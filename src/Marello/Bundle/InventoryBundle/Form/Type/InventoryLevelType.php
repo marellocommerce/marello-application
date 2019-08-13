@@ -37,12 +37,10 @@ class InventoryLevelType extends AbstractType
 
     /**
      * @param EventSubscriberInterface $subscriber
-     * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(EventSubscriberInterface $subscriber, EventDispatcherInterface $eventDispatcher)
+    public function __construct(EventSubscriberInterface $subscriber)
     {
         $this->subscriber = $subscriber;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -118,6 +116,19 @@ class InventoryLevelType extends AbstractType
             InventoryLevelFinishFormViewEvent::NAME,
             new InventoryLevelFinishFormViewEvent($view)
         );
+    }
+
+    /**
+     * Added to keep BC
+     * @deprecated will be removed in 3.0
+     * @param EventDispatcherInterface $eventDispatcher
+     * @return $this
+     */
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+
+        return $this;
     }
 
     /**

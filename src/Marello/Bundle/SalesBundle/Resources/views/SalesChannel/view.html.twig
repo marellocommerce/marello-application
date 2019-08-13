@@ -52,6 +52,25 @@
         }
     ] %}
 
+    {%- set additionalInfoPlaceholders = marello_get_additional_placeholder_data('salesChannel') -%}
+    {% for additionalInfo in additionalInfoPlaceholders %}
+        {% set salesChannelAdditionalInfoSection %}
+            {% set placeholderName = additionalInfo.placeholder %}
+            {% placeholder placeholderName with {'salesChannel': entity} %}
+        {% endset %}
+        {% if salesChannelAdditionalInfoSection|trim is not empty %}
+            {% set dataBlocks = dataBlocks|merge([
+                {
+                    'title': additionalInfo.label|trans,
+                    'class': 'active',
+                    'subblocks': [
+                        { 'data': [salesChannelAdditionalInfoSection] }
+                    ]
+                }
+            ]) %}
+        {% endif %}
+    {% endfor %}
+
     {% set data = { 'dataBlocks': dataBlocks } %}
     {{ parent() }}
 {% endblock content_data %}

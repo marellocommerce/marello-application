@@ -44,7 +44,7 @@ class InventoryLevelCollectionType extends AbstractType
     {
         $resolver->setDefaults([
             'entry_type'           => InventoryLevelType::class,
-            'show_form_when_empty' => true,
+            'show_form_when_empty' => false,
             'error_bubbling'       => false,
             'constraints'          => [new Valid()],
             'prototype_name'       => '__nameinventorylevelcollection__',

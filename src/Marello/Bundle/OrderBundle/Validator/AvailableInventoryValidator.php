@@ -13,7 +13,9 @@
 
 namespace Marello\Bundle\OrderBundle\Validator;
 
+use Marello\Bundle\OrderBundle\Event\ProductAvailableInventoryValidationEvent;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -41,6 +43,11 @@ class AvailableInventoryValidator extends ConstraintValidator
 
     /** @var array */
     private $collection = [];
+    
+    /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
 
     /**
      * {@inheritdoc}
@@ -103,13 +110,6 @@ class AvailableInventoryValidator extends ConstraintValidator
                 $violation = true;
                 if ($this->isProductCanDropship($values[self::PRODUCT_FIELD])) {
                     $violation = false;
-                } elseif ($this->isProductCanPreorder($values[self::PRODUCT_FIELD]) &&
-                    $this->compareValues(
-                        $this->getPreorderQty($values[self::PRODUCT_FIELD]),
-                        $values[self::QUANTITY_FIELD]
-                    )
-                ) {
-                    $violation = false;
                 } elseif ($this->isProductCanBackorder($values[self::PRODUCT_FIELD]) &&
                     $this->compareValues(
                         $this->getBackorderQty($values[self::PRODUCT_FIELD]),
@@ -117,6 +117,21 @@ class AvailableInventoryValidator extends ConstraintValidator
                     )
                 ) {
                     $violation = false;
+                } elseif ($this->isProductCanPreorder($values[self::PRODUCT_FIELD]) &&
+                    $this->compareValues(
+                        $this->getPreorderQty($values[self::PRODUCT_FIELD]),
+                        $values[self::QUANTITY_FIELD]
+                    )
+                ) {
+                    $violation = false;
+                }
+                if ($violation === true) {
+                    $event = new ProductAvailableInventoryValidationEvent($entity, $violation);
+                    $this->eventDispatcher->dispatch(
+                        ProductAvailableInventoryValidationEvent::NAME,
+                        $event
+                    );
+                    $violation = $event->getViolation();
                 }
                 if ($violation === true) {
                     $errorPath = $this->getErrorPathFromConfig($constraint, $fields);
@@ -182,6 +197,9 @@ class AvailableInventoryValidator extends ConstraintValidator
     {
         foreach ($product->getInventoryItems() as $inventoryItem) {
             if ($inventoryItem->isBackorderAllowed()) {
+                if (null === $inventoryItem->getMaxQtyToBackorder()) {
+                    return PHP_INT_MAX;
+                }
                 return $inventoryItem->getMaxQtyToBackorder();
             }
         }
@@ -212,6 +230,9 @@ class AvailableInventoryValidator extends ConstraintValidator
     {
         foreach ($product->getInventoryItems() as $inventoryItem) {
             if ($inventoryItem->isCanPreorder()) {
+                if (null === $inventoryItem->getMaxQtyToPreorder()) {
+                    return PHP_INT_MAX;
+                }
                 return $inventoryItem->getMaxQtyToPreorder();
             }
         }
@@ -300,5 +321,18 @@ class AvailableInventoryValidator extends ConstraintValidator
     private function getErrorPathFromConfig(Constraint $constraint, $fields)
     {
         return null !== $constraint->errorPath ? $constraint->errorPath : $fields[0];
+    }
+
+    /**
+     * Added for keeping BC
+     * @deprecated will be removed in 3.0
+     * @param EventDispatcherInterface $eventDispatcher
+     * @return $this
+     */
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+
+        return $this;
     }
 }

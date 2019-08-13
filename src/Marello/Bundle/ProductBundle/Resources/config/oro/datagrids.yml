@@ -6,7 +6,17 @@ datagrids:
             acl_resource: marello_product_view
             query:
                 select:
-                    - p
+                    - p.id
+                    - p.sku
+                    - p.type
+                    - IDENTITY(p.image) as image
+                    - p.name
+                    - p.weight
+                    - p.name
+                    - p.manufacturingCode
+                    - p.createdAt
+                    - p.updatedAt
+                    - p.manufacturingCode
                     - (CASE WHEN p.image IS NOT NULL THEN true ELSE false END) as hasImage
                     - s.label as status
                     - count(sc.code) as channelsCount
@@ -41,6 +51,9 @@ datagrids:
                 type:             twig
                 frontend_type:    html
                 template:         MarelloProductBundle:Product/Datagrid/Property:image.html.twig
+            type:
+                label:              marello.product.type.label
+                frontend_type:      string
             sku:
                 label:              marello.product.sku.label
                 frontend_type:      string
@@ -133,6 +146,7 @@ datagrids:
                 params:     [ id ]
         sorters:
             columns:
+                type:                   { data_name: p.type }
                 sku:                    { data_name: p.sku }
                 name:                   { data_name: p.name }
                 status:                 { data_name: s.label }
@@ -155,6 +169,9 @@ datagrids:
                 image:
                     type:             boolean
                     data_name:        hasImage
+                type:
+                    type:             string
+                    data_name:        p.type
                 sku:
                     type:             string
                     data_name:        p.sku
@@ -274,7 +291,6 @@ datagrids:
         options:
             export: false
             entity_pagination: false
-
 
     marello-products-supplier-no-actions-grid:
         extends: marello-products-grid

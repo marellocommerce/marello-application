@@ -191,7 +191,7 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
      * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
-     *              "header"="Can Preorder"
+     *              "header"="Can Pre-order"
      *          },
      *          "dataaudit"={
      *              "auditable"=true
@@ -208,7 +208,7 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
      * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
-     *              "header"="Max Quantity To Preorder"
+     *              "header"="Max Quantity To Pre-order"
      *          },
      *          "dataaudit"={
      *              "auditable"=true

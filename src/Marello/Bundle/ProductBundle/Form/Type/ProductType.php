@@ -6,13 +6,15 @@ use Marello\Bundle\CatalogBundle\Entity\Category;
 use Marello\Bundle\PricingBundle\Form\EventListener\ChannelPricingSubscriber;
 use Marello\Bundle\PricingBundle\Form\EventListener\PricingSubscriber;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\ProductBundle\Form\EventListener\DefaultAttributeFamilySubscriber;
+use Marello\Bundle\ProductBundle\Form\EventListener\AttributeFamilySubscriber;
 use Marello\Bundle\SalesBundle\Form\EventListener\DefaultSalesChannelSubscriber;
 use Marello\Bundle\TaxBundle\Form\Type\TaxCodeSelectType;
 use Oro\Bundle\AttachmentBundle\Form\Type\ImageType;
 use Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -39,23 +41,31 @@ class ProductType extends AbstractType
     protected $channelPricingSubscriber;
 
     /**
-     * @var DefaultAttributeFamilySubscriber $defaultAttributeFamilySubscriber
+     * @var AttributeFamilySubscriber
      */
-    protected $defaultAttributeFamilySubscriber;
+    protected $attributeFamilySubscriber;
+
+    /**
+     * @var EventSubscriberInterface
+     */
+    protected $subscriptionProductSubscriber;
 
     /**
      * @param DefaultSalesChannelSubscriber $defaultSalesChannelSubscriber
      * @param PricingSubscriber $pricingSubscriber
      * @param ChannelPricingSubscriber $channelPricingSubscriber
+     * @param AttributeFamilySubscriber $attributeFamilySubscriber
      */
     public function __construct(
         DefaultSalesChannelSubscriber $defaultSalesChannelSubscriber,
         PricingSubscriber $pricingSubscriber,
-        ChannelPricingSubscriber $channelPricingSubscriber
+        ChannelPricingSubscriber $channelPricingSubscriber,
+        AttributeFamilySubscriber $attributeFamilySubscriber
     ) {
         $this->defaultSalesChannelSubscriber = $defaultSalesChannelSubscriber;
         $this->pricingSubscriber = $pricingSubscriber;
         $this->channelPricingSubscriber = $channelPricingSubscriber;
+        $this->attributeFamilySubscriber = $attributeFamilySubscriber;
     }
 
     /**
@@ -64,6 +74,8 @@ class ProductType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('type', HiddenType::class)
+            ->add('attributeFamily', HiddenType::class)
             ->add(
                 'name',
                 TextType::class,
@@ -182,7 +194,10 @@ class ProductType extends AbstractType
         $builder->addEventSubscriber($this->defaultSalesChannelSubscriber);
         $builder->addEventSubscriber($this->pricingSubscriber);
         $builder->addEventSubscriber($this->channelPricingSubscriber);
-        $builder->addEventSubscriber($this->defaultAttributeFamilySubscriber);
+        $builder->addEventSubscriber($this->attributeFamilySubscriber);
+        if ($this->subscriptionProductSubscriber) {
+            $builder->addEventSubscriber($this->subscriptionProductSubscriber);
+        }
     }
 
     /**
@@ -208,12 +223,12 @@ class ProductType extends AbstractType
     }
 
     /**
-     * Add default attribute family subscriber and keeping BC
-     * probably will be removed once going to next major version of Marello 3.0
-     * @param DefaultAttributeFamilySubscriber $subscriber
+     * Added because of keeping BC
+     * @deprecated will be removed in 3.0
+     * @param EventSubscriberInterface|null $subscriptionProductSubscriber
      */
-    public function setDefaultAttributeFamilySubscriber(DefaultAttributeFamilySubscriber $subscriber)
+    public function setEventSubscriberInterface(EventSubscriberInterface $subscriptionProductSubscriber = null)
     {
-        $this->defaultAttributeFamilySubscriber = $subscriber;
+        $this->subscriptionProductSubscriber = $subscriptionProductSubscriber;
     }
 }

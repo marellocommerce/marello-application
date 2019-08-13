@@ -9,9 +9,27 @@ use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 
 class OrderWarehousesProvider implements OrderWarehousesProviderInterface
 {
+    /**
+     * keeping property for BC
+     * @var DoctrineHelper
+     * @deprecated will be removed in 3.0
+     */
+    protected $doctrineHelper;
+
+    /**
+     * keeping property for BC
+     * @deprecated will be removed in 3.0
+     * @param DoctrineHelper $doctrineHelper
+     */
+    public function __construct(DoctrineHelper $doctrineHelper)
+    {
+        $this->doctrineHelper = $doctrineHelper;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -130,5 +148,18 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
         }
 
         return $preferredSupplier;
+    }
+
+    /**
+     * keep for BC
+     * @deprecated will be removed in 3.0
+     * @return Warehouse
+     */
+    protected function getWarehouse()
+    {
+        return $this->doctrineHelper
+            ->getEntityManagerForClass(Warehouse::class)
+            ->getRepository(Warehouse::class)
+            ->getDefault();
     }
 }

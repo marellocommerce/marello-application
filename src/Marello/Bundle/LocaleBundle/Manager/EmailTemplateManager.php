@@ -106,7 +106,6 @@ class EmailTemplateManager
     {
         if (method_exists($entity, 'getSalesChannel')) {
             $salesChannel = $entity->getSalesChannel();
-
             if ($salesChannel instanceof LocaleAwareInterface && $salesChannel->getLocale() !== null) {
                 return $this->emailTemplateTranslatableRepository
                     ->findOneByNameAndLocale($templateName, $salesChannel->getLocale());

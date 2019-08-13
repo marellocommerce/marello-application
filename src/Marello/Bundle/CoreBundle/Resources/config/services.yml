@@ -31,6 +31,13 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: marello_core.greater_than_or_equal_to_value_validator }
 
+    marello_core.twig.core_extension:
+        class: Marello\Bundle\CoreBundle\Twig\CoreExtension
+        calls:
+          - [ setPlaceholderProvider, ['@marello_core.provider.additional_placeholder_provider'] ]
+        tags:
+            - { name: twig.extension }
+
     marello_core.twig.workflow_extension:
         class: Marello\Bundle\CoreBundle\Twig\WorkflowExtension
         arguments:
@@ -61,3 +68,13 @@ services:
             - '@oro_workflow.manager'
         calls:
             - ["setFieldsFilter", ['@oro_security.serializer.filter_chain']]
+
+    marello_core.provider.additional_placeholder_provider:
+        class: 'Marello\Bundle\CoreBundle\Provider\AdditionalPlaceholderProvider'
+
+    marello_core.twig.file_extension:
+        class: 'Marello\Bundle\CoreBundle\Twig\FileExtension'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: twig.extension }

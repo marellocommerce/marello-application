@@ -44,6 +44,7 @@ services:
         arguments:
             - '@oro_entity.doctrine_helper'
             - '@marello_inventory.provider.available_inventory_provider'
+            - '@event_dispatcher'
         tags:
             - { name: doctrine.event_listener, event: postPersist }
             - { name: kernel.event_listener, event: extendable_action.order_paid, method: onOrderPaid }
@@ -214,6 +215,8 @@ services:
         arguments:
             - '@oro_entity.doctrine_helper'
             - '@marello_inventory.provider.available_inventory_provider'
+        calls:
+            - ['setEventDispatcher', ['@event_dispatcher']]
         tags:
             - { name: validator.constraint_validator, alias: marello_order.available_inventory_validator }
 
