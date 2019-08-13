@@ -63,3 +63,4 @@ navigation:
         marello_sales_saleschannelgroup_create:  'oro.ui.create_entity'
         marello_sales_saleschannelgroup_update:  '%name% - oro.ui.edit'
         marello_sales_saleschannelgroup_view:  '%name% - oro.ui.view'
+        marello_sales_config_config: '%name% - marello.sales.config.saleschannel.label'
