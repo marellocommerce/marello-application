@@ -1,0 +1,40 @@
+marello:
+    pdf:
+        config:
+            groups:
+                documents.label: Documents
+                document_configuration.label: Document Configuration
+                template.label: Template Settings
+                dimensions.label: Dimensions
+            fields:
+                paper_size:
+                    label: "Paper size"
+                    a4.label: "A4"
+                    letter.label: "Letter"
+                language:
+                    label: "Language"
+                    tooltip: "Language applied to certain language-specific fields on invoice PDF."
+                locale:
+                    label: "Localization"
+                    tooltip: "Localization applied number- and date-fields on invoice PDF."
+                logo:
+                    label: "Company logo"
+                    tooltip: "Upload a logo that will be displayed on top of your invoices."
+                company_address:
+                    label: "Company address"
+                    tooltip: "Enter company address information here, including the company name and country."
+                company_email:
+                    label: "Company e-mail address"
+                    tooltip: "Enter the company invoice-related e-mail address here."
+                company_phone:
+                    label: "Company phone number"
+                    tooltip: "Enter the company invoice-related phone number here."
+                company_bank:
+                    label: "Bank information"
+                    tooltip: "Bank information such as bank name, IBAN or BIC."
+                company_coc:
+                    label: "Chamber Of Commerce information"
+                    tooltip: "Chamber Of Commerce-related information, such as Chamber Of Commerce number."
+
+        filename:
+            invoice: "Invoice_%entityNumber%"

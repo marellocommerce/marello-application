@@ -3,6 +3,11 @@ marello_sales_saleschannel:
     type:     annotation
     prefix:   /marello/saleschannel
 
+marello_sales_config:
+    resource: "@MarelloSalesBundle/Controller/ConfigController.php"
+    type:     annotation
+    prefix:   /config
+
 marello_sales_saleschannelgroup:
     resource: "@MarelloSalesBundle/Controller/SalesChannelGroupController.php"
     type:     annotation
