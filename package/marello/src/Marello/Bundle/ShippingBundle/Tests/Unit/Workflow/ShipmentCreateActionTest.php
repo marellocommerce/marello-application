@@ -5,6 +5,7 @@ namespace Marello\Bundle\ShippingBundle\Tests\Unit\Workflow;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Persistence\ObjectManager;
 
+use Marello\Bundle\ShippingBundle\Context\ShippingContext;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -159,7 +160,7 @@ class ShipmentCreateActionTest extends TestCase
 
         $this->action->initialize(
             [
-                'context' => new PropertyPath('context'),
+                'context' => [$this->createMock(ShippingContextInterface::class)],
                 'method' => new PropertyPath('method'),
                 'methodType' => new PropertyPath('methodType'),
             ]
