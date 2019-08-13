@@ -12,7 +12,9 @@ use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
 
 class AvailableInventoryProvider
 {
-    /** @var DoctrineHelper $doctrineHelper */
+    /**
+     * @var DoctrineHelper
+     */
     protected $doctrineHelper;
 
     /**

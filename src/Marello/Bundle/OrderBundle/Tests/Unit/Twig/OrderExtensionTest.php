@@ -2,6 +2,8 @@
 
 namespace Marello\Bundle\OrderBundle\Tests\Unit\Twig;
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
+use Marello\Bundle\OrderBundle\Provider\OrderItem\ShippingPreparedOrderItemsForNotificationProvider;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
@@ -27,11 +29,20 @@ class OrderExtensionTest extends WebTestCase
      */
     protected function setUp()
     {
-        $this->workflowManager = $this->getMockBuilder(WorkflowManager::class)
+        $registry = $this
+            ->getMockBuilder(Registry::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->workflowManager = $this
+            ->getMockBuilder(WorkflowManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $orderItemsForNotificationProvider = $this
+            ->getMockBuilder(ShippingPreparedOrderItemsForNotificationProvider::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->extension = new OrderExtension($this->workflowManager);
+        $this->extension = new OrderExtension($registry, $this->workflowManager, $orderItemsForNotificationProvider);
     }
 
     /**
@@ -57,11 +68,14 @@ class OrderExtensionTest extends WebTestCase
     public function testGetFunctionsAreRegisteredInExtension()
     {
         $functions = $this->extension->getFunctions();
-        $this->assertCount(1, $functions);
+        $this->assertCount(4, $functions);
 
-        $expectedFunctions = array(
-            'marello_order_can_return'
-        );
+        $expectedFunctions = [
+            'marello_order_can_return',
+            'marello_order_item_shipped',
+            'marello_get_order_item_status',
+            'marello_get_order_items_for_notification'
+        ];
 
         /** @var \Twig_SimpleFunction $function */
         foreach ($functions as $function) {

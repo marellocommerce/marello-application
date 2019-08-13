@@ -7,7 +7,7 @@ interface ShippingContextFactoryInterface
     /**
      * @param object $entity
      *
-     * @return ShippingContextInterface
+     * @return ShippingContextInterface[]
      */
     public function create($entity);
 }

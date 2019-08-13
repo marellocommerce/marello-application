@@ -1113,7 +1113,7 @@ class Product extends ExtendProduct implements
             return $productChannelPrice;
         }
 
-        return null;
+        return $this->getPrice($salesChannel->getCurrency());
     }
     
     /**
