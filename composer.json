@@ -28,8 +28,8 @@
     },
     "require": {
         "php": ">=7.1.26",
-        "oro/platform-enterprise": "~3.1.1",
-        "marellocommerce/marello": "~2.1.0"
+        "oro/platform-enterprise": "3.1.9",
+        "marellocommerce/marello": "self.version"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
