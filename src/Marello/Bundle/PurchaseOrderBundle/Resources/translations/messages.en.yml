@@ -27,6 +27,7 @@ marello:
         supplier.label:                                 Supplier
         organization.label:                             Organization
         shipping_address.label:                         Shipping Address
+        data.label:                                     Data
 
         ui:
             continue:                                   Continue

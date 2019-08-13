@@ -71,4 +71,6 @@ workflows:
                         entity: $po
                     - '@marello_purchase_order_transit_complete_action':
                         entity: $po
+                    - '@extendable':
+                       events: [extendable_action.purchase_order_completed]
             cancel_purchase_order_definition: ~
