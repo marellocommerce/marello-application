@@ -1,0 +1,18 @@
+marello:
+    pdf:
+        invoice:
+            invoice_date.label: "Invoice date"
+            invoice_number.label: "Invoice number"
+            debtor_number.label: "Debtor number"
+            subtotal.label: "Subtotal"
+            total.label: "Total"
+            page_number.label: "Page %pageNumber% of %totalPages%"
+            entity.label: "Invoice"
+            tax.label: "Tax"
+        invoice_line:
+            title.label: "Title"
+            quantity_and_price.label: "Units"
+            discount.label: "Discount"
+            total_ex_tax.label: "Total ex tax"
+            tax.label: "Tax"
+            total_inc_tax.label: "Total inc tax"

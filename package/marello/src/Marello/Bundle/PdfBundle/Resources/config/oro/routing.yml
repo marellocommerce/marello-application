@@ -1,0 +1,4 @@
+marello_pdf_download:
+    resource: "@MarelloPdfBundle/Controller/DownloadController.php"
+    type:     annotation
+    prefix:   /marello/pdf/download
