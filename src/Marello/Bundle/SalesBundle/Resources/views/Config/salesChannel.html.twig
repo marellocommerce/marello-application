@@ -1,0 +1,21 @@
+{% extends 'OroConfigBundle::configPage.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% oro_title_set({params : {"%name%": entity.name }}) %}
+
+{% set pageTitle = [
+    UI.link({
+        'path': path('marello_sales_saleschannel_index'),
+        'label': 'marello.sales.saleschannel.entity_plural_label'|trans
+    }),
+    UI.link({
+        'path': path('marello_sales_saleschannel_view', {id: entity.id}),
+        'label': entity.name
+    }),
+    'marello.sales.config.saleschannel.label'|trans ~ (scopeInfo ? UI.tooltip(scopeInfo|trans) : '')
+] %}
+
+{% set routeName = 'marello_sales_config_saleschannel' %}
+{% set routeParameters = {'id': entity.id, 'activeGroup': activeGroup, 'activeSubGroup': activeSubGroup} %}
+
+{% set formAction = path(routeName, routeParameters) %}
