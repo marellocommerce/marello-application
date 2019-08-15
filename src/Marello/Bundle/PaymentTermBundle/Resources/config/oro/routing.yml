@@ -1,0 +1,4 @@
+marello_paymentterm_paymentterm:
+    resource:     "@MarelloPaymentTermBundle/Controller/PaymentTermController.php"
+    type:         annotation
+    prefix:       /marello/paymentterm/paymentterm
