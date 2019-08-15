@@ -45,7 +45,9 @@ class PaymentTermDeletePermissionProvider
      */
     protected function isDefaultPaymentTerm(PaymentTerm $paymentTerm)
     {
-        return $paymentTerm->getId() == $this->paymentTermProvider->getDefaultPaymentTerm()->getId();
+        /** @var PaymentTerm|null $defaultPaymentTerm */
+        $defaultPaymentTerm = $this->paymentTermProvider->getDefaultPaymentTerm();
+        return ($defaultPaymentTerm && $paymentTerm->getId() === $defaultPaymentTerm->getId());
     }
 
     /**
