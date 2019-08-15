@@ -289,22 +289,22 @@
                         </td>
                         <td class="price">
                             {%- if line['price'] is not empty -%}
-                                {{ line['price']|oro_format_currency({'locale': locale}) -}}
+                                {{ line['price']|oro_format_currency({'locale': locale, 'currency':entity.currency}) -}}
                             {%- else -%}
                                 &nbsp;
                             {%- endif -%}
                         </td>
                         <td class="r">
-                            {%- if line['discount'] is not empty %}{{ line['discount']|oro_format_currency({'locale': locale}) }}{% else %}&nbsp;{% endif -%}
+                            {%- if line['discount'] is not empty %}{{ line['discount']|oro_format_currency({'locale': locale, 'currency':entity.currency}) }}{% else %}&nbsp;{% endif -%}
                         </td>
                         <td class="r">
-                            {%- if line['total_ex_tax'] is not empty %}{{ line['total_ex_tax']|oro_format_currency({'locale': locale}) }}{% else %}&nbsp;{% endif -%}
+                            {%- if line['total_ex_tax'] is not empty %}{{ line['total_ex_tax']|oro_format_currency({'locale': locale, 'currency':entity.currency}) }}{% else %}&nbsp;{% endif -%}
                         </td>
                         <td class="r">
-                            {%- if line['tax'] is not empty %}{{ line['tax']|oro_format_currency({'locale': locale}) }}{% else %}&nbsp;{% endif -%}
+                            {%- if line['tax'] is not empty %}{{ line['tax']|oro_format_currency({'locale': locale, 'currency':entity.currency}) }}{% else %}&nbsp;{% endif -%}
                         </td>
                         <td class="r total">
-                            {%- if line['total_inc_tax'] is not empty %}{{ line['total_inc_tax']|oro_format_currency({'locale': locale}) }}{% else %}&nbsp;{% endif -%}
+                            {%- if line['total_inc_tax'] is not empty %}{{ line['total_inc_tax']|oro_format_currency({'locale': locale, 'currency':entity.currency}) }}{% else %}&nbsp;{% endif -%}
                         </td>
                     </tr>
                     {% endfor -%}
@@ -316,7 +316,7 @@
                 <tr>
                     <td class="empty">&nbsp;</td>
                     <td>{% if entity.invoiceNumber is not empty %}{{ 'marello.pdf.invoice.entity.label'|trans({}, 'pdf', language) }} {{ entity.invoiceNumber }}{% else %}&nbsp;{% endif %}</td>
-                    <td class="subtotal r">{{ subtotal|oro_format_currency({'locale': locale}) }}</td>
+                    <td class="subtotal r">{{ subtotal|oro_format_currency({'locale': locale, 'currency':entity.currency}) }}</td>
                 </tr>
             </table>
 
@@ -330,15 +330,15 @@
                 <tbody>
                 <tr>
                     <th>{{ 'marello.pdf.invoice.subtotal.label'|trans({}, 'pdf', language) }}</th>
-                    <td class="r">{{ total|oro_format_currency({'locale': locale}) }}</td>
+                    <td class="r">{{ total|oro_format_currency({'locale': locale, 'currency':entity.currency}) }}</td>
                 </tr>
                 <tr>
                     <th>{{ 'marello.pdf.invoice.tax.label'|trans({}, 'pdf', language) }}</th>
-                    <td class="r">{{ taxtotal|oro_format_currency({'locale': locale}) }}</td>
+                    <td class="r">{{ taxtotal|oro_format_currency({'locale': locale, 'currency':entity.currency}) }}</td>
                 </tr>
                 <tr class="invoice-total">
                     <th>{{ 'marello.pdf.invoice.total.label'|trans({}, 'pdf', language) }}</th>
-                    <td class="r">{{ (total + taxtotal)|oro_format_currency({'locale': locale}) }}</td>
+                    <td class="r">{{ (total + taxtotal)|oro_format_currency({'locale': locale, 'currency':entity.currency}) }}</td>
                 </tr>
                 </tbody>
             </table>
