@@ -1,0 +1,17 @@
+services:
+    marello_payment_term.provider.payment_term:
+        class: 'Marello\Bundle\PaymentTermBundle\Provider\PaymentTermProvider'
+        arguments:
+            - '@oro_config.manager'
+            - '@oro_entity.doctrine_helper'
+
+    marello_payment_term.provider.payment_term_delete_permission:
+        class: 'Marello\Bundle\PaymentTermBundle\Provider\PaymentTermDeletePermissionProvider'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@marello_payment_term.provider.payment_term'
+
+    marello_payment_term.action_permissions.payment_term:
+        class: 'Marello\Bundle\PaymentTermBundle\Datagrid\PaymentTermActionPermissionProvider'
+        arguments:
+            - '@marello_payment_term.provider.payment_term_delete_permission'
