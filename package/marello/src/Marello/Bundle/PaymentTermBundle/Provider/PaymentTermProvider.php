@@ -53,6 +53,9 @@ class PaymentTermProvider
     protected function fetchDefaultPaymentTerm()
     {
         $id = $this->config->get(Configuration::DEFAULT_PAYMENT_TERM_CONFIG_PATH);
+        if (!$id) {
+            return null;
+        }
 
         return $this->doctrineHelper->getEntityRepositoryForClass(PaymentTerm::class)->find($id);
     }

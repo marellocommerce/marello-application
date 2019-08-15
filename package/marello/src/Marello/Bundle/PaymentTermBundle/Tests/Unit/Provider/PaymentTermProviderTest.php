@@ -17,11 +17,19 @@ class PaymentTermProviderTest extends TestCase
     public function testGetDefaultPaymentTermWhenSet()
     {
         $configManager = $this->getConfigManagerMock('1');
-        $doctrineHelper = $this->getDoctrineHelperMock('1', $this->getEntity(PaymentTerm::class, [
-            'id' => 1,
-            'code' => 'default',
-            'term' => 14,
-        ]));
+        /** @var PaymentTermRepository|\PHPUnit_Framework_MockObject_MockObject $paymentTermRepository */
+        $paymentTermRepository = $this->getPaymentTermRepositoryMock(
+            static::once(),
+            'find',
+            '1',
+            $this->getEntity(PaymentTerm::class, [
+                'id' => 1,
+                'code' => 'default',
+                'term' => 14,
+            ])
+        );
+
+        $doctrineHelper = $this->getDoctrineHelperMock($paymentTermRepository);
 
         $provider = new PaymentTermProvider($configManager, $doctrineHelper);
 
@@ -33,8 +41,11 @@ class PaymentTermProviderTest extends TestCase
     public function testGetDefaultPaymentTermWhenNotSet()
     {
         $configManager = $this->getConfigManagerMock(null);
-        $doctrineHelper = $this->getDoctrineHelperMock(null, null);
+        /** @var PaymentTermRepository|\PHPUnit_Framework_MockObject_MockObject $paymentTermRepository */
+        $paymentTermRepository = $this->getPaymentTermRepositoryMock(static::never(), 'find');
 
+        /** @var DoctrineHelper|\PHPUnit_Framework_MockObject_MockObject $doctrineHelper */
+        $doctrineHelper = $this->getDoctrineHelperMock($paymentTermRepository);
         $provider = new PaymentTermProvider($configManager, $doctrineHelper);
 
         $result = $provider->getDefaultPaymentTerm();
@@ -61,22 +72,16 @@ class PaymentTermProviderTest extends TestCase
         ];
 
         /** @var PaymentTermRepository|\PHPUnit_Framework_MockObject_MockObject $paymentTermRepository */
-        $paymentTermRepository = $this->createMock(PaymentTermRepository::class);
-        $paymentTermRepository->expects(static::once())
-            ->method('findAll')
-            ->willReturn($paymentTerms)
-        ;
+        $paymentTermRepository = $this->getPaymentTermRepositoryMock(
+            static::once(),
+            'findAll',
+            null,
+            $paymentTerms
+        );
 
         /** @var DoctrineHelper|\PHPUnit_Framework_MockObject_MockObject $doctrineHelper */
-        $doctrineHelper = $this->createMock(DoctrineHelper::class);
-        $doctrineHelper
-            ->method('getEntityRepositoryForClass')
-            ->with(PaymentTerm::class)
-            ->willReturn($paymentTermRepository)
-        ;
-
+        $doctrineHelper = $this->getDoctrineHelperMock($paymentTermRepository);
         $provider = new PaymentTermProvider($configManager, $doctrineHelper);
-
         $result = $provider->getPaymentTerms();
 
         static::assertInternalType('array', $result);
@@ -86,6 +91,35 @@ class PaymentTermProviderTest extends TestCase
         }
     }
 
+    /**
+     * Create PaymentTermRepository mock object based on 'fixed' parameters
+     * @param $matcher
+     * @param $method
+     * @param null $argument
+     * @param null $returnValue
+     * @return PaymentTermRepository|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getPaymentTermRepositoryMock($matcher, $method, $argument = null, $returnValue = null)
+    {
+        /** @var PaymentTermRepository|\PHPUnit_Framework_MockObject_MockObject $paymentTermRepository */
+        $paymentTermRepository = $this->createMock(PaymentTermRepository::class);
+        $paymentTermRepository->expects($matcher)
+            ->method($method)
+            ->willReturn($returnValue)
+        ;
+
+        if ($argument) {
+            $paymentTermRepository->with($argument);
+        }
+
+        return $paymentTermRepository;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @param $value
+     * @return ConfigManager|\PHPUnit_Framework_MockObject_MockObject
+     */
     protected function getConfigManagerMock($value)
     {
         /** @var ConfigManager|\PHPUnit_Framework_MockObject_MockObject $configManager */
@@ -99,16 +133,13 @@ class PaymentTermProviderTest extends TestCase
         return $configManager;
     }
 
-    protected function getDoctrineHelperMock($argument, $result)
+    /**
+     * {@inheritdoc
+     * @param $paymentTermRepository PaymentTermRepository|\PHPUnit_Framework_MockObject_MockObject
+     * @return DoctrineHelper|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getDoctrineHelperMock($paymentTermRepository)
     {
-        /** @var PaymentTermRepository|\PHPUnit_Framework_MockObject_MockObject $paymentTermRepository */
-        $paymentTermRepository = $this->createMock(PaymentTermRepository::class);
-        $paymentTermRepository->expects(static::once())
-            ->method('find')
-            ->with($argument)
-            ->willReturn($result)
-        ;
-
         /** @var DoctrineHelper|\PHPUnit_Framework_MockObject_MockObject $doctrineHelper */
         $doctrineHelper = $this->createMock(DoctrineHelper::class);
         $doctrineHelper
