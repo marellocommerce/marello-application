@@ -20,6 +20,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\Valid;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class InventoryLevelType extends AbstractType
 {
@@ -55,6 +56,14 @@ class InventoryLevelType extends AbstractType
                 [
                     'class' => Warehouse::class,
                     'attr'  => ['readonly' => true]
+                ]
+            )
+            ->add(
+                'warehouseLocation',
+                TextType::class,
+                [
+                    'required' => false,
+                    'label'    => 'marello.inventory.inventorylevel.warehouse_location.label'
                 ]
             )
             ->add(
