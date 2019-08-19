@@ -185,6 +185,23 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
     protected $managedInventory;
 
     /**
+     * @ORM\Column(name="warehouse_location", type="string", nullable=true, length=100)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "header"="Warehouse Location"
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var string
+     */
+    protected $warehouseLocation;
+
+    /**
      * @return int
      */
     public function getId()
@@ -320,10 +337,31 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
      * @param mixed $managedInventory
      * @return $this
      */
-    public function setManagedInventory($managedInventory)
+    public function setManagedInventory($managedInventory): InventoryLevel
     {
         $this->managedInventory = $managedInventory;
         
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @param $warehouseLocation
+     * @return string
+     */
+    public function setWarehouseLocation($warehouseLocation): InventoryLevel
+    {
+        $this->warehouseLocation = $warehouseLocation;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return string
+     */
+    public function getWarehouseLocation(): string
+    {
+        return $this->warehouseLocation;
     }
 }
