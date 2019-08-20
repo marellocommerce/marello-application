@@ -25,4 +25,4 @@ EXPOSE 443 80 8080
 
 CMD ["run.sh"]
 
-ENV "SYMFONY_ENV=prod"
+ENV SYMFONY_ENV=prod
