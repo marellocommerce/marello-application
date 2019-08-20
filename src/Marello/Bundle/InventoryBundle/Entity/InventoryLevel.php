@@ -360,7 +360,7 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
      * {@inheritdoc}
      * @return string
      */
-    public function getWarehouseLocation(): string
+    public function getWarehouseLocation(): ?string
     {
         return $this->warehouseLocation;
     }
