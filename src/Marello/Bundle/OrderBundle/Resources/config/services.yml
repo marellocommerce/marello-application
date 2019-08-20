@@ -265,3 +265,11 @@ services:
         arguments: ['marello_item_status']
         tags:
             - { name: oro_dashboard.value.converter, form_type: Marello\Bundle\OrderBundle\Form\Type\WidgetOrderItemStatusesSelectType }
+
+    marello_order.listener.start_workflow:
+        class: 'Marello\Bundle\OrderBundle\EventListener\Doctrine\OrderWorkflowStartListener'
+        arguments:
+            - '@oro_workflow.manager'
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: postFlush }
