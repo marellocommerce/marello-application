@@ -5,6 +5,7 @@ namespace Marello\Bundle\OrderBundle\EventListener\Doctrine;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 
+use Oro\Bundle\WorkflowBundle\Model\Workflow;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
@@ -12,6 +13,7 @@ use Marello\Bundle\OrderBundle\Entity\Order;
 class OrderWorkflowStartListener
 {
     const WORKFLOW = 'marello_order_b2c_workflow_1';
+    const WORKFLOW_2 = 'marello_order_b2c_workflow_2';
     const TRANSIT_TO_STEP = 'pending';
 
     /** @var WorkflowManager $workflowManager */
@@ -51,9 +53,37 @@ class OrderWorkflowStartListener
                 ->getRepository(Order::class)
                 ->find($this->orderId);
             if ($entity) {
-                $this->orderId = null;
-                $this->workflowManager->startWorkflow(self::WORKFLOW, $entity, self::TRANSIT_TO_STEP);
+                if ($workflow = $this->getApplicableWorkflow($entity)) {
+                    $this->orderId = null;
+                    $this->workflowManager->startWorkflow($workflow->getName(), $entity, self::TRANSIT_TO_STEP);
+                }
             }
         }
+    }
+
+    /**
+     * @param $entity
+     * @return Workflow|null
+     */
+    protected function getApplicableWorkflow($entity)
+    {
+        if (!$this->workflowManager->hasApplicableWorkflows($entity)) {
+            return null;
+        }
+
+        $applicableWorkflows = [];
+        // apply force autostart (ignore default filters)
+        $workflows = $this->workflowManager->getApplicableWorkflows($entity);
+        foreach ($workflows as $name => $workflow) {
+            if (in_array($name, [self::WORKFLOW, self::WORKFLOW_2])) {
+                $applicableWorkflows[$name] = $workflow;
+            }
+        }
+
+        if (count($applicableWorkflows) !== 1) {
+            return null;
+        }
+
+        return array_shift($applicableWorkflows);
     }
 }
