@@ -15,6 +15,7 @@ use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\ShippingBundle\Method\ShippingMethodInterface;
+use Marello\Bundle\OrderBundle\Model\WorkflowNameProviderInterface;
 use Marello\Bundle\ShippingBundle\Method\ShippingMethodTypeInterface;
 use Marello\Bundle\ShippingBundle\Method\ShippingMethodProviderInterface;
 use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
@@ -23,10 +24,11 @@ use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 
 class OrderWorkflowStartListenerTest extends WebTestCase
 {
-    const WORKFLOW = 'marello_order_b2c_workflow_1';
-    const WORKFLOW_2 = 'marello_order_b2c_workflow_2';
     const TRANSIT_TO_STEP = 'pending';
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         $this->initClient(
@@ -39,6 +41,9 @@ class OrderWorkflowStartListenerTest extends WebTestCase
         ]);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function testOrderHasSingleWorkflowStartedByDefault()
     {
         /** @var Order $order */
@@ -50,6 +55,9 @@ class OrderWorkflowStartListenerTest extends WebTestCase
         self::assertCount(1, $workflowItems);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function testWorkflowStartedIsDefaultWorkflow()
     {
         /** @var Order $order */
@@ -61,14 +69,17 @@ class OrderWorkflowStartListenerTest extends WebTestCase
         self::assertCount(1, $workflowItems);
         /** @var WorkflowItem $workflowItem */
         $workflowItem = array_shift($workflowItems);
-        self::assertEquals(self::WORKFLOW, $workflowItem->getWorkflowName());
+        self::assertEquals(WorkflowNameProviderInterface::ORDER_WORKFLOW_1, $workflowItem->getWorkflowName());
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function testWorkflowDidNotStartTwoActiveWorkflowsForOrderEntity()
     {
         /** @var WorkflowManager $workflowManager */
         $workflowManager = $this->getContainer()->get('oro_workflow.manager');
-        $workflowManager->activateWorkflow(self::WORKFLOW_2);
+        $workflowManager->activateWorkflow(WorkflowNameProviderInterface::ORDER_WORKFLOW_2);
 
         $order = $this->createOrder();
 
@@ -78,7 +89,10 @@ class OrderWorkflowStartListenerTest extends WebTestCase
         self::assertCount(0, $workflowItems);
     }
 
-
+    /**
+     * {@inheritdoc}
+     * @return Order
+     */
     private function createOrder()
     {
         $crawler = $this->client->request('GET', $this->getUrl('marello_order_order_create'));
