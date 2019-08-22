@@ -1,0 +1,5 @@
+data:
+    type: marellopaymentterms
+    id: '<toString(@paymentTerm1->id)>'
+    attributes:
+        term: 180
