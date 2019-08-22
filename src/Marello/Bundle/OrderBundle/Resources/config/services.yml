@@ -281,3 +281,11 @@ services:
             - ['namePrefix', 'firstName', 'middleName', 'lastName', 'nameSuffix']
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: marello_company_customers, acl_resource: marello_order_customer_view }
+
+    marello_order.listener.start_workflow:
+        class: 'Marello\Bundle\OrderBundle\EventListener\Doctrine\OrderWorkflowStartListener'
+        arguments:
+            - '@oro_workflow.manager'
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: postFlush }
