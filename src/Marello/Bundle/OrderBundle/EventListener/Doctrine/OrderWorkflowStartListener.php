@@ -9,11 +9,10 @@ use Oro\Bundle\WorkflowBundle\Model\Workflow;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\OrderBundle\Model\WorkflowNameProviderInterface;
 
 class OrderWorkflowStartListener
 {
-    const WORKFLOW = 'marello_order_b2c_workflow_1';
-    const WORKFLOW_2 = 'marello_order_b2c_workflow_2';
     const TRANSIT_TO_STEP = 'pending';
 
     /** @var WorkflowManager $workflowManager */
@@ -33,7 +32,7 @@ class OrderWorkflowStartListener
     /**
      * @param LifecycleEventArgs $args
      */
-    public function postPersist(LifecycleEventArgs $args)
+    public function postPersist(LifecycleEventArgs $args): void
     {
         $entity = $args->getEntity();
         if ($entity instanceof Order) {
@@ -43,8 +42,9 @@ class OrderWorkflowStartListener
 
     /**
      * @param PostFlushEventArgs $args
+     * @throws \Oro\Bundle\WorkflowBundle\Exception\WorkflowRecordGroupException
      */
-    public function postFlush(PostFlushEventArgs $args)
+    public function postFlush(PostFlushEventArgs $args): void
     {
         if ($this->orderId) {
             $entityManager = $args->getEntityManager();
@@ -52,11 +52,9 @@ class OrderWorkflowStartListener
             $entity = $entityManager
                 ->getRepository(Order::class)
                 ->find($this->orderId);
-            if ($entity) {
-                if ($workflow = $this->getApplicableWorkflow($entity)) {
-                    $this->orderId = null;
-                    $this->workflowManager->startWorkflow($workflow->getName(), $entity, self::TRANSIT_TO_STEP);
-                }
+            if ($entity && $workflow = $this->getApplicableWorkflow($entity)) {
+                $this->orderId = null;
+                $this->workflowManager->startWorkflow($workflow->getName(), $entity, self::TRANSIT_TO_STEP);
             }
         }
     }
@@ -65,7 +63,7 @@ class OrderWorkflowStartListener
      * @param $entity
      * @return Workflow|null
      */
-    protected function getApplicableWorkflow($entity)
+    protected function getApplicableWorkflow($entity): ?Workflow
     {
         if (!$this->workflowManager->hasApplicableWorkflows($entity)) {
             return null;
@@ -75,7 +73,7 @@ class OrderWorkflowStartListener
         // apply force autostart (ignore default filters)
         $workflows = $this->workflowManager->getApplicableWorkflows($entity);
         foreach ($workflows as $name => $workflow) {
-            if (in_array($name, [self::WORKFLOW, self::WORKFLOW_2])) {
+            if (in_array($name, $this->getDefaultWorkflowNames())) {
                 $applicableWorkflows[$name] = $workflow;
             }
         }
@@ -85,5 +83,16 @@ class OrderWorkflowStartListener
         }
 
         return array_shift($applicableWorkflows);
+    }
+
+    /**
+     * @return array
+     */
+    protected function getDefaultWorkflowNames(): array
+    {
+        return [
+            WorkflowNameProviderInterface::ORDER_WORKFLOW_1,
+            WorkflowNameProviderInterface::ORDER_WORKFLOW_2
+        ];
     }
 }
