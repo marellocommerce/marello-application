@@ -7,19 +7,18 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 
-use Oro\Bundle\WorkflowBundle\Model\Workflow;
 use PHPUnit\Framework\TestCase;
 
+use Oro\Bundle\WorkflowBundle\Model\Workflow;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Marello\Bundle\OrderBundle\Model\WorkflowNameProviderInterface;
 use Marello\Bundle\OrderBundle\EventListener\Doctrine\OrderWorkflowStartListener;
 
 class OrderWorkflowStartListenerTest extends TestCase
 {
-    const WORKFLOW = 'marello_order_b2c_workflow_1';
-    const WORKFLOW_2 = 'marello_order_b2c_workflow_2';
     const TRANSIT_TO_STEP = 'pending';
 
     /** @var WorkflowManager|\PHPUnit_Framework_MockObject_MockObject $workflowManager */
@@ -28,6 +27,9 @@ class OrderWorkflowStartListenerTest extends TestCase
     /** @var  OrderWorkflowStartListener $orderWorkflowStartListener */
     private $orderWorkflowStartListener;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->workflowManagerMock = $this->createMock(WorkflowManager::class);
@@ -39,17 +41,9 @@ class OrderWorkflowStartListenerTest extends TestCase
      */
     public function testEntityIsNotEligibleToProcess()
     {
-        $eventArgs = $this->createMock(LifecycleEventArgs::class);
         $entity = $this->createMock(OrderItem::class);
-        $eventArgs->expects(static::once())
-            ->method('getEntity')
-            ->willReturn($entity);
-
-        $entity->expects(static::never())
-            ->method('getId');
-
-        $this->orderWorkflowStartListener->postPersist($eventArgs);
-
+        $this->runFirstSequenceOfWorkflowListenerTest($entity, static::never());
+        /** @var PostFlushEventArgs|\PHPUnit\Framework\MockObject\MockObject $eventPostFlushArgs */
         $eventPostFlushArgs = $this->createMock(PostFlushEventArgs::class);
         $eventPostFlushArgs->expects(static::never())
             ->method('getEntityManager');
@@ -62,52 +56,29 @@ class OrderWorkflowStartListenerTest extends TestCase
      */
     public function testEntityIsEligibleToProcess()
     {
-        $eventArgs = $this->createMock(LifecycleEventArgs::class);
         $entity = $this->createMock(Order::class);
-        $eventArgs->expects(static::once())
-            ->method('getEntity')
-            ->willReturn($entity);
-
-        $entity->expects(static::once())
-            ->method('getId')
-            ->willReturn(1);
-
-        $this->orderWorkflowStartListener->postPersist($eventArgs);
-        $eventPostFlushArgs = $this->createMock(PostFlushEventArgs::class);
-        $entityManager = $this->createMock(EntityManagerInterface::class);
-        $eventPostFlushArgs->expects(static::once())
-            ->method('getEntityManager')
-            ->willReturn($entityManager);
-
-        $entityRepository = $this->createMock(EntityRepository::class);
-        $entityManager->expects(static::once())
-            ->method('getRepository')
-            ->willReturn($entityRepository);
-
-        $entityRepository->expects(static::once())
-            ->method('find')
-            ->with(1)
-            ->willReturn($entity);
-
-
-        $this->workflowManagerMock->expects(static::once())
-            ->method('hasApplicableWorkflows')
-            ->with($entity)
-            ->willReturn(true);
+        $this->runFirstSequenceOfWorkflowListenerTest($entity, static::once(), 1);
+        /** @var PostFlushEventArgs|\PHPUnit\Framework\MockObject\MockObject $eventPostFlushArgs */
+        $eventPostFlushArgs = $this->createPostFlushEventArgsMock($entity);
+        $this->setWorkflowManagerHasApplicableWorkflowsMockExpectation($entity);
 
         $workflowMock = $this->createMock(Workflow::class);
         $workflowMock->expects(static::once())
             ->method('getName')
-            ->willReturn(self::WORKFLOW);
+            ->willReturn(WorkflowNameProviderInterface::ORDER_WORKFLOW_1);
 
         $this->workflowManagerMock->expects(static::once())
             ->method('getApplicableWorkflows')
             ->with($entity)
-            ->willReturn([self::WORKFLOW => $workflowMock]);
+            ->willReturn([WorkflowNameProviderInterface::ORDER_WORKFLOW_1 => $workflowMock]);
 
         $this->workflowManagerMock->expects(static::once())
             ->method('startWorkflow')
-            ->with(OrderWorkflowStartListener::WORKFLOW, $entity, OrderWorkflowStartListener::TRANSIT_TO_STEP);
+            ->with(
+                WorkflowNameProviderInterface::ORDER_WORKFLOW_1,
+                $entity,
+                OrderWorkflowStartListener::TRANSIT_TO_STEP
+            );
 
         $this->orderWorkflowStartListener->postFlush($eventPostFlushArgs);
     }
@@ -117,44 +88,22 @@ class OrderWorkflowStartListenerTest extends TestCase
      */
     public function testTwoApplicableWorkflowsOnOrderEntity()
     {
-        $eventArgs = $this->createMock(LifecycleEventArgs::class);
         $entity = $this->createMock(Order::class);
-        $eventArgs->expects(static::once())
-            ->method('getEntity')
-            ->willReturn($entity);
-
-        $entity->expects(static::once())
-            ->method('getId')
-            ->willReturn(1);
-
-        $this->orderWorkflowStartListener->postPersist($eventArgs);
-        $eventPostFlushArgs = $this->createMock(PostFlushEventArgs::class);
-        $entityManager = $this->createMock(EntityManagerInterface::class);
-        $eventPostFlushArgs->expects(static::once())
-            ->method('getEntityManager')
-            ->willReturn($entityManager);
-
-        $entityRepository = $this->createMock(EntityRepository::class);
-        $entityManager->expects(static::once())
-            ->method('getRepository')
-            ->willReturn($entityRepository);
-
-        $entityRepository->expects(static::once())
-            ->method('find')
-            ->with(1)
-            ->willReturn($entity);
-
-        $this->workflowManagerMock->expects(static::once())
-            ->method('hasApplicableWorkflows')
-            ->with($entity)
-            ->willReturn(true);
+        $this->runFirstSequenceOfWorkflowListenerTest($entity, static::once(), 1);
+        /** @var PostFlushEventArgs|\PHPUnit\Framework\MockObject\MockObject $eventPostFlushArgs */
+        $eventPostFlushArgs = $this->createPostFlushEventArgsMock($entity);
+        $this->setWorkflowManagerHasApplicableWorkflowsMockExpectation($entity);
 
         $workflowMock = $this->createMock(Workflow::class);
-
         $this->workflowManagerMock->expects(static::once())
             ->method('getApplicableWorkflows')
             ->with($entity)
-            ->willReturn([self::WORKFLOW => $workflowMock, self::WORKFLOW_2 => $workflowMock]);
+            ->willReturn(
+                [
+                    WorkflowNameProviderInterface::ORDER_WORKFLOW_1 => $workflowMock,
+                    WorkflowNameProviderInterface::ORDER_WORKFLOW_2 => $workflowMock
+                ]
+            );
 
         $workflowMock->expects(static::never())
             ->method('getName');
@@ -170,17 +119,66 @@ class OrderWorkflowStartListenerTest extends TestCase
      */
     public function testZeroOrCustomApplicableWorkflowsOnOrderEntity()
     {
-        $eventArgs = $this->createMock(LifecycleEventArgs::class);
         $entity = $this->createMock(Order::class);
+        $this->runFirstSequenceOfWorkflowListenerTest($entity, static::once(), 1);
+        /** @var PostFlushEventArgs|\PHPUnit\Framework\MockObject\MockObject $eventPostFlushArgs */
+        $eventPostFlushArgs = $this->createPostFlushEventArgsMock($entity);
+        $this->setWorkflowManagerHasApplicableWorkflowsMockExpectation($entity);
+
+        $this->workflowManagerMock->expects(static::once())
+            ->method('getApplicableWorkflows')
+            ->with($entity)
+            ->willReturn([]);
+
+        $workflowMock = $this->createMock(Workflow::class);
+        $workflowMock->expects(static::never())
+            ->method('getName');
+
+        $this->workflowManagerMock->expects(static::never())
+            ->method('startWorkflow');
+
+        $this->orderWorkflowStartListener->postFlush($eventPostFlushArgs);
+    }
+
+    /**
+     * {@inheritdoc}
+     * @param $entity|\PHPUnit\Framework\MockObject\MockObject
+     * @return LifecycleEventArgs|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected function createEventArgsMock($entity)
+    {
+        $eventArgs = $this->createMock(LifecycleEventArgs::class);
         $eventArgs->expects(static::once())
             ->method('getEntity')
             ->willReturn($entity);
 
-        $entity->expects(static::once())
+        return $eventArgs;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @param $entity|\PHPUnit\Framework\MockObject\MockObject
+     * @param $expected
+     * @param null $returnValue
+     */
+    protected function runFirstSequenceOfWorkflowListenerTest($entity, $expected, $returnValue = null)
+    {
+        $eventArgs = $this->createEventArgsMock($entity);
+        $entity
+            ->expects($expected)
             ->method('getId')
-            ->willReturn(1);
+            ->willReturn($returnValue);
 
         $this->orderWorkflowStartListener->postPersist($eventArgs);
+    }
+
+    /**
+     * {@inheritdoc}
+     * @param $entity|\PHPUnit\Framework\MockObject\MockObject
+     * @return PostFlushEventArgs|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected function createPostFlushEventArgsMock($entity)
+    {
         $eventPostFlushArgs = $this->createMock(PostFlushEventArgs::class);
         $entityManager = $this->createMock(EntityManagerInterface::class);
         $eventPostFlushArgs->expects(static::once())
@@ -197,23 +195,18 @@ class OrderWorkflowStartListenerTest extends TestCase
             ->with(1)
             ->willReturn($entity);
 
+        return $eventPostFlushArgs;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @param $entity|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected function setWorkflowManagerHasApplicableWorkflowsMockExpectation($entity)
+    {
         $this->workflowManagerMock->expects(static::once())
             ->method('hasApplicableWorkflows')
             ->with($entity)
             ->willReturn(true);
-
-        $this->workflowManagerMock->expects(static::once())
-            ->method('getApplicableWorkflows')
-            ->with($entity)
-            ->willReturn([]);
-
-        $workflowMock = $this->createMock(Workflow::class);
-        $workflowMock->expects(static::never())
-            ->method('getName');
-
-        $this->workflowManagerMock->expects(static::never())
-            ->method('startWorkflow');
-
-        $this->orderWorkflowStartListener->postFlush($eventPostFlushArgs);
     }
 }
