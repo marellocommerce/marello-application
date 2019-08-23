@@ -78,7 +78,7 @@
     </td>
 {% endblock %}
 
-{% macro marello_purchase_order_item_receive_collection_item_prototype(widget, widgetContainerAttributes) %}
+{% macro marello_purchase_order_item_receive_collection_item_prototype(widget, attributes) %}
     {% if 'collection' in widget.vars.block_prefixes %}
         {% set form = widget.vars.prototype %}
         {% set name = widget.vars.full_name ~ '[' ~ widget.vars.prototype.vars.name ~ ']' %}
@@ -91,7 +91,7 @@
     {% endif %}
 
     {% if form.vars.value.status != 'complete' and form.vars.value.status != 'closed' %}
-    <tr data-content="{{ name }}" data-validation-optional-group {{ widgetContainerAttributes }}
+    <tr data-content="{{ name }}"
         class="return-line-item display-values">
         {{ form_widget(form) }}
 
@@ -102,7 +102,7 @@
     {% endif %}
 {% endmacro %}
 
-{% macro marello_purchase_order_item_collection_item_prototype(widget, widgetContainerAttributes) %}
+{% macro marello_purchase_order_item_collection_item_prototype(widget, attributes) %}
     {% if 'collection' in widget.vars.block_prefixes %}
         {% set form = widget.vars.prototype %}
         {% set name = widget.vars.full_name ~ '[' ~ widget.vars.prototype.vars.name ~ ']' %}
@@ -115,7 +115,7 @@
         {% set allow_delete = true %}
     {% endif %}
 
-    <tr data-content="{{ name }}" data-validation-optional-group {{ widgetContainerAttributes }}
+    <tr data-content="{{ name }}"
         class="purchase-order-line-item display-values marello-line-item"
         data-page-component-module="oroui/js/app/components/view-component"
         data-page-component-options="{{ {view: 'marellopurchaseorder/js/app/views/purchaseorder-item-view'}|json_encode }}"
@@ -137,7 +137,7 @@
     </tr>
 {% endmacro %}
 
-{% macro marello_purchase_order_item_advice_collection_item_prototype(widget, widgetContainerAttributes) %}
+{% macro marello_purchase_order_item_advice_collection_item_prototype(widget, attributes) %}
     {% if 'collection' in widget.vars.block_prefixes %}
         {% set form = widget.vars.prototype %}
         {% set name = widget.vars.full_name ~ '[' ~ widget.vars.prototype.vars.name ~ ']' %}
@@ -150,7 +150,7 @@
         {% set allow_delete = true %}
     {% endif %}
 
-    <tr data-content="{{ name }}" data-validation-optional-group {{ widgetContainerAttributes }}
+    <tr data-content="{{ name }}"
         class="purchase-order-line-item display-values marello-line-item"
         data-page-component-module="oroui/js/app/components/view-component"
         data-page-component-options="{{ {view: 'marellopurchaseorder/js/app/views/purchaseorder-item-view'}|json_encode }}"
@@ -184,7 +184,7 @@
         {% set id = id ~ '_collection' %}
         <div class="row-oro">
             {% set prototype_name = form.vars.prototype_name %}
-            <div {{ widgetContainerAttributes }}>
+            <div {{ block('widget_container_attributes') }}>
                 <table class="grid table-hover table table-bordered table-condensed">
                     <thead>
                         <tr>
@@ -230,7 +230,7 @@
         {% set id = id ~ '_collection' %}
         <div class="row-oro">
             {% set prototype_name = form.vars.prototype_name %}
-            <div {{ widgetContainerAttributes }}>
+            <div {{ block('widget_container_attributes') }}>
                 <table class="grid table-hover table table-bordered table-condensed">
                     <thead>
                         <tr>
@@ -276,7 +276,7 @@
         {% set id = id ~ '_collection' %}
         <div class="row-oro">
             {% set prototype_name = form.vars.prototype_name %}
-            <div {{ widgetContainerAttributes }}>
+            <div {{ block('widget_container_attributes') }}>
                 {% set completedItems = 0 %}
                 {% if form.children|length %}
                     {% for child in form.children %}

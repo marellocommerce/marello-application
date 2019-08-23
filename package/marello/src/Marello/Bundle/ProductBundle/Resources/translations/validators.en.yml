@@ -2,6 +2,7 @@ marello:
     product:
         messages:
             error:
+                names.blank:        Product Name should not be blank.
                 sku:                SKU already exists, please provide a unique SKU
                 channels:           Please select a Sales Channel. There should be at least one Sales Channel per product.
 

@@ -29,7 +29,7 @@
     </td>
 {% endblock %}
 
-{% macro marello_inventory_inventorylevel_collection_item_prototype(widget, widgetContainerAttributes) %}
+{% macro marello_inventory_inventorylevel_collection_item_prototype(widget, attributes) %}
     {% if 'collection' in widget.vars.block_prefixes %}
         {% set form = widget.vars.prototype %}
         {% set name = widget.vars.full_name ~ '[' ~ widget.vars.prototype.vars.name ~ ']' %}
@@ -47,7 +47,7 @@
     {% endif %}
     {% set page_component_options = { 'disabled': not allow_delete } %}
     {% if form.vars.display is not defined or form.vars.display != false %}
-        <tr data-content="{{ name }}" data-validation-optional-group {{ widgetContainerAttributes }}
+        <tr data-content="{{ name }}"
             class="marello-line-item display-values"
             data-page-component-module="oroui/js/app/components/view-component"
             data-page-component-options="{{ {view: 'marelloenterpriseinventory/js/app/views/inventorylevel-item-view'}|json_encode }}"
@@ -74,7 +74,7 @@
         {% set id = id ~ '_collection' %}
         <div class="row-oro">
             {% set prototype_name = form.vars.prototype_name %}
-            <div {{ widgetContainerAttributes }}>
+            <div {{ block('widget_container_attributes') }}>
                 <table class="grid table-hover table table-bordered table-condensed">
                     <thead>
                         <tr>

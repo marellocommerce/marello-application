@@ -24,6 +24,7 @@ use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
 use Oro\Bundle\EntityExtendBundle\Entity\AbstractEnumValue;
 use Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
+use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 
 class LoadSubscriptionProductData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -288,11 +289,14 @@ class LoadSubscriptionProductData extends AbstractFixture implements DependentFi
      */
     private function createProduct(array $data)
     {
+        $name = new LocalizedFallbackValue();
+        $name->setString($data['name']);
+
         $product = new Product();
         $product
             ->setType('subscription')
             ->setSku($data['sku'])
-            ->setName($data['name'])
+            ->addName($name)
             ->setOrganization($this->defaultOrganization)
             ->setWeight($data['weight'])
             ->setSubscriptionDuration($this->getEnumValue(
