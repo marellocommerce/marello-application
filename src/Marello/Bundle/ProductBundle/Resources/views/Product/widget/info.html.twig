@@ -4,11 +4,17 @@
     <div class="row-fluid form-horizontal">
         <div class="responsive-block">
             {{ UI.renderProperty('marello.product.sku.label'|trans, product.sku) }}
-            {{ UI.renderProperty('marello.product.name.label'|trans, product.name) }}
+            {{ UI.renderProperty('marello.product.names.label'|trans, product.defaultName) }}
             {{ UI.renderProperty('marello.product.status.label'|trans, product.status) }}
-            {{ UI.renderProperty('marello.product.weight.label'|trans, product.weight) }}
-            {{ UI.renderProperty('marello.product.warranty.label'|trans, product.warranty) }}
-            {{ UI.renderProperty('marello.product.manufacturing_code.label'|trans, product.manufacturingCode) }}
+            {% if marello_entity_has_attribute(product, 'weight') %}
+                {{ UI.renderProperty('marello.product.weight.label'|trans, product.weight) }}
+            {% endif %}
+            {% if marello_entity_has_attribute(product, 'warranty') %}
+                {{ UI.renderProperty('marello.product.warranty.label'|trans, product.warranty) }}
+            {% endif %}
+            {% if marello_entity_has_attribute(product, 'manufacturingCode') %}
+                {{ UI.renderProperty('marello.product.manufacturing_code.label'|trans, product.manufacturingCode) }}
+            {% endif %}
         </div>
     </div>
 </div>

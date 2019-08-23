@@ -20,6 +20,10 @@ use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxCodeData;
 use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
 use Marello\Bundle\SupplierBundle\Tests\Functional\DataFixtures\LoadSupplierData;
 use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
+use Oro\Bundle\EntityConfigBundle\Tests\Functional\DataFixtures\LoadAttributeFamilyData;
+use Oro\Bundle\LocaleBundle\Entity\Localization;
+use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
+use Oro\Bundle\LocaleBundle\Tests\Functional\DataFixtures\LoadLocalizationData;
 
 class LoadProductData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -41,7 +45,9 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     /** @var array $data */
     protected $data = [
         self::PRODUCT_1_REF => [
-            'name'          => 'product1',
+            'names'          => [
+                ['reference' => 'product1.names.default', 'string' => 'product1']
+            ],
             'sku'           => 'p1',
             'price'         => 10,
             'weight'        => 1.00,
@@ -58,7 +64,9 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             ]
         ],
         self::PRODUCT_2_REF => [
-            'name'          => 'product 2',
+            'names'          => [
+                ['reference' => 'product2.names.default', 'string' => 'product2']
+            ],
             'sku'           => 'p2',
             'price'         => 25,
             'weight'        => 2.00,
@@ -82,7 +90,9 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             ]
         ],
         self::PRODUCT_3_REF => [
-            'name'          => 'product 3',
+            'names'          => [
+                ['reference' => 'product3.names.default', 'string' => 'product3']
+            ],
             'sku'           => 'p3',
             'price'         => 50,
             'weight'        => 5.00,
@@ -106,7 +116,9 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             ]
         ],
         self::PRODUCT_4_REF => [
-            'name'          => 'product 4',
+            'names'          => [
+                ['reference' => 'product4.names.default', 'string' => 'product4']
+            ],
             'sku'           => 'p4',
             'price'         => 100,
             'weight'        => 10.00,
@@ -127,7 +139,9 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             ]
         ],
         self::PRODUCT_5_REF => [
-            'name'          => 'product5',
+            'names'          => [
+                ['reference' => 'product5.names.default', 'string' => 'product5']
+            ],
             'sku'           => 'p5',
             'price'         => 10,
             'weight'        => 1.00,
@@ -144,7 +158,9 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             ]
         ],
         self::PRODUCT_6_REF => [
-            'name'          => 'product6',
+            'names'          => [
+                ['reference' => 'product6.names.default', 'string' => 'product6']
+            ],
             'sku'           => 'p6',
             'price'         => 10,
             'weight'        => 1.00,
@@ -165,6 +181,8 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     public function getDependencies()
     {
         return [
+            LoadLocalizationData::class,
+            LoadAttributeFamilyData::class,
             LoadSalesData::class,
             LoadSupplierData::class,
             LoadTaxCodeData::class
@@ -210,7 +228,11 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     {
         $product = new Product();
         $product->setSku($data['sku']);
-        $product->setName($data['name']);
+        if (!empty($data['names'])) {
+            foreach ($data['names'] as $name) {
+                $product->addName($this->createLocalizedValue($name));
+            }
+        }
         $product->setOrganization($this->defaultOrganization);
         $product->setWeight($data['weight']);
 
@@ -354,5 +376,31 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
 
             $product->setPreferredSupplier($preferredSupplier);
         }
+    }
+
+    /**
+     * @param array $name
+     * @return LocalizedFallbackValue
+     */
+    protected function createLocalizedValue(array $name)
+    {
+        $value = new LocalizedFallbackValue();
+        if (array_key_exists('localization', $name)) {
+            /** @var Localization $localization */
+            $localization = $this->getReference($name['localization']);
+            $value->setLocalization($localization);
+        }
+        if (array_key_exists('fallback', $name)) {
+            $value->setFallback($name['fallback']);
+        }
+        if (array_key_exists('string', $name)) {
+            $value->setString($name['string']);
+        }
+        if (array_key_exists('text', $name)) {
+            $value->setText($name['text']);
+        }
+        $this->setReference($name['reference'], $value);
+
+        return $value;
     }
 }

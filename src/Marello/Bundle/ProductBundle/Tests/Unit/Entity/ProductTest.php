@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\ProductBundle\Tests\Unit\Entity;
 
+use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 use PHPUnit\Framework\TestCase;
 
 use Oro\Component\Testing\Unit\EntityTrait;
@@ -39,7 +40,6 @@ class ProductTest extends TestCase
     {
         $this->assertPropertyAccessors(new Product(), [
             ['id', 42],
-            ['name', 'some string'],
             ['sku', 'some string'],
             ['manufacturingCode', 'some string'],
             ['status', new ProductStatus('active')],
@@ -56,6 +56,7 @@ class ProductTest extends TestCase
             ['updatedAt', new \DateTime()]
         ]);
         $this->assertPropertyCollections(new Product(), [
+            ['names', new LocalizedFallbackValue()],
             ['prices', new AssembledPriceList()],
             ['channels', new SalesChannel()],
             ['channelPrices', new AssembledChannelPriceList()],

@@ -53,7 +53,7 @@
     </td>
 {% endblock %}
 
-{% macro marello_order_item_refund_prototype(widget, widgetContainerAttributes) %}
+{% macro marello_order_item_refund_prototype(widget, attributes) %}
     {% if 'collection' in widget.vars.block_prefixes %}
         {% set form = widget.vars.prototype %}
         {% set name = widget.vars.full_name ~ '[' ~ widget.vars.prototype.vars.name ~ ']' %}
@@ -72,13 +72,13 @@
 
     {% set page_component_options = { 'disabled': not allow_delete } %}
 
-    <tr data-content="{{ name }}" data-validation-optional-group {{ widgetContainerAttributes }}
+    <tr data-content="{{ name }}"
         class="marello-line-item">
         {{ form_widget(form) }}
     </tr>
 {% endmacro %}
 
-{% macro marello_additional_refund_prototype(widget, widgetContainerAttributes) %}
+{% macro marello_additional_refund_prototype(widget, attributes) %}
     {% if 'collection' in widget.vars.block_prefixes %}
         {% set form = widget.vars.prototype %}
         {% set name = widget.vars.full_name ~ '[' ~ widget.vars.prototype.vars.name ~ ']' %}
@@ -97,7 +97,7 @@
 
     {% set page_component_options = { 'disabled': not allow_delete } %}
 
-    <tr data-content="{{ name }}" data-validation-optional-group {{ widgetContainerAttributes }}
+    <tr data-content="{{ name }}"
         class="marello-line-item"
         data-page-component-module="oroui/js/app/components/view-component"
         data-page-component-options="{{ {view: 'marellolayout/js/app/views/abstract-item-view'}|json_encode }}"
@@ -130,7 +130,7 @@
         {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'marello-item-collection grid-container' }) %}
         {% set id = id ~ '_collection' %}
         <div class="row-oro">
-            <div {{ widgetContainerAttributes }}>
+            <div {{ block('widget_container_attributes') }}>
                 <table class="grid table-hover table table-bordered table-condensed">
                     <thead>
                         <tr>
@@ -171,7 +171,7 @@
         {% set id = id ~ '_collection' %}
         <div class="row-oro">
             {% set prototype_name = form.vars.prototype_name %}
-            <div {{ widgetContainerAttributes }}>
+            <div {{ block('widget_container_attributes') }}>
                 <table class="grid table-hover table table-bordered table-condensed">
                     <thead>
                     <tr>
