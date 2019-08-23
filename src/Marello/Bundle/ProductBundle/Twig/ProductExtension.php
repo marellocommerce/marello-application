@@ -6,6 +6,7 @@ use Marello\Bundle\CatalogBundle\Provider\CategoriesIdsProvider;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Provider\ChannelProvider;
 use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 class ProductExtension extends AbstractExtension
 {
@@ -49,11 +50,11 @@ class ProductExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_sales_get_saleschannel_ids',
                 [$this, 'getSalesChannelsIds']
             ),
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_product_get_categories_ids',
                 [$this, 'getCategoriesIds']
             )

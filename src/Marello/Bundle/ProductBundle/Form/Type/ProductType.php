@@ -6,11 +6,12 @@ use Marello\Bundle\CatalogBundle\Entity\Category;
 use Marello\Bundle\PricingBundle\Form\EventListener\ChannelPricingSubscriber;
 use Marello\Bundle\PricingBundle\Form\EventListener\PricingSubscriber;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\ProductBundle\Form\EventListener\AttributeFamilySubscriber;
 use Marello\Bundle\SalesBundle\Form\EventListener\DefaultSalesChannelSubscriber;
 use Marello\Bundle\TaxBundle\Form\Type\TaxCodeSelectType;
 use Oro\Bundle\AttachmentBundle\Form\Type\ImageType;
+use Oro\Bundle\FormBundle\Form\Extension\StripTagsExtension;
 use Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType;
+use Oro\Bundle\LocaleBundle\Form\Type\LocalizedFallbackValueCollectionType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
@@ -19,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Valid;
 
 class ProductType extends AbstractType
@@ -41,11 +43,6 @@ class ProductType extends AbstractType
     protected $channelPricingSubscriber;
 
     /**
-     * @var AttributeFamilySubscriber
-     */
-    protected $attributeFamilySubscriber;
-
-    /**
      * @var EventSubscriberInterface
      */
     protected $subscriptionProductSubscriber;
@@ -54,18 +51,15 @@ class ProductType extends AbstractType
      * @param DefaultSalesChannelSubscriber $defaultSalesChannelSubscriber
      * @param PricingSubscriber $pricingSubscriber
      * @param ChannelPricingSubscriber $channelPricingSubscriber
-     * @param AttributeFamilySubscriber $attributeFamilySubscriber
      */
     public function __construct(
         DefaultSalesChannelSubscriber $defaultSalesChannelSubscriber,
         PricingSubscriber $pricingSubscriber,
-        ChannelPricingSubscriber $channelPricingSubscriber,
-        AttributeFamilySubscriber $attributeFamilySubscriber
+        ChannelPricingSubscriber $channelPricingSubscriber
     ) {
         $this->defaultSalesChannelSubscriber = $defaultSalesChannelSubscriber;
         $this->pricingSubscriber = $pricingSubscriber;
         $this->channelPricingSubscriber = $channelPricingSubscriber;
-        $this->attributeFamilySubscriber = $attributeFamilySubscriber;
     }
 
     /**
@@ -75,13 +69,16 @@ class ProductType extends AbstractType
     {
         $builder
             ->add('type', HiddenType::class)
-            ->add('attributeFamily', HiddenType::class)
             ->add(
-                'name',
-                TextType::class,
+                'names',
+                LocalizedFallbackValueCollectionType::class,
                 [
+                    'label' => 'marello.product.names.label',
                     'required' => true,
-                    'label'    => 'marello.product.name.label',
+                    'entry_options' => [
+                        'constraints' => [new NotBlank(['message' => 'marello.product.messages.error.names.blank'])],
+                        StripTagsExtension::OPTION_NAME => true,
+                    ],
                 ]
             )
             ->add(
@@ -194,7 +191,6 @@ class ProductType extends AbstractType
         $builder->addEventSubscriber($this->defaultSalesChannelSubscriber);
         $builder->addEventSubscriber($this->pricingSubscriber);
         $builder->addEventSubscriber($this->channelPricingSubscriber);
-        $builder->addEventSubscriber($this->attributeFamilySubscriber);
         if ($this->subscriptionProductSubscriber) {
             $builder->addEventSubscriber($this->subscriptionProductSubscriber);
         }
@@ -210,6 +206,7 @@ class ProductType extends AbstractType
             'intention'          => 'product',
             'single_form'        => true,
             'enable_attributes'  => true,
+            'enable_attribute_family' => true,
             'constraints'        => [new Valid()],
         ]);
     }
