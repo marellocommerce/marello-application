@@ -203,8 +203,8 @@ datagrids:
             warehouse:
                 label:              marello.inventory.inventorylevel.warehouse.label
                 frontend_type:      string
-            warehouseLocation:
-                label:              marello.inventory.inventorylevel.warehouse_location.label
+            pickLocation:
+                label:              marello.inventory.inventorylevel.pick_location.label
                 frontend_type:      string
             warehouseTypeLabel:
                 label:              marello.inventory.warehousetype.entity_label

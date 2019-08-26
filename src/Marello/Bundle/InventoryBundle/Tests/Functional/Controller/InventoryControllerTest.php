@@ -106,7 +106,7 @@ class InventoryControllerTest extends WebTestCase
                 'inventoryLevels' => [
                     [
                         'warehouse' => 1,
-                        'warehouseLocation' => '11-11-11',
+                        'pickLocation' => '11-11-11',
                         'adjustmentOperator' => InventoryLevelCalculator::OPERATOR_INCREASE,
                         'quantity' => 10
                     ]

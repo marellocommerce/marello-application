@@ -59,11 +59,11 @@ class InventoryLevelType extends AbstractType
                 ]
             )
             ->add(
-                'warehouseLocation',
+                'pickLocation',
                 TextType::class,
                 [
                     'required' => false,
-                    'label'    => 'marello.inventory.inventorylevel.warehouse_location.label'
+                    'label'    => 'marello.inventory.inventorylevel.pick_location.label'
                 ]
             )
             ->add(
