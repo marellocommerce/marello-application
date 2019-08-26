@@ -31,6 +31,7 @@ marello:
         organization.label:         Organization
         type.label:                 Invoice Type
         invoice_type.label:         Invoice Type
+        download_pdf.label:         Download invoice PDF
 
         creditmemo:
             id.label:                   Id
@@ -64,6 +65,7 @@ marello:
             organization.label:         Organization
             type.label:                 Invoice Type
             invoice_type.label:         Invoice Type
+            download_pdf.label:         Download invoice PDF
 
         datablock:
             general:                General
