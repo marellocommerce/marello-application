@@ -5,11 +5,11 @@
         </div>
         {{ form_errors(form.warehouse) }}
     </td>
-    <td class="inventorylevel-warehouse {{ form.warehouseLocation.vars.errors|length ? 'has-errors' : '' }}">
+    <td class="inventorylevel-pick-location {{ form.pickLocation.vars.errors|length ? 'has-errors' : '' }}">
         <div class="fields-row">
-            {{ form_widget(form.warehouseLocation) }}
+            {{ form_widget(form.pickLocation) }}
         </div>
-        {{ form_errors(form.warehouseLocation) }}
+        {{ form_errors(form.pickLocation) }}
     </td>
     <td class="inventorylevel-quantity">
         <div class="fields-row">
@@ -64,7 +64,7 @@
                     <thead>
                     <tr>
                         <th class="inventorylevel-line-item-warehouse"><span>{{ 'marello.inventory.inventorylevel.warehouse.label'|trans }}</span></th>
-                        <th class="inventorylevel-line-item-warehouse-location"><span>{{ 'marello.inventory.inventorylevel.warehouse_location.label'|trans }}</span></th>
+                        <th class="inventorylevel-line-item-pick-location"><span>{{ 'marello.inventory.inventorylevel.pick_location.label'|trans }}</span></th>
                         <th class="inventorylevel-line-item-inventory-qty"><span>{{ 'marello.inventory.inventorylevel.inventory.label'|trans }}</span></th>
                         <th class="inventorylevel-line-item-adjustment"><span>{{ 'marello.inventory.model.warehouse.adjustment.label'|trans }}</span></th>
                     </tr>

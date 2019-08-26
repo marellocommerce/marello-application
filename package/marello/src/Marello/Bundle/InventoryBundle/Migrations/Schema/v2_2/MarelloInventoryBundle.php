@@ -22,6 +22,6 @@ class MarelloInventoryBundle implements Migration
     protected function addColumnsToInventoryItemTable(Schema $schema, QueryBag $queries)
     {
         $table = $schema->getTable(self::TABLE_NAME);
-        $table->addColumn('warehouse_location', 'string', ['length' => 100, 'notnull' => false]);
+        $table->addColumn('pick_location', 'string', ['length' => 100, 'notnull' => false]);
     }
 }
