@@ -22,6 +22,7 @@ class InventoryLevelTest extends TestCase
             ['id', 42],
             ['inventoryItem', new InventoryItem($warehouse, new Product())],
             ['warehouse', $warehouse],
+            ['pickLocation', '12-4-16', false],
             ['createdAt', new \DateTime()],
             ['updatedAt', new \DateTime()]
         ]);

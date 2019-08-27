@@ -6,6 +6,7 @@ use Symfony\Component\Yaml\Command\LintCommand;
 use Marello\Cli\Command\RemoteInitCommand;
 use Marello\Cli\Command\RemoteRemoveCommand;
 use Marello\Cli\Command\RemoteSyncCommand;
+use Marello\Cli\Command\Phpstorm\InitApplication;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
@@ -15,7 +16,8 @@ $application->addCommands(
         new LintCommand(),
         new RemoteInitCommand(),
         new RemoteRemoveCommand(),
-        new RemoteSyncCommand()
+        new RemoteSyncCommand(),
+        new InitApplication(),
     ]
 );
 
