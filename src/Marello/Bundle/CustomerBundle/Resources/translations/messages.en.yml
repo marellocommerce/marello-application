@@ -1,0 +1,34 @@
+marello:
+    customer:
+        company:
+            entity_label:           'Company'
+            entity_plural_label:    'Companies'
+            id.label:               'Id'
+            name.label:             'Name'
+            parent.label:           'Parent'
+            children.label:         'Children'
+            addresses.label:        'Addresses'
+            customers.label:        'Customers'
+            organization.label:     'Organization'
+
+            form:
+                choose:             'Choose a company...'
+                choose_parent:      'Choose parent company...'
+                address:
+                    add:            'Add Address'
+                    cancel:         'Cancel'
+                    save:           'Save'
+            menu:
+                shortcut_new_company:
+                    label:           'Create new company'
+                    description:     'Create new company'
+                shortcut_list_companies:
+                    label:           'Show companies list'
+                    description:     'List of companies'
+            sections:
+                addresses:           'Addresses'
+                general:             'General'
+                additional:          'Additional'
+        controller:
+            company:
+                saved.message:      'Company has been saved'
