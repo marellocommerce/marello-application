@@ -59,6 +59,9 @@ services:
 
     marello_inventory.provider.order_warehouse:
         class: 'Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProvider'
+        # keep argument for BC, will be removed in 3.0
+        arguments:
+            - '@oro_entity.doctrine_helper'
 
     marello_inventory.repository.warehouse:
         class: 'Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository'

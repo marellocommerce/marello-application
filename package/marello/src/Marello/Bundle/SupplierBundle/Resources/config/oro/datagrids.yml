@@ -177,4 +177,4 @@ datagrids:
                 icon:           eye
                 rowAction:      true
         options:
-            export: true
+            export: false

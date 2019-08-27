@@ -203,6 +203,9 @@ datagrids:
             warehouse:
                 label:              marello.inventory.inventorylevel.warehouse.label
                 frontend_type:      string
+            pickLocation:
+                label:              marello.inventory.inventorylevel.pick_location.label
+                frontend_type:      string
             warehouseTypeLabel:
                 label:              marello.inventory.warehousetype.entity_label
                 frontend_type:      string
@@ -218,9 +221,6 @@ datagrids:
                 label:              marello.inventory.inventorylevel.virtual_inventory.label
                 frontend_type:      number
                 data_name:          virtualInventoryQty
-            createdAt:
-                label:              oro.ui.created_at
-                frontend_type:      datetime
             updatedAt:
                 label:              oro.ui.updated_at
                 frontend_type:      datetime

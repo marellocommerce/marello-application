@@ -1,7 +1,8 @@
 version: "2"
 services:
     data:
-        image: djocker/orodata
+        build:
+            context: ./.docker-data
         container_name: enterprise-data
     db:
         image: percona:5.7
@@ -24,6 +25,26 @@ services:
             - db
         environment:
             - PMA_HOST=db
+
+    db_postgres:
+        expose:
+            - "5432"
+        image: postgres:9.6.9
+        container_name: marello-ee-pgsql-db
+        environment:
+            - POSTGRES_PASSWORD=root
+            - POSTGRES_USER=root
+            - POSTGRES_DB=marellocommerce
+        volumes_from:
+            - data
+
+    adminer:
+        image: adminer
+        container_name: marello-ee-pgsql-adminer
+        ports:
+            - "5084:8080"
+        links:
+            - db
 
     mailhog:
         image: mailhog/mailhog

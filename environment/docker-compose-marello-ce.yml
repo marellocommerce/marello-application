@@ -1,7 +1,8 @@
 version: "2"
 services:
     data:
-        image: djocker/orodata
+        build:
+            context: ./.docker-data
         container_name: marelloce-data
     db:
         image: percona:5.7
@@ -34,7 +35,7 @@ services:
         logging:
             driver: "none"
 
-    web:
+    ce_web:
         build:
             context: ./.docker
             args:
@@ -48,8 +49,8 @@ services:
             - "db"
             - "mailhog"
         ports:
-            - "5080:80"
-            - "5081:8080"
+            - "3080:80"
+            - "3081:8080"
         volumes_from:
             - data
         volumes:
@@ -59,7 +60,7 @@ services:
             - VIRTUAL_HOST=marello.docker
             - IS_LOCAL=true
             - CMD_INIT_BEFORE=
-            - CMD_INIT_CLEAN=runuser -s /bin/sh -c '/usr/bin/php /var/www/app/console oro:install --timeout 3600 --sample-data=y --drop-database --env=prod --user-name=admin --user-firstname=John --user-lastname=Doe --user-password="marello123" --user-email="johndoe@example.com" --organization-name="Marello" --application-url="http://localhost:5080/"' www-data
+            - CMD_INIT_CLEAN=runuser -s /bin/sh -c '/usr/bin/php /var/www/app/console oro:install --timeout 3600 --sample-data=y --drop-database --env=prod --user-name=admin --user-firstname=John --user-lastname=Doe --user-password="marello123" --user-email="johndoe@example.com" --organization-name="Marello" --application-url="http://marello-ce.docker:3080/"' www-data
             - CMD_INIT_INSTALLED=
             - CMD_INIT_AFTER=
             - APP_DB_DRIVER=pdo_mysql
@@ -76,5 +77,5 @@ services:
             - APP_MAILER_USER=user
             - APP_MAILER_PASSWORD=password
             - APP_WEBSOCKET_HOST=
-            - APP_WEBSOCKET_PORT=5081
+            - APP_WEBSOCKET_PORT=3081
             - APP_IS_INSTALLED=

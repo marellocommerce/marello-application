@@ -1,7 +1,8 @@
 version: "2"
 services:
     data:
-        image: djocker/orodata
+        build:
+            context: ./.docker-data
         container_name: subscription-data
     db:
         image: percona:5.7
@@ -32,7 +33,7 @@ services:
           - "5083:8025"
         logging:
             driver: "none"
-    web:
+    ee_sub_web:
         build:
             context: ./.docker
             args:
