@@ -50,7 +50,7 @@
         "oro/platform-serialised-fields": "~3.1.1",
         "oro/calendar-bundle": "~3.1.1",
         "oro/health-check-bundle": "~3.1.1",
-        "marellocommerce/marello-enterprise": "~2.0.0"
+        "marellocommerce/marello-enterprise": "~2.1.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "3.1.*",
@@ -116,6 +116,9 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "extra": {
+        "symfony": {
+            "require": "3.4.*"
+        },
         "symfony-web-dir": "public",
         "symfony-var-dir": "var",
         "symfony-bin-dir": "bin",
