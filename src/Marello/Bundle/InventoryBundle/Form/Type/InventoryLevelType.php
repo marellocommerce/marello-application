@@ -20,6 +20,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\Valid;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class InventoryLevelType extends AbstractType
 {
@@ -37,12 +38,10 @@ class InventoryLevelType extends AbstractType
 
     /**
      * @param EventSubscriberInterface $subscriber
-     * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(EventSubscriberInterface $subscriber, EventDispatcherInterface $eventDispatcher)
+    public function __construct(EventSubscriberInterface $subscriber)
     {
         $this->subscriber = $subscriber;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -57,6 +56,14 @@ class InventoryLevelType extends AbstractType
                 [
                     'class' => Warehouse::class,
                     'attr'  => ['readonly' => true]
+                ]
+            )
+            ->add(
+                'pickLocation',
+                TextType::class,
+                [
+                    'required' => false,
+                    'label'    => 'marello.inventory.inventorylevel.pick_location.label'
                 ]
             )
             ->add(
@@ -118,6 +125,19 @@ class InventoryLevelType extends AbstractType
             InventoryLevelFinishFormViewEvent::NAME,
             new InventoryLevelFinishFormViewEvent($view)
         );
+    }
+
+    /**
+     * Added to keep BC
+     * @deprecated will be removed in 3.0
+     * @param EventDispatcherInterface $eventDispatcher
+     * @return $this
+     */
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+
+        return $this;
     }
 
     /**

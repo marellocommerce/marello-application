@@ -23,6 +23,12 @@ class OrmFilterExtension extends BaseOrmFilterExtension
     }
 
     /**
+     * getValuesToApply removed and replaced by processConfigs
+     * because of the removal of the function in the AbstractFilterExtension of Oro
+     * https://github.com/oroinc/platform/commit/1b963e62da45f8490923943905db8e8c2f1308a9#diff-1383de7d0ef0720b4ae0e52643eda20d
+     */
+
+    /**
      * {@inheritDoc}
      */
     public function processConfigs(DatagridConfiguration $config)
