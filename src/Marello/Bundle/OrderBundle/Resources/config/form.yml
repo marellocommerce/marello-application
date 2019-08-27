@@ -48,6 +48,11 @@ services:
         tags:
             - { name: form.type }
 
+    marello_order.form.type.company_aware_customer_select:
+        class: Marello\Bundle\OrderBundle\Form\Type\CompanyAwareCustomerSelectType
+        tags:
+            - { name: form.type }
+
     marello_order.form.type.customer_select:
         class: Marello\Bundle\OrderBundle\Form\Type\CustomerSelectType
         tags:

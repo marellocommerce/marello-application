@@ -93,6 +93,7 @@ marello:
             warehouse.label:                Warehouse
             organization.label:             Organization
             managed_inventory.label:        Manage Inventory
+            pick_location.label:            Pick Location
 
         inventorylevellogrecord:
             id.label:                       Id
