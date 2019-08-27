@@ -1,0 +1,15 @@
+search:
+    Marello\Bundle\CustomerBundle\Entity\Company:
+        alias:                          marello_company
+        label:                          marello.customer.company.entity_plural_label
+        title_fields:                   [name]
+        route:
+            name:                       marello_customer_company_view
+            parameters:
+                id:                     id
+        search_template:                MarelloCustomerBundle:Company:searchResult.html.twig
+        fields:
+            -
+                name:                   name
+                target_type:            text
+                target_fields:          [name]

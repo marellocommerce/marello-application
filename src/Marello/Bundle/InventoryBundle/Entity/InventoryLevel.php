@@ -185,6 +185,23 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
     protected $managedInventory;
 
     /**
+     * @ORM\Column(name="pick_location", type="string", nullable=true, length=100)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "header"="Pick Location"
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var string
+     */
+    protected $pickLocation;
+
+    /**
      * @return int
      */
     public function getId()
@@ -320,10 +337,31 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
      * @param mixed $managedInventory
      * @return $this
      */
-    public function setManagedInventory($managedInventory)
+    public function setManagedInventory($managedInventory): InventoryLevel
     {
         $this->managedInventory = $managedInventory;
         
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @param $pickLocation
+     * @return string
+     */
+    public function setPickLocation($pickLocation): InventoryLevel
+    {
+        $this->pickLocation = $pickLocation;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return string
+     */
+    public function getPickLocation(): ?string
+    {
+        return $this->pickLocation;
     }
 }
