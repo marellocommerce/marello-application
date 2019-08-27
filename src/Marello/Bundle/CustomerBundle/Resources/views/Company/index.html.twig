@@ -1,0 +1,21 @@
+{% extends 'OroUIBundle:actions:index.html.twig' %}
+
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% set gridName = 'marello-companies-grid' %}
+{% set pageTitle = 'marello.customer.company.entity_plural_label'|trans %}
+
+{% block navButtons %}
+    {% include 'OroImportExportBundle:ImportExport:buttons_from_configuration.html.twig' with {
+        'alias': 'marellocompany'
+    } %}
+    
+    {% if is_granted('marello_customer_company_create') %}
+        <div class="btn-group">
+            {{ UI.addButton({
+                'path': path('marello_customer_company_create'),
+                'entity_label': 'marello.customer.company.entity_label'|trans
+            }) }}
+        </div>
+    {% endif %}
+{% endblock %}

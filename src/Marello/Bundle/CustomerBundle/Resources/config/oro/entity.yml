@@ -1,0 +1,5 @@
+oro_entity:
+    entity_aliases:
+        Marello\Bundle\CustomerBundle\Entity\Company:
+            alias: marellocompany
+            plural_alias: marellocompanies

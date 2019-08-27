@@ -6,12 +6,21 @@ datagrids:
             acl_resource: marello_product_view
             query:
                 select:
-                    - p
+                    - p.id
+                    - p.sku
+                    - p.type
+                    - IDENTITY(p.image) as image
+                    - p.name
+                    - p.weight
+                    - p.name
+                    - p.manufacturingCode
+                    - p.createdAt
+                    - p.updatedAt
+                    - tc.code as taxCode
                     - (CASE WHEN p.image IS NOT NULL THEN true ELSE false END) as hasImage
                     - s.label as status
                     - count(sc.code) as channelsCount
                     - count(cat.id) as categoriesCount
-                    - count(sup.id) as suppliersCount
                     - sum(defpr.value) as defaultPricesSum
                     - sum(sppr.value) as specialPricesSum
                     - sum(mspr.value) as msrpPricesSum
@@ -25,8 +34,6 @@ datagrids:
                         - { join: p.taxCode, alias: tc }
                         - { join: p.channels, alias: sc }
                         - { join: p.categories, alias: cat }
-                        - { join: p.suppliers, alias: psr }
-                        - { join: psr.supplier, alias: sup }
                         - { join: p.prices, alias: pr }
                         - { join: pr.defaultPrice, alias: defpr }
                         - { join: pr.specialPrice, alias: sppr }
@@ -111,12 +118,6 @@ datagrids:
                 frontend_type:      html
                 template:           MarelloProductBundle:Product/Datagrid/Property:categories.html.twig
                 renderable:         false
-            suppliers:
-                label:              marello.product.suppliers.label
-                type:               twig
-                frontend_type:      html
-                template:           MarelloProductBundle:Product/Datagrid/Property:suppliers.html.twig
-                renderable:         false
             createdAt:
                 label:              oro.ui.created_at
                 frontend_type:      datetime
@@ -149,7 +150,6 @@ datagrids:
                 defaultChannelPrices:   { data_name: defaultChannelPricesSum }
                 specialChannelPrices:   { data_name: specialChannelPricesSum }
                 msrpPrices:             { data_name: msrpPricesSum }
-                suppliers:              { data_name: suppliersCount }
                 createdAt:              { data_name: p.createdAt }
                 updatedAt:              { data_name: p.updatedAt }
             default:
@@ -220,14 +220,6 @@ datagrids:
                         field_options:
                             multiple:   true
                             choices:    '@marello_catalog.provider.categories_choices->getCategories()'
-                    enabled:            false
-                suppliers:
-                    type:               choice
-                    data_name:          sup.id
-                    options:
-                        field_options:
-                            multiple:   true
-                            choices:    '@marello_supplier.provider.suppliers_choices->getSuppliers()'
                     enabled:            false
                 weight:
                     data_name:          p.weight

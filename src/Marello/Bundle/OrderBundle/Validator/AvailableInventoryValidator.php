@@ -55,12 +55,10 @@ class AvailableInventoryValidator extends ConstraintValidator
      */
     public function __construct(
         DoctrineHelper $doctrineHelper,
-        AvailableInventoryProvider $availableInventoryProvider,
-        EventDispatcherInterface $eventDispatcher
+        AvailableInventoryProvider $availableInventoryProvider
     ) {
         $this->doctrineHelper = $doctrineHelper;
         $this->availableInventoryProvider = $availableInventoryProvider;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -323,5 +321,18 @@ class AvailableInventoryValidator extends ConstraintValidator
     private function getErrorPathFromConfig(Constraint $constraint, $fields)
     {
         return null !== $constraint->errorPath ? $constraint->errorPath : $fields[0];
+    }
+
+    /**
+     * Added for keeping BC
+     * @deprecated will be removed in 3.0
+     * @param EventDispatcherInterface $eventDispatcher
+     * @return $this
+     */
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+
+        return $this;
     }
 }
