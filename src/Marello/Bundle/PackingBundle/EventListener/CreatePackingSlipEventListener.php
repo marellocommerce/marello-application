@@ -36,6 +36,7 @@ class CreatePackingSlipEventListener
     protected $stopPropagation = false;
 
     /**
+     * Could not prevent BC break with event dispatcher in this case because of saving the PackingSlips directly
      * @param MapperInterface $mapper
      * @param DoctrineHelper $doctrineHelper
      * @param EventDispatcherInterface $eventDispatcher
