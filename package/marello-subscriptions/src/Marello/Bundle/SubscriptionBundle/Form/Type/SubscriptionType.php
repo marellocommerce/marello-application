@@ -11,6 +11,7 @@ use Marello\Bundle\SubscriptionBundle\Migrations\Data\ORM\LoadSubscriptionRenewa
 use Marello\Bundle\SubscriptionBundle\Migrations\Data\ORM\LoadSubscriptionTerminationNoticePeriodData;
 use Oro\Bundle\EntityExtendBundle\Form\Type\EnumChoiceType;
 use Oro\Bundle\FormBundle\Form\Type\OroDateTimeType;
+use Oro\Bundle\FormBundle\Form\Type\OroChoiceType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -82,9 +83,13 @@ class SubscriptionType extends AbstractType
             )
             ->add(
                 'cancelBeforeDuration',
-                CheckboxType::class,
+                OroChoiceType::class,
                 [
-                    'required'  => false,
+                    'choices' => [
+                        'marello.core.no.label' => false,
+                        'marello.core.yes.label' => true
+                    ],
+                    'required' => false
                 ]
             )
             ->add('item', SubscriptionProductSalesChannelAwareSelectType::class, [

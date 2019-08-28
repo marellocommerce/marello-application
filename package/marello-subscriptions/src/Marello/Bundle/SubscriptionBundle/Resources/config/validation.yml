@@ -1,8 +1,12 @@
 Marello\Bundle\ProductBundle\Entity\Product:
-     constraints:
+    constraints:
         - Marello\Bundle\SubscriptionBundle\Validator\Constraints\SubscriptionProductAttributes: ~
-#    properties:
-#        subscriptionDuration:
-#            - NotBlank: ~
-#        paymentTerm:
-#            - NotBlank: ~
+
+Marello\Bundle\SubscriptionBundle\Entity\Subscription:
+    properties:
+        billingAddress:
+            - NotBlank:
+                message: 'marello.subscription.address.validation.billing_not_blank'
+        shippingAddress:
+            - NotBlank:
+                message: 'marello.subscription.address.validation.shipping_not_blank'

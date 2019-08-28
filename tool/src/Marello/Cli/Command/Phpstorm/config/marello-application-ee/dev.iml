@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="WEB_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/applications/marello-application-ee-subscription" />
+      <excludeFolder url="file://$MODULE_DIR$/applications/marello-application/vendor/marellocommerce/marello" />
+      <excludeFolder url="file://$MODULE_DIR$/applications/marello-application/vendor/marellocommerce/marello-enterprise" />
+      <excludeFolder url="file://$MODULE_DIR$/applications/marello-application/vendor/marellocommerce/marello-subscriptions" />
+      <excludeFolder url="file://$MODULE_DIR$/docs" />
+      <excludeFolder url="file://$MODULE_DIR$/environment" />
+      <excludeFolder url="file://$MODULE_DIR$/package/marello-subscriptions" />
+      <excludeFolder url="file://$MODULE_DIR$/tool/vendor" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

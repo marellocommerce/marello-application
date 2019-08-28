@@ -93,6 +93,12 @@
                             <span class="widget-title">{{ 'marello.order.datablock.customer_information'|trans }}</span>
                         </div>
                         {{ UI.renderProperty('marello.order.customer.email.label'|trans, entity.customer.email) }}
+                        {% if entity.customer.company %}
+                            {{ UI.renderHtmlProperty(
+                            'marello.customer.company.entity_label'|trans,
+                            UI.entityViewLink(entity.customer.company, entity.customer.company.name, 'marello_customer_company_view')
+                            ) }}
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -146,33 +152,15 @@
     {% set shippingSubblocks = shippingSubblocks|merge([{'data' : [shippingWidget] }]) %}
 
     {% set items %}
-        <div class="widget-content">
-            <div class="row-fluid form-horizontal">
-                <div class="responsive-block">
-                    {{ dataGrid.renderGrid('marello-order-items', {'orderId': entity.id}) }}
-                </div>
-            </div>
-        </div>
+        {{ dataGrid.renderGrid('marello-order-items', {'orderId': entity.id}) }}
     {% endset %}
 
     {% set packingSlips %}
-        <div class="widget-content">
-            <div class="row-fluid form-horizontal">
-                <div class="responsive-block">
-                    {{ dataGrid.renderGrid('marello-order-packingslips', {'orderId': entity.id}) }}
-                </div>
-            </div>
-        </div>
+        {{ dataGrid.renderGrid('marello-order-packingslips', {'orderId': entity.id}) }}
     {% endset %}
 
     {% set invoices %}
-        <div class="widget-content">
-            <div class="row-fluid form-horizontal">
-                <div class="responsive-block">
-                    {{ dataGrid.renderGrid('marello-order-invoices-grid', {'orderId': entity.id}) }}
-                </div>
-            </div>
-        </div>
+        {{ dataGrid.renderGrid('marello-order-invoices-grid', {'orderId': entity.id}) }}
     {% endset %}
 
     {% set dataBlocks = [
