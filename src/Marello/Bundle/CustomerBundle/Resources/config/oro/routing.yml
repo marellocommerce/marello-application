@@ -1,0 +1,5 @@
+marello_company:
+    resource: "@MarelloCustomerBundle/Controller/CompanyController.php"
+    type:     annotation
+    prefix:   /marello/company
+

@@ -6,6 +6,13 @@ parameters:
     marello_order_customer.class: Marello\Bundle\OrderBundle\Entity\Customer
 
 services:
+    marello_order.listener.datagrid.company-customers-select_listener:
+        class: Marello\Bundle\OrderBundle\EventListener\Datagrid\CompanyCustomersSelectGridListener
+        arguments:
+            - '@marello_customer.repository.company'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.before_query.marello-company-customers-select-grid, method: onResultBeforeQuery }
+
     marello_order.listener.datagrid.order_grid_address_filter_listener:
         class: Marello\Bundle\OrderBundle\EventListener\Datagrid\OrderGridAddressFilterListener
         arguments:
@@ -215,7 +222,8 @@ services:
         arguments:
             - '@oro_entity.doctrine_helper'
             - '@marello_inventory.provider.available_inventory_provider'
-            - '@event_dispatcher'
+        calls:
+            - ['setEventDispatcher', ['@event_dispatcher']]
         tags:
             - { name: validator.constraint_validator, alias: marello_order.available_inventory_validator }
 
@@ -264,3 +272,12 @@ services:
         arguments: ['marello_item_status']
         tags:
             - { name: oro_dashboard.value.converter, form_type: Marello\Bundle\OrderBundle\Form\Type\WidgetOrderItemStatusesSelectType }
+
+    marello_order.form.autocomplete.company_customer.search_handler:
+        class: 'Marello\Bundle\OrderBundle\Autocomplete\CompanyCustomerHandler'
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - '%marello_order_customer.class%'
+            - ['namePrefix', 'firstName', 'middleName', 'lastName', 'nameSuffix']
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: marello_company_customers, acl_resource: marello_order_customer_view }

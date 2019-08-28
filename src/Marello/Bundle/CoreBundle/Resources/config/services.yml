@@ -69,6 +69,12 @@ services:
         calls:
             - ["setFieldsFilter", ['@oro_security.serializer.filter_chain']]
 
-
     marello_core.provider.additional_placeholder_provider:
         class: 'Marello\Bundle\CoreBundle\Provider\AdditionalPlaceholderProvider'
+
+    marello_core.twig.file_extension:
+        class: 'Marello\Bundle\CoreBundle\Twig\FileExtension'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: twig.extension }
