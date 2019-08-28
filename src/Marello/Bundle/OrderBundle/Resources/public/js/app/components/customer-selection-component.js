@@ -11,7 +11,7 @@ define(function(require) {
          * @property {Object}
          */
         options: {
-            customerSelect: 'input[name*="customer"]'
+            customerSelect: '.marello-company-aware-customer-select input[type="hidden"]'
         },
 
         /**
@@ -28,8 +28,18 @@ define(function(require) {
 
             this.$customerSelect = this.$el.find(this.options.customerSelect);
             this.$el.on('change', this.options.customerSelect, _.bind(this.onCustomerChanged, this));
+            mediator.on('marello_customer:company:changed', this.onCompanyChanged, this);
         },
-
+        
+        /**
+         * Handle Company change
+         */
+        onCompanyChanged: function() {
+            this.$customerSelect.inputWidget('val', '');
+            this.$customerSelect.data('select2_query_additional_params', {customerId: this.$customerSelect.val()});
+            this.onCustomerChanged();
+        },
+        
         /**
          * Handle Customer change
          */

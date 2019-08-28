@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\OrderBundle\Provider;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Util\ClassUtils;
 use Marello\Bundle\OrderBundle\Entity\Customer;
 
@@ -50,6 +49,14 @@ class OrderCustomerAddressProvider
             foreach ($customer->getAddresses() as $address) {
                 $result[$address->getId()] = $address;
             }
+            
+            $company = $customer->getCompany();
+            if ($company) {
+                foreach ($company->getAddresses() as $address) {
+                    $result[$address->getId()] = $address;
+                }
+            }
+            
             $this->cache[self::CACHE_KEY_BILLING][$key] = $result;
 
             return $result;
@@ -80,6 +87,14 @@ class OrderCustomerAddressProvider
             foreach ($customer->getAddresses() as $address) {
                 $result[$address->getId()] = $address;
             }
+
+            $company = $customer->getCompany();
+            if ($company) {
+                foreach ($company->getAddresses() as $address) {
+                    $result[$address->getId()] = $address;
+                }
+            }
+            
             $this->cache[self::CACHE_KEY_SHIPPING][$key] = $result;
 
             return $result;
