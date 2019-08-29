@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\Cron;
 
+use Marello\Bundle\NotificationBundle\Email\SendProcessor;
 use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
@@ -14,11 +15,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class PurchaseOrderAdviceCommand extends ContainerAwareCommand implements CronCommandInterface
 {
-    /**
-     * Command name
-     */
     const COMMAND_NAME = 'marello:cron:po-advice';
-
+    const EXIT_CODE = 0;
     /**
      * @inheritDoc
      */
@@ -58,7 +56,7 @@ class PurchaseOrderAdviceCommand extends ContainerAwareCommand implements CronCo
         if ($configManager->get('marello_purchaseorder.purchaseorder_notification') !== true) {
             $output->writeln('The PO notification feature is disabled. The command will not run.');
 
-            return 0;
+            return self::EXIT_CODE;
         }
 
         $doctrine = $this->getContainer()->get('doctrine');
@@ -69,7 +67,7 @@ class PurchaseOrderAdviceCommand extends ContainerAwareCommand implements CronCo
         if (empty($advisedItems)) {
             $output->writeln('There are no advised items for PO notification. The command will not run.');
 
-            return 0;
+            return self::EXIT_CODE;
         }
         $entity = new PurchaseOrder();
         $organization = $doctrine
@@ -87,15 +85,16 @@ class PurchaseOrderAdviceCommand extends ContainerAwareCommand implements CronCo
         }
         $recipient = new Customer();
         $recipient->setEmail($configManager->get('marello_purchaseorder.purchaseorder_notification_address'));
+        /** @var SendProcessor $sendProcessor */
         $sendProcessor = $this->getContainer()->get('marello_notification.email.send_processor');
+        $sendProcessor->setNotifcationShouldBeSavedAsActivity(false);
         $sendProcessor->sendNotification(
             'marello_purchase_order_advise',
             [$recipient],
             $entity,
-            [],
-            false
+            []
         );
 
-        return 0;
+        return self::EXIT_CODE;
     }
 }
