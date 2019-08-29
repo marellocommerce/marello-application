@@ -41,6 +41,9 @@ class SendProcessor
     /** @var EmailNotificationSender $emailNotificationSender */
     protected $emailNotificationSender;
 
+    /** @var bool $saveNotificationAsActivity */
+    protected $saveNotificationAsActivity = true;
+
     /**
      * EmailSendProcessor constructor.
      *
@@ -82,12 +85,11 @@ class SendProcessor
      * @param array  $recipients   Array of recipient email addresses.
      * @param object $entity       Entity used to render template.
      * @param array  $data         Empty array for possible extending of additional parameters
-     * @param bool   $save
      * @throws MarelloNotificationException
      * @throws \Oro\Bundle\NotificationBundle\Exception\NotificationSendException
      * @throws \Twig_Error
      */
-    public function sendNotification($templateName, array $recipients, $entity, array $data = [], $save = true)
+    public function sendNotification($templateName, array $recipients, $entity, array $data = [])
     {
         $entityName = $this->getRealClassName($entity);
 
@@ -133,12 +135,21 @@ class SendProcessor
                 [$notification]
             );
         }
-        if ($save) {
+        if ($this->saveNotificationAsActivity) {
             $this->activityManager->addActivityTarget($notification, $entity);
 
             $this->manager->persist($notification);
             $this->manager->flush();
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     * @param bool $saveAsActivity
+     */
+    public function setNotifcationShouldBeSavedAsActivity(bool $saveAsActivity)
+    {
+        $this->saveNotificationAsActivity = $saveAsActivity;
     }
 
     /**
