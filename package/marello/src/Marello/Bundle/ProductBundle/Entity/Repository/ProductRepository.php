@@ -154,8 +154,12 @@ class ProductRepository extends EntityRepository
                 i.purchaseInventory'
             )
             ->innerJoin('p.preferredSupplier', 'sup')
+            ->innerJoin('p.status', 's')
             ->innerJoin('p.inventoryItems', 'i')
             ->innerJoin('i.inventoryLevels', 'l')
+            ->where("sup.name <> ''")
+            ->andWhere("s.name = 'enabled'")
+            ->andWhere("i.replenishment = 'never_out_of_stock'")
             ->groupBy('p.sku')
             ->having('SUM(l.inventory - l.allocatedInventory) < i.purchaseInventory');
 
