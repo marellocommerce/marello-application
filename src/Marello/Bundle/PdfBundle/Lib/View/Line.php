@@ -76,7 +76,7 @@ class Line implements \ArrayAccess
     public function isEmpty()
     {
         foreach ($this->fields as $field) {
-            if (count($field) > 0) {
+            if (count($field) > 1 || reset($field) !== null) {
                 return false;
             }
         }
@@ -91,7 +91,7 @@ class Line implements \ArrayAccess
 
     private function createInvalidArgumentException($key)
     {
-        new \InvalidArgumentException(sprintf(
+        return new \InvalidArgumentException(sprintf(
             'Key "%s" does not exist in %s object with keys %s',
             $key,
             __CLASS__,

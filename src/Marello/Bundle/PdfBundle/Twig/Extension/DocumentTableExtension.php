@@ -6,6 +6,8 @@ use Marello\Bundle\PdfBundle\Provider\DocumentTableProvider;
 
 class DocumentTableExtension extends \Twig_Extension
 {
+    const NAME = 'marello_document_table';
+
     protected $tableProvider;
 
     public function __construct(DocumentTableProvider $tableProvider)
@@ -22,6 +24,6 @@ class DocumentTableExtension extends \Twig_Extension
 
     public function getName()
     {
-        return 'marello_document_table';
+        return self::NAME;
     }
 }
