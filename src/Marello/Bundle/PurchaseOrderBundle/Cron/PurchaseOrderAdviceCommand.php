@@ -17,6 +17,7 @@ class PurchaseOrderAdviceCommand extends ContainerAwareCommand implements CronCo
 {
     const COMMAND_NAME = 'marello:cron:po-advice';
     const EXIT_CODE = 0;
+
     /**
      * @inheritDoc
      */
@@ -55,7 +56,6 @@ class PurchaseOrderAdviceCommand extends ContainerAwareCommand implements CronCo
         $configManager = $this->getContainer()->get('oro_config.manager');
         if ($configManager->get('marello_purchaseorder.purchaseorder_notification') !== true) {
             $output->writeln('The PO notification feature is disabled. The command will not run.');
-
             return self::EXIT_CODE;
         }
 
@@ -66,15 +66,16 @@ class PurchaseOrderAdviceCommand extends ContainerAwareCommand implements CronCo
             ->getPurchaseOrderItemsCandidates();
         if (empty($advisedItems)) {
             $output->writeln('There are no advised items for PO notification. The command will not run.');
-
             return self::EXIT_CODE;
         }
+
         $entity = new PurchaseOrder();
         $organization = $doctrine
             ->getManagerForClass(Organization::class)
             ->getRepository(Organization::class)
             ->getFirst();
         $entity->setOrganization($organization);
+
         foreach ($advisedItems as $advisedItem) {
             $poItem = new PurchaseOrderItem();
             $poItem
@@ -83,6 +84,7 @@ class PurchaseOrderAdviceCommand extends ContainerAwareCommand implements CronCo
                 ->setOrderedAmount((double)$advisedItem['orderAmount']);
             $entity->addItem($poItem);
         }
+
         $recipient = new Customer();
         $recipient->setEmail($configManager->get('marello_purchaseorder.purchaseorder_notification_address'));
         /** @var SendProcessor $sendProcessor */
