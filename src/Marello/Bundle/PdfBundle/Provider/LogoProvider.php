@@ -13,6 +13,8 @@ use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 
 class LogoProvider
 {
+    const IMAGE_FILTER = 'invoice_logo';
+
     protected $configManager;
 
     protected $doctrineHelper;
@@ -73,7 +75,7 @@ class LogoProvider
 
     protected function getInvoiceLogoAttachment(File $entity, $absolute)
     {
-        $path = $this->attachmentManager->getFilteredImageUrl($entity, 'invoice_logo');
+        $path = $this->attachmentManager->getFilteredImageUrl($entity, self::IMAGE_FILTER);
         $absolutePath = $this->projectDir.'/public'.$path;
 
         if (!file_exists($absolutePath)) {
@@ -89,7 +91,7 @@ class LogoProvider
 
     protected function fetchImage(File $entity, $path)
     {
-        $resized = $this->imageResizer->resizeImage($entity, 'invoice_logo');
+        $resized = $this->imageResizer->resizeImage($entity, self::IMAGE_FILTER);
         $this->mediaCacheManager->store($resized->getContent(), $path);
     }
 }
