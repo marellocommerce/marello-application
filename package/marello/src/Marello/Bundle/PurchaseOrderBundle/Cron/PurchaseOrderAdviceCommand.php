@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class PurchaseOrderAdviceCommand extends ContainerAwareCommand implements CronCommandInterface
 {
-    const COMMAND_NAME = 'marello:cron:po-advice';
+    const COMMAND_NAME = 'oro:cron:marello:po-advice';
     const EXIT_CODE = 0;
 
     /**
