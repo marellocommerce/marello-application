@@ -2,9 +2,11 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\Tests\Functional\Cron;
 
+use Oro\Bundle\CronBundle\Entity\Repository\ScheduleRepository;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 
+use Oro\Bundle\CronBundle\Entity\Schedule;
 use Oro\Bundle\NotificationBundle\Async\Topics;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
@@ -109,5 +111,18 @@ class PurchaseOrderAdviceCronTest extends WebTestCase
         self::assertNotContains('{{ entity', $message['body']);
         self::assertEquals('text/html', $message['contentType']);
         self::assertEquals('Purchase Order advise notification', $message['subject']);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function testAdviceCommandIsRegisteredCorrectly()
+    {
+        /** @var ScheduleRepository $scheduleRepository */
+        $scheduleRepository = self::getContainer()
+            ->get('doctrine')
+            ->getRepository(Schedule::class);
+        $crons = $scheduleRepository->findBy(['command' => PurchaseOrderAdviceCommand::COMMAND_NAME]);
+        self::assertCount(1, $crons);
     }
 }
