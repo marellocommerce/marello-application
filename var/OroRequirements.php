@@ -1,19 +1,13 @@
 <?php
 // @codingStandardsIgnoreFile
 
-if (is_file(__DIR__.'/../vendor/autoload.php')) {
-    require_once __DIR__ . '/../vendor/autoload.php';
-}
 require_once __DIR__ . '/../var/SymfonyRequirements.php';
 
 use Oro\Bundle\AssetBundle\NodeJsVersionChecker;
 use Oro\Bundle\AssetBundle\NodeJsExecutableFinder;
-use Oro\Component\PhpUtils\ArrayUtil;
-use Symfony\Component\Config\FileLocator;
+
 use Symfony\Component\Intl\Intl;
-use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\ProcessBuilder;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * This class specifies all requirements and optional recommendations that are necessary to run the Oro Application.
@@ -23,7 +17,6 @@ class OroRequirements extends SymfonyRequirements
     const REQUIRED_PHP_VERSION  = '7.1.26';
     const REQUIRED_GD_VERSION   = '2.0';
     const REQUIRED_CURL_VERSION = '7.0';
-    const REQUIRED_ICU_VERSION  = '3.8';
     const REQUIRED_NODEJS_VERSION  = '>=6.6';
 
     const EXCLUDE_REQUIREMENTS_MASK = '/5\.[0-6]|7\.0/';
@@ -103,10 +96,31 @@ class OroRequirements extends SymfonyRequirements
             'Install and enable the <strong>intl</strong> extension.'
         );
 
-        $this->addOroRequirement(
-            null !== $icuVersion && version_compare($icuVersion, self::REQUIRED_ICU_VERSION, '>='),
-            'icu library must be at least ' . self::REQUIRED_ICU_VERSION,
-            'Install and enable the <strong>icu</strong> library at least ' . self::REQUIRED_ICU_VERSION . ' version'
+        $localeCurrencies = [
+            'de_DE' => 'EUR',
+            'en_CA' => 'CAD',
+            'en_GB' => 'GBP',
+            'en_US' => 'USD',
+            'fr_FR' => 'EUR',
+            'uk_UA' => 'UAH',
+        ];
+
+        foreach ($localeCurrencies as $locale => $currencyCode) {
+            $numberFormatter = new \NumberFormatter($locale, \NumberFormatter::CURRENCY);
+
+            if ($currencyCode === $numberFormatter->getTextAttribute(\NumberFormatter::CURRENCY_CODE)) {
+                unset($localeCurrencies[$locale]);
+            }
+        }
+
+        $this->addRecommendation(
+            empty($localeCurrencies),
+            sprintf('Current version %s of the ICU library should meet the requirements', $icuVersion),
+            sprintf(
+                'There may be a problem with currency formatting in <strong>ICU</strong> %s, ' .
+                'please upgrade your <strong>ICU</strong> library.',
+                $icuVersion
+            )
         );
 
         $this->addOroRequirement(
@@ -179,21 +193,6 @@ class OroRequirements extends SymfonyRequirements
             );
         }
 
-        // Web installer specific checks
-        if ('cli' !== PHP_SAPI) {
-            $output = $this->checkCliRequirements();
-
-            $requirement = new CliRequirement(
-                !$output,
-                'Requirements validation for PHP CLI',
-                'If you have multiple PHP versions installed, you need to configure ORO_PHP_PATH variable with PHP binary path used by web server'
-            );
-
-            $requirement->setOutput($output);
-
-            $this->add($requirement);
-        }
-
         $baseDir = realpath(__DIR__ . '/..');
         $mem     = $this->getBytes(ini_get('memory_limit'));
 
@@ -206,6 +205,7 @@ class OroRequirements extends SymfonyRequirements
             'memory_limit should be at least 512M',
             'Set the "<strong>memory_limit</strong>" setting in php.ini<a href="#phpini">*</a> to at least "512M".'
         );
+
         $nodeJsExecutableFinder = new NodeJsExecutableFinder();
         $nodeJsExecutable = $nodeJsExecutableFinder->findNodeJs();
         $nodeJsExists = null !== $nodeJsExecutable;
@@ -285,19 +285,6 @@ class OroRequirements extends SymfonyRequirements
                 'Change the permissions of the "<strong>config/parameters.yml</strong>" file so that the web server can write into it.'
             );
         }
-
-        $configYmlPath = $baseDir . '/config/config_' . $env . '.yml';
-        if (is_file($configYmlPath)) {
-            $config = $this->getParameters($configYmlPath);
-            $pdo = $this->getDatabaseConnection($config);
-            if ($pdo) {
-                $this->addOroRequirement(
-                    $this->isUuidSqlFunctionPresent($pdo),
-                    'UUID SQL function must be present',
-                    'Execute "<strong>CREATE EXTENSION IF NOT EXISTS "uuid-ossp";</strong>" SQL command so UUID-OSSP extension will be installed for database.'
-                );
-            }
-        }
     }
 
     /**
@@ -324,8 +311,7 @@ class OroRequirements extends SymfonyRequirements
             $this->getRequirements(),
             function ($requirement) {
                 return !($requirement instanceof PhpIniRequirement)
-                    && !($requirement instanceof OroRequirement)
-                    && !($requirement instanceof CliRequirement);
+                    && !($requirement instanceof OroRequirement);
             }
         );
     }
@@ -356,19 +342,6 @@ class OroRequirements extends SymfonyRequirements
             $this->getRequirements(),
             function ($requirement) {
                 return $requirement instanceof OroRequirement;
-            }
-        );
-    }
-
-    /**
-     * @return array
-     */
-    public function getCliRequirements()
-    {
-        return array_filter(
-            $this->getRequirements(),
-            function ($requirement) {
-                return $requirement instanceof CliRequirement;
             }
         );
     }
@@ -465,191 +438,8 @@ class OroRequirements extends SymfonyRequirements
 
         return $fileLength >= 242;
     }
-
-    /**
-     * @return null|string
-     */
-    protected function checkCliRequirements()
-    {
-        $finder  = new PhpExecutableFinder();
-        $command = sprintf(
-            '%s %soro-check.php',
-            $finder->find(),
-            __DIR__ . DIRECTORY_SEPARATOR
-        );
-
-        return shell_exec($command);
-    }
-
-    /**
-     * @param PDO $pdo
-     * @return bool
-     */
-    protected function isUuidSqlFunctionPresent(PDO $pdo)
-    {
-        if ($pdo->getAttribute(PDO::ATTR_DRIVER_NAME) === 'pgsql') {
-            try {
-                $version = $pdo->query("SELECT extversion FROM pg_extension WHERE extname = 'uuid-ossp'")->fetchColumn();
-
-                return !empty($version);
-            } catch (\Exception $e) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * @param array $config
-     * @return bool
-     */
-    protected function isPdoDriver(array $config)
-    {
-        return !empty($config['database_driver']) && strpos($config['database_driver'], 'pdo') === 0;
-    }
-
-    /**
-     * @param array $config
-     * @return bool|null|PDO
-     */
-    protected function getDatabaseConnection(array $config)
-    {
-        if ($config && $this->isPdoDriver($config)) {
-            $driver = str_replace('pdo_', '', $config['database_driver']);
-            $dsnParts = array(
-                'host=' . $config['database_host'],
-            );
-            if (!empty($config['database_port'])) {
-                $dsnParts[] = 'port=' . $config['database_port'];
-            }
-            $dsnParts[] = 'dbname=' . $config['database_name'];
-
-            try {
-                return new PDO(
-                    $driver . ':' . implode(';', $dsnParts),
-                    $config['database_user'],
-                    $config['database_password']
-                );
-            } catch (\Exception $e) {
-                return null;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * @param string $parametersYmlPath
-     * @return array
-     */
-    protected function getParameters($parametersYmlPath)
-    {
-        $fileLocator = new FileLocator();
-        $loader = new YamlFileLoader($fileLocator);
-
-        return $loader->load($parametersYmlPath);
-    }
 }
 
 class OroRequirement extends Requirement
 {
-}
-
-class CliRequirement extends Requirement
-{
-    /**
-     * @var string
-     */
-    protected $output;
-
-    /**
-     * @return string
-     */
-    public function getOutput()
-    {
-        return $this->output;
-    }
-
-    /**
-     * @param string $output
-     */
-    public function setOutput($output)
-    {
-        $this->output = $output;
-    }
-}
-
-class YamlFileLoader extends Symfony\Component\Config\Loader\FileLoader
-{
-    /**
-     * {@inheritdoc}
-     */
-    public function load($resource, $type = null)
-    {
-        $path = $this->locator->locate($resource);
-
-        $content = Yaml::parse(file_get_contents($path));
-
-        // empty file
-        if (null === $content) {
-            return array();
-        }
-        if (empty($content['parameters'])) {
-            $content['parameters'] = array();
-        }
-
-        // imports
-        $importedParameters = $this->parseImports($content, $path);
-        $content['parameters'] = ArrayUtil::arrayMergeRecursiveDistinct($content['parameters'], $importedParameters);
-
-        // parameters
-        if (isset($content['parameters'])) {
-            return $content['parameters'];
-        }
-
-        return array();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports($resource, $type = null)
-    {
-        return is_string($resource) && in_array(pathinfo($resource, PATHINFO_EXTENSION), array('yml', 'yaml'), true);
-    }
-
-    /**
-     * Parses all imports.
-     *
-     * @param array $content
-     * @param string $file
-     * @return array
-     */
-    private function parseImports($content, $file)
-    {
-        if (!isset($content['imports'])) {
-            return array();
-        }
-
-        if (!is_array($content['imports'])) {
-            throw new InvalidArgumentException(sprintf('The "imports" key should contain an array in %s. Check your YAML syntax.', $file));
-        }
-
-        $defaultDirectory = dirname($file);
-        $importedParameters = array();
-        foreach ($content['imports'] as $import) {
-            if (!is_array($import)) {
-                throw new InvalidArgumentException(sprintf('The values in the "imports" key should be arrays in %s. Check your YAML syntax.', $file));
-            }
-
-            $this->setCurrentDir($defaultDirectory);
-            $importedContent = (array)$this->import($import['resource'], null, isset($import['ignore_errors']) ? (bool) $import['ignore_errors'] : false, $file);
-            if (is_array($importedContent)) {
-                $importedParameters = ArrayUtil::arrayMergeRecursiveDistinct($importedParameters, $importedContent);
-            }
-        }
-
-        return $importedParameters;
-    }
 }
