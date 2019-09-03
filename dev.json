@@ -26,16 +26,17 @@
             "type": "composer",
             "url": "https://asset-packagist.orocrm.com"
         },
-        "platform": {
-            "type": "vcs",
-            "url": "https://github.com/oroinc/platform.git"
+        "local-packages": {
+            "type": "path",
+            "url": "../../package/*"
         }
     },
     "require": {
         "php": ">=7.1",
         "oro/platform": "~3.1.1",
         "oro/platform-serialised-fields": "~3.1.1",
-        "oro/calendar-bundle": "~3.1.1"
+        "oro/calendar-bundle": "~3.1.1",
+        "marellocommerce/marello": "self.version"
     },
     "require-dev": {
         "sensio/generator-bundle": "3.1.*",
@@ -87,10 +88,10 @@
             "bin/console oro:install --env test --organization-name Oro --user-name admin --user-email admin@example.com --user-firstname John --user-lastname Doe --user-password admin --sample-data n --application-url http://localhost --drop-database --timeout 3600 --skip-translations --skip-assets",
             "php ./bin/phpunit --color --testsuite=\"unit\"",
             "php ./bin/phpunit --color --testsuite=\"functional\"",
-            "php ./bin/phpcs src/ -p --encoding=utf-8 --extensions=php --standard=psr2 --report=checkstyle --report-file=var/logs/phpcs.xml"
+            "php ./bin/phpcs vendor/marellocommerce/ -p --encoding=utf-8 --extensions=php --standard=psr2 --report=checkstyle --report-file=var/logs/phpcs.xml"
         ],
         "test-psr": [
-            "php ./bin/phpcs src/ -p --encoding=utf-8 --extensions=php --standard=psr2 --report=checkstyle --report-file=var/logs/phpcs.xml"
+            "php ./bin/phpcs vendor/marellocommerce/ -p --encoding=utf-8 --extensions=php --standard=psr2 --report=checkstyle --report-file=var/logs/phpcs.xml"
         ],
         "post-install-cmd": [
             "@build-parameters",

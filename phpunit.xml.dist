@@ -35,19 +35,10 @@
     </groups>
     <testsuites>
         <testsuite name="unit">
-            <directory>vendor/oro/*/Tests/Unit</directory>
-            <directory>vendor/oro/*/*/Tests/Unit</directory>
-            <directory>vendor/oro/*/*/*/Tests/Unit</directory>
-            <directory>vendor/oro/*/*/*/*/Tests/Unit</directory>
-            <directory>vendor/oro/*/*/*/*/*/Tests/Unit</directory>
             <directory>vendor/marellocommerce/*/*/*/*/*/Tests/Unit</directory>
         </testsuite>
         <testsuite name="functional">
-            <directory>vendor/oro/*/Tests/Functional</directory>
-            <directory>vendor/oro/*/*/Tests/Functional</directory>
-            <directory>vendor/oro/*/*/*/Tests/Functional</directory>
-            <directory>vendor/oro/*/*/*/*/Tests/Functional</directory>
-            <directory>vendor/oro/*/*/*/*/*/Tests/Functional</directory>
+            <directory>vendor/oro/platform/src/Oro/Bundle/TestFrameworkBundle/Tests/Functional</directory>
             <directory>vendor/marellocommerce/*/*/*/*/*/Tests/Functional</directory>
         </testsuite>
         <testsuite name="selenium">
