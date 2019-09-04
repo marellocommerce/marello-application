@@ -72,7 +72,6 @@ services:
 
     marello_customer.company.form.handler:
         class: 'Marello\Bundle\CustomerBundle\Form\Handler\CompanyHandler'
-        scope: request
         arguments:
             - '@marello_customer.company.form'
             - '@request_stack'
