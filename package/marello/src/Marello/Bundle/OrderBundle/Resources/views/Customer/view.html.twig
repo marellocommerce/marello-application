@@ -31,10 +31,12 @@
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
-                    {{ UI.renderHtmlProperty(
-                    'marello.order.customer.company.label'|trans,
-                    UI.entityViewLink(entity.company, entity.company.name, 'marello_customer_company_view')
-                    ) }}
+                    {% if entity.company %}
+                        {{ UI.renderHtmlProperty(
+                        'marello.order.customer.company.label'|trans,
+                        UI.entityViewLink(entity.company, entity.company.name, 'marello_customer_company_view')
+                        ) }}
+                    {% endif %}
                     {{ UI.renderProperty('marello.order.customer.name_prefix.label'|trans, entity.namePrefix) }}
                     {{ UI.renderProperty('marello.order.customer.first_name.label'|trans, entity.firstName) }}
                     {{ UI.renderProperty('marello.order.customer.middle_name.label'|trans, entity.middleName) }}
