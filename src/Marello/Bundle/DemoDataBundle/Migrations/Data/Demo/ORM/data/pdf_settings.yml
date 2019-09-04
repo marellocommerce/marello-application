@@ -1,0 +1,27 @@
+configuration:
+    global:
+        marello_pdf:
+            paper_size: a4
+            company_address: |-
+                Goodwaves
+                Einsteinstraße
+                81675 München
+                Germany
+            company_email: info@goodwaves.com
+            company_phone: +49-155-5553-927
+            company_bank: |-
+                Deutsche Bank München 44.0532.0130.00
+                IBAN: DE89 3704 0044 0532 0130 00
+                BIC: DEUT DE BB
+            company_coc: |-
+                IHK München HRB 204447
+                St. Nr. DE214585624
+
+    sales_channel:
+        marello_pdf:
+            company_address: |-
+                Goodwaves Main
+                22 Av. des Champs-Élysées
+                75008 Paris
+                France
+            company_email: main@goodwaves.com
