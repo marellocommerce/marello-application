@@ -3,6 +3,7 @@
 namespace Marello\Bundle\PdfBundle\Tests\Unit\Provider;
 
 use Marello\Bundle\PdfBundle\DependencyInjection\Configuration;
+use Marello\Bundle\PdfBundle\Exception\PaperSizeNotSetException;
 use Marello\Bundle\PdfBundle\Provider\TableSizeProvider;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
@@ -36,7 +37,7 @@ class TableSizeProviderTest extends TestCase
     {
         $provider = $this->getProvider($maxHeight, $maxTextWidth, $firstPageInfoHeight, $lastPageInfoHeight, $pageSize);
 
-        $result = $pageSize !== null ? $maxHeight[$pageSize] : $maxHeight;
+        $result = $this->getPageSizeProviderResult($maxHeight, $pageSize);
 
         $this->assertEquals($result, $provider->getMaxHeight($this->salesChannel));
     }
@@ -54,7 +55,7 @@ class TableSizeProviderTest extends TestCase
     {
         $provider = $this->getProvider($maxHeight, $maxTextWidth, $firstPageInfoHeight, $lastPageInfoHeight, $pageSize);
 
-        $result = $pageSize !== null ? $maxTextWidth[$pageSize] : $maxTextWidth;
+        $result = $this->getPageSizeProviderResult($maxTextWidth, $pageSize);
 
         $this->assertEquals($result, $provider->getMaxTextWidth($this->salesChannel));
     }
@@ -72,7 +73,7 @@ class TableSizeProviderTest extends TestCase
     {
         $provider = $this->getProvider($maxHeight, $maxTextWidth, $firstPageInfoHeight, $lastPageInfoHeight, $pageSize);
 
-        $result = $pageSize !== null ? $firstPageInfoHeight[$pageSize] : $firstPageInfoHeight;
+        $result = $this->getPageSizeProviderResult($firstPageInfoHeight, $pageSize);
 
         $this->assertEquals($result, $provider->getFirstPageInfoHeight($this->salesChannel));
     }
@@ -90,11 +91,14 @@ class TableSizeProviderTest extends TestCase
     {
         $provider = $this->getProvider($maxHeight, $maxTextWidth, $firstPageInfoHeight, $lastPageInfoHeight, $pageSize);
 
-        $result = $pageSize !== null ? $lastPageInfoHeight[$pageSize] : $lastPageInfoHeight;
+        $result = $this->getPageSizeProviderResult($lastPageInfoHeight, $pageSize);
 
         $this->assertEquals($result, $provider->getLastPageInfoHeight($this->salesChannel));
     }
 
+    /**
+     * @return array
+     */
     public function dataProvider()
     {
         return [
@@ -112,16 +116,31 @@ class TableSizeProviderTest extends TestCase
                 'lastPageInfoHeight' => ['a4' => 16, 'letter' => 17],
                 'pageSize' => Configuration::PAPER_SIZE_LETTER,
             ],
-            'not set' => [
+            'not compound' => [
                 'maxHeight' => 30,
                 'maxTextWidth' => 32,
                 'firstPageInfoHeight' => 34,
                 'lastPageInfoHeight' => 36,
                 'pageSize' => null,
             ],
+            'not set' => [
+                'maxHeight' => ['a4' => 20, 'letter' => 21],
+                'maxTextWidth' => ['a4' => 22, 'letter' => 23],
+                'firstPageInfoHeight' => ['a4' => 14, 'letter' => 15],
+                'lastPageInfoHeight' => ['a4' => 16, 'letter' => 17],
+                'pageSize' => 'not existing',
+            ],
         ];
     }
 
+    /**
+     * @param $maxHeight
+     * @param $maxTextWidth
+     * @param $firstPageInfoHeight
+     * @param $lastPageInfoHeight
+     * @param $pageSize
+     * @return TableSizeProvider
+     */
     protected function getProvider($maxHeight, $maxTextWidth, $firstPageInfoHeight, $lastPageInfoHeight, $pageSize)
     {
         /** @var SalesChannel $salesChannel */
@@ -137,14 +156,31 @@ class TableSizeProviderTest extends TestCase
             ;
         }
 
-        $provider = new TableSizeProvider(
+        return new TableSizeProvider(
             $configManager,
             $maxHeight,
             $maxTextWidth,
             $firstPageInfoHeight,
             $lastPageInfoHeight
         );
+    }
 
-        return $provider;
+    /**
+     * @param $values
+     * @param $pageSize
+     * @return mixed|null
+     */
+    protected function getPageSizeProviderResult($values, $pageSize)
+    {
+        $result = null;
+        if (!is_array($values)) {
+            $result = $values;
+        } elseif (isset($values[$pageSize])) {
+            $result = $values[$pageSize];
+        } else {
+            $this->expectException(PaperSizeNotSetException::class);
+        }
+
+        return $result;
     }
 }
