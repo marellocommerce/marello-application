@@ -85,8 +85,11 @@ class PaymentTermCSelectTypeTest extends FormIntegrationTestCase
         $localizationHelper = $this->createMock(LocalizationHelper::class);
         $localizationHelper->expects(self::exactly($numberOfCalls))
             ->method('getLocalizedValue')
-            ->willReturnCallback(function (Collection $localizedValues) { return $localizedValues->first(); })
-        ;
+            ->willReturnCallback(
+                function (Collection $localizedValues) {
+                    return $localizedValues->first();
+                }
+            );
 
         return new PaymentTermSelectType($localizationHelper);
     }
