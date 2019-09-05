@@ -12,7 +12,7 @@ use Oro\Component\Testing\Unit\FormIntegrationTestCase;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PaymentTermCSelectTypeTest extends FormIntegrationTestCase
+class PaymentTermSelectTypeTest extends FormIntegrationTestCase
 {
     use EntityTrait;
 
