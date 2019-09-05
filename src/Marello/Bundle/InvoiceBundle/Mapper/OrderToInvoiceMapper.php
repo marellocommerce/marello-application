@@ -9,9 +9,34 @@ use Marello\Bundle\InvoiceBundle\Entity\Invoice;
 use Marello\Bundle\InvoiceBundle\Entity\InvoiceItem;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Marello\Bundle\PaymentTermBundle\Entity\PaymentTerm;
+use Marello\Bundle\PaymentTermBundle\Provider\PaymentTermProvider;
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+use Oro\Bundle\EntityBundle\Provider\EntityFieldProvider;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 class OrderToInvoiceMapper extends AbstractInvoiceMapper
 {
+    protected $paymentTermProvider;
+
+    /**
+     * OrderToInvoiceMapper constructor.
+     * @param EntityFieldProvider $entityFieldProvider
+     * @param PropertyAccessorInterface $propertyAccessor
+     * @param DoctrineHelper $doctrineHelper
+     * @param PaymentTermProvider $paymentTermProvider
+     */
+    public function __construct(
+        EntityFieldProvider $entityFieldProvider,
+        PropertyAccessorInterface $propertyAccessor,
+        DoctrineHelper $doctrineHelper,
+        PaymentTermProvider $paymentTermProvider
+    ) {
+        parent::__construct($entityFieldProvider, $propertyAccessor, $doctrineHelper);
+
+        $this->paymentTermProvider = $paymentTermProvider;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -27,6 +52,7 @@ class OrderToInvoiceMapper extends AbstractInvoiceMapper
         $data = $this->getData($sourceEntity, Invoice::class);
         $data['order'] = $sourceEntity;
         $data['items'] = $this->getItems($sourceEntity->getItems());
+        $data['payment_term'] = $this->getPaymentTerm($sourceEntity);
         if ($data['invoicedAt'] === null) {
             $data['invoicedAt'] = new \DateTime('now', new \DateTimeZone('UTC'));
         }
@@ -63,5 +89,14 @@ class OrderToInvoiceMapper extends AbstractInvoiceMapper
         $this->assignData($invoiceItem, $invoiceItemData);
 
         return $invoiceItem;
+    }
+
+    /**
+     * @param Order $sourceEntity
+     * @return PaymentTerm|null
+     */
+    protected function getPaymentTerm(Order $sourceEntity)
+    {
+        return $this->paymentTermProvider->getCustomerPaymentTerm($sourceEntity->getCustomer());
     }
 }
