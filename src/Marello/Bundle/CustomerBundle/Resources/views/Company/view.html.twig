@@ -31,6 +31,9 @@
                         UI.entityViewLink(entity.parent, entity.parent.name, 'marello_customer_company_view')
                         ) }}
                     {% endif %}
+                    {%  if entity.paymentTerm %}
+                        {{ UI.renderProperty('marello.customer.company.payment_term.label'|trans, entity.paymentTerm.labels|localized_value) }}
+                    {% endif %}
                     {{ entityConfig.renderDynamicFields(entity) }}
                 </div>
             </div>

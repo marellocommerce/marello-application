@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\CustomerBundle\Model\ExtendCompany;
-use Marello\Bundle\CustomerBundle\Entity\Customer;
+use Marello\Bundle\PaymentTermBundle\Entity\PaymentTerm;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
@@ -82,6 +82,24 @@ class Company extends ExtendCompany implements OrganizationAwareInterface
      * )
      */
     protected $name;
+
+    /**
+     * @var PaymentTerm
+     *
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\PaymentTermBundle\Entity\PaymentTerm")
+     * @ORM\JoinColumn(name="payment_term_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ConfigField(
+     *     defaultValues={
+     *         "dataaudit"={
+     *             "auditable"=true
+     *         },
+     *         "importexport"={
+     *              "order"=40
+     *         }
+     *     }
+     * )
+     */
+    protected $paymentTerm;
 
     /**
      * @var Company
@@ -206,6 +224,26 @@ class Company extends ExtendCompany implements OrganizationAwareInterface
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return PaymentTerm
+     */
+    public function getPaymentTerm()
+    {
+        return $this->paymentTerm;
+    }
+
+    /**
+     * @param PaymentTerm $paymentTerm
+     *
+     * @return $this
+     */
+    public function setPaymentTerm(PaymentTerm $paymentTerm = null)
+    {
+        $this->paymentTerm = $paymentTerm;
+
+        return $this;
     }
 
     /**

@@ -7,7 +7,8 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\CustomerBundle\Entity\Company;
 use Marello\Bundle\CustomerBundle\Entity\Customer;
-use Marello\Bundle\CustomerBundle\Tests\Functional\DataFixtures\LoadCustomerData;
+use Marello\Bundle\PaymentTermBundle\Entity\PaymentTerm;
+use Marello\Bundle\PaymentTermBundle\Tests\Functional\DataFixtures\LoadPaymentTermsData;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class LoadCompanyData extends AbstractFixture implements DependentFixtureInterface
@@ -48,7 +49,8 @@ class LoadCompanyData extends AbstractFixture implements DependentFixtureInterfa
             ],
             'children' => [
                 self::COMPANY_3_REF
-            ]
+            ],
+            'paymentTerm' => LoadPaymentTermsData::PAYMENT_TERM_1_REF,
         ],
         self::COMPANY_3_REF => [
             'name' => self::COMPANY_3_REF,
@@ -66,6 +68,7 @@ class LoadCompanyData extends AbstractFixture implements DependentFixtureInterfa
     {
         return [
             LoadCustomerData::class,
+            LoadPaymentTermsData::class,
         ];
     }
 
@@ -138,6 +141,11 @@ class LoadCompanyData extends AbstractFixture implements DependentFixtureInterfa
                 $customer = $this->getReference($customerRef);
                 $company->addCustomer($customer);
             }
+        }
+        if (isset($data['paymentTerm'])) {
+            /** @var PaymentTerm $paymentTerm */
+            $paymentTerm = $this->getReference($data['paymentTerm']);
+            $company->setPaymentTerm($paymentTerm);
         }
 
         $this->manager->persist($company);

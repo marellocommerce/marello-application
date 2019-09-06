@@ -31,6 +31,7 @@ marello:
             addresses.label:        'Addresses'
             customers.label:        'Customers'
             organization.label:     'Organization'
+            payment_term.label:     'Payment Term'
 
             form:
                 choose:             'Choose a company...'
