@@ -2,20 +2,29 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\Migrations\Data\ORM;
 
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-
 use Oro\Bundle\EmailBundle\Migrations\Data\ORM\AbstractEmailFixture;
-use Oro\Bundle\MigrationBundle\Fixture\VersionedFixtureInterface;
 
-class UpdateEmailTemplatesHtmlEscapeTags extends AbstractEmailFixture implements VersionedFixtureInterface
+class AddPurchaseOrderAdviseEmailTemplate extends AbstractEmailFixture implements DependentFixtureInterface
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function getDependencies()
+    {
+        return [
+            LoadEmailTemplatesData::class
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function findExistingTemplate(ObjectManager $manager, array $template)
     {
         $name = $template['params']['name'];
-        if (empty($name)) {
+        if (empty($name) || 'marello_purchase_order_advise' !== $name) {
             return null;
         }
 
@@ -24,7 +33,24 @@ class UpdateEmailTemplatesHtmlEscapeTags extends AbstractEmailFixture implements
             'entityName' => 'Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder',
         ]);
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getEmailTemplatesList($dir)
+    {
+        $templates = parent::getEmailTemplatesList($dir);
+        $result = [];
+        foreach ($templates as $name => $data) {
+            if ($name === 'marello_purchase_order_advise') {
+                $result[$name] = $data;
+                break;
+            }
+        }
 
+        return $result;
+    }
+    
     /**
      * Return path to email templates
      *
@@ -35,13 +61,5 @@ class UpdateEmailTemplatesHtmlEscapeTags extends AbstractEmailFixture implements
         return $this->container
             ->get('kernel')
             ->locateResource('@MarelloPurchaseOrderBundle/Migrations/Data/ORM/data/emails');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getVersion()
-    {
-        return '1.2';
     }
 }

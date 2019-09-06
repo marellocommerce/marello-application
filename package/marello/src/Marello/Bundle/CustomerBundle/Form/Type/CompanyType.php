@@ -6,6 +6,7 @@ use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\AddressBundle\Form\Type\AddressType;
 use Marello\Bundle\CustomerBundle\Entity\Company;
 use Marello\Bundle\CustomerBundle\Entity\Customer;
+use Marello\Bundle\PaymentTermBundle\Form\Type\PaymentTermSelectType;
 use Oro\Bundle\AddressBundle\Form\Type\AddressCollectionType;
 use Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType;
 use Symfony\Component\Form\AbstractType;
@@ -49,6 +50,10 @@ class CompanyType extends AbstractType
                     'required' => false
                 ]
             )
+            ->add('paymentTerm', PaymentTermSelectType::class, [
+                'label' => 'marello.customer.company.payment_term.label',
+                'required' => false,
+            ])
             ->add(
                 'appendCustomers',
                 EntityIdentifierType::class,
