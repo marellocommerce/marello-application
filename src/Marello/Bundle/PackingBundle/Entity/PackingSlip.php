@@ -9,7 +9,7 @@ use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\PackingBundle\Model\ExtendPackingSlip;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
@@ -118,7 +118,7 @@ class PackingSlip extends ExtendPackingSlip implements DerivedPropertyAwareInter
     protected $shippingAddress;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\Customer", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\CustomerBundle\Entity\Customer", cascade={"persist"})
      * @ORM\JoinColumn(name="customer_id", referencedColumnName="id", nullable=false)
      * @Oro\ConfigField(
      *      defaultValues={

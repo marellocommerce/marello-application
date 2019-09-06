@@ -17,7 +17,10 @@ use Symfony\Component\HttpFoundation\Request;
 class ShippingMethodsConfigsRuleController extends AbstractController
 {
     /**
-     * @Route("/", name="marello_shipping_methods_configs_rule_index")
+     * @Route(
+     *     path="/", 
+     *     name="marello_shipping_methods_configs_rule_index"
+     * )
      * @Template
      * @AclAncestor("marello_shipping_methods_configs_rule_view")
      *
@@ -31,7 +34,10 @@ class ShippingMethodsConfigsRuleController extends AbstractController
     }
 
     /**
-     * @Route("/create", name="marello_shipping_methods_configs_rule_create")
+     * @Route(
+     *     path="/create", 
+     *     name="marello_shipping_methods_configs_rule_create"
+     * )
      * @Template("MarelloShippingBundle:ShippingMethodsConfigsRule:update.html.twig")
      * @Acl(
      *     id="marello_shipping_methods_configs_rule_create",
@@ -49,7 +55,11 @@ class ShippingMethodsConfigsRuleController extends AbstractController
     }
 
     /**
-     * @Route("/view/{id}", name="marello_shipping_methods_configs_rule_view", requirements={"id"="\d+"})
+     * @Route(
+     *     path="/view/{id}", 
+     *     name="marello_shipping_methods_configs_rule_view", 
+     *     requirements={"id"="\d+"}
+     * )
      * @Template
      * @Acl(
      *      id="marello_shipping_methods_configs_rule_view",
@@ -70,7 +80,11 @@ class ShippingMethodsConfigsRuleController extends AbstractController
     }
 
     /**
-     * @Route("/update/{id}", name="marello_shipping_methods_configs_rule_update", requirements={"id"="\d+"})
+     * @Route(
+     *     path="/update/{id}", 
+     *     name="marello_shipping_methods_configs_rule_update", 
+     *     requirements={"id"="\d+"}
+     * )
      * @Template
      * @Acl(
      *     id="marello_shipping_methods_configs_rule_update",
@@ -118,7 +132,10 @@ class ShippingMethodsConfigsRuleController extends AbstractController
     }
 
     /**
-     * @Route("/{gridName}/massAction/{actionName}", name="marello_status_shipping_rule_massaction")
+     * @Route(
+     *     path="/{gridName}/massAction/{actionName}", 
+     *     name="marello_status_shipping_rule_massaction"
+     * )
      * @Acl(
      *     id="marello_shipping_methods_configs_rule_update",
      *     type="entity",

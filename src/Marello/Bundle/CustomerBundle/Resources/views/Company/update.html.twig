@@ -1,4 +1,5 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 {% set formAction = entity.id ? path('marello_customer_company_update', {id: entity.id}) : path('marello_customer_company_create') %}
 
@@ -8,9 +9,9 @@
     {{ parent() }}
 
     {{ UI.cancelButton(path('marello_customer_company_index')) }}
-    {% if resource_granted('marello_customer_company_update') %}
+    {% if is_granted('marello_customer_company_update') %}
         {% set html = '' %}
-        {% if resource_granted('marello_customer_company_view') %}
+        {% if is_granted('marello_customer_company_view') %}
             {% set html = UI.saveAndCloseButton({
             'route': 'marello_customer_company_view',
             'params': {'id': '$id'}
@@ -57,9 +58,9 @@
         }]}
     ] %}
 
-    {% if resource_granted('marello_customer_company_update') %}
+    {% if is_granted('marello_customer_company_update') %}
         {% set dataBlocks = dataBlocks|merge([{
-            'title' : 'marello.order.customer.entity_plural_label'|trans,
+            'title' : 'marello.customer.entity_plural_label'|trans,
             'subblocks': [
                 {
                     'title' : null,

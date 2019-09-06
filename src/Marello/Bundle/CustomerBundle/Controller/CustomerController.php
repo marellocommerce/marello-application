@@ -1,18 +1,21 @@
 <?php
 
-namespace Marello\Bundle\OrderBundle\Controller;
+namespace Marello\Bundle\CustomerBundle\Controller;
 
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
+use Oro\Bundle\NoteBundle\Entity\Note;
+use Oro\Bundle\NoteBundle\Entity\Repository\NoteRepository;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class CustomerController extends AbstractController
 {
     /**
-     * @Config\Route("/", name="marello_order_customer_index")
-     * @Config\Template
+     * @Route(path="/", name="marello_customer_index")
+     * @Template
      * @AclAncestor("marello_customer_view")
      *
      * @return array
@@ -23,8 +26,8 @@ class CustomerController extends AbstractController
     }
 
     /**
-     * @Config\Route("/view/{id}", requirements={"id"="\d+"}, name="marello_order_customer_view")
-     * @Config\Template
+     * @Route(path="/view/{id}", requirements={"id"="\d+"}, name="marello_customer_view")
+     * @Template
      * @AclAncestor("marello_customer_view")
      *
      * @param Customer $customer
@@ -33,13 +36,25 @@ class CustomerController extends AbstractController
      */
     public function viewAction(Customer $customer)
     {
+        $entityClass = $this->get('oro_entity.routing_helper')->resolveEntityClass('marellocustomers');
+        $manager = $this->get('oro_activity_list.manager');
+        $results = $manager->getListData(
+            $entityClass,
+            1000,
+            [],
+            []
+        );
+        
         return ['entity' => $customer];
     }
 
     /**
-     * @Config\Route("/create", name="marello_order_customer_create")
-     * @Config\Method({"GET", "POST"})
-     * @Config\Template("@MarelloOrder/Customer/update.html.twig")
+     * @Route(
+     *     path="/create", 
+     *     methods={"GET", "POST"}, 
+     *     name="marello_customer_create"
+     * )
+     * @Template("@MarelloCustomer/Customer/update.html.twig")
      * @AclAncestor("marello_customer_create")
      *
      * @param Request $request
@@ -52,9 +67,13 @@ class CustomerController extends AbstractController
     }
 
     /**
-     * @Config\Route("/update/{id}", requirements={"id"="\d+"}, name="marello_order_customer_update")
-     * @Config\Method({"GET", "POST"})
-     * @Config\Template
+     * @Route(
+     *     path="/update/{id}", 
+     *     methods={"GET", "POST"}, 
+     *     requirements={"id"="\d+"}, 
+     *     name="marello_customer_update"
+     * )
+     * @Template
      * @AclAncestor("marello_customer_update")
      *
      * @param Request  $request
@@ -79,24 +98,24 @@ class CustomerController extends AbstractController
             $customer = new Customer();
         }
 
-        return $this->get('oro_form.update_handler')
-            ->update(
+        return $this->get('oro_form.model.update_handler')
+        ->handleUpdate(
                 $customer,
-                $this->get('marello_order.form.customer'),
+                $this->get('marello_customer.form'),
                 function (Customer $entity) {
                     return [
-                        'route' => 'marello_order_customer_update',
+                        'route' => 'marello_customer_update',
                         'parameters' => ['id' => $entity->getId()]
                     ];
                 },
                 function (Customer $entity) {
                     return [
-                        'route' => 'marello_order_customer_view',
+                        'route' => 'marello_customer_view',
                         'parameters' => ['id' => $entity->getId()]
                     ];
                 },
                 $this->get('translator')->trans('marello.order.messages.success.customer.saved'),
-                $this->get('marello_order.form.handler.customer')
+                $this->get('marello_customer.form.handler.customer')
             );
     }
 }

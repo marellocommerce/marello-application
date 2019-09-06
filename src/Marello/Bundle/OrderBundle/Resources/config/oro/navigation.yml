@@ -1,20 +1,6 @@
 navigation:
     menu_config:
         items:
-            customers_tab:
-                label: marello.order.navigation.customers.label
-                uri: '#'
-                extras:
-                    icon: fa-users
-                    position: 40
-
-            customers:
-                label: marello.order.customer.entity_plural_label
-                route: marello_order_customer_index
-                extras:
-                    routes: ['marello_order_customer_*']
-                    position: 10
-
             orders:
                 label: marello.order.entity_plural_label
                 route: marello_order_order_index
@@ -52,9 +38,6 @@ navigation:
                     sales_tab:
                         children:
                             orders: ~
-                    customers_tab:
-                        children:
-                            customers: ~
                     reports_tab:
                         children:
                             static_reports_tab:
@@ -72,5 +55,4 @@ navigation:
         marello_order_order_view: 'Order #%id%'
         marello_order_order_update: 'Order #%id% - Update'
         marello_order_order_create: 'New order'
-        marello_order_customer_index: marello.order.customer.entity_plural_label
-        marello_order_customer_view: 'Customer - %name%'
+

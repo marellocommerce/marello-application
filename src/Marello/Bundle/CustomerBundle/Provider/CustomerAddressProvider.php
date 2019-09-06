@@ -1,11 +1,11 @@
 <?php
 
-namespace Marello\Bundle\OrderBundle\Provider;
+namespace Marello\Bundle\CustomerBundle\Provider;
 
 use Doctrine\Common\Util\ClassUtils;
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 
-class OrderCustomerAddressProvider
+class CustomerAddressProvider
 {
     const CACHE_KEY_BILLING = 'billing';
     const CACHE_KEY_SHIPPING = 'shipping';

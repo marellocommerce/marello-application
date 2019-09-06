@@ -1,10 +1,9 @@
 <?php
 
-namespace Marello\Bundle\OrderBundle\Form\Type;
+namespace Marello\Bundle\CustomerBundle\Form\Type;
 
 use Marello\Bundle\AddressBundle\Form\Type\AddressType;
-use Marello\Bundle\CustomerBundle\Form\Type\CompanySelectType;
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

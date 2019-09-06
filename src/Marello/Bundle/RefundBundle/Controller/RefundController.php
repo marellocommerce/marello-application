@@ -5,17 +5,20 @@ namespace Marello\Bundle\RefundBundle\Controller;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\RefundBundle\Entity\Refund;
 use Marello\Bundle\RefundBundle\Form\Type\RefundType;
-
-use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Symfony\Component\Routing\Annotation\Route;
 
 class RefundController extends AbstractController
 {
     /**
-     * @Config\Route("/", name="marello_refund_index")
-     * @Config\Template
+     * @Route(
+     *     path="/", 
+     *     name="marello_refund_index"
+     * )
+     * @Template
      * @AclAncestor("marello_refund_view")
      */
     public function indexAction()
@@ -26,8 +29,11 @@ class RefundController extends AbstractController
     }
 
     /**
-     * @Config\Route("/view/{id}", name="marello_refund_view")
-     * @Config\Template
+     * @Route(
+     *     path="/view/{id}", 
+     *     name="marello_refund_view"
+     * )
+     * @Template
      * @AclAncestor("marello_refund_view")
      *
      * @param Refund $entity
@@ -40,8 +46,11 @@ class RefundController extends AbstractController
     }
 
     /**
-     * @Config\Route("/create/{id}", name="marello_refund_create")
-     * @Config\Template("MarelloRefundBundle:Refund:update.html.twig")
+     * @Route(
+     *     path="/create/{id}", 
+     *     name="marello_refund_create"
+     * )
+     * @Template("MarelloRefundBundle:Refund:update.html.twig")
      * @AclAncestor("marello_refund_create")
      *
      * @param Request $request
@@ -58,8 +67,12 @@ class RefundController extends AbstractController
 
 
     /**
-     * @Config\Route("/update/{id}", requirements={"id"="\d+"}, name="marello_refund_update")
-     * @Config\Template
+     * @Route(
+     *     path="/update/{id}", 
+     *     requirements={"id"="\d+"}, 
+     *     name="marello_refund_update"
+     * )
+     * @Template
      * @AclAncestor("marello_refund_update")
      *
      * @param Request $request

@@ -3,13 +3,8 @@
 namespace Marello\Bundle\ProductBundle\Migrations\Schema\v1_9;
 
 use Doctrine\DBAL\Schema\Schema;
-
-use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
-use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 use Oro\Bundle\MigrationBundle\Migration\Migration;
-use Oro\Bundle\EntityConfigBundle\Migration\UpdateEntityConfigFieldValueQuery;
-
-use Marello\Bundle\ProductBundle\Entity\Product;
+use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
 class AddLocalizedNamesToProduct implements Migration
 {
