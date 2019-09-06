@@ -4,18 +4,22 @@ namespace Marello\Bundle\InventoryBundle\Controller;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Form\Type\InventoryItemType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class InventoryItemController extends AbstractController
 {
     /**
-     * @Config\Route("/", name="marello_inventory_inventory_index")
-     * @Config\Template("MarelloInventoryBundle:Inventory:index.html.twig")
+     * @Route(
+     *     path="/", 
+     *     name="marello_inventory_inventory_index"
+     * )
+     * @Template("MarelloInventoryBundle:Inventory:index.html.twig")
      * @AclAncestor("marello_inventory_inventory_view")
      */
     public function indexAction()
@@ -26,8 +30,12 @@ class InventoryItemController extends AbstractController
     }
 
     /**
-     * @Config\Route("/view/{id}", requirements={"id"="\d+"}, name="marello_inventory_inventory_view")
-     * @Config\Template("MarelloInventoryBundle:Inventory:view.html.twig")
+     * @Route(
+     *     path="/view/{id}", 
+     *     requirements={"id"="\d+"}, 
+     *     name="marello_inventory_inventory_view"
+     * )
+     * @Template("MarelloInventoryBundle:Inventory:view.html.twig")
      * @Acl(
      *      id="marello_inventory_inventory_view",
      *      type="entity",
@@ -47,8 +55,12 @@ class InventoryItemController extends AbstractController
     }
 
     /**
-     * @Config\Route("/update/{id}", requirements={"id"="\d+"}, name="marello_inventory_inventory_update")
-     * @Config\Template("MarelloInventoryBundle:Inventory:update.html.twig")
+     * @Route(
+     *     path="/update/{id}", 
+     *     requirements={"id"="\d+"}, 
+     *     name="marello_inventory_inventory_update"
+     * )
+     * @Template("MarelloInventoryBundle:Inventory:update.html.twig")
      * @Acl(
      *      id="marello_inventory_inventory_update",
      *      type="entity",
@@ -74,8 +86,12 @@ class InventoryItemController extends AbstractController
 
 
     /**
-     * @Config\Route("/widget/info/{id}", name="marello_inventory_widget_info", requirements={"id"="\d+"})
-     * @Config\Template("MarelloInventoryBundle:Inventory/widget:info.html.twig")
+     * @Route(
+     *     path="/widget/info/{id}", 
+     *     name="marello_inventory_widget_info", 
+     *     requirements={"id"="\d+"}
+     * )
+     * @Template("MarelloInventoryBundle:Inventory/widget:info.html.twig")
      *
      * @param InventoryItem $inventoryItem
      *
@@ -90,8 +106,12 @@ class InventoryItemController extends AbstractController
     }
 
     /**
-     * @Config\Route("/widget/datagrid/{id}", name="marello_inventory_widget_datagrid", requirements={"id"="\d+"})
-     * @Config\Template("MarelloInventoryBundle:Inventory/widget:datagrid.html.twig")
+     * @Route(
+     *     path="/widget/datagrid/{id}", 
+     *     name="marello_inventory_widget_datagrid", 
+     *     requirements={"id"="\d+"}
+     * )
+     * @Template("MarelloInventoryBundle:Inventory/widget:datagrid.html.twig")
      *
      * @param InventoryItem $inventoryItem
      *

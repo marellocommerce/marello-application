@@ -136,7 +136,7 @@ datagrids:
                     - i
                     - inv.currency as currency
                     - product.sku as productSku
-                    - product.name as productName
+                    - product.denormalizedDefaultName as productName
                 from:
                     - { table: MarelloInvoiceBundle:InvoiceItem, alias: i}
                 join:
@@ -193,7 +193,7 @@ datagrids:
                     - i
                     - inv.currency as currency
                     - product.sku as productSku
-                    - product.name as productName
+                    - product.denormalizedDefaultName as productName
                 from:
                     - { table: MarelloInvoiceBundle:CreditmemoItem, alias: i}
                 join:

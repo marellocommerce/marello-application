@@ -10,22 +10,26 @@ use Oro\Bundle\ActionBundle\Model\ActionData;
 use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
 use Oro\Bundle\SecurityBundle\Annotation as Security;
 use Oro\Bundle\UIBundle\Route\Router;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class ProductController extends AbstractController
 {
     const ACTION_SAVE_AND_DUPLICATE = 'save_and_duplicate';
 
     /**
-     * @Config\Route("/", name="marello_product_index")
+     * @Route(
+     *     path="/", 
+     *     name="marello_product_index"
+     * )
      * @AclAncestor("marello_product_view")
-     * @Config\Template
+     * @Template
      */
     public function indexAction()
     {
@@ -33,9 +37,12 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Config\Route("/create", name="marello_product_create")
+     * @Route(
+     *     path="/create", 
+     *     name="marello_product_create"
+     * )
      * @AclAncestor("marello_product_create")
-     * @Config\Template("MarelloProductBundle:Product:createStepOne.html.twig")
+     * @Template("MarelloProductBundle:Product:createStepOne.html.twig")
      *
      * @param Request $request
      *
@@ -77,9 +84,12 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Config\Route("/create/step-two", name="marello_product_create_step_two")
+     * @Route(
+     *     path="/create/step-two", 
+     *     name="marello_product_create_step_two"
+     * )
      *
-     * @Config\Template("MarelloProductBundle:Product:createStepTwo.html.twig")
+     * @Template("MarelloProductBundle:Product:createStepTwo.html.twig")
      *
      * @AclAncestor("marello_product_create")
      *
@@ -127,9 +137,13 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Config\Route("/update/{id}", requirements={"id"="\d+"}, name="marello_product_update")
+     * @Route(
+     *     path="/update/{id}", 
+     *     requirements={"id"="\d+"}, 
+     *     name="marello_product_update"
+     * )
      * @AclAncestor("marello_product_update")
-     * @Config\Template
+     * @Template
      *
      * @param Product $product
      * @param Request $request
@@ -197,9 +211,13 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Config\Route("/view/{id}", requirements={"id"="\d+"}, name="marello_product_view")
+     * @Route(
+     *     path="/view/{id}", 
+     *     requirements={"id"="\d+"}, 
+     *     name="marello_product_view"
+     * )
      * @AclAncestor("marello_product_view")
-     * @Config\Template("MarelloProductBundle:Product:view.html.twig")
+     * @Template("MarelloProductBundle:Product:view.html.twig")
      *
      * @param Product $product
      *
@@ -213,9 +231,13 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Config\Route("/widget/info/{id}", name="marello_product_widget_info", requirements={"id"="\d+"})
+     * @Route(
+     *     path="/widget/info/{id}", 
+     *     name="marello_product_widget_info", 
+     *     requirements={"id"="\d+"}
+     * )
      * @AclAncestor("marello_product_view")
-     * @Config\Template
+     * @Template("MarelloProductBundle:Product/widget:info.html.twig")
      *
      * @param Product $product
      *
@@ -229,9 +251,13 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Config\Route("/widget/price/{id}", name="marello_product_widget_price", requirements={"id"="\d+"})
+     * @Route(
+     *     path="/widget/price/{id}", 
+     *     name="marello_product_widget_price", 
+     *     requirements={"id"="\d+"}
+     * )
      * @AclAncestor("marello_product_view")
-     * @Config\Template
+     * @Template("MarelloProductBundle:Product/widget:price.html.twig")
      *
      * @param Product $product
      *
@@ -245,9 +271,12 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Config\Route("/assign-sales-channels", name="marello_product_assign_sales_channels")
+     * @Route(
+     *     path="/assign-sales-channels", 
+     *     name="marello_product_assign_sales_channels"
+     * )
      * @AclAncestor("marello_product_update")
-     * @Config\Template
+     * @Template
      *
      * @return array
      */

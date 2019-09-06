@@ -5,7 +5,7 @@ namespace Marello\Bundle\OrderBundle\Tests\Functional\Api;
 use Symfony\Component\HttpFoundation\Response;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\CoreBundle\Tests\Functional\RestJsonApiTestCase;
 use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
 use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderWorkflowData;
