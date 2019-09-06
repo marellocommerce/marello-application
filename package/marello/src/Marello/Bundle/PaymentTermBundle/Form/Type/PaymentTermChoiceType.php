@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\PaymentTermBundle\Form\Type;
 
-use Marello\Bundle\PaymentTermBundle\Entity\PaymentTerm;
 use Marello\Bundle\PaymentTermBundle\Provider\PaymentTermProvider;
 use Oro\Bundle\LocaleBundle\Helper\LocalizationHelper;
 use Symfony\Component\Form\AbstractType;

@@ -5,6 +5,8 @@ namespace Marello\Bundle\OrderBundle\Model;
 class ExtendCustomer
 {
     /**
+     * @deprecated, use "Marello\Bundle\CustomerBundle\Model\ExtendCustomer" instead
+     *
      * Constructor
      *
      * The real implementation of this method is auto generated.

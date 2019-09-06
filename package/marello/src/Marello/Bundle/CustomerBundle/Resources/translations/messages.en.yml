@@ -1,5 +1,26 @@
 marello:
     customer:
+        entity_label:                     'Customer'
+        entity_plural_label:              'Customers'
+        id.label:                         'Id'
+        organization.label:               'Organization'
+        primary_address.label:            'Primary Address'
+        shipping_address.label:           'Shipping Address'
+        tax_identification_number.label:  'Tax Identification Number'
+        addresses.label:                  'Addresses'
+        email.label:                      'Primary Email'
+        emails.label:                     'Email Addresses'
+        name_prefix.label:                'Name Prefix'
+        first_name.label:                 'First Name'
+        middle_name.label:                'Middle Name'
+        last_name.label:                  'Last Name'
+        name_suffix.label:                'Name Suffix'
+        company.label:                    'Company'
+        phone.label:                      'Phone'
+        label:                            'Customer'
+        form:
+            choose:                       'Choose customer'
+
         company:
             entity_label:           'Company'
             entity_plural_label:    'Companies'
@@ -32,3 +53,6 @@ marello:
         controller:
             company:
                 saved.message:      'Company has been saved'
+
+        navigation:
+            customers.label:        'Customers'

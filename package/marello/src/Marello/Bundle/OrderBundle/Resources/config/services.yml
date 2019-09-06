@@ -3,16 +3,8 @@ parameters:
     marello_order.entity.order_item.class: Marello\Bundle\OrderBundle\Entity\OrderItem
     marello_order.provider.order_statistic_provider.class: Marello\Bundle\OrderBundle\Provider\OrderDashboardStatisticProvider
     marello_order.provider.order_item_statistic_provider.class: Marello\Bundle\OrderBundle\Provider\OrderItem\OrderItemDashboardStatisticProvider
-    marello_order_customer.class: Marello\Bundle\OrderBundle\Entity\Customer
 
 services:
-    marello_order.listener.datagrid.company-customers-select_listener:
-        class: Marello\Bundle\OrderBundle\EventListener\Datagrid\CompanyCustomersSelectGridListener
-        arguments:
-            - '@marello_customer.repository.company'
-        tags:
-            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.before_query.marello-company-customers-select-grid, method: onResultBeforeQuery }
-
     marello_order.listener.datagrid.order_grid_address_filter_listener:
         class: Marello\Bundle\OrderBundle\EventListener\Datagrid\OrderGridAddressFilterListener
         arguments:
@@ -78,14 +70,6 @@ services:
             - '@translator'
         tags:
             - { name: marello.form_changes_data_provider, class: '%marello_order.entity.order.class%', type: items, priority: 10 }
-
-    marello_order.provider.customer_email_owner:
-        class: Marello\Bundle\OrderBundle\Provider\CustomerEmailOwnerProvider
-        tags:
-            - { name: oro_email.owner.provider, order: 1 }
-
-    marello_order.provider.customer_address:
-        class: Marello\Bundle\OrderBundle\Provider\OrderCustomerAddressProvider
 
     marello_order.provider.form_changes.billing_address:
         class: Marello\Bundle\OrderBundle\Provider\OrderAddressFormChangesProvider
@@ -172,7 +156,7 @@ services:
     marello_order.search_handler.customer:
         parent: oro_form.autocomplete.search_handler
         arguments:
-            - '%marello_order_customer.class%'
+            - '%marello_customer_customer.class%'
             - ["namePrefix", "firstName", "middleName", "lastName", "nameSuffix"]
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: marello_customers, acl_resource: marello_customer_view }
@@ -274,15 +258,6 @@ services:
         arguments: ['marello_item_status']
         tags:
             - { name: oro_dashboard.value.converter, form_type: Marello\Bundle\OrderBundle\Form\Type\WidgetOrderItemStatusesSelectType }
-
-    marello_order.form.autocomplete.company_customer.search_handler:
-        class: 'Marello\Bundle\OrderBundle\Autocomplete\CompanyCustomerHandler'
-        parent: oro_form.autocomplete.search_handler
-        arguments:
-            - '%marello_order_customer.class%'
-            - ['namePrefix', 'firstName', 'middleName', 'lastName', 'nameSuffix']
-        tags:
-            - { name: oro_form.autocomplete.search_handler, alias: marello_company_customers, acl_resource: marello_order_customer_view }
 
     marello_order.listener.start_workflow:
         class: 'Marello\Bundle\OrderBundle\EventListener\Doctrine\OrderWorkflowStartListener'

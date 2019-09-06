@@ -1,5 +1,6 @@
 parameters:
     marello_customer.entity.company.class: 'Marello\Bundle\CustomerBundle\Entity\Company'
+    marello_customer_customer.class: Marello\Bundle\CustomerBundle\Entity\Customer
 
 services:
     marello_customer.repository.company:
@@ -17,6 +18,7 @@ services:
 
     marello_customer.company_tree_handler:
         class: 'Marello\Bundle\CustomerBundle\JsTree\CompanyTreeHandler'
+        public: true
         arguments:
             - '%marello_customer.entity.company.class%'
             - "@doctrine"
@@ -28,6 +30,13 @@ services:
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-company-customers-extend-grid, method: buildBefore }
 
+    marello_customer.listener.datagrid.company-customers-select_listener:
+        class: 'Marello\Bundle\CustomerBundle\EventListener\Datagrid\CompanyCustomersSelectGridListener'
+        arguments:
+            - '@marello_customer.repository.company'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.before_query.marello-company-customers-select-grid, method: onResultBeforeQuery }
+
     marello_customer.form.autocomplete.company.search_handler:
         public: false
         parent: oro_form.autocomplete.search_handler
@@ -36,6 +45,16 @@ services:
             - ["name"]
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: marello_customer_company, acl_resource: marello_customer_company_view }
+
+    marello_customer.form.autocomplete.company_customer.search_handler:
+        class: 'Marello\Bundle\CustomerBundle\Autocomplete\CompanyCustomerHandler'
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - '%marello_customer_customer.class%'
+            - ['namePrefix', 'firstName', 'middleName', 'lastName', 'nameSuffix']
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: marello_company_customers, acl_resource: marello_customer_view }
+
 
     marello_customer.form.autocomplete.company_parent.search_handler:
         public: false
@@ -70,9 +89,48 @@ services:
         arguments:
             - 'Marello\Bundle\CustomerBundle\Form\Type\CompanyType'
 
+    marello_customer.form:
+        class: 'Symfony\Component\Form\Form'
+        public: true
+        factory: ['@form.factory', 'create']
+        arguments:
+            - 'Marello\Bundle\CustomerBundle\Form\Type\CustomerType'
+
+    marello_customer.form.type.customer:
+        class: 'Marello\Bundle\CustomerBundle\Form\Type\CustomerType'
+        tags:
+            - { name: form.type }
+
+    marello_customer.form.type.company_aware_customer_select:
+        class: 'Marello\Bundle\CustomerBundle\Form\Type\CompanyAwareCustomerSelectType'
+        tags:
+            - { name: form.type }
+
+    marello_customer.form.type.customer_select:
+        class: 'Marello\Bundle\CustomerBundle\Form\Type\CustomerSelectType'
+        tags:
+            - { name: form.type }
+
     marello_customer.company.form.handler:
         class: 'Marello\Bundle\CustomerBundle\Form\Handler\CompanyHandler'
+        public: true
         arguments:
             - '@marello_customer.company.form'
             - '@request_stack'
             - '@doctrine.orm.entity_manager'
+
+    marello_customer.form.handler.customer:
+        class: 'Marello\Bundle\CustomerBundle\Form\Handler\CustomerHandler'
+        public: true
+        arguments:
+            - '@marello_customer.form'
+            - '@request_stack'
+            - '@doctrine.orm.entity_manager'
+
+    marello_customer.provider.customer_email_owner:
+        class: 'Marello\Bundle\CustomerBundle\Provider\CustomerEmailOwnerProvider'
+        tags:
+            - { name: oro_email.owner.provider, order: 1 }
+
+    marello_customer.provider.customer_address:
+        class: 'Marello\Bundle\CustomerBundle\Provider\CustomerAddressProvider'
