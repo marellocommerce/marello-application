@@ -90,3 +90,9 @@ services:
             - '%marello_pdf.document.invoice.description_width%'
             - '%marello_pdf.document.invoice.header_rows%'
             - '%marello_pdf.document.invoice.footer_rows%'
+
+    marello_pdf.workflow_action.send_email_template_attachment:
+        parent: 'oro_email.workflow.action.send_email_template'
+        class: 'Marello\Bundle\PdfBundle\Workflow\Action\SendEmailTemplateAttachmentAction'
+        tags:
+            - { name: oro_action.action, alias: send_email_template_attachment }
