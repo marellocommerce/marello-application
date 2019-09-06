@@ -33,8 +33,6 @@ class MarelloEnterpriseReplenishmentBundle implements Migration, ActivityExtensi
     }
 
     /**
-     * Create marello_order_customer table
-     *
      * @param Schema $schema
      */
     protected function createMarelloReplenishmentOrderConfigTable(Schema $schema)

@@ -2,20 +2,24 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Controller;
 
+use FOS\RestBundle\Controller\Annotations\Route;
 use Marello\Bundle\InventoryBundle\Controller\WarehouseController as BaseController;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Form\Type\WarehouseType;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class WarehouseController extends BaseController
 {
     /**
-     * @Config\Route("/", name="marelloenterprise_inventory_warehouse_index")
-     * @Config\Method("GET")
-     * @Config\Template
+     * @Route(
+     *     path="/", 
+     *     methods={"GET"}, 
+     *     name="marelloenterprise_inventory_warehouse_index"
+     * )
+     * @Template
      * @AclAncestor("marelloenterprise_inventory_warehouse_view")
      */
     public function indexAction()
@@ -26,9 +30,12 @@ class WarehouseController extends BaseController
     }
 
     /**
-     * @Config\Route("/create", name="marelloenterprise_inventory_warehouse_create")
-     * @Config\Method({"GET", "POST"})
-     * @Config\Template("@MarelloEnterpriseInventory/Warehouse/update.html.twig")
+     * @Route(
+     *     path="/create", 
+     *     methods={"GET", "POST"}, 
+     *     name="marelloenterprise_inventory_warehouse_create"
+     * )
+     * @Template("@MarelloEnterpriseInventory/Warehouse/update.html.twig")
      * @AclAncestor("marelloenterprise_inventory_warehouse_create")
      *
      * @param Request $request
@@ -41,9 +48,12 @@ class WarehouseController extends BaseController
     }
 
     /**
-     * @Config\Route("/update/{id}", name="marelloenterprise_inventory_warehouse_update")
-     * @Config\Method({"GET", "POST"})
-     * @Config\Template
+     * @Route(
+     *     path="/update/{id}", 
+     *     methods={"GET", "POST"}, 
+     *     name="marelloenterprise_inventory_warehouse_update"
+     * )
+     * @Template
      * @AclAncestor("marelloenterprise_inventory_warehouse_update")
      *
      * @param Warehouse $warehouse
@@ -58,9 +68,13 @@ class WarehouseController extends BaseController
 
 
     /**
-     * @Config\Route("/view/{id}", requirements={"id"="\d+"}, name="marelloenterprise_inventory_warehouse_view")
-     * @Config\Method({"GET"})
-     * @Config\Template
+     * @Route(
+     *     path="/view/{id}", 
+     *     methods={"GET"}, 
+     *     requirements={"id"="\d+"}, 
+     *     name="marelloenterprise_inventory_warehouse_view"
+     * )
+     * @Template
      * @AclAncestor("marelloenterprise_inventory_warehouse_view")
      *
      * @param Warehouse $warehouse

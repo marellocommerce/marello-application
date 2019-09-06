@@ -17,7 +17,10 @@ use Symfony\Component\HttpFoundation\Request;
 class WFARuleController extends AbstractController
 {
     /**
-     * @Route("/", name="marelloenterprise_inventory_wfa_rule_index")
+     * @Route(
+     *     path="/", 
+     *     name="marelloenterprise_inventory_wfa_rule_index"
+     * )
      * @Template
      * @AclAncestor("marelloenterprise_inventory_wfa_rule_view")
      *
@@ -31,7 +34,10 @@ class WFARuleController extends AbstractController
     }
 
     /**
-     * @Route("/create", name="marelloenterprise_inventory_wfa_rule_create")
+     * @Route(
+     *     path="/create", 
+     *     name="marelloenterprise_inventory_wfa_rule_create"
+     * )
      * @Template("MarelloEnterpriseInventoryBundle:WFARule:update.html.twig")
      * @Acl(
      *     id="marelloenterprise_inventory_wfa_rule_create",
@@ -49,7 +55,11 @@ class WFARuleController extends AbstractController
     }
 
     /**
-     * @Route("/view/{id}", name="marelloenterprise_inventory_wfa_rule_view", requirements={"id"="\d+"})
+     * @Route(
+     *     path="/view/{id}", 
+     *     name="marelloenterprise_inventory_wfa_rule_view", 
+     *     requirements={"id"="\d+"}
+     * )
      * @Template
      * @Acl(
      *      id="marelloenterprise_inventory_wfa_rule_view",
@@ -70,7 +80,11 @@ class WFARuleController extends AbstractController
     }
 
     /**
-     * @Route("/update/{id}", name="marelloenterprise_inventory_wfa_rule_update", requirements={"id"="\d+"})
+     * @Route(
+     *     path="/update/{id}", 
+     *     name="marelloenterprise_inventory_wfa_rule_update", 
+     *     requirements={"id"="\d+"}
+     * )
      * @Template
      * @Acl(
      *     id="marelloenterprise_inventory_wfa_rule_update",
@@ -113,7 +127,10 @@ class WFARuleController extends AbstractController
     }
 
     /**
-     * @Route("/{gridName}/massAction/{actionName}", name="marelloenterprise_inventory_wfa_rule_massaction")
+     * @Route(
+     *     path="/{gridName}/massAction/{actionName}", 
+     *     name="marelloenterprise_inventory_wfa_rule_massaction"
+     * )
      * @Acl(
      *     id="marelloenterprise_inventory_wfa_rule_update",
      *     type="entity",
