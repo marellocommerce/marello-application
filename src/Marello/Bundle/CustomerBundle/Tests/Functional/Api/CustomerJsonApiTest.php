@@ -1,12 +1,12 @@
 <?php
 
-namespace Marello\Bundle\OrderBundle\Tests\Functional\Api;
+namespace Marello\Bundle\CustomerBundle\Tests\Functional\Api;
 
 use Symfony\Component\HttpFoundation\Response;
 
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\CoreBundle\Tests\Functional\RestJsonApiTestCase;
-use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadCustomerData;
+use Marello\Bundle\CustomerBundle\Tests\Functional\DataFixtures\LoadCustomerData;
 
 class CustomerJsonApiTest extends RestJsonApiTestCase
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\OrderBundle\EventListener\Datagrid;
+namespace Marello\Bundle\CustomerBundle\EventListener\Datagrid;
 
 use Doctrine\ORM\Query;
 use Marello\Bundle\CustomerBundle\Entity\Repository\CompanyRepository;

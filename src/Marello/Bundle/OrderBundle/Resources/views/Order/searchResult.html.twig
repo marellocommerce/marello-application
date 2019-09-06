@@ -8,7 +8,7 @@
 {% set entityType = 'marello.order.entity_label'|trans %}
 
 {% set entityInfo = [
-    {'title': 'marello.order.customer.label'|trans, 'value': entity.customer ? entity.customer.fullName : 'N/A'|trans},
+    {'title': 'marello.customer.label'|trans, 'value': entity.customer ? entity.customer.fullName : 'N/A'|trans},
     {'title': 'oro.ui.created_at'|trans, 'value': entity.createdAt ? entity.createdAt|oro_format_datetime : 'N/A'|trans},
     {'title': 'oro.ui.updated_at'|trans, 'value': entity.updatedAt ? entity.updatedAt|oro_format_datetime : 'N/A'|trans},
 ] %}

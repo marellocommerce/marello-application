@@ -15,11 +15,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class PurchaseOrderController extends AbstractController
 {
     /**
-     * @Config\Route("/", name="marello_purchaseorder_purchaseorder_index")
+     * @Route(
+     *     path="/", 
+     *     name="marello_purchaseorder_purchaseorder_index"
+     * )
      * @Config\Template
      * @AclAncestor("marello_purchase_order_view")
      */
@@ -29,7 +33,11 @@ class PurchaseOrderController extends AbstractController
     }
 
     /**
-     * @Config\Route("/view/{id}", requirements={"id"="\d+"}, name="marello_purchaseorder_purchaseorder_view")
+     * @Route(
+     *     path="/view/{id}", 
+     *     requirements={"id"="\d+"}, 
+     *     name="marello_purchaseorder_purchaseorder_view"
+     * )
      * @Config\Template
      * @AclAncestor("marello_purchase_order_view")
      *
@@ -45,7 +53,10 @@ class PurchaseOrderController extends AbstractController
     }
 
     /**
-     * @Config\Route("/select-products", name="marello_purchaseorder_purchaseorder_selectproducts")
+     * @Route(
+     *     path="/select-products", 
+     *     name="marello_purchaseorder_purchaseorder_selectproducts"
+     * )
      * @Config\Template
      * @AclAncestor("marello_purchase_order_create")
      */
@@ -55,7 +66,10 @@ class PurchaseOrderController extends AbstractController
     }
 
     /**
-     * @Config\Route("/create", name="marello_purchaseorder_purchaseorder_create")
+     * @Route(
+     *     path="/create", 
+     *     name="marello_purchaseorder_purchaseorder_create"
+     * )
      * @Config\Template("MarelloPurchaseOrderBundle:PurchaseOrder:createStepOne.html.twig")
      * @AclAncestor("marello_purchase_order_create")
      *
@@ -69,7 +83,11 @@ class PurchaseOrderController extends AbstractController
     }
 
     /**
-     * @Config\Route("/update/{id}", requirements={"id"="\d+"}, name="marello_purchaseorder_purchaseorder_update")
+     * @Route(
+     *     path="/update/{id}", 
+     *     requirements={"id"="\d+"}, 
+     *     name="marello_purchaseorder_purchaseorder_update"
+     * )
      * @AclAncestor("marello_purchase_order_update")
      * @Config\Template
      *
@@ -83,7 +101,10 @@ class PurchaseOrderController extends AbstractController
     }
 
     /**
-     * @Config\Route("/create/step-two", name="marello_purchaseorder_purchaseorder_create_step_two")
+     * @Route(
+     *     path="/create/step-two", 
+     *     name="marello_purchaseorder_purchaseorder_create_step_two"
+     * )
      * @Config\Template("MarelloPurchaseOrderBundle:PurchaseOrder:createStepTwo.html.twig")
      * @AclAncestor("marello_purchase_order_create")
      *
@@ -218,14 +239,15 @@ class PurchaseOrderController extends AbstractController
 
     /**
      * @param PurchaseOrder|null $purchaseOrder
-     * @Config\Route(
-     *      "/widget/products/{id}",
+     * @Route(
+     *      path="/widget/products/{id}",
      *      name="marello_purchase_order_widget_products_by_supplier",
      *      requirements={"id"="\d+"},
      *      defaults={"id"=0}
      * )
      * @AclAncestor("marello_product_view")
-     * @Config\Template()
+     * @Config\Template("MarelloPurchaseOrderBundle:PurchaseOrder/widget:productsBySupplier.html.twig")
+     * @return array
      */
     public function productsBySupplierAction(PurchaseOrder $purchaseOrder = null)
     {
@@ -243,10 +265,13 @@ class PurchaseOrderController extends AbstractController
     }
 
     /**
-     * @Config\Route("/supplier-product-price/{productId}/{supplierId}", name="marello_purchase_order_supplier_product_price")
+     * @Route(
+     *     path="/supplier-product-price/{productId}/{supplierId}", 
+     *     methods={"GET"},
+     *     name="marello_purchase_order_supplier_product_price"
+     * )
      * @Config\ParamConverter("product", options={"mapping": {"productId" : "id"}})
      * @Config\ParamConverter("supplier", options={"mapping": {"supplierId"   : "id"}})
-     * @Config\Method({"GET"})
      * @AclAncestor("marello_product_view")
      *
      * @param Product $product

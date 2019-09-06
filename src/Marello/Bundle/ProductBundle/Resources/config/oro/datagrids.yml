@@ -465,7 +465,7 @@ datagrids:
                 select:
                     - p.id
                     - p.sku
-                    - p.name
+                    - p.denormalizedDefaultName as productName
                     - p.manufacturingCode
                 from:
                     - { table: MarelloProductBundle:Product, alias: p }
@@ -473,9 +473,10 @@ datagrids:
             sku:
                 label:              marello.product.sku.label
                 frontend_type:      string
-            name:
+            productName:
                 label:              marello.product.name.label
                 frontend_type:      string
+                data_name:          productName
             manufacturingCode:
                 label:              marello.product.manufacturing_code.label
                 frontend_type:      string
@@ -485,10 +486,10 @@ datagrids:
                     label:            marello.product.sku.label
                     type:             string
                     data_name:        p.sku
-                name:
+                productName:
                     label:            marello.product.name.label
                     type:             string
-                    data_name:        p.name
+                    data_name:        productName
                 manufacturingCode:
                     label:            marello.product.manufacturing_code.label
                     type:             string
@@ -496,7 +497,7 @@ datagrids:
         sorters:
             columns:
                 sku:                  { data_name: p.sku }
-                name:                 { data_name: p.name }
+                productName:          { data_name: productName }
                 manufacturingCode:    { data_name: p.manufacturingCode }
             default:
                 name:  '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'

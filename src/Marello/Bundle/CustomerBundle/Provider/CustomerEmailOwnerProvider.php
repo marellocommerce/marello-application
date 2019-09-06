@@ -1,9 +1,9 @@
 <?php
 
-namespace Marello\Bundle\OrderBundle\Provider;
+namespace Marello\Bundle\CustomerBundle\Provider;
 
 use Doctrine\ORM\EntityManager;
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProviderInterface;
 
 class CustomerEmailOwnerProvider implements EmailOwnerProviderInterface

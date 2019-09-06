@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\OrderBundle\Entity;
+namespace Marello\Bundle\CustomerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 

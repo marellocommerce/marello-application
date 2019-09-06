@@ -5,6 +5,7 @@ namespace Marello\Bundle\InventoryBundle\Twig;
 use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 class WarehouseExtension extends AbstractExtension
 {
@@ -41,7 +42,7 @@ class WarehouseExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_inventory_get_warehouses_names_by_ids',
                 [$this, 'getWarehousesNamesByIds']
             )

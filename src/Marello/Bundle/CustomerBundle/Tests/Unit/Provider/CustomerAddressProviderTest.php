@@ -1,27 +1,27 @@
 <?php
 
-namespace Marello\Bundle\OrderBundle\Tests\Unit\Provider;
+namespace Marello\Bundle\CustomerBundle\Tests\Unit\Provider;
 
 use PHPUnit\Framework\TestCase;
 
 use Oro\Component\Testing\Unit\EntityTrait;
 
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use Marello\Bundle\OrderBundle\Provider\OrderCustomerAddressProvider;
+use Marello\Bundle\CustomerBundle\Provider\CustomerAddressProvider;
 
-class OrderCustomerAddressProviderTest extends TestCase
+class CustomerAddressProviderTest extends TestCase
 {
     use EntityTrait;
 
     /**
-     * @var OrderCustomerAddressProvider
+     * @var CustomerAddressProvider
      */
-    protected $orderCustomerAddressProvider;
+    protected $customerAddressProvider;
 
     protected function setUp()
     {
-        $this->orderCustomerAddressProvider = new OrderCustomerAddressProvider();
+        $this->customerAddressProvider = new CustomerAddressProvider();
     }
 
     /**
@@ -34,7 +34,7 @@ class OrderCustomerAddressProviderTest extends TestCase
 
         static::assertEquals(
             [7 => $primaryAddress],
-            $this->orderCustomerAddressProvider->getCustomerBillingAddresses($customer)
+            $this->customerAddressProvider->getCustomerBillingAddresses($customer)
         );
     }
 
@@ -48,7 +48,7 @@ class OrderCustomerAddressProviderTest extends TestCase
 
         static::assertEquals(
             [7 => $primaryAddress],
-            $this->orderCustomerAddressProvider->getCustomerBillingAddresses($customer)
+            $this->customerAddressProvider->getCustomerBillingAddresses($customer)
         );
     }
 
@@ -62,7 +62,7 @@ class OrderCustomerAddressProviderTest extends TestCase
 
         static::assertEquals(
             [8 => $shippingAddress],
-            $this->orderCustomerAddressProvider->getCustomerShippingAddresses($customer)
+            $this->customerAddressProvider->getCustomerShippingAddresses($customer)
         );
     }
 }

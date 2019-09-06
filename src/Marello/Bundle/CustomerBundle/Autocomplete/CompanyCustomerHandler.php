@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\OrderBundle\Autocomplete;
+namespace Marello\Bundle\CustomerBundle\Autocomplete;
 
 use Marello\Bundle\CustomerBundle\Entity\Company;
 use Oro\Bundle\FormBundle\Autocomplete\SearchHandler;
