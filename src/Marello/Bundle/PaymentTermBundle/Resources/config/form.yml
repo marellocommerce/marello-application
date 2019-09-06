@@ -25,3 +25,10 @@ services:
             - '@oro_locale.helper.localization'
         tags:
             - { name: form.type }
+
+    marello_payment_term.form_type.payment_term_select:
+        class: 'Marello\Bundle\PaymentTermBundle\Form\Type\PaymentTermSelectType'
+        arguments:
+            - '@oro_locale.helper.localization'
+        tags:
+            - { name: form.type }

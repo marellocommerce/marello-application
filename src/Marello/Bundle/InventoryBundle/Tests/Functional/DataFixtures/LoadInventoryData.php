@@ -86,9 +86,6 @@ class LoadInventoryData extends AbstractFixture implements DependentFixtureInter
             ->get('marello_inventory.repository.warehouse')
             ->getDefault();
 
-        $replenishmentClass = ExtendHelper::buildEnumValueClassName('marello_inv_reple');
-        $this->replenishments = $this->manager->getRepository($replenishmentClass)->findAll();
-
         $this->loadProductInventory();
     }
 
@@ -132,8 +129,12 @@ class LoadInventoryData extends AbstractFixture implements DependentFixtureInter
             if (!$inventoryItem) {
                 return;
             }
+            $replenishmentClass = ExtendHelper::buildEnumValueClassName('marello_inv_reple');
+            $replenishment = $this->manager->getRepository($replenishmentClass)->find($data['replenishment']);
+            $inventoryItem->setReplenishment($replenishment);
+            $inventoryItem->setPurchaseInventory($data['purchaseInventory']);
+            $inventoryItem->setDesiredInventory($data['desiredInventory']);
 
-            $inventoryItem->setReplenishment($this->replenishments[rand(0, count($this->replenishments) - 1)]);
             $this->handleInventoryUpdate($product, $inventoryItem, $data['inventory_qty'], 0, null);
             $this->balanceInventory($product, $data['inventory_qty']);
         }

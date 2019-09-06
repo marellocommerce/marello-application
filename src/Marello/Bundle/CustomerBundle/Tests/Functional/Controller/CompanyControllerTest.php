@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\CustomerBundle\Tests\Functional\Controller;
 
+use Marello\Bundle\PaymentTermBundle\Tests\Functional\DataFixtures\LoadPaymentTermsData;
 use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -56,6 +57,7 @@ class CompanyControllerTest extends WebTestCase
         $form    = $crawler->selectButton('Save and Close')->form();
         $customer = $this->getReference('marello-customer-7');
         $parent = $this->getReference(LoadCompanyData::COMPANY_3_REF);
+        $paymentTerm = $this->getReference(LoadPaymentTermsData::PAYMENT_TERM_1_REF);
 
         $form['marello_customer_company[name]'] = $name;
         $form['marello_customer_company[parent]'] = $parent->getId();
@@ -63,6 +65,7 @@ class CompanyControllerTest extends WebTestCase
         $form['marello_customer_company[addresses]'] = [
             $this->getAddressFormData($this->getReference(LoadAddressData::ADDRESS_2_REF))
         ];
+        $form['marello_customer_company[paymentTerm]'] = $paymentTerm->getId();
 
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);
@@ -162,6 +165,9 @@ class CompanyControllerTest extends WebTestCase
      */
     public function testCompanyView($resultData)
     {
+        $paymentTerm = $this->getReference(LoadPaymentTermsData::PAYMENT_TERM_1_REF);
+        $paymentTermLabel = (string)$paymentTerm->getLabels()->first();
+
         $crawler = $this->client->request(
             'GET',
             $this->getUrl('marello_customer_company_view', ['id' => $resultData['id']])
@@ -170,6 +176,7 @@ class CompanyControllerTest extends WebTestCase
         $result = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
         $this->assertContains("{$resultData['name']}", $crawler->html());
+        $this->assertContains($paymentTermLabel, $crawler->html());
     }
 
     /**
