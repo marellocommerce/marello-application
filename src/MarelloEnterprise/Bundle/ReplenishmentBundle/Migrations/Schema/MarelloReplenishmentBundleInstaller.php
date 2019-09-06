@@ -40,8 +40,6 @@ class MarelloEnterpriseReplenishmentBundleInstaller implements Installation, Act
     }
 
     /**
-     * Create marello_order_customer table
-     *
      * @param Schema $schema
      */
     protected function createMarelloReplenishmentOrderConfigTable(Schema $schema)
