@@ -2,18 +2,20 @@
 
 namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrder;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Annotation\Route;
 
 class ReplenishmentOrderController extends AbstractController
 {
     /**
-     * @Config\Route("/", name="marelloenterprise_replenishmentorder_index")
-     * @Config\Template
+     * @Route(
+     *     path="/", 
+     *     name="marelloenterprise_replenishmentorder_index"
+     * )
+     * @Template
      * @AclAncestor("marelloenterprise_replenishmentorder_view")
      */
     public function indexAction()
@@ -22,8 +24,12 @@ class ReplenishmentOrderController extends AbstractController
     }
     
     /**
-     * @Config\Route("/view/{id}", requirements={"id"="\d+"}, name="marelloenterprise_replenishmentorder_view")
-     * @Config\Template
+     * @Route(
+     *     path="/view/{id}", 
+     *     requirements={"id"="\d+"}, 
+     *     name="marelloenterprise_replenishmentorder_view"
+     * )
+     * @Template
      * @AclAncestor("marelloenterprise_replenishmentorder_view")
      *
      * @param ReplenishmentOrder $order

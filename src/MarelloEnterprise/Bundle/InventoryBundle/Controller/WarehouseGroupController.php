@@ -15,7 +15,10 @@ use Symfony\Component\HttpFoundation\Request;
 class WarehouseGroupController extends AbstractController
 {
     /**
-     * @Route("/", name="marelloenterprise_inventory_warehousegroup_index")
+     * @Route(
+     *     path="/", 
+     *     name="marelloenterprise_inventory_warehousegroup_index"
+     * )
      * @Template
      * @AclAncestor("marelloenterprise_inventory_warehousegroup_view")
      *
@@ -29,7 +32,10 @@ class WarehouseGroupController extends AbstractController
     }
 
     /**
-     * @Route("/create", name="marelloenterprise_inventory_warehousegroup_create")
+     * @Route(
+     *     path="/create", 
+     *     name="marelloenterprise_inventory_warehousegroup_create"
+     * )
      * @Template("MarelloEnterpriseInventoryBundle:WarehouseGroup:update.html.twig")
      * @Acl(
      *     id="marelloenterprise_inventory_warehousegroup_create",
@@ -47,7 +53,11 @@ class WarehouseGroupController extends AbstractController
     }
 
     /**
-     * @Route("/view/{id}", name="marelloenterprise_inventory_warehousegroup_view", requirements={"id"="\d+"})
+     * @Route(
+     *     path="/view/{id}", 
+     *     name="marelloenterprise_inventory_warehousegroup_view", 
+     *     requirements={"id"="\d+"}
+     * )
      * @Template
      * @Acl(
      *      id="marelloenterprise_inventory_warehousegroup_view",
@@ -68,7 +78,11 @@ class WarehouseGroupController extends AbstractController
     }
 
     /**
-     * @Route("/update/{id}", name="marelloenterprise_inventory_warehousegroup_update", requirements={"id"="\d+"})
+     * @Route(
+     *     path="/update/{id}", 
+     *     name="marelloenterprise_inventory_warehousegroup_update", 
+     *     requirements={"id"="\d+"}
+     * )
      * @Template
      * @Acl(
      *     id="marelloenterprise_inventory_warehousegroup_update",
