@@ -314,8 +314,12 @@ class ParentCompanySearchHandlerTest extends TestCase
             ->getMock();
         $expr->expects($this->once())
             ->method('in')
-            ->with('e.id', $expectedIds)
+            ->with('e.id', ':entityIds')
             ->will($this->returnSelf());
+        $queryBuilder->expects($this->once())
+            ->method('setParameter')
+            ->with('entityIds', $expectedIds)
+            ->willReturnSelf();
         $queryBuilder->expects($this->once())
             ->method('expr')
             ->will($this->returnValue($expr));
