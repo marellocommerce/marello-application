@@ -81,7 +81,11 @@ class PossibleShippingMethodsProvider implements FormChangesProviderInterface
     {
         $data = [];
         if ($this->priceProvider) {
-            $shippingContext = $this->factory->create($this->subscriptionToOrderMapper->map($subscription));
+            $shippingContextArray = $this->factory->create($this->subscriptionToOrderMapper->map($subscription));
+            $shippingContext = !empty($shippingContextArray) ? reset($shippingContextArray) : null;
+            if (!$shippingContext) {
+                return $data;
+            }
             $shippingMethodViews = $this->priceProvider
                 ->getApplicableMethodsViews($shippingContext)
                 ->toArray();

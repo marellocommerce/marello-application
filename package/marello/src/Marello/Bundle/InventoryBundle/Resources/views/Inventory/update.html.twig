@@ -101,6 +101,16 @@
         </div>
     {% endset %}
 
+    {% set orderOnDemandInfoWidget %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ form_row(form.orderOnDemandAllowed) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
     {% set dataBlocks = [
         {
             'title': 'General Information'|trans,
@@ -141,6 +151,12 @@
                 'title': 'marello.inventory.inventoryitem.section.preorder.label'|trans,
                 'data': [
                     preOrderInfoWidget
+                ]
+            },
+            {
+                'title': 'marello.inventory.inventoryitem.section.orderondemand.label'|trans,
+                'data': [
+                    orderOnDemandInfoWidget
                 ]
             }]
         }

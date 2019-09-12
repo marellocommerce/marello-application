@@ -74,6 +74,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addColumn('max_qty_to_preorder', 'integer', ['notnull' => false, 'default' => 0]);
         $table->addColumn('back_orders_datetime', 'datetime', ['notnull' => false]);
         $table->addColumn('pre_orders_datetime', 'datetime', ['notnull' => false]);
+        $table->addColumn('order_on_demand_allowed', 'boolean', ['notnull' => false, 'default' => false]);
         $this->extendExtension->addEnumField(
             $schema,
             $table,

@@ -159,7 +159,7 @@ class ShipmentCreateActionTest extends TestCase
 
         $this->action->initialize(
             [
-                'context' => new PropertyPath('context'),
+                'context' => [$this->createMock(ShippingContextInterface::class)],
                 'method' => new PropertyPath('method'),
                 'methodType' => new PropertyPath('methodType'),
             ]
