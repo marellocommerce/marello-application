@@ -465,16 +465,15 @@
                                         <h1>Dear {{ entity.customer.firstName ~ ' ' ~ entity.customer.middleName ~ ' ' ~ entity.customer.lastName }},</h1>
                                         <p class="greeting" style="font-size: 16px; margin: 1em 0;">Thank you for your order from {{ entity.salesChannelName }}.</p>
                                         <p class="greeting" style="font-size: 16px; margin: 1em 0;">
-                                        {% if entity.items | length > 1 %}-->
+                                        <!-- {% if entity.items | length > 1 %}-->
                                             The products below from your order #{{ entity.orderNumber }} have been shipped.</p>
-                                        {% else %}-->
+                                        <!-- {% else %}-->
                                             The product below from your order #{{ entity.orderNumber }} has been shipped.</p>
-                                        {% endif %}-->
-                                        {% if entity.shippingMethod is not null %}-->
+                                        <!-- {% endif %}-->
+                                        <!-- {% if entity.shippingMethod is not null %}-->
                                             <p class="greeting" style="font-size: 16px; margin: 1em 0;">
                                                 Your order will be delivered by {{ marello_shipping_method_with_type_label(entity.shippingMethod, entity.shippingMethodType) }}.</p>
-                                        {% endif %}-->
-
+                                        <!-- {% endif %}-->
                                     </td>
                                 </tr>
                                 <tr class="email-summary">
@@ -538,7 +537,7 @@
                                                         {{ item.rowTotalInclTax|oro_format_currency({'currency': entity.currency}) }}
                                                     </td>
                                                 </tr>
-                                            {% endfor %}-->
+                                            {% endfor %}
                                             </tbody>
                                         </table>
                                     </td>

@@ -5,6 +5,7 @@ namespace Marello\Bundle\ShippingBundle\Tests\Unit\Workflow;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Persistence\ObjectManager;
 
+use Marello\Bundle\ShippingBundle\Context\ShippingContext;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
