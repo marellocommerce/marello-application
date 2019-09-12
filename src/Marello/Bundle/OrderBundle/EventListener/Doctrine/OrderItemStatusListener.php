@@ -23,7 +23,7 @@ class OrderItemStatusListener
      * @var DoctrineHelper
      */
     protected $doctrineHelper;
-    
+
     /**
      * @var AvailableInventoryProvider
      */
@@ -114,7 +114,7 @@ class OrderItemStatusListener
         }
         $entityManager->flush();
     }
-    
+
     /**
      * @param ExtendableActionEvent $event
      */
@@ -158,7 +158,7 @@ class OrderItemStatusListener
             && $context->getData()->get('order') instanceof Order
         );
     }
-    
+
     /**
      * @return null|object
      */
@@ -176,7 +176,7 @@ class OrderItemStatusListener
 
         return null;
     }
-    
+
     /**
      * @param string $name
      * @return null|object
