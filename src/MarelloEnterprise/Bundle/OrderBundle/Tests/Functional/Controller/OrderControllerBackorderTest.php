@@ -140,7 +140,9 @@ class OrderControllerBackorderTest extends WebTestCase
         $inventoryItem = $inventoryItemManager
             ->getRepository(InventoryItem::class)
             ->findOneBy(['product' => $product->getId()]);
-        $inventoryItem->setBackorderAllowed(true);
+        $inventoryItem
+            ->setBackorderAllowed(true)
+            ->setOrderOnDemandAllowed(false);
         $inventoryItemManager->persist($inventoryItem);
         $inventoryItemManager->flush($inventoryItem);
 
