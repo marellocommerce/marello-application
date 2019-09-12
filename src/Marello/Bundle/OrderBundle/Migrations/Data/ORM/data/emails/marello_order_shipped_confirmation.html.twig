@@ -517,7 +517,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            {% for item in entity.items %}-->
+                                            {% for item in marello_get_order_items_for_notification(entity, 'marello_order_shipped_confirmation') %}-->
                                                 <tr>
                                                     <td class="item-info" style="border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px;">
                                                         {{ item.productName }}
@@ -540,54 +540,6 @@
                                                 </tr>
                                             {% endfor %}-->
                                             </tbody>
-                                            <tfoot class="order-totals">
-                                            <tr class="subtotal">
-                                                <th colspan="5" scope="row" style="background-color: #f8f8f8; border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; text-align: right;">
-                                                    Subtotal:
-                                                </th>
-                                                <td data-th="subtotaal" style="background-color: #f8f8f8; border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px; text-align: right;">
-                                                    <span class="price" style="white-space: nowrap;">{{ entity.subtotal|oro_format_currency({'currency': entity.currency}) }}</span>
-                                                </td>
-                                            </tr>
-                                            <tr class="tax">
-                                                <th colspan="5" scope="row" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; padding-top: 0; text-align: right;">
-                                                    Tax:
-                                                </th>
-                                                <td data-th="tax" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px; padding-top: 0; text-align: right;">
-                                                    <span class="price" style="white-space: nowrap;">{{ entity.totalTax|oro_format_currency({'currency': entity.currency}) }}</span>
-                                                </td>
-                                            </tr>
-                                            {% if entity.discountAmount %}-->
-                                                <tr class="discount">
-                                                    <th colspan="5" scope="row" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; padding-top: 0; text-align: right;">
-                                                        Discount:
-                                                    </th>
-                                                    <td data-th="discount" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px; padding-top: 0; text-align: right;">
-                                                        <span class="price" style="white-space: nowrap;">{{ entity.discountAmount|oro_format_currency({'currency': entity.currency}) }}</span>
-                                                    </td>
-                                                </tr>
-                                            {% endif %}-->
-                                            <tr class="shipping">
-                                                <th colspan="5" scope="row" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; padding-top: 0; text-align: right;">
-                                                    Shipping cost:
-                                                </th>
-                                                <td data-th="Verzending en verwerking" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px; padding-top: 0; text-align: right;">
-                                                    <span class="price" style="white-space: nowrap;">{{ entity.shippingAmountInclTax|oro_format_currency({'currency': entity.currency}) }}</span>
-                                                </td>
-                                            </tr>
-                                            <tr class="grand_total">
-                                                <th colspan="5" scope="row" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; padding-top: 0; text-align: right;">
-                                                    <strong style="font-weight: 600;">
-                                                        Total:
-                                                    </strong>
-                                                </th>
-                                                <td data-th="Groot Totaal" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px; padding-top: 0; text-align: right;">
-                                                    <strong style="font-weight: 600;">
-                                                        <span class="price" style="white-space: nowrap;">{{ entity.grandTotal|oro_format_currency({'currency': entity.currency}) }}</span>
-                                                    </strong>
-                                                </td>
-                                            </tr>
-                                            </tfoot>
                                         </table>
                                     </td>
                                 </tr>

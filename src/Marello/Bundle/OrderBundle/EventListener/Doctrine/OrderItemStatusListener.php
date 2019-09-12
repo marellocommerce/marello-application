@@ -70,6 +70,7 @@ class OrderItemStatusListener
                         $inventoryItem->getMaxQtyToBackorder() >= $entity->getQuantity()
                     ) || ($inventoryItem->isCanPreorder() &&
                         $inventoryItem->getMaxQtyToPreorder() >= $entity->getQuantity())
+                    || $inventoryItem->isOrderOnDemandAllowed()
                 )
             ) {
                 $entity->setStatus($this->findStatusByName(LoadOrderItemStatusData::WAITING_FOR_SUPPLY));
@@ -95,13 +96,21 @@ class OrderItemStatusListener
         /** @var Order $entity */
         $entity = $event->getContext()->getData()->get('order');
         foreach ($entity->getItems() as $orderItem) {
-            $event = new OrderItemStatusUpdateEvent($orderItem, LoadOrderItemStatusData::PROCESSING);
-            $this->eventDispatcher->dispatch(
-                OrderItemStatusUpdateEvent::NAME,
-                $event
+            $product = $orderItem->getProduct();
+            /** @var InventoryItem $inventoryItem */
+            $availableInventory = $this->availableInventoryProvider->getAvailableInventory(
+                $product,
+                $entity->getSalesChannel()
             );
-            $orderItem->setStatus($this->findStatusByName($event->getStatusName()));
-            $entityManager->persist($orderItem);
+            if ($availableInventory >= $orderItem->getQuantity()) {
+                $event = new OrderItemStatusUpdateEvent($orderItem, LoadOrderItemStatusData::PROCESSING);
+                $this->eventDispatcher->dispatch(
+                    OrderItemStatusUpdateEvent::NAME,
+                    $event
+                );
+                $orderItem->setStatus($this->findStatusByName($event->getStatusName()));
+                $entityManager->persist($orderItem);
+            }
         }
         $entityManager->flush();
     }
@@ -118,13 +127,21 @@ class OrderItemStatusListener
         /** @var Order $entity */
         $entity = $event->getContext()->getData()->get('order');
         foreach ($entity->getItems() as $orderItem) {
-            $event = new OrderItemStatusUpdateEvent($orderItem, LoadOrderItemStatusData::SHIPPED);
-            $this->eventDispatcher->dispatch(
-                OrderItemStatusUpdateEvent::NAME,
-                $event
+            $product = $orderItem->getProduct();
+            /** @var InventoryItem $inventoryItem */
+            $availableInventory = $this->availableInventoryProvider->getAvailableInventory(
+                $product,
+                $entity->getSalesChannel()
             );
-            $orderItem->setStatus($this->findStatusByName($event->getStatusName()));
-            $entityManager->persist($orderItem);
+            if ($availableInventory >= $orderItem->getQuantity()) {
+                $event = new OrderItemStatusUpdateEvent($orderItem, LoadOrderItemStatusData::SHIPPED);
+                $this->eventDispatcher->dispatch(
+                    OrderItemStatusUpdateEvent::NAME,
+                    $event
+                );
+                $orderItem->setStatus($this->findStatusByName($event->getStatusName()));
+                $entityManager->persist($orderItem);
+            }
         }
         $entityManager->flush();
     }
