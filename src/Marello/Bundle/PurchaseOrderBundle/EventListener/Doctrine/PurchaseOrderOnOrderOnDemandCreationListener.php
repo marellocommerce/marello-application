@@ -137,7 +137,8 @@ class PurchaseOrderOnOrderOnDemandCreationListener
      * @param Product $product
      * @return ProductPrice|null
      */
-    private function getPurchasePrice(Product $product) {
+    private function getPurchasePrice(Product $product)
+    {
         $supplier = $product->getPreferredSupplier();
         foreach ($product->getSuppliers() as $productSupplierRelation) {
             if ($productSupplierRelation->getSupplier() === $supplier) {
@@ -193,19 +194,19 @@ class PurchaseOrderOnOrderOnDemandCreationListener
      */
     private function getLinkedWarehouse(Order $order, EntityManager $manager)
     {
-            /** @var WarehouseChannelGroupLink $warehouseGroupLink */
-            $warehouseGroupLink = $manager->getRepository(WarehouseChannelGroupLink::class)
-                ->findLinkBySalesChannelGroup($order->getSalesChannel()->getGroup());
+        /** @var WarehouseChannelGroupLink $warehouseGroupLink */
+        $warehouseGroupLink = $manager->getRepository(WarehouseChannelGroupLink::class)
+            ->findLinkBySalesChannelGroup($order->getSalesChannel()->getGroup());
 
-            if (!$warehouseGroupLink) {
-                return null;
-            }
+        if (!$warehouseGroupLink) {
+            return null;
+        }
 
-            /** @var Warehouse[] $linkedWarehouses */
-            $linkedWarehouses = $warehouseGroupLink
-                ->getWarehouseGroup()
-                ->getWarehouses()
-                ->toArray();
+        /** @var Warehouse[] $linkedWarehouses */
+        $linkedWarehouses = $warehouseGroupLink
+            ->getWarehouseGroup()
+            ->getWarehouses()
+            ->toArray();
 
         return !empty($linkedWarehouses) ? reset($linkedWarehouses) : null;
     }

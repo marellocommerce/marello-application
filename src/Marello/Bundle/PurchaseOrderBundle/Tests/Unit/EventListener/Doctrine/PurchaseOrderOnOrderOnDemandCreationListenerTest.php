@@ -125,7 +125,10 @@ class PurchaseOrderOnOrderOnDemandCreationListenerTest extends TestCase
 
         $organization = $this->getEntity(Organization::class, ['id' => 1]);
         /** @var Order $order */
-        $order = $this->getEntity(Order::class, ['id' => 1, 'salesChannel' => $salesChannel, 'organization' => $organization]);
+        $order = $this->getEntity(
+            Order::class,
+            ['id' => 1, 'salesChannel' => $salesChannel, 'organization' => $organization]
+        );
 
 
         $product1 = $this->getProduct(1);

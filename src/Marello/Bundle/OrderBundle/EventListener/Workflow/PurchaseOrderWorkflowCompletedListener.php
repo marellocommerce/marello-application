@@ -133,8 +133,8 @@ class PurchaseOrderWorkflowCompletedListener
                 $hasPackedItems = false;
                 foreach ($order->getItems() as $item) {
                     if (!in_array($item->getId(), $data[$orderOnDemandKey]['orderItems'])) {
-                        if (in_array($item->getStatus(),
-                            [LoadOrderItemStatusData::DROPSHIPPING, LoadOrderItemStatusData::SHIPPED])) {
+                        $statuses = [LoadOrderItemStatusData::DROPSHIPPING, LoadOrderItemStatusData::SHIPPED];
+                        if (in_array($item->getStatus(), $statuses, true)) {
                             $hasShippedItems = true;
                         }
                     }
@@ -149,7 +149,6 @@ class PurchaseOrderWorkflowCompletedListener
                         break;
                     }
                 }
-                $workflowItems = $this->workflowManager->getWorkflowItemsByEntity($order);
                 if ($hasPackedItems || $hasShippedItems) {
                     foreach ($order->getItems() as $item) {
                         if (!in_array($item->getId(), $data[$orderOnDemandKey]['orderItems'])) {
@@ -168,13 +167,15 @@ class PurchaseOrderWorkflowCompletedListener
                         if ($shippingMethodType = $shippingMethod->getType($methodType)) {
                             $shipmentManager = $this->doctrine->getManagerForClass(Shipment::class);
                             foreach ($shippingContextArray as $shippingContext) {
-                                if ($shipment = $shippingMethodType->createShipment($shippingContext, $method, $methodType)) {
+                                $shipment = $shippingMethodType->createShipment($shippingContext, $method, $methodType);
+                                if ($shipment) {
                                     $shipmentManager->persist($shipment);
                                 }
                             }
                             $shipmentManager->flush();
                         }
                     }
+                    $workflowItems = $this->workflowManager->getWorkflowItemsByEntity($order);
                     foreach ($workflowItems as $workflowItem) {
                         $this->eventDispatcher->dispatch(
                             'extendable_action.create_packingslip',
@@ -243,7 +244,7 @@ class PurchaseOrderWorkflowCompletedListener
                 $sku = $lineItem->getProductSku();
                 $qty = $lineItem->getQuantity();
                 foreach ($this->removedItems as $removedItem) {
-                    if ($sku === $removedItem['sku'] && $qty === $removedItem['quantity'] ) {
+                    if ($sku === $removedItem['sku'] && $qty === $removedItem['quantity']) {
                         unset($lineItems[$key]);
                     }
                 }
@@ -272,7 +273,7 @@ class PurchaseOrderWorkflowCompletedListener
             $sku = $lineItem->getProductSku();
             $qty = $lineItem->getQuantity();
             foreach ($this->removedItems as $removedItem) {
-                if ($sku === $removedItem['sku'] && $qty === $removedItem['quantity'] ) {
+                if ($sku === $removedItem['sku'] && $qty === $removedItem['quantity']) {
                     $lineItems->removeElement($lineItem);
                 } else {
                     $subtotal += $lineItem->getPrice()->getValue() * $lineItem->getQuantity();
@@ -289,7 +290,8 @@ class PurchaseOrderWorkflowCompletedListener
     /**
      * @param AfterPackingSlipCreationEvent $event
      */
-    public function afterPackingSlipCreation(AfterPackingSlipCreationEvent $event) {
+    public function afterPackingSlipCreation(AfterPackingSlipCreationEvent $event)
+    {
         if ($this->removedItems) {
             $packingSlip = $event->getPackingSlip();
             foreach ($packingSlip->getItems() as $slipItem) {
@@ -297,7 +299,7 @@ class PurchaseOrderWorkflowCompletedListener
                 $sku = $orderItem->getProductSku();
                 $qty = $orderItem->getQuantity();
                 foreach ($this->removedItems as $removedItem) {
-                    if ($sku === $removedItem['sku'] && $qty === $removedItem['quantity'] ) {
+                    if ($sku === $removedItem['sku'] && $qty === $removedItem['quantity']) {
                         $packingSlip->removeItem($slipItem);
                     }
                 }
