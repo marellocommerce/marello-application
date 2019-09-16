@@ -20,10 +20,12 @@ class MarelloInventoryBundle implements Migration
         $this->addColumnsToInventoryItemTable($schema, $queries);
         $this->addColumnsToInventoryLevelTable($schema, $queries);
     }
-    
+
     /**
+     * {@inheritdoc}
      * @param Schema $schema
      * @param QueryBag $queries
+     * @throws \Doctrine\DBAL\Schema\SchemaException
      */
     protected function addColumnsToInventoryItemTable(Schema $schema, QueryBag $queries)
     {
@@ -39,8 +41,10 @@ class MarelloInventoryBundle implements Migration
     }
 
     /**
+     * {@inheritdoc}
      * @param Schema $schema
      * @param QueryBag $queries
+     * @throws \Doctrine\DBAL\Schema\SchemaException
      */
     protected function addColumnsToInventoryLevelTable(Schema $schema, QueryBag $queries)
     {

@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraint;
 class InventoryOrderOnDemand extends Constraint
 {
     /** @var string */
-    public $message = 'marello.inventory.validation.messages.error.inventoryitem.order_on_demand_allowed_with_no_supplier';
+    public $message = 'marello.inventory.validation.messages.error.inventoryitem.order_on_demand_allowed_no_supplier';
 
     /**
      * @return string
