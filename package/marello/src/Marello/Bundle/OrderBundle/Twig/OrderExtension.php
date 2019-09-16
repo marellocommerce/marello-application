@@ -80,21 +80,37 @@ class OrderExtension extends \Twig_Extension
     public function canReturn(Order $order)
     {
         foreach ($order->getItems() as $orderItem) {
-            if (!in_array($orderItem->getStatus(),
-                [LoadOrderItemStatusData::DROPSHIPPING, LoadOrderItemStatusData::SHIPPED])) {
+            if (!in_array($orderItem->getStatus(), $this->getOrderItemStatuses())) {
                 return false;
             }
         }
         return true;
     }
 
-    public function isShippedOrderItem(OrderItem $orderItem) {
-        if (in_array($orderItem->getStatus(),
-            [LoadOrderItemStatusData::DROPSHIPPING, LoadOrderItemStatusData::SHIPPED])) {
+    /**
+     * {@inheritdoc}
+     * @param OrderItem $orderItem
+     * @return bool
+     */
+    public function isShippedOrderItem(OrderItem $orderItem)
+    {
+        if (in_array($orderItem->getStatus(), $this->getOrderItemStatuses())) {
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * Get related OrderItem statuses
+     * @return array
+     */
+    protected function getOrderItemStatuses()
+    {
+        return [
+            LoadOrderItemStatusData::DROPSHIPPING,
+            LoadOrderItemStatusData::SHIPPED
+        ];
     }
 
     /**
