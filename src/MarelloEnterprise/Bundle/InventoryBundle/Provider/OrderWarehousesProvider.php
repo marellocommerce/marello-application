@@ -12,6 +12,11 @@ use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategiesRegistry;
 class OrderWarehousesProvider implements OrderWarehousesProviderInterface
 {
     /**
+     * @var bool
+     */
+    private $estimation = false;
+    
+    /**
      * @var WFAStrategiesRegistry
      */
     protected $strategiesRegistry;
@@ -42,6 +47,14 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
     }
 
     /**
+     * @inheritDoc
+     */
+    public function setEstimation($estimation = false)
+    {
+        $this->estimation = $estimation;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getWarehousesForOrder(Order $order)
@@ -52,9 +65,9 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
         $results = [];
 
         foreach ($filteredRules as $rule) {
-            $results = $this->strategiesRegistry
-                ->getStrategy($rule->getStrategy())
-                ->getWarehouseResults($order, $results);
+            $strategy = $this->strategiesRegistry->getStrategy($rule->getStrategy());
+            $strategy->setEstimation($this->estimation);
+            $results = $strategy->getWarehouseResults($order, $results);
 
             if (count($results) === 1) {
                 return reset($results);
