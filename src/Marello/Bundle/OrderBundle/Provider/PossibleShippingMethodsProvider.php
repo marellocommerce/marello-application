@@ -38,6 +38,7 @@ class PossibleShippingMethodsProvider implements FormChangesProviderInterface
      * @param ShippingContextFactoryInterface $factory
      * @param ShippingPricesConverter $priceConverter
      * @param ShippingPriceProviderInterface|null $priceProvider
+     * @param ShippingServiceRegistry $registry
      */
     public function __construct(
         ShippingContextFactoryInterface $factory,
@@ -71,6 +72,7 @@ class PossibleShippingMethodsProvider implements FormChangesProviderInterface
     {
         $data = [];
         if ($this->priceProvider) {
+            $this->factory->setEstimation(true);
             $shippingContextArray = $this->factory->create($order);
             $shippingContext = !empty($shippingContextArray) ? reset($shippingContextArray) : null;
             if (!$shippingContext) {
