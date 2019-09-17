@@ -12,4 +12,10 @@ interface OrderWarehousesProviderInterface
      * @return OrderWarehouseResult[]
      */
     public function getWarehousesForOrder(Order $order);
+
+    /**
+     * @param bool $estimation
+     * @return $this
+     */
+    public function setEstimation($estimation = false);
 }

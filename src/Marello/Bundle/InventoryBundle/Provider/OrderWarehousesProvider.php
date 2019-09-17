@@ -14,6 +14,11 @@ use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 class OrderWarehousesProvider implements OrderWarehousesProviderInterface
 {
     /**
+     * @var bool
+     */
+    private $estimation = false;
+
+    /**
      * keeping property for BC
      * @var DoctrineHelper
      * @deprecated will be removed in 3.0
@@ -28,6 +33,14 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
     public function __construct(DoctrineHelper $doctrineHelper)
     {
         $this->doctrineHelper = $doctrineHelper;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setEstimation($estimation = false)
+    {
+        $this->estimation = $estimation;
     }
 
     /**
@@ -58,8 +71,22 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
                     $warehouse = $inventoryLevel->getWarehouse();
                     $invLevToWh[$warehouse->getId()] = $inventoryLevel;
                     $warehouseType = $warehouse->getWarehouseType()->getName();
-                    if (($invLevelQty >= $orderItem->getQuantity() ||
-                            $warehouseType === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL)) {
+                    if ($invLevelQty >= $orderItem->getQuantity() ||
+                        $warehouseType === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL ||
+                        ( $this->estimation === true &&
+                            (
+                                $inventoryItem->isOrderOnDemandAllowed() ||
+                                (
+                                    $inventoryItem->isCanPreorder() &&
+                                    $inventoryItem->getMaxQtyToPreorder() >= $orderItem->getQuantity()
+                                ) ||
+                                (
+                                    $inventoryItem->isBackorderAllowed() &&
+                                    $inventoryItem->getMaxQtyToBackorder() >= $orderItem->getQuantity()
+                                )
+                            )
+                        )
+                    ) {
                         $productsByWh[$key] [] = $warehouse;
                     }
                 }
