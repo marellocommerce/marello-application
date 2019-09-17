@@ -10,4 +10,10 @@ interface ShippingContextFactoryInterface
      * @return ShippingContextInterface[]
      */
     public function create($entity);
+
+    /**
+     * @param bool $estimation
+     * @return $this
+     */
+    public function setEstimation($estimation = false);
 }
