@@ -6,6 +6,8 @@ marello:
                 document_configuration.label: Document Configuration
                 template.label: Template Settings
                 dimensions.label: Dimensions
+                workflow.label: Workflow
+                email.label: Email
             fields:
                 paper_size:
                     label: "Paper size"
@@ -35,6 +37,19 @@ marello:
                 company_coc:
                     label: "Chamber Of Commerce information"
                     tooltip: "Chamber Of Commerce-related information, such as Chamber Of Commerce number."
+                email_workflow_transition:
+                    label: "Send invoice in workflow transition"
+                    tooltip: "Select the workflow transition in which the invoice is e-mailed to the customer."
+                    placeholder: "Do not send e-mail"
+                email_sender_email:
+                    label: "E-mail sender address"
+                    tooltip: "The e-mail address the invoice is sent from"
+                email_sender_name:
+                    label: "E-mail sender name"
+                    tooltip: "The name displayed as sender of the invoice"
+                email_bcc:
+                    label: "BCC address"
+                    tooltip: "Receive a copy of the invoice e-mail at this address"
 
         filename:
             invoice: "Invoice_%entityNumber%"
