@@ -17,6 +17,11 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class OrderShippingContextFactory implements ShippingContextFactoryInterface
 {
     /**
+     * @var bool
+     */ 
+    private $estimation = false;
+    
+    /**
      * @var OrderWarehousesProviderInterface
      */
     private $orderWarehousesProvider;
@@ -55,6 +60,22 @@ class OrderShippingContextFactory implements ShippingContextFactoryInterface
     }
 
     /**
+     * @inheritDoc
+     */
+    public function setEstimation($estimation = false)
+    {
+        $this->estimation = $estimation;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isEstimation()
+    {
+        return $this->estimation;
+    }
+
+    /**
      * @param Order $order
      * @return ShippingContextInterface[]
      */
@@ -70,7 +91,7 @@ class OrderShippingContextFactory implements ShippingContextFactoryInterface
             $order,
             (string)$order->getId()
         );
-
+        $this->orderWarehousesProvider->setEstimation($this->estimation);
         $orderWarehouseResults = $this->orderWarehousesProvider->getWarehousesForOrder($order);
         if (!empty($orderWarehouseResults)) {
             $results = [];
