@@ -18,7 +18,7 @@ class OrderShippingContextFactory implements ShippingContextFactoryInterface
 {
     /**
      * @var bool
-     */ 
+     */
     private $estimation = false;
     
     /**
