@@ -23,6 +23,12 @@ interface WFAStrategyInterface
     public function isEnabled();
 
     /**
+     * @param bool $estimation
+     * @return $this
+     */
+    public function setEstimation($estimation = false);
+
+    /**
      * @param Order $order
      * @param OrderWarehouseResult[] $initialResults
      * @return OrderWarehouseResult[]|null
