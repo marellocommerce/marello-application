@@ -113,8 +113,7 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
                     $warehouse = $inventoryLevel->getWarehouse();
                     $warehouseType = $warehouse->getWarehouseType()->getName();
                     $warehouseId = $warehouse->getId();
-                    if (
-                        (
+                    if ((
                             $inventoryLevel->getInventoryQty() >= $orderItem->getQuantity() ||
                             $warehouseType === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL ||
                             ( $this->estimation === true &&
