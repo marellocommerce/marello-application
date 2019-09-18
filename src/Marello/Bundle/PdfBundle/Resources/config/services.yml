@@ -96,3 +96,10 @@ services:
         class: 'Marello\Bundle\PdfBundle\Workflow\Action\SendEmailTemplateAttachmentAction'
         tags:
             - { name: oro_action.action, alias: send_email_template_attachment }
+
+    marello_pdf.form_type.workflow_transition_select:
+        class: 'Marello\Bundle\PdfBundle\Form\Type\WorkflowTransitionSelectType'
+        arguments:
+            - '@oro_workflow.manager'
+        tags:
+            - { name: form.type }

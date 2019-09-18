@@ -13,6 +13,13 @@ system_configuration:
         dimensions:
             title: marello.pdf.config.groups.dimensions.label
 
+        workflow:
+            title: marello.pdf.config.groups.workflow.label
+            icon: fa-random
+
+        email:
+            title: marello.pdf.config.groups.email.label
+
     fields:
         marello_pdf.paper_size:
             data_type: string
@@ -90,6 +97,43 @@ system_configuration:
                 label: marello.pdf.config.fields.company_coc.label
                 tooltip: marello.pdf.config.fields.company_coc.tooltip
 
+        marello_pdf.email_workflow_transition:
+            data_type: string
+            type: 'Marello\Bundle\PdfBundle\Form\Type\WorkflowTransitionSelectType'
+            options:
+                label: marello.pdf.config.fields.email_workflow_transition.label
+                tooltip: marello.pdf.config.fields.email_workflow_transition.tooltip
+                workflow: marello_order_b2c_workflow_1
+                required: false
+                placeholder: marello.pdf.config.fields.email_workflow_transition.placeholder
+
+        marello_pdf.email_sender_email:
+            data_type: string
+            type: 'Symfony\Component\Form\Extension\Core\Type\EmailType'
+            options:
+                label: marello.pdf.config.fields.email_sender_email.label
+                tooltip: marello.pdf.config.fields.email_sender_email.tooltip
+                required: true
+                constraints:
+                    - NotBlank: ~
+                    - Email: ~
+
+        marello_pdf.email_sender_name:
+            data_type: string
+            type: 'Symfony\Component\Form\Extension\Core\Type\TextType'
+            options:
+                label: marello.pdf.config.fields.email_sender_name.label
+                tooltip: marello.pdf.config.fields.email_sender_name.tooltip
+
+        marello_pdf.email_bcc:
+            data_type: string
+            type: 'Symfony\Component\Form\Extension\Core\Type\EmailType'
+            options:
+                label: marello.pdf.config.fields.email_bcc.label
+                tooltip: marello.pdf.config.fields.email_bcc.tooltip
+                constraints:
+                    - Email: ~
+
     tree:
         system_configuration:
             marello:
@@ -111,6 +155,15 @@ system_configuration:
                                             - marello_pdf.company_phone
                                             - marello_pdf.company_bank
                                             - marello_pdf.company_coc
+                            workflow:
+                                children:
+                                    email:
+                                        children:
+                                            - marello_pdf.email_workflow_transition
+                                            - marello_pdf.email_sender_email
+                                            - marello_pdf.email_sender_name
+                                            - marello_pdf.email_bcc
+
 
         saleschannel_configuration:
             marello:
@@ -129,3 +182,11 @@ system_configuration:
                                             - marello_pdf.company_phone
                                             - marello_pdf.company_bank
                                             - marello_pdf.company_coc
+                            workflow:
+                                children:
+                                    email:
+                                        children:
+                                            - marello_pdf.email_workflow_transition
+                                            - marello_pdf.email_sender_email
+                                            - marello_pdf.email_sender_name
+                                            - marello_pdf.email_bcc
