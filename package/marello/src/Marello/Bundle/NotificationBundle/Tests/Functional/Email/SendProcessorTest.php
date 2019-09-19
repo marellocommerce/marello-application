@@ -109,4 +109,45 @@ class SendProcessorTest extends WebTestCase
         self::assertContains($order->getOrderNumber(), $message['subject']);
         self::assertContains($order->getOrderNumber(), $message['body']);
     }
+
+
+    /**
+     * @covers SendProcessor::sendNotification
+     */
+    public function testSendsNotificationButDontSaveInDb()
+    {
+        /** @var Order $order */
+        $order = $this->getReference('marello_order_0');
+        $notificationsBefore = count(
+            $this->getContainer()
+                ->get('doctrine')
+                ->getRepository(Notification::class)
+                ->findAll()
+        );
+
+        static::assertEquals(12, $notificationsBefore);
+
+        $this->sendProcessor->setNotifcationShouldBeSavedAsActivity(false);
+        $this->sendProcessor->sendNotification(
+            'marello_order_accepted_confirmation',
+            [$order->getCustomer()],
+            $order
+        );
+
+        $notificationsAfter = count(
+            $this->getContainer()
+                ->get('doctrine')
+                ->getRepository(Notification::class)
+                ->findAll()
+        );
+
+        static::assertEquals($notificationsBefore, $notificationsAfter);
+        self::assertMessageSent(Topics::SEND_NOTIFICATION_EMAIL);
+        $message = self::getSentMessage(Topics::SEND_NOTIFICATION_EMAIL);
+        self::assertNotContains('{{ entity', $message['subject']);
+        self::assertNotContains('{{ entity', $message['body']);
+        self::assertEquals('text/html', $message['contentType']);
+        self::assertContains($order->getOrderNumber(), $message['subject']);
+        self::assertContains($order->getOrderNumber(), $message['body']);
+    }
 }
