@@ -1,0 +1,49 @@
+data:
+    -
+        type: marellopaymentterms
+        id: '<toString(@paymentTerm1->id)>'
+        attributes:
+            code: term1
+            term: 1
+        relationships:
+            labels:
+                data:
+                    -
+                        type: localizedfallbackvalues
+                        id: '<toString(@paymentTerm1->labels->first->id)>'
+    -
+        type: marellopaymentterms
+        id: '<toString(@paymentTerm2->id)>'
+        attributes:
+            code: term2
+            term: 2
+        relationships:
+            labels:
+                data:
+                    -
+                        type: localizedfallbackvalues
+                        id: '<toString(@paymentTerm2->labels->first->id)>'
+    -
+        type: marellopaymentterms
+        id: '<toString(@paymentTerm3->id)>'
+        attributes:
+            code: term3
+            term: 3
+        relationships:
+            labels:
+                data:
+                    -
+                        type: localizedfallbackvalues
+                        id: '<toString(@paymentTerm3->labels->first->id)>'
+    -
+        type: marellopaymentterms
+        id: '<toString(@paymentTerm4->id)>'
+        attributes:
+            code: term4
+            term: 4
+        relationships:
+            labels:
+                data:
+                    -
+                        type: localizedfallbackvalues
+                        id: '<toString(@paymentTerm4->labels->first->id)>'
