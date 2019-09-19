@@ -1,0 +1,40 @@
+navigation:
+    menu_config:
+        items:
+            companies:
+                label: marello.customer.company.entity_plural_label
+                route: marello_customer_company_index
+                extras:
+                    routes: ['marello_customer_company_*']
+                    position: 5
+
+            shortcut_new_company:
+                label: 'marello.customer.company.menu.shortcut_new_company.label'
+                route: 'marello_customer_company_create'
+                extras:
+                    description: 'marello.customer.company.menu.shortcut_new_company.description'
+                    isCustomAction: true
+
+            shortcut_list_companies:
+                label: 'marello.customer.company.menu.shortcut_list_companies.label'
+                route: 'marello_customer_company_index'
+                extras:
+                    description: 'marello.customer.company.menu.shortcut_list_companies.description'
+                    isCustomAction: true
+
+        tree:
+            application_menu:
+                children:
+                    customers_tab:
+                        children:
+                            companies: ~
+            shortcuts:
+                children:
+                    shortcut_new_company: ~
+                    shortcut_list_companies: ~
+
+    titles:
+        marello_customer_company_index: marello.customer.company.entity_plural_label
+        marello_customer_company_view: 'Company %companyName%'
+        marello_customer_company_update: 'Company %companyName% - Update'
+        marello_customer_company_create: 'New Company'
