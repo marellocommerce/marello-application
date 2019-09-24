@@ -14,6 +14,11 @@ use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 class OrderWarehousesProvider implements OrderWarehousesProviderInterface
 {
     /**
+     * @var bool
+     */
+    private $estimation = false;
+
+    /**
      * keeping property for BC
      * @var DoctrineHelper
      * @deprecated will be removed in 3.0
@@ -28,6 +33,14 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
     public function __construct(DoctrineHelper $doctrineHelper)
     {
         $this->doctrineHelper = $doctrineHelper;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEstimation($estimation = false)
+    {
+        $this->estimation = $estimation;
     }
 
     /**
@@ -58,50 +71,66 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
                     $warehouse = $inventoryLevel->getWarehouse();
                     $invLevToWh[$warehouse->getId()] = $inventoryLevel;
                     $warehouseType = $warehouse->getWarehouseType()->getName();
-                    if (($invLevelQty >= $orderItem->getQuantity() ||
-                            $warehouseType === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL)) {
-                        $productsByWh[$key] [] = $warehouse;
+                    if ($invLevelQty >= $orderItem->getQuantity() ||
+                        $warehouseType === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL ||
+                        ( $this->estimation === true &&
+                            (
+                                $inventoryItem->isOrderOnDemandAllowed() ||
+                                (
+                                    $inventoryItem->isCanPreorder() &&
+                                    $inventoryItem->getMaxQtyToPreorder() >= $orderItem->getQuantity()
+                                ) ||
+                                (
+                                    $inventoryItem->isBackorderAllowed() &&
+                                    $inventoryItem->getMaxQtyToBackorder() >= $orderItem->getQuantity()
+                                )
+                            )
+                        )
+                    ) {
+                        $productsByWh[$key][] = $warehouse;
                     }
                 }
             }
-            usort($productsByWh[$key], function (Warehouse $a, Warehouse $b) use ($product) {
-                if ($a->isDefault() === true) {
-                    return -1;
-                } elseif ($b->isDefault() === true) {
-                    return 1;
-                } else {
-                    $aWhType = $a->getWarehouseType()->getName();
-                    $bWhType = $b->getWarehouseType()->getName();
-                    $externalType = WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL;
-                    if ($aWhType !== $externalType && $bWhType === $externalType) {
+            if (array_key_exists($key, $productsByWh) && is_array($productsByWh[$key])) {
+                usort($productsByWh[$key], function (Warehouse $a, Warehouse $b) use ($product) {
+                    if ($a->isDefault() === true) {
                         return -1;
-                    } elseif ($aWhType === $externalType && $bWhType !== $externalType) {
+                    } elseif ($b->isDefault() === true) {
                         return 1;
-                    } elseif ($aWhType !== $externalType && $bWhType !== $externalType) {
-                        return 0;
-                    } elseif ($aWhType === $externalType && $bWhType === $externalType) {
-                        $aWhCode = $a->getCode();
-                        $bWhCode = $b->getCode();
-                        $preferedSupplier = $this->getPreferredSupplierWhichCanDropship($product);
-                        if ($preferedSupplier) {
-                            $supplierWarehouseCode = sprintf(
-                                '%s_external_warehouse',
-                                str_replace(' ', '_', strtolower($preferedSupplier->getName()))
-                            );
-                            if ($aWhCode === $supplierWarehouseCode) {
-                                return -1;
-                            } elseif ($bWhCode === $supplierWarehouseCode) {
-                                return 1;
+                    } else {
+                        $aWhType = $a->getWarehouseType()->getName();
+                        $bWhType = $b->getWarehouseType()->getName();
+                        $externalType = WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL;
+                        if ($aWhType !== $externalType && $bWhType === $externalType) {
+                            return -1;
+                        } elseif ($aWhType === $externalType && $bWhType !== $externalType) {
+                            return 1;
+                        } elseif ($aWhType !== $externalType && $bWhType !== $externalType) {
+                            return 0;
+                        } elseif ($aWhType === $externalType && $bWhType === $externalType) {
+                            $aWhCode = $a->getCode();
+                            $bWhCode = $b->getCode();
+                            $preferedSupplier = $this->getPreferredSupplierWhichCanDropship($product);
+                            if ($preferedSupplier) {
+                                $supplierWarehouseCode = sprintf(
+                                    '%s_external_warehouse',
+                                    str_replace(' ', '_', strtolower($preferedSupplier->getName()))
+                                );
+                                if ($aWhCode === $supplierWarehouseCode) {
+                                    return -1;
+                                } elseif ($bWhCode === $supplierWarehouseCode) {
+                                    return 1;
+                                }
                             }
                         }
                     }
-                }
 
-                return 0;
-            });
-            $productsByWh[$key] = reset($productsByWh[$key]);
-            $invLevel = $invLevToWh[$productsByWh[$key]->getId()];
-            $invLevelQtyKey = sprintf('%s_|_%s', $sku, $invLevel->getId());
+                    return 0;
+                });
+                $productsByWh[$key] = reset($productsByWh[$key]);
+                $invLevel = $invLevToWh[$productsByWh[$key]->getId()];
+                $invLevelQtyKey = sprintf('%s_|_%s', $sku, $invLevel->getId());
+            }
             $productsQty[$invLevelQtyKey] =
                 (isset($productsQty[$invLevelQtyKey]) ? $productsQty[$invLevelQtyKey] : 0) + $orderItem->getQuantity();
         }
