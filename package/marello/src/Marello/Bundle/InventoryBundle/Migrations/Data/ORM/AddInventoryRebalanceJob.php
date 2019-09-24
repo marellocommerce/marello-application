@@ -27,10 +27,6 @@ class AddInventoryRebalanceJob extends AbstractFixture implements ContainerAware
     public function load(ObjectManager $manager)
     {
         $this->manager = $manager;
-
-        // add rebalance job to the queue...
-        $this->getMessageProducer()
-            ->send(Topics::RESOLVE_REBALANCE_ALL_INVENTORY, Topics::ALL_INVENTORY);
     }
 
     /**
