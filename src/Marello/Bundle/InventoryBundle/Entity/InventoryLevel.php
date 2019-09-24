@@ -30,7 +30,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
  *              "owner_column_name"="organization_id"
  *          },
  *          "dataaudit"={
- *              "auditable"=true
+ *              "auditable"=false
  *          }
  *      }
  * )
@@ -68,7 +68,7 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
      *              "full"=true
      *          },
      *          "dataaudit"={
-     *              "auditable"=true
+     *              "auditable"=false
      *          }
      *      }
      * )
@@ -87,7 +87,7 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
      *              "full"=true,
      *          },
      *          "dataaudit"={
-     *              "auditable"=true
+     *              "auditable"=false
      *          }
      *      }
      * )
@@ -104,7 +104,7 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
      *              "header"="Inventory Qty"
      *          },
      *          "dataaudit"={
-     *              "auditable"=true
+     *              "auditable"=false
      *          }
      *      }
      * )
@@ -121,7 +121,7 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
      *              "excluded"=true
      *          },
      *          "dataaudit"={
-     *              "auditable"=true
+     *              "auditable"=false
      *          }
      *      }
      * )
@@ -141,7 +141,7 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
      *              "excluded"=true
      *          },
      *          "dataaudit"={
-     *              "auditable"=true
+     *              "auditable"=false
      *          }
      *      }
      * )
@@ -160,7 +160,7 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
      *              "label"="oro.ui.updated_at"
      *          },
      *          "dataaudit"={
-     *              "auditable"=true
+     *              "auditable"=false
      *          }
      *      }
      * )
@@ -175,7 +175,7 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
      *              "header"="Managed Inventory"
      *          },
      *          "dataaudit"={
-     *              "auditable"=true
+     *              "auditable"=false
      *          }
      *      }
      * )
