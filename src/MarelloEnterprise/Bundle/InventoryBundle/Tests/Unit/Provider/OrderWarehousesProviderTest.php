@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule;
 use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
-use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategyInterface;
+use MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\MinimumQuantityWFAStrategy;
 use Marello\Bundle\RuleBundle\RuleFiltration\RuleFiltrationServiceInterface;
 use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategiesRegistry;
 use MarelloEnterprise\Bundle\InventoryBundle\Provider\OrderWarehousesProvider;
@@ -142,7 +142,9 @@ class OrderWarehousesProviderTest extends TestCase
      */
     private function mockStrategy(array $results)
     {
-        $strategy = $this->createMock(WFAStrategyInterface::class);
+        // temporarily replace WFAStrategyInterface for concrete implementation because of prevention for BC breaks
+        // setEstimation method will be added in major version not in 2.2
+        $strategy = $this->createMock(MinimumQuantityWFAStrategy::class);
         $strategy
             ->expects(static::any())
             ->method('getWarehouseResults')
