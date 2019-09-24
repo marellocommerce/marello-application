@@ -1,0 +1,5 @@
+data:
+      type: marellocompanies
+      id: '<toString(@company1->id)>'
+      attributes:
+          name: 'new company name'

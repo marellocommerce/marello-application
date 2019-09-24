@@ -54,6 +54,14 @@ services:
         tags:
             - { name: twig.extension }
 
+    marello_purchaseorder.listener.doctrine.po_on_demand_creation:
+        class: Marello\Bundle\PurchaseOrderBundle\EventListener\Doctrine\PurchaseOrderOnOrderOnDemandCreationListener
+        arguments:
+            - '@marello_inventory.provider.available_inventory_provider'
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: postFlush }
+
     marello_purchaseorder.listener.doctrine.warehouse_listener:
         class: Marello\Bundle\PurchaseOrderBundle\EventListener\Doctrine\PurchaseOrderWarehouseListener
         arguments:
@@ -82,3 +90,10 @@ services:
             - '@translator.default'
         tags:
             - { name: oro.api.processor, action: customize_loaded_data, class: Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder }
+
+    marello_purchaseorder.command.purchase_order_advice:
+        class: 'Marello\Bundle\PurchaseOrderBundle\Cron\PurchaseOrderAdviceCommand'
+        calls:
+            - ['setContainer', ['@service_container']]
+        tags:
+            - { name: console.command }
