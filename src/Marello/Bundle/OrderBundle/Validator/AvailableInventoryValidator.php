@@ -55,12 +55,10 @@ class AvailableInventoryValidator extends ConstraintValidator
      */
     public function __construct(
         DoctrineHelper $doctrineHelper,
-        AvailableInventoryProvider $availableInventoryProvider,
-        EventDispatcherInterface $eventDispatcher = null
+        AvailableInventoryProvider $availableInventoryProvider
     ) {
         $this->doctrineHelper = $doctrineHelper;
         $this->availableInventoryProvider = $availableInventoryProvider;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
