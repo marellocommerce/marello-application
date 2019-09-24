@@ -149,8 +149,9 @@ services:
         arguments:
             - '@marello_inventory.provider.order_warehouse'
             - '@marello_order.shipping_line_item.converter_basic'
-            - '@event_dispatcher'
             - '@marello_shipping.context.builder_factory_basic'
+        calls:
+            - [setEventDispatcher, ['@event_dispatcher']]
 
     marello_order.shipping_line_item.converter_basic:
         class: 'Marello\Bundle\OrderBundle\Converter\BasicOrderShippingLineItemConverter'
@@ -207,8 +208,10 @@ services:
     marello_order.twig.order_extension:
         class: Marello\Bundle\OrderBundle\Twig\OrderExtension
         arguments:
-            - '@doctrine'
-            - '@marello_order.provider.shipping_order_items_for_notifications'
+            - '@oro_workflow.manager'
+        calls:
+            - [setRegistry, ['@doctrine']]
+            - [setItemsForNotificationProvider, ['@marello_order.provider.shipping_order_items_for_notifications']]
         tags:
             - { name: twig.extension }
 
