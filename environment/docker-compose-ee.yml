@@ -72,7 +72,7 @@ services:
         volumes_from:
             - data
         volumes:
-            - ../applications/marello-application-ee:/var/www
+            - ../applications/marello-application-ee:/var/www:cached
             - ../package/marello:/package/marello
             - ../package/marello-enterprise:/package/marello-enterprise
         environment:
