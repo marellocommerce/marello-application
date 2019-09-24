@@ -18,6 +18,11 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
     const LABEL = 'marelloenterprise.inventory.strategies.min_quantity';
 
     /**
+     * @var bool
+     */
+    private $estimation = false;
+
+    /**
      * @var MinQtyWHCalculatorInterface
      */
     private $minQtyWHCalculator;
@@ -69,6 +74,14 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
     }
 
     /**
+     * @inheritDoc
+     */
+    public function setEstimation($estimation = false)
+    {
+        $this->estimation = $estimation;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getWarehouseResults(Order $order, array $initialResults = [])
@@ -87,8 +100,12 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
             return $warehouse->getId();
         }, $linkedWarehouses);
 
-        foreach ($orderItems as $orderItem) {
-            $orderItemsByProducts[sprintf('%s_|_%s', $orderItem->getProductSku(), $orderItem->getId())] = $orderItem;
+        foreach ($orderItems as $key => $orderItem) {
+            $orderItemsByProducts[sprintf(
+                '%s_|_%s',
+                $orderItem->getProduct()->getSku(),
+                $orderItem->getId() ? : $key
+            )] = $orderItem;
             $inventoryItems = $orderItem->getInventoryItems();
             foreach ($inventoryItems as $inventoryItem) {
                 /** @var InventoryLevel $inventoryLevel */
@@ -96,8 +113,23 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
                     $warehouse = $inventoryLevel->getWarehouse();
                     $warehouseType = $warehouse->getWarehouseType()->getName();
                     $warehouseId = $warehouse->getId();
-                    if (($inventoryLevel->getInventoryQty() >= $orderItem->getQuantity() ||
-                            $warehouseType === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) &&
+                    if ((
+                            $inventoryLevel->getInventoryQty() >= $orderItem->getQuantity() ||
+                            $warehouseType === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL ||
+                            ( $this->estimation === true &&
+                                (
+                                    $inventoryItem->isOrderOnDemandAllowed() ||
+                                    (
+                                        $inventoryItem->isCanPreorder() &&
+                                        $inventoryItem->getMaxQtyToPreorder() >= $orderItem->getQuantity()
+                                    ) ||
+                                    (
+                                        $inventoryItem->isBackorderAllowed() &&
+                                        $inventoryItem->getMaxQtyToBackorder() >= $orderItem->getQuantity()
+                                    )
+                                )
+                            )
+                        ) &&
                         in_array($warehouseId, $warehousesIds)) {
                         $warehouses[$warehouseId] = $warehouse;
                         $productsByWh[$warehouseId] [] = $inventoryItem->getProduct()->getSku();
