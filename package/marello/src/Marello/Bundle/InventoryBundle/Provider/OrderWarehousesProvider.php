@@ -36,7 +36,7 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function setEstimation($estimation = false)
     {
