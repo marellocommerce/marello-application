@@ -3,36 +3,36 @@
 namespace Marello\Bundle\OrderBundle\Twig;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
+
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
+use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
+
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\OrderBundle\Migrations\Data\ORM\LoadOrderItemStatusData;
 use Marello\Bundle\OrderBundle\Provider\OrderItem\ShippingPreparedOrderItemsForNotificationProvider;
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 
 class OrderExtension extends \Twig_Extension
 {
     const NAME = 'marello_order';
 
-    /**
-     * @var Registry
-     */
+    /** @var Registry $doctrine */
     private $doctrine;
 
-    /**
-     * @var ShippingPreparedOrderItemsForNotificationProvider
-     */
+    /** @var ShippingPreparedOrderItemsForNotificationProvider $orderItemsForNotificationProvider*/
     private $orderItemsForNotificationProvider;
 
+    /** @var WorkflowManager $workflowManager */
+    protected $workflowManager;
+
     /**
-     * @param Registry $doctrine
-     * @param ShippingPreparedOrderItemsForNotificationProvider $orderItemsForNotificationProvider
+     * ProductExtension constructor.
+     *
+     * @param WorkflowManager $workflowManager
      */
-    public function __construct(
-        Registry $doctrine,
-        ShippingPreparedOrderItemsForNotificationProvider $orderItemsForNotificationProvider
-    ) {
-        $this->doctrine = $doctrine;
-        $this->orderItemsForNotificationProvider = $orderItemsForNotificationProvider;
+    public function __construct(WorkflowManager $workflowManager)
+    {
+        $this->workflowManager = $workflowManager;
     }
 
     /**
@@ -130,5 +130,30 @@ class OrderExtension extends \Twig_Extension
         }
 
         return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @param Registry $doctrine
+     * @return $this
+     */
+    public function setRegistry(Registry $doctrine)
+    {
+        $this->doctrine = $doctrine;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @param ShippingPreparedOrderItemsForNotificationProvider $itemsForNotificationProvider
+     * @return $this
+     */
+    public function setItemsForNotificationProvider(
+        ShippingPreparedOrderItemsForNotificationProvider $itemsForNotificationProvider
+    ) {
+        $this->orderItemsForNotificationProvider = $itemsForNotificationProvider;
+
+        return $this;
     }
 }

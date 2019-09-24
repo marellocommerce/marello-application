@@ -50,29 +50,11 @@ class OrderShippingContextFactory implements ShippingContextFactoryInterface
     public function __construct(
         OrderWarehousesProviderInterface $orderWarehousesProvider,
         OrderShippingLineItemConverterInterface $shippingLineItemConverter,
-        EventDispatcherInterface $eventDispatcher,
         ShippingContextBuilderFactoryInterface $shippingContextBuilderFactory = null
     ) {
         $this->orderWarehousesProvider = $orderWarehousesProvider;
         $this->shippingLineItemConverter = $shippingLineItemConverter;
-        $this->eventDispatcher = $eventDispatcher;
         $this->shippingContextBuilderFactory = $shippingContextBuilderFactory;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function setEstimation($estimation = false)
-    {
-        $this->estimation = $estimation;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function isEstimation()
-    {
-        return $this->estimation;
     }
 
     /**
@@ -174,5 +156,32 @@ class OrderShippingContextFactory implements ShippingContextFactoryInterface
         }
 
         return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @param EventDispatcherInterface $eventDispatcher
+     */
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
+    /**
+     * Set estimation for getting correct shipping methods when order on demand items are in the order
+     * @param bool $estimation
+     */
+    public function setEstimation($estimation = false)
+    {
+        $this->estimation = $estimation;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return bool
+     */
+    public function isEstimation()
+    {
+        return $this->estimation;
     }
 }

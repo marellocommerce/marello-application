@@ -9,16 +9,12 @@ use Oro\Bundle\CurrencyBundle\Entity\Price;
 
 interface ShippingContextInterface
 {
+    // setters for all getters will be included in 3.0 not in 2.2 because of BC breaks
+
     /**
      * @return ShippingLineItemCollectionInterface
      */
     public function getLineItems();
-
-    /**
-     * @param ShippingLineItemCollectionInterface $lineItems
-     * @return $this
-     */
-    public function setLineItems(ShippingLineItemCollectionInterface $lineItems);
 
     /**
      * @return MarelloAddress|null
@@ -26,21 +22,9 @@ interface ShippingContextInterface
     public function getBillingAddress();
 
     /**
-     * @param MarelloAddress|null $address
-     * @return $this
-     */
-    public function setBillingAddress(MarelloAddress $address = null);
-
-    /**
      * @return MarelloAddress
      */
     public function getShippingAddress();
-
-    /**
-     * @param MarelloAddress $address
-     * @return $this
-     */
-    public function setShippingAddress(MarelloAddress $address);
 
     /**
      * @return MarelloAddress
@@ -48,21 +32,9 @@ interface ShippingContextInterface
     public function getShippingOrigin();
 
     /**
-     * @param MarelloAddress|null $address
-     * @return $this
-     */
-    public function setShippingOrigin(MarelloAddress $address);
-
-    /**
      * @return String|null
      */
     public function getPaymentMethod();
-
-    /**
-     * @param String|null $paymentMethod
-     * @return $this
-     */
-    public function setPaymentMethod($paymentMethod);
 
     /**
      * @return String|null
@@ -70,21 +42,9 @@ interface ShippingContextInterface
     public function getCurrency();
 
     /**
-     * @param String|null $currency
-     * @return $this
-     */
-    public function setCurrency($currency);
-
-    /**
      * @return Customer|null
      */
     public function getCustomer();
-
-    /**
-     * @param Customer|null $customer
-     * @return $this
-     */
-    public function setCustomer(Customer $customer = null);
 
     /**
      * @return Price|null
@@ -92,30 +52,12 @@ interface ShippingContextInterface
     public function getSubtotal();
 
     /**
-     * @param Price|null $subtotal
-     * @return $this
-     */
-    public function setSubtotal(Price $subtotal = null);
-
-    /**
      * @return object
      */
     public function getSourceEntity();
 
     /**
-     * @param object $sourceEntity
-     * @return $this
-     */
-    public function setSourceEntity($sourceEntity);
-
-    /**
      * @return mixed
      */
     public function getSourceEntityIdentifier();
-
-    /**
-     * @param mixed $sourceEntityIdentifier
-     * @return $this
-     */
-    public function setSourceEntityIdentifier($sourceEntityIdentifier);
 }
