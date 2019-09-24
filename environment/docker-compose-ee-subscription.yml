@@ -52,7 +52,7 @@ services:
         volumes_from:
             - data
         volumes:
-            - ../applications/marello-application-ee-subscription:/var/www
+            - ../applications/marello-application-ee-subscription:/var/www:cached
             - ../package/marello:/package/marello
             - ../package/marello-enterprise:/package/marello-enterprise
             - ../package/marello-subscriptions:/package/marello-subscriptions

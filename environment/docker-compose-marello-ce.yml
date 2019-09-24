@@ -54,7 +54,7 @@ services:
         volumes_from:
             - data
         volumes:
-            - ../applications/marello-application:/var/www
+            - ../applications/marello-application:/var/www:cached
             - ../package/marello:/package/marello
         environment:
             - VIRTUAL_HOST=marello.docker
