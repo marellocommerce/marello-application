@@ -40,7 +40,7 @@ marello:
                 email_workflow_transition:
                     label: "Send invoice in workflow transition"
                     tooltip: "Select the workflow transition in which the invoice is e-mailed to the customer."
-                    placeholder: "Do not send e-mail"
+                    placeholder: "Don't send invoice via e-mail"
                 email_sender_email:
                     label: "E-mail sender address"
                     tooltip: "The e-mail address the invoice is sent from"
