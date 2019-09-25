@@ -47,10 +47,7 @@ class IsSendEmailTransition extends AbstractCondition implements ContextAccessor
             $configuredTransitions = [$configuredTransitions];
         }
 
-        $retval = in_array($currentTransition, $configuredTransitions);
-        file_put_contents('/tmp/transition.txt', $currentTransition.' '.($retval ? '==' : '!=').' '.json_encode($configuredTransitions).PHP_EOL, FILE_APPEND);
-
-        return $retval;
+        return in_array($currentTransition, $configuredTransitions);
     }
 
     public function getName()
