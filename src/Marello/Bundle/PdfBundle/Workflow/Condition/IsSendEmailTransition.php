@@ -43,6 +43,9 @@ class IsSendEmailTransition extends AbstractCondition implements ContextAccessor
         $configKey = sprintf('%s.%s', Configuration::CONFIG_NAME, Configuration::CONFIG_KEY_EMAIL_WORKFLOW_TRANSITION);
 
         $configuredTransitions = $this->configManager->get($configKey, false, false, $configScope);
+        if ($configuredTransitions === null) {
+            $configuredTransitions = [];
+        }
         if (is_scalar($configuredTransitions)) {
             $configuredTransitions = [$configuredTransitions];
         }
