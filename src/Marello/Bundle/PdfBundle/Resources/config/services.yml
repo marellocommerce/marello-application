@@ -103,3 +103,10 @@ services:
             - '@oro_workflow.manager'
         tags:
             - { name: form.type }
+
+    marello_pdf.condition.is_send_email_transition:
+        class: 'Marello\Bundle\PdfBundle\Workflow\Condition\IsSendEmailTransition'
+        arguments:
+            - '@oro_config.manager'
+        tags:
+            - { name: oro_action.condition, alias: is_send_email_transition }
