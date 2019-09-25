@@ -1,0 +1,89 @@
+action_groups:
+    send_order_invoice_email:
+        parameters:
+            order:
+                type: object
+            current_transition:
+                type: string
+
+        actions:
+            - '@tree':
+                conditions:
+                    '@is_send_email_transition':
+                        current_transition: '$.current_transition'
+                        config_scope: '$.object.salesChannel'
+                actions:
+                    - '@find_entity':
+                        class: 'Marello\Bundle\InvoiceBundle\Entity\Invoice'
+                        attribute: '$.invoice'
+                        where:
+                            order: '$.order'
+                    - '@tree':
+                        conditions:
+                            '@not_empty': ['$.invoice']
+                        actions:
+                            - '@call_service_method':
+                                service: oro_config.manager
+                                method: get
+                                method_parameters:
+                                    - 'marello_pdf.email_sender_email'
+                                    - false
+                                    - false
+                                    - '$.order.salesChannel'
+                                attribute: '$.sender_email'
+                            - '@tree':
+                                conditions:
+                                    '@not_empty': ['$.sender_email']
+                                actions:
+                                    - '@assign_value': ['$.receiver_email', '$.order.customer.email']
+                                    - '@assign_value': ['$.receiver_name', '$.order.customer.fullName']
+                                    - '@call_service_method':
+                                        service: oro_config.manager
+                                        method: get
+                                        method_parameters:
+                                            - 'marello_pdf.email_sender_name'
+                                            - false
+                                            - false
+                                            - '$.order.salesChannel'
+                                        attribute: '$.sender_name'
+                                    - '@call_service_method':
+                                        service: oro_config.manager
+                                        method: get
+                                        method_parameters:
+                                            - 'marello_pdf.email_bcc'
+                                            - false
+                                            - false
+                                            - '$.order.salesChannel'
+                                        attribute: '$.bcc'
+                                    - '@call_service_method':
+                                        service: translator
+                                        method: trans
+                                        method_parameters:
+                                            - 'marello.pdf.filename.invoice'
+                                            - { '%%entityNumber%%': '$.invoice.invoiceNumber' }
+                                        attribute: '$.filename'
+                                    - '@call_service_method':
+                                        service: marello_pdf.provider.render_parameters
+                                        method: getParams
+                                        method_parameters:
+                                            - '$.invoice'
+                                            - { config_scope: '$.order.salesChannel' }
+                                        attribute: '$.render_parameters'
+                                    - '@call_service_method':
+                                        service: marello_pdf.renderer.twig
+                                        method: renderBase64
+                                        method_parameters:
+                                            - 'MarelloPdfBundle:Download:invoice.html.twig'
+                                            - '$.render_parameters'
+                                        attribute: '$.invoice_pdf'
+                                    - '@send_email_template_attachment':
+                                        parameters:
+                                            from: { email: '$.sender_email', name: '$.sender_name' }
+                                            to: { email: '$.receiver_email', name: '$.receiver_name' }
+                                            template: marello_send_invoice
+                                            bcc: '$.bcc'
+                                            entity: '$.invoice'
+                                            attachments:
+                                                - filename: '$.filename'
+                                                  body: '$.invoice_pdf'
+                                                  mimetype: 'application/pdf'
