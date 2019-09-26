@@ -50,6 +50,7 @@ export DEBIAN_FRONTEND=noninteractive \
   php${PHP_VERSION}-tidy \
   php${PHP_VERSION}-bcmath \
   php${PHP_VERSION}-xdebug \
+  php${PHP_VERSION}-imagick \
 && apt-get -qy autoremove --purge software-properties-common python-software-properties \
 && apt-get autoclean || exit 1
 #  php${PHP_VERSION}-mcrypt \
@@ -63,6 +64,9 @@ apt-get install -qqy nginx || exit 1
 
 # Install librsvg2
 apt-get install -qqy librsvg2-2 librsvg2-dev || exit 1
+
+# Install Ghostscript
+apt-get install -qqy ghostscript || exit 1
 
 # Update nodejs to at least v6, change setup_6 to 7,8 or whatever version to get something new and shiny
 (curl -sL https://deb.nodesource.com/setup_6.x | bash -) || exit 1
