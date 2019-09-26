@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-PHP_VERSION="7.2"
-
 export DEBIAN_FRONTEND=noninteractive \
 && export LC_ALL='en_US.UTF-8' \
 && export LANG='en_US.UTF-8' \
@@ -51,6 +49,7 @@ export DEBIAN_FRONTEND=noninteractive \
   php${PHP_VERSION}-bz2 \
   php${PHP_VERSION}-tidy \
   php${PHP_VERSION}-bcmath \
+  php${PHP_VERSION}-xdebug \
 && apt-get -qy autoremove --purge software-properties-common python-software-properties \
 && apt-get autoclean || exit 1
 #  php${PHP_VERSION}-mcrypt \

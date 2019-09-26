@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-PHP_VERSION="7.2"
 function info {
     printf "\033[0;36m===> \033[0;33m${1}\033[0m\n"
 }

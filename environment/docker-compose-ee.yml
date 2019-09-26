@@ -57,10 +57,8 @@ services:
         build:
             context: ./.docker
             args:
-              - SYMFONY_ENV=prod
-              - COMPOSERFILE=dev.json
-              - TIMEOUT=3000
-              - APP_ROOT=/var/www
+                - SYMFONY_ENV=prod
+                - PHP_VERSION=7.2
         container_name: enterprise-web
         working_dir: /var/www/
         links:
@@ -76,6 +74,8 @@ services:
             - ../package/marello:/package/marello
             - ../package/marello-enterprise:/package/marello-enterprise
         environment:
+            - PHP_IDE_CONFIG=serverName=PHPSTORM
+            - XDEBUG_CONFIG="remote_enable=1 remote_mode=req remote_port=9005 remote_host=172.16.1.45 remote_connect_back=0 idekey=PHPSTORM profiler_enable=1"
             - VIRTUAL_HOST=marello-ee.docker
             - IS_LOCAL=true
             - CMD_INIT_BEFORE=
