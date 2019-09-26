@@ -24,6 +24,17 @@ class HtmlRendererTest extends TestCase
         $this->renderer = new HtmlRenderer($factory);
     }
 
+    public function tearDown()
+    {
+        $files = ['/tmp/pdf_single.pdf', '/tmp/pdf_multiple.pdf'];
+
+        foreach ($files as $file) {
+            if (file_exists($file)) {
+                unlink($file);
+            }
+        }
+    }
+
     /**
      * @param $input
      * @param $expected
