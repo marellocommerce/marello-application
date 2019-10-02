@@ -167,3 +167,46 @@ data:
                     -
                         type: marellosaleschannels
                         id: chan_gbp
+    -
+        type: marellobalancedinventorylevels
+        id: '<toString(@marello_balancedinvlev_p6_channelgroup1->id)>'
+        attributes:
+            inventory: 0
+            balancedInventory: 0
+            reservedInventory: null
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p6
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+            saleschannels:
+                data:
+                    -
+                        type: marellosaleschannels
+                        id: chan_eur
+
+    -
+        type: marellobalancedinventorylevels
+        id: '<toString(@marello_balancedinvlev_p6_channelgroup2->id)>'
+        attributes:
+            inventory: 0
+            balancedInventory: 0
+            reservedInventory: null
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p6
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+            saleschannels:
+                data:
+                    -
+                        type: marellosaleschannels
+                        id: chan_usd
