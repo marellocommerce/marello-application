@@ -466,13 +466,16 @@ class PurchaseOrderItem implements
     {
         return $this->status;
     }
-
+    
     /**
      * @param int $receivedAmount
+     * @return $this
      */
     public function setReceivedAmount($receivedAmount)
     {
         $this->receivedAmount = $receivedAmount;
+
+        return $this;
     }
 
     /**

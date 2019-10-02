@@ -15,6 +15,7 @@ marello:
         payment_method.label:       Payment Method
         payment_reference.label:    Payment Reference
         payment_details.label:      Payment Details
+        payment_term.label:         Payment Term
         shipping_method.label:      Shipping Method
         shipping_method_type.label: Shipping Method Type
         order.label:                Order

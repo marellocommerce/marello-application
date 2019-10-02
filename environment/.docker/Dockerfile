@@ -1,6 +1,9 @@
 FROM ubuntu:xenial
 
-ARG PHP_VERSION="7.2"
+ARG PHP_VERSION
+ENV PHP_VERSION=$PHP_VERSION
+ARG SYMFONY_ENV
+ENV SYMFONY_ENV=$SYMFONY_ENV
 
 COPY ["bin/setup.sh", "bin/configure.sh", "/opt/bin/"]
 COPY ["bin/sources.list", "/etc/apt/sources.list"]
@@ -24,5 +27,3 @@ VOLUME ["/var/www/var/cache",  "/var/www/var/attachment", "/var/www/var/sessions
 EXPOSE 443 80 8080
 
 CMD ["run.sh"]
-
-ENV SYMFONY_ENV=prod

@@ -28,7 +28,7 @@ class ShippingContextToRulesValuesConverter implements ShippingContextToRulesVal
      */
     public function convert(ShippingContextInterface $context): array
     {
-        $lineItems = $context->getLineItems()->toArray();
+        $lineItems = $context->getLineItems() ? $context->getLineItems()->toArray() : [];
 
         return [
             'lineItems' => array_map(function (ShippingLineItemInterface $lineItem) use ($lineItems) {

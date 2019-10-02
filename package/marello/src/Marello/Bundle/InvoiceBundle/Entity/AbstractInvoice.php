@@ -501,7 +501,7 @@ abstract class AbstractInvoice implements
      * @param \DateTime $invoiceDueDate
      * @return AbstractInvoice
      */
-    public function setInvoiceDueDate(\DateTime $invoiceDueDate)
+    public function setInvoiceDueDate(\DateTime $invoiceDueDate = null)
     {
         $this->invoiceDueDate = $invoiceDueDate;
 
