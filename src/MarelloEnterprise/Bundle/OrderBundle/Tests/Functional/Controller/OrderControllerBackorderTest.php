@@ -5,13 +5,9 @@ namespace MarelloEnterprise\Bundle\OrderBundle\Tests\Functional\Controller;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\OrderBundle\Migrations\Data\ORM\LoadOrderItemStatusData;
 use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
-use Marello\Bundle\PackingBundle\Entity\PackingSlip;
-use Marello\Bundle\PackingBundle\Entity\PackingSlipItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
@@ -71,7 +67,16 @@ class OrderControllerBackorderTest extends WebTestCase
 
         /** @var Product $product */
         $product = $this->getReference(LoadProductData::PRODUCT_6_REF);
-
+        $inventoryItemManager = $this->getContainer()->get('doctrine')
+            ->getManagerForClass(InventoryItem::class);
+        /** @var InventoryItem $inventoryItem */
+        $inventoryItem = $inventoryItemManager
+            ->getRepository(InventoryItem::class)
+            ->findOneBy(['product' => $product->getId()]);
+        $inventoryItem
+            ->setOrderOnDemandAllowed(false);
+        $inventoryItemManager->persist($inventoryItem);
+        $inventoryItemManager->flush($inventoryItem);
         $price = $product->getPrice($salesChannel->getCurrency())->getPrice()->getValue();
         $orderItems = [
             [
@@ -135,7 +140,9 @@ class OrderControllerBackorderTest extends WebTestCase
         $inventoryItem = $inventoryItemManager
             ->getRepository(InventoryItem::class)
             ->findOneBy(['product' => $product->getId()]);
-        $inventoryItem->setBackorderAllowed(true);
+        $inventoryItem
+            ->setBackorderAllowed(true)
+            ->setOrderOnDemandAllowed(false);
         $inventoryItemManager->persist($inventoryItem);
         $inventoryItemManager->flush($inventoryItem);
 
