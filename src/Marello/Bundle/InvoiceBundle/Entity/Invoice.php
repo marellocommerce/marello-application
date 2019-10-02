@@ -5,6 +5,7 @@ namespace Marello\Bundle\InvoiceBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 
+use Marello\Bundle\PaymentTermBundle\Entity\PaymentTerm;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 use Marello\Bundle\InvoiceBundle\Model\ExtendInvoice;
@@ -47,4 +48,41 @@ class Invoice extends ExtendInvoice
      * )
      */
     protected $items;
+
+    /**
+     * @var PaymentTerm
+     *
+     * @ORM\ManyToONe(targetEntity="Marello\Bundle\PaymentTermBundle\Entity\PaymentTerm")
+     * @ORM\JoinColumn(name="payment_term_id", nullable=true, onDelete="SET NULL")
+     * @Oro\ConfigField(
+     *     defaultValues={
+     *         "email"={
+     *             "available_in_template"=true
+     *         },
+     *         "dataaudit"={
+     *             "auditable"=true
+     *         }
+     *     }
+     * )
+     */
+    protected $paymentTerm;
+
+    /**
+     * @return PaymentTerm|null
+     */
+    public function getPaymentTerm()
+    {
+        return $this->paymentTerm;
+    }
+
+    /**
+     * @param PaymentTerm|null $paymentTerm
+     * @return Invoice
+     */
+    public function setPaymentTerm(PaymentTerm $paymentTerm = null)
+    {
+        $this->paymentTerm = $paymentTerm;
+
+        return $this;
+    }
 }

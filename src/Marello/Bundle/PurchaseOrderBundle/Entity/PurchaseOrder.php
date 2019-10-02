@@ -147,6 +147,20 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
     protected $orderTotal;
 
     /**
+     * @var array $data
+     *
+     * @ORM\Column(name="data", type="json_array", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $data;
+
+    /**
      * Creates order using products
      *
      * @param array|Product[] $products
@@ -336,6 +350,26 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
         $this->orderTotal = $orderTotal;
         
         return $this;
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return $this
+     */
+    public function setData(array $data)
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return $this->data;
     }
 
     /**
