@@ -12,6 +12,7 @@ services:
 
     marello_payment_term.payment_term.form.handler:
         class: 'Marello\Bundle\PaymentTermBundle\Form\Handler\PaymentTermFormHandler'
+        public: true
         arguments:
             - '@marello_payment_term.payment_term.form'
             - '@request_stack'

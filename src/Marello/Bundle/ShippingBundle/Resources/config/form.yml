@@ -67,6 +67,7 @@ services:
 
     marello_shipping.form.handler.shipping_methods_configs_rule:
         class: Marello\Bundle\ShippingBundle\Form\Handler\ShippingMethodsConfigsRuleHandler
+        public: true
         arguments:
             - '@request_stack'
             - '@doctrine.orm.entity_manager'
