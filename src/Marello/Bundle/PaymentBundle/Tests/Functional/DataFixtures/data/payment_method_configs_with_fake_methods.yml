@@ -1,0 +1,15 @@
+payment_rule.1.method_config.1:
+    methods_configs_rule: payment_rule.1
+    method: ups
+
+payment_rule.2.method_config.1:
+    methods_configs_rule: payment_rule.2
+    method: flat_rate
+
+payment_rule.3.method_config.1:
+    methods_configs_rule: payment_rule.3
+    method: dpd
+
+payment_rule.3.method_config_without_type_configs:
+    methods_configs_rule: payment_rule.3
+    method: ups
