@@ -11,6 +11,7 @@ use Marello\Bundle\OrderBundle\Migrations\Data\ORM\LoadOrderItemStatusData;
 use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
 use Marello\Bundle\PackingBundle\Entity\PackingSlip;
 use Marello\Bundle\PackingBundle\Entity\PackingSlipItem;
+use Marello\Bundle\PaymentBundle\Method\PaymentMethodInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
@@ -270,6 +271,10 @@ class OrderControllerDropshipmentTest extends WebTestCase
      */
     private function getSubmittedData($form, $orderCustomer, $salesChannel, $orderItems)
     {
+        $paymentMethodProvider = $this->getContainer()->get('marello_payment.payment_method.composite_provider');
+        $paymentMethods = $paymentMethodProvider->getPaymentMethods();
+        /** @var PaymentMethodInterface $paymentMethod */
+        $paymentMethod = reset($paymentMethods);
         /** @var ShippingMethodProviderInterface $shippingMethodsProvider */
         $shippingMethodsProvider = $this->getContainer()->get('marello_shipping.shipping_method_provider');
         $shippingMethods = $shippingMethodsProvider->getShippingMethods();
@@ -288,6 +293,7 @@ class OrderControllerDropshipmentTest extends WebTestCase
                 'billingAddress' => $this->getAddressFormData($orderCustomer->getPrimaryAddress()),
                 'shippingAddress' => $this->getAddressFormData($orderCustomer->getPrimaryAddress()),
                 'calculateShipping' => true,
+                'paymentMethod' => $paymentMethod->getIdentifier(),
                 'shippingMethod' => $shippingMethod->getIdentifier(),
                 'shippingMethodType' => $shippingMethodType->getIdentifier(),
                 'estimatedShippingCostAmount' => 5.00
