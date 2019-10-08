@@ -1,0 +1,31 @@
+parameters:
+    marello_bank_transfer.method.identifier_prefix.bank_transfer: 'bank_transfer'
+    marello_bank_transfer.admin_view.method_template: 'MarelloBankTransferBundle::method/bankTransferMethodWithOptions.html.twig'
+
+services:
+    marello_bank_transfer.method.identifier_generator.method:
+        parent: oro_integration.generator.prefixed_identifier_generator
+        public: true
+        arguments:
+            - '%marello_bank_transfer.method.identifier_prefix.bank_transfer%'
+
+    marello_bank_transfer.repository.bank_transfer_settings:
+        class: 'Marello\Bundle\BankTransferBundle\Entity\Repository\BankTransferSettingsRepository'
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'Marello\Bundle\BankTransferBundle\Entity\BankTransferSettings'
+        calls:
+            - [setAclHelper, ['@oro_security.acl_helper']]
+
+    marello_bank_transfer.form.type.bank_transfer_options:
+        class: 'Marello\Bundle\BankTransferBundle\Form\Type\BankTransferOptionsType'
+        tags:
+            - { name: form.type }
+
+    marello_bank_transfer.event_listener.payment_method_config_data:
+        parent: marello_payment.admin_view.method_template.listener
+        arguments:
+            - '%marello_bank_transfer.admin_view.method_template%'
+            - '@marello_bank_transfer.payment_method_provider.bank_transfer'
+        tags:
+            - { name: kernel.event_listener, event: marello_payment_method.config_data, method: onGetConfigData }

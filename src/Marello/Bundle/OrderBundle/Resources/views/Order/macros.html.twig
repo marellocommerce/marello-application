@@ -39,6 +39,43 @@
     </div>
 {% endmacro %}
 
+{% macro renderPossiblePaymentMethods(
+    form,
+    entity,
+    events = {},
+    view = 'marelloorder/js/app/views/possible-payment-methods-view'
+) %}
+    {% if entity.paymentMethod %}
+        {% set savedPaymentMethod = {
+        method: entity.paymentMethod
+        } %}
+        {% set savedPaymentMethodLabel = marello_get_payment_method_label(entity.paymentMethod) %}
+    {% endif %}
+    {% set options = {
+    view: view,
+    savedPaymentMethodLabel: savedPaymentMethodLabel|default(null),
+    savedPaymentMethod: savedPaymentMethod|default(null)
+    } %}
+    {% if events|length > 0 %}
+        {% set options = options|merge({events: events}) %}
+    {% endif %}
+    <div data-page-component-module="oroui/js/app/components/view-component"
+         data-page-component-options="{{ options|json_encode }}"
+         class="possible_payment_methods_container"
+    >
+        <div class="btn-group">
+            <span
+                    data-role="possible_payment_methods_btn"
+                    id="possible_payment_methods_btn"
+                    class="btn"
+            >{{ 'marello.order.btn.calculate_payment'|trans }}</span>
+        </div>
+        <div class="possible_payment_methods_form" data-content="possible_payment_methods_form"></div>
+        {{ form_row(form.paymentMethod) }}
+        {{ form_row(form.paymentMethodOptions) }}
+    </div>
+{% endmacro %}
+
 {% macro hiddenCollection(form) %}
     <div data-role="hidden-collection"
          data-last-index="{{ form.children|length}}"
