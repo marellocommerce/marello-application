@@ -173,7 +173,7 @@
 
 {% block oro_entity_create_or_select_inline_js_company_customer %}
     {% import 'OroUIBundle::macros.html.twig' as UI %}
-    {% if form.vars.configs.async_dialogs|default(false) is sameas(true) %}
+    {% if form.vars.configs.async_dialogs|default(false) is same as(true) %}
         {% set asyncNameSegment = 'async-' %}
     {% endif %}
     {% set urlParts = {
@@ -187,7 +187,7 @@
     }
     } %}
 
-    {% if form.vars.create_enabled|default(false) is sameas(true) %}
+    {% if form.vars.create_enabled|default(false) is same as(true) %}
         {% set urlParts = urlParts|merge({
         create: {
         route:      form.vars.create_form_route,
