@@ -27,9 +27,15 @@
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
-                    {{ UI.renderProperty('marello.order.order_number.label'|trans, entity.order.orderNumber) }}
+                    {{ UI.renderHtmlProperty(
+                        'marello.order.order_number.label'|trans,
+                        UI.entityViewLink(entity.order, entity.order.orderNumber, 'marello_order_order_view')
+                    )}}
                     {{ UI.renderProperty('marello.order.currency.label'|trans, entity.order.currency) }}
-                    {{ UI.renderProperty('marello.sales.saleschannel.entity_label'|trans, entity.order.salesChannel) }}
+                    {{ UI.renderHtmlProperty(
+                        'marello.order.sales_channel.label'|trans,
+                        UI.entityViewLink(entity.order.salesChannel, entity.order.salesChannel.name, 'marello_sales_saleschannel_view')
+                    )}}
                     {{ UI.renderProperty('marello.order.order_reference.label'|trans, entity.order.orderReference) }}
                     {{ UI.renderProperty('marello.order.payment_method.label'|trans, entity.order.paymentMethod) }}
                     {{ UI.renderProperty('marello.order.payment_reference.label'|trans, entity.order.paymentReference) }}
