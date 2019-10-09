@@ -355,7 +355,9 @@ datagrids:
             columns:
                 orderNumber:
                     label: marello.order.order_number.label
-                    frontend_type: string
+                    type: twig
+                    frontend_type: html
+                    template: MarelloOrderBundle:Order:Datagrid/Property/orderNumber.html.twig
                 salesChannel:
                     label: marello.order.sales_channel.label
                     frontend_type: string
