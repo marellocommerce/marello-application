@@ -21,6 +21,11 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
  *      defaultValues={
  *          "dataaudit"={
  *              "auditable"=true
+ *          },
+ *          "ownership"={
+ *              "owner_type"="ORGANIZATION",
+ *              "owner_field_name"="organization",
+ *              "owner_column_name"="organization_id"
  *          }
  *      }
  * )
