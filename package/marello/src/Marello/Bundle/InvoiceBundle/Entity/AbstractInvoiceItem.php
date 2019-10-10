@@ -4,7 +4,7 @@ namespace Marello\Bundle\InvoiceBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
-use Marello\Bundle\InvoiceBundle\Model\ExtendInvoiceItem;
+
 use Marello\Bundle\OrderBundle\Model\QuantityAwareInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
@@ -12,6 +12,8 @@ use Marello\Bundle\ProductBundle\Model\ProductAwareInterface;
 use Marello\Bundle\TaxBundle\Model\TaxAwareInterface;
 use Oro\Bundle\CurrencyBundle\Entity\PriceAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
+use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 /**
  * @ORM\Entity
@@ -32,8 +34,11 @@ abstract class AbstractInvoiceItem implements
     QuantityAwareInterface,
     PriceAwareInterface,
     TaxAwareInterface,
-    ProductAwareInterface
+    ProductAwareInterface,
+    OrganizationAwareInterface
 {
+    use AuditableOrganizationAwareTrait;
+
     /**
      * @var int
      *
