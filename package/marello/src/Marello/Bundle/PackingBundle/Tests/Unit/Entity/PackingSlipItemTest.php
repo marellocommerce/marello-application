@@ -5,6 +5,7 @@ namespace Marello\Bundle\PackingBundle\Tests\Unit\Entity;
 use PHPUnit\Framework\TestCase;
 
 use Oro\Component\Testing\Unit\EntityTestCaseTrait;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\PackingBundle\Entity\PackingSlip;
