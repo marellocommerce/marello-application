@@ -8,7 +8,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 use JMS\Serializer\Annotation as JMS;
 
-use Marello\Bundle\OrderBundle\Migrations\Data\ORM\LoadOrderItemStatusData;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\CurrencyBundle\Entity\PriceAwareInterface;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
+use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
+
 use Marello\Bundle\ProductBundle\Model\ProductAwareInterface;
 use Marello\Bundle\OrderBundle\Model\ExtendOrderItem;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
@@ -18,8 +22,6 @@ use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
 use Marello\Bundle\TaxBundle\Model\TaxAwareInterface;
-use Oro\Bundle\CurrencyBundle\Entity\PriceAwareInterface;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\OrderBundle\Entity\Repository\OrderItemRepository")
@@ -27,7 +29,12 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  *      defaultValues={
  *          "dataaudit"={
  *              "auditable"=true
- *          }
+ *          },
+ *          "ownership"={
+ *              "owner_type"="ORGANIZATION",
+ *              "owner_field_name"="organization",
+ *              "owner_column_name"="organization_id"
+ *          },
  *      }
  * )
  * @ORM\Table(name="marello_order_order_item")
@@ -40,8 +47,11 @@ class OrderItem extends ExtendOrderItem implements
     PriceAwareInterface,
     TaxAwareInterface,
     ProductAwareInterface,
-    OrderAwareInterface
+    OrderAwareInterface,
+    OrganizationAwareInterface
 {
+    use AuditableOrganizationAwareTrait;
+
     /**
      * @var int
      *
