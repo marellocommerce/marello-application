@@ -5,6 +5,7 @@ namespace Marello\Bundle\OrderBundle\Tests\Unit\Entity;
 use PHPUnit\Framework\TestCase;
 
 use Oro\Component\Testing\Unit\EntityTestCaseTrait;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
@@ -35,7 +36,8 @@ class OrderItemTest extends TestCase
             ['discountAmount', 'some string'],
             ['rowTotalInclTax', 42],
             ['rowTotalExclTax', 42],
-            ['taxCode', new TaxCode()]
+            ['taxCode', new TaxCode()],
+            ['organization', new Organization()]
         ]);
         $this->assertPropertyCollections(new OrderItem(), [
             ['returnItems', new ReturnItem()],
