@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-PHP_VERSION="7.2"
 function info {
     printf "\033[0;36m===> \033[0;33m${1}\033[0m\n"
 }
@@ -33,6 +32,9 @@ sed -i -e "s/;daemonize\s*=\s*yes/daemonize = no/g" /etc/php/${PHP_VERSION}/fpm/
 sed -i -e "s/;catch_workers_output\s*=\s*yes/catch_workers_output = yes/g" /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf
 sed -i -e "s/;catch_workers_output\s*=\s*yes/catch_workers_output = yes/g" /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf
 sed -i -e "s/listen\s=\s\/run\/php\/php${PHP_VERSION}-fpm.sock/listen = \/var\/run\/php-fpm.sock/g" /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf
+
+# configure php imagick
+sed -i -e 's/rights="none" pattern="PDF"/rights="read|write" pattern="PDF"/' /etc/ImageMagick-6/policy.xml
 
 # Fix old style for comments
 find /etc/php/${PHP_VERSION}/cli/conf.d/ -name "*.ini" -exec sed -i -re 's/^(\s*)#(.*)/\1;\2/g' {} \;
