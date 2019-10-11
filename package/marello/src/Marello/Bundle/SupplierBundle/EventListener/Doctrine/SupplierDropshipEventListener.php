@@ -62,4 +62,18 @@ class SupplierDropshipEventListener
             }
         }
     }
+
+    /**
+     * @param LifecycleEventArgs $args
+     */
+    public function preRemove(LifecycleEventArgs $args)
+    {
+        $entity = $args->getEntity();
+        if ($entity instanceof Supplier && $entity->getCanDropship() === true) {
+            $this->eventDispatcher->dispatch(
+                SupplierDropshipEvent::NAME,
+                new SupplierDropshipEvent($entity, false)
+            );
+        }
+    }
 }
