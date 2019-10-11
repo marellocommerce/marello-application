@@ -17,6 +17,7 @@ services:
 
     marello_customer.company_tree_handler:
         class: 'Marello\Bundle\CustomerBundle\JsTree\CompanyTreeHandler'
+        public: true
         arguments:
             - '%marello_customer.entity.company.class%'
             - "@doctrine"
@@ -72,7 +73,7 @@ services:
 
     marello_customer.company.form.handler:
         class: 'Marello\Bundle\CustomerBundle\Form\Handler\CompanyHandler'
-        scope: request
+        public: true
         arguments:
             - '@marello_customer.company.form'
             - '@request_stack'
