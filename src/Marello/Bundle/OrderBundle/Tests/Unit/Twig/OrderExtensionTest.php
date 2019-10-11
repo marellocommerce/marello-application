@@ -22,6 +22,7 @@ class OrderExtensionTest extends WebTestCase
      */
     protected function setUp()
     {
+        $this->extension = new OrderExtension();
         /** @var Registry $registry */
         $registry = $this
             ->getMockBuilder(Registry::class)
