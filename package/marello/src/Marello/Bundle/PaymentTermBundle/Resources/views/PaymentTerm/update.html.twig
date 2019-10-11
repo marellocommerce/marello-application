@@ -1,4 +1,5 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 {% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
 {% if form.vars.value.id %}
@@ -12,9 +13,9 @@
     {{ parent() }}
 
     {{ UI.cancelButton(path('marello_paymentterm_paymentterm_index')) }}
-    {% if resource_granted('marello_paymentterm_paymentterm_update') %}
+    {% if is_granted('marello_paymentterm_paymentterm_update') %}
         {% set html = '' %}
-        {% if resource_granted('marello_paymentterm_paymentterm_view') %}
+        {% if is_granted('marello_paymentterm_paymentterm_view') %}
             {% set html = UI.saveAndCloseButton({
                 'route': 'marello_paymentterm_paymentterm_view',
                 'params': {'id': '$id'}
