@@ -84,7 +84,7 @@ class WarehouseGroup extends ExtendWarehouseGroup implements OrganizationAwareIn
     /**
      * @var bool
      *
-     * @ORM\Column(name="system", type="boolean", nullable=false, options={"default"=false})
+     * @ORM\Column(name="is_system", type="boolean", nullable=false, options={"default"=false})
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
