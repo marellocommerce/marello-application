@@ -1,0 +1,12 @@
+data:
+    type: marellopaymentterms
+    id: '<toString(@paymentTerm1->id)>'
+    attributes:
+        code: term1
+        term: 1
+    relationships:
+        labels:
+            data:
+                -
+                    type: localizedfallbackvalues
+                    id: '<toString(@paymentTerm1->labels->first->id)>'

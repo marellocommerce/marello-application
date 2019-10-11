@@ -25,7 +25,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
      */
     public function getMigrationVersion()
     {
-        return 'v2_1';
+        return 'v2_2';
     }
 
     /**
@@ -74,6 +74,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addColumn('max_qty_to_preorder', 'integer', ['notnull' => false, 'default' => 0]);
         $table->addColumn('back_orders_datetime', 'datetime', ['notnull' => false]);
         $table->addColumn('pre_orders_datetime', 'datetime', ['notnull' => false]);
+        $table->addColumn('order_on_demand_allowed', 'boolean', ['notnull' => false, 'default' => false]);
         $this->extendExtension->addEnumField(
             $schema,
             $table,
@@ -106,6 +107,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addColumn('inventory_item_id', 'integer', ['notnull' => false]);
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('managed_inventory', 'boolean', ['notnull' => false, 'default' => false]);
+        $table->addColumn('pick_location', 'string', ['length' => 100, 'notnull' => false]);
         
         $table->setPrimaryKey(['id']);
         $table->addIndex(['inventory_item_id']);
