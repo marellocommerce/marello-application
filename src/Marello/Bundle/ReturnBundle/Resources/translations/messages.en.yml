@@ -33,7 +33,7 @@ marello:
             order_item.label:           Order Item
             return.label:               Return
             organization.label:         Organization
-            
+
         system_configuration:
             groups:
                 return.title:               Return
