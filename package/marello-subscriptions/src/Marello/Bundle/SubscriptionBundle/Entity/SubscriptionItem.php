@@ -3,10 +3,15 @@
 namespace Marello\Bundle\SubscriptionBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+
 use JMS\Serializer\Annotation as JMS;
-use Marello\Bundle\SubscriptionBundle\Model\ExtendSubscriptionItem;
+
 use Oro\Bundle\CurrencyBundle\Entity\PriceAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
+use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
+
+use Marello\Bundle\SubscriptionBundle\Model\ExtendSubscriptionItem;
 
 /**
  * @ORM\Entity()
@@ -14,6 +19,11 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  *      defaultValues={
  *          "dataaudit"={
  *              "auditable"=true
+ *          },
+ *          "ownership"={
+ *              "owner_type"="ORGANIZATION",
+ *              "owner_field_name"="organization",
+ *              "owner_column_name"="organization_id"
  *          }
  *      }
  * )
@@ -21,8 +31,9 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  * @ORM\HasLifecycleCallbacks()
  * @JMS\ExclusionPolicy("ALL")
  */
-class SubscriptionItem extends ExtendSubscriptionItem implements PriceAwareInterface
+class SubscriptionItem extends ExtendSubscriptionItem implements PriceAwareInterface, OrganizationAwareInterface
 {
+    use AuditableOrganizationAwareTrait;
     /**
      * @var int
      *

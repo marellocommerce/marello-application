@@ -46,6 +46,7 @@ marelloenterprise:
             note.label:                Note
             inventory_qty.label:       Qty
             total_inventory_qty.label: Total Inventory Qty Origin
+            organization.label:        Organization
 
         form:
             replenishmentorderconfig:
