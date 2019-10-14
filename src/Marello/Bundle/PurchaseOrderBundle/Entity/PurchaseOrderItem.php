@@ -35,7 +35,8 @@ use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
  * )
  */
 class PurchaseOrderItem implements
-    ProductAwareInterface, OrganizationAwareInterface
+    ProductAwareInterface,
+    OrganizationAwareInterface
 {
     use EntityCreatedUpdatedAtTrait;
     use AuditableOrganizationAwareTrait;
