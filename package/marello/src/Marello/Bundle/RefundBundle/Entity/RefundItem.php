@@ -3,11 +3,14 @@
 namespace Marello\Bundle\RefundBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
+use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
+
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
  * @ORM\Entity
@@ -17,14 +20,20 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  *      defaultValues={
  *          "dataaudit"={
  *              "auditable"=true
+ *          },
+ *          "ownership"={
+ *              "owner_type"="ORGANIZATION",
+ *              "owner_field_name"="organization",
+ *              "owner_column_name"="organization_id"
  *          }
  *      }
  * )
  */
-class RefundItem implements CurrencyAwareInterface
+class RefundItem implements CurrencyAwareInterface, OrganizationAwareInterface
 {
     use EntityCreatedUpdatedAtTrait;
-    
+    use AuditableOrganizationAwareTrait;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
