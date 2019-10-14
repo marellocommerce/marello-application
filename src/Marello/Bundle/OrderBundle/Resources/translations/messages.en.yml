@@ -38,9 +38,6 @@ marello:
         estimated_shipping_cost_amount.label: Estimated Shipping Costs
         overridden_shipping_cost_amount.label: Overridden Shipping Cost Amount
         status.label:               Order Status
-        localization.label:         Localization
-        shipment.label:             Shipment
-        data.label:                 Data
         billing_address:
             label:                  Billing Address
             name.label:             Bill to Name
@@ -83,7 +80,6 @@ marello:
             purchase_price_incl.label:       Purchase Price Incl. Tax
             row_total_excl_tax.label:        Row Total Excl. Tax
             row_total_incl_tax.label:        Row Total Incl. Tax
-            tax_code.label:         Tax Code
             product_name.label:     Product Name
             product_sku.label:      Product SKU
             product.label:          Product
@@ -91,11 +87,9 @@ marello:
             discount_percent.label: Discount Percent
             tax_percent.label:      Tax Percent
             return_items.label:     Returned items
-            purchase_price_incl.label:   Purchase Price Incl. Tax
-            row_total_excl_tax.label:    Row Total Excl. Tax
-            row_total_incl_tax.label:    Row Total Incl. Tax
             inventory.label:     Inventory Available
             status.label:        Status
+            organization.label: Organization
 
             messages:
                 product_not_salable:    Product cannot be sold in the chosen Sales Channel
@@ -119,7 +113,6 @@ marello:
             name_suffix.label:                Name Suffix
             company.label:                    Company
             phone.label:                      Phone
-            organization.label:               Organization
             label:                            Customer
             form:
                 choose:             Choose customer

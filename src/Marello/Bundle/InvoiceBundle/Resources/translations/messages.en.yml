@@ -93,6 +93,7 @@ marello:
             product_sku.label:        Product Sku
             row_total_incl_tax.label: Row Total Including Tax
             row_total_excl_tax.label: Row Total Excluding Tax
+            organization.label:       Organization
 
         creditmemoitem:
             id.label:                 Id
@@ -108,6 +109,7 @@ marello:
             product_sku.label:        Product Sku
             row_total_incl_tax.label: Row Total Including Tax
             row_total_excl_tax.label: Row Total Excluding Tax
+            organization.label:       Organization
 
         abstractinvoice:
             id.label:                   Id
@@ -156,3 +158,4 @@ marello:
             product_sku.label:        Product Sku
             row_total_incl_tax.label: Row Total Including Tax
             row_total_excl_tax.label: Row Total Excluding Tax
+            organization.label:       Organization
