@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\InvoiceBunddle\Migrations\Data\ORM;
+namespace Marello\Bundle\InvoiceBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
