@@ -57,6 +57,7 @@ marello:
             special_price.label:          Special Price
             special_price_duration.label: Special Price Duration
             subscription.label:           Subscription
+            organization.label:           Organization
 
         messages:
             success:

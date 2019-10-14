@@ -145,6 +145,7 @@ class MarelloSubscriptionBundleInstaller implements
     {
         $table = $schema->createTable('marello_subscription_item');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('sku', 'string', ['length' => 255]);
         $this->extendExtension->addEnumField(
             $schema,
@@ -175,6 +176,13 @@ class MarelloSubscriptionBundleInstaller implements
             ]
         );
         $table->setPrimaryKey(['id']);
+        $table->addIndex(['organization_id']);
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_organization'),
+            ['organization_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
     }
 
     /**
