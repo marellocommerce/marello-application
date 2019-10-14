@@ -4,16 +4,18 @@ namespace Marello\Bundle\PurchaseOrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-use Marello\Bundle\PricingBundle\Entity\ProductPrice;
-use Marello\Bundle\ProductBundle\Entity\Product;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
+use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
-use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\ProductBundle\Model\ProductAwareInterface;
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\PurchaseOrderBundle\Entity\Repository\PurchaseOrderItemRepository")
@@ -23,15 +25,21 @@ use Marello\Bundle\ProductBundle\Model\ProductAwareInterface;
  *      defaultValues={
  *          "dataaudit"={
  *              "auditable"=true
+ *          },
+ *          "ownership"={
+ *              "owner_type"="ORGANIZATION",
+ *              "owner_field_name"="organization",
+ *              "owner_column_name"="organization_id"
  *          }
  *      }
  * )
  */
 class PurchaseOrderItem implements
-    ProductAwareInterface
+    ProductAwareInterface, OrganizationAwareInterface
 {
     use EntityCreatedUpdatedAtTrait;
-    
+    use AuditableOrganizationAwareTrait;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
