@@ -3,10 +3,14 @@
 namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
+use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
+
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 use Marello\Bundle\ProductBundle\Model\ProductAwareInterface;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
  * @ORM\Entity
@@ -16,12 +20,18 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  *      defaultValues={
  *          "dataaudit"={
  *              "auditable"=true
+ *          },
+ *          "ownership"={
+ *              "owner_type"="ORGANIZATION",
+ *              "owner_field_name"="organization",
+ *              "owner_column_name"="organization_id"
  *          }
  *      }
  * )
  */
-class ReplenishmentOrderItem implements ProductAwareInterface
+class ReplenishmentOrderItem implements ProductAwareInterface, OrganizationAwareInterface
 {
+    use AuditableOrganizationAwareTrait;
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
