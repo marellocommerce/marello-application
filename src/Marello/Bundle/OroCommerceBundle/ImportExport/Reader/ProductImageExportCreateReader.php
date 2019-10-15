@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\OroCommerceBundle\ImportExport\Reader;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractExportWriter;
 use Oro\Bundle\AttachmentBundle\Entity\File;
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
@@ -15,13 +16,11 @@ class ProductImageExportCreateReader extends EntityReader
     
     /**
      * @var string
-     * @deprecated will be removed in 2.0
      */
     protected $filename;
     
     /**
      * @var string
-     * @deprecated will be removed in 2.0
      */
     protected $id;
 
@@ -31,44 +30,23 @@ class ProductImageExportCreateReader extends EntityReader
     protected function createSourceEntityQueryBuilder($entityName, Organization $organization = null, array $ids = [])
     {
         $qb = parent::createSourceEntityQueryBuilder($entityName, $organization, $ids);
-
-        $property = EntityReaderById::ID_FILTER;
-        $value = $this->getParametersFromContext($property);
-
+        
         if ($this->filename) {
             $property = self::ORIGINAL_FILE_NAME_FILTER;
-            $value = $this->getParametersFromContext($property);
+            $value = $this->filename;
+        } else {
+            $property = EntityReaderById::ID_FILTER;
+            $value = $this->id;
         }
-
         $qb
             ->andWhere('o.' . $property . ' = :' . $property)
-            ->setParameter($property, $value);
+            ->setParameter($property, $value ? : -1);
 
         return $qb;
     }
 
     /**
      * {@inheritdoc}
-     * @param string $parameter
-     * @return string|null
-     */
-    protected function getParametersFromContext($parameter)
-    {
-        $context = $this->getContext();
-        if ($context->getOption('entityName') === File::class) {
-            if ($context->getOption(AbstractExportWriter::ACTION_FIELD) === AbstractExportWriter::CREATE_ACTION
-                && $context->hasOption($parameter)
-            ) {
-                return $context->getOption($parameter);
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     * @deprecated will be removed in 2.0 in favour of the parent action
      */
     protected function initializeFromContext(ContextInterface $context)
     {
@@ -77,7 +55,6 @@ class ProductImageExportCreateReader extends EntityReader
             $this->filename = $context->getOption(self::ORIGINAL_FILE_NAME_FILTER);
             $this->id = $context->getOption(EntityReaderById::ID_FILTER);
         }
-
         parent::initializeFromContext($context);
     }
 }

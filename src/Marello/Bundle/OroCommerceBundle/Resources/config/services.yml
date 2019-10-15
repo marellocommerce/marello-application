@@ -6,12 +6,12 @@ services:
             - '@marello_orocommerce.cache_key_generator'
             - '@oro_locale.settings'
         tags:
-            - { name: form.type, alias: marello_orocommerce_settings }
+            - { name: form.type }
 
     marello_orocommerce.form.extension.channel_connectors:
         class: 'Marello\Bundle\OroCommerceBundle\Form\Extension\ChannelConnectorsExtension'
         tags:
-            - { name: form.type_extension, alias: oro_integration_channel_form }
+            - { name: form.type_extension, extended_type: 'Oro\Bundle\IntegrationBundle\Form\Type\ChannelType' }
 
     marello_orocommerce.sync_state:
         class: 'Marello\Bundle\OroCommerceBundle\Model\SyncState'
@@ -76,14 +76,6 @@ services:
         tags:
             - { name: doctrine.event_listener, event: onFlush, priority: 20 }
 
-    marello_orocommerce.event_listener.reverse_sync_inventory_level.on_remote_product_creation:
-        class: 'Marello\Bundle\OroCommerceBundle\EventListener\ReverseSyncInventoryLevelOnRemoteProductCreationListener'
-        arguments:
-            - '@oro_integration.sync_scheduler.link'
-            - '@doctrine'
-        tags:
-            - { name: kernel.event_listener, event: marello_orocommerce.remote_product_created, method: onRemoteProductCreated }
-
     marello_orocommerce.event_listener.doctrine.reverse_sync_product_image:
         class: 'Marello\Bundle\OroCommerceBundle\EventListener\Doctrine\ReverseSyncProductImageListener'
         arguments:
@@ -124,13 +116,6 @@ services:
             - '@oro_integration.sync_scheduler.link'
         tags:
             - { name: doctrine.event_listener, event: onFlush }
-
-    marello_orocommerce.event_listener.doctrine.reverse_sync_tax_rule.all:
-        class: 'Marello\Bundle\OroCommerceBundle\EventListener\Doctrine\ReverseSyncAllTaxRulesListener'
-        arguments:
-            - '@oro_integration.sync_scheduler.link'
-        tags:
-            - { name: doctrine.event_listener, event: postPersist }
 
     marello_orocommerce.rest.client_factory:
         class: 'Marello\Bundle\OroCommerceBundle\Client\Factory\OroCommerceRestClientFactory'
@@ -607,8 +592,6 @@ services:
     marello_orocommerce.importexport.writer.export.product.create:
         class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\ProductExportCreateWriter'
         parent: marello_orocommerce.importexport.writer.export.abstract
-        calls:
-            - ['setEventDispatcher', ['@event_dispatcher']]
 
     marello_orocommerce.importexport.writer.export.product.update:
         class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\ProductExportUpdateWriter'
@@ -689,8 +672,3 @@ services:
     marello_orocommerce.importexport.writer.export.tax_rule.delete:
         class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\TaxRuleExportDeleteWriter'
         parent: marello_orocommerce.importexport.writer.export.abstract
-
-    marello_orocommerce.validator.warehouse_exists_for_enterprise_edition:
-        class: 'Marello\Bundle\OroCommerceBundle\Validator\WarehouseExistsForEnterpriseEditionValidator'
-        tags:
-            - { name: validator.constraint_validator, alias: 'marello_orocommerce.warehouse_exists_for_enterprise_edition_validator' }

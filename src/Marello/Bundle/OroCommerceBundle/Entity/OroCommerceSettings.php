@@ -12,11 +12,9 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 class OroCommerceSettings extends Transport
 {
     const URL_FIELD = 'url';
-    const ENTERPRISE_FIELD = 'enterprise';
     const CURRENCY_FIELD = 'currency';
     const KEY_FIELD = 'key';
     const USERNAME_FIELD = 'username';
-    const WAREHOUSE_FIELD = 'warehouse';
     const PRODUCTUNIT_FIELD = 'productunit';
     const CUSTOMERTAXCODE_FIELD = 'customertaxcode';
     const PRICELIST_FIELD = 'pricelist';
@@ -102,20 +100,6 @@ class OroCommerceSettings extends Transport
      */
     private $backOrder;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="orocommerce_enterprise", type="boolean", nullable=true)
-     */
-    private $enterprise;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="orocommerce_warehouse", type="integer", nullable=true)
-     */
-    private $warehouse;
-    
     /**
      * @var ParameterBag
      */
@@ -331,44 +315,6 @@ class OroCommerceSettings extends Transport
     }
 
     /**
-     * @return boolean
-     */
-    public function isEnterprise()
-    {
-        return $this->enterprise;
-    }
-
-    /**
-     * @param boolean $enterprise
-     * @return $this
-     */
-    public function setEnterprise($enterprise = false)
-    {
-        $this->enterprise = $enterprise;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getWarehouse()
-    {
-        return $this->warehouse;
-    }
-
-    /**
-     * @param int $warehouse
-     * @return $this
-     */
-    public function setWarehouse($warehouse = null)
-    {
-        $this->warehouse = $warehouse;
-
-        return $this;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getSettingsBag()
@@ -379,9 +325,7 @@ class OroCommerceSettings extends Transport
                     self::URL_FIELD => $this->getUrl(),
                     self::CURRENCY_FIELD => $this->getCurrency(),
                     self::KEY_FIELD => $this->getKey(),
-                    self::ENTERPRISE_FIELD => $this->isEnterprise(),
                     self::USERNAME_FIELD => $this->getUserName(),
-                    self::WAREHOUSE_FIELD => $this->getWarehouse(),
                     self::PRODUCTUNIT_FIELD => $this->getProductUnit(),
                     self::CUSTOMERTAXCODE_FIELD => $this->getCustomerTaxCode(),
                     self::PRICELIST_FIELD => $this->getPriceList(),
