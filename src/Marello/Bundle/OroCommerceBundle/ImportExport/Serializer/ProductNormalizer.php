@@ -41,7 +41,7 @@ class ProductNormalizer extends AbstractNormalizer
                         'owner' => [
                             'data' => [
                                     'type' => 'businessunits',
-                                    'id' => '1'
+                                    'id' => $transport->getBusinessUnit() ? (string)$transport->getBusinessUnit() : '1'
                                 ]
                         ],
                         'names' => [

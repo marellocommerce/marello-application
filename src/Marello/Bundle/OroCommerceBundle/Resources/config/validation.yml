@@ -1,0 +1,3 @@
+Marello\Bundle\OroCommerceBundle\Entity\OroCommerceSettings:
+    constraints:
+        - Marello\Bundle\OroCommerceBundle\Validator\Constraints\WarehouseExistsForEnterpriseEditionConstraint: ~
