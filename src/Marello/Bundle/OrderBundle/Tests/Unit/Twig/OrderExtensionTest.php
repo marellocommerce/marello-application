@@ -2,21 +2,16 @@
 
 namespace Marello\Bundle\OrderBundle\Tests\Unit\Twig;
 
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
-use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
-
-use Marello\Bundle\OrderBundle\Twig\OrderExtension;
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Marello\Bundle\OrderBundle\Migrations\Data\ORM\LoadOrderItemStatusData;
+use Marello\Bundle\OrderBundle\Provider\OrderItem\ShippingPreparedOrderItemsForNotificationProvider;
+use Marello\Bundle\OrderBundle\Twig\OrderExtension;
+use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 class OrderExtensionTest extends WebTestCase
 {
-    /**
-     * @var WorkflowManager|\PHPUnit_Framework_MockObject_MockObject
-     */
-    protected $workflowManager;
-
     /**
      * @var OrderExtension
      */
@@ -27,11 +22,22 @@ class OrderExtensionTest extends WebTestCase
      */
     protected function setUp()
     {
-        $this->workflowManager = $this->getMockBuilder(WorkflowManager::class)
+        $this->extension = new OrderExtension();
+        /** @var Registry $registry */
+        $registry = $this
+            ->getMockBuilder(Registry::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->extension = new OrderExtension($this->workflowManager);
+        /** @var ShippingPreparedOrderItemsForNotificationProvider $orderItemsForNotificationProvider */
+        $orderItemsForNotificationProvider = $this
+            ->getMockBuilder(ShippingPreparedOrderItemsForNotificationProvider::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->extension
+            ->setItemsForNotificationProvider($orderItemsForNotificationProvider)
+            ->setRegistry($registry);
     }
 
     /**
@@ -57,10 +63,13 @@ class OrderExtensionTest extends WebTestCase
     public function testGetFunctionsAreRegisteredInExtension()
     {
         $functions = $this->extension->getFunctions();
-        $this->assertCount(1, $functions);
+        $this->assertCount(4, $functions);
 
         $expectedFunctions = array(
-            'marello_order_can_return'
+            'marello_order_can_return',
+            'marello_order_item_shipped',
+            'marello_get_order_item_status',
+            'marello_get_order_items_for_notification'
         );
 
         /** @var \Twig_SimpleFunction $function */
@@ -75,34 +84,16 @@ class OrderExtensionTest extends WebTestCase
      */
     public function testIfOrderCanReturnIsTrue()
     {
-        /** @var Order $order */
+        /** @var Order|\PHPUnit_Framework_MockObject_MockObject $order */
         $order = $this->getMockBuilder(Order::class)
             ->disableOriginalConstructor()
             ->getMock();
-
-        /** @var WorkflowItem $workflowItem */
-        $workflowItem = $this->getMockBuilder(WorkflowItem::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        /** @var WorkflowStep $workflowStep */
-        $workflowStep = $this->getMockBuilder(WorkflowStep::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->workflowManager
+        $orderItem = new OrderItem();
+        $orderItem->setStatus(LoadOrderItemStatusData::SHIPPED);
+        $order
             ->expects($this->once())
-            ->method('getWorkflowItemsByEntity')
-            ->with($order)
-            ->willReturn([$workflowItem]);
-
-        $workflowItem->expects($this->atLeastOnce())
-            ->method('getCurrentStep')
-            ->willReturn($workflowStep);
-
-        $workflowStep->expects($this->atLeastOnce())
-            ->method('getName')
-            ->willReturn('shipped');
+            ->method('getItems')
+            ->willReturn([$orderItem]);
 
         $this->assertTrue($this->extension->canReturn($order));
     }
@@ -112,16 +103,16 @@ class OrderExtensionTest extends WebTestCase
      */
     public function testIfOrderCanReturnIsFalse()
     {
-        /** @var Order $order */
+        /** @var Order|\PHPUnit_Framework_MockObject_MockObject $order */
         $order = $this->getMockBuilder(Order::class)
             ->disableOriginalConstructor()
             ->getMock();
-
-        $this->workflowManager
+        $orderItem = new OrderItem();
+        $orderItem->setStatus(LoadOrderItemStatusData::PROCESSING);
+        $order
             ->expects($this->once())
-            ->method('getWorkflowItemsByEntity')
-            ->with($order)
-            ->willReturn([]);
+            ->method('getItems')
+            ->willReturn([$orderItem]);
 
         $this->assertFalse($this->extension->canReturn($order));
     }

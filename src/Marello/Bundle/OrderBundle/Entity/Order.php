@@ -482,6 +482,13 @@ class Order extends ExtendOrder implements
         $this->shippingAddress = $shippingAddress;
     }
 
+    public function __clone()
+    {
+        if ($this->id) {
+            $this->id = null;
+        }
+    }
+
     /**
      * @ORM\PrePersist
      */
