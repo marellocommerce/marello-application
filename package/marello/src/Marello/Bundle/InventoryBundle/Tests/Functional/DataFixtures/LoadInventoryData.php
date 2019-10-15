@@ -129,6 +129,11 @@ class LoadInventoryData extends AbstractFixture implements DependentFixtureInter
             if (!$inventoryItem) {
                 return;
             }
+            if ($data['orderOnDemandAllowed'] === 'true') {
+                $inventoryItem->setOrderOnDemandAllowed(true);
+                $this->manager->persist($inventoryItem);
+            }
+
             $replenishmentClass = ExtendHelper::buildEnumValueClassName('marello_inv_reple');
             $replenishment = $this->manager->getRepository($replenishmentClass)->find($data['replenishment']);
             $inventoryItem->setReplenishment($replenishment);

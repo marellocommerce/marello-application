@@ -24,6 +24,7 @@ marello:
         has_item.label:                                 Has Product
         billing_and_shipping.label:                     Billing & Shipping Info
         shipping_address.label:                         Shipping Address
+        data.label:                                     Data
 
         ui:
             continue:                                   Continue

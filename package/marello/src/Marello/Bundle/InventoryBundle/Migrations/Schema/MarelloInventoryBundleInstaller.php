@@ -25,7 +25,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
      */
     public function getMigrationVersion()
     {
-        return 'v2_2';
+        return 'v2_3';
     }
 
     /**
@@ -74,6 +74,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addColumn('max_qty_to_preorder', 'integer', ['notnull' => false, 'default' => 0]);
         $table->addColumn('back_orders_datetime', 'datetime', ['notnull' => false]);
         $table->addColumn('pre_orders_datetime', 'datetime', ['notnull' => false]);
+        $table->addColumn('order_on_demand_allowed', 'boolean', ['notnull' => false, 'default' => false]);
         $this->extendExtension->addEnumField(
             $schema,
             $table,
@@ -187,7 +188,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('name', 'string', ['length' => 255]);
         $table->addColumn('description', 'text', ['notnull' => false]);
-        $table->addColumn('system', 'boolean', ['default' => false]);
+        $table->addColumn('is_system', 'boolean', ['default' => false]);
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
@@ -201,7 +202,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
     {
         $table = $schema->createTable('marello_inventory_wh_chg_link');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
-        $table->addColumn('system', 'boolean', ['default' => false]);
+        $table->addColumn('is_system', 'boolean', ['default' => false]);
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('warehouse_group_id', 'integer', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime');

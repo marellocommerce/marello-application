@@ -9,7 +9,7 @@ use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\CustomerBundle\Entity\Customer;
-use Marello\Bundle\LocaleBundle\Model\LocaleAwareInterface;
+use Marello\Bundle\LocaleBundle\Model\LocalizationAwareInterface;
 use Marello\Bundle\LocaleBundle\Model\LocalizationTrait;
 use Marello\Bundle\OrderBundle\Model\DiscountAwareInterface;
 use Marello\Bundle\OrderBundle\Model\ExtendOrder;
@@ -72,7 +72,7 @@ class Order extends ExtendOrder implements
     SubtotalAwareInterface,
     TaxAwareInterface,
     LineItemsAwareInterface,
-    LocaleAwareInterface,
+    LocalizationAwareInterface,
     ChannelAwareInterface,
     OrganizationAwareInterface
 {
@@ -199,6 +199,20 @@ class Order extends ExtendOrder implements
      * )
      */
     protected $paymentMethod;
+
+    /**
+     * @var array $paymentMethodOptions
+     *
+     * @ORM\Column(name="payment_method_options", type="json_array", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $paymentMethodOptions;
 
     /**
      * @var string
@@ -481,6 +495,13 @@ class Order extends ExtendOrder implements
         $this->items           = new ArrayCollection();
         $this->billingAddress  = $billingAddress;
         $this->shippingAddress = $shippingAddress;
+    }
+
+    public function __clone()
+    {
+        if ($this->id) {
+            $this->id = null;
+        }
     }
 
     /**
@@ -772,6 +793,25 @@ class Order extends ExtendOrder implements
     {
         $this->paymentMethod = $paymentMethod;
 
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPaymentMethodOptions()
+    {
+        return $this->paymentMethodOptions;
+    }
+
+    /**
+     * @param array $paymentMethodOptions
+     * @return Order
+     */
+    public function setPaymentMethodOptions(array $paymentMethodOptions)
+    {
+        $this->paymentMethodOptions = $paymentMethodOptions;
+        
         return $this;
     }
 
