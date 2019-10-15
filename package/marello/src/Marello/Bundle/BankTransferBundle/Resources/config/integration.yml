@@ -1,0 +1,16 @@
+parameters:
+    marello_bank_transfer.integration.channel.type: 'bank_transfer'
+    marello_bank_transfer.integration.transport.type: 'bank_transfer'
+
+services:
+    marello_bank_transfer.integration.channel:
+        class: 'Marello\Bundle\BankTransferBundle\Integration\BankTransferChannelType'
+        public: true
+        tags:
+            - { name: oro_integration.channel, type: bank_transfer }
+
+    marello_bank_transfer.integration.transport:
+        class: 'Marello\Bundle\BankTransferBundle\Integration\BankTransferTransport'
+        public: false
+        tags:
+            - { name: oro_integration.transport, type: bank_transfer, channel_type: bank_transfer }

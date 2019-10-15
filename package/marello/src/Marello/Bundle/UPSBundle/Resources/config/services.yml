@@ -34,6 +34,7 @@ services:
 
     marello_ups.method.identifier_generator.method:
         parent: oro_integration.generator.prefixed_identifier_generator
+        public: true
         arguments:
             - '%marello_ups.integration.channel.type%'
 

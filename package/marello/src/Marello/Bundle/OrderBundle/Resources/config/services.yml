@@ -134,6 +134,14 @@ services:
         tags:
             - { name: marello.form_changes_data_provider, class: '%marello_order.entity.order.class%', type: totals, priority: 40 }
 
+    marello_order.provider.form_changes.possible_payment_methods:
+        class: Marello\Bundle\OrderBundle\Provider\PossiblePaymentMethodsProvider
+        arguments:
+            - '@marello_order.factory.payment_context'
+            - '@marello_payment.provider.payment_methods_views'
+        tags:
+            - { name: marello.form_changes_data_provider, class: '%marello_order.entity.order.class%', type: possible_payment_methods, priority: 45 }
+
     marello_order.provider.form_changes.possible_shipping_methods:
         class: Marello\Bundle\OrderBundle\Provider\PossibleShippingMethodsProvider
         arguments:
@@ -143,6 +151,21 @@ services:
             - '@marello_shipping.integration.shipping_service_registry'
         tags:
             - { name: marello.form_changes_data_provider, class: '%marello_order.entity.order.class%', type: possible_shipping_methods, priority: 50 }
+
+    marello_order.factory.payment_context:
+        class: 'Marello\Bundle\OrderBundle\Factory\OrderPaymentContextFactory'
+        public: true
+        arguments:
+            - '@marello_inventory.provider.order_warehouse'
+            - '@marello_order.payment_line_item.converter_basic'
+            - '@event_dispatcher'
+            - '@marello_payment.context.builder_factory_basic'
+
+    marello_order.payment_line_item.converter_basic:
+        class: 'Marello\Bundle\OrderBundle\Converter\BasicOrderPaymentLineItemConverter'
+        arguments:
+            - '@marello_payment.context.doctrine_line_item_collection_factory'
+            - '@marello_payment.line_item.builder_factory_basic'
 
     marello_order.factory.shipping_context:
         class: 'Marello\Bundle\OrderBundle\Factory\OrderShippingContextFactory'

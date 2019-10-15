@@ -1,0 +1,65 @@
+{% block marello_payment_method_config_widget %}
+    {% import 'MarelloPaymentBundle:PaymentMethodsConfigsRule:macros.html.twig' as PayRuleMacro %}
+
+    {% set collapseView = {
+    group: 'payment-method',
+    open: true
+    } %}
+
+    <div class="payment-method-config payment-method-config-grouped collapse-view"
+         data-page-component-collapse="{{ collapseView|json_encode }}"
+         data-role="method-view">
+        {% if form.method.vars.value %}
+            <div class="payment-method-config__header"
+                 data-collapse-trigger>
+                <div class="payment-method-config__item">
+                    <i class="fa-plus-square-o"></i>
+                    {% set icon = methods_icons[form.method.vars.value]|default('') %}
+                    {% set label = methods_labels[form.method.vars.value]|trans %}
+                    {% if icon %}<img src="{{ asset(icon) }}" alt="{{ label }}" title="{{ label }}"/>{% endif %}
+                    {{ label }}
+                    {{ PayRuleMacro.renderPaymentMethodDisabledFlag(form.method.vars.value) }}
+                </div>
+                <div class="payment-method-config__info" data-role="method-preview"></div>
+            </div>
+        {% endif %}
+        <div class="payment-method-config__body"
+             data-collapse-container>
+            <div class="payment-method-config__global-options">
+                {% set index = (form.method.vars.id|replace({'marello_payment_methods_configs_rule_methodConfigs_': ''})|split('_'))[0] %}
+                <input type="hidden" name ="marello_payment_methods_configs_rule[methodConfigs][{{ index }}][method]" data-name="field__method" value="{{ form.method.vars.value }}">
+                {{ form_widget(form.options) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block marello_payment_methods_configs_rule_destination_widget %}
+    {{ form_row(form.country) }}
+    {{ form_row(form.region) }}
+    {{ form_row(form.postalCodes) }}
+    {{ form_rest(form) }}
+{% endblock %}
+
+{% block marello_payment_method_config_collection_widget %}
+    {% if form|length != 0 %}
+        <div class="payment-methods-grid">
+            <div class="payment-methods-grid__header">
+                {% set collapseView = {
+                widgetModule: 'oroui/js/widget/collapse-group-widget',
+                group: 'payment-method'
+                } %}
+                <div class="payment-methods-grid__header-method"
+                     data-page-component-jquery="{{ collapseView|json_encode }}">
+                    <i class="fa-plus-square-o"></i>
+                    {{ 'marello.payment.payment_methods_table.method.label'|trans }}
+                </div>
+                <div>{{ 'marello.payment.payment_methods_table.options.label'|trans }}</div>
+            </div>
+            <div>
+                {{ form_widget(form, {'attr': {'class': 'marello-payment-rule-method-configs-collection row-oro'}}) }}
+                {{ form_errors(form) }}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

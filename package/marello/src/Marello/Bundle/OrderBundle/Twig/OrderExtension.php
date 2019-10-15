@@ -43,15 +43,15 @@ class OrderExtension extends AbstractExtension
                 'marello_order_can_return',
                 [$this, 'canReturn']
             ),
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_order_item_shipped',
                 [$this, 'isShippedOrderItem']
             ),
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_get_order_item_status',
                 [$this, 'findStatusByName']
             ),
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_get_order_items_for_notification',
                 [$this->orderItemsForNotificationProvider, 'getItems']
             )

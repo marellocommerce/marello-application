@@ -26,6 +26,7 @@ marello:
         invoiced_at.label:          Invoiced At
         invoice_reference.label:    Invoice Reference
         payment_method.label:       Payment Method
+        payment_method_options.label: Payment Method Options
         payment_details.label:      Payment Details
         payment_reference.label:    Payment Reference
         shipping_method.label:      Shipping Method
@@ -167,6 +168,7 @@ marello:
 
         sections:
             general: General
+            payment_information: Payment Information
             shipping_information: Shipping Information
             subtotals: Order Totals
             additional: Additional
@@ -176,6 +178,7 @@ marello:
                 choose: Select an address
                 choose_or_create: Select an existing address or enter a new address below
                 manual: Enter address manually
+            payment_options.label: Payment Options
             shipping_options.label: Shipping Options
             override_shipping_cost.label: Override Shipping Cost
 
@@ -186,6 +189,7 @@ marello:
 
         btn:
             calculate_shipping: Calculate Shipping
+            calculate_payment: Calculate Payment
 
         system_configuration:
             fields:
