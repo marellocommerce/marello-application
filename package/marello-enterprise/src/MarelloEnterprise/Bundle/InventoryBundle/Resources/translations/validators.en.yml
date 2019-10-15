@@ -1,9 +1,0 @@
-marelloenterprise:
-    inventory:
-        validation:
-            messages:
-                error:
-                    unique_warehouse_inventory_level: Warehouse should be unique for an Inventory Level
-                    default_warehouse_exists:         There must be a default warehouse
-                    warehouse_added_to_linked_group:  This warehouse added to linked group, for changing warehouse type please remove it from group or unlink group
-                    fixed_warehouse_type_linking:     Fixed Warehouse(Group) can be linked just with one SalesChannel(Group)
