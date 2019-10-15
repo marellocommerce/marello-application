@@ -16,7 +16,7 @@ class MarelloCustomerBundleInstaller implements Installation
      */
     public function getMigrationVersion()
     {
-        return 'v1_0';
+        return 'v1_1';
     }
 
     /**
@@ -41,6 +41,7 @@ class MarelloCustomerBundleInstaller implements Installation
 
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('name', 'string', ['length' => 255]);
+        $table->addColumn('payment_term_id', 'integer', ['notnull' => false]);
         $table->addColumn('parent_id', 'integer', ['notnull' => false]);
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime');
@@ -77,6 +78,12 @@ class MarelloCustomerBundleInstaller implements Installation
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_organization'),
             ['organization_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_payment_term'),
+            ['payment_term_id'],
             ['id'],
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
