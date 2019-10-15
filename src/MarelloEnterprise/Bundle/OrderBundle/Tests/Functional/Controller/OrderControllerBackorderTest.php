@@ -8,6 +8,7 @@ use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
+use Marello\Bundle\PaymentBundle\Method\PaymentMethodInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
@@ -67,7 +68,16 @@ class OrderControllerBackorderTest extends WebTestCase
 
         /** @var Product $product */
         $product = $this->getReference(LoadProductData::PRODUCT_6_REF);
-
+        $inventoryItemManager = $this->getContainer()->get('doctrine')
+            ->getManagerForClass(InventoryItem::class);
+        /** @var InventoryItem $inventoryItem */
+        $inventoryItem = $inventoryItemManager
+            ->getRepository(InventoryItem::class)
+            ->findOneBy(['product' => $product->getId()]);
+        $inventoryItem
+            ->setOrderOnDemandAllowed(false);
+        $inventoryItemManager->persist($inventoryItem);
+        $inventoryItemManager->flush($inventoryItem);
         $price = $product->getPrice($salesChannel->getCurrency())->getPrice()->getValue();
         $orderItems = [
             [
@@ -131,7 +141,9 @@ class OrderControllerBackorderTest extends WebTestCase
         $inventoryItem = $inventoryItemManager
             ->getRepository(InventoryItem::class)
             ->findOneBy(['product' => $product->getId()]);
-        $inventoryItem->setBackorderAllowed(true);
+        $inventoryItem
+            ->setBackorderAllowed(true)
+            ->setOrderOnDemandAllowed(false);
         $inventoryItemManager->persist($inventoryItem);
         $inventoryItemManager->flush($inventoryItem);
 
@@ -320,6 +332,10 @@ class OrderControllerBackorderTest extends WebTestCase
      */
     private function getSubmittedData($form, $orderCustomer, $salesChannel, $orderItems)
     {
+        $paymentMethodProvider = $this->getContainer()->get('marello_payment.payment_method.composite_provider');
+        $paymentMethods = $paymentMethodProvider->getPaymentMethods();
+        /** @var PaymentMethodInterface $paymentMethod */
+        $paymentMethod = reset($paymentMethods);
         /** @var ShippingMethodProviderInterface $shippingMethodsProvider */
         $shippingMethodsProvider = $this->getContainer()->get('marello_shipping.shipping_method_provider');
         $shippingMethods = $shippingMethodsProvider->getShippingMethods();
@@ -338,6 +354,7 @@ class OrderControllerBackorderTest extends WebTestCase
                 'billingAddress' => $this->getAddressFormData($orderCustomer->getPrimaryAddress()),
                 'shippingAddress' => $this->getAddressFormData($orderCustomer->getPrimaryAddress()),
                 'calculateShipping' => true,
+                'paymentMethod' => $paymentMethod->getIdentifier(),
                 'shippingMethod' => $shippingMethod->getIdentifier(),
                 'shippingMethodType' => $shippingMethodType->getIdentifier(),
                 'estimatedShippingCostAmount' => 5.00
