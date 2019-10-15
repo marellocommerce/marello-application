@@ -46,7 +46,7 @@ services:
         volumes_from:
             - data
         volumes:
-            - ../applications/demo-marello-com:/var/www
+            - ../applications/demo-marello-com:/var/www:cached
         environment:
             - VIRTUAL_HOST=demo.marello.docker
             - IS_LOCAL=true

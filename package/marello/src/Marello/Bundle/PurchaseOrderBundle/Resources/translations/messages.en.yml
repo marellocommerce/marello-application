@@ -24,6 +24,7 @@ marello:
         has_item.label:                                 Has Product
         billing_and_shipping.label:                     Billing & Shipping Info
         shipping_address.label:                         Shipping Address
+        data.label:                                     Data
 
         ui:
             continue:                                   Continue
@@ -68,3 +69,8 @@ marello:
             purchaseorder:
                 saved:                                  Purchase Order saved succesfully
                 not_saved:                              Something went wrong, Purchase Order was not saved
+
+        system_configuration:
+            fields:
+                purchaseorder_notification.label:          Purchase Order notification
+                purchaseorder_notification_address.label:  Purchase Order notification email address

@@ -12,6 +12,7 @@ services:
 
     marello_payment_term.payment_term.form.handler:
         class: 'Marello\Bundle\PaymentTermBundle\Form\Handler\PaymentTermFormHandler'
+        public: true
         arguments:
             - '@marello_payment_term.payment_term.form'
             - '@request_stack'
@@ -21,6 +22,13 @@ services:
         class: 'Marello\Bundle\PaymentTermBundle\Form\Type\PaymentTermChoiceType'
         arguments:
             - '@marello_payment_term.provider.payment_term'
+            - '@oro_locale.helper.localization'
+        tags:
+            - { name: form.type }
+
+    marello_payment_term.form_type.payment_term_select:
+        class: 'Marello\Bundle\PaymentTermBundle\Form\Type\PaymentTermSelectType'
+        arguments:
             - '@oro_locale.helper.localization'
         tags:
             - { name: form.type }

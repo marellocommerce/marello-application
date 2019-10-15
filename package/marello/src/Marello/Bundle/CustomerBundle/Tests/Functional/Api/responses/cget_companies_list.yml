@@ -23,6 +23,10 @@ data:
         attributes:
             name: company2
         relationships:
+            paymentTerm:
+                data:
+                    type: marellopaymentterms
+                    id: '<toString(@company2->paymentTerm->id)>'
             customers:
                 data:
                     -

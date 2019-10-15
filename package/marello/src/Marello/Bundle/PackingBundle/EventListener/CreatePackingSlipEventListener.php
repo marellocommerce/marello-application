@@ -5,6 +5,7 @@ namespace Marello\Bundle\PackingBundle\EventListener;
 use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\PackingBundle\Entity\PackingSlip;
+use Marello\Bundle\PackingBundle\Event\AfterPackingSlipCreationEvent;
 use Marello\Bundle\PackingBundle\Event\BeforePackingSlipCreationEvent;
 use Marello\Bundle\PackingBundle\Mapper\MapperInterface;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
@@ -74,7 +75,11 @@ class CreatePackingSlipEventListener
             return;
         }
         foreach ($packingSlips as $packingSlip) {
-            $this->entityManager->persist($packingSlip);
+            $afterPackingSlipCreationEvent = new AfterPackingSlipCreationEvent($packingSlip);
+            $this->eventDispatcher->dispatch(AfterPackingSlipCreationEvent::NAME, $afterPackingSlipCreationEvent);
+            if ($packingSlip = $afterPackingSlipCreationEvent->getPackingSlip()) {
+                $this->entityManager->persist($packingSlip);
+            }
         }
         $this->entityManager->flush();
         

@@ -25,7 +25,6 @@ data:
         salesChannelName: channel3
         purchaseDate: '@marello_order_1->purchaseDate->format("Y-m-d\TH:i:s\Z")'
         data: null
-        locale: null
         workflowItem:
             currentStep:
                 name: pending
