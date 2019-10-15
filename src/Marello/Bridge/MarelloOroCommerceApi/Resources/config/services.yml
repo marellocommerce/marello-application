@@ -1,0 +1,7 @@
+services:
+    marello_commerce_bridge.workflow.action.send_email_template.marello_decorator:
+        class: 'Marello\Bridge\MarelloOroCommerceApi\Workflow\Action\SendEmailTemplateMarelloDecorator'
+        public: false
+        decorates: oro_email.workflow.action.send_email_template
+        arguments:
+            - '@marello_commerce_bridge.workflow.action.send_email_template.marello_decorator.inner'
