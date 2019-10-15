@@ -49,7 +49,7 @@
     </td>
 {% endblock %}
 
-{% macro marello_order_item_collection_item_prototype(widget, widgetContainerAttributes) %}
+{% macro marello_order_item_collection_item_prototype(widget, attributes) %}
     {% if 'collection' in widget.vars.block_prefixes %}
         {% set form = widget.vars.prototype %}
         {% set name = widget.vars.full_name ~ '[' ~ widget.vars.prototype.vars.name ~ ']' %}
@@ -68,7 +68,7 @@
 
     {% set page_component_options = { 'disabled': not allow_delete } %}
 
-    <tr data-content="{{ name }}" data-validation-optional-group {{ widgetContainerAttributes }}
+    <tr data-content="{{ name }}"
         class="marello-line-item display-values"
         data-page-component-module="oroui/js/app/components/view-component"
         data-page-component-options="{{ {view: 'marelloorder/js/app/views/order-item-view'}|json_encode }}"

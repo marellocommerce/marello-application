@@ -8,7 +8,6 @@ services:
         arguments:
             - name: 'subscription'
               label: 'Subscription'
-              attribute_family_code: 'marello_subscription'
         tags:
             - {name: marello_product.product_type}
 

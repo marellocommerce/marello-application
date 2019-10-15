@@ -6,10 +6,13 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Migrations\Data\ORM\AssignAttributesToDefaultFamily;
+use Marello\Bundle\ProductBundle\Migrations\Data\ORM\LoadDefaultAttributeFamilyData;
 use Marello\Bundle\ProductBundle\Migrations\Data\ORM\MakeProductAttributesTrait;
 use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
 use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeGroup;
 use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeGroupRelation;
+use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
 class LoadProductSubscriptionAttributesAndGroupData extends AbstractFixture implements
@@ -20,9 +23,10 @@ class LoadProductSubscriptionAttributesAndGroupData extends AbstractFixture impl
 
     /** @var string */
     const GROUP_CODE = 'subscription';
+    const GROUP_LABEL = 'Subscription';
 
     /** @var array */
-    private $fields = [
+    const ATTRIBUTES = [
         'subscriptionDuration' => [
             'visible' => true
         ],
@@ -42,7 +46,7 @@ class LoadProductSubscriptionAttributesAndGroupData extends AbstractFixture impl
      */
     public function load(ObjectManager $manager)
     {
-        $this->makeProductAttributes($this->fields);
+        $this->makeProductAttributes(self::ATTRIBUTES, ExtendScope::ORIGIN_CUSTOM);
         $this->addGroup($manager);
     }
 
@@ -58,22 +62,48 @@ class LoadProductSubscriptionAttributesAndGroupData extends AbstractFixture impl
                 'code' => LoadSubscriptionAttributeFamilyData::SUBSCRIPTION_FAMILY_CODE
             ]);
 
+        $manager->persist(
+            $this->createGroup(
+                $subscriptionFamily,
+                LoadDefaultAttributeFamilyData::GENERAL_GROUP_CODE,
+                LoadDefaultAttributeFamilyData::GENERAL_GROUP_LABEL,
+                AssignAttributesToDefaultFamily::ATTRIBUTES
+            )
+        );
+        $manager->persist(
+            $this->createGroup(
+                $subscriptionFamily,
+                self::GROUP_CODE,
+                self::GROUP_LABEL,
+                self::ATTRIBUTES
+            )
+        );
+        $manager->flush();
+    }
+
+    /**
+     * @param AttributeFamily $family
+     * @param string $code
+     * @param string $label
+     * @param array $attributes
+     * @return AttributeGroup
+     */
+    private function createGroup($family, $code, $label, $attributes) {
         $attributeGroup = new AttributeGroup();
-        $attributeGroup->setAttributeFamily($subscriptionFamily);
-        $attributeGroup->setDefaultLabel('Subscription');
-        $attributeGroup->setCode(self::GROUP_CODE);
+        $attributeGroup->setAttributeFamily($family);
+        $attributeGroup->setDefaultLabel($label);
+        $attributeGroup->setCode($code);
         $attributeGroup->setIsVisible(true);
 
         $configManager = $this->getConfigManager();
-        foreach ($this->fields as $attribute => $data) {
+        foreach ($attributes as $attribute => $data) {
             $fieldConfigModel = $configManager->getConfigFieldModel(Product::class, $attribute);
             $attributeGroupRelation = new AttributeGroupRelation();
             $attributeGroupRelation->setEntityConfigFieldId($fieldConfigModel->getId());
             $attributeGroup->addAttributeRelation($attributeGroupRelation);
         }
-
-        $manager->persist($attributeGroup);
-        $manager->flush();
+        
+        return $attributeGroup;
     }
 
     /**
@@ -82,6 +112,8 @@ class LoadProductSubscriptionAttributesAndGroupData extends AbstractFixture impl
     public function getDependencies()
     {
         return [
+            LoadDefaultAttributeFamilyData::class,
+            AssignAttributesToDefaultFamily::class,
             LoadSubscriptionAttributeFamilyData::class
         ];
     }
