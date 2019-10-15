@@ -4,12 +4,12 @@ namespace Marello\Bundle\PurchaseOrderBundle\EventListener\Doctrine;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
-
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
+use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
+use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
-
-use Marello\Bundle\SupplierBundle\Entity\Supplier;
-use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 
 class PurchaseOrderWorkflowTransitListener
 {
@@ -36,8 +36,22 @@ class PurchaseOrderWorkflowTransitListener
     public function postPersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        if ($entity instanceof PurchaseOrder && $entity->getSupplier()->getPoSendBy() === Supplier::SEND_PO_MANUALLY) {
-            $this->purchaseOrderId = $entity->getId();
+        if ($entity instanceof PurchaseOrder) {
+            if ($entity->getSupplier()->getPoSendBy() === Supplier::SEND_PO_MANUALLY) {
+                $this->purchaseOrderId = $entity->getId();
+            } else {
+                $onDemandItems = [];
+                /** @var PurchaseOrderItem[] $poItems */
+                $poItems = $entity->getItems()->toArray();
+                foreach ($poItems as $poItem) {
+                    if ($this->isOrderOnDemandAllowed($poItem->getProduct())) {
+                        $onDemandItems[] = $poItem;
+                    }
+                }
+                if (count($onDemandItems) === count($poItems)) {
+                    $this->purchaseOrderId = $entity->getId();
+                }
+            }
         }
     }
 
@@ -91,5 +105,20 @@ class PurchaseOrderWorkflowTransitListener
             }
         }
         return null;
+    }
+
+    /**
+     * @param Product $product
+     * @return bool
+     */
+    private function isOrderOnDemandAllowed(Product $product)
+    {
+        foreach ($product->getInventoryItems() as $inventoryItem) {
+            if ($inventoryItem->isOrderOnDemandAllowed()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -41,6 +41,9 @@ class SendProcessor
     /** @var EmailNotificationSender $emailNotificationSender */
     protected $emailNotificationSender;
 
+    /** @var bool $saveNotificationAsActivity */
+    protected $saveNotificationAsActivity = true;
+
     /**
      * EmailSendProcessor constructor.
      *
@@ -132,10 +135,21 @@ class SendProcessor
                 [$notification]
             );
         }
-        $this->activityManager->addActivityTarget($notification, $entity);
+        if ($this->saveNotificationAsActivity) {
+            $this->activityManager->addActivityTarget($notification, $entity);
 
-        $this->manager->persist($notification);
-        $this->manager->flush();
+            $this->manager->persist($notification);
+            $this->manager->flush();
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     * @param bool $saveAsActivity
+     */
+    public function setNotifcationShouldBeSavedAsActivity(bool $saveAsActivity)
+    {
+        $this->saveNotificationAsActivity = $saveAsActivity;
     }
 
     /**
