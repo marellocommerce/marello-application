@@ -1,2 +1,0 @@
-bundles:
-    - { name: Marello\Bundle\UPSBundle\MarelloUPSBundle, kernel: false, priority: 220 }

@@ -1,0 +1,7 @@
+marello:
+    orocommerce:
+        orocommercesettings:
+            url.tooltip: 'Url of OroCommerce admin including the web backend prefix. For example: http://example.com/admin'
+            inventory_threshold.tooltip: 'The value that defines the limit of the inventory after which this product can not be ordered'
+            low_inventory_threshold.tooltip: 'The minimum inventory level defined for the product. Reaching the defined level will trigger a warning message to the buyer in the front store.'
+            back_order.tooltip: 'Backorder flag defines whether a product may be ordered while not in stock or when the inventory is low. When such product is ordered, the shipment will happen once the product is restocked.'
