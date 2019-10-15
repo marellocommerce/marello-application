@@ -18,16 +18,21 @@ define(function(require) {
             urlSelector: 'input[name$="[transport][url]"]',
             usernameSelector: 'input[name$="[transport][username]"]',
             keySelector: 'input[name$="[transport][key]"]',
+            enterpriseSelector: 'input[name$="[transport][enterprise]"]',
             currencySelector: 'select[name$="[transport][currency]"]',
+            businessUnitSelector: 'select[name$="[transport][businessUnit]"]',
             productUnitSelector: 'select[name$="[transport][productUnit]"]',
             customerTaxCodeSelector: 'select[name$="[transport][customerTaxCode]"]',
             priceListSelector: 'select[name$="[transport][priceList]"]',
             productFamilySelector: 'select[name$="[transport][productFamily]"]',
+            warehouseSelector: 'select[name$="[transport][warehouse]"]',
             container: '.control-group',
+            businessUnitUpdateRoute: '',
             productUnitUpdateRoute: '',
             customerTaxCodeUpdateRoute: '',
             priceListUpdateRoute: '',
-            productFamilyUpdateRoute: ''
+            productFamilyUpdateRoute: '',
+            warehouseUpdateRoute: ''
         },
 
         /**
@@ -52,15 +57,19 @@ define(function(require) {
             this.options = _.defaults(options || {}, this.options);
             this.$elem = options._sourceElement;
             this.$form = $(options.formSelector);
+            this.selectedBusinessUnit = options.selectedBusinessUnit;
             this.selectedProductUnit = options.selectedProductUnit;
             this.selectedCustomerTaxCode = options.selectedCustomerTaxCode;
             this.selectedPriceList = options.selectedPriceList;
             this.selectedProductFamily = options.selectedProductFamily;
+            this.selectedWarehouse = options.selectedWarehouse;
 
+            this.businessUnitLoadingMaskView = new LoadingMaskView({container: this.$elem.find(this.options.businessUnitSelector).closest('.controls')});
             this.productUnitLoadingMaskView = new LoadingMaskView({container: this.$elem.find(this.options.productUnitSelector).closest('.controls')});
             this.customerTaxCodeLoadingMaskView = new LoadingMaskView({container: this.$elem.find(this.options.customerTaxCodeSelector).closest('.controls')});
             this.priceListLoadingMaskView = new LoadingMaskView({container: this.$elem.find(this.options.priceListSelector).closest('.controls')});
             this.productFamilyLoadingMaskView = new LoadingMaskView({container: this.$elem.find(this.options.productFamilySelector).closest('.controls')});
+            this.warehouseLoadingMaskView = new LoadingMaskView({container: this.$elem.find(this.options.warehouseSelector).closest('.controls')});
             this.$elem.find(this.options.urlSelector)
                 .on('change', _.bind(this.makeChanges, this))
                 .trigger('change');
@@ -73,97 +82,61 @@ define(function(require) {
             this.$elem.find(this.options.currencySelector)
                 .on('change', _.bind(this.updatePriceLists, this))
                 .trigger('change');
+            this.$elem.find(this.options.enterpriseSelector)
+                .on('change', _.bind(this.toggleWarehousesVisibility, this))
+                .trigger('change');
         },
 
         makeChanges: function() {
+            this.updateBusinessUnits();
             this.updateProductUnits();
             this.updateCustomerTaxCodes();
             this.updatePriceLists();
             this.updateProductFamilies();
+            this.updateWarehouses();
         },
+        updateBusinessUnits: function() {
+            var url = this.$elem.find(this.options.urlSelector).val();
+            var username = this.$elem.find(this.options.usernameSelector).val();
+            var key = this.$elem.find(this.options.keySelector).val();
 
+            if (url !== '' && username !== '' && key !== '') {
+                this.updateItem(
+                    this.options.businessUnitUpdateRoute,
+                    this.options.businessUnitSelector,
+                    this.businessUnitLoadingMaskView,
+                    this.selectedBusinessUnit
+                );
+            }
+        },
         updateProductUnits: function() {
             var url = this.$elem.find(this.options.urlSelector).val();
             var username = this.$elem.find(this.options.usernameSelector).val();
             var key = this.$elem.find(this.options.keySelector).val();
-            var self = this;
-            
+
             if (url !== '' && username !== '' && key !== '') {
-                $.ajax({
-                    url: this.options.productUnitUpdateRoute,
-                    type: 'POST',
-                    data: this.$form.serialize(),
-                    beforeSend: function() {
-                        self.productUnitLoadingMaskView.show();
-                    },
-                    success: function(json) {
-                        $(self.options.productUnitSelector)
-                            .closest(self.options.container)
-                            .show();
-                        $(self.options.productUnitSelector)
-                            .find('option')
-                            .remove();
-                        var selectedExists = false;
-                        $(json).each(function(index, data) {
-                            if (self.selectedProductUnit === data.value) {
-                                selectedExists = true
-                            }
-                            $(self.options.productUnitSelector)
-                                .append('<option value="' + data.value + '">' + data.label + '</option>');
-                        });
-                        if (self.selectedProductUnit !== null && selectedExists === true) {
-                            $(self.options.productUnitSelector).val(self.selectedProductUnit);
-                        }
-                        $(self.options.productUnitSelector).trigger('change');
-                    },
-                    complete: function() {
-                        self.productUnitLoadingMaskView.hide();
-                    }
-                });
+                this.updateItem(
+                    this.options.productUnitUpdateRoute,
+                    this.options.productUnitSelector,
+                    this.productUnitLoadingMaskView,
+                    this.selectedProductUnit
+                );
             }
         },
-
         updateCustomerTaxCodes: function() {
             var url = this.$elem.find(this.options.urlSelector).val();
             var username = this.$elem.find(this.options.usernameSelector).val();
             var key = this.$elem.find(this.options.keySelector).val();
-            var self = this;
 
             if (url !== '' && username !== '' && key !== '') {
-                $.ajax({
-                    url: this.options.customerTaxCodeUpdateRoute,
-                    type: 'POST',
-                    data: this.$form.serialize(),
-                    beforeSend: function() {
-                        self.customerTaxCodeLoadingMaskView.show();
-                    },
-                    success: function(json) {
-                        $(self.options.customerTaxCodeSelector)
-                            .closest(self.options.container)
-                            .show();
-                        $(self.options.customerTaxCodeSelector)
-                            .find('option')
-                            .remove();
-                        var selectedExists = false;
-                        $(json).each(function(index, data) {
-                            if (self.selectedCustomerTaxCode === data.value) {
-                                selectedExists = true
-                            }
-                            $(self.options.customerTaxCodeSelector)
-                                .append('<option value="' + data.value + '">' + data.label + '</option>');
-                        });
-                        if (self.selectedCustomerTaxCode !== null && selectedExists === true) {
-                            $(self.options.customerTaxCodeSelector).val(self.selectedCustomerTaxCode);
-                        }
-                        $(self.options.customerTaxCodeSelector).trigger('change');
-                    },
-                    complete: function() {
-                        self.customerTaxCodeLoadingMaskView.hide();
-                    }
-                });
+                this.updateItem(
+                    this.options.customerTaxCodeUpdateRoute,
+                    this.options.customerTaxCodeSelector,
+                    this.customerTaxCodeLoadingMaskView,
+                    this.selectedCustomerTaxCode
+                );
             }
         },
-
         updatePriceLists: function() {
             var url = this.$elem.find(this.options.urlSelector).val();
             var username = this.$elem.find(this.options.usernameSelector).val();
@@ -179,7 +152,6 @@ define(function(require) {
                 );
             }
         },
-
         updateProductFamilies: function() {
             var url = this.$elem.find(this.options.urlSelector).val();
             var username = this.$elem.find(this.options.usernameSelector).val();
@@ -194,7 +166,34 @@ define(function(require) {
                 );
             }
         },
-        
+        updateWarehouses: function() {
+            var url = this.$elem.find(this.options.urlSelector).val();
+            var username = this.$elem.find(this.options.usernameSelector).val();
+            var key = this.$elem.find(this.options.keySelector).val();
+            var enterprise = this.$elem.find(this.options.enterpriseSelector).is(':checked');
+
+            if (url !== '' && username !== '' && key !== '' && enterprise === true) {
+                this.updateItem(
+                    this.options.warehouseUpdateRoute,
+                    this.options.warehouseSelector,
+                    this.warehouseLoadingMaskView,
+                    this.selectedWarehouse
+                );
+            }
+        },
+        toggleWarehousesVisibility: function() {
+            var isEnterprise = this.$elem.find(this.options.enterpriseSelector).is(':checked');
+            var warehouseSelect = this.$elem.find(this.options.warehouseSelector);
+            var warehouseContainer = warehouseSelect.closest('.control-group');
+            if (isEnterprise === true) {
+                warehouseSelect.removeAttr("disabled");
+                warehouseContainer.show();
+                this.updateWarehouses();
+            } else {
+                warehouseSelect.attr('disabled', 'disabled');
+                warehouseContainer.hide();
+            }
+        },
         updateItem: function(route, selector, loadingMaskView, selectedItem) {
             var self = this;
             $.ajax({
@@ -213,7 +212,7 @@ define(function(require) {
                         .remove();
                     var selectedExists = false;
                     $(json).each(function(index, data) {
-                        if (selectedItem === data.value) {
+                        if (selectedItem.toString() === data.value) {
                             selectedExists = true
                         }
                         $(selector)
@@ -229,7 +228,6 @@ define(function(require) {
                 }
             });
         },
-
         dispose: function() {
             if (this.disposed) {
                 return;

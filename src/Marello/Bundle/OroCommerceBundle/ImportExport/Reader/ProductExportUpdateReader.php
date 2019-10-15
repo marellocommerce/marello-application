@@ -14,10 +14,8 @@ class ProductExportUpdateReader extends EntityReaderById
      */
     protected function getIdsFromContext(ContextInterface $context)
     {
-        if ($context->getOption(AbstractExportWriter::ACTION_FIELD) ===
-            AbstractExportWriter::UPDATE_ACTION) {
-            $ids = $context->getOption('ids', []);
-
+        $ids = $context->getOption('ids', []);
+        if ($context->getOption(AbstractExportWriter::ACTION_FIELD) === AbstractExportWriter::UPDATE_ACTION) {
             if ($context->hasOption('id')) {
                 $id = $context->getOption('id');
 
@@ -29,13 +27,12 @@ class ProductExportUpdateReader extends EntityReaderById
                     }
                 }
             }
-
-            if (empty($ids)) {
-                $ids[] = -1;
-            }
-            return $ids;
         }
-        
-        return [-1];
+
+        if (empty($ids)) {
+            $ids[] = -1;
+        }
+
+        return $ids;
     }
 }

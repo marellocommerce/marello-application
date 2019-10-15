@@ -29,6 +29,8 @@ services:
 
     marello_orocommerce.event_listener.doctrine.integration:
         class: 'Marello\Bundle\OroCommerceBundle\EventListener\Doctrine\OroCommerceIntegrationEventListener'
+        arguments:
+            - '%database_driver%'
         tags:
             - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\IntegrationBundle\Entity\Channel', event: postPersist }
             - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\IntegrationBundle\Entity\Channel', event: postUpdate }
@@ -57,14 +59,25 @@ services:
         arguments:
             - '@security.token_storage'
             - '@oro_integration.sync_scheduler.link'
+            - '@oro_security.encoder.default'
         tags:
             - { name: doctrine.event_listener, event: onFlush, priority: 100 }
+
+    marello_orocommerce.event_listener.doctrine.reverse_sync_product.all:
+        class: 'Marello\Bundle\OroCommerceBundle\EventListener\Doctrine\ReverseSyncAllProductsListener'
+        arguments:
+            - '@oro_integration.sync_scheduler.link'
+            - '@marello_orocommerce.importexport.writer.export.product.delete.bulk'
+        tags:
+            - { name: doctrine.event_listener, event: preUpdate }
+            - { name: doctrine.event_listener, event: preRemove }
 
     marello_orocommerce.event_listener.doctrine.reverse_sync_product_price:
         class: 'Marello\Bundle\OroCommerceBundle\EventListener\Doctrine\ReverseSyncProductPriceListener'
         arguments:
             - '@security.token_storage'
             - '@oro_integration.sync_scheduler.link'
+            - '@oro_security.encoder.default'
         tags:
             - { name: doctrine.event_listener, event: onFlush, priority: 10 }
 
@@ -73,14 +86,25 @@ services:
         arguments:
             - '@security.token_storage'
             - '@oro_integration.sync_scheduler.link'
+            - '@oro_security.encoder.default'
         tags:
             - { name: doctrine.event_listener, event: onFlush, priority: 20 }
+
+
+    marello_orocommerce.event_listener.reverse_sync_inventory_level.on_remote_product_creation:
+        class: 'Marello\Bundle\OroCommerceBundle\EventListener\ReverseSyncInventoryLevelOnRemoteProductCreationListener'
+        arguments:
+            - '@oro_integration.sync_scheduler.link'
+            - '@doctrine'
+        tags:
+            - { name: kernel.event_listener, event: marello_orocommerce.remote_product_created, method: onRemoteProductCreated }
 
     marello_orocommerce.event_listener.doctrine.reverse_sync_product_image:
         class: 'Marello\Bundle\OroCommerceBundle\EventListener\Doctrine\ReverseSyncProductImageListener'
         arguments:
             - '@security.token_storage'
             - '@oro_integration.sync_scheduler.link'
+            - '@oro_security.encoder.default'
         tags:
             - { name: doctrine.event_listener, event: postPersist }
             - { name: doctrine.event_listener, event: postUpdate }
@@ -90,32 +114,70 @@ services:
         arguments:
             - '@security.token_storage'
             - '@oro_integration.sync_scheduler.link'
+            - '@oro_security.encoder.default'
         tags:
             - { name: doctrine.event_listener, event: onFlush }
+
+    marello_orocommerce.event_listener.doctrine.reverse_sync_tax_code.all:
+        class: 'Marello\Bundle\OroCommerceBundle\EventListener\Doctrine\ReverseSyncAllTaxCodesListener'
+        arguments:
+            - '@marello_orocommerce.importexport.writer.export.tax_code.delete.bulk'
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\IntegrationBundle\Entity\Channel', event: preUpdate }
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\IntegrationBundle\Entity\Channel', event: preRemove }
 
     marello_orocommerce.event_listener.doctrine.reverse_sync_tax_rate:
         class: 'Marello\Bundle\OroCommerceBundle\EventListener\Doctrine\ReverseSyncTaxRateListener'
         arguments:
             - '@security.token_storage'
             - '@oro_integration.sync_scheduler.link'
+            - '@oro_security.encoder.default'
         tags:
             - { name: doctrine.event_listener, event: onFlush }
+
+    marello_orocommerce.event_listener.doctrine.reverse_sync_tax_rate.all:
+        class: 'Marello\Bundle\OroCommerceBundle\EventListener\Doctrine\ReverseSyncAllTaxRatesListener'
+        arguments:
+            - '@marello_orocommerce.importexport.writer.export.tax_rate.delete.bulk'
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\IntegrationBundle\Entity\Channel', event: preUpdate }
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\IntegrationBundle\Entity\Channel', event: preRemove }
 
     marello_orocommerce.event_listener.doctrine.reverse_sync_tax_jurisdiction:
         class: 'Marello\Bundle\OroCommerceBundle\EventListener\Doctrine\ReverseSyncTaxJurisdictionListener'
         arguments:
             - '@security.token_storage'
             - '@oro_integration.sync_scheduler.link'
+            - '@oro_security.encoder.default'
         tags:
             - { name: doctrine.event_listener, event: onFlush }
+
+    marello_orocommerce.event_listener.doctrine.reverse_sync_tax_jurisdiction.all:
+        class: 'Marello\Bundle\OroCommerceBundle\EventListener\Doctrine\ReverseSyncAllTaxJurisdictionsListener'
+        arguments:
+            - '@marello_orocommerce.importexport.writer.export.tax_jurisdiction.delete.bulk'
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\IntegrationBundle\Entity\Channel', event: preUpdate }
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\IntegrationBundle\Entity\Channel', event: preRemove }
 
     marello_orocommerce.event_listener.doctrine.reverse_sync_tax_rule:
         class: 'Marello\Bundle\OroCommerceBundle\EventListener\Doctrine\ReverseSyncTaxRuleListener'
         arguments:
             - '@security.token_storage'
             - '@oro_integration.sync_scheduler.link'
+            - '@oro_security.encoder.default'
         tags:
             - { name: doctrine.event_listener, event: onFlush }
+
+    marello_orocommerce.event_listener.doctrine.reverse_sync_tax_rule.all:
+        class: 'Marello\Bundle\OroCommerceBundle\EventListener\Doctrine\ReverseSyncAllTaxRulesListener'
+        arguments:
+            - '@oro_integration.sync_scheduler.link'
+            - '@marello_orocommerce.importexport.writer.export.tax_rule.delete.bulk'
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: preUpdate }
+            - { name: doctrine.event_listener, event: preRemove }
 
     marello_orocommerce.rest.client_factory:
         class: 'Marello\Bundle\OroCommerceBundle\Client\Factory\OroCommerceRestClientFactory'
@@ -417,14 +479,14 @@ services:
         public: false
         parent: oro_importexport.processor.import_abstract
         tags:
-            - { name: oro_importexport.processor, type: import, entity: 'Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel', alias:  marello_orocommerce_inventory_level.add_or_replace }
-            - { name: oro_importexport.processor, type: import_validation, entity: 'Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel', alias:  marello_orocommerce_inventory_level.add_or_replace }
+            - { name: oro_importexport.processor, type: import, entity: 'Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel', alias:  marello_orocommerce_inventory_level.add_or_replace }
+            - { name: oro_importexport.processor, type: import_validation, entity: 'Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel', alias:  marello_orocommerce_inventory_level.add_or_replace }
 
     marello_orocommerce.importexport.processor.export.inventory_level:
         public: false
         parent: oro_importexport.processor.export_abstract
         tags:
-            - { name: oro_importexport.processor, type: export, entity: 'Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel', alias:  marello_orocommerce_inventory_level.export }
+            - { name: oro_importexport.processor, type: export, entity: 'Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel', alias:  marello_orocommerce_inventory_level.export }
 
     marello_orocommerce.importexport.processor.import.tax_code:
         public: false
@@ -585,90 +647,127 @@ services:
             - '@oro_integration.logger.strategy'
             - '@marello_orocommerce.integration.transport'
 
+    marello_orocommerce.importexport.writer.export.abstract.item:
+        class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractItemExportWriter'
+        abstract: true
+        parent: marello_orocommerce.importexport.writer.export.abstract
+
+    marello_orocommerce.importexport.writer.export.abstract.bulk:
+        class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractBulkExportWriter'
+        abstract: true
+        parent: marello_orocommerce.importexport.writer.export.abstract
+
     marello_orocommerce.importexport.writer.export.order:
         class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\OrderExportWriter'
-        parent: marello_orocommerce.importexport.writer.export.abstract
+        parent: marello_orocommerce.importexport.writer.export.abstract.item
 
     marello_orocommerce.importexport.writer.export.product.create:
         class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\ProductExportCreateWriter'
-        parent: marello_orocommerce.importexport.writer.export.abstract
+        parent: marello_orocommerce.importexport.writer.export.abstract.item
+        calls:
+            - ['setEventDispatcher', ['@event_dispatcher']]
 
     marello_orocommerce.importexport.writer.export.product.update:
         class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\ProductExportUpdateWriter'
-        parent: marello_orocommerce.importexport.writer.export.abstract
+        parent: marello_orocommerce.importexport.writer.export.abstract.item
 
     marello_orocommerce.importexport.writer.export.product.delete:
         class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\ProductExportDeleteWriter'
-        parent: marello_orocommerce.importexport.writer.export.abstract
+        parent: marello_orocommerce.importexport.writer.export.abstract.item
 
     marello_orocommerce.importexport.writer.export.product_image.create:
         class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\ProductImageExportCreateWriter'
-        parent: marello_orocommerce.importexport.writer.export.abstract
+        parent: marello_orocommerce.importexport.writer.export.abstract.item
 
     marello_orocommerce.importexport.writer.export.product_image.update:
         class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\ProductImageExportUpdateWriter'
-        parent: marello_orocommerce.importexport.writer.export.abstract
+        parent: marello_orocommerce.importexport.writer.export.abstract.item
 
     marello_orocommerce.importexport.writer.export.product_image.delete:
         class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\ProductImageExportDeleteWriter'
-        parent: marello_orocommerce.importexport.writer.export.abstract
+        parent: marello_orocommerce.importexport.writer.export.abstract.item
 
     marello_orocommerce.importexport.writer.export.product_price.create:
         class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\ProductPriceExportCreateWriter'
-        parent: marello_orocommerce.importexport.writer.export.abstract
+        parent: marello_orocommerce.importexport.writer.export.abstract.item
 
     marello_orocommerce.importexport.writer.export.product_price.update:
         class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\ProductPriceExportUpdateWriter'
-        parent: marello_orocommerce.importexport.writer.export.abstract
+        parent: marello_orocommerce.importexport.writer.export.abstract.item
 
     marello_orocommerce.importexport.writer.export.inventory_level.update:
         class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\InventoryLevelExportUpdateWriter'
-        parent: marello_orocommerce.importexport.writer.export.abstract
+        parent: marello_orocommerce.importexport.writer.export.abstract.item
 
     marello_orocommerce.importexport.writer.export.tax_code.create:
         class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\TaxCodeExportCreateWriter'
-        parent: marello_orocommerce.importexport.writer.export.abstract
+        parent: marello_orocommerce.importexport.writer.export.abstract.item
 
     marello_orocommerce.importexport.writer.export.tax_code.update:
         class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\TaxCodeExportUpdateWriter'
-        parent: marello_orocommerce.importexport.writer.export.abstract
+        parent: marello_orocommerce.importexport.writer.export.abstract.item
 
     marello_orocommerce.importexport.writer.export.tax_code.delete:
         class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\TaxCodeExportDeleteWriter'
-        parent: marello_orocommerce.importexport.writer.export.abstract
+        parent: marello_orocommerce.importexport.writer.export.abstract.item
 
     marello_orocommerce.importexport.writer.export.tax_rate.create:
         class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\TaxRateExportCreateWriter'
-        parent: marello_orocommerce.importexport.writer.export.abstract
+        parent: marello_orocommerce.importexport.writer.export.abstract.item
 
     marello_orocommerce.importexport.writer.export.tax_rate.update:
         class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\TaxRateExportUpdateWriter'
-        parent: marello_orocommerce.importexport.writer.export.abstract
+        parent: marello_orocommerce.importexport.writer.export.abstract.item
 
     marello_orocommerce.importexport.writer.export.tax_rate.delete:
         class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\TaxRateExportDeleteWriter'
-        parent: marello_orocommerce.importexport.writer.export.abstract
+        parent: marello_orocommerce.importexport.writer.export.abstract.item
 
     marello_orocommerce.importexport.writer.export.tax_jurisdiction.create:
         class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\TaxJurisdictionExportCreateWriter'
-        parent: marello_orocommerce.importexport.writer.export.abstract
+        parent: marello_orocommerce.importexport.writer.export.abstract.item
 
     marello_orocommerce.importexport.writer.export.tax_jurisdiction.update:
         class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\TaxJurisdictionExportUpdateWriter'
-        parent: marello_orocommerce.importexport.writer.export.abstract
+        parent: marello_orocommerce.importexport.writer.export.abstract.item
 
     marello_orocommerce.importexport.writer.export.tax_jurisdiction.delete:
         class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\TaxJurisdictionExportDeleteWriter'
-        parent: marello_orocommerce.importexport.writer.export.abstract
+        parent: marello_orocommerce.importexport.writer.export.abstract.item
 
     marello_orocommerce.importexport.writer.export.tax_rule.create:
         class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\TaxRuleExportCreateWriter'
-        parent: marello_orocommerce.importexport.writer.export.abstract
+        parent: marello_orocommerce.importexport.writer.export.abstract.item
 
     marello_orocommerce.importexport.writer.export.tax_rule.update:
         class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\TaxRuleExportCreateWriter'
-        parent: marello_orocommerce.importexport.writer.export.abstract
+        parent: marello_orocommerce.importexport.writer.export.abstract.item
 
     marello_orocommerce.importexport.writer.export.tax_rule.delete:
         class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\TaxRuleExportDeleteWriter'
-        parent: marello_orocommerce.importexport.writer.export.abstract
+        parent: marello_orocommerce.importexport.writer.export.abstract.item
+
+    marello_orocommerce.importexport.writer.export.product.delete.bulk:
+        class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\ProductExportBulkDeleteWriter'
+        parent: marello_orocommerce.importexport.writer.export.abstract.bulk
+
+    marello_orocommerce.importexport.writer.export.tax_code.delete.bulk:
+        class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\TaxCodeExportBulkDeleteWriter'
+        parent: marello_orocommerce.importexport.writer.export.abstract.bulk
+
+    marello_orocommerce.importexport.writer.export.tax_jurisdiction.delete.bulk:
+        class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\TaxJurisdictionExportBulkDeleteWriter'
+        parent: marello_orocommerce.importexport.writer.export.abstract.bulk
+
+    marello_orocommerce.importexport.writer.export.tax_rate.delete.bulk:
+        class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\TaxRateExportBulkDeleteWriter'
+        parent: marello_orocommerce.importexport.writer.export.abstract.bulk
+
+    marello_orocommerce.importexport.writer.export.tax_rule.delete.bulk:
+        class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\TaxRuleExportBulkDeleteWriter'
+        parent: marello_orocommerce.importexport.writer.export.abstract.bulk
+
+    marello_orocommerce.validator.warehouse_exists_for_enterprise_edition:
+        class: 'Marello\Bundle\OroCommerceBundle\Validator\WarehouseExistsForEnterpriseEditionValidator'
+        tags:
+            - { name: validator.constraint_validator, alias: 'marello_orocommerce.warehouse_exists_for_enterprise_edition_validator' }

@@ -15,19 +15,24 @@ use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProviderInterface;
 class ProductPriceExportReader extends EntityReader
 {
     const SKU_FILTER = 'sku';
+    const CURRENCY_FILTER = 'currency';
+    const VALUE_FILTER = 'value';
 
     /**
      * @var string
+     * @deprecated will be removed in 2.0
      */
     protected $sku;
 
     /**
      * @var float
+     * @deprecated will be removed in 2.0
      */
     protected $value;
 
     /**
      * @var string
+     * @deprecated will be removed in 2.0
      */
     protected $currency;
 
@@ -65,15 +70,35 @@ class ProductPriceExportReader extends EntityReader
             ->andWhere('p.' . self::SKU_FILTER . ' = :sku')
             ->andWhere('o.value = :value')
             ->andWhere('o.currency = :currency')
-            ->setParameter(self::SKU_FILTER, $this->sku ? : -1)
-            ->setParameter('value', $this->value ? : -1)
-            ->setParameter('currency', $this->currency ? : -1);
+            ->setParameter(self::SKU_FILTER, $this->getParametersFromContext(self::SKU_FILTER))
+            ->setParameter(self::VALUE_FILTER, $this->getParametersFromContext(self::VALUE_FILTER))
+            ->setParameter(self::CURRENCY_FILTER, $this->getParametersFromContext(self::CURRENCY_FILTER));
 
         return $qb;
     }
 
     /**
      * {@inheritdoc}
+     * @param string $parameter
+     * @return string|null
+     */
+    protected function getParametersFromContext($parameter)
+    {
+        $context = $this->getContext();
+        if (in_array($context->getOption('entityName'), [ProductPrice::class, ProductChannelPrice::class])) {
+            if ($context->getOption(AbstractExportWriter::ACTION_FIELD) === $this->action
+                && $context->hasOption($parameter)
+            ) {
+                return $context->getOption($parameter);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @deprecated will be removed in 2.0 in favour of the parent action
      */
     protected function initializeFromContext(ContextInterface $context)
     {
@@ -84,6 +109,7 @@ class ProductPriceExportReader extends EntityReader
                 $this->currency = $context->getOption('currency');
             }
         }
+
         parent::initializeFromContext($context);
     }
 }
