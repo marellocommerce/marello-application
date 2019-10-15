@@ -32,7 +32,7 @@ Example:
     "id": "100909",
     "attributes": {
       "productId": 848,
-      "name": "9'4\" Super Magnum",
+      "denormalizedDefaultName": "9'4\" Super Magnum",
       "manufacturingCode": "TZH-529-udz-090",
       "productType": null,
       "weight": 12,
@@ -40,6 +40,12 @@ Example:
       "data": []
     },
     "relationships": {
+      "names": {
+        "data": {
+          "type": "localizedfallbackvalues",
+          "id": 1
+        }
+      },
       "status": {
         "data": {
           "type": "productstatuses",

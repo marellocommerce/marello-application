@@ -6,48 +6,18 @@ datagrids:
             acl_resource: marello_product_view
             query:
                 select:
+                    - p
                     - p.id
                     - p.sku
                     - p.type
-                    - IDENTITY(p.image) as image
-                    - p.name
                     - p.weight
-                    - p.name
                     - p.manufacturingCode
                     - p.createdAt
                     - p.updatedAt
-                    - tc.code as taxCode
-                    - (CASE WHEN p.image IS NOT NULL THEN true ELSE false END) as hasImage
-                    - s.label as status
-                    - count(sc.code) as channelsCount
-                    - count(cat.id) as categoriesCount
-                    - sum(defpr.value) as defaultPricesSum
-                    - sum(sppr.value) as specialPricesSum
-                    - sum(mspr.value) as msrpPricesSum
-                    - sum(defcpr.value) as defaultChannelPricesSum
-                    - sum(spcpr.value) as specialChannelPricesSum
                 from:
                     - { table: MarelloProductBundle:Product, alias: p }
-                join:
-                    left:
-                        - { join: p.status, alias: s }
-                        - { join: p.taxCode, alias: tc }
-                        - { join: p.channels, alias: sc }
-                        - { join: p.categories, alias: cat }
-                        - { join: p.prices, alias: pr }
-                        - { join: pr.defaultPrice, alias: defpr }
-                        - { join: pr.specialPrice, alias: sppr }
-                        - { join: pr.msrpPrice, alias: mspr }
-                        - { join: p.channelPrices, alias: cpr }
-                        - { join: cpr.defaultPrice, alias: defcpr }
-                        - { join: cpr.specialPrice, alias: spcpr }
-                groupBy: p.id, s.label
+                groupBy: p.id
         columns:
-            image:
-                label:            marello.product.image.label
-                type:             twig
-                frontend_type:    html
-                template:         MarelloProductBundle:Product/Datagrid/Property:image.html.twig
             type:
                 label:              marello.product.type.label
                 frontend_type:      string
@@ -55,14 +25,7 @@ datagrids:
                 label:              marello.product.sku.label
                 frontend_type:      string
             name:
-                label:              marello.product.name.label
-                frontend_type:      string
-            status:
-                label:              marello.product.status.label
-                frontend_type:      string
-            taxCode:
-                label:              marello.product.tax_code.label
-                frontend_type:      string
+                label:              marello.product.names.label
             manufacturingCode:
                 label:              marello.product.manufacturing_code.label
                 frontend_type:      string
@@ -70,53 +33,6 @@ datagrids:
             weight:
                 label:              marello.product.weight.label
                 frontend_type:      number
-                renderable:         false
-            defaultPrices:
-                label:              marello.pricing.assembledpricelist.default_price.plural_label
-                type:               twig
-                frontend_type:      html
-                template:           MarelloProductBundle:Product/Datagrid/Property:defaultPrices.html.twig
-                renderable:         false
-                align:              right
-            specialPrices:
-                label:              marello.pricing.assembledpricelist.special_price.plural_label
-                type:               twig
-                frontend_type:      html
-                template:           MarelloProductBundle:Product/Datagrid/Property:specialPrices.html.twig
-                renderable:         false
-                align:              right
-            msrpPrices:
-                label:              marello.pricing.assembledpricelist.msrp_price.plural_label
-                type:               twig
-                frontend_type:      html
-                template:           MarelloProductBundle:Product/Datagrid/Property:msrpPrices.html.twig
-                renderable:         false
-                align:              right
-            defaultChannelPrices:
-                label:              marello.pricing.assembledchannelpricelist.default_price.plural_label
-                type:               twig
-                frontend_type:      html
-                template:           MarelloProductBundle:Product/Datagrid/Property:defaultChannelPrices.html.twig
-                renderable:         false
-                align:              right
-            specialChannelPrices:
-                label:              marello.pricing.assembledchannelpricelist.special_price.plural_label
-                type:               twig
-                frontend_type:      html
-                template:           MarelloProductBundle:Product/Datagrid/Property:specialChannelPrices.html.twig
-                renderable:         false
-                align:              right
-            channels:
-                label:              marello.product.channels.label
-                type:               twig
-                frontend_type:      html
-                template:           MarelloProductBundle:Product/Datagrid/Property:channels.html.twig
-                renderable:         false
-            categories:
-                label:              marello.product.categories.label
-                type:               twig
-                frontend_type:      html
-                template:           MarelloProductBundle:Product/Datagrid/Property:categories.html.twig
                 renderable:         false
             createdAt:
                 label:              oro.ui.created_at
@@ -127,6 +43,9 @@ datagrids:
                 renderable:         false
         properties:
             id: ~
+            name:
+                type: localized_value
+                data_name: names
             view_link:
                 type:       url
                 route:      marello_product_view
@@ -139,26 +58,14 @@ datagrids:
             columns:
                 type:                   { data_name: p.type }
                 sku:                    { data_name: p.sku }
-                name:                   { data_name: p.name }
-                status:                 { data_name: s.label }
+                name:                   { data_name: name }
                 weight:                 { data_name: p.weight }
-                taxCode:                { data_name: p.taxCode }
-                channels:               { data_name: channelsCount }
-                categories:             { data_name: categoriesCount }
-                defaultPrices:          { data_name: defaultPricesSum }
-                specialPrices:          { data_name: specialPricesSum }
-                defaultChannelPrices:   { data_name: defaultChannelPricesSum }
-                specialChannelPrices:   { data_name: specialChannelPricesSum }
-                msrpPrices:             { data_name: msrpPricesSum }
                 createdAt:              { data_name: p.createdAt }
                 updatedAt:              { data_name: p.updatedAt }
             default:
                 name: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
         filters:
             columns:
-                image:
-                    type:             boolean
-                    data_name:        hasImage
                 type:
                     type:             string
                     data_name:        p.type
@@ -167,59 +74,10 @@ datagrids:
                     data_name:        p.sku
                 name:
                     type:             string
-                    data_name:        p.name
-                status:
-                    type: entity
-                    data_name: s
-                    options:
-                        field_options:
-                            class: Marello\Bundle\ProductBundle\Entity\ProductStatus
+                    data_name:        name
                 manufacturingCode:
                     data_name:          p.manufacturingCode
                     type:               string
-                    enabled:            false
-                defaultPrices:
-                    data_name:          defpr.value
-                    type:               number
-                    enabled:            false
-                specialPrices:
-                    data_name:          sppr.value
-                    type:               number
-                    enabled:            false
-                msrpPrices:
-                    data_name:          mspr.value
-                    type:               number
-                    enabled:            false
-                defaultChannelPrices:
-                    data_name:          defcpr.value
-                    type:               number
-                    enabled:            false
-                specialChannelPrices:
-                    data_name:          spcpr.value
-                    type:               number
-                    enabled:            false
-                taxCode:
-                    type:               choice
-                    data_name:          tc.id
-                    options:
-                        field_options:
-                            multiple:   true
-                            choices:    '@marello_tax.provider.tax_codes_choices->getTaxCodes()'
-                channels:
-                    type:               choice
-                    data_name:          sc.code
-                    options:
-                        field_options:
-                            multiple:   true
-                            choices:    '@marello_sales.provider.basic_sales_channels_choices->getChannels()'
-                    enabled:            false
-                categories:
-                    type:               choice
-                    data_name:          cat.code
-                    options:
-                        field_options:
-                            multiple:   true
-                            choices:    '@marello_catalog.provider.categories_choices->getCategories()'
                     enabled:            false
                 weight:
                     data_name:          p.weight
@@ -285,7 +143,6 @@ datagrids:
             acl_resource: marello_product_view
             query:
                 select:
-                    - p.name
                     - p.sku
                     - s.label as status
                     - COALESCE(SUM(il.inventory), 0) AS inventoryQty
@@ -309,8 +166,7 @@ datagrids:
                 label:              marello.product.sku.label
                 frontend_type:      string
             name:
-                label:              marello.product.name.label
-                frontend_type:      string
+                label:              marello.product.names.label
             inventoryQty:
                 label:              marello.inventory.inventorylevel.inventory.label
                 frontend_type:      number
@@ -318,9 +174,13 @@ datagrids:
             status:
                 label:              marello.product.status.label
                 frontend_type:      string
+        properties:
+            name:
+                type: localized_value
+                data_name: names
         sorters:
             columns:
-                name:           { data_name: p.name }
+                name:           { data_name: name }
                 sku:            { data_name: p.sku }
                 inventoryQty:   { data_name: inventoryQty }
             default:
@@ -347,7 +207,6 @@ datagrids:
                         ELSE
                             false
                         END) as hasVariant
-                    - p.name
                     - p.sku
                     - s.label as status
                     - COALESCE(SUM(il.inventory), 0) AS inventoryQty
@@ -380,8 +239,7 @@ datagrids:
                 label:              marello.product.sku.label
                 frontend_type:      string
             name:
-                label:              marello.product.name.label
-                frontend_type:      string
+                label:              marello.product.names.label
             inventoryQty:
                 label:              marello.inventory.inventorylevel.inventory.label
                 frontend_type:      number
@@ -396,22 +254,25 @@ datagrids:
                     type:             boolean
                     data_name:        hasVariant
                 name:
-                    label:            marello.product.name.label
+                    label:            marello.product.names.label
                     type:             string
-                    data_name:        p.name
+                    data_name:        name
                 sku:
                     label:            marello.product.sku.label
                     type:             string
                     data_name:        p.sku
         sorters:
             columns:
-                name:           { data_name: p.name }
+                name:           { data_name: name }
                 sku:            { data_name: p.sku }
                 hasVariant:     { data_name: hasVariant }
             default:
                 hasVariant:  "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
         properties:
             id: ~
+            name:
+                type: localized_value
+                data_name: names
         options:
             entityHint: product
             rowSelection:

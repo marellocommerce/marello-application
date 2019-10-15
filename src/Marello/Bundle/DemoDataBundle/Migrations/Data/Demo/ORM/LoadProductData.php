@@ -9,6 +9,7 @@ use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Migrations\Data\ORM\LoadDefaultAttributeFamilyData;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
+use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
@@ -89,9 +90,12 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
      */
     private function createProduct(array $data)
     {
+        $name = new LocalizedFallbackValue();
+        $name->setString($data['name']);
+        
         $product = new Product();
         $product->setSku($data['sku']);
-        $product->setName($data['name']);
+        $product->addName($name);
         $product->setOrganization($this->defaultOrganization);
         $product->setWeight($data['weight']);
         $product->setManufacturingCode($this->generateManufacturingCode($data['sku']));
