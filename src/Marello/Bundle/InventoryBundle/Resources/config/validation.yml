@@ -29,6 +29,7 @@ Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink:
 
 Marello\Bundle\InventoryBundle\Entity\InventoryItem:
     constraints:
+        - Marello\Bundle\InventoryBundle\Validator\Constraints\InventoryOrderOnDemand: ~
         - Marello\Bundle\CoreBundle\Validator\Constraints\GreaterThanOrEqualToValue:
             fields: [desiredInventory, purchaseInventory]
             errorPath: desiredInventory

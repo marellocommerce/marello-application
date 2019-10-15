@@ -364,10 +364,9 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             $this->manager->persist($productSupplierRelation);
             $product->addSupplier($productSupplierRelation);
 
-            if (null == $preferredSupplier) {
+            if (null === $preferredSupplier) {
                 $preferredSupplier = $supplier;
                 $preferredPriority = $priority;
-                continue;
             }
             if ($priority < $preferredPriority) {
                 $preferredSupplier = $supplier;
