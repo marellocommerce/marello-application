@@ -12,13 +12,6 @@ class OroCommerceRequestFactory implements OroCommerceRequestFactoryInterface
     const METHOD_POST = 'POST';
     const METHOD_PATCH = 'PATCH';
     const METHOD_DELETE = 'DELETE';
-
-    const EQ = 'eq';
-    const NEQ = 'neq';
-    const LT = 'lt';
-    const LTE = 'lte';
-    const GT = 'gt';
-    const GTE = 'gte';
     
     /**
      * {@inheritdoc}
@@ -51,7 +44,7 @@ class OroCommerceRequestFactory implements OroCommerceRequestFactoryInterface
                 foreach ($filters as $key => $filter) {
                     $value = $filter->getValue();
                     $path .= sprintf(
-                        '%sfilter[%s][%s]=%s',
+                        '%sfilter[%s]%s%s',
                         $key === 0 && count($include) === 0 ? '' : '&',
                         $filter->getPath(),
                         $filter->getOperator(),

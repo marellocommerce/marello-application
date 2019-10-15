@@ -3,6 +3,7 @@
 namespace Marello\Bundle\OroCommerceBundle\Form\Extension;
 
 use Marello\Bundle\OroCommerceBundle\Integration\OroCommerceChannelType;
+use Oro\Bundle\IntegrationBundle\Form\Type\ChannelType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -33,9 +34,6 @@ class ChannelConnectorsExtension extends AbstractTypeExtension
     public function onPreSubmit(FormEvent $event)
     {
         $data = $event->getData();
-        if (!$data || $data['type'] !== OroCommerceChannelType::TYPE) {
-            return;
-        }
         $data['synchronizationSettings'] = [
             'isTwoWaySyncEnabled' => 1,
             'syncPriority' => 'local'
@@ -87,6 +85,6 @@ class ChannelConnectorsExtension extends AbstractTypeExtension
      */
     public function getExtendedType()
     {
-        return 'oro_integration_channel_form';
+        return ChannelType::class;
     }
 }
