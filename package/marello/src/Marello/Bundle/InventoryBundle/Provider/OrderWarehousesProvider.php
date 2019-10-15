@@ -60,6 +60,7 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
             $orderItemsByProducts[$key] = $orderItem;
             $inventoryItems = $product->getInventoryItems();
             $invLevToWh = [];
+            $invLevelQtyKey = null;
             foreach ($inventoryItems as $inventoryItem) {
                 /** @var InventoryLevel $inventoryLevel */
                 foreach ($inventoryItem->getInventoryLevels() as $inventoryLevel) {

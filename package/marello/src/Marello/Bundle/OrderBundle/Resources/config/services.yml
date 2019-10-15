@@ -232,8 +232,6 @@ services:
 
     marello_order.twig.order_extension:
         class: Marello\Bundle\OrderBundle\Twig\OrderExtension
-        arguments:
-            - '@oro_workflow.manager'
         calls:
             - [setRegistry, ['@doctrine']]
             - [setItemsForNotificationProvider, ['@marello_order.provider.shipping_order_items_for_notifications']]

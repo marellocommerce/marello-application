@@ -19,7 +19,7 @@
     </td>
 {% endblock %}
 
-{% macro marello_product_collection_item_prototype(widget, widgetContainerAttributes) %}
+{% macro marello_product_collection_item_prototype(widget, attributes) %}
     {% if 'collection' in widget.vars.block_prefixes %}
         {% set form = widget.vars.prototype %}
         {% set name = widget.vars.full_name ~ '[' ~ widget.vars.prototype.vars.name ~ ']' %}
@@ -35,7 +35,7 @@
         {% set name = widget.vars.full_name %}
         {% set disabled = widget.parent.vars.disabled %}
     {% endif %}
-    <tr data-content="{{ name }}" data-validation-optional-group {{ widgetContainerAttributes }}
+    <tr data-content="{{ name }}"
         class="marello-line-item"
         data-page-component-module="oroui/js/app/components/view-component"
         data-page-component-options="{{ {view: 'marellolayout/js/app/views/abstract-item-view'}|json_encode }}">
@@ -62,7 +62,7 @@
         {% set id = id ~ '_collection' %}
         <div class="row-oro">
             {% set prototype_name = form.vars.prototype_name %}
-            <div {{ widgetContainerAttributes }}>
+            <div {{ block('widget_container_attributes') }}>
                 <table class="grid table-hover table table-bordered table-condensed">
                     <thead>
                     <tr>
@@ -90,7 +90,7 @@
             {% endif %}
         </div>
         {% if handle_primary and (prototype is not defined or prototype.primary is defined) %}
-            {{ _self.oro_collection_validate_primary_js(_context) }}
+            {{ fields.oro_collection_validate_primary_js(_context) }}
         {% endif %}
     {% endspaceless %}
 {% endblock %}

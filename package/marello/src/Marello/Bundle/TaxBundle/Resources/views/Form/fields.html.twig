@@ -10,7 +10,7 @@
         {% set id = id ~ '_collection' %}
         <div class="row-oro">
             {% set prototype_name = form.vars.prototype_name %}
-            <div {{ widgetContainerAttributes }} data-last-index="{{ form.children|length}}" data-row-count-add="{{ form.vars.row_count_add }}" data-prototype-name="{{ prototype_name }}"{% if prototype_html is defined %} data-prototype="{{ prototype_html|escape }}"{% endif %}>
+            <div {{ block('widget_container_attributes') }} data-last-index="{{ form.children|length}}" data-row-count-add="{{ form.vars.row_count_add }}" data-prototype-name="{{ prototype_name }}"{% if prototype_html is defined %} data-prototype="{{ prototype_html|escape }}"{% endif %}>
                 <table class="grid table-hover table table-bordered">
                     <thead>
                     <tr>
@@ -40,7 +40,7 @@
     {% endspaceless %}
 {% endblock %}
 
-{% macro marello_tax_zip_code_collection_prototype(widget, widgetContainerAttributes) %}
+{% macro marello_tax_zip_code_collection_prototype(widget, attributes) %}
     {% if 'collection' in widget.vars.block_prefixes %}
         {% set form = widget.vars.prototype %}
         {% set name = widget.vars.full_name ~ '[' ~ widget.vars.prototype.vars.name ~ ']' %}
@@ -48,7 +48,7 @@
         {% set form = widget %}
         {% set name = widget.vars.full_name %}
     {% endif %}
-    <tr data-content="{{ name }}" data-validation-optional-group {{ widgetContainerAttributes }}
+    <tr data-content="{{ name }}"
         class="tax-zip-code-list tax-zip-code-list-item">
         {{ form_widget(form) }}
         <td class="tax-zip-code-list-item-remove marello-line-item-remove">
