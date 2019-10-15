@@ -92,6 +92,7 @@
                     {{ UI.renderProperty('marello.invoice.payment_method.label'|trans, entity.paymentMethod) }}
                     {{ UI.renderProperty('marello.invoice.payment_reference.label'|trans, entity.paymentReference) }}
                     {{ UI.renderHtmlProperty('marello.invoice.payment_details.label'|trans, entity.paymentDetails|nl2br) }}
+                    {{ UI.renderProperty('marello.invoice.payment_term.label'|trans, (entity.paymentTerm is not empty ? entity.paymentTerm.labels|localized_value : 'N/A')|trans) }}
                 </div>
             </div>
         </div>
