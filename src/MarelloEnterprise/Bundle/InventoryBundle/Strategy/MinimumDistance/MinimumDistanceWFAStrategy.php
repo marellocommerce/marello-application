@@ -13,6 +13,11 @@ class MinimumDistanceWFAStrategy implements WFAStrategyInterface
     const LABEL = 'marelloenterprise.inventory.strategies.min_distance';
 
     /**
+     * @var bool
+     */
+    private $estimation = false;
+
+    /**
      * @var AddressesDistanceCalculatorInterface
      */
     private $distanceCalculator;
@@ -47,6 +52,14 @@ class MinimumDistanceWFAStrategy implements WFAStrategyInterface
     public function __construct(AddressesDistanceCalculatorInterface $distanceCalculator)
     {
         $this->distanceCalculator = $distanceCalculator;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setEstimation($estimation = false)
+    {
+        $this->estimation = $estimation;
     }
 
     /**
