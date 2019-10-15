@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\PaymenttermBundle\Tests\Functional\Controller;
 
-use Marello\Bundle\PaymentTermBundle\Form\Type\PaymentTermType;
 use Marello\Bundle\PaymentTermBundle\Tests\Functional\DataFixtures\LoadPaymentTermsData;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;

@@ -2,6 +2,10 @@
 
 namespace Marello\Bundle\ShippingBundle\Context;
 
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\ShippingBundle\Context\LineItem\Collection\ShippingLineItemCollectionInterface;
+use Oro\Bundle\CurrencyBundle\Entity\Price;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class ShippingContext extends ParameterBag implements ShippingContextInterface
@@ -34,11 +38,31 @@ class ShippingContext extends ParameterBag implements ShippingContextInterface
     }
 
     /**
+     * @inheritDoc
+     */
+    public function setCustomer(Customer $customer = null)
+    {
+        $this->set(self::FIELD_CUSTOMER, $customer);
+
+        return $this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function getLineItems()
     {
         return $this->get(self::FIELD_LINE_ITEMS);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setLineItems(ShippingLineItemCollectionInterface $lineItems)
+    {
+        $this->set(self::FIELD_LINE_ITEMS, $lineItems);
+
+        return $this;
     }
 
     /**
@@ -50,11 +74,31 @@ class ShippingContext extends ParameterBag implements ShippingContextInterface
     }
 
     /**
+     * @inheritDoc
+     */
+    public function setBillingAddress(MarelloAddress $address = null)
+    {
+        $this->set(self::FIELD_BILLING_ADDRESS, $address);
+
+        return $this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function getShippingAddress()
     {
         return $this->get(self::FIELD_SHIPPING_ADDRESS);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setShippingAddress(MarelloAddress $address)
+    {
+        $this->set(self::FIELD_SHIPPING_ADDRESS, $address);
+
+        return $this;
     }
 
     /**
@@ -66,11 +110,31 @@ class ShippingContext extends ParameterBag implements ShippingContextInterface
     }
 
     /**
+     * @inheritDoc
+     */
+    public function setShippingOrigin(MarelloAddress $address)
+    {
+        $this->set(self::FIELD_SHIPPING_ORIGIN, $address);
+
+        return $this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function getPaymentMethod()
     {
         return $this->get(self::FIELD_PAYMENT_METHOD);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setPaymentMethod($paymentMethod = null)
+    {
+        $this->set(self::FIELD_PAYMENT_METHOD, $paymentMethod);
+
+        return $this;
     }
 
     /**
@@ -82,11 +146,31 @@ class ShippingContext extends ParameterBag implements ShippingContextInterface
     }
 
     /**
+     * @inheritDoc
+     */
+    public function setCurrency($currency)
+    {
+        $this->set(self::FIELD_CURRENCY, $currency);
+
+        return $this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function getSubtotal()
     {
         return $this->get(self::FIELD_SUBTOTAL);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setSubtotal(Price $subtotal = null)
+    {
+        $this->set(self::FIELD_SUBTOTAL, $subtotal);
+
+        return $this;
     }
 
     /**
@@ -98,10 +182,30 @@ class ShippingContext extends ParameterBag implements ShippingContextInterface
     }
 
     /**
+     * @inheritDoc
+     */
+    public function setSourceEntity($sourceEntity)
+    {
+        $this->set(self::FIELD_SOURCE_ENTITY, $sourceEntity);
+
+        return $this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function getSourceEntityIdentifier()
     {
         return $this->get(self::FIELD_SOURCE_ENTITY_ID);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setSourceEntityIdentifier($sourceEntityIdentifier)
+    {
+        $this->set(self::FIELD_SOURCE_ENTITY_ID, $sourceEntityIdentifier);
+
+        return $this;
     }
 }

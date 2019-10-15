@@ -13,5 +13,6 @@ services:
 
     marello_payment_term.action_permissions.payment_term:
         class: 'Marello\Bundle\PaymentTermBundle\Datagrid\PaymentTermActionPermissionProvider'
+        public: true
         arguments:
             - '@marello_payment_term.provider.payment_term_delete_permission'

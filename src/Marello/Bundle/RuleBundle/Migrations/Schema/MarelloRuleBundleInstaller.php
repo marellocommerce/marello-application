@@ -13,7 +13,7 @@ class MarelloRuleBundleInstaller implements Installation
      */
     public function getMigrationVersion()
     {
-        return 'v1_1';
+        return 'v1_2';
     }
 
     /**
@@ -36,7 +36,7 @@ class MarelloRuleBundleInstaller implements Installation
         $table->addColumn('sort_order', 'integer', []);
         $table->addColumn('stop_processing', 'boolean', ['default' => false]);
         $table->addColumn('expression', 'text', ['notnull' => false]);
-        $table->addColumn('system', 'boolean', ['default' => false]);
+        $table->addColumn('is_system', 'boolean', ['default' => false]);
         $table->addColumn('created_at', 'datetime', []);
         $table->addColumn('updated_at', 'datetime', []);
         $table->setPrimaryKey(['id']);
