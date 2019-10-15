@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\OroCommerceBundle\ImportExport\Serializer;
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\TaxRateExportCreateWriter;
 use Marello\Bundle\TaxBundle\Entity\TaxRate;
 
@@ -20,7 +21,7 @@ class TaxRateNormalizer extends AbstractNormalizer
                     'type' => 'taxes',
                     'attributes' => [
                         'code' => $object->getCode(),
-                        'rate' => $object->getRate()
+                        'rate' => $object->getRate() * 100
                     ],
                 ]
             ];

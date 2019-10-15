@@ -111,7 +111,7 @@ class TaxRuleNormalizer extends AbstractNormalizer
                         'id' => 'tax-id-1',
                         'attributes' => [
                             'code' => $taxRate->getCode(),
-                            'rate' => $taxRate->getRate(),
+                            'rate' => $taxRate->getRate() * 100,
                         ],
                     ];
                 }

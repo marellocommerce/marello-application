@@ -8,6 +8,7 @@ use Marello\Bundle\OroCommerceBundle\Entity\OroCommerceSettings;
 use Marello\Bundle\OroCommerceBundle\Form\Type\OroCommerceSettingsType;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Serializer\TaxCodeNormalizer;
 use Marello\Bundle\OroCommerceBundle\Request\Factory\OroCommerceRequestFactory;
+use Oro\Bundle\ApiBundle\Filter\ComparisonFilter;
 use Oro\Bundle\ApiBundle\Filter\FilterValue;
 use Oro\Bundle\IntegrationBundle\Entity\Transport;
 use Oro\Bundle\IntegrationBundle\Provider\PingableInterface;
@@ -18,18 +19,6 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class OroCommerceRestTransport implements TransportInterface, PingableInterface
 {
-    const ORDERS_ALIAS = 'orders';
-    const PRODUCTS_ALIAS = 'products';
-    const PRODUCTIMAGES_ALIAS = 'productimages';
-    const PRODUCTPRICES_ALIAS = 'productprices';
-    const PRODUCTTAXCODES_ALIAS = 'producttaxcodes';
-    const INVENTORYLEVELS_ALIAS = 'inventorylevels';
-    const PAYMENTSTATUSES_ALIAS = 'paymentstatuses';
-    const TAXVALUES_ALIAS = 'taxvalues';
-    const TAXES_ALIAS = 'taxes';
-    const TAXRULES_ALIAS = 'taxrules';
-    const TAXJURISDICTIONS_ALIAS = 'taxjurisdictions';
-    const WAREHOUSES_ALIAS = 'warehouses';
 
     /**
      * @var ParameterBag
@@ -65,7 +54,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
             $this->settings->get(OroCommerceSettings::URL_FIELD),
             []
         );
-
+        
         return $this;
     }
 
@@ -108,17 +97,17 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $ordersRequest = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_GET,
             $this->settings,
-            self::ORDERS_ALIAS,
+            'orders',
             [
                 new FilterValue(
                     'currency',
                     $this->settings->get(OroCommerceSettings::CURRENCY_FIELD),
-                    OroCommerceRequestFactory::EQ
+                    ComparisonFilter::EQ
                 ),
                 new FilterValue(
                     'updatedAt',
                     $lastSyncStr,
-                    OroCommerceRequestFactory::GT
+                    ComparisonFilter::GT
                 )
             ],
             ['customerUser', 'lineItems', 'shippingAddress', 'billingAddress']
@@ -133,17 +122,17 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $ordersTaxValuesRequest = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_GET,
             $this->settings,
-            self::TAXVALUES_ALIAS,
+            'taxvalues',
             [
                 new FilterValue(
                     'updatedAt',
                     $lastSyncStr,
-                    OroCommerceRequestFactory::GT
+                    ComparisonFilter::GT
                 ),
                 new FilterValue(
                     'entityClass',
                     'Oro\Bundle\OrderBundle\Entity\Order',
-                    OroCommerceRequestFactory::EQ
+                    ComparisonFilter::EQ
                 )
             ]
         );
@@ -164,30 +153,25 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
             $attributes = $order['attributes'];
             if ($attributes['currency'] === $currency) {
                 $orderIds[] = $order['id'];
-                if (isset($order['relationships'])) {
-                    foreach ($order['relationships'] as &$relationship) {
-                        foreach ($ordersResponse['included'] as $included) {
-                            if (!isset($relationship['data']['type'])) {
-                                if (is_array($relationship['data'])) {
-                                    foreach ($relationship['data'] as $key => $data) {
-                                        if ($data['type'] === 'orderlineitems') {
-                                            $lineItems[$data['id']] = $data['id'];
-                                        }
-                                        if ($data['type'] === $included['type'] && $data['id'] === $included['id']) {
-                                            $relationship['data'][$key] = $included;
-                                            break;
-                                        }
-                                    }
+                foreach ($order['relationships'] as &$relationship) {
+                    foreach ($ordersResponse['included'] as $included) {
+                        if (!isset($relationship['data']['type'])) {
+                            foreach ($relationship['data'] as $key => $data) {
+                                if ($data['type'] === 'orderlineitems') {
+                                    $lineItems[$data['id']] = $data['id'];
                                 }
-                            } elseif ($relationship['data']['type'] === $included['type'] &&
-                                $relationship['data']['id'] === $included['id']
-                            ) {
-                                $relationship['data'] = $included;
-                                break;
+                                if ($data['type'] === $included['type'] && $data['id'] === $included['id']) {
+                                    $relationship['data'][$key] = $included;
+                                    break;
+                                }
                             }
+                        } elseif ($relationship['data']['type'] === $included['type'] &&
+                            $relationship['data']['id'] === $included['id']) {
+                            $relationship['data'] = $included;
+                            break;
                         }
-                        unset($relationship);
                     }
+                    unset($relationship);
                 }
                 foreach ($taxValuesData as $taxValue) {
                     if (isset($taxValue['attributes']['entityClass']) &&
@@ -195,7 +179,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                         $taxValue['attributes']['entityClass'] === 'Oro\Bundle\OrderBundle\Entity\Order' &&
                         (int)$taxValue['attributes']['entityId'] === (int)$order['id']
                     ) {
-                        $order['relationships'][self::TAXVALUES_ALIAS]['data'] = $taxValue;
+                        $order['relationships']['taxvalues']['data'] = $taxValue;
                     }
                 }
                 $orders[] = $order;
@@ -205,17 +189,17 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
             $paymentStatusesRequest = OroCommerceRequestFactory::createRequest(
                 OroCommerceRequestFactory::METHOD_GET,
                 $this->settings,
-                self::PAYMENTSTATUSES_ALIAS,
+                'paymentstatuses',
                 [
                     new FilterValue(
                         'entityIdentifier',
                         $orderIds,
-                        OroCommerceRequestFactory::EQ
+                        ComparisonFilter::EQ
                     ),
                     new FilterValue(
                         'entityClass',
                         'Oro\Bundle\OrderBundle\Entity\Order',
-                        OroCommerceRequestFactory::EQ
+                        ComparisonFilter::EQ
                     )
                 ]
             );
@@ -231,17 +215,17 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
             $lineItemsTaxValuesRequest = OroCommerceRequestFactory::createRequest(
                 OroCommerceRequestFactory::METHOD_GET,
                 $this->settings,
-                self::TAXVALUES_ALIAS,
+                'taxvalues',
                 [
                     new FilterValue(
                         'entityId',
                         $lineItems,
-                        OroCommerceRequestFactory::EQ
+                        ComparisonFilter::EQ
                     ),
                     new FilterValue(
                         'entityClass',
                         'Oro\Bundle\OrderBundle\Entity\OrderLineItem',
-                        OroCommerceRequestFactory::EQ
+                        ComparisonFilter::EQ
                     )
                 ]
             );
@@ -277,7 +261,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                                 'Oro\Bundle\OrderBundle\Entity\OrderLineItem' &&
                                 (int)$taxValue['attributes']['entityId'] === (int)$lineItem['id']
                             ) {
-                                $order['relationships']['lineItems']['data'][$k]['relationships'][self::TAXVALUES_ALIAS]['data'] =
+                                $order['relationships']['lineItems']['data'][$k]['relationships']['taxvalues']['data'] =
                                     $taxValue;
                             }
                         }
@@ -301,7 +285,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_PATCH,
             $this->settings,
-            self::ORDERS_ALIAS,
+            'orders',
             [],
             [],
             $data
@@ -326,7 +310,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_POST,
             $this->settings,
-            self::PAYMENTSTATUSES_ALIAS,
+            'paymentstatuses',
             [],
             [],
             $data
@@ -350,7 +334,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_GET,
             $this->settings,
-            self::PRODUCTS_ALIAS,
+            'products',
             [],
             ['taxCode'],
             $data
@@ -362,7 +346,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
             $request->getHeaders()
         );
         foreach ($json['included'] as $included) {
-            if ($included['type'] === self::PRODUCTTAXCODES_ALIAS &&
+            if ($included['type'] === 'producttaxcode' &&
                 (int)$included['id'] === (int)$json['data']['relationships']['taxCode']['data']['id']) {
                 $json['data']['relationships']['taxCode']['data']['attributes'] = $included['attributes'];
             }
@@ -380,7 +364,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_POST,
             $this->settings,
-            self::PRODUCTS_ALIAS,
+            'products',
             [],
             [],
             $data
@@ -401,31 +385,22 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
             }
             $productId = $json['data']['id'];
             $unitPrecisionId = $json['data']['relationships']['primaryUnitPrecision']['data']['id'];
-            $inventoryFilters = [
-                new FilterValue(
-                    'product',
-                    $productId,
-                    OroCommerceRequestFactory::EQ
-                ),
-                new FilterValue(
-                    'productUnitPrecision',
-                    $unitPrecisionId,
-                    OroCommerceRequestFactory::EQ
-                )
-            ];
-            if ($this->settings->get(OroCommerceSettings::ENTERPRISE_FIELD) &&
-                $this->settings->get(OroCommerceSettings::WAREHOUSE_FIELD)) {
-                $inventoryFilters[] = new FilterValue(
-                    'warehouse',
-                    $this->settings->get(OroCommerceSettings::WAREHOUSE_FIELD),
-                    OroCommerceRequestFactory::EQ
-                );
-            }
             $request = OroCommerceRequestFactory::createRequest(
                 OroCommerceRequestFactory::METHOD_GET,
                 $this->settings,
-                self::INVENTORYLEVELS_ALIAS,
-                $inventoryFilters,
+                'inventorylevels',
+                [
+                    new FilterValue(
+                        'product',
+                        $productId,
+                        ComparisonFilter::EQ
+                    ),
+                    new FilterValue(
+                        'productUnitPrecision',
+                        $unitPrecisionId,
+                        ComparisonFilter::EQ
+                    )
+                ],
                 [],
                 []
             );
@@ -441,7 +416,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
 
             return $json;
         }
-
+        
         return null;
     }
 
@@ -454,7 +429,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_PATCH,
             $this->settings,
-            self::PRODUCTS_ALIAS,
+            'products',
             [],
             [],
             $data
@@ -477,7 +452,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
 
         return $json;
     }
-
+    
     /**
      * @param int $id
      * @return RestResponseInterface
@@ -487,7 +462,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_DELETE,
             $this->settings,
-            self::PRODUCTS_ALIAS,
+            'products',
             [],
             [],
             [
@@ -504,7 +479,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
 
         return $response;
     }
-
+    
     /**
      * @param array $data
      * @return array
@@ -514,7 +489,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_POST,
             $this->settings,
-            self::PRODUCTPRICES_ALIAS,
+            'productprices',
             [],
             [],
             $data
@@ -530,7 +505,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
             $request = OroCommerceRequestFactory::createRequest(
                 OroCommerceRequestFactory::METHOD_GET,
                 $this->settings,
-                self::PRODUCTPRICES_ALIAS,
+                'productprices',
                 [],
                 ['product'],
                 $json
@@ -556,7 +531,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_PATCH,
             $this->settings,
-            self::PRODUCTPRICES_ALIAS,
+            'productprices',
             [],
             [],
             $data
@@ -580,7 +555,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_POST,
             $this->settings,
-            self::PRODUCTIMAGES_ALIAS,
+            'productimages',
             [],
             [],
             $data
@@ -596,7 +571,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
             $request = OroCommerceRequestFactory::createRequest(
                 OroCommerceRequestFactory::METHOD_GET,
                 $this->settings,
-                self::PRODUCTIMAGES_ALIAS,
+                'productimages',
                 [],
                 ['product'],
                 $json
@@ -622,7 +597,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_PATCH,
             $this->settings,
-            self::PRODUCTIMAGES_ALIAS,
+            'productimages',
             [],
             [],
             $data
@@ -646,7 +621,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_DELETE,
             $this->settings,
-            self::PRODUCTIMAGES_ALIAS,
+            'productimages',
             [],
             [],
             [
@@ -673,7 +648,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_PATCH,
             $this->settings,
-            self::INVENTORYLEVELS_ALIAS,
+            'inventorylevels',
             [],
             [],
             $data
@@ -709,6 +684,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
             $request->getHeaders()
         );
     }
+
 
     /**
      * @return array
@@ -774,7 +750,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                 new FilterValue(
                     'entityClass',
                     'Oro\Bundle\ProductBundle\Entity\Product',
-                    OroCommerceRequestFactory::EQ
+                    ComparisonFilter::EQ
                 )
             ],
             ['labels'],
@@ -807,7 +783,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_POST,
             $this->settings,
-            self::PRODUCTTAXCODES_ALIAS,
+            'producttaxcodes',
             [],
             [],
             $data
@@ -831,7 +807,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_PATCH,
             $this->settings,
-            self::PRODUCTTAXCODES_ALIAS,
+            'producttaxcodes',
             [],
             [],
             $data
@@ -855,7 +831,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_DELETE,
             $this->settings,
-            self::PRODUCTTAXCODES_ALIAS,
+            'producttaxcodes',
             [],
             [],
             [
@@ -882,7 +858,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_POST,
             $this->settings,
-            self::TAXES_ALIAS,
+            'taxes',
             [],
             [],
             $data
@@ -906,7 +882,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_PATCH,
             $this->settings,
-            self::TAXES_ALIAS,
+            'taxes',
             [],
             [],
             $data
@@ -930,7 +906,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_DELETE,
             $this->settings,
-            self::TAXES_ALIAS,
+            'taxes',
             [],
             [],
             [
@@ -957,7 +933,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_POST,
             $this->settings,
-            self::TAXJURISDICTIONS_ALIAS,
+            'taxjurisdictions',
             [],
             [],
             $data
@@ -981,7 +957,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_PATCH,
             $this->settings,
-            self::TAXJURISDICTIONS_ALIAS,
+            'taxjurisdictions',
             [],
             [],
             $data
@@ -1005,7 +981,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_DELETE,
             $this->settings,
-            self::TAXJURISDICTIONS_ALIAS,
+            'taxjurisdictions',
             [],
             [],
             [
@@ -1024,27 +1000,6 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
     }
 
     /**
-     * @return array
-     */
-    public function getTaxRules()
-    {
-        $request = OroCommerceRequestFactory::createRequest(
-            OroCommerceRequestFactory::METHOD_GET,
-            $this->settings,
-            self::TAXRULES_ALIAS,
-            [],
-            [],
-            []
-        );
-
-        return $this->client->getJSON(
-            $request->getPath(),
-            $request->getPayload(),
-            $request->getHeaders()
-        );
-    }
-
-    /**
      * @param array $data
      * @return array
      */
@@ -1053,7 +1008,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_POST,
             $this->settings,
-            self::TAXRULES_ALIAS,
+            'taxrules',
             [],
             [],
             $data
@@ -1069,7 +1024,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
             $request = OroCommerceRequestFactory::createRequest(
                 OroCommerceRequestFactory::METHOD_GET,
                 $this->settings,
-                self::TAXRULES_ALIAS,
+                'taxrules',
                 [],
                 ['productTaxCode', 'tax', 'taxJurisdiction'],
                 $json
@@ -1095,7 +1050,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_PATCH,
             $this->settings,
-            self::TAXRULES_ALIAS,
+            'taxrules',
             [],
             [],
             $data
@@ -1112,7 +1067,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
             $request = OroCommerceRequestFactory::createRequest(
                 OroCommerceRequestFactory::METHOD_GET,
                 $this->settings,
-                self::TAXRULES_ALIAS,
+                'taxrules',
                 [],
                 ['productTaxCode', 'tax', 'taxJurisdiction'],
                 $json
@@ -1138,7 +1093,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_DELETE,
             $this->settings,
-            self::TAXRULES_ALIAS,
+            'taxrules',
             [],
             [],
             [
@@ -1157,44 +1112,24 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
     }
 
     /**
-     * @return array
-     */
-    public function getWarehouses()
-    {
-        $request = OroCommerceRequestFactory::createRequest(
-            OroCommerceRequestFactory::METHOD_GET,
-            $this->settings,
-            self::WAREHOUSES_ALIAS,
-            [],
-            [],
-            []
-        );
-
-        return $this->client->getJSON(
-            $request->getPath(),
-            $request->getPayload(),
-            $request->getHeaders()
-        );
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function ping()
     {
         try {
-            $this->getTaxRules();
-            if ($this->settings->get(OroCommerceSettings::ENTERPRISE_FIELD)) {
-                $result = $this->getWarehouses();
-                if (empty($result) || empty($result['data'])) {
-                    return [
-                        'result' => false,
-                        'message' =>
-                            'For integration with OroCommerce EE
-                             at least one warehouse should be created on OroCommerce side'
-                    ];
-                }
-            }
+            $request = OroCommerceRequestFactory::createRequest(
+                OroCommerceRequestFactory::METHOD_GET,
+                $this->settings,
+                'taxrules',
+                [],
+                [],
+                []
+            );
+            $this->client->get(
+                $request->getPath(),
+                $request->getPayload(),
+                $request->getHeaders()
+            );
         } catch (RestException $e) {
             return ['result' => false, 'message' => $e->getMessage()];
         }

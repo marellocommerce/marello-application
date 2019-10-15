@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\OroCommerceBundle\EventListener\Doctrine;
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Reader\ProductExportCreateReader;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Reader\ProductExportUpdateReader;
@@ -14,19 +15,49 @@ use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\AttachmentBundle\Entity\File;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Reader\EntityReaderById;
+use Oro\Component\DependencyInjection\ServiceLink;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class ReverseSyncProductImageListener extends AbstractReverseSyncListener
+class ReverseSyncProductImageListener
 {
+    /**
+     * @var TokenStorageInterface
+     */
+    private $tokenStorage;
+
+    /**
+     * @var ServiceLink
+     */
+    private $syncScheduler;
+
+    /**
+     * @var EntityManager
+     */
+    private $entityManager;
+
+    /**
+     * @param TokenStorageInterface $tokenStorage
+     * @param ServiceLink $schedulerServiceLink
+     */
+    public function __construct(TokenStorageInterface $tokenStorage, ServiceLink $schedulerServiceLink)
+    {
+        $this->tokenStorage = $tokenStorage;
+        $this->syncScheduler = $schedulerServiceLink;
+    }
+
     /**
      * @param LifecycleEventArgs $args
      */
     public function postPersist(LifecycleEventArgs $args)
     {
-        parent::init($args->getEntityManager());
-        
+        // check for logged user is for confidence that data changes mes from UI, not from sync process.
+        if (!$this->tokenStorage->getToken() || !$this->tokenStorage->getToken()->getUser()) {
+            return;
+        }
+        $this->entityManager = $args->getEntityManager();
         $entity = $args->getEntity();
         if ($entity instanceof Product) {
-            $changeSet = $this->unitOfWork->getEntityChangeSet($entity);
+            $changeSet = $this->entityManager->getUnitOfWork()->getEntityChangeSet($entity);
             if (in_array('image', array_keys($changeSet))) {
                 $this->scheduleSync($entity);
             }
@@ -38,22 +69,15 @@ class ReverseSyncProductImageListener extends AbstractReverseSyncListener
      */
     public function postUpdate(LifecycleEventArgs $args)
     {
-        parent::init($args->getEntityManager());
-        
+        // check for logged user is for confidence that data changes mes from UI, not from sync process.
+        if (!$this->tokenStorage->getToken() || !$this->tokenStorage->getToken()->getUser()) {
+            return;
+        }
+        $this->entityManager = $args->getEntityManager();
         $entity = $args->getEntity();
         if ($entity instanceof Product) {
-            $data = $entity->getData();
-            $changeSet = $this->unitOfWork->getEntityChangeSet($entity);
-            if (in_array('image', array_keys($changeSet)) ||
-                (ReverseSyncProductListener::isSyncRequired($entity, $this->unitOfWork) &&
-                    $entity->getImage() &&
-                    (!isset($data[AbstractProductExportWriter::IMAGE_ID_FIELD]) ||
-                        (count($data[AbstractProductExportWriter::IMAGE_ID_FIELD]) <
-                            count($this->getIntegrationChannels($entity))
-                        )
-                    )
-                )
-            ) {
+            $changeSet = $this->entityManager->getUnitOfWork()->getEntityChangeSet($entity);
+            if (in_array('image', array_keys($changeSet))) {
                 $this->scheduleSync($entity);
             }
         } elseif ($entity instanceof File) {

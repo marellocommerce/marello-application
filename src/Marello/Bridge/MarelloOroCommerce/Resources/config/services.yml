@@ -6,6 +6,11 @@ services:
         tags:
             - { name: kernel.event_listener, event: oro_dashboard.widget_configuration_load, method: onConfigurationLoad, priority: -100 }
 
+    marello_commerce_bridge.ups.event_listener.shipping_method_types.create.before:
+        class: Marello\Bridge\MarelloOroCommerce\UPS\EventListener\UpsShippingMethodTypesCreateBeforeEventListener
+        tags:
+            - { name: kernel.event_listener, event: marello_ups.shipping_method_types_create.before, method: onBeforeCreate }
+
     marello_commerce_bridge.entity_alias_provider:
         class: Marello\Bridge\MarelloOroCommerce\Provider\MarelloEntityAliasProvider
         public: false
