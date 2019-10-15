@@ -13,7 +13,7 @@ interface ShippingAwareInterface
 
     /**
      * @param Shipment|null $shipment
-     * @return this
+     * @return $this
      */
     public function setShipment(Shipment $shipment = null);
 }

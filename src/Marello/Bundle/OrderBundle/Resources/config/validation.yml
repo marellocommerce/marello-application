@@ -39,6 +39,8 @@ Marello\Bundle\OrderBundle\Entity\Order:
             - NotBlank: ~
         salesChannel:
             - NotBlank: ~
+        paymentMethod:
+            - NotBlank: ~
         shippingMethod:
             - NotBlank: ~
         billingAddress:

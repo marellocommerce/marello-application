@@ -21,7 +21,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
  * @Oro\Config(
  *      defaultValues={
  *          "dataaudit"={
- *              "auditable"=true
+ *              "auditable"=false
  *          },
  *          "entity"={
  *              "icon"="fa-list-alt"
@@ -69,7 +69,7 @@ class BalancedInventoryLevel implements OrganizationAwareInterface, BalancedInve
      *              "label"="marello.product.entity_label"
      *          },
      *          "dataaudit"={
-     *              "auditable"=true
+     *              "auditable"=false
      *          }
      *      }
      * )
@@ -87,7 +87,7 @@ class BalancedInventoryLevel implements OrganizationAwareInterface, BalancedInve
      *              "label"="marello.sales.saleschannelgroup.entity_label"
      *          },
      *          "dataaudit"={
-     *              "auditable"=true
+     *              "auditable"=false
      *          }
      *      }
      * )
@@ -104,7 +104,7 @@ class BalancedInventoryLevel implements OrganizationAwareInterface, BalancedInve
      *              "label"="marello.inventory.balancedinventorylevel.inventory.label"
      *          },
      *          "dataaudit"={
-     *              "auditable"=true
+     *              "auditable"=false
      *          }
      *      }
      * )
@@ -121,7 +121,7 @@ class BalancedInventoryLevel implements OrganizationAwareInterface, BalancedInve
      *              "label"="marello.inventory.balancedinventorylevel.balanced_inventory_qty.label"
      *          },
      *          "dataaudit"={
-     *              "auditable"=true
+     *              "auditable"=false
      *          }
      *      }
      * )
@@ -139,7 +139,7 @@ class BalancedInventoryLevel implements OrganizationAwareInterface, BalancedInve
      *              "label"="marello.inventory.balancedinventorylevel.reserved_inventory_qty.label"
      *          },
      *          "dataaudit"={
-     *              "auditable"=true
+     *              "auditable"=false
      *          }
      *      }
      * )

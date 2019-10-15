@@ -23,6 +23,7 @@ services:
 
     marello_shipping.mass_action.status_handler:
         class: 'Marello\Bundle\RuleBundle\Datagrid\Extension\MassAction\StatusMassActionHandler'
+        public: true
         arguments:
             - 'marello.shipping.datagrid.status.success_message'
             - 'MarelloShippingBundle:ShippingMethodsConfigsRule'
