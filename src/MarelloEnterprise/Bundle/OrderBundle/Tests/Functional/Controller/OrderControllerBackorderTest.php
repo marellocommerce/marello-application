@@ -67,7 +67,16 @@ class OrderControllerBackorderTest extends WebTestCase
 
         /** @var Product $product */
         $product = $this->getReference(LoadProductData::PRODUCT_6_REF);
-
+        $inventoryItemManager = $this->getContainer()->get('doctrine')
+            ->getManagerForClass(InventoryItem::class);
+        /** @var InventoryItem $inventoryItem */
+        $inventoryItem = $inventoryItemManager
+            ->getRepository(InventoryItem::class)
+            ->findOneBy(['product' => $product->getId()]);
+        $inventoryItem
+            ->setOrderOnDemandAllowed(false);
+        $inventoryItemManager->persist($inventoryItem);
+        $inventoryItemManager->flush($inventoryItem);
         $price = $product->getPrice($salesChannel->getCurrency())->getPrice()->getValue();
         $orderItems = [
             [
@@ -131,7 +140,9 @@ class OrderControllerBackorderTest extends WebTestCase
         $inventoryItem = $inventoryItemManager
             ->getRepository(InventoryItem::class)
             ->findOneBy(['product' => $product->getId()]);
-        $inventoryItem->setBackorderAllowed(true);
+        $inventoryItem
+            ->setBackorderAllowed(true)
+            ->setOrderOnDemandAllowed(false);
         $inventoryItemManager->persist($inventoryItem);
         $inventoryItemManager->flush($inventoryItem);
 
