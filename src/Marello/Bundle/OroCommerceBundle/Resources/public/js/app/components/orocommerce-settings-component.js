@@ -18,19 +18,16 @@ define(function(require) {
             urlSelector: 'input[name$="[transport][url]"]',
             usernameSelector: 'input[name$="[transport][username]"]',
             keySelector: 'input[name$="[transport][key]"]',
-            enterpriseSelector: 'input[name$="[transport][enterprise]"]',
             currencySelector: 'select[name$="[transport][currency]"]',
             productUnitSelector: 'select[name$="[transport][productUnit]"]',
             customerTaxCodeSelector: 'select[name$="[transport][customerTaxCode]"]',
             priceListSelector: 'select[name$="[transport][priceList]"]',
             productFamilySelector: 'select[name$="[transport][productFamily]"]',
-            warehouseSelector: 'select[name$="[transport][warehouse]"]',
             container: '.control-group',
             productUnitUpdateRoute: '',
             customerTaxCodeUpdateRoute: '',
             priceListUpdateRoute: '',
-            productFamilyUpdateRoute: '',
-            warehouseUpdateRoute: ''
+            productFamilyUpdateRoute: ''
         },
 
         /**
@@ -59,13 +56,11 @@ define(function(require) {
             this.selectedCustomerTaxCode = options.selectedCustomerTaxCode;
             this.selectedPriceList = options.selectedPriceList;
             this.selectedProductFamily = options.selectedProductFamily;
-            this.selectedWarehouse = options.selectedWarehouse;
 
             this.productUnitLoadingMaskView = new LoadingMaskView({container: this.$elem.find(this.options.productUnitSelector).closest('.controls')});
             this.customerTaxCodeLoadingMaskView = new LoadingMaskView({container: this.$elem.find(this.options.customerTaxCodeSelector).closest('.controls')});
             this.priceListLoadingMaskView = new LoadingMaskView({container: this.$elem.find(this.options.priceListSelector).closest('.controls')});
             this.productFamilyLoadingMaskView = new LoadingMaskView({container: this.$elem.find(this.options.productFamilySelector).closest('.controls')});
-            this.warehouseLoadingMaskView = new LoadingMaskView({container: this.$elem.find(this.options.warehouseSelector).closest('.controls')});
             this.$elem.find(this.options.urlSelector)
                 .on('change', _.bind(this.makeChanges, this))
                 .trigger('change');
@@ -78,9 +73,6 @@ define(function(require) {
             this.$elem.find(this.options.currencySelector)
                 .on('change', _.bind(this.updatePriceLists, this))
                 .trigger('change');
-            this.$elem.find(this.options.enterpriseSelector)
-                .on('change', _.bind(this.toggleWarehousesVisibility, this))
-                .trigger('change');
         },
 
         makeChanges: function() {
@@ -88,7 +80,6 @@ define(function(require) {
             this.updateCustomerTaxCodes();
             this.updatePriceLists();
             this.updateProductFamilies();
-            this.updateWarehouses();
         },
 
         updateProductUnits: function() {
@@ -203,37 +194,7 @@ define(function(require) {
                 );
             }
         },
-
-        updateWarehouses: function() {
-            var url = this.$elem.find(this.options.urlSelector).val();
-            var username = this.$elem.find(this.options.usernameSelector).val();
-            var key = this.$elem.find(this.options.keySelector).val();
-            var enterprise = this.$elem.find(this.options.enterpriseSelector).is(':checked');
-
-            if (url !== '' && username !== '' && key !== '' && enterprise === true) {
-                this.updateItem(
-                    this.options.warehouseUpdateRoute,
-                    this.options.warehouseSelector,
-                    this.warehouseLoadingMaskView,
-                    this.selectedWarehouse
-                );
-            }
-        },
-
-        toggleWarehousesVisibility: function() {
-            var isEnterprise = this.$elem.find(this.options.enterpriseSelector).is(':checked');
-            var warehouseSelect = this.$elem.find(this.options.warehouseSelector);
-            var warehouseContainer = warehouseSelect.closest('.control-group');
-            if (isEnterprise === true) {
-                warehouseSelect.removeAttr("disabled");
-                warehouseContainer.show();
-                this.updateWarehouses();
-            } else {
-                warehouseSelect.attr('disabled', 'disabled');
-                warehouseContainer.hide();
-            }
-        },
-
+        
         updateItem: function(route, selector, loadingMaskView, selectedItem) {
             var self = this;
             $.ajax({

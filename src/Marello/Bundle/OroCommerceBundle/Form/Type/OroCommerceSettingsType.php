@@ -19,11 +19,10 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Valid;
 
 class OroCommerceSettingsType extends AbstractType
 {
-    const NAME = 'marello_orocommerce_settings';
+    const BLOCK_PREFIX = 'marello_orocommerce_settings';
 
     /**
      * @var CacheProvider
@@ -122,22 +121,6 @@ class OroCommerceSettingsType extends AbstractType
                 ]
             )
             ->add(
-                'enterprise',
-                CheckboxType::class,
-                [
-                    'label' => 'marello.orocommerce.orocommercesettings.enterprise.label',
-                    'required' => false
-                ]
-            )
-            ->add(
-                'warehouse',
-                ChoiceType::class,
-                [
-                    'label' => 'marello.orocommerce.orocommercesettings.warehouse.label',
-                    'required' => false
-                ]
-            )
-            ->add(
                 'productUnit',
                 ChoiceType::class,
                 [
@@ -222,13 +205,11 @@ class OroCommerceSettingsType extends AbstractType
         $customerTaxCodeKey = sprintf('%s_%s', $key, CacheKeyGenerator::CUSTOMER_TAX_CODE);
         $priceListKey = sprintf('%s_%s_%s', $key, CacheKeyGenerator::PRICE_LIST, $data['currency']);
         $productFamilyKey = sprintf('%s_%s', $key, CacheKeyGenerator::PRODUCT_FAMILY);
-        $warehouseKey = sprintf('%s_%s', $key, CacheKeyGenerator::WAREHOUSE);
 
         $this->updateFormWithCachedData($productUnitKey, $form, 'productUnit', 'product_unit');
         $this->updateFormWithCachedData($customerTaxCodeKey, $form, 'customerTaxCode', 'customer_tax_code');
         $this->updateFormWithCachedData($priceListKey, $form, 'priceList', 'price_list');
         $this->updateFormWithCachedData($productFamilyKey, $form, 'productFamily', 'product_family');
-        $this->updateFormWithCachedData($warehouseKey, $form, 'warehouse', 'warehouse');
     }
 
     /**
@@ -243,7 +224,7 @@ class OroCommerceSettingsType extends AbstractType
             $choices = [];
             $results = $this->cache->fetch($key);
             foreach ($results as $result) {
-                $choices[$result['value']] = $result['label'];
+                $choices[$result['label']] = $result['value'];
             }
             $form->remove($field);
             $form->add(
@@ -264,17 +245,8 @@ class OroCommerceSettingsType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => OroCommerceSettings::class,
-            'constraints' => new Valid(),
+            'data_class' => OroCommerceSettings::class
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return self::NAME;
     }
 
     /**
@@ -282,6 +254,6 @@ class OroCommerceSettingsType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

@@ -12,8 +12,6 @@
                 'priceListUpdateRoute': path('marello_orocommerce_get_pricelists', {'channelId': form.vars.value.channel.id|default(0) }),
                 'selectedProductFamily': form.vars.value.productFamily|default(null),
                 'productFamilyUpdateRoute': path('marello_orocommerce_get_productfamilies', {'channelId': form.vars.value.channel.id|default(0) }),
-                'selectedWarehouse': form.vars.value.warehouse|default(null),
-                'warehouseUpdateRoute': path('marello_orocommerce_get_warehouses', {'channelId': form.vars.value.channel.id|default(0) }),
             }|json_encode }}"
     >
         {{ form_widget(form) }}
