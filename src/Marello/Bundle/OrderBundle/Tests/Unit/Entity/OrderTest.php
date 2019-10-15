@@ -46,7 +46,6 @@ class OrderTest extends TestCase
             ['salesChannelName', 'some string'],
             ['organization', new Organization()],
             ['localization', new Localization()],
-            ['locale', 'some string'],
             ['createdAt', new \DateTime()],
             ['updatedAt', new \DateTime()]
         ]);

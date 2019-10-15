@@ -4,20 +4,21 @@ namespace Marello\Bundle\PaymentTermBundle\Controller;
 
 use Marello\Bundle\PaymentTermBundle\Entity\PaymentTerm;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class PaymentTermController extends Controller
+class PaymentTermController extends AbstractController
 {
     /**
-     * @param Request $request
      * @return array
      *
-     * @Route("/", name="marello_paymentterm_paymentterm_index")
+     * @Route(
+     *     path="/", 
+     *     name="marello_paymentterm_paymentterm_index"
+     * )
      * @Template
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
         return [
             'entityClass' => PaymentTerm::class,
@@ -25,13 +26,15 @@ class PaymentTermController extends Controller
     }
 
     /**
-     * @param Request $request
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      *
-     * @Route("/create", name="marello_paymentterm_paymentterm_create")
+     * @Route(
+     *     path="/create", 
+     *     name="marello_paymentterm_paymentterm_create"
+     * )
      * @Template("MarelloPaymentTermBundle:PaymentTerm:update.html.twig")
      */
-    public function createAction(Request $request)
+    public function createAction()
     {
         $entity = new PaymentTerm();
 
@@ -39,14 +42,17 @@ class PaymentTermController extends Controller
     }
 
     /**
-     * @param Request $request
      * @param PaymentTerm $entity
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      *
-     * @Route("/update/{id}", requirements={"id" = "\d+"}, name="marello_paymentterm_paymentterm_update")
+     * @Route(
+     *     path="/update/{id}", 
+     *     requirements={"id" = "\d+"}, 
+     *     name="marello_paymentterm_paymentterm_update"
+     * )
      * @Template("MarelloPaymentTermBundle:PaymentTerm:update.html.twig")
      */
-    public function updateAction(Request $request, PaymentTerm $entity)
+    public function updateAction(PaymentTerm $entity)
     {
         return $this->update($entity);
     }
@@ -75,14 +81,17 @@ class PaymentTermController extends Controller
     }
 
     /**
-     * @param Request $request
      * @param PaymentTerm $entity
      * @return array
      *
-     * @Route("/view/{id}", requirements={"id" = "\d+"}, name="marello_paymentterm_paymentterm_view")
+     * @Route(
+     *     path="/view/{id}", 
+     *     requirements={"id" = "\d+"}, 
+     *     name="marello_paymentterm_paymentterm_view"
+     * )
      * @Template
      */
-    public function viewAction(Request $request, PaymentTerm $entity)
+    public function viewAction(PaymentTerm $entity)
     {
         return [
             'entity' => $entity,

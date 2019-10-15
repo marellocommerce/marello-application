@@ -14,14 +14,6 @@ trait LocalizationTrait
      */
     protected $localization;
 
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="locale", type="string", length=5, nullable=true)
-     */
-    protected $locale;
-
     /**
      * @return Localization
      */
@@ -31,29 +23,12 @@ trait LocalizationTrait
     }
 
     /**
+     * @param Localization $localization
      * @return $this
      */
-    public function setLocalization($localization)
+    public function setLocalization(Localization $localization = null)
     {
         $this->localization = $localization;
-
-        return $this;
-    }
-    
-    /**
-     * @return string
-     */
-    public function getLocale()
-    {
-        return $this->locale;
-    }
-
-    /**
-     * @return $this
-     */
-    public function setLocale($locale)
-    {
-        $this->locale = $locale;
 
         return $this;
     }

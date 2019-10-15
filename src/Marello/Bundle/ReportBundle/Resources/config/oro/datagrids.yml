@@ -49,7 +49,7 @@ datagrids:
             query:
                 select:
                     - i.id
-                    - p.name as productName
+                    - p.denormalizedDefaultName as productName
                     - p.sku as productSku
                     - s.label as status
                     - COALESCE(SUM(il.inventory), 0) AS inventoryQty
@@ -66,7 +66,7 @@ datagrids:
                 label:              marello.product.sku.label
                 frontend_type:      string
             productName:
-                label:              marello.product.name.label
+                label:              marello.product.names.label
                 frontend_type:      string
             inventoryQty:
                 label:              marello.inventory.inventorylevel.inventory.label
@@ -78,7 +78,7 @@ datagrids:
         sorters:
             columns:
                 productSku:     { data_name: p.sku }
-                productName:    { data_name: p.name }
+                productName:    { data_name: p.denormalizedDefaultName }
                 inventoryQty:   { data_name: inventoryQty }
                 status:         { data_name: s.label }
             default:
