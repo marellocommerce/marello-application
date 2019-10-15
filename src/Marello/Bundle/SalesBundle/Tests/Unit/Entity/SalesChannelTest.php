@@ -27,8 +27,7 @@ class SalesChannelTest extends TestCase
             ['channelType', 'some string'],
             ['createdAt', new \DateTime()],
             ['updatedAt', new \DateTime()],
-            ['localization', new Localization()],
-            ['locale', 'some string']
+            ['localization', new Localization()]
         ]);
     }
 }

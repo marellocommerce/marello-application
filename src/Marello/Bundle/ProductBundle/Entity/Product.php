@@ -5,15 +5,6 @@ namespace Marello\Bundle\ProductBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
-use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
-use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
-use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
-use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamilyAwareInterface;
-
 use Marello\Bundle\CatalogBundle\Entity\Category;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Model\InventoryItemAwareInterface;
@@ -26,10 +17,15 @@ use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
+use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
+use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamilyAwareInterface;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 
 /**
- * Represents a Marello Product
- *
  * @ORM\Entity(repositoryClass="Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository")
  * @ORM\Table(
  *      name="marello_product_product",
@@ -76,8 +72,6 @@ class Product extends ExtendProduct implements
     InventoryItemAwareInterface,
     AttributeFamilyAwareInterface
 {
-    use EntityCreatedUpdatedAtTrait;
-    
     const DEFAULT_PRODUCT_TYPE = 'simple';
  
     /**
@@ -95,23 +89,62 @@ class Product extends ExtendProduct implements
      * )
      */
     protected $id;
-
+    
     /**
+     * This is a mirror field for performance reasons only.
+     * It mirrors getDefaultName()->getString().
+     *
      * @var string
      *
-     * @ORM\Column(name="name", type="string", nullable=false)
+     * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      },
+     *      mode="hidden"
+     * )
+     */
+    protected $denormalizedDefaultName;
+    
+    /**
+     * @var Collection|LocalizedFallbackValue[]
+     *
+     * @ORM\ManyToMany(
+     *      targetEntity="Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue",
+     *      cascade={"ALL"},
+     *      orphanRemoval=true
+     * )
+     * @ORM\JoinTable(
+     *      name="marello_product_product_name",
+     *      joinColumns={
+     *          @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
+     *      },
+     *      inverseJoinColumns={
+     *          @ORM\JoinColumn(name="localized_value_id", referencedColumnName="id", onDelete="CASCADE", unique=true)
+     *      }
+     * )
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
      *          },
      *          "importexport"={
-     *              "excluded"=true
+     *              "order"=20,
+     *              "full"=true,
+     *              "fallback_field"="string"
+     *          },
+     *          "attribute"={
+     *              "is_attribute"=true
+     *          },
+     *          "extend"={
+     *              "owner"="System"
      *          }
      *      }
      * )
      */
-    protected $name;
+    protected $names;
 
     /**
      * @var string
@@ -126,6 +159,12 @@ class Product extends ExtendProduct implements
      *              "order"=10,
      *              "header"="SKU",
      *              "identity"=true,
+     *          },
+     *          "attribute"={
+     *              "is_attribute"=true
+     *          },
+     *          "extend"={
+     *              "owner"="System"
      *          }
      *      }
      * )
@@ -143,6 +182,12 @@ class Product extends ExtendProduct implements
      *          },
      *          "importexport"={
      *              "excluded"=true
+     *          },
+     *          "attribute"={
+     *              "is_attribute"=true
+     *          },
+     *          "extend"={
+     *              "owner"="Custom"
      *          }
      *      }
      * )
@@ -161,6 +206,12 @@ class Product extends ExtendProduct implements
      *          },
      *          "importexport"={
      *              "excluded"=true
+     *          },
+     *          "attribute"={
+     *              "is_attribute"=true
+     *          },
+     *          "extend"={
+     *              "owner"="System"
      *          }
      *      }
      * )
@@ -193,6 +244,12 @@ class Product extends ExtendProduct implements
      *          },
      *          "importexport"={
      *              "excluded"=true
+     *          },
+     *          "attribute"={
+     *              "is_attribute"=true
+     *          },
+     *          "extend"={
+     *              "owner"="Custom"
      *          }
      *      }
      * )
@@ -212,6 +269,12 @@ class Product extends ExtendProduct implements
      *          },
      *          "importexport"={
      *              "excluded"=true
+     *          },
+     *          "attribute"={
+     *              "is_attribute"=true
+     *          },
+     *          "extend"={
+     *              "owner"="Custom"
      *          }
      *      }
      * )
@@ -253,6 +316,12 @@ class Product extends ExtendProduct implements
      *          },
      *          "importexport"={
      *              "excluded"=true
+     *          },
+     *          "attribute"={
+     *              "is_attribute"=true
+     *          },
+     *          "extend"={
+     *              "owner"="System"
      *          }
      *      }
      * )
@@ -276,6 +345,12 @@ class Product extends ExtendProduct implements
      *          },
      *          "importexport"={
      *              "excluded"=true
+     *          },
+     *          "attribute"={
+     *              "is_attribute"=true
+     *          },
+     *          "extend"={
+     *              "owner"="System"
      *          }
      *      }
      * )
@@ -296,6 +371,12 @@ class Product extends ExtendProduct implements
      *          },
      *          "importexport"={
      *              "excluded"=true
+     *          },
+     *          "attribute"={
+     *              "is_attribute"=true
+     *          },
+     *          "extend"={
+     *              "owner"="System"
      *          }
      *      }
      * )
@@ -373,6 +454,12 @@ class Product extends ExtendProduct implements
      *          },
      *          "importexport"={
      *              "excluded"=true
+     *          },
+     *          "attribute"={
+     *              "is_attribute"=true
+     *          },
+     *          "extend"={
+     *              "owner"="Custom"
      *          }
      *      }
      * )
@@ -408,6 +495,12 @@ class Product extends ExtendProduct implements
      *          },
      *          "importexport"={
      *              "excluded"=true
+     *          },
+     *          "attribute"={
+     *              "is_attribute"=true
+     *          },
+     *          "extend"={
+     *              "owner"="System"
      *          }
      *      }
      * )
@@ -430,6 +523,12 @@ class Product extends ExtendProduct implements
      *          },
      *          "importexport"={
      *              "excluded"=true
+     *          },
+     *          "attribute"={
+     *              "is_attribute"=true
+     *          },
+     *          "extend"={
+     *              "owner"="System"
      *          }
      *      }
      * )
@@ -452,6 +551,12 @@ class Product extends ExtendProduct implements
      *          },
      *          "importexport"={
      *              "excluded"=true
+     *          },
+     *          "attribute"={
+     *              "is_attribute"=true
+     *          },
+     *          "extend"={
+     *              "owner"="Custom"
      *          }
      *      }
      * )
@@ -476,8 +581,37 @@ class Product extends ExtendProduct implements
      */
     protected $attributeFamily;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="oro.ui.created_at"
+     *          }
+     *      }
+     * )
+     */
+    protected $createdAt;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="oro.ui.updated_at"
+     *          }
+     *      }
+     * )
+     */
+    protected $updatedAt;
+
     public function __construct()
     {
+        $this->names                = new ArrayCollection();
         $this->prices               = new ArrayCollection();
         $this->channelPrices        = new ArrayCollection();
         $this->channels             = new ArrayCollection();
@@ -491,6 +625,7 @@ class Product extends ExtendProduct implements
     {
         if ($this->id) {
             $this->id                   = null;
+            $this->names                = new ArrayCollection();
             $this->prices               = new ArrayCollection();
             $this->channelPrices        = new ArrayCollection();
             $this->channels             = new ArrayCollection();
@@ -509,21 +644,53 @@ class Product extends ExtendProduct implements
     }
 
     /**
-     * @return string
+     * @param array|LocalizedFallbackValue[] $names
+     *
+     * @return $this
      */
-    public function getName()
+    public function setNames(array $names = [])
     {
-        return $this->name;
+        $this->names->clear();
+
+        foreach ($names as $name) {
+            $this->addName($name);
+        }
+
+        return $this;
     }
 
     /**
-     * @param string $name
-     *
-     * @return Product
+     * @return Collection|LocalizedFallbackValue[]
      */
-    public function setName($name)
+    public function getNames()
     {
-        $this->name = $name;
+        return $this->names;
+    }
+
+    /**
+     * @param LocalizedFallbackValue $name
+     *
+     * @return $this
+     */
+    public function addName(LocalizedFallbackValue $name)
+    {
+        if (!$this->names->contains($name)) {
+            $this->names->add($name);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param LocalizedFallbackValue $name
+     *
+     * @return $this
+     */
+    public function removeName(LocalizedFallbackValue $name)
+    {
+        if ($this->names->contains($name)) {
+            $this->names->removeElement($name);
+        }
 
         return $this;
     }
@@ -821,13 +988,21 @@ class Product extends ExtendProduct implements
     {
         return $this->data;
     }
-
+    
     /**
      * @return string
      */
     public function __toString()
     {
-        return $this->name;
+        try {
+            if ($this->getDefaultName()) {
+                return (string) $this->getDefaultName();
+            } else {
+                return (string) $this->sku;
+            }
+        } catch (\LogicException $e) {
+            return (string) $this->sku;
+        }
     }
 
     /**
@@ -1167,5 +1342,83 @@ class Product extends ExtendProduct implements
         $this->type = $type;
         
         return $this;
+    }
+
+    /**
+     * This field is read-only, updated automatically prior to persisting.
+     *
+     * @return string
+     */
+    public function getDenormalizedDefaultName()
+    {
+        return $this->denormalizedDefaultName;
+    }
+    
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     *
+     * @return mixed
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @return \Datetime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     *
+     * @return mixed
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return \Datetime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+    
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+        $this->createdAt = new \DateTime('now', new \DateTimeZone('UTC'));
+        if (!$this->getDefaultName()) {
+            throw new \RuntimeException('Product has to have a default name');
+        }
+        $this->denormalizedDefaultName = $this->getDefaultName()->getString();
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function preUpdate()
+    {
+        $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
+        if (!$this->getDefaultName()) {
+            throw new \RuntimeException('Product has to have a default name');
+        }
+        $this->denormalizedDefaultName = $this->getDefaultName()->getString();
     }
 }

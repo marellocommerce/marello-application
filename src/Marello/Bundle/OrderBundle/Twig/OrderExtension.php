@@ -8,7 +8,6 @@ use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\OrderBundle\Migrations\Data\ORM\LoadOrderItemStatusData;
 use Marello\Bundle\OrderBundle\Provider\OrderItem\ShippingPreparedOrderItemsForNotificationProvider;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
-use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -21,19 +20,6 @@ class OrderExtension extends AbstractExtension
 
     /** @var ShippingPreparedOrderItemsForNotificationProvider $orderItemsForNotificationProvider*/
     private $orderItemsForNotificationProvider;
-
-    /** @var WorkflowManager $workflowManager */
-    protected $workflowManager;
-
-    /**
-     * ProductExtension constructor.
-     *
-     * @param WorkflowManager $workflowManager
-     */
-    public function __construct(WorkflowManager $workflowManager)
-    {
-        $this->workflowManager = $workflowManager;
-    }
 
     /**
      * Returns the name of the extension.

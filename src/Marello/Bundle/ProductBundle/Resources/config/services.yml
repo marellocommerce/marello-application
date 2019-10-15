@@ -28,6 +28,13 @@ services:
         tags:
             - { name: oro_ui.view_action_provider, group: product }
 
+    marello_product.twig.dynamic_fields_extension:
+        class: Marello\Bundle\ProductBundle\Twig\DynamicFieldsExtension
+        arguments:
+            - '@oro_entity_config.manager.attribute_manager'
+        tags:
+            - { name: twig.extension }
+
     marello_product.twig.product_extension:
         class: Marello\Bundle\ProductBundle\Twig\ProductExtension
         arguments:
@@ -60,15 +67,9 @@ services:
     marello_product.listener.datagrid.product_grid_listener:
         class: Marello\Bundle\ProductBundle\EventListener\Datagrid\ProductGridListener
         tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-products-grid, method: onBuildBefore }
             - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.before.marello-products-grid, method: onResultBefore }
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.marello-products-grid, method: buildAfter }
-
-    marello_product.listener.doctrine.product_attribute_family:
-        class: Marello\Bundle\ProductBundle\EventListener\Doctrine\ProductAttributeFamilyEventListener
-        arguments:
-            - '@marello_product.provider.product_types'
-        tags:
-            - { name: doctrine.event_listener, event: prePersist }
 
     marello_product.listener.doctrine.product_dropship:
         class: Marello\Bundle\ProductBundle\EventListener\Doctrine\ProductDropshipEventListener
@@ -104,6 +105,7 @@ services:
 
     marello_product.service.duplicator:
         class: 'Marello\Bundle\ProductBundle\Duplicator\ProductDuplicator'
+        public: true
         arguments:
             - "@oro_entity.doctrine_helper"
             - "@event_dispatcher"
@@ -158,24 +160,20 @@ services:
         tags:
             - { name: 'oro_message_queue.client.message_processor' }
 
+
     marello_product.event_listener.attribute_family_form_view:
         parent: oro_entity_config.event_listener.attribute_family_form_view.abstract
         tags:
-            - { name: kernel.event_listener, event: oro_ui.scroll_data.before.marello-product-create-step-two, method: onEdit, priority: -255 }
-            - { name: kernel.event_listener, event: oro_ui.scroll_data.before.marello-product-update, method: onEdit }
+            - { name: kernel.event_listener, event: oro_ui.scroll_data.before.marello-product-create-step-one, method: onEdit }
 
     marello_product.event_listener.attributes_form_view:
-        parent: oro_entity_config.event_listener.attributes_form_view.abstract
+        class: Marello\Bundle\ProductBundle\EventListener\AttributeFormViewListener
+        arguments:
+            - '@oro_entity_config.manager.attribute_manager'
         tags:
             - { name: kernel.event_listener, event: oro_ui.scroll_data.before.marello-product-create-step-two, method: onEdit, priority: -255 }
             - { name: kernel.event_listener, event: oro_ui.scroll_data.before.marello-product-update, method: onEdit, priority: -255 }
             - { name: kernel.event_listener, event: oro_ui.scroll_data.before.marello-product-view, method: onViewList, priority: -255 }
-
-    marello_product.product.form.event_listener.attribute_family:
-        class: Marello\Bundle\ProductBundle\Form\EventListener\AttributeFamilySubscriber
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@marello_product.provider.product_types'
 
     marello_product.provider.product_types:
         public: true
@@ -186,6 +184,5 @@ services:
         arguments:
             - name: 'simple'
               label: 'Simple'
-              attribute_family_code: 'marello_default'
         tags:
             - {name: marello_product.product_type}

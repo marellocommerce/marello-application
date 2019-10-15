@@ -55,11 +55,15 @@ class ProductController extends AbstractController
         $form = $this->createForm(ProductStepOneType::class);
         $handler = new ProductCreateStepOneHandler($form, $request);
         $productTypesProvider = $this->get('marello_product.provider.product_types');
-
+        $em = $this->get('doctrine.orm.entity_manager');
+        /** @var AttributeFamily $attributeFamily */
+        $attributeFamilies = $em
+            ->getRepository(AttributeFamily::class)
+            ->findBy(['entityClass' => Product::class]);
         if ($handler->process()) {
             return $this->forward('MarelloProductBundle:Product:createStepTwo');
         }
-        if (count($productTypesProvider->getProductTypes()) === 1) {
+        if (count($productTypesProvider->getProductTypes()) <= 1 && count($attributeFamilies) <= 1) {
             $request->setMethod('POST');
             $request->request->set('input_action', 'marello_product_create');
             $request->request->set('single_product_type', true);
@@ -96,35 +100,28 @@ class ProductController extends AbstractController
     {
         if ($request->get('input_action') === 'marello_product_create') {
             $formStepOne = $this->createForm(ProductStepOneType::class, $product);
+            $em = $this->get('doctrine.orm.entity_manager');
             if ($request->get('single_product_type')) {
                 $type = Product::DEFAULT_PRODUCT_TYPE;
+                $attributeFamily = $em
+                    ->getRepository(AttributeFamily::class)
+                    ->findOneBy(['entityClass' => Product::class]);
             } else {
                 $formStepOne->handleRequest($request);
                 $type = $formStepOne->get('type')->getData();
+                $attributeFamily = $formStepOne->get('attributeFamily')->getData();
             }
             $product->setType($type);
-            $productTypesProvider = $this->get('marello_product.provider.product_types');
-            $em = $this->get('doctrine.orm.entity_manager');
-            $productType = $productTypesProvider->getProductType($type);
-            if ($productType) {
-                /** @var AttributeFamily $attributeFamily */
-                $attributeFamily = $em
-                    ->getRepository(AttributeFamily::class)
-                    ->findOneBy(['code' => $productType->getAttributeFamilyCode()]);
-                $product->setAttributeFamily($attributeFamily);
+            $product->setAttributeFamily($attributeFamily);
 
-                $form = $this->createForm(ProductType::class, $product);
-                $form->get('type')->setData($type);
-                $form->get('attributeFamily')->setData($attributeFamily->getId());
-            }
+            $form = $this->createForm(ProductType::class, $product);
+
             return [
                 'form' => $form->createView(),
                 'entity' => $product,
                 'isWidgetContext' => (bool)$request->get('_wid', false)
             ];
         }
-        //$form = $this->createForm(ProductStepOneType::class, $product, ['validation_groups'=> false]);
-        //$form->submit($request->request->get(ProductType::BLOCK_PREFIX));
 
         return $this->update($product, $request);
     }

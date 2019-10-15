@@ -134,3 +134,10 @@ services:
         public: true
         arguments:
             - '@oro_entity.doctrine_helper'
+
+    marello_tax.event_listener.datagrid.products_grid:
+        class: 'Marello\Bundle\TaxBundle\EventListener\Datagrid\TaxCodeDatagridListener'
+        arguments:
+            - '%marello_product.entity.class%'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-products-grid, method: onBuildBefore }
