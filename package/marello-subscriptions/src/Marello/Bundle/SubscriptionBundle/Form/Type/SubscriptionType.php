@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\SubscriptionBundle\Form\Type;
 
-use Marello\Bundle\OrderBundle\Form\Type\CustomerSelectType;
+use Marello\Bundle\CustomerBundle\Form\Type\CustomerSelectType;
 use Marello\Bundle\SalesBundle\Form\Type\SalesChannelSelectType;
 use Marello\Bundle\SubscriptionBundle\Entity\Subscription;
 use Marello\Bundle\SubscriptionBundle\Form\EventListener\SubscriptionItemSubscriber;

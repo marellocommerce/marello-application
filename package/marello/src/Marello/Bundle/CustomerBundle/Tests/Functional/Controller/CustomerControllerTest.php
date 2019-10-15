@@ -1,12 +1,12 @@
 <?php
 
-namespace Marello\Bundle\OrderBundle\Tests\Functional\Controller;
+namespace Marello\Bundle\CustomerBundle\Tests\Functional\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
-use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadCustomerData;
+use Marello\Bundle\CustomerBundle\Tests\Functional\DataFixtures\LoadCustomerData;
 
 class CustomerControllerTest extends WebTestCase
 {
@@ -26,7 +26,7 @@ class CustomerControllerTest extends WebTestCase
     {
         $this->client->request(
             'GET',
-            $this->getUrl('marello_order_customer_index')
+            $this->getUrl('marello_customer_index')
         );
 
         $this->assertResponseStatusCodeEquals($this->client->getResponse(), Response::HTTP_OK);

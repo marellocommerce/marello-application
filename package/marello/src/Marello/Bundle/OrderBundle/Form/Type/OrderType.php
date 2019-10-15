@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\OrderBundle\Form\Type;
 
+use Marello\Bundle\CustomerBundle\Form\Type\CompanyAwareCustomerSelectType;
 use Marello\Bundle\CustomerBundle\Form\Type\CompanySelectType;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Form\EventListener\CurrencySubscriber;

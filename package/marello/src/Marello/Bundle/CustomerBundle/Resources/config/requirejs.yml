@@ -1,3 +1,7 @@
 config:
     paths:
         'marellocustomer/js/app/components/customer-company-select-component': 'bundles/marellocustomer/js/app/components/customer-compay-select-component.js'
+        'marellocustomer/js/app/components/customer-selection-component': 'bundles/marellocustomer/js/app/components/customer-selection-component.js'
+        'marellocustomer/js/app/components/select-create-company-customer-inline-type-component': 'bundles/marellocustomer/js/app/components/select-create-company-customer-inline-type-component.js'
+        'marellocustomer/js/app/components/select-create-company-customer-inline-type-async-component': 'bundles/marellocustomer/js/app/components/select-create-company-customer-inline-type-async-component.js'
+        'oro/select2-autocomplete-company-customer-component': 'bundles/marellocustomer/js/app/components/select2-autocomplete-company-customer-component.js'

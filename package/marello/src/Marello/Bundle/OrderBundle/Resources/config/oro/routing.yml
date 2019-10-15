@@ -3,11 +3,6 @@ marello_order:
     type:     annotation
     prefix:   /marello/order
 
-marello_order_customer:
-    resource: "@MarelloOrderBundle/Controller/CustomerController.php"
-    type:     annotation
-    prefix:   /marello/order/customer
-
 marello_order_ajax:
     resource: "@MarelloOrderBundle/Controller/OrderAjaxController.php"
     type:     annotation

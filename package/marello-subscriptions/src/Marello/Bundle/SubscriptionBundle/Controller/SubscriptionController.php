@@ -8,16 +8,20 @@ use Marello\Bundle\SubscriptionBundle\Entity\Subscription;
 use Marello\Bundle\SubscriptionBundle\Form\Type\SubscriptionType;
 use Marello\Bundle\SubscriptionBundle\Form\Type\SubscriptionUpdateType;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Routing\Annotation\Route;
 
 class SubscriptionController extends AbstractController
 {
     /**
-     * @Config\Route("/", name="marello_subscription_index")
-     * @Config\Template
+     * @Route(
+     *     path="/", 
+     *     name="marello_subscription_index"
+     * )
+     * @Template
      * @AclAncestor("marello_subscription_view")
      */
     public function indexAction()
@@ -26,8 +30,12 @@ class SubscriptionController extends AbstractController
     }
 
     /**
-     * @Config\Route("/view/{id}", requirements={"id"="\d+"}, name="marello_subscription_view")
-     * @Config\Template
+     * @Route(
+     *     path="/view/{id}", 
+     *     requirements={"id"="\d+"}, 
+     *     name="marello_subscription_view"
+     * )
+     * @Template
      * @AclAncestor("marello_subscription_view")
      *
      * @param Subscription $subscription
@@ -40,9 +48,12 @@ class SubscriptionController extends AbstractController
     }
 
     /**
-     * @Config\Route("/create", name="marello_subscription_create")
-     * @Config\Method({"GET", "POST"})
-     * @Config\Template
+     * @Route(
+     *     path="/create", 
+     *     methods={"GET", "POST"},
+     *     name="marello_subscription_create"
+     * )
+     * @Template
      * @AclAncestor("marello_subscription_create")
      *
      * @param Request $request
@@ -55,9 +66,13 @@ class SubscriptionController extends AbstractController
     }
 
     /**
-     * @Config\Route("/update/{id}", requirements={"id"="\d+"}, name="marello_subscription_update")
-     * @Config\Method({"GET", "POST"})
-     * @Config\Template
+     * @Route(
+     *     path="/update/{id}", 
+     *     methods={"GET", "POST"},
+     *     requirements={"id"="\d+"}, 
+     *     name="marello_subscription_update"
+     * )
+     * @Template
      * @AclAncestor("marello_subscription_update")
      *
      * @param Request $request
@@ -122,13 +137,13 @@ class SubscriptionController extends AbstractController
     }
 
     /**
-     * @Config\Route(
-     *     "/widget/address/{id}/{typeId}",
+     * @Route(
+     *     path="/widget/address/{id}/{typeId}",
+     *     methods={"GET", "POST"},
      *     requirements={"id"="\d+","typeId"="\d+"},
      *     name="marello_subscription_address"
      * )
-     * @Config\Method({"GET", "POST"})
-     * @Config\Template("MarelloSubscriptionBundle:Subscription/widget:address.html.twig")
+     * @Template("MarelloSubscriptionBundle:Subscription/widget:address.html.twig")
      * @AclAncestor("marello_subscription_view")
      *
      * @param Request $request
@@ -145,9 +160,13 @@ class SubscriptionController extends AbstractController
     }
     
     /**
-     * @Config\Route("/update/address/{id}", requirements={"id"="\d+"}, name="marello_subscription_updateaddress")
-     * @Config\Method({"GET", "POST"})
-     * @Config\Template("MarelloSubscriptionBundle:Subscription:widget/updateAddress.html.twig")
+     * @Route(
+     *     path="/update/address/{id}", 
+     *     methods={"GET", "POST"},
+     *     requirements={"id"="\d+"}, 
+     *     name="marello_subscription_updateaddress"
+     * )
+     * @Template("MarelloSubscriptionBundle:Subscription:widget/updateAddress.html.twig")
      * @AclAncestor("marello_subscription_update")
      *
      * @param Request $request

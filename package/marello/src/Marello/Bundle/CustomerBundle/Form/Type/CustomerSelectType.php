@@ -1,5 +1,5 @@
 <?php
-namespace Marello\Bundle\OrderBundle\Form\Type;
+namespace Marello\Bundle\CustomerBundle\Form\Type;
 
 use Oro\Bundle\FormBundle\Form\Type\OroEntitySelectOrCreateInlineType;
 use Symfony\Component\Form\AbstractType;
@@ -17,13 +17,13 @@ class CustomerSelectType extends AbstractType
         $resolver->setDefaults(
             [
                 'autocomplete_alias' => 'marello_customers',
-                'create_form_route'  => 'marello_order_customer_create',
+                'create_form_route'  => 'marello_customer_create',
                 'grid_name'          => 'marello-customer-select-grid',
                 'create_enabled'     => true,
                 'configs'            => [
-                    'placeholder' => 'marello.order.customer.form.choose',
-                    'result_template_twig' => 'MarelloOrderBundle:Customer:Autocomplete/result.html.twig',
-                    'selection_template_twig' => 'MarelloOrderBundle:Customer:Autocomplete/selection.html.twig',
+                    'placeholder' => 'marello.customer.form.choose',
+                    'result_template_twig' => 'MarelloCustomerBundle:Customer:Autocomplete/result.html.twig',
+                    'selection_template_twig' => 'MarelloCustomerBundle:Customer:Autocomplete/selection.html.twig',
                 ],
             ]
         );

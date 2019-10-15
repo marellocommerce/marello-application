@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\PaymentTermBundle\Provider;
 
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\PaymentTermBundle\DependencyInjection\Configuration;
 use Marello\Bundle\PaymentTermBundle\Entity\PaymentTerm;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;

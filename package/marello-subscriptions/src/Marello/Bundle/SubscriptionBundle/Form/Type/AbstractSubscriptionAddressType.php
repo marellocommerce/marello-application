@@ -4,7 +4,7 @@ namespace Marello\Bundle\SubscriptionBundle\Form\Type;
 
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\AddressBundle\Form\Type\AddressType as MarelloAddressType;
-use Marello\Bundle\OrderBundle\Provider\OrderCustomerAddressProvider;
+use Marello\Bundle\CustomerBundle\Provider\CustomerAddressProvider;
 use Marello\Bundle\SubscriptionBundle\Entity\Subscription;
 use Oro\Bundle\AddressBundle\Entity\AddressType;
 use Oro\Bundle\FormBundle\Form\Type\Select2ChoiceType;
@@ -28,9 +28,9 @@ abstract class AbstractSubscriptionAddressType extends AbstractType
     protected $addressFormatter;
 
     /**
-     * @var OrderCustomerAddressProvider
+     * @var CustomerAddressProvider
      */
-    protected $orderCustomerAddressProvider;
+    protected $customerAddressProvider;
 
     /**
      * @var Serializer
@@ -39,16 +39,16 @@ abstract class AbstractSubscriptionAddressType extends AbstractType
 
     /**
      * @param AddressFormatter $addressFormatter
-     * @param OrderCustomerAddressProvider $orderCustomerAddressProvider
+     * @param CustomerAddressProvider $customerAddressProvider
      * @param Serializer $serializer
      */
     public function __construct(
         AddressFormatter $addressFormatter,
-        OrderCustomerAddressProvider $orderCustomerAddressProvider,
+        CustomerAddressProvider $customerAddressProvider,
         Serializer $serializer
     ) {
         $this->addressFormatter = $addressFormatter;
-        $this->orderCustomerAddressProvider = $orderCustomerAddressProvider;
+        $this->customerAddressProvider = $customerAddressProvider;
         $this->serializer = $serializer;
     }
 

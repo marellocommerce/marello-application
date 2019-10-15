@@ -1,13 +1,13 @@
 <?php
 
-namespace Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures;
+namespace Marello\Bundle\CustomerBundle\Tests\Functional\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 
 class LoadCustomerData extends AbstractFixture

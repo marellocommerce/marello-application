@@ -11,7 +11,7 @@ class OrderDashboardController extends AbstractController
 {
     /**
      * @Route(
-     *      "/orderitems_by_status/chart/{widget}",
+     *      path="/orderitems_by_status/chart/{widget}",
      *      name="marello_order_dashboard_orderitems_by_status_chart",
      *      requirements={"widget"="[\w-]+"}
      * )

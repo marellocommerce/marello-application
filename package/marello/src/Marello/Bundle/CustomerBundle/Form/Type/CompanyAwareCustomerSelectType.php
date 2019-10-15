@@ -1,7 +1,6 @@
 <?php
-namespace Marello\Bundle\OrderBundle\Form\Type;
+namespace Marello\Bundle\CustomerBundle\Form\Type;
 
-use Oro\Bundle\FormBundle\Form\Type\OroEntitySelectOrCreateInlineType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;

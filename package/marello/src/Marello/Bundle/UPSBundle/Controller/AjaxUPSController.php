@@ -9,7 +9,6 @@ use Marello\Bundle\UPSBundle\Connection\Validator\Result\UpsConnectionValidatorR
 use Marello\Bundle\UPSBundle\Entity\Repository\ShippingServiceRepository;
 use Marello\Bundle\UPSBundle\Entity\UPSSettings;
 use Oro\Bundle\IntegrationBundle\Form\Type\ChannelType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,11 +18,13 @@ use Symfony\Component\HttpFoundation\Request;
 class AjaxUPSController extends AbstractController
 {
     /**
-     * @Route("/get-shipping-services-by-country/{code}",
-     *      name="marello_ups_country_shipping_services",
-     *      requirements={"code"="^[A-Z]{2}$"})
+     * @Route(
+     *     path="/get-shipping-services-by-country/{code}",
+     *     methods={"GET"},
+     *     name="marello_ups_country_shipping_services",
+     *     requirements={"code"="^[A-Z]{2}$"}
+     * )
      * @ParamConverter("country", options={"id" = "code"})
-     * @Method("GET")
      * @param Country $country
      * @return JsonResponse
      */
@@ -43,9 +44,12 @@ class AjaxUPSController extends AbstractController
     }
 
     /**
-     * @Route("/validate-connection/{channelId}/", name="marello_ups_validate_connection")
+     * @Route(
+     *     path="/validate-connection/{channelId}/", 
+     *     methods={"POST"},
+     *     name="marello_ups_validate_connection"
+     * )
      * @ParamConverter("channel", class="OroIntegrationBundle:Channel", options={"id" = "channelId"})
-     * @Method("POST")
      *
      * @param Request      $request
      * @param Channel|null $channel

@@ -10,16 +10,20 @@ use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\OrderBundle\Form\Type\OrderType;
 use Marello\Bundle\OrderBundle\Form\Type\OrderUpdateType;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Routing\Annotation\Route;
 
 class OrderController extends AbstractController
 {
     /**
-     * @Config\Route("/", name="marello_order_order_index")
-     * @Config\Template
+     * @Route(
+     *     path="/", 
+     *     name="marello_order_order_index"
+     * )
+     * @Template
      * @AclAncestor("marello_order_view")
      */
     public function indexAction()
@@ -28,8 +32,12 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Config\Route("/view/{id}", requirements={"id"="\d+"}, name="marello_order_order_view")
-     * @Config\Template
+     * @Route(
+     *     path="/view/{id}", 
+     *     requirements={"id"="\d+"}, 
+     *     name="marello_order_order_view"
+     * )
+     * @Template
      * @AclAncestor("marello_order_view")
      *
      * @param Order $order
@@ -42,9 +50,12 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Config\Route("/create", name="marello_order_order_create")
-     * @Config\Method({"GET", "POST"})
-     * @Config\Template
+     * @Route(
+     *     path="/create",
+     *     methods={"GET", "POST"},
+     *     name="marello_order_order_create"
+     * )
+     * @Template
      * @AclAncestor("marello_order_create")
      *
      * @param Request $request
@@ -57,9 +68,13 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Config\Route("/update/{id}", requirements={"id"="\d+"}, name="marello_order_order_update")
-     * @Config\Method({"GET", "POST"})
-     * @Config\Template
+     * @Route(
+     *     path="/update/{id}",
+     *     methods={"GET", "POST"},
+     *     requirements={"id"="\d+"}, 
+     *     name="marello_order_order_update"
+     * )
+     * @Template
      * @AclAncestor("marello_order_update")
      *
      * @param Request $request
@@ -139,13 +154,13 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Config\Route(
-     *     "/widget/address/{id}/{typeId}",
+     * @Route(
+     *     path="/widget/address/{id}/{typeId}",
+     *     methods={"GET", "POST"},
      *     requirements={"id"="\d+","typeId"="\d+"},
      *     name="marello_order_order_address"
      * )
-     * @Config\Method({"GET", "POST"})
-     * @Config\Template("MarelloOrderBundle:Order/widget:address.html.twig")
+     * @Template("MarelloOrderBundle:Order/widget:address.html.twig")
      * @AclAncestor("marello_order_view")
      *
      * @param Request $request
@@ -162,9 +177,13 @@ class OrderController extends AbstractController
     }
     
     /**
-     * @Config\Route("/update/address/{id}", requirements={"id"="\d+"}, name="marello_order_order_updateaddress")
-     * @Config\Method({"GET", "POST"})
-     * @Config\Template("MarelloOrderBundle:Order:widget/updateAddress.html.twig")
+     * @Route(
+     *     path="/update/address/{id}", 
+     *     methods={"GET", "POST"},
+     *     requirements={"id"="\d+"}, 
+     *     name="marello_order_order_updateaddress"
+     * )
+     * @Template("MarelloOrderBundle:Order:widget/updateAddress.html.twig")
      * @AclAncestor("marello_order_update")
      *
      * @param Request $request

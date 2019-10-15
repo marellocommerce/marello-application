@@ -114,7 +114,7 @@ class MarelloRefundBundleInstaller implements
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
         $table->addForeignKeyConstraint(
-            $schema->getTable('marello_order_customer'),
+            $schema->getTable('marello_customer_customer'),
             ['customer_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]

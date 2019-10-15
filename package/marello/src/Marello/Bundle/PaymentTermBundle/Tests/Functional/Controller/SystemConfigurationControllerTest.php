@@ -45,7 +45,7 @@ class SystemConfigurationControllerTest extends WebTestCase
             $crawler->filter('select[name="payment_config[marello_payment_term___default_payment_term][value]"]')
         );
 
-        $form = $crawler->selectbutton('Save settings')->form();
+        $form = $crawler->selectButton('Save settings')->form();
         $selectField = $form['payment_config[marello_payment_term___default_payment_term][value]'];
 
         static::assertEquals(
@@ -88,7 +88,7 @@ class SystemConfigurationControllerTest extends WebTestCase
         $result = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
 
-        $form = $crawler->selectbutton('Save settings')->form();
+        $form = $crawler->selectButton('Save settings')->form();
         $selectField = $form['payment_config[marello_payment_term___default_payment_term][value]'];
 
         static::assertEquals(

@@ -3,8 +3,8 @@
 namespace Marello\Bundle\SubscriptionBundle\Tests\Functional\Controller;
 
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use Marello\Bundle\OrderBundle\Entity\Customer;
-use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadCustomerData;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Tests\Functional\DataFixtures\LoadCustomerData;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;

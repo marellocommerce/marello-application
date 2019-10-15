@@ -5,7 +5,7 @@ namespace MarelloEnterprise\Bundle\OrderBundle\Tests\Functional\Controller;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Migrations\Data\ORM\LoadOrderItemStatusData;
 use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;

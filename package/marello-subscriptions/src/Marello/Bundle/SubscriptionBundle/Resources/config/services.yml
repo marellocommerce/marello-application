@@ -23,7 +23,7 @@ services:
     marello_subscription.form.type.address:
         arguments:
             - '@oro_locale.formatter.address'
-            - '@marello_order.provider.customer_address'
+            - '@marello_customer.provider.customer_address'
             - '@oro_importexport.serializer'
         abstract: true
 

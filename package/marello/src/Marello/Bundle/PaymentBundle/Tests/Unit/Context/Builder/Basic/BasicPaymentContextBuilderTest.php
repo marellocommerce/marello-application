@@ -6,7 +6,7 @@ use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\PaymentBundle\Context\LineItem\Collection\Factory\PaymentLineItemCollectionFactoryInterface;
 use Marello\Bundle\PaymentBundle\Context\PaymentLineItemInterface;
 use Oro\Bundle\CurrencyBundle\Entity\Price;
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Oro\Bundle\LocaleBundle\Model\AddressInterface;
 use Marello\Bundle\PaymentBundle\Context\Builder\Basic\BasicPaymentContextBuilder;
 use Marello\Bundle\PaymentBundle\Context\LineItem\Collection\PaymentLineItemCollectionInterface;

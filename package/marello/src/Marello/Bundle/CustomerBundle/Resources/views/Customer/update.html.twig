@@ -1,16 +1,17 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
 {% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
 
 {% if form.vars.value.id %}
-    {% set formAction = path('marello_order_customer_update', { 'id': form.vars.value.id }) %}
+    {% set formAction = path('marello_customer_update', { 'id': form.vars.value.id }) %}
 {% else %}
-    {% set formAction = path('marello_order_customer_create') %}
+    {% set formAction = path('marello_customer_create') %}
 {% endif %}
 
 {% block navButtons %}
-    {{ UI.cancelButton(path('marello_order_customer_index')) }}
+    {{ UI.cancelButton(path('marello_customer_index')) }}
     {% set html = UI.saveAndCloseButton() %}
-    {% if is_granted('marello_order_update') %}
+    {% if is_granted('marello_customer_update') %}
         {% set html = html ~ UI.saveAndStayButton() %}
     {% endif %}
     {{ UI.dropdownSaveButton({ 'html': html }) }}
@@ -20,13 +21,13 @@
     {% if form.vars.value.id %}
         {% set breadcrumbs = {
             'entity':      entity,
-            'indexPath':   path('marello_order_customer_index'),
-            'indexLabel': 'marello.order.customer.entity_plural_label'|trans,
+            'indexPath':   path('marello_customer_index'),
+            'indexLabel': 'marello.customer.entity_plural_label'|trans,
             'entityTitle': entity
         } %}
         {{ parent() }}
     {% else %}
-        {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'marello.order.customer.entity_label'|trans}) %}
+        {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'marello.customer.entity_label'|trans}) %}
         {% include 'OroUIBundle::page_title_block.html.twig' with { title: title } %}
     {% endif %}
 {% endblock pageHeader %}
@@ -55,11 +56,11 @@
     {% set dataBlocks = dataBlocks|merge( [{
         'title' : 'Addresses'|trans,
         'subblocks': [{
-            'title': 'marello.order.customer.primary_address.label'|trans,
+            'title': 'marello.customer.primary_address.label'|trans,
             'data': [form_widget(form.primaryAddress)]
         },
         {
-            'title': 'marello.order.customer.shipping_address.label'|trans,
+            'title': 'marello.customer.shipping_address.label'|trans,
             'data': [form_widget(form.shippingAddress)]
         }]
     }] ) %}

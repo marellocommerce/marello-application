@@ -4,7 +4,7 @@ namespace Marello\Bundle\ShippingBundle\Tests\Unit\Context;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Oro\Bundle\CurrencyBundle\Entity\Price;
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Oro\Bundle\LocaleBundle\Model\AddressInterface;
 use Marello\Bundle\ShippingBundle\Context\LineItem\Collection\ShippingLineItemCollectionInterface;
 use Marello\Bundle\ShippingBundle\Context\ShippingContext;

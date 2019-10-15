@@ -1,4 +1,115 @@
 datagrids:
+
+    marello-customer:
+        source:
+            type: orm
+            query:
+                select:
+                    - c.id
+                    - c
+                from:
+                    - { table: MarelloCustomerBundle:Customer, alias: c }
+        columns:
+            id:
+                label: marello.customer.id.label
+                renderable: false
+            namePrefix:
+                label: marello.customer.name_prefix.label
+            firstName:
+                label: marello.customer.first_name.label
+            middleName:
+                label: marello.customer.middle_name.label
+            lastName:
+                label: marello.customer.last_name.label
+            nameSuffix:
+                label: marello.customer.name_suffix.label
+            email:
+                label: marello.customer.email.label
+            createdAt:
+                label:            oro.ui.created_at
+                frontend_type:    datetime
+            updatedAt:
+                label:            oro.ui.updated_at
+                frontend_type:    datetime
+        filters:
+            columns:
+                namePrefix:
+                    type: string
+                    data_name: c.namePrefix
+                firstName:
+                    type: string
+                    data_name: c.firstName
+                middleName:
+                    type: string
+                    data_name: c.middleName
+                lastName:
+                    type: string
+                    data_name: c.lastName
+                nameSuffix:
+                    type: string
+                    data_name: c.nameSuffix
+                email:
+                    type: string
+                    data_name: c.email
+                createdAt:
+                    type: datetime
+                    data_name: c.createdAt
+                updatedAt:
+                    type: datetime
+                    data_name: c.updatedAt
+        sorters:
+            columns:
+                namePrefix:
+                    data_name: c.namePrefix
+                firstName:
+                    data_name: c.firstName
+                middleName:
+                    data_name: c.middleName
+                lastName:
+                    data_name: c.lastName
+                nameSuffix:
+                    data_name: c.nameSuffix
+                email:
+                    data_name: c.email
+                createdAt:
+                    data_name: c.createdAt
+                updatedAt:
+                    data_name: c.updatedAt
+            default:
+                createdAt: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+        properties:
+            view_link:
+                type:   url
+                route:  marello_customer_view
+                params:
+                    id: id
+            update_link:
+                type:   url
+                route:  marello_customer_update
+                params:
+                    id: id
+        actions:
+            view:
+                type:       navigate
+                link:       view_link
+                icon:       eye
+                rowAction:  true
+            update:
+                type:       navigate
+                link:       update_link
+                icon:       edit
+        options:
+            entityHint: customer
+
+    marello-customer-select-grid:
+        extends: marello-customer
+        properties:
+            id: ~
+        actions: ~
+
+    marello-company-customers-select-grid:
+        extends: marello-customer-select-grid
+
     marello-companies-select-grid:
         extended_entity_name: '%marello_customer.entity.company.class%'
         acl_resource: marello_customer_company_view
@@ -142,7 +253,7 @@ datagrids:
                     type: integer
         columns:
             belongsToCompany:
-                label:         marello.order.customer.company.label
+                label:         marello.customer.company.label
                 editable:      true
                 frontend_type: boolean
                 add_before:    true

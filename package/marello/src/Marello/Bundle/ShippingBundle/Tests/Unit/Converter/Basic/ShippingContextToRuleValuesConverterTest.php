@@ -5,7 +5,7 @@ namespace Marello\Bundle\ShippingBundle\Tests\Unit\Converter\Basic;
 use Oro\Bundle\AddressBundle\Entity\Country;
 use Oro\Bundle\AddressBundle\Entity\Region;
 use Oro\Bundle\CurrencyBundle\Entity\Price;
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\VirtualFields\VirtualFieldsProductDecoratorFactory;
 use Marello\Bundle\ShippingBundle\Context\LineItem\Collection\Doctrine\DoctrineShippingLineItemCollection;

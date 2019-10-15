@@ -52,67 +52,15 @@ class MarelloOrderBundleInstaller implements
     public function up(Schema $schema, QueryBag $queries)
     {
         /** Tables generation **/
-        $this->createMarelloOrderCustomerTable($schema);
         $this->createMarelloOrderOrderTable($schema);
         $this->createMarelloOrderOrderItemTable($schema);
 
         /** Foreign keys generation **/
-        $this->addMarelloOrderCustomerForeignKeys($schema);
         $this->addMarelloOrderOrderForeignKeys($schema);
         $this->addMarelloOrderOrderItemForeignKeys($schema);
-        $this->addMarelloAddressForeignKeys($schema);
-        $this->addMarelloOrderCustomerOwnerToOroEmailAddress($schema);
-
-        $this->activityExtension->addActivityAssociation($schema, 'oro_note', 'marello_order_customer');
+        
         $this->activityExtension->addActivityAssociation($schema, 'oro_note', 'marello_order_order');
     }
-
-    /**
-     * Add marello_address foreign keys.
-     *
-     * @param Schema $schema
-     */
-    protected function addMarelloAddressForeignKeys(Schema $schema)
-    {
-        $table = $schema->getTable('marello_address');
-        $table->addForeignKeyConstraint(
-            $schema->getTable('marello_order_customer'),
-            ['customer_id'],
-            ['id'],
-            ['onDelete' => 'SET NULL', 'onUpdate' => null]
-        );
-    }
-
-    /**
-     * Create marello_order_customer table
-     *
-     * @param Schema $schema
-     */
-    protected function createMarelloOrderCustomerTable(Schema $schema)
-    {
-        $table = $schema->createTable('marello_order_customer');
-        $table->addColumn('id', 'integer', ['autoincrement' => true]);
-        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
-        $table->addColumn('primary_address_id', 'integer', ['notnull' => false]);
-        $table->addColumn('shipping_address_id', 'integer', ['notnull' => false]);
-        $table->addColumn('created_at', 'datetime');
-        $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
-        $table->addColumn('name_prefix', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('first_name', 'string', ['length' => 255]);
-        $table->addColumn('middle_name', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('last_name', 'string', ['length' => 255]);
-        $table->addColumn('name_suffix', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('email', 'text', []);
-        $table->addColumn('tax_identification_number', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('company_id', 'integer', ['notnull' => false]);
-        $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['primary_address_id'], 'UNIQ_75C456C9F5B7AF75');
-        $table->addUniqueIndex(['shipping_address_id'], 'UNIQ_75C456C94D4CFF2B');
-        $table->addIndex(['organization_id']);
-
-        $this->attachmentExtension->addAttachmentAssociation($schema, $table->getName());
-    }
-
 
     /**
      * Create marello_order_order table
@@ -272,40 +220,6 @@ class MarelloOrderBundleInstaller implements
     }
 
     /**
-     * Add marello_order_customer foreign keys.
-     *
-     * @param Schema $schema
-     */
-    protected function addMarelloOrderCustomerForeignKeys(Schema $schema)
-    {
-        $table = $schema->getTable('marello_order_customer');
-        $table->addForeignKeyConstraint(
-            $schema->getTable('oro_organization'),
-            ['organization_id'],
-            ['id'],
-            ['onDelete' => 'SET NULL', 'onUpdate' => null]
-        );
-        $table->addForeignKeyConstraint(
-            $schema->getTable('marello_address'),
-            ['primary_address_id'],
-            ['id'],
-            ['onDelete' => null, 'onUpdate' => null]
-        );
-        $table->addForeignKeyConstraint(
-            $schema->getTable('marello_address'),
-            ['shipping_address_id'],
-            ['id'],
-            ['onDelete' => null, 'onUpdate' => null]
-        );
-        $table->addForeignKeyConstraint(
-            $schema->getTable('marello_customer_company'),
-            ['company_id'],
-            ['id'],
-            ['onDelete' => 'SET NULL', 'onUpdate' => null]
-        );
-    }
-
-    /**
      * Add marello_order_order foreign keys.
      *
      * @param Schema $schema
@@ -332,7 +246,7 @@ class MarelloOrderBundleInstaller implements
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
         $table->addForeignKeyConstraint(
-            $schema->getTable('marello_order_customer'),
+            $schema->getTable('marello_customer_customer'),
             ['customer_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
@@ -384,18 +298,6 @@ class MarelloOrderBundleInstaller implements
             ['id'],
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
-    }
-
-    /**
-     * Add owner_marello_customer_id to oro_email_address table.
-     *
-     * @param Schema $schema
-     */
-    protected function addMarelloOrderCustomerOwnerToOroEmailAddress(Schema $schema)
-    {
-        $table = $schema->getTable('oro_email_address');
-        $table->addColumn('owner_marello_customer_id', 'integer', ['notnull' => false]);
-        $table->addForeignKeyConstraint('marello_order_customer', ['owner_marello_customer_id'], ['id']);
     }
 
     /**

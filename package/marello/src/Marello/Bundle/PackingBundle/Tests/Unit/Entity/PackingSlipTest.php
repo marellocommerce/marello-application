@@ -8,7 +8,7 @@ use Oro\Component\Testing\Unit\EntityTestCaseTrait;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\PackingBundle\Entity\PackingSlip;

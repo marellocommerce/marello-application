@@ -4,7 +4,7 @@ namespace Marello\Bundle\PaymentBundle\Context\Builder\Basic;
 
 use Marello\Bundle\CustomerBundle\Entity\Company;
 use Oro\Bundle\CurrencyBundle\Entity\Price;
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Oro\Bundle\LocaleBundle\Model\AddressInterface;
 use Marello\Bundle\PaymentBundle\Context\Builder\PaymentContextBuilderInterface;
 use Marello\Bundle\PaymentBundle\Context\LineItem\Collection\Factory\PaymentLineItemCollectionFactoryInterface;

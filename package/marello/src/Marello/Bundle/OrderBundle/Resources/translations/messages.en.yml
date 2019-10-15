@@ -93,7 +93,7 @@ marello:
             messages:
                 product_not_salable:    Product cannot be sold in the chosen Sales Channel
 
-        # Customer Entity
+        # Customer Entity - deprecated
         customer:
             entity_label:                     Customer
             entity_plural_label:              Customers
@@ -112,9 +112,6 @@ marello:
             name_suffix.label:                Name Suffix
             company.label:                    Company
             phone.label:                      Phone
-            label:                            Customer
-            form:
-                choose:             Choose customer
 
         messages:
             success:
@@ -122,9 +119,6 @@ marello:
                     saved:          Order saved
                 customer:
                     saved:          Customer saved
-
-        navigation:
-            customers.label: Customers
 
         menu:
             shortcut_new_order.label: Create new order
