@@ -26,6 +26,23 @@ class UpdatePurchaseOrderSupplierEmailTemplates extends AbstractEmailFixture imp
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getEmailTemplatesList($dir)
+    {
+        $templates = parent::getEmailTemplatesList($dir);
+        $result = [];
+        foreach ($templates as $name => $data) {
+            if ($name === 'marello_purchase_order_supplier') {
+                $result[$name] = $data;
+                break;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * Return path to email templates
      *
      * @return string

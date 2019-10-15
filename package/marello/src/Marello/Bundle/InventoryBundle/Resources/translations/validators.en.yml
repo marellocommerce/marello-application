@@ -8,3 +8,4 @@ marello:
 
                     inventoryitem:
                         desired_should_be_greater_than_purchase_inventory: Desired Inventory needs to be greater than or equal to the Purchase Inventory
+                        order_on_demand_allowed_no_supplier: Order On Demand Allowed can't be enabled if Product has no any Supplier

@@ -1,0 +1,14 @@
+{% extends 'OroUIBundle:actions:index.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% set pageTitle = 'marello.paymentterm.entity_plural_label'|trans %}
+{% set gridName  = 'marello-paymentterm-grid' %}
+
+{% block navButtons %}
+    {% if is_granted('marello_paymentterm_paymentterm_create') %}
+        {{ UI.addButton({
+            'path': path('marello_paymentterm_paymentterm_create'),
+            'entity_label': 'marello.paymentterm.entity_label'|trans
+        }) }}
+    {% endif %}
+{% endblock %}

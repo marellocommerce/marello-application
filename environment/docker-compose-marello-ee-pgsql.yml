@@ -46,9 +46,8 @@ services:
         build:
             context: ./.docker
             args:
-              - SYMFONY_ENV=prod
-              - COMPOSERFILE=dev.json
-              - TIMEOUT=3000
+                - SYMFONY_ENV=prod
+                - PHP_VERSION=7.2
         working_dir: /var/www/
         links:
             - "db"
@@ -60,7 +59,7 @@ services:
         volumes_from:
             - data
         volumes:
-            - ../applications/marello-application-ee:/var/www
+            - ../applications/marello-application-ee:/var/www:cached
             - ../package/marello:/package/marello
             - ../package/marello-enterprise:/package/marello-enterprise
         environment:

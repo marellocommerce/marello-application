@@ -37,10 +37,8 @@ services:
         build:
             context: ./.docker
             args:
-              - SYMFONY_ENV=prod
-              - COMPOSERFILE=dev.json
-              - TIMEOUT=3000
-              - APP_ROOT=/var/www
+                - SYMFONY_ENV=prod
+                - PHP_VERSION=7.2
         working_dir: /var/www/
         container_name: subscription-web
         links:
@@ -52,7 +50,7 @@ services:
         volumes_from:
             - data
         volumes:
-            - ../applications/marello-application-ee-subscription:/var/www
+            - ../applications/marello-application-ee-subscription:/var/www:cached
             - ../package/marello:/package/marello
             - ../package/marello-enterprise:/package/marello-enterprise
             - ../package/marello-subscriptions:/package/marello-subscriptions
