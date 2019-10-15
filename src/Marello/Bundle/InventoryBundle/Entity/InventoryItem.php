@@ -247,6 +247,23 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
      * )
      */
     protected $preOrdersDatetime;
+
+    /**
+     * @ORM\Column(name="order_on_demand_allowed", type="boolean", nullable=true, options={"default"=false})
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "header"="Order On Demand Allowed"
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var boolean
+     */
+    protected $orderOnDemandAllowed;
     
     /**
      * @var Warehouse
@@ -547,6 +564,25 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
     public function setPreOrdersDatetime(\DateTime $preOrdersDatetime = null)
     {
         $this->preOrdersDatetime = $preOrdersDatetime;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOrderOnDemandAllowed()
+    {
+        return $this->orderOnDemandAllowed;
+    }
+
+    /**
+     * @param mixed $orderOnDemandAllowed
+     * @return InventoryItem
+     */
+    public function setOrderOnDemandAllowed($orderOnDemandAllowed)
+    {
+        $this->orderOnDemandAllowed = $orderOnDemandAllowed;
 
         return $this;
     }

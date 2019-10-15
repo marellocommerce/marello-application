@@ -57,7 +57,7 @@ define(function(require) {
             if (productId.length === 0) {
                 this.setOrderItemData({});
             } else {
-                mediator.trigger('order:form-changes:trigger', {updateFields: ['items', 'totals', 'inventory', 'possible_shipping_methods']});
+                mediator.trigger('order:form-changes:trigger', {updateFields: ['items', 'totals', 'inventory', 'possible_shipping_methods', 'possible_payment_methods']});
             }
         },
 
@@ -177,7 +177,7 @@ define(function(require) {
          */
         removeRow: function() {
             OrderItemView.__super__.removeRow.call(this);
-            mediator.trigger('order:form-changes:trigger', {updateFields: ['totals', 'possible_shipping_methods']});
+            mediator.trigger('order:form-changes:trigger', {updateFields: ['totals', 'possible_shipping_methods', 'possible_payment_methods']});
         },
 
         /**

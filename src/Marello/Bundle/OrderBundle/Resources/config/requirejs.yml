@@ -6,3 +6,4 @@ config:
         'marelloorder/js/app/views/order-discount-view': 'bundles/marelloorder/js/app/views/order-discount-view.js'
         'marelloorder/js/app/views/shipping-cost-view': 'bundles/marelloorder/js/app/views/shipping-cost-view.js'
         'marelloorder/js/app/views/possible-shipping-methods-view': 'bundles/marelloorder/js/app/views/possible-shipping-methods-view.js'
+        'marelloorder/js/app/views/possible-payment-methods-view': 'bundles/marelloorder/js/app/views/possible-payment-methods-view.js'
