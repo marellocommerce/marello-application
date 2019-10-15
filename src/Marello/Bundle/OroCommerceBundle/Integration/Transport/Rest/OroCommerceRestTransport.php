@@ -8,7 +8,6 @@ use Marello\Bundle\OroCommerceBundle\Entity\OroCommerceSettings;
 use Marello\Bundle\OroCommerceBundle\Form\Type\OroCommerceSettingsType;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Serializer\TaxCodeNormalizer;
 use Marello\Bundle\OroCommerceBundle\Request\Factory\OroCommerceRequestFactory;
-use Oro\Bundle\ApiBundle\Filter\ComparisonFilter;
 use Oro\Bundle\ApiBundle\Filter\FilterValue;
 use Oro\Bundle\IntegrationBundle\Entity\Transport;
 use Oro\Bundle\IntegrationBundle\Provider\PingableInterface;
@@ -19,6 +18,18 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class OroCommerceRestTransport implements TransportInterface, PingableInterface
 {
+    const ORDERS_ALIAS = 'orders';
+    const PRODUCTS_ALIAS = 'products';
+    const PRODUCTIMAGES_ALIAS = 'productimages';
+    const PRODUCTPRICES_ALIAS = 'productprices';
+    const PRODUCTTAXCODES_ALIAS = 'producttaxcodes';
+    const INVENTORYLEVELS_ALIAS = 'inventorylevels';
+    const PAYMENTSTATUSES_ALIAS = 'paymentstatuses';
+    const TAXVALUES_ALIAS = 'taxvalues';
+    const TAXES_ALIAS = 'taxes';
+    const TAXRULES_ALIAS = 'taxrules';
+    const TAXJURISDICTIONS_ALIAS = 'taxjurisdictions';
+    const WAREHOUSES_ALIAS = 'warehouses';
 
     /**
      * @var ParameterBag
@@ -54,7 +65,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
             $this->settings->get(OroCommerceSettings::URL_FIELD),
             []
         );
-        
+
         return $this;
     }
 
@@ -97,17 +108,17 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $ordersRequest = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_GET,
             $this->settings,
-            'orders',
+            self::ORDERS_ALIAS,
             [
                 new FilterValue(
                     'currency',
                     $this->settings->get(OroCommerceSettings::CURRENCY_FIELD),
-                    ComparisonFilter::EQ
+                    OroCommerceRequestFactory::EQ
                 ),
                 new FilterValue(
                     'updatedAt',
                     $lastSyncStr,
-                    ComparisonFilter::GT
+                    OroCommerceRequestFactory::GT
                 )
             ],
             ['customerUser', 'lineItems', 'shippingAddress', 'billingAddress']
@@ -122,17 +133,17 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $ordersTaxValuesRequest = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_GET,
             $this->settings,
-            'taxvalues',
+            self::TAXVALUES_ALIAS,
             [
                 new FilterValue(
                     'updatedAt',
                     $lastSyncStr,
-                    ComparisonFilter::GT
+                    OroCommerceRequestFactory::GT
                 ),
                 new FilterValue(
                     'entityClass',
                     'Oro\Bundle\OrderBundle\Entity\Order',
-                    ComparisonFilter::EQ
+                    OroCommerceRequestFactory::EQ
                 )
             ]
         );
@@ -153,25 +164,30 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
             $attributes = $order['attributes'];
             if ($attributes['currency'] === $currency) {
                 $orderIds[] = $order['id'];
-                foreach ($order['relationships'] as &$relationship) {
-                    foreach ($ordersResponse['included'] as $included) {
-                        if (!isset($relationship['data']['type'])) {
-                            foreach ($relationship['data'] as $key => $data) {
-                                if ($data['type'] === 'orderlineitems') {
-                                    $lineItems[$data['id']] = $data['id'];
+                if (isset($order['relationships'])) {
+                    foreach ($order['relationships'] as &$relationship) {
+                        foreach ($ordersResponse['included'] as $included) {
+                            if (!isset($relationship['data']['type'])) {
+                                if (is_array($relationship['data'])) {
+                                    foreach ($relationship['data'] as $key => $data) {
+                                        if ($data['type'] === 'orderlineitems') {
+                                            $lineItems[$data['id']] = $data['id'];
+                                        }
+                                        if ($data['type'] === $included['type'] && $data['id'] === $included['id']) {
+                                            $relationship['data'][$key] = $included;
+                                            break;
+                                        }
+                                    }
                                 }
-                                if ($data['type'] === $included['type'] && $data['id'] === $included['id']) {
-                                    $relationship['data'][$key] = $included;
-                                    break;
-                                }
+                            } elseif ($relationship['data']['type'] === $included['type'] &&
+                                $relationship['data']['id'] === $included['id']
+                            ) {
+                                $relationship['data'] = $included;
+                                break;
                             }
-                        } elseif ($relationship['data']['type'] === $included['type'] &&
-                            $relationship['data']['id'] === $included['id']) {
-                            $relationship['data'] = $included;
-                            break;
                         }
+                        unset($relationship);
                     }
-                    unset($relationship);
                 }
                 foreach ($taxValuesData as $taxValue) {
                     if (isset($taxValue['attributes']['entityClass']) &&
@@ -179,7 +195,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                         $taxValue['attributes']['entityClass'] === 'Oro\Bundle\OrderBundle\Entity\Order' &&
                         (int)$taxValue['attributes']['entityId'] === (int)$order['id']
                     ) {
-                        $order['relationships']['taxvalues']['data'] = $taxValue;
+                        $order['relationships'][self::TAXVALUES_ALIAS]['data'] = $taxValue;
                     }
                 }
                 $orders[] = $order;
@@ -189,17 +205,17 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
             $paymentStatusesRequest = OroCommerceRequestFactory::createRequest(
                 OroCommerceRequestFactory::METHOD_GET,
                 $this->settings,
-                'paymentstatuses',
+                self::PAYMENTSTATUSES_ALIAS,
                 [
                     new FilterValue(
                         'entityIdentifier',
                         $orderIds,
-                        ComparisonFilter::EQ
+                        OroCommerceRequestFactory::EQ
                     ),
                     new FilterValue(
                         'entityClass',
                         'Oro\Bundle\OrderBundle\Entity\Order',
-                        ComparisonFilter::EQ
+                        OroCommerceRequestFactory::EQ
                     )
                 ]
             );
@@ -215,17 +231,17 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
             $lineItemsTaxValuesRequest = OroCommerceRequestFactory::createRequest(
                 OroCommerceRequestFactory::METHOD_GET,
                 $this->settings,
-                'taxvalues',
+                self::TAXVALUES_ALIAS,
                 [
                     new FilterValue(
                         'entityId',
                         $lineItems,
-                        ComparisonFilter::EQ
+                        OroCommerceRequestFactory::EQ
                     ),
                     new FilterValue(
                         'entityClass',
                         'Oro\Bundle\OrderBundle\Entity\OrderLineItem',
-                        ComparisonFilter::EQ
+                        OroCommerceRequestFactory::EQ
                     )
                 ]
             );
@@ -261,7 +277,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                                 'Oro\Bundle\OrderBundle\Entity\OrderLineItem' &&
                                 (int)$taxValue['attributes']['entityId'] === (int)$lineItem['id']
                             ) {
-                                $order['relationships']['lineItems']['data'][$k]['relationships']['taxvalues']['data'] =
+                                $order['relationships']['lineItems']['data'][$k]['relationships'][self::TAXVALUES_ALIAS]['data'] =
                                     $taxValue;
                             }
                         }
@@ -285,7 +301,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_PATCH,
             $this->settings,
-            'orders',
+            self::ORDERS_ALIAS,
             [],
             [],
             $data
@@ -310,7 +326,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_POST,
             $this->settings,
-            'paymentstatuses',
+            self::PAYMENTSTATUSES_ALIAS,
             [],
             [],
             $data
@@ -325,6 +341,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
 
         return $json;
     }
+
     /**
      * @param array $data
      * @return array
@@ -334,7 +351,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_GET,
             $this->settings,
-            'products',
+            self::PRODUCTS_ALIAS,
             [],
             ['taxCode'],
             $data
@@ -346,8 +363,9 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
             $request->getHeaders()
         );
         foreach ($json['included'] as $included) {
-            if ($included['type'] === 'producttaxcode' &&
-                (int)$included['id'] === (int)$json['data']['relationships']['taxCode']['data']['id']) {
+            if ($included['type'] === self::PRODUCTTAXCODES_ALIAS &&
+                (int)$included['id'] === (int)$json['data']['relationships']['taxCode']['data']['id']
+            ) {
                 $json['data']['relationships']['taxCode']['data']['attributes'] = $included['attributes'];
             }
         }
@@ -364,60 +382,75 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_POST,
             $this->settings,
-            'products',
+            self::PRODUCTS_ALIAS,
             [],
             [],
             $data
         );
-
-        $response = $this->client->post(
-            $request->getPath(),
-            $request->getPayload(),
-            $request->getHeaders()
-        );
-        $json = $response->json();
-        if ($response->getStatusCode() === 201) {
-            if (isset($data['data']['relationships']['taxCode']) &&
-                isset($data['data']['relationships']['taxCode']['data']['id']) &&
-                $data['data']['relationships']['taxCode']['data']['id'] ===
-                TaxCodeNormalizer::NEW_PRODUCT_TAX_CODE_ID) {
-                $json = $this->getProductWithTaxCodeData($json);
-            }
-            $productId = $json['data']['id'];
-            $unitPrecisionId = $json['data']['relationships']['primaryUnitPrecision']['data']['id'];
-            $request = OroCommerceRequestFactory::createRequest(
-                OroCommerceRequestFactory::METHOD_GET,
-                $this->settings,
-                'inventorylevels',
-                [
-                    new FilterValue(
-                        'product',
-                        $productId,
-                        ComparisonFilter::EQ
-                    ),
-                    new FilterValue(
-                        'productUnitPrecision',
-                        $unitPrecisionId,
-                        ComparisonFilter::EQ
-                    )
-                ],
-                [],
-                []
-            );
-            $inventoryResponse = $this->client->getJSON(
+        try {
+            $response = $this->client->post(
                 $request->getPath(),
                 $request->getPayload(),
                 $request->getHeaders()
             );
+            $json = $response->json();
+            if ($response->getStatusCode() === 201) {
+                if (isset($data['data']['relationships']['taxCode']) &&
+                    isset($data['data']['relationships']['taxCode']['data']['id']) &&
+                    $data['data']['relationships']['taxCode']['data']['id'] ===
+                    TaxCodeNormalizer::NEW_PRODUCT_TAX_CODE_ID
+                ) {
+                    $json = $this->getProductWithTaxCodeData($json);
+                }
+                $productId = $json['data']['id'];
+                $unitPrecisionId = $json['data']['relationships']['primaryUnitPrecision']['data']['id'];
+                $inventoryFilters = [
+                    new FilterValue(
+                        'product',
+                        $productId,
+                        OroCommerceRequestFactory::EQ
+                    ),
+                    new FilterValue(
+                        'productUnitPrecision',
+                        $unitPrecisionId,
+                        OroCommerceRequestFactory::EQ
+                    )
+                ];
+                if ($this->settings->get(OroCommerceSettings::ENTERPRISE_FIELD) &&
+                    $this->settings->get(OroCommerceSettings::WAREHOUSE_FIELD)
+                ) {
+                    $inventoryFilters[] = new FilterValue(
+                        'warehouse',
+                        $this->settings->get(OroCommerceSettings::WAREHOUSE_FIELD),
+                        OroCommerceRequestFactory::EQ
+                    );
+                }
+                $request = OroCommerceRequestFactory::createRequest(
+                    OroCommerceRequestFactory::METHOD_GET,
+                    $this->settings,
+                    self::INVENTORYLEVELS_ALIAS,
+                    $inventoryFilters,
+                    [],
+                    []
+                );
+                $inventoryResponse = $this->client->getJSON(
+                    $request->getPath(),
+                    $request->getPayload(),
+                    $request->getHeaders()
+                );
 
-            if (isset($inventoryResponse['data'])) {
-                $json['data']['relationships']['inventoryLevel']['data'] = reset($inventoryResponse['data']);
+                if (isset($inventoryResponse['data'])) {
+                    $json['data']['relationships']['inventoryLevel']['data'] = reset($inventoryResponse['data']);
+                }
+
+                return $json;
+
             }
-
-            return $json;
+        } catch (RestException $e) {
+            return $this->processEntityDuplicationException($e, $data, 'createProduct', 'updateProduct');
         }
-        
-        return null;
+
+        return [];
     }
 
     /**
@@ -429,7 +462,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_PATCH,
             $this->settings,
-            'products',
+            self::PRODUCTS_ALIAS,
             [],
             [],
             $data
@@ -445,14 +478,57 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
             if (isset($data['data']['relationships']['taxCode']) &&
                 isset($data['data']['relationships']['taxCode']['data']['id']) &&
                 $data['data']['relationships']['taxCode']['data']['id'] ===
-                TaxCodeNormalizer::NEW_PRODUCT_TAX_CODE_ID) {
+                TaxCodeNormalizer::NEW_PRODUCT_TAX_CODE_ID
+            ) {
                 $json = $this->getProductWithTaxCodeData($json);
             }
+            $productId = $json['data']['id'];
+            $unitPrecisionId = $json['data']['relationships']['primaryUnitPrecision']['data']['id'];
+            $inventoryFilters = [
+                new FilterValue(
+                    'product',
+                    $productId,
+                    OroCommerceRequestFactory::EQ
+                ),
+                new FilterValue(
+                    'productUnitPrecision',
+                    $unitPrecisionId,
+                    OroCommerceRequestFactory::EQ
+                )
+            ];
+            if ($this->settings->get(OroCommerceSettings::ENTERPRISE_FIELD) &&
+                $this->settings->get(OroCommerceSettings::WAREHOUSE_FIELD)
+            ) {
+                $inventoryFilters[] = new FilterValue(
+                    'warehouse',
+                    $this->settings->get(OroCommerceSettings::WAREHOUSE_FIELD),
+                    OroCommerceRequestFactory::EQ
+                );
+            }
+            $request = OroCommerceRequestFactory::createRequest(
+                OroCommerceRequestFactory::METHOD_GET,
+                $this->settings,
+                self::INVENTORYLEVELS_ALIAS,
+                $inventoryFilters,
+                [],
+                []
+            );
+            $inventoryResponse = $this->client->getJSON(
+                $request->getPath(),
+                $request->getPayload(),
+                $request->getHeaders()
+            );
+
+            if (isset($inventoryResponse['data'])) {
+                $json['data']['relationships']['inventoryLevel']['data'] = reset($inventoryResponse['data']);
+            }
+
+            return $json;
         }
 
-        return $json;
+        return null;
     }
-    
+
     /**
      * @param int $id
      * @return RestResponseInterface
@@ -462,7 +538,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_DELETE,
             $this->settings,
-            'products',
+            self::PRODUCTS_ALIAS,
             [],
             [],
             [
@@ -479,7 +555,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
 
         return $response;
     }
-    
+
     /**
      * @param array $data
      * @return array
@@ -489,23 +565,114 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_POST,
             $this->settings,
-            'productprices',
+            self::PRODUCTPRICES_ALIAS,
+            [],
+            [],
+            $data
+        );
+        try {
+            $response = $this->client->post(
+                $request->getPath(),
+                $request->getPayload(),
+                $request->getHeaders()
+            );
+            if ($response->getStatusCode() === 201) {
+                $json = $response->json();
+                $request = OroCommerceRequestFactory::createRequest(
+                    OroCommerceRequestFactory::METHOD_GET,
+                    $this->settings,
+                    self::PRODUCTPRICES_ALIAS,
+                    [],
+                    ['product'],
+                    $json
+                );
+                $response = $this->client->get(
+                    $request->getPath(),
+                    $request->getPayload(),
+                    $request->getHeaders()
+                );
+
+                return $response->json();
+            }
+
+            return [];
+        } catch (RestException $e) {
+            $json = $e->getResponse()->json();
+            if (isset($json['errors']) && count($json['errors']) === 1) {
+                $error = reset($json['errors']);
+                if (isset($error['detail']) &&
+                    $error['detail'] === 'Product has duplication of product prices. Set of fields "PriceList", "Quantity" , "Unit" and "Currency" should be unique.') {
+                    $filters = [];
+                    foreach ($data['data']['relationships'] as $k => $relationship) {
+                        $filters[] = new FilterValue(
+                            $k,
+                            $relationship['data']['id'],
+                            OroCommerceRequestFactory::EQ
+                        );
+                    }
+                    $request = OroCommerceRequestFactory::createRequest(
+                        OroCommerceRequestFactory::METHOD_GET,
+                        $this->settings,
+                        $data['data']['type'],
+                        $filters,
+                        [],
+                        []
+                    );
+                    $existingEntity = $this->client->getJSON(
+                        $request->getPath(),
+                        $request->getPayload(),
+                        $request->getHeaders()
+                    );
+                    $existingEntityId = null;
+                    if (isset($existingEntity['data'])) {
+                        $existingEntityData = reset($existingEntity['data']);
+                        if (isset($existingEntityData['id'])) {
+                            $existingEntityId = $existingEntityData['id'];
+                        }
+                    }
+                    if ($existingEntityId) {
+                        $data['data']['id'] = $existingEntityId;
+                        unset($data['data']['relationships']['priceList']);
+                        return $this->updateProductPrice($data);
+                    } else {
+                        return $this->createProductPrice($data);
+                    }
+                }
+            } else {
+                return $this->processEntityDuplicationException($e, $data, 'createProductPrice', 'updateProductPrice');
+            }
+        }
+
+        return [];
+    }
+
+    /**
+     * @param array $data
+     * @return array
+     */
+    public function updateProductPrice(array $data)
+    {
+        $request = OroCommerceRequestFactory::createRequest(
+            OroCommerceRequestFactory::METHOD_PATCH,
+            $this->settings,
+            self::PRODUCTPRICES_ALIAS,
             [],
             [],
             $data
         );
 
-        $response = $this->client->post(
+        $response = $this->client->patch(
             $request->getPath(),
             $request->getPayload(),
             $request->getHeaders()
         );
-        if ($response->getStatusCode() === 201) {
+
+        if ($response->getStatusCode() === 200) {
             $json = $response->json();
             $request = OroCommerceRequestFactory::createRequest(
                 OroCommerceRequestFactory::METHOD_GET,
                 $this->settings,
-                'productprices',
+                self::PRODUCTPRICES_ALIAS,
                 [],
                 ['product'],
                 $json
@@ -526,36 +693,77 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
      * @param array $data
      * @return array
      */
-    public function updateProductPrice(array $data)
-    {
-        $request = OroCommerceRequestFactory::createRequest(
-            OroCommerceRequestFactory::METHOD_PATCH,
-            $this->settings,
-            'productprices',
-            [],
-            [],
-            $data
-        );
-
-        $response = $this->client->patch(
-            $request->getPath(),
-            $request->getPayload(),
-            $request->getHeaders()
-        );
-
-        return $response->json();
-    }
-
-    /**
-     * @param array $data
-     * @return array
-     */
     public function createProductImage(array $data)
     {
+        $productId = $data['data']['relationships']['product']['data']['id'];
+        $existingProductImagesRequest = OroCommerceRequestFactory::createRequest(
+            OroCommerceRequestFactory::METHOD_GET,
+            $this->settings,
+            self::PRODUCTIMAGES_ALIAS,
+            [
+                new FilterValue(
+                    'product',
+                    $productId,
+                    OroCommerceRequestFactory::EQ
+                ),
+            ],
+            ['image'],
+            []
+        );
+
+        $existingProductImages = $this->client->getJSON(
+            $existingProductImagesRequest->getPath(),
+            $existingProductImagesRequest->getPayload(),
+            $existingProductImagesRequest->getHeaders()
+        );
+        if (isset($existingProductImages['included'])) {
+            $fileAttributes = [];
+            foreach ($data['included'] as $included) {
+                if ($included['type'] === 'files' && isset($included['attributes'])) {
+                    $fileAttributes = $included['attributes'];
+                    break;
+                }
+            }
+            foreach ($existingProductImages['included'] as $included) {
+                if ($included['type'] === 'files') {
+                    $fileId = $included['id'];
+                    $existingImageArguments = $included['attributes'];
+                    if ($existingImageArguments['mimeType'] === $fileAttributes['mimeType'] &&
+                        $existingImageArguments['originalFilename'] === $fileAttributes['originalFilename'] &&
+                        $existingImageArguments['fileSize'] === $fileAttributes['fileSize'] &&
+                        $existingImageArguments['content'] === $fileAttributes['content']
+                    ) {
+                        foreach ($existingProductImages['data'] as $existingProductImage) {
+                            if ($existingProductImage['relationships']['image']['data']['id'] === $fileId) {
+                                $request = OroCommerceRequestFactory::createRequest(
+                                    OroCommerceRequestFactory::METHOD_GET,
+                                    $this->settings,
+                                    self::PRODUCTIMAGES_ALIAS,
+                                    [],
+                                    ['product'],
+                                    [
+                                        'data' => [
+                                            'id' => $existingProductImage['id']
+                                        ]
+                                    ]
+                                );
+                                $response = $this->client->get(
+                                    $request->getPath(),
+                                    $request->getPayload(),
+                                    $request->getHeaders()
+                                );
+
+                                return $response->json();
+                            }
+                        }
+                    }
+                }
+            }
+        }
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_POST,
             $this->settings,
-            'productimages',
+            self::PRODUCTIMAGES_ALIAS,
             [],
             [],
             $data
@@ -571,7 +779,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
             $request = OroCommerceRequestFactory::createRequest(
                 OroCommerceRequestFactory::METHOD_GET,
                 $this->settings,
-                'productimages',
+                self::PRODUCTIMAGES_ALIAS,
                 [],
                 ['product'],
                 $json
@@ -597,7 +805,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_PATCH,
             $this->settings,
-            'productimages',
+            self::PRODUCTIMAGES_ALIAS,
             [],
             [],
             $data
@@ -609,7 +817,26 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
             $request->getHeaders()
         );
 
-        return $response->json();
+        if ($response->getStatusCode() === 200) {
+            $json = $response->json();
+            $request = OroCommerceRequestFactory::createRequest(
+                OroCommerceRequestFactory::METHOD_GET,
+                $this->settings,
+                self::PRODUCTIMAGES_ALIAS,
+                [],
+                ['product'],
+                $json
+            );
+            $response = $this->client->get(
+                $request->getPath(),
+                $request->getPayload(),
+                $request->getHeaders()
+            );
+
+            return $response->json();
+        }
+
+        return [];
     }
 
     /**
@@ -621,7 +848,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_DELETE,
             $this->settings,
-            'productimages',
+            self::PRODUCTIMAGES_ALIAS,
             [],
             [],
             [
@@ -648,7 +875,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_PATCH,
             $this->settings,
-            'inventorylevels',
+            self::INVENTORYLEVELS_ALIAS,
             [],
             [],
             $data
@@ -662,6 +889,27 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $json = $response->json();
 
         return $json;
+    }
+
+    /**
+     * @return array
+     */
+    public function getBusinessUnits()
+    {
+        $request = OroCommerceRequestFactory::createRequest(
+            OroCommerceRequestFactory::METHOD_GET,
+            $this->settings,
+            'businessunits',
+            [],
+            [],
+            []
+        );
+
+        return $this->client->getJSON(
+            $request->getPath(),
+            $request->getPayload(),
+            $request->getHeaders()
+        );
     }
 
     /**
@@ -684,7 +932,6 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
             $request->getHeaders()
         );
     }
-
 
     /**
      * @return array
@@ -721,7 +968,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
             []
         );
 
-        $json =  $this->client->getJSON(
+        $json = $this->client->getJSON(
             $request->getPath(),
             $request->getPayload(),
             $request->getHeaders()
@@ -750,14 +997,14 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                 new FilterValue(
                     'entityClass',
                     'Oro\Bundle\ProductBundle\Entity\Product',
-                    ComparisonFilter::EQ
+                    OroCommerceRequestFactory::EQ
                 )
             ],
             ['labels'],
             []
         );
 
-        $json =  $this->client->getJSON(
+        $json = $this->client->getJSON(
             $request->getPath(),
             $request->getPayload(),
             $request->getHeaders()
@@ -783,19 +1030,22 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_POST,
             $this->settings,
-            'producttaxcodes',
+            self::PRODUCTTAXCODES_ALIAS,
             [],
             [],
             $data
         );
+        try {
+            $response = $this->client->post(
+                $request->getPath(),
+                $request->getPayload(),
+                $request->getHeaders()
+            );
 
-        $response = $this->client->post(
-            $request->getPath(),
-            $request->getPayload(),
-            $request->getHeaders()
-        );
-
-        return $response->json();
+            return $response->json();
+        } catch (RestException $e) {
+            return $this->processEntityDuplicationException($e, $data, 'createProductTaxCode', 'updateProductTaxCode');
+        }
     }
 
     /**
@@ -807,7 +1057,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_PATCH,
             $this->settings,
-            'producttaxcodes',
+            self::PRODUCTTAXCODES_ALIAS,
             [],
             [],
             $data
@@ -823,6 +1073,35 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
     }
 
     /**
+     * @param array $ids
+     * @return RestResponseInterface
+     */
+    public function bulkDeleteProductTaxCodes(Array $ids)
+    {
+        $request = OroCommerceRequestFactory::createRequest(
+            OroCommerceRequestFactory::METHOD_DELETE,
+            $this->settings,
+            self::PRODUCTTAXCODES_ALIAS,
+            [
+                new FilterValue(
+                    'id',
+                    $ids,
+                    OroCommerceRequestFactory::EQ
+                )
+            ],
+            [],
+            []
+        );
+
+        $response = $this->client->delete(
+            $request->getPath(),
+            $request->getHeaders()
+        );
+
+        return $response;
+    }
+
+    /**
      * @param int $id
      * @return RestResponseInterface
      */
@@ -831,7 +1110,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_DELETE,
             $this->settings,
-            'producttaxcodes',
+            self::PRODUCTTAXCODES_ALIAS,
             [],
             [],
             [
@@ -858,19 +1137,22 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_POST,
             $this->settings,
-            'taxes',
+            self::TAXES_ALIAS,
             [],
             [],
             $data
         );
+        try {
+            $response = $this->client->post(
+                $request->getPath(),
+                $request->getPayload(),
+                $request->getHeaders()
+            );
 
-        $response = $this->client->post(
-            $request->getPath(),
-            $request->getPayload(),
-            $request->getHeaders()
-        );
-
-        return $response->json();
+            return $response->json();
+        } catch (RestException $e) {
+            return $this->processEntityDuplicationException($e, $data, 'createTax', 'updateTax');
+        }
     }
 
     /**
@@ -882,7 +1164,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_PATCH,
             $this->settings,
-            'taxes',
+            self::TAXES_ALIAS,
             [],
             [],
             $data
@@ -898,6 +1180,35 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
     }
 
     /**
+     * @param array $ids
+     * @return RestResponseInterface
+     */
+    public function bulkDeleteTaxes(Array $ids)
+    {
+        $request = OroCommerceRequestFactory::createRequest(
+            OroCommerceRequestFactory::METHOD_DELETE,
+            $this->settings,
+            self::TAXES_ALIAS,
+            [
+                new FilterValue(
+                    'id',
+                    $ids,
+                    OroCommerceRequestFactory::EQ
+                )
+            ],
+            [],
+            []
+        );
+
+        $response = $this->client->delete(
+            $request->getPath(),
+            $request->getHeaders()
+        );
+
+        return $response;
+    }
+
+    /**
      * @param int $id
      * @return RestResponseInterface
      */
@@ -906,7 +1217,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_DELETE,
             $this->settings,
-            'taxes',
+            self::TAXES_ALIAS,
             [],
             [],
             [
@@ -933,19 +1244,22 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_POST,
             $this->settings,
-            'taxjurisdictions',
+            self::TAXJURISDICTIONS_ALIAS,
             [],
             [],
             $data
         );
+        try {
+            $response = $this->client->post(
+                $request->getPath(),
+                $request->getPayload(),
+                $request->getHeaders()
+            );
 
-        $response = $this->client->post(
-            $request->getPath(),
-            $request->getPayload(),
-            $request->getHeaders()
-        );
-
-        return $response->json();
+            return $response->json();
+        } catch (RestException $e) {
+            return $this->processEntityDuplicationException($e, $data, 'createTaxJurisdiction', 'updateTaxJurisdiction');
+        }
     }
 
     /**
@@ -957,7 +1271,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_PATCH,
             $this->settings,
-            'taxjurisdictions',
+            self::TAXJURISDICTIONS_ALIAS,
             [],
             [],
             $data
@@ -973,6 +1287,35 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
     }
 
     /**
+     * @param array $ids
+     * @return RestResponseInterface
+     */
+    public function bulkDeleteTaxJurisdictions(Array $ids)
+    {
+        $request = OroCommerceRequestFactory::createRequest(
+            OroCommerceRequestFactory::METHOD_DELETE,
+            $this->settings,
+            self::TAXJURISDICTIONS_ALIAS,
+            [
+                new FilterValue(
+                    'id',
+                    $ids,
+                    OroCommerceRequestFactory::EQ
+                )
+            ],
+            [],
+            []
+        );
+
+        $response = $this->client->delete(
+            $request->getPath(),
+            $request->getHeaders()
+        );
+
+        return $response;
+    }
+
+    /**
      * @param int $id
      * @return RestResponseInterface
      */
@@ -981,7 +1324,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_DELETE,
             $this->settings,
-            'taxjurisdictions',
+            self::TAXJURISDICTIONS_ALIAS,
             [],
             [],
             [
@@ -1000,6 +1343,27 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
     }
 
     /**
+     * @return array
+     */
+    public function getTaxRules()
+    {
+        $request = OroCommerceRequestFactory::createRequest(
+            OroCommerceRequestFactory::METHOD_GET,
+            $this->settings,
+            self::TAXRULES_ALIAS,
+            [],
+            [],
+            []
+        );
+
+        return $this->client->getJSON(
+            $request->getPath(),
+            $request->getPayload(),
+            $request->getHeaders()
+        );
+    }
+
+    /**
      * @param array $data
      * @return array
      */
@@ -1008,37 +1372,40 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_POST,
             $this->settings,
-            'taxrules',
+            self::TAXRULES_ALIAS,
             [],
             [],
             $data
         );
-
-        $response = $this->client->post(
-            $request->getPath(),
-            $request->getPayload(),
-            $request->getHeaders()
-        );
-        if ($response->getStatusCode() === 201) {
-            $json = $response->json();
-            $request = OroCommerceRequestFactory::createRequest(
-                OroCommerceRequestFactory::METHOD_GET,
-                $this->settings,
-                'taxrules',
-                [],
-                ['productTaxCode', 'tax', 'taxJurisdiction'],
-                $json
-            );
-            $response = $this->client->get(
+        try {
+            $response = $this->client->post(
                 $request->getPath(),
                 $request->getPayload(),
                 $request->getHeaders()
             );
+            if ($response->getStatusCode() === 201) {
+                $json = $response->json();
+                $request = OroCommerceRequestFactory::createRequest(
+                    OroCommerceRequestFactory::METHOD_GET,
+                    $this->settings,
+                    self::TAXRULES_ALIAS,
+                    [],
+                    ['productTaxCode', 'tax', 'taxJurisdiction'],
+                    $json
+                );
+                $response = $this->client->get(
+                    $request->getPath(),
+                    $request->getPayload(),
+                    $request->getHeaders()
+                );
 
-            return $response->json();
+                return $response->json();
+            }
+
+            return [];
+        } catch (RestException $e) {
+            return $this->processEntityDuplicationException($e, $data, 'createTaxRule', 'updateTaxRule');
         }
-
-        return [];
     }
 
     /**
@@ -1050,7 +1417,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_PATCH,
             $this->settings,
-            'taxrules',
+            self::TAXRULES_ALIAS,
             [],
             [],
             $data
@@ -1067,7 +1434,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
             $request = OroCommerceRequestFactory::createRequest(
                 OroCommerceRequestFactory::METHOD_GET,
                 $this->settings,
-                'taxrules',
+                self::TAXRULES_ALIAS,
                 [],
                 ['productTaxCode', 'tax', 'taxJurisdiction'],
                 $json
@@ -1085,6 +1452,35 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
     }
 
     /**
+     * @param array $ids
+     * @return RestResponseInterface
+     */
+    public function bulkDeleteTaxRules(Array $ids)
+    {
+        $request = OroCommerceRequestFactory::createRequest(
+            OroCommerceRequestFactory::METHOD_DELETE,
+            $this->settings,
+            self::TAXRULES_ALIAS,
+            [
+                new FilterValue(
+                    'id',
+                    $ids,
+                    OroCommerceRequestFactory::EQ
+                )
+            ],
+            [],
+            []
+        );
+
+        $response = $this->client->delete(
+            $request->getPath(),
+            $request->getHeaders()
+        );
+
+        return $response;
+    }
+
+    /**
      * @param int $id
      * @return RestResponseInterface
      */
@@ -1093,7 +1489,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_DELETE,
             $this->settings,
-            'taxrules',
+            self::TAXRULES_ALIAS,
             [],
             [],
             [
@@ -1112,24 +1508,256 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
     }
 
     /**
+     * @return array
+     */
+    public function getWarehouses()
+    {
+        $request = OroCommerceRequestFactory::createRequest(
+            OroCommerceRequestFactory::METHOD_GET,
+            $this->settings,
+            self::WAREHOUSES_ALIAS,
+            [],
+            [],
+            []
+        );
+
+        return $this->client->getJSON(
+            $request->getPath(),
+            $request->getPayload(),
+            $request->getHeaders()
+        );
+    }
+
+    /**
+     * @param RestException $e
+     * @param array $data
+     * @param string $createMethod
+     * @param string $updateMethod
+     * @return array
+     */
+    protected function processEntityDuplicationException(RestException $e, $data, $createMethod, $updateMethod)
+    {
+        $json = $e->getResponse()->json();
+        if (isset($json['errors'])) {
+            $errorInIncludedEntities = false;
+            foreach ($json['errors'] as $error) {
+                if (isset($error['detail']) && $error['detail'] === 'This value is already used.') {
+                    if (isset($error['source']) && isset($error['source']['pointer'])) {
+                        $pointersString = ltrim($error['source']['pointer'], '/');
+                        if (strpos($pointersString, 'included') !== false) {
+                            $errorInIncludedEntities = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            if ($errorInIncludedEntities === true) {
+                return $this->processIncludedEntitiesDuplicationException($e, $data, $createMethod, $updateMethod);
+            }
+
+            return $this->processMainEntityDuplicationException($e, $data, $createMethod, $updateMethod);
+        }
+
+        return [];
+    }
+
+    /**
+     * @param RestException $e
+     * @param array $data
+     * @param string $createMethod
+     * @param string $updateMethod
+     * @return array
+     */
+    protected function processIncludedEntitiesDuplicationException(RestException $e, $data, $createMethod, $updateMethod)
+    {
+        $json = $e->getResponse()->json();
+        if (isset($json['errors'])) {
+            foreach ($json['errors'] as $error) {
+                if (isset($error['detail']) && $error['detail'] === 'This value is already used.') {
+                    if (isset($error['source']) && isset($error['source']['pointer'])) {
+                        $pointersString = ltrim($error['source']['pointer'], '/');
+                        if (strpos($pointersString, 'included') !== false) {
+                            $pointersArray = explode('/', $pointersString);
+                            $errorSource = $data;
+                            $type = null;
+                            $pointer = null;
+                            foreach ($pointersArray as $pointer) {
+                                $errorSource = $errorSource[$pointer];
+                                if (isset($errorSource['type'])) {
+                                    $type = $errorSource['type'];
+                                }
+                            }
+
+                            if ($errorSource && $type && $pointer) {
+                                $request = OroCommerceRequestFactory::createRequest(
+                                    OroCommerceRequestFactory::METHOD_GET,
+                                    $this->settings,
+                                    $type,
+                                    [
+                                        new FilterValue(
+                                            $pointer,
+                                            $errorSource,
+                                            OroCommerceRequestFactory::EQ
+                                        ),
+                                    ],
+                                    [],
+                                    []
+                                );
+                                $errorSourceJson = $this->client->getJSON(
+                                    $request->getPath(),
+                                    $request->getPayload(),
+                                    $request->getHeaders()
+                                );
+                                $errorSourceId = null;
+                                if (isset($errorSourceJson['data'])) {
+                                    $errorSourceData = reset($errorSourceJson['data']);
+                                    if (isset($errorSourceData['id'])) {
+                                        $errorSourceId = $errorSourceData['id'];
+                                    }
+                                }
+                                if ($errorSourceId) {
+                                    foreach ($data['data']['relationships'] as $k => $relationship) {
+                                        if (isset($relationship['data']) && isset($relationship['data']['type']) &&
+                                            $relationship['data']['type'] === $type
+                                        ) {
+                                            $data['data']['relationships'][$k]['data']['id'] = $errorSourceId;
+                                            unset($data['included'][$pointersArray[1]]);
+                                        }
+                                    }
+                                    if (empty($data['included'])) {
+                                        unset($data['included']);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            $filters = [];
+            foreach ($data['data']['relationships'] as $k => $relationship) {
+                $filters[] = new FilterValue(
+                    $k,
+                    $relationship['data']['id'],
+                    OroCommerceRequestFactory::EQ
+                );
+            }
+            $request = OroCommerceRequestFactory::createRequest(
+                OroCommerceRequestFactory::METHOD_GET,
+                $this->settings,
+                $data['data']['type'],
+                $filters,
+                [],
+                []
+            );
+            $existingEntity = $this->client->getJSON(
+                $request->getPath(),
+                $request->getPayload(),
+                $request->getHeaders()
+            );
+            $existingEntityId = null;
+            if (isset($existingEntity['data'])) {
+                $existingEntityData = reset($existingEntity['data']);
+                if (isset($existingEntityData['id'])) {
+                    $existingEntityId = $existingEntityData['id'];
+                }
+            }
+            if ($existingEntityId) {
+                $data['data']['id'] = $existingEntityId;
+                return $this->$updateMethod($data);
+            } else {
+                return $this->$createMethod($data);
+            }
+        }
+
+        return [];
+    }
+
+    /**
+     * @param RestException $e
+     * @param array $data
+     * @param string $createMethod
+     * @param string $updateMethod
+     * @return array
+     */
+    protected function processMainEntityDuplicationException(RestException $e, $data, $createMethod, $updateMethod)
+    {
+        $json = $e->getResponse()->json();
+        if (isset($json['errors'])) {
+            foreach ($json['errors'] as $error) {
+                if (isset($error['detail']) && $error['detail'] === 'This value is already used.') {
+                    if (isset($error['source']) && isset($error['source']['pointer'])) {
+                        $pointersString = ltrim($error['source']['pointer'], '/');
+                        $pointersArray = explode('/', $pointersString);
+                        $errorSource = $data;
+                        $type = null;
+                        $pointer = null;
+                        foreach ($pointersArray as $pointer) {
+                            $errorSource = $errorSource[$pointer];
+                            if (isset($errorSource['type'])) {
+                                $type = $errorSource['type'];
+                            }
+                        }
+
+                        if ($errorSource && $type && $pointer) {
+                            $request = OroCommerceRequestFactory::createRequest(
+                                OroCommerceRequestFactory::METHOD_GET,
+                                $this->settings,
+                                $type,
+                                [
+                                    new FilterValue(
+                                        $pointer,
+                                        $errorSource,
+                                        OroCommerceRequestFactory::EQ
+                                    ),
+                                ],
+                                [],
+                                []
+                            );
+                            $errorSourceJson = $this->client->getJSON(
+                                $request->getPath(),
+                                $request->getPayload(),
+                                $request->getHeaders()
+                            );
+                            $errorSourceId = null;
+                            if (isset($errorSourceJson['data'])) {
+                                $errorSourceData = reset($errorSourceJson['data']);
+                                if (isset($errorSourceData['id'])) {
+                                    $errorSourceId = $errorSourceData['id'];
+                                }
+                            }
+                            if ($errorSourceId) {
+                                $data['data']['id'] = $errorSourceId;
+                                return $this->$updateMethod($data);
+                            } else {
+                                return $this->$createMethod($data);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return [];
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function ping()
     {
         try {
-            $request = OroCommerceRequestFactory::createRequest(
-                OroCommerceRequestFactory::METHOD_GET,
-                $this->settings,
-                'taxrules',
-                [],
-                [],
-                []
-            );
-            $this->client->get(
-                $request->getPath(),
-                $request->getPayload(),
-                $request->getHeaders()
-            );
+            $this->getTaxRules();
+            if ($this->settings->get(OroCommerceSettings::ENTERPRISE_FIELD)) {
+                $result = $this->getWarehouses();
+                if (empty($result) || empty($result['data'])) {
+                    return [
+                        'result' => false,
+                        'message' =>
+                            'For integration with OroCommerce EE
+                             at least one warehouse should be created on OroCommerce side'
+                    ];
+                }
+            }
         } catch (RestException $e) {
             return ['result' => false, 'message' => $e->getMessage()];
         }

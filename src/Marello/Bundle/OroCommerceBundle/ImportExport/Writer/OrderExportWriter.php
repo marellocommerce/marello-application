@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\OroCommerceBundle\ImportExport\Writer;
 
-class OrderExportWriter extends AbstractExportWriter
+class OrderExportWriter extends AbstractItemExportWriter
 {
     const CANCEL_ACTION = 'cancelled';
     const PAID_ACTION = 'paid';
