@@ -3,7 +3,7 @@
 namespace Marello\Bundle\PurchaseOrderBundle\Cron;
 
 use Marello\Bundle\NotificationBundle\Email\SendProcessor;
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;

@@ -43,7 +43,7 @@ class MarelloOrderBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_9';
+        return 'v1_10';
     }
 
     /**
@@ -81,6 +81,7 @@ class MarelloOrderBundleInstaller implements
         $table->addColumn('grand_total', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('currency', 'string', ['notnull' => false, 'length' => 10]);
         $table->addColumn('payment_method', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('payment_method_options', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
         $table->addColumn('payment_reference', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('payment_details', 'text', ['notnull' => false]);
         $table->addColumn('data', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
@@ -128,7 +129,6 @@ class MarelloOrderBundleInstaller implements
         $table->addColumn('shipping_address_id', 'integer', ['notnull' => false]);
         $table->addColumn('salesChannel_id', 'integer', ['notnull' => false]);
         $table->addColumn('localization_id', 'integer', ['notnull' => false]);
-        $table->addColumn('locale', 'string', ['notnull' => false, 'length' => 5]);
         $table->addColumn('shipment_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['shipment_id'], 'UNIQ_A619DD647BE036FC');

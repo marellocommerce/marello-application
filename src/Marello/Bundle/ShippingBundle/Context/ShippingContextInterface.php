@@ -9,6 +9,8 @@ use Oro\Bundle\CurrencyBundle\Entity\Price;
 
 interface ShippingContextInterface
 {
+    // setters for all getters will be included in 3.0 not in 2.2 because of BC breaks
+
     /**
      * @return ShippingLineItemCollectionInterface
      */

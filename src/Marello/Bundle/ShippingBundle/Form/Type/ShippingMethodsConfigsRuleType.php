@@ -2,20 +2,18 @@
 
 namespace Marello\Bundle\ShippingBundle\Form\Type;
 
+use Marello\Bundle\RuleBundle\Form\Type\RuleType;
+use Marello\Bundle\ShippingBundle\Entity\ShippingMethodsConfigsRule;
+use Marello\Bundle\ShippingBundle\Provider\ShippingMethodChoicesProviderInterface;
+use Oro\Bundle\CurrencyBundle\Form\Type\CurrencySelectionType;
+use Oro\Bundle\FormBundle\Form\Type\CollectionType;
+use Oro\Bundle\FormBundle\Form\Type\OroChoiceType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
-
-use Oro\Bundle\FormBundle\Form\Type\OroChoiceType;
-use Oro\Bundle\FormBundle\Form\Type\CollectionType;
-use Oro\Bundle\CurrencyBundle\Form\Type\CurrencySelectionType;
-
-use Marello\Bundle\RuleBundle\Form\Type\RuleType;
-use Marello\Bundle\ShippingBundle\Entity\ShippingMethodsConfigsRule;
-use Marello\Bundle\ShippingBundle\Provider\ShippingMethodChoicesProviderInterface;
 
 class ShippingMethodsConfigsRuleType extends AbstractType
 {

@@ -55,6 +55,7 @@ class MarelloInvoiceBundleInstaller implements Installation
         $table->addColumn('shipping_method', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('shipping_method_type', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('order_id', 'integer', ['notnull' => true]);
+        $table->addColumn('payment_term_id', 'integer', ['notnull' => false]);
         $table->addColumn('currency', 'string', ['notnull' => false, 'length' => 10]);
         $table->addColumn('type', 'string', ['notnull' => true]);
         $table->addColumn('invoice_type', 'string', ['notnull' => false]);
@@ -151,6 +152,12 @@ class MarelloInvoiceBundleInstaller implements Installation
             ['order_id'],
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_payment_term'),
+            ['payment_term_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_address'),
