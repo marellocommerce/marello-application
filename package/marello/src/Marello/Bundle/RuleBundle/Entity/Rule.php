@@ -143,7 +143,7 @@ class Rule extends ExtendRule implements DatesAwareInterface, RuleInterface
     /**
      * @var bool
      *
-     * @ORM\Column(name="system", type="boolean", nullable=false, options={"default"=false})
+     * @ORM\Column(name="is_system", type="boolean", nullable=false, options={"default"=false})
      * @ConfigField(
      *      defaultValues={
      *          "dataaudit"={
