@@ -17,7 +17,7 @@ class MarelloSalesBundleInstaller implements Installation
      */
     public function getMigrationVersion()
     {
-        return 'v1_1';
+        return 'v1_2';
     }
 
     /**
@@ -69,7 +69,6 @@ class MarelloSalesBundleInstaller implements Installation
         $table->addColumn('code', 'string', ['length' => 255]);
         $table->addColumn('currency', 'string', ['length' => 5]);
         $table->addColumn('localization_id', 'integer', ['notnull' => false]);
-        $table->addColumn('locale', 'string', ['notnull' => false, 'length' => 5]);
         $table->addColumn('group_id', 'integer', ['notnull' => false]);
         $table->addColumn('integration_channel_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);

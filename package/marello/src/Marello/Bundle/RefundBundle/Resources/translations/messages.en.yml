@@ -11,7 +11,6 @@ marello:
         additional_items.label: Additional Items
         original_order.label:   Original Order
         currency.label:         Currency
-        locale.label:           Locale
         customer.label:         Customer
         items.label:            Items
         localization.label:     Localization

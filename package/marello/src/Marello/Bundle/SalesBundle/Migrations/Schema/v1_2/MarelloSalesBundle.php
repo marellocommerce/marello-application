@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\OrderBundle\Migrations\Schema\v1_9;
+namespace Marello\Bundle\SalesBundle\Migrations\Schema\v1_2;
 
 use Doctrine\DBAL\Schema\Schema;
 
@@ -10,21 +10,14 @@ use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterf
 use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
-class MarelloOrderBundle implements Migration
+class MarelloSalesBundle implements Migration
 {
     /**
      * {@inheritdoc}
      */
     public function up(Schema $schema, QueryBag $queries)
     {
-        $table = $schema->getTable('marello_order_customer');
+        $table = $schema->getTable('marello_sales_sales_channel');
         $table->dropColumn('locale');
-        $table->addColumn('company_id', 'integer', ['notnull' => false]);
-        $table->addForeignKeyConstraint(
-            $schema->getTable('marello_customer_company'),
-            ['company_id'],
-            ['id'],
-            ['onDelete' => 'SET NULL', 'onUpdate' => null]
-        );
     }
 }
