@@ -1,0 +1,37 @@
+{% block marello_orocommerce_settings_widget %}
+    <div
+            data-page-component-module="marelloorocommerce/js/app/components/orocommerce-settings-component"
+            data-layout="separate"
+            data-page-component-options="{{ {
+                'formSelector': '[name="oro_integration_channel_form"]',
+                'selectedProductUnit': form.vars.value.productUnit|default(null),
+                'productUnitUpdateRoute': path('marello_orocommerce_get_productunits', {'channelId': form.vars.value.channel.id|default(0) }),
+                'selectedCustomerTaxCode': form.vars.value.customerTaxCode|default(null),
+                'customerTaxCodeUpdateRoute': path('marello_orocommerce_get_customertaxcodes', {'channelId': form.vars.value.channel.id|default(0) }),
+                'selectedPriceList': form.vars.value.priceList|default(null),
+                'priceListUpdateRoute': path('marello_orocommerce_get_pricelists', {'channelId': form.vars.value.channel.id|default(0) }),
+                'selectedProductFamily': form.vars.value.productFamily|default(null),
+                'productFamilyUpdateRoute': path('marello_orocommerce_get_productfamilies', {'channelId': form.vars.value.channel.id|default(0) }),
+                'selectedWarehouse': form.vars.value.warehouse|default(null),
+                'warehouseUpdateRoute': path('marello_orocommerce_get_warehouses', {'channelId': form.vars.value.channel.id|default(0) }),
+            }|json_encode }}"
+    >
+        {{ form_widget(form) }}
+    </div>
+    <div class="control-group control-group-text">
+        <div class="controls">
+            <button type="button"
+                    class="btn btn-primary"
+                    data-page-component-module="marelloorocommerce/js/app/components/orocommerce-connection-validator-component"
+                    data-layout="separate"
+                    data-page-component-options="{{ {
+                        'formSelector': '[name="oro_integration_channel_form"]',
+                        'backendUrl': path('marello_orocommerce_validate_connection', {'channelId': form.vars.value.id|default(0) })
+                    }|json_encode }}"
+            >
+                {{ 'marello.orocommerce.connection_validation.button.text'|trans }}
+            </button>
+        </div>
+    </div>
+
+{% endblock %}

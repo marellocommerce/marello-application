@@ -1,0 +1,25 @@
+{
+  "data": [
+    {
+      "type": "inventorylevels",
+      "id": "132",
+      "attributes": {
+        "quantity": "10.0000000000"
+      },
+      "relationships": {
+        "product": {
+          "data": {
+            "type": "products",
+            "id": "68"
+          }
+        },
+        "productUnitPrecision": {
+          "data": {
+            "type": "productunitprecisions",
+            "id": "132"
+          }
+        }
+      }
+    }
+  ]
+}

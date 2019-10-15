@@ -1,0 +1,2 @@
+bundles:
+    - MarelloOroCommerceBundle:Form:fields.html.twig

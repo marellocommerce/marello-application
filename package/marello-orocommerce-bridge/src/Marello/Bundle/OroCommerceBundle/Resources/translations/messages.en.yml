@@ -1,0 +1,32 @@
+marello:
+    orocommerce:
+        orocommercesettings:
+            label: 'OroCommerce Settings'
+            url.label: 'Url'
+            username.label: "Username"
+            key.label: "API Key"
+            enterprise.label: 'Is Enterprise Edition'
+            currency.label: 'Currency'
+            product_unit.label: 'Product Unit'
+            customer_tax_code.label: 'Customer Tax Code'
+            price_list.label: 'Price List'
+            product_family.label: 'Product Family'
+            warehouse.label: 'Warehouse'
+            inventory_threshold.label: 'Inventory Threshold'
+            low_inventory_threshold.label: 'Low Inventory Threshold'
+            back_order.label: 'Backorder'
+        channel_type:
+            label: 'OroCommerce'
+        connector:
+            order.label: 'Order Connector'
+            product.label: 'Product Connector'
+            product_price.label: 'Product Price Connector'
+            product_image.label: 'Product Image Connector'
+            inventory_level.label: 'Inventory Level Connector'
+            tax_code.label: 'Tax Code Connector'
+            tax_rate.label: 'Tax Rate Connector'
+            tax_jurisdiction.label: 'Tax Jurisdiction Connector'
+            tax_rule.label: 'Tax Rule Connector'
+        connection_validation:
+            button.text: 'Check OroCommerce Connection'
+            success.message: 'OroCommerce Connection is valid'
