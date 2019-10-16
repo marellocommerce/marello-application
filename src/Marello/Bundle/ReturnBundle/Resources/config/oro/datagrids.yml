@@ -200,9 +200,11 @@ datagrids:
                 return_id: returnId
         columns:
             sku:
-                data_name: orderItem.productSku
-                label: marello.product.sku.label
-                frontend_type: string
+                data_name:          orderItem.productSku
+                label:              marello.product.sku.label
+                type:               twig
+                frontend_type:      html
+                template:           MarelloProductBundle:Product/Datagrid:productSku.html.twig
             product:
                 data_name: orderItem.productName
                 label: marello.product.name.label
