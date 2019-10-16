@@ -13,7 +13,7 @@ class MarelloOrderBundle implements Migration
      */
     public function up(Schema $schema, QueryBag $queries)
     {
-        $table = $schema->getTable('marello_order_customer');
+        $table = $schema->getTable('marello_customer_customer');
         $table->dropColumn('locale');
         $table->addColumn('company_id', 'integer', ['notnull' => false]);
         $table->addForeignKeyConstraint(
