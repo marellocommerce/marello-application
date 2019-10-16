@@ -1,3 +1,0 @@
-config:
-    paths:
-        'marelloups/js/app/components/ups-transport-settings-component': 'bundles/marelloups/js/app/components/ups-transport-settings-component.js'

@@ -1,9 +1,0 @@
-marello_sales_saleschannel:
-    resource: "@MarelloSalesBundle/Controller/SalesChannelController.php"
-    type:     annotation
-    prefix:   /marello/saleschannel
-
-marello_sales_saleschannelgroup:
-    resource: "@MarelloSalesBundle/Controller/SalesChannelGroupController.php"
-    type:     annotation
-    prefix:   /marello/saleschannel-group

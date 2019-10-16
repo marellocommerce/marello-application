@@ -1,0 +1,4 @@
+marello_orocommerce_bundle:
+    resource: "@MarelloOroCommerceBundle/Controller"
+    type:     annotation
+    prefix:   /marello/orocommerce
