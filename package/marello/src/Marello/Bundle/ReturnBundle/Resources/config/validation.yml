@@ -1,3 +1,0 @@
-Marello\Bundle\ReturnBundle\Entity\ReturnItem:
-    constraints:
-        - Marello\Bundle\ReturnBundle\Validator\Constraints\ReturnItemConstraint: ~

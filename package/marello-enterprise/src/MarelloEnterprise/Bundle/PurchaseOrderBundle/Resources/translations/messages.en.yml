@@ -1,4 +1,0 @@
-marelloenterprise:
-    purchaseorder:
-        warehouse:
-            delivery_location.label: Delivery Location
