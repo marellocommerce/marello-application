@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\CustomerBundle\Migrations\Schema\v1_1;
+namespace Marello\Bundle\CustomerBundle\Migrations\Schema\v1_2;
 
 use Doctrine\DBAL\Types\Type;
 use Marello\Bundle\CustomerBundle\Entity\Customer;
