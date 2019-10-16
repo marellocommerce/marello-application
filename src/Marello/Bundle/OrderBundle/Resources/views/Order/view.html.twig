@@ -45,17 +45,10 @@
                             {{ UI.renderProperty( stepLabel|trans({}, "workflows"), stepName|trans({}, "workflows") ) }}
                         {% endfor %}
 
-                        {% set channelViewGranted = is_granted('marello_saleschannel_update') %}
-                        {%- if channelViewGranted -%}
-                            {%- set channelData -%}
-                                <a href="{{ path('marello_sales_saleschannel_update', {'id': entity.salesChannel.id}) }}">
-                                    {{ entity.salesChannel|default(entity.salesChannelName) }}
-                                </a>
-                            {%- endset -%}
-                            {{ UI.renderHtmlProperty('marello.order.sales_channel.label'|trans,channelData)}}
-                        {%- else -%}
-                            {{ UI.renderProperty('marello.order.sales_channel.label'|trans, entity.salesChannel|default(entity.salesChannelName)) }}
-                        {%- endif -%}
+                        {{ UI.renderHtmlProperty(
+                            'marello.order.sales_channel.label'|trans,
+                            UI.entityViewLink(entity.salesChannel, entity.salesChannelName, 'marello_sales_saleschannel_view')
+                        )}}
                         {{ UI.renderProperty('marello.order.order_reference.label'|trans, entity.orderReference) }}
                         {{ UI.renderProperty('marello.order.localization.label'|trans, entity.localization) }}
                     </div>
@@ -92,6 +85,10 @@
                         <div class="title">
                             <span class="widget-title">{{ 'marello.order.datablock.customer_information'|trans }}</span>
                         </div>
+                        {{ UI.renderHtmlProperty(
+                            'marello.customer.entity_label'|trans,
+                            UI.entityViewLink(entity.customer, entity.customer|oro_format_name, 'marello_customer_view')
+                        )}}
                         {{ UI.renderProperty('marello.customer.email.label'|trans, entity.customer.email) }}
                         {% if entity.customer.company %}
                             {{ UI.renderHtmlProperty(

@@ -31,6 +31,7 @@ marello:
             status_n_a.label:           To be decided
             order_item.label:           Order Item
             return.label:               Return
+            organization.label:         Organization
 
         system_configuration:
             groups:
