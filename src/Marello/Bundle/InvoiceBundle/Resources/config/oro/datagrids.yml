@@ -151,8 +151,10 @@ datagrids:
         columns:
             productSku:
                 label:            marello.product.sku.label
-                frontend_type:    string
                 data_name:        productSku
+                type:             twig
+                frontend_type:    html
+                template:         MarelloProductBundle:Product/Datagrid:productSku.html.twig
             productName:
                 label:            marello.product.name.label
                 frontend_type:    string
