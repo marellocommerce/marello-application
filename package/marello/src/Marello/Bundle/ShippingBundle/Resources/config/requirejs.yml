@@ -1,3 +1,0 @@
-config:
-    paths:
-        'marelloshipping/js/app/views/shipping-rule-method-view': 'bundles/marelloshipping/js/app/views/shipping-rule-method-view.js'

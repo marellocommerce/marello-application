@@ -1,3 +1,0 @@
-api:
-    entities:
-        Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition: ~
