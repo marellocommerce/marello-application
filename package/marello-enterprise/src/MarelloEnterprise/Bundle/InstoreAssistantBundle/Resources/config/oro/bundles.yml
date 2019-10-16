@@ -1,2 +1,0 @@
-bundles:
-    - { name: MarelloEnterprise\Bundle\InstoreAssistantBundle\MarelloEnterpriseInstoreAssistantBundle, priority: 100 }

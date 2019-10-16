@@ -1,9 +1,0 @@
-oro_entity:
-    entity_aliases:
-        Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder:
-            alias: marellopurchaseorder
-            plural_alias: marellopurchaseorders
-
-        Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem:
-            alias: marellopurchaseorderitem
-            plural_alias: marellopurchaseorderitems
