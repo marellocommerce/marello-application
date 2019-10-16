@@ -294,9 +294,11 @@ datagrids:
                 order_id: orderId
         columns:
             productSKU:
-                label:            marello.product.sku.label
-                frontend_type:    string
-                data_name:        productSku
+                label:              marello.product.sku.label
+                data_name:          productSku
+                type:               twig
+                frontend_type:      html
+                template:           MarelloProductBundle:Product/Datagrid:productSku.html.twig
             productName:
                 label:            marello.product.name.label
                 frontend_type:    string
@@ -355,7 +357,9 @@ datagrids:
             columns:
                 orderNumber:
                     label: marello.order.order_number.label
-                    frontend_type: string
+                    type: twig
+                    frontend_type: html
+                    template: MarelloOrderBundle:Order:Datagrid/Property/orderNumber.html.twig
                 salesChannel:
                     label: marello.order.sales_channel.label
                     frontend_type: string
@@ -551,8 +555,10 @@ datagrids:
                         - { join: oi.order, alias: o }
         columns:
             productSku:
-                label: marello.order.orderitem.product_sku.label
-                frontend_type: string
+                label:              marello.order.orderitem.product_sku.label
+                type:               twig
+                frontend_type:      html
+                template:           MarelloProductBundle:Product/Datagrid:productSku.html.twig
             productName:
                 label: marello.order.orderitem.product_name.label
                 frontend_type: string
