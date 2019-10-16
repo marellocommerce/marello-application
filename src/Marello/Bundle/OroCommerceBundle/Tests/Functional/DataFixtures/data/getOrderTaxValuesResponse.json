@@ -1,0 +1,33 @@
+{
+  "data": [
+    {
+      "type": "taxvalues",
+      "id": "1",
+      "attributes": {
+        "result": {
+          "total": {
+            "includingTax": "2014.35",
+            "excludingTax": "1839.59",
+            "taxAmount": "174.76",
+            "adjustment": "0.00105",
+            "currency": "USD"
+          },
+          "taxes": [
+            {
+              "tax": "SANTA_MONICA_SALES_TAX",
+              "rate": "0.095",
+              "taxableAmount": "1839.59",
+              "taxAmount": "174.76",
+              "currency": "USD"
+            }
+          ]
+        },
+        "entityClass": "Oro\\Bundle\\OrderBundle\\Entity\\Order",
+        "entityId": 1,
+        "address": "Amanda Cole , 713 Georgina Ave  Santa Monica California , United States 90402",
+        "createdAt": "2018-04-12T14:07:24Z",
+        "updatedAt": "2018-04-12T14:07:39Z"
+      }
+    }
+  ]
+}
