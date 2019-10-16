@@ -1,3 +1,4 @@
+{% import 'MarelloProductBundle::macros.html.twig' as productMacro %}
 <span class="title"><b>{{ item.label|trans }}</b></span>
 <div class="oro-datagrid">
     <table class="hero-products-table">
@@ -15,7 +16,7 @@
                         <img src="{{ productImage }}" alt="{{ val.name }}" />
                     </div>
                 </td>
-                <td class="string-cell grid-cell grid-body-cell"><a href="{{ path('marello_product_view', {'id': val.id}) }}">{{ val.sku }}</a></td>
+                <td class="string-cell grid-cell grid-body-cell">{{ productMacro.renderProductSkuViewLink(val.sku) }}</td>
                 <td class="string-cell grid-cell grid-body-cell">{{ val.name }}</td>
                 <td class="string-cell grid-cell grid-body-cell value">{{ val.quantity }}</td>
             </tr>
