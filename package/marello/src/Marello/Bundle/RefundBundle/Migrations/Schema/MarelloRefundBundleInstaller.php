@@ -32,7 +32,7 @@ class MarelloRefundBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_2';
+        return 'v1_3';
     }
 
     /**
@@ -86,6 +86,7 @@ class MarelloRefundBundleInstaller implements
     {
         $table = $schema->createTable('marello_refund_item');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('refund_id', 'integer', []);
         $table->addColumn('name', 'string', ['length' => 255]);
         $table->addColumn('quantity', 'integer', []);
@@ -97,6 +98,7 @@ class MarelloRefundBundleInstaller implements
         $table->setPrimaryKey(['id']);
         $table->addIndex(['refund_id'], 'IDX_2D9010DD189801D5', []);
         $table->addIndex(['order_item_id'], 'IDX_2D9010DDE76E9C94', []);
+        $table->addIndex(['organization_id']);
     }
 
     /**
@@ -152,6 +154,12 @@ class MarelloRefundBundleInstaller implements
             ['order_item_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_organization'),
+            ['organization_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
     }
 }

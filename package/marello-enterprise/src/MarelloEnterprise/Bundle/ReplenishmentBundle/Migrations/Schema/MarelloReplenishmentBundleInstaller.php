@@ -20,7 +20,7 @@ class MarelloEnterpriseReplenishmentBundleInstaller implements Installation, Act
      */
     public function getMigrationVersion()
     {
-        return 'v1_0';
+        return 'v1_1';
     }
 
     /**
@@ -95,6 +95,7 @@ class MarelloEnterpriseReplenishmentBundleInstaller implements Installation, Act
     {
         $table = $schema->createTable('marello_repl_order_item');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('repl_order_id', 'integer', ['notnull' => true]);
         $table->addColumn('product_id', 'integer', ['notnull' => true]);
         $table->addColumn('product_name', 'string', ['length' => 255]);
@@ -102,7 +103,7 @@ class MarelloEnterpriseReplenishmentBundleInstaller implements Installation, Act
         $table->addColumn('note', 'text', ['notnull' => false]);
         $table->addColumn('inventory_qty', 'integer', ['notnull' => false]);
         $table->addColumn('total_inventory_qty', 'integer', ['notnull' => false]);
-
+        $table->addIndex(['organization_id']);
         $table->setPrimaryKey(['id']);
     }
 
@@ -169,6 +170,12 @@ class MarelloEnterpriseReplenishmentBundleInstaller implements Installation, Act
             ['product_id'],
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_organization'),
+            ['organization_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
     }
 

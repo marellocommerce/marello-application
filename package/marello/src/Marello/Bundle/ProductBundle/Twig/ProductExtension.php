@@ -4,7 +4,9 @@ namespace Marello\Bundle\ProductBundle\Twig;
 
 use Marello\Bundle\CatalogBundle\Provider\CategoriesIdsProvider;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 use Marello\Bundle\SalesBundle\Provider\ChannelProvider;
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -21,6 +23,11 @@ class ProductExtension extends AbstractExtension
      * @var CategoriesIdsProvider
      */
     protected $categoriesIdsProvider;
+
+    /**
+     * @var DoctrineHelper
+     */
+    private $doctrineHelper;
 
     /**
      * @param ChannelProvider $channelProvider
@@ -57,6 +64,10 @@ class ProductExtension extends AbstractExtension
             new TwigFunction(
                 'marello_product_get_categories_ids',
                 [$this, 'getCategoriesIds']
+            ),
+            new TwigFunction(
+                'marello_get_product_by_sku',
+                [$this, 'getProductBySku']
             )
         ];
     }
@@ -79,5 +90,27 @@ class ProductExtension extends AbstractExtension
     public function getCategoriesIds(Product $product)
     {
         return $this->categoriesIdsProvider->getCategoriesIds($product);
+    }
+
+    /**
+     * @param $sku
+     * @return \Extend\Entity\EX_MarelloProductBundle_Product|Product|null
+     */
+    public function getProductBySku($sku)
+    {
+        if (!$this->doctrineHelper || !$sku) {
+            return null;
+        }
+        /** @var ProductRepository $productRepository */
+        $productRepository = $this->doctrineHelper->getEntityRepository(Product::class);
+        return $productRepository->findOneBySku($sku);
+    }
+
+    /**
+     * @param DoctrineHelper $doctrineHelper
+     */
+    public function setOroEntityDoctrineHelper(DoctrineHelper $doctrineHelper)
+    {
+        $this->doctrineHelper = $doctrineHelper;
     }
 }

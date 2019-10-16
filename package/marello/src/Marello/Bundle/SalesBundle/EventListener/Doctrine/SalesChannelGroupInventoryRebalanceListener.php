@@ -95,8 +95,8 @@ class SalesChannelGroupInventoryRebalanceListener
     }
 
     /**
-     * @deprecated since 2.1.1 will be removed in 3.0,
-     * use rebalanceForSalesChannelGroup(SalesChannelGroup $entity) instead
+     * @deprecated since 2.1.1 will be removed in 3.0 use
+     * rebalanceForSalesChannelGroup(SalesChannelGroup $entity) instead
      * @throws \Oro\Component\MessageQueue\Transport\Exception\Exception
      */
     protected function triggerRebalance()

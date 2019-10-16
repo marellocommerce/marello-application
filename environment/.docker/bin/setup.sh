@@ -53,7 +53,6 @@ export DEBIAN_FRONTEND=noninteractive \
   php${PHP_VERSION}-imagick \
 && apt-get -qy autoremove --purge software-properties-common python-software-properties \
 && apt-get autoclean || exit 1
-#  php${PHP_VERSION}-mcrypt \
 
 # install PostgreSQL
 apt-get install -qqy libpq-dev postgresql postgresql-contrib || exit 1
