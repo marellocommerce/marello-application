@@ -1,3 +1,0 @@
-config:
-    paths:
-        'marellocustomer/js/app/components/customer-company-select-component': 'bundles/marellocustomer/js/app/components/customer-compay-select-component.js'
