@@ -1,4 +1,0 @@
-marello_invoice:
-    resource: "@MarelloInvoiceBundle/Controller/InvoiceController.php"
-    type:     annotation
-    prefix:   /marello/invoice

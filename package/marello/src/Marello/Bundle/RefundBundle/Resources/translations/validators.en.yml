@@ -1,6 +1,0 @@
-marello:
-    refund:
-        refunditem:
-            messages:
-                error:
-                    refund_balance: Refund Balance can't be less than zero.
