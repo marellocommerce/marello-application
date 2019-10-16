@@ -31,29 +31,15 @@
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
-                    {% set orderViewGranted = is_granted('marello_order_view') %}
-                    {%- if orderViewGranted -%}
-                        {%- set orderNumberData -%}
-                            <a href="{{ path('marello_order_order_view', {'id': entity.order.id}) }}">
-                                {{ entity.order.orderNumber }}
-                            </a>
-                        {%- endset -%}
-                        {{ UI.renderHtmlProperty('marello.order.order_number.label'|trans,orderNumberData)}}
-                    {%- else -%}
-                        {{ UI.renderProperty('marello.order.order_number.label'|trans, entity.order.orderNumber) }}
-                    {%- endif -%}
+                    {{ UI.renderHtmlProperty(
+                        'marello.order.order_number.label'|trans,
+                        UI.entityViewLink(entity.order, entity.order.orderNumber, 'marello_order_order_view')
+                    )}}
                     {{ UI.renderProperty('marello.order.currency.label'|trans, entity.order.currency) }}
-                    {% set channelViewGranted = is_granted('marello_saleschannel_update') %}
-                    {%- if channelViewGranted -%}
-                        {%- set channelData -%}
-                            <a href="{{ path('marello_sales_saleschannel_update', {'id': entity.order.salesChannel.id}) }}">
-                                {{ entity.order.salesChannel|default(entity.order.salesChannelName) }}
-                            </a>
-                        {%- endset -%}
-                        {{ UI.renderHtmlProperty('marello.order.sales_channel.label'|trans,channelData)}}
-                    {%- else -%}
-                        {{ UI.renderProperty('marello.order.sales_channel.label'|trans, entity.order.salesChannel|default(entity.order.salesChannelName)) }}
-                    {%- endif -%}
+                    {{ UI.renderHtmlProperty(
+                        'marello.order.sales_channel.label'|trans,
+                        UI.entityViewLink(entity.order.salesChannel, entity.order.salesChannelName, 'marello_sales_saleschannel_view')
+                    )}}
                     {{ UI.renderProperty('marello.order.order_reference.label'|trans, entity.order.orderReference) }}
                     {{ UI.renderProperty('marello.order.create_date.label'|trans, entity.order.createdAt|oro_format_datetime) }}
                     {{ UI.renderProperty('marello.order.purchase_date.label'|trans, entity.order.purchaseDate|oro_format_datetime) }}

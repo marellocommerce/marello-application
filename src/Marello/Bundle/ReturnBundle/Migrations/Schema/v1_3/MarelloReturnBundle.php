@@ -4,12 +4,13 @@ namespace Marello\Bundle\ReturnBundle\Migrations\Schema\v1_3;
 
 use Doctrine\DBAL\Schema\Schema;
 
-use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
-use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension;
-use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
 use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
+/**
+ * @SuppressWarnings(PHPMD.TooManyMethods)
+ * @SuppressWarnings(PHPMD.ExcessiveClassLength)
+ */
 class MarelloReturnBundle implements Migration
 {
     /**
@@ -17,7 +18,28 @@ class MarelloReturnBundle implements Migration
      */
     public function up(Schema $schema, QueryBag $queries)
     {
-        $table = $schema->getTable('marello_return_return');
-        $table->dropColumn('locale');
+        $this->modifyMarelloReturnItemTable($schema);
+    }
+
+    /**
+     * @param Schema $schema
+     * @throws \Doctrine\DBAL\Schema\SchemaException
+     */
+    protected function modifyMarelloReturnItemTable(Schema $schema)
+    {
+        // update table with organization id
+        $table = $schema->getTable('marello_return_item');
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
+
+        // add index to organization column
+        $table->addIndex(['organization_id']);
+
+        // add foreign key constraint
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_organization'),
+            ['organization_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
     }
 }

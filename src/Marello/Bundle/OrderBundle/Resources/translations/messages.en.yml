@@ -89,6 +89,7 @@ marello:
             return_items.label:     Returned items
             inventory.label:     Inventory Available
             status.label:        Status
+            organization.label: Organization
 
             messages:
                 product_not_salable:    Product cannot be sold in the chosen Sales Channel

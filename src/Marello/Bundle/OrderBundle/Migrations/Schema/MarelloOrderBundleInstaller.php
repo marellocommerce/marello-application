@@ -153,6 +153,7 @@ class MarelloOrderBundleInstaller implements
     {
         $table = $schema->createTable('marello_order_order_item');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('product_id', 'integer', ['notnull' => false]);
         $table->addColumn('order_id', 'integer', ['notnull' => false]);
         $table->addColumn('product_name', 'string', ['length' => 255]);
@@ -217,6 +218,7 @@ class MarelloOrderBundleInstaller implements
             ]
         );
         $table->setPrimaryKey(['id']);
+        $table->addIndex(['organization_id']);
     }
 
     /**
@@ -295,6 +297,12 @@ class MarelloOrderBundleInstaller implements
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_tax_tax_code'),
             ['tax_code_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_organization'),
+            ['organization_id'],
             ['id'],
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );

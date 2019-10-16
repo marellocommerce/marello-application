@@ -3,34 +3,27 @@
 namespace Marello\Bundle\PackingBundle\Migrations\Schema\v1_2;
 
 use Doctrine\DBAL\Schema\Schema;
+
 use Oro\Bundle\MigrationBundle\Migration\Migration;
-use Oro\Bundle\MigrationBundle\Migration\OrderedMigrationInterface;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
-class MarelloPackingBundle implements Migration, OrderedMigrationInterface
+use Marello\Bundle\PackingBundle\Migrations\Schema\MarelloPackingBundleInstaller;
+
+class MarelloPackingBundle implements Migration
 {
     /**
      * {@inheritdoc}
      */
     public function up(Schema $schema, QueryBag $queries)
     {
-        $table = $schema->getTable('marello_packing_packing_slip');
-        if ($table->hasForeignKey('FK_B0E654D9395C3F3')) {
-            $table->removeForeignKey('FK_B0E654D9395C3F3');
-        }
+        $table = $schema->getTable(MarelloPackingBundleInstaller::MARELLO_PACKING_SLIP_ITEM_TABLE);
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
+        $table->addIndex(['organization_id']);
         $table->addForeignKeyConstraint(
-            $schema->getTable('marello_customer_customer'),
-            ['customer_id'],
+            $schema->getTable('oro_organization'),
+            ['organization_id'],
             ['id'],
-            ['onDelete' => null, 'onUpdate' => null]
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getOrder()
-    {
-        return 20;
     }
 }
