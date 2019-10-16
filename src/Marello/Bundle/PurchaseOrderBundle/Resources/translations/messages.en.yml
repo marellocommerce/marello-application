@@ -53,6 +53,7 @@ marello:
             purchase_price.label:                       Purchase Price
             purchase_price_value.label:                 Purchase Price
             row_total.label:                            Row Total
+            organization.label:                         Organization
             validation:
                 received_amount:                        Total amount received can only be as many items as ordered amount.
 

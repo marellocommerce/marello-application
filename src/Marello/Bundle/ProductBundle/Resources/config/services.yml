@@ -40,6 +40,8 @@ services:
         arguments:
             - '@marello_sales.saleschannel.provider.channel_provider'
             - '@marello_catalog.provider.categories_ids'
+        calls:
+            - ['setOroEntityDoctrineHelper', ['@oro_entity.doctrine_helper']]
         tags:
             - { name: twig.extension }
 

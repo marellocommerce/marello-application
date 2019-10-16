@@ -11,6 +11,8 @@ use Marello\Bundle\ProductBundle\Model\ProductAwareInterface;
 use Marello\Bundle\TaxBundle\Model\TaxAwareInterface;
 use Oro\Bundle\CurrencyBundle\Entity\PriceAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
+use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 /**
  * @ORM\Entity
@@ -18,6 +20,11 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  *      defaultValues={
  *          "dataaudit"={
  *              "auditable"=true
+ *          },
+ *          "ownership"={
+ *              "owner_type"="ORGANIZATION",
+ *              "owner_field_name"="organization",
+ *              "owner_column_name"="organization_id"
  *          }
  *      }
  * )
@@ -31,8 +38,11 @@ abstract class AbstractInvoiceItem implements
     QuantityAwareInterface,
     PriceAwareInterface,
     TaxAwareInterface,
-    ProductAwareInterface
+    ProductAwareInterface,
+    OrganizationAwareInterface
 {
+    use AuditableOrganizationAwareTrait;
+
     /**
      * @var int
      *

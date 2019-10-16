@@ -17,6 +17,8 @@ use Marello\Bundle\TaxBundle\Entity\TaxCode;
 use Marello\Bundle\TaxBundle\Model\TaxAwareInterface;
 use Oro\Bundle\CurrencyBundle\Entity\PriceAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
+use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\OrderBundle\Entity\Repository\OrderItemRepository")
@@ -24,7 +26,12 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  *      defaultValues={
  *          "dataaudit"={
  *              "auditable"=true
- *          }
+ *          },
+ *          "ownership"={
+ *              "owner_type"="ORGANIZATION",
+ *              "owner_field_name"="organization",
+ *              "owner_column_name"="organization_id"
+ *          },
  *      }
  * )
  * @ORM\Table(name="marello_order_order_item")
@@ -37,8 +44,11 @@ class OrderItem extends ExtendOrderItem implements
     PriceAwareInterface,
     TaxAwareInterface,
     ProductAwareInterface,
-    OrderAwareInterface
+    OrderAwareInterface,
+    OrganizationAwareInterface
 {
+    use AuditableOrganizationAwareTrait;
+
     /**
      * @var int
      *

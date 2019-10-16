@@ -3,9 +3,14 @@
 namespace Marello\Bundle\RefundBundle\Migrations\Schema\v1_2;
 
 use Doctrine\DBAL\Schema\Schema;
-use Oro\Bundle\MigrationBundle\Migration\Migration;
-use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
+use Oro\Bundle\MigrationBundle\Migration\QueryBag;
+use Oro\Bundle\MigrationBundle\Migration\Migration;
+
+/**
+ * @SuppressWarnings(PHPMD.TooManyMethods)
+ * @SuppressWarnings(PHPMD.ExcessiveClassLength)
+ */
 class MarelloRefundBundle implements Migration
 {
     /**
@@ -13,16 +18,27 @@ class MarelloRefundBundle implements Migration
      */
     public function up(Schema $schema, QueryBag $queries)
     {
-        $table = $schema->getTable('marello_refund');
-        $table->dropColumn('locale');
-        if ($table->hasForeignKey('fk_marello_refund_customer_id')) {
-            $table->removeForeignKey('fk_marello_refund_customer_id');
-        }
+        $this->modifyMarelloRefundItemTable($schema);
+    }
+
+    /**
+     * @param Schema $schema
+     * @throws \Doctrine\DBAL\Schema\SchemaException
+     */
+    protected function modifyMarelloRefundItemTable(Schema $schema)
+    {
+        $table = $schema->getTable('marello_refund_item');
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
+
+        // add index to organization column
+        $table->addIndex(['organization_id']);
+
+        // add foreign key constraint
         $table->addForeignKeyConstraint(
-            $schema->getTable('marello_customer_customer'),
-            ['customer_id'],
+            $schema->getTable('oro_organization'),
+            ['organization_id'],
             ['id'],
-            ['onDelete' => null, 'onUpdate' => null]
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
     }
 }

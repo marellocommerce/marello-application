@@ -5,6 +5,7 @@ namespace Marello\Bundle\PackingBundle\Tests\Unit\Entity;
 use PHPUnit\Framework\TestCase;
 
 use Oro\Component\Testing\Unit\EntityTestCaseTrait;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\PackingBundle\Entity\PackingSlip;
@@ -25,6 +26,7 @@ class PackingSlipItemTest extends TestCase
             ['weight', 3.1415926],
             ['quantity', 3.1415926],
             ['comment', 'some string'],
+            ['organization', new Organization()],
             ['createdAt', new \DateTime()],
             ['updatedAt', new \DateTime()]
         ]);

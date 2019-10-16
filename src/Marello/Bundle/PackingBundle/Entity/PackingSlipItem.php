@@ -9,6 +9,8 @@ use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\PackingBundle\Model\ExtendPackingSlipItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
+use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 /**
  * @ORM\Entity()
@@ -16,16 +18,22 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  *      defaultValues={
  *          "dataaudit"={
  *              "auditable"=true
+ *          },
+ *          "ownership"={
+ *              "owner_type"="ORGANIZATION",
+ *              "owner_field_name"="organization",
+ *              "owner_column_name"="organization_id"
  *          }
  *      }
  * )
  * @ORM\Table(name="marello_packing_pack_slip_item")
  * @ORM\HasLifecycleCallbacks()
  */
-class PackingSlipItem extends ExtendPackingSlipItem
+class PackingSlipItem extends ExtendPackingSlipItem implements OrganizationAwareInterface
 {
     use EntityCreatedUpdatedAtTrait;
-    
+    use AuditableOrganizationAwareTrait;
+
     /**
      * @var int
      *

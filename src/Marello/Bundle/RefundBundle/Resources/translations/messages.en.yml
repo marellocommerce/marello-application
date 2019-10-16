@@ -28,7 +28,7 @@ marello:
             quantity_ordered.label: Ordered Quantity
             quantity.label:         Refunded Quantity
             refund_amount.label:    Refunded Amount
-
+            organization.label:     Organization
         form:
             price.label:            Price (incl VAT)
             subtotal.label:         Subtotal (incl VAT)
