@@ -3,7 +3,10 @@
 namespace Marello\Bundle\ProductBundle\Migrations\Schema\v1_9;
 
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Types\Type;
+use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\MigrationBundle\Migration\Migration;
+use Oro\Bundle\MigrationBundle\Migration\ParametrizedSqlMigrationQuery;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
 class AddLocalizedNamesToProduct implements Migration
@@ -15,8 +18,24 @@ class AddLocalizedNamesToProduct implements Migration
     {
         $this->createMarelloProductProductNameTable($schema);
         $this->addMarelloProductNameForeignKeys($schema);
+
+        $dropFields = ['name', 'cost'];
+        $dropFieldInConfigSql = <<<EOF
+DELETE FROM oro_entity_config_field
+WHERE field_name = :field_name
+AND entity_id IN (SELECT id FROM oro_entity_config WHERE class_name = :class_name)
+EOF;
+        foreach ($dropFields as $field) {
+            $dropFieldInConfigQuery = new ParametrizedSqlMigrationQuery();
+            $dropFieldInConfigQuery->addSql(
+                $dropFieldInConfigSql,
+                ['field_name' => $field, 'class_name' => Product::class],
+                ['field_name' => Type::STRING, 'class_name' => Type::STRING]
+            );
+            $queries->addPostQuery($dropFieldInConfigQuery);
+        }
     }
-    
+
     /**
      * @param Schema $schema
      */
