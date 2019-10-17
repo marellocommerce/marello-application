@@ -14,6 +14,7 @@ class MarelloOrderBundle implements Migration
     public function up(Schema $schema, QueryBag $queries)
     {
         $table = $schema->getTable('marello_order_order');
+        $table->dropColumn('locale');
         $table->addColumn('payment_method_options', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
     }
 }
