@@ -68,6 +68,10 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
         // deliberately return a different entity than the initial imported entity,
         // during errors with multiple runs of import
         $product = $this->getProduct($entity);
+        if (!$product) {
+            return null;
+        }
+
         return $this->getInventoryItem($product);
     }
 
@@ -201,9 +205,9 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
         if (!$product) {
             return null;
         }
+
         /** @var InventoryItem $inventoryItem */
         $inventoryItem = $this->getInventoryItem($product);
-
         if (!$inventoryItem) {
             return null;
         }
@@ -240,7 +244,6 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
     {
         return $this->databaseHelper->findOneBy(InventoryItem::class, ['product' => $entity->getId()]);
     }
-
 
     /**
      * @param InventoryLevel $entity
