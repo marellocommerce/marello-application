@@ -1,0 +1,60 @@
+marello:
+    servicepoint:
+        entity_label: "Service Point"
+        entity_plural_label: "Service Points"
+
+        id.label: "Id"
+        labels.label: "Name"
+        descriptions.label: "Description"
+        image.label: "Image"
+        service_point_facilities.label: "Facilities"
+        address.label: "Address"
+        latitude.label: "Latitude"
+        longitude.label: "Longitude"
+
+        facility:
+            entity_label: "Facility"
+            entity_plural_label: "Facilities"
+
+            id.label: "Id"
+            code.label: "Code"
+            labels.label: "Name"
+
+        timeperiod:
+            entity_label: "Time Period"
+            entity_plural_label: "Time Periods"
+
+            id.label: "Id"
+            day_of_week.label: "Day"
+            open_time.label: "Opening Time"
+            close_time.label: "Closing Time"
+            servicepoint_facility.label: "Service Point Facility"
+
+        serviecpoint_address:
+            entity_label: "Service Point Address"
+            entity_plural_label: "Service Point Addresses"
+
+        servicepoint_facility:
+            entity_label: "Service Point Facility"
+            entity_plural_label: "Service Point Facilities"
+
+            id.label: "Id"
+            service_point.label: "Service Point"
+            facility.label: "Facility"
+            business_hours.label: "Business Hours"
+            phone.label: "Phone Number"
+            email.label: "E-mail address"
+
+        ui:
+            facility:
+                saved.message: "The Facility was saved."
+                sections:
+                    additional: "Additional Fields"
+            servicepoint:
+                saved.message: "The Service Point was saved."
+                sections:
+                    additional: "Additional Fields"
+            servicepoint_facility:
+                saved.message: "The Service Point Facility was saved."
+                sections:
+                    additional: "Additional Fields"

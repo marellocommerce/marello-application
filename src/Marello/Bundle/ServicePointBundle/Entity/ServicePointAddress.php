@@ -35,7 +35,7 @@ class ServicePointAddress extends ExtendServicePointAddress implements AddressIn
      * @ORM\GeneratedValue
      * @ConfigField(defaultValues={
      *     "entity"={
-     *         "label" = "marello.servicepoint.servicepoint_address.id.label"
+     *         "label" = "oro.address.id.label"
      *     }
      * })
      */
@@ -47,7 +47,7 @@ class ServicePointAddress extends ExtendServicePointAddress implements AddressIn
      * @ORM\Column(name="street", type="string", length=500, nullable=true)
      * @ConfigField(defaultValues={
      *     "entity"={
-     *         "label" = "marello.servicepoint.servicepoint_address.street.label"
+     *         "label" = "oro.address.street.label"
      *     }
      * })
      */
@@ -59,7 +59,7 @@ class ServicePointAddress extends ExtendServicePointAddress implements AddressIn
      * @ORM\Column(name="street2", type="string", length=500, nullable=true)
      * @ConfigField(defaultValues={
      *     "entity"={
-     *         "label" = "marello.servicepoint.servicepoint_address.street2.label"
+     *         "label" = "oro.address.street2.label"
      *     }
      * })
      */
@@ -71,7 +71,7 @@ class ServicePointAddress extends ExtendServicePointAddress implements AddressIn
      * @ORM\Column(name="city", type="string", length=255, nullable=true)
      * @ConfigField(defaultValues={
      *     "entity"={
-     *         "label" = "marello.servicepoint.servicepoint_address.city.label"
+     *         "label" = "oro.address.city.label"
      *     }
      * })
      */
@@ -83,7 +83,7 @@ class ServicePointAddress extends ExtendServicePointAddress implements AddressIn
      * @ORM\Column(name="postal_code", type="string", length=255, nullable=true)
      * @ConfigField(defaultValues={
      *     "entity"={
-     *         "label" = "marello.servicepoint.servicepoint_address.postal_code.label"
+     *         "label" = "oro.address.postal_code.label"
      *     }
      * })
      */
@@ -96,7 +96,7 @@ class ServicePointAddress extends ExtendServicePointAddress implements AddressIn
      * @ORM\JoinColumn(name="country_code", referencedColumnName="iso2_code", nullable=false)
      * @ConfigField(defaultValues={
      *     "entity"={
-     *         "label" = "marello.servicepoint.servicepoint_address.country.label"
+     *         "label" = "oro.address.country.label"
      *     }
      * })
      */
@@ -109,7 +109,7 @@ class ServicePointAddress extends ExtendServicePointAddress implements AddressIn
      * @ORM\JoinColumn(name="region_code", referencedColumnName="combined_code", nullable=true)
      * @ConfigField(defaultValues={
      *     "entity"={
-     *         "label" = "marello.servicepoint.servicepoint_address.region.label"
+     *         "label" = "oro.address.region.label"
      *     }
      * })
      */
@@ -133,7 +133,7 @@ class ServicePointAddress extends ExtendServicePointAddress implements AddressIn
      * @ORM\Column(name="organization", type="string", length=255, nullable=true)
      * @ConfigField(defaultValues={
      *     "entity"={
-     *         "label" = "marello.servicepoint.servicepoint_address.organization.label"
+     *         "label" = "oro.address.organization.label"
      *     }
      * })
      */
