@@ -1,1 +1,12 @@
 services:
+    marello_servicepoint.provider.day_of_week:
+        class: 'Marello\Bundle\ServicePointBundle\Provider\DayOfWeekProvider'
+        arguments:
+            - '@oro_locale.settings'
+
+    marello_servicepoint.constraint_validator.day_of_week:
+        class: 'Marello\Bundle\ServicePointBundle\Constraint\DayOfWeekValidator'
+        arguments:
+            - '@marello_servicepoint.provider.day_of_week'
+        tags:
+            - { name: validator.constraint_validator }
