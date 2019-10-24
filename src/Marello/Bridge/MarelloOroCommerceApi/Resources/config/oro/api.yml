@@ -41,7 +41,6 @@ api:
             actions:
                 create: true
                 delete: true
-                delete_list: true
                 update: true
         Oro\Bundle\TaxBundle\Entity\TaxJurisdiction: ~
         Oro\Bundle\TaxBundle\Entity\ZipCode: ~
