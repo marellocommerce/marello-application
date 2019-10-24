@@ -2,11 +2,13 @@
 
 namespace Marello\Bundle\OroCommerceBundle\ImportExport\Writer;
 
+use Marello\Bundle\OroCommerceBundle\Integration\Transport\Rest\OroCommerceRestTransport;
 use Marello\Bundle\TaxBundle\Entity\TaxRule;
 
-class TaxRuleExportCreateWriter extends AbstractItemExportWriter
+class TaxRuleExportCreateWriter extends AbstractExportWriter
 {
     const TAX_RULE_ID = 'orocommerce_tax_rule_id';
+
     /**
      * @param array $data
      */
@@ -22,19 +24,19 @@ class TaxRuleExportCreateWriter extends AbstractItemExportWriter
         }
 
         if (isset($response['data'])&& isset($response['included']) && isset($response['data']['type']) &&
-            isset($response['data']['id']) && $response['data']['type'] === 'taxrules') {
+            isset($response['data']['id']) && $response['data']['type'] === OroCommerceRestTransport::TAXRULES_ALIAS) {
             $em = $this->registry->getManagerForClass(TaxRule::class);
             $taxCode = null;
             $taxRate = null;
             $taxJurisdiction = null;
             foreach ($response['included'] as $included) {
-                if ($included['type'] === 'producttaxcodes') {
+                if ($included['type'] === OroCommerceRestTransport::PRODUCTTAXCODES_ALIAS) {
                     $taxCode = $included['attributes']['code'];
                 }
-                if ($included['type'] === 'taxes') {
+                if ($included['type'] === OroCommerceRestTransport::TAXES_ALIAS) {
                     $taxRate = $included['attributes']['code'];
                 }
-                if ($included['type'] === 'taxjurisdictions') {
+                if ($included['type'] === OroCommerceRestTransport::TAXJURISDICTIONS_ALIAS) {
                     $taxJurisdiction = $included['attributes']['code'];
                 }
             }

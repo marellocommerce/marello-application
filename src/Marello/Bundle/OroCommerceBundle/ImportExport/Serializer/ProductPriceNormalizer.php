@@ -52,8 +52,8 @@ class ProductPriceNormalizer extends AbstractNormalizer
                     ]
                 ];
                 if (isset($productData[AbstractProductExportWriter::PRICE_ID_FIELD]) &&
-                    isset($productData[AbstractProductExportWriter::PRICE_ID_FIELD][$context['channel']]) &&
-                    $context[AbstractProductExportWriter::ACTION_FIELD] !== AbstractProductExportWriter::CREATE_ACTION) {
+                    isset($productData[AbstractProductExportWriter::PRICE_ID_FIELD][$context['channel']])
+                ) {
                     $data['data']['id'] =
                         $productData[AbstractProductExportWriter::PRICE_ID_FIELD][$context['channel']];
                     unset($data['data']['relationships']['priceList']);

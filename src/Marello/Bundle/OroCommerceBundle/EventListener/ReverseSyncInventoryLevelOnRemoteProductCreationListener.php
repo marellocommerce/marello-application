@@ -3,7 +3,7 @@
 namespace Marello\Bundle\OroCommerceBundle\EventListener;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
+use Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel;
 use Marello\Bundle\OroCommerceBundle\Event\RemoteProductCreatedEvent;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractExportWriter;
 use Marello\Bundle\OroCommerceBundle\Integration\Connector\OroCommerceInventoryLevelConnector;
@@ -41,9 +41,9 @@ class ReverseSyncInventoryLevelOnRemoteProductCreationListener
         $data = $product->getData();
         $salesChannel = $event->getSalesChannel();
         $balancedInventory = $this->doctrine
-            ->getManagerForClass(BalancedInventoryLevel::class)
-            ->getRepository(BalancedInventoryLevel::class)
-            ->findExistingBalancedInventory($product, $salesChannel->getGroup());
+            ->getManagerForClass(VirtualInventoryLevel::class)
+            ->getRepository(VirtualInventoryLevel::class)
+            ->findExistingVirtualInventory($product, $salesChannel->getGroup());
         if ($balancedInventory) {
             $integrationChannel = $salesChannel->getIntegrationChannel();
             $channelId = $integrationChannel->getId();

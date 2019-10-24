@@ -3,7 +3,6 @@
 namespace Marello\Bundle\OroCommerceBundle\EventListener\Doctrine;
 
 use Doctrine\ORM\Event\OnFlushEventArgs;
-use Marello\Bundle\OroCommerceBundle\Entity\OroCommerceSettings;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Reader\ProductExportUpdateReader;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Reader\TaxExportReader;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractExportWriter;
@@ -11,7 +10,6 @@ use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\TaxRateExportCreateWrit
 use Marello\Bundle\OroCommerceBundle\Integration\Connector\OroCommerceTaxRateConnector;
 use Marello\Bundle\OroCommerceBundle\Integration\OroCommerceChannelType;
 use Marello\Bundle\TaxBundle\Entity\TaxRate;
-use Oro\Bundle\EntityBundle\Event\OroEventManager;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 
 class ReverseSyncTaxRateListener extends AbstractReverseSyncListener
@@ -138,30 +136,11 @@ class ReverseSyncTaxRateListener extends AbstractReverseSyncListener
                 }
 
                 if (!empty($connector_params)) {
-                    /** @var OroCommerceSettings $transport */
-                    $transport = $integrationChannel->getTransport();
-                    $settingsBag = $transport->getSettingsBag();
-                    if ($integrationChannel->isEnabled()) {
-                        $this->syncScheduler->getService()->schedule(
-                            $integrationChannel->getId(),
-                            OroCommerceTaxRateConnector::TYPE,
-                            $connector_params
-                        );
-                    } elseif($settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION) === false) {
-                        $transportData = $transport->getData();
-                        $transportData[AbstractExportWriter::NOT_SYNCHRONIZED]
-                        [OroCommerceTaxRateConnector::TYPE]
-                        [$this->generateConnectionParametersKey($connector_params)] = $connector_params;
-                        $transport->setData($transportData);
-                        $this->entityManager->persist($transport);
-                        /** @var OroEventManager $eventManager */
-                        $eventManager = $this->entityManager->getEventManager();
-                        $eventManager->removeEventListener(
-                            'onFlush',
-                            'marello_orocommerce.event_listener.doctrine.reverse_sync_tax_rate'
-                        );
-                        $this->entityManager->flush($transport);
-                    }
+                    $this->syncScheduler->getService()->schedule(
+                        $integrationChannel->getId(),
+                        OroCommerceTaxRateConnector::TYPE,
+                        $connector_params
+                    );
 
                     $this->processedEntities[] = $entity;
                 }
@@ -178,7 +157,8 @@ class ReverseSyncTaxRateListener extends AbstractReverseSyncListener
         $channels = $this->entityManager
             ->getRepository(Channel::class)
             ->findBy([
-                'type' => OroCommerceChannelType::TYPE
+                'type' => OroCommerceChannelType::TYPE,
+                'enabled' => true
             ]);
 
         $integrationChannels = [];

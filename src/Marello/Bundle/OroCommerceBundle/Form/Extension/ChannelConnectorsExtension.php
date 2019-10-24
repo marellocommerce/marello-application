@@ -3,7 +3,6 @@
 namespace Marello\Bundle\OroCommerceBundle\Form\Extension;
 
 use Marello\Bundle\OroCommerceBundle\Integration\OroCommerceChannelType;
-use Oro\Bundle\IntegrationBundle\Form\Type\ChannelType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -88,6 +87,6 @@ class ChannelConnectorsExtension extends AbstractTypeExtension
      */
     public function getExtendedType()
     {
-        return ChannelType::class;
+        return 'oro_integration_channel_form';
     }
 }

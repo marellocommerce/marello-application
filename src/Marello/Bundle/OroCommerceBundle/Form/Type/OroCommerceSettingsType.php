@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Constraints\Valid;
 
 class OroCommerceSettingsType extends AbstractType
 {
-    const BLOCK_PREFIX = 'marello_orocommerce_settings';
+    const NAME = 'marello_orocommerce_settings';
 
     /**
      * @var CacheProvider
@@ -122,22 +122,6 @@ class OroCommerceSettingsType extends AbstractType
                 ]
             )
             ->add(
-                'deleteRemoteDataOnDeactivation',
-                CheckboxType::class,
-                [
-                    'label' => 'marello.orocommerce.orocommercesettings.delete_remote_data_on_deactivation.label',
-                    'required' => false
-                ]
-            )
-            ->add(
-                'deleteRemoteDataOnDeletion',
-                CheckboxType::class,
-                [
-                    'label' => 'marello.orocommerce.orocommercesettings.delete_remote_data_on_deletion.label',
-                    'required' => false
-                ]
-            )
-            ->add(
                 'enterprise',
                 CheckboxType::class,
                 [
@@ -151,14 +135,6 @@ class OroCommerceSettingsType extends AbstractType
                 [
                     'label' => 'marello.orocommerce.orocommercesettings.warehouse.label',
                     'required' => false
-                ]
-            )
-            ->add(
-                'businessUnit',
-                ChoiceType::class,
-                [
-                    'label' => 'marello.orocommerce.orocommercesettings.business_unit.label',
-                    'required' => true
                 ]
             )
             ->add(
@@ -242,14 +218,12 @@ class OroCommerceSettingsType extends AbstractType
         ]);
 
         $key = $this->cacheKeyGenerator->generateKey($paramBag);
-        $businessUnitKey = sprintf('%s_%s', $key, CacheKeyGenerator::BUSINESS_UNIT);
         $productUnitKey = sprintf('%s_%s', $key, CacheKeyGenerator::PRODUCT_UNIT);
         $customerTaxCodeKey = sprintf('%s_%s', $key, CacheKeyGenerator::CUSTOMER_TAX_CODE);
         $priceListKey = sprintf('%s_%s_%s', $key, CacheKeyGenerator::PRICE_LIST, $data['currency']);
         $productFamilyKey = sprintf('%s_%s', $key, CacheKeyGenerator::PRODUCT_FAMILY);
         $warehouseKey = sprintf('%s_%s', $key, CacheKeyGenerator::WAREHOUSE);
 
-        $this->updateFormWithCachedData($businessUnitKey, $form, 'businessUnit', 'business_unit');
         $this->updateFormWithCachedData($productUnitKey, $form, 'productUnit', 'product_unit');
         $this->updateFormWithCachedData($customerTaxCodeKey, $form, 'customerTaxCode', 'customer_tax_code');
         $this->updateFormWithCachedData($priceListKey, $form, 'priceList', 'price_list');
@@ -269,7 +243,7 @@ class OroCommerceSettingsType extends AbstractType
             $choices = [];
             $results = $this->cache->fetch($key);
             foreach ($results as $result) {
-                $choices[$result['label']] = $result['value'];
+                $choices[$result['value']] = $result['label'];
             }
             $form->remove($field);
             $form->add(
@@ -298,8 +272,16 @@ class OroCommerceSettingsType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    public function getName()
+    {
+        return self::NAME;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getBlockPrefix()
     {
-        return self::BLOCK_PREFIX;
+        return self::NAME;
     }
 }

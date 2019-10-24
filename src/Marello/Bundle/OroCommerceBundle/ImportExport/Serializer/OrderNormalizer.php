@@ -33,7 +33,6 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
     public function __construct(Registry $registry, ConfigManager $configManager)
     {
         parent::__construct($registry);
-        
         $this->configManager = $configManager;
     }
 
@@ -102,7 +101,6 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
     {
         /** @var Order $order */
         $order = $this->createOrder($data);
-
         return $order->getItems()->count() > 0 ? $order : null;
     }
 
@@ -128,6 +126,7 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
                 self::PAYMENT_STATUS => $this->getProperty($paymentStatus, 'paymentStatus')
             ]);
         }
+
         $order
             ->setOrderReference($this->getProperty($data, 'id'))
             ->setShippingMethod(
@@ -144,9 +143,25 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
             ->setTotalTax((float)$total['taxAmount'])
             ->setSubtotal($subtotal)
             ->setCurrency($this->getProperty($data, 'currency'))
-            ->setCustomer($customer)
-            ->setBillingAddress($this->prepareAddress($this->getProperty($data, 'billingAddress')))
-            ->setShippingAddress($this->prepareAddress($this->getProperty($data, 'shippingAddress')));
+            ->setCustomer($customer);
+
+        if($billingAddress = $this->getProperty($data, 'billingAddress')) {
+            if ($billingAddress) {
+                $billingAddress = $this->prepareAddress($billingAddress);
+                if ($billingAddress) {
+                    $order->setShippingAddress($billingAddress);
+                }
+            }
+        }
+
+        if($shippingAddress = $this->getProperty($data, 'shippingAddress')) {
+            if ($shippingAddress) {
+                $shippingAddress = $this->prepareAddress($shippingAddress);
+                if ($shippingAddress) {
+                    $order->setShippingAddress($shippingAddress);
+                }
+            }
+        }
 
         $this->prepareOrderItems(
             $this->getProperty($data, 'lineItems'),
@@ -184,7 +199,15 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
             $customer->setEmail($email);
         }
 
-        $customer->setPrimaryAddress($this->prepareAddress($this->getProperty($data, 'shippingAddress')));
+        if($shippingAddress = $this->getProperty($data, 'shippingAddress')) {
+            if ($shippingAddress) {
+                $shippingAddress = $this->prepareAddress($shippingAddress);
+                if ($shippingAddress) {
+                    $customer->setPrimaryAddress($shippingAddress);
+                }
+            }
+        }
+
 
         return $customer;
     }

@@ -3,7 +3,6 @@
 namespace Marello\Bundle\OroCommerceBundle\EventListener\Doctrine;
 
 use Doctrine\ORM\Event\OnFlushEventArgs;
-use Marello\Bundle\OroCommerceBundle\Entity\OroCommerceSettings;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Reader\ProductExportUpdateReader;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Reader\TaxExportReader;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractExportWriter;
@@ -12,7 +11,6 @@ use Marello\Bundle\OroCommerceBundle\Integration\Connector\OroCommerceTaxJurisdi
 use Marello\Bundle\OroCommerceBundle\Integration\OroCommerceChannelType;
 use Marello\Bundle\TaxBundle\Entity\TaxJurisdiction;
 use Marello\Bundle\TaxBundle\Entity\ZipCode;
-use Oro\Bundle\EntityBundle\Event\OroEventManager;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 
 class ReverseSyncTaxJurisdictionListener extends AbstractReverseSyncListener
@@ -181,30 +179,11 @@ class ReverseSyncTaxJurisdictionListener extends AbstractReverseSyncListener
                 }
 
                 if (!empty($connector_params)) {
-                    /** @var OroCommerceSettings $transport */
-                    $transport = $integrationChannel->getTransport();
-                    $settingsBag = $transport->getSettingsBag();
-                    if ($integrationChannel->isEnabled()) {
-                        $this->syncScheduler->getService()->schedule(
-                            $integrationChannel->getId(),
-                            OroCommerceTaxJurisdictionConnector::TYPE,
-                            $connector_params
-                        );
-                    } elseif($settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION) === false) {
-                        $transportData = $transport->getData();
-                        $transportData[AbstractExportWriter::NOT_SYNCHRONIZED]
-                        [OroCommerceTaxJurisdictionConnector::TYPE]
-                        [$this->generateConnectionParametersKey($connector_params)] = $connector_params;
-                        $transport->setData($transportData);
-                        $this->entityManager->persist($transport);
-                        /** @var OroEventManager $eventManager */
-                        $eventManager = $this->entityManager->getEventManager();
-                        $eventManager->removeEventListener(
-                            'onFlush',
-                            'marello_orocommerce.event_listener.doctrine.reverse_sync_tax_jurisdiction'
-                        );
-                        $this->entityManager->flush($transport);
-                    }
+                    $this->syncScheduler->getService()->schedule(
+                        $integrationChannel->getId(),
+                        OroCommerceTaxJurisdictionConnector::TYPE,
+                        $connector_params
+                    );
 
                     $this->processedEntities[] = $entity;
                 }
@@ -221,7 +200,8 @@ class ReverseSyncTaxJurisdictionListener extends AbstractReverseSyncListener
         $channels = $this->entityManager
             ->getRepository(Channel::class)
             ->findBy([
-                'type' => OroCommerceChannelType::TYPE
+                'type' => OroCommerceChannelType::TYPE,
+                'enabled' => true
             ]);
 
         $integrationChannels = [];

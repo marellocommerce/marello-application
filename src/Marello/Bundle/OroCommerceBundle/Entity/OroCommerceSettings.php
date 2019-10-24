@@ -17,7 +17,6 @@ class OroCommerceSettings extends Transport
     const KEY_FIELD = 'key';
     const USERNAME_FIELD = 'username';
     const WAREHOUSE_FIELD = 'warehouse';
-    const BUSINESSUNIT_FIELD = 'businessunit';
     const PRODUCTUNIT_FIELD = 'productunit';
     const CUSTOMERTAXCODE_FIELD = 'customertaxcode';
     const PRICELIST_FIELD = 'pricelist';
@@ -25,9 +24,6 @@ class OroCommerceSettings extends Transport
     const INVENTORYTHRESHOLD_FIELD = 'inventorythreshold';
     const LOWINVENTORYTHRESHOLD_FIELD = 'lowinventorythreshold';
     const BACKORDER_FIELD = 'backorder';
-    const DELETE_REMOTE_DATA_ON_DEACTIVATION = 'deleteRemoteDataOnDeactivation';
-    const DELETE_REMOTE_DATA_ON_DELETION = 'deleteRemoteDataOnDeletion';
-    const DATA = 'data';
 
     /**
      * @var string
@@ -58,13 +54,6 @@ class OroCommerceSettings extends Transport
     private $userName;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="orocommerce_businessunit", type="integer", nullable=false)
-     */
-    private $businessUnit;
-    
-    /**
      * @var string
      *
      * @ORM\Column(name="orocommerce_productunit", type="string", length=20, nullable=false)
@@ -72,60 +61,46 @@ class OroCommerceSettings extends Transport
     private $productUnit;
 
     /**
-     * @var string
+     * @var int
      *
      * @ORM\Column(name="orocommerce_customertaxcode", type="integer", nullable=false)
      */
     private $customerTaxCode;
 
     /**
-     * @var string
+     * @var int
      *
      * @ORM\Column(name="orocommerce_pricelist", type="integer", nullable=false)
      */
     private $priceList;
 
     /**
-     * @var string
+     * @var int
      *
      * @ORM\Column(name="orocommerce_productfamily", type="integer", nullable=false)
      */
     private $productFamily;
 
     /**
-     * @var string
+     * @var int
      *
      * @ORM\Column(name="orocommerce_inventorythreshold", type="integer", nullable=false)
      */
     private $inventoryThreshold;
 
     /**
-     * @var string
+     * @var int
      *
      * @ORM\Column(name="orocommerce_lowinvthreshold", type="integer", nullable=false)
      */
     private $lowInventoryThreshold;
 
     /**
-     * @var string
+     * @var bool
      *
      * @ORM\Column(name="orocommerce_backorder", type="boolean", nullable=false)
      */
     private $backOrder;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="orocommerce_deldataondeactiv", type="boolean", nullable=true)
-     */
-    private $deleteRemoteDataOnDeactivation;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="orocommerce_deldataondel", type="boolean", nullable=true)
-     */
-    private $deleteRemoteDataOnDeletion;
 
     /**
      * @var bool
@@ -135,18 +110,11 @@ class OroCommerceSettings extends Transport
     private $enterprise;
 
     /**
-     * @var string
+     * @var int
      *
      * @ORM\Column(name="orocommerce_warehouse", type="integer", nullable=true)
      */
     private $warehouse;
-
-    /**
-     * @var array $data
-     *
-     * @ORM\Column(name="orocommerce_data", type="json_array", nullable=true)
-     */
-    protected $data;
     
     /**
      * @var ParameterBag
@@ -226,25 +194,6 @@ class OroCommerceSettings extends Transport
     {
         $this->userName = $userName;
 
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getBusinessUnit()
-    {
-        return $this->businessUnit;
-    }
-
-    /**
-     * @param int $businessUnit
-     * @return $this
-     */
-    public function setBusinessUnit($businessUnit)
-    {
-        $this->businessUnit = $businessUnit;
-        
         return $this;
     }
 
@@ -382,44 +331,6 @@ class OroCommerceSettings extends Transport
     }
 
     /**
-     * @return bool
-     */
-    public function isDeleteRemoteDataOnDeactivation()
-    {
-        return $this->deleteRemoteDataOnDeactivation;
-    }
-
-    /**
-     * @param bool $deleteRemoteDataOnDeactivation
-     * @return $this
-     */
-    public function setDeleteRemoteDataOnDeactivation($deleteRemoteDataOnDeactivation)
-    {
-        $this->deleteRemoteDataOnDeactivation = $deleteRemoteDataOnDeactivation;
-
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isDeleteRemoteDataOnDeletion()
-    {
-        return $this->deleteRemoteDataOnDeletion;
-    }
-
-    /**
-     * @param boolean $deleteRemoteDataOnDeletion
-     * @return OroCommerceSettings
-     */
-    public function setDeleteRemoteDataOnDeletion($deleteRemoteDataOnDeletion)
-    {
-        $this->deleteRemoteDataOnDeletion = $deleteRemoteDataOnDeletion;
-        
-        return $this;
-    }
-
-    /**
      * @return boolean
      */
     public function isEnterprise()
@@ -458,26 +369,6 @@ class OroCommerceSettings extends Transport
     }
 
     /**
-     * @param array $data
-     *
-     * @return $this
-     */
-    public function setData(array $data)
-    {
-        $this->data = $data;
-
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getData()
-    {
-        return $this->data;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getSettingsBag()
@@ -491,17 +382,13 @@ class OroCommerceSettings extends Transport
                     self::ENTERPRISE_FIELD => $this->isEnterprise(),
                     self::USERNAME_FIELD => $this->getUserName(),
                     self::WAREHOUSE_FIELD => $this->getWarehouse(),
-                    self::BUSINESSUNIT_FIELD => $this->getBusinessUnit(),
                     self::PRODUCTUNIT_FIELD => $this->getProductUnit(),
                     self::CUSTOMERTAXCODE_FIELD => $this->getCustomerTaxCode(),
                     self::PRICELIST_FIELD => $this->getPriceList(),
                     self::PRODUCTFAMILY_FIELD => $this->getProductFamily(),
                     self::INVENTORYTHRESHOLD_FIELD => $this->getInventoryThreshold(),
                     self::LOWINVENTORYTHRESHOLD_FIELD => $this->getLowInventoryThreshold(),
-                    self::BACKORDER_FIELD => $this->isBackOrder(),
-                    self::DELETE_REMOTE_DATA_ON_DEACTIVATION => $this->isDeleteRemoteDataOnDeactivation(),
-                    self::DELETE_REMOTE_DATA_ON_DELETION => $this->isDeleteRemoteDataOnDeletion(),
-                    self::DATA => $this->getData()
+                    self::BACKORDER_FIELD => $this->isBackOrder()
                 ]
             );
         }

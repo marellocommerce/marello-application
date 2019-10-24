@@ -4,7 +4,7 @@ namespace Marello\Bundle\OroCommerceBundle\ImportExport\Reader;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
-use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
+use Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractExportWriter;
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
@@ -58,7 +58,7 @@ class InventoryLevelExportReader extends EntityReader
     {
         $qb = parent::createSourceEntityQueryBuilder($entityName, $organization, $ids);
 
-        if ($entityName === BalancedInventoryLevel::class) {
+        if ($entityName === VirtualInventoryLevel::class) {
             $qb
                 ->innerJoin('o.product', 'p')
                 ->innerJoin('o.salesChannelGroup', 'g')
@@ -88,7 +88,7 @@ class InventoryLevelExportReader extends EntityReader
     protected function getParametersFromContext($parameter)
     {
         $context = $this->getContext();
-        if (in_array($context->getOption('entityName'), [BalancedInventoryLevel::class, InventoryLevel::class])) {
+        if (in_array($context->getOption('entityName'), [VirtualInventoryLevel::class, InventoryLevel::class])) {
             if ($context->getOption(AbstractExportWriter::ACTION_FIELD) === $this->action
                 && $context->hasOption($parameter)
             ) {
@@ -105,7 +105,7 @@ class InventoryLevelExportReader extends EntityReader
      */
     protected function initializeFromContext(ContextInterface $context)
     {
-        if (in_array($context->getOption('entityName'), [BalancedInventoryLevel::class, InventoryLevel::class])) {
+        if (in_array($context->getOption('entityName'), [VirtualInventoryLevel::class, InventoryLevel::class])) {
             if ($context->getOption(AbstractExportWriter::ACTION_FIELD) === $this->action) {
                 $this->productId = $context->getOption('product');
                 $this->groupId = $context->getOption('group');
