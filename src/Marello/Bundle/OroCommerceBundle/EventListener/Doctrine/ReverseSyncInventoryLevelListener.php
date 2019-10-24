@@ -4,16 +4,13 @@ namespace Marello\Bundle\OroCommerceBundle\EventListener\Doctrine;
 
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
-use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
-use Marello\Bundle\OroCommerceBundle\Entity\OroCommerceSettings;
-use Marello\Bundle\InventoryBundle\Model\InventoryQtyAwareInterface;
+use Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractExportWriter;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractProductExportWriter;
 use Marello\Bundle\OroCommerceBundle\Integration\Connector\OroCommerceInventoryLevelConnector;
 use Marello\Bundle\OroCommerceBundle\Integration\OroCommerceChannelType;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Oro\Bundle\EntityBundle\Event\OroEventManager;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 
 class ReverseSyncInventoryLevelListener extends AbstractReverseSyncListener
@@ -65,9 +62,9 @@ class ReverseSyncInventoryLevelListener extends AbstractReverseSyncListener
                             $salesChannelsGroups[$group->getName()] = $group;
                         }
                     }
-                    $repo = $this->entityManager->getRepository(BalancedInventoryLevel::class);
+                    $repo = $this->entityManager->getRepository(VirtualInventoryLevel::class);
                     foreach ($salesChannelsGroups as $group) {
-                        $balancedInventory = $repo->findExistingBalancedInventory($entity, $group);
+                        $balancedInventory = $repo->findExistingVirtualInventory($entity, $group);
                         if ($balancedInventory &&
                             (!isset($data[AbstractProductExportWriter::INVENTORY_LEVEL_ID_FIELD]) ||
                                 count($data[AbstractProductExportWriter::INVENTORY_LEVEL_ID_FIELD]) <
@@ -103,7 +100,7 @@ class ReverseSyncInventoryLevelListener extends AbstractReverseSyncListener
                     }
                 }
             }
-            if ($entity instanceof BalancedInventoryLevel) {
+            if ($entity instanceof VirtualInventoryLevel) {
                 if ($this->isSyncRequired($entity)) {
                     $result[
                         sprintf(
@@ -120,10 +117,10 @@ class ReverseSyncInventoryLevelListener extends AbstractReverseSyncListener
     }
 
     /**
-     * @param InventoryQtyAwareInterface $entity
+     * @param VirtualInventoryLevel|InventoryLevel $entity
      * @return bool
      */
-    protected function isSyncRequired(InventoryQtyAwareInterface $entity)
+    protected function isSyncRequired($entity)
     {
         $changeSet = $this->unitOfWork->getEntityChangeSet($entity);
 
@@ -141,14 +138,14 @@ class ReverseSyncInventoryLevelListener extends AbstractReverseSyncListener
     }
 
     /**
-     * @param InventoryQtyAwareInterface $entity
+     * @param VirtualInventoryLevel|InventoryLevel $entity
      */
-    protected function scheduleSync(InventoryQtyAwareInterface $entity)
+    protected function scheduleSync($entity)
     {
         if (!in_array($entity, $this->processedEntities)) {
             $product = null;
             $integrationChannels = $this->getIntegrationChannels($entity);
-            if ($entity instanceof BalancedInventoryLevel) {
+            if ($entity instanceof VirtualInventoryLevel) {
                 $product = $entity->getProduct();
             } elseif ($entity instanceof InventoryLevel) {
                 $product = $entity->getInventoryItem()->getProduct();
@@ -174,30 +171,12 @@ class ReverseSyncInventoryLevelListener extends AbstractReverseSyncListener
                         }
 
                         if (!empty($connector_params)) {
-                            /** @var OroCommerceSettings $transport */
-                            $transport = $integrationChannel->getTransport();
-                            $settingsBag = $transport->getSettingsBag();
-                            if ($integrationChannel->isEnabled()) {
-                                $this->syncScheduler->getService()->schedule(
-                                    $integrationChannel->getId(),
-                                    OroCommerceInventoryLevelConnector::TYPE,
-                                    $connector_params
-                                );
-                            } elseif ($settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION) === false) {
-                                $transportData = $transport->getData();
-                                $transportData[AbstractExportWriter::NOT_SYNCHRONIZED]
-                                [OroCommerceInventoryLevelConnector::TYPE]
-                                [$this->generateConnectionParametersKey($connector_params)] = $connector_params;
-                                $transport->setData($transportData);
-                                $this->entityManager->persist($transport);
-                                /** @var OroEventManager $eventManager */
-                                $eventManager = $this->entityManager->getEventManager();
-                                $eventManager->removeEventListener(
-                                    'onFlush',
-                                    'marello_orocommerce.event_listener.doctrine.reverse_sync_inventory_level'
-                                );
-                            }
-    
+                            $this->syncScheduler->getService()->schedule(
+                                $integrationChannel->getId(),
+                                OroCommerceInventoryLevelConnector::TYPE,
+                                $connector_params
+                            );
+
                             $this->processedEntities[] = $entity;
                         }
                     }
@@ -207,21 +186,21 @@ class ReverseSyncInventoryLevelListener extends AbstractReverseSyncListener
     }
 
     /**
-     * @param InventoryQtyAwareInterface $entity
+     * @param VirtualInventoryLevel|InventoryLevel $entity
      * @return Channel[]
      */
-    protected function getIntegrationChannels(InventoryQtyAwareInterface $entity)
+    protected function getIntegrationChannels($entity)
     {
         $integrationChannels = [];
         $salesChannels = [];
-        if ($entity instanceof BalancedInventoryLevel) {
+        if ($entity instanceof VirtualInventoryLevel) {
             $salesChannels = $entity->getSalesChannelGroup()->getSalesChannels();
         } elseif ($entity instanceof InventoryLevel) {
             $salesChannels = $entity->getInventoryItem()->getProduct()->getChannels();
         }
         foreach ($salesChannels as $salesChannel) {
             $channel = $salesChannel->getIntegrationChannel();
-            if ($channel && $channel->getType() === OroCommerceChannelType::TYPE &&
+            if ($channel && $channel->getType() === OroCommerceChannelType::TYPE && $channel->isEnabled() &&
                 $channel->getSynchronizationSettings()->offsetGetOr('isTwoWaySyncEnabled', false)
             ) {
                 $integrationChannels[] = $channel;

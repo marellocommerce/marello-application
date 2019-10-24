@@ -3,7 +3,6 @@
 namespace Marello\Bundle\OroCommerceBundle\EventListener\Doctrine;
 
 use Doctrine\ORM\Event\OnFlushEventArgs;
-use Marello\Bundle\OroCommerceBundle\Entity\OroCommerceSettings;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Reader\ProductExportCreateReader;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractExportWriter;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractProductExportWriter;
@@ -14,7 +13,6 @@ use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Oro\Bundle\EntityBundle\Event\OroEventManager;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 
 class ReverseSyncProductPriceListener extends AbstractReverseSyncListener
@@ -35,7 +33,7 @@ class ReverseSyncProductPriceListener extends AbstractReverseSyncListener
             $this->scheduleSync($entity);
         }
     }
-
+    
     /**
      * @return array
      */
@@ -62,9 +60,9 @@ class ReverseSyncProductPriceListener extends AbstractReverseSyncListener
                     foreach ($entity->getChannels() as $salesChannel) {
                         if ($salesChannel->getIntegrationChannel()) {
                             $finalPrice = $this->getFinalPrice($entity, $salesChannel);
-                            if (!isset($data[AbstractProductExportWriter::PRICE_ID_FIELD]) ||
-                                count($data[AbstractProductExportWriter::PRICE_ID_FIELD]) <
-                                count($this->getIntegrationChannels($finalPrice)
+                            if (!isset($data[AbstractProductExportWriter::PRICE_ID_FIELD]) || 
+                                    count($data[AbstractProductExportWriter::PRICE_ID_FIELD]) <
+                                    count($this->getIntegrationChannels($finalPrice)
                                 )
                             ) {
                                 $key = sprintf(
@@ -88,7 +86,7 @@ class ReverseSyncProductPriceListener extends AbstractReverseSyncListener
                 }
             }
         }
-
+        
         usort($result, function ($a, $b) {
             if ($a instanceof ProductChannelPrice && $b instanceof ProductPrice) {
                 return -1;
@@ -109,7 +107,7 @@ class ReverseSyncProductPriceListener extends AbstractReverseSyncListener
     protected function isSyncRequired(BasePrice $entity)
     {
         $changeSet = $this->unitOfWork->getEntityChangeSet($entity);
-
+        
         if (count($changeSet) === 0) {
             return false;
         }
@@ -172,32 +170,13 @@ class ReverseSyncProductPriceListener extends AbstractReverseSyncListener
                             ];
                         }
 
-                        if (!empty($connector_params)) {
-                            $connector_params['entityName'] = $entityName;
-                            /** @var OroCommerceSettings $transport */
-                            $transport = $integrationChannel->getTransport();
-                            $settingsBag = $transport->getSettingsBag();
-                            if ($integrationChannel->isEnabled()) {
-                                $this->syncScheduler->getService()->schedule(
-                                    $integrationChannel->getId(),
-                                    OroCommerceProductPriceConnector::TYPE,
-                                    $connector_params
-                                );
-                            } elseif ($settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION) === false) {
-                                $transportData = $transport->getData();
-                                $transportData[AbstractExportWriter::NOT_SYNCHRONIZED]
-                                [OroCommerceProductPriceConnector::TYPE]
-                                [$this->generateConnectionParametersKey($connector_params, ['value'])] = $connector_params;
-                                $transport->setData($transportData);
-                                $this->entityManager->persist($transport);
-                                /** @var OroEventManager $eventManager */
-                                $eventManager = $this->entityManager->getEventManager();
-                                $eventManager->removeEventListener(
-                                    'onFlush',
-                                    'marello_orocommerce.event_listener.doctrine.reverse_sync_product_price'
-                                );
-                                $this->entityManager->flush($transport);
-                            }
+                    if (!empty($connector_params)) {
+                        $connector_params['entityName'] = $entityName;
+                        $this->syncScheduler->getService()->schedule(
+                            $integrationChannel->getId(),
+                            OroCommerceProductPriceConnector::TYPE,
+                            $connector_params
+                        );
 
                             $this->processedEntities[] = $entity;
                         }
@@ -217,7 +196,7 @@ class ReverseSyncProductPriceListener extends AbstractReverseSyncListener
         if ($entity instanceof ProductChannelPrice) {
             $salesChannel = $entity->getChannel();
             $channel = $salesChannel->getIntegrationChannel();
-            if ($channel && $channel->getType() === OroCommerceChannelType::TYPE &&
+            if ($channel && $channel->getType() === OroCommerceChannelType::TYPE && $channel->isEnabled() &&
                 $channel->getSynchronizationSettings()->offsetGetOr('isTwoWaySyncEnabled', false)) {
                 $integrationChannels[] = $channel;
             }
@@ -227,7 +206,7 @@ class ReverseSyncProductPriceListener extends AbstractReverseSyncListener
             $integrationChannels = [];
             foreach ($salesChannels as $salesChannel) {
                 $channel = $salesChannel->getIntegrationChannel();
-                if ($channel && $channel->getType() === OroCommerceChannelType::TYPE &&
+                if ($channel && $channel->getType() === OroCommerceChannelType::TYPE && $channel->isEnabled() &&
                     $channel->getSynchronizationSettings()->offsetGetOr('isTwoWaySyncEnabled', false)
                 ) {
                     $integrationChannels[$channel->getId()] = $channel;
@@ -250,7 +229,7 @@ class ReverseSyncProductPriceListener extends AbstractReverseSyncListener
                 return $salesChannel;
             }
         }
-
+        
         return null;
     }
 
@@ -259,13 +238,12 @@ class ReverseSyncProductPriceListener extends AbstractReverseSyncListener
      * @param SalesChannel $salesChannel
      * @return BasePrice
      */
-    public static function getFinalPrice(Product $product, SalesChannel $salesChannel)
+    private function getFinalPrice(Product $product, SalesChannel $salesChannel)
     {
         if ($channelPrice = $product->getSalesChannelPrice($salesChannel)) {
-            return $channelPrice->getSpecialPrice() ? : $channelPrice->getDefaultPrice();
+            return $channelPrice;
         }
-        $defaultPrice = $product->getPrice($salesChannel->getCurrency());
 
-        return $defaultPrice->getSpecialPrice() ? : $defaultPrice->getDefaultPrice();
+        return $product->getPrice($salesChannel->getCurrency());
     }
 }

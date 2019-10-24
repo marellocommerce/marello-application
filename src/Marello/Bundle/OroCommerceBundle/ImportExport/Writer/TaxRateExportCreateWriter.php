@@ -4,7 +4,7 @@ namespace Marello\Bundle\OroCommerceBundle\ImportExport\Writer;
 
 use Marello\Bundle\TaxBundle\Entity\TaxRate;
 
-class TaxRateExportCreateWriter extends AbstractItemExportWriter
+class TaxRateExportCreateWriter extends AbstractExportWriter
 {
     const TAX_ID = 'orocommerce_tax_id';
     /**

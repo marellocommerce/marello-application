@@ -5,18 +5,15 @@ namespace Marello\Bundle\OroCommerceBundle\EventListener\Doctrine;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\UnitOfWork;
-use Marello\Bundle\OroCommerceBundle\Entity\OroCommerceSettings;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Reader\ProductExportCreateReader;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Reader\ProductExportUpdateReader;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractExportWriter;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractProductExportWriter;
 use Marello\Bundle\OroCommerceBundle\Integration\Connector\OroCommerceProductConnector;
 use Marello\Bundle\OroCommerceBundle\Integration\OroCommerceChannelType;
-use Marello\Bundle\OroCommerceBundle\Integration\Transport\Rest\OroCommerceRestTransport;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Oro\Bundle\EntityBundle\Event\OroEventManager;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Reader\EntityReaderById;
 
@@ -300,30 +297,11 @@ class ReverseSyncProductListener extends AbstractReverseSyncListener
         }
 
         if (!empty($connector_params)) {
-            /** @var OroCommerceSettings $transport */
-            $transport = $integrationChannel->getTransport();
-            $settingsBag = $transport->getSettingsBag();
-            if ($integrationChannel->isEnabled()) {
-                $this->syncScheduler->getService()->schedule(
-                    $integrationChannel->getId(),
-                    OroCommerceProductConnector::TYPE,
-                    $connector_params
-                );
-            }  elseif($settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION) === false) {
-                $transportData = $transport->getData();
-                $transportData[AbstractExportWriter::NOT_SYNCHRONIZED]
-                [OroCommerceProductConnector::TYPE]
-                [$this->generateConnectionParametersKey($connector_params)] = $connector_params;
-                $transport->setData($transportData);
-                $this->entityManager->persist($transport);
-                /** @var OroEventManager $eventManager */
-                $eventManager = $this->entityManager->getEventManager();
-                $eventManager->removeEventListener(
-                    'onFlush',
-                    'marello_orocommerce.event_listener.doctrine.reverse_sync_product'
-                );
-                $this->entityManager->flush($transport);
-            }
+            $this->syncScheduler->getService()->schedule(
+                $integrationChannel->getId(),
+                OroCommerceProductConnector::TYPE,
+                $connector_params
+            );
 
             $this->processedEntities[] = $entity;
         }
@@ -340,23 +318,9 @@ class ReverseSyncProductListener extends AbstractReverseSyncListener
         $integrationChannels = [];
         foreach ($salesChannels as $salesChannel) {
             $channel = $salesChannel->getIntegrationChannel();
-            if ($channel && $channel->getType() === OroCommerceChannelType::TYPE &&
+            if ($channel && $channel->getType() === OroCommerceChannelType::TYPE && $channel->isEnabled() &&
                 $channel->getSynchronizationSettings()->offsetGetOr('isTwoWaySyncEnabled', false)) {
                 $integrationChannels[$channel->getId()] = $channel;
-            }
-        }
-        if (empty($integrationChannels)) {
-            /** @var PersistentCollection $collection */
-            $collectionUpd = $this->unitOfWork->getScheduledCollectionUpdates();
-            foreach ($collectionUpd as $collection) {
-                if ($collection->first() instanceof SalesChannel) {
-                    /** @var SalesChannel $salesChannel */
-                    foreach ($collection->getDeleteDiff() as $salesChannel) {
-                        if ($channel = $salesChannel->getIntegrationChannel()) {
-                            $integrationChannels[$channel->getId()] = $channel;
-                        }
-                    }
-                }
             }
         }
 

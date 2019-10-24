@@ -4,7 +4,7 @@ namespace Marello\Bundle\OroCommerceBundle\ImportExport\Writer;
 
 use Marello\Bundle\OroCommerceBundle\ImportExport\Reader\ProductExportUpdateReader;
 
-class TaxCodeExportDeleteWriter extends AbstractItemExportWriter
+class TaxCodeExportDeleteWriter extends AbstractExportWriter
 {
     /**
      * @param array $data

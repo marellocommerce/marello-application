@@ -12,7 +12,7 @@ use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 class OrderWorkflowEventListener
 {
     const WORKFLOW = 'marello_order_b2c_workflow_1';
-    const TRANSIT_TO_STEP = 'paid';
+    const TRANSIT_TO_STEP = 'invoice';
     
     /**
      * @var WorkflowManager

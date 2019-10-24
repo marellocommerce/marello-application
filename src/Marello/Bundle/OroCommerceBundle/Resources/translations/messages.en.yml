@@ -7,7 +7,6 @@ marello:
             key.label: "API Key"
             enterprise.label: 'Is Enterprise Edition'
             currency.label: 'Currency'
-            business_unit.label: 'Business Unit'
             product_unit.label: 'Product Unit'
             customer_tax_code.label: 'Customer Tax Code'
             price_list.label: 'Price List'
@@ -16,9 +15,6 @@ marello:
             inventory_threshold.label: 'Inventory Threshold'
             low_inventory_threshold.label: 'Low Inventory Threshold'
             back_order.label: 'Backorder'
-            delete_remote_data_on_deactivation.label: 'Delete Remote Synchronized Data On Deactivation'
-            delete_remote_data_on_deletion.label: 'Delete Remote Synchronized Data On Deletion'
-            data.label: 'Data'
         channel_type:
             label: 'OroCommerce'
         connector:

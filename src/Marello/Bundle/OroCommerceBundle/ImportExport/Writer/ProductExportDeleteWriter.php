@@ -6,7 +6,7 @@ use Marello\Bundle\OroCommerceBundle\ImportExport\Reader\ProductExportCreateRead
 use Marello\Bundle\OroCommerceBundle\ImportExport\Reader\ProductExportUpdateReader;
 use Marello\Bundle\ProductBundle\Entity\Product;
 
-class ProductExportDeleteWriter extends AbstractItemExportWriter
+class ProductExportDeleteWriter extends AbstractExportWriter
 {
     /**
      * @param array $data
