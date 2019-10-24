@@ -135,8 +135,6 @@ datagrids:
                 select:
                     - i
                     - inv.currency as currency
-                    - product.sku as productSku
-                    - product.name as productName
                 from:
                     - { table: MarelloInvoiceBundle:InvoiceItem, alias: i}
                 join:
@@ -194,8 +192,6 @@ datagrids:
                 select:
                     - i
                     - inv.currency as currency
-                    - product.sku as productSku
-                    - product.name as productName
                 from:
                     - { table: MarelloInvoiceBundle:CreditmemoItem, alias: i}
                 join:
@@ -210,8 +206,10 @@ datagrids:
         columns:
             productSku:
                 label:            marello.product.sku.label
-                frontend_type:    string
                 data_name:        productSku
+                type:             twig
+                frontend_type:    html
+                template:         MarelloProductBundle:Product/Datagrid:productSku.html.twig
             productName:
                 label:            marello.product.name.label
                 frontend_type:    string
