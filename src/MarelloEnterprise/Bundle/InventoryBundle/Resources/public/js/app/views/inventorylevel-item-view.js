@@ -92,11 +92,6 @@ define(function(require) {
             if (this.disposed) {
                 return;
             }
-            if (this.confirm) {
-                this.confirm
-                    .off()
-                    .remove();
-            }
 
             InventoryLevelItemView.__super__.dispose.call(this);
         }

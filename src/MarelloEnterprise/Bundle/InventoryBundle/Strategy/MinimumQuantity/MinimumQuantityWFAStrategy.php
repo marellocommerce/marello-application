@@ -144,6 +144,9 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
     private function getLinkedWarehouses(Order $order)
     {
         if (empty($this->linkedWarehouses)) {
+            if (!$order->getSalesChannel() || !$order->getSalesChannel()->getGroup()) {
+                return [];
+            }
             /** @var WarehouseChannelGroupLink $warehouseGroupLink */
             $warehouseGroupLink = $this->warehouseChannelGroupLinkRepository
                 ->findLinkBySalesChannelGroup($order->getSalesChannel()->getGroup());
