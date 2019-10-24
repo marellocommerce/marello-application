@@ -1,0 +1,3 @@
+marello:
+    servicepoint:
+        no_duplicate_business_hours.message: "This day is already has business hours"
