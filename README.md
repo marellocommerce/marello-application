@@ -8,7 +8,7 @@ This package should be present on the OroCommerce instance whenever integrating 
 Requirements
 ------------
 
-This package requires you to have OroCommerce 1.5.x or above installed, with the exception of 3.0 version, in order to extend the API Data resources
+This package requires you to have OroCommerce 3.1.x version installed in order to extend the API Data resources
 
 Installation instructions
 ------------
