@@ -61,42 +61,42 @@ class OroCommerceSettings extends Transport
     private $productUnit;
 
     /**
-     * @var string
+     * @var int
      *
      * @ORM\Column(name="orocommerce_customertaxcode", type="integer", nullable=false)
      */
     private $customerTaxCode;
 
     /**
-     * @var string
+     * @var int
      *
      * @ORM\Column(name="orocommerce_pricelist", type="integer", nullable=false)
      */
     private $priceList;
 
     /**
-     * @var string
+     * @var int
      *
      * @ORM\Column(name="orocommerce_productfamily", type="integer", nullable=false)
      */
     private $productFamily;
 
     /**
-     * @var string
+     * @var int
      *
      * @ORM\Column(name="orocommerce_inventorythreshold", type="integer", nullable=false)
      */
     private $inventoryThreshold;
 
     /**
-     * @var string
+     * @var int
      *
      * @ORM\Column(name="orocommerce_lowinvthreshold", type="integer", nullable=false)
      */
     private $lowInventoryThreshold;
 
     /**
-     * @var string
+     * @var bool
      *
      * @ORM\Column(name="orocommerce_backorder", type="boolean", nullable=false)
      */
@@ -110,7 +110,7 @@ class OroCommerceSettings extends Transport
     private $enterprise;
 
     /**
-     * @var string
+     * @var int
      *
      * @ORM\Column(name="orocommerce_warehouse", type="integer", nullable=true)
      */
