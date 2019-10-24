@@ -96,7 +96,7 @@ define(function(require) {
             // other parts are updated because of the triggers
             this.updateBusinessUnits();
         },
-        
+
         updateBusinessUnits: function() {
             var url = this.$elem.find(this.options.urlSelector).val();
             var username = this.$elem.find(this.options.usernameSelector).val();
@@ -230,6 +230,7 @@ define(function(require) {
                             if (selectedItem.toString() === data.value) {
                                 selectedExists = true
                             }
+                        }
                         $(selector)
                             .append('<option value="' + data.value + '">' + data.label + '</option>');
                     });
