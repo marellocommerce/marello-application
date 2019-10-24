@@ -22,8 +22,19 @@ class InventoryOrderOnDemandValidator extends ConstraintValidator
             return;
         }
         $product = $entity->getProduct();
-        if ($entity->isOrderOnDemandAllowed() && !$product->getPreferredSupplier()) {
+        if ($entity->isOrderOnDemandAllowed() &&
+            (!$product->getPreferredSupplier() || $product->getSuppliers()->count() === 0)) {
             $this->context->buildViolation($constraint->message)
+                ->atPath('orderOnDemandAllowed')
+                ->addViolation();
+        }
+        if ($entity->isOrderOnDemandAllowed() && $entity->isBackorderAllowed()) {
+            $this->context->buildViolation('marello.inventory.validation.messages.error.inventoryitem.order_on_demand_allowed_and_backorder_allowed')
+                ->atPath('orderOnDemandAllowed')
+                ->addViolation();
+        }
+        if ($entity->isOrderOnDemandAllowed() && $entity->isCanPreorder()) {
+            $this->context->buildViolation('marello.inventory.validation.messages.error.inventoryitem.order_on_demand_allowed_and_preorder_allowed')
                 ->atPath('orderOnDemandAllowed')
                 ->addViolation();
         }
