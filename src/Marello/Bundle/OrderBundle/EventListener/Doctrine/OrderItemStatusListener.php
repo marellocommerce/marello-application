@@ -74,7 +74,9 @@ class OrderItemStatusListener
             ) {
                 $entity->setStatus($this->findStatusByName(LoadOrderItemStatusData::WAITING_FOR_SUPPLY));
             } else {
-                $entity->setStatus($this->findDefaultStatus());
+                if (!$entity->getStatus()) {
+                    $entity->setStatus($this->findDefaultStatus());
+                }
             }
         }
         if ($entity instanceof PackingSlipItem) {
