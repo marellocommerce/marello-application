@@ -1,0 +1,21 @@
+services:
+    marello_servicepoint.form_type.day_of_week:
+        class: 'Marello\Bundle\ServicePointBundle\Form\Type\DayOfWeekType'
+        arguments:
+            - '@marello_servicepoint.provider.day_of_week'
+        tags:
+            - { name: form.type }
+
+    marello_servicepoint.form_type.servicepoint_address:
+        class: 'Marello\Bundle\ServicePointBundle\Form\Type\ServicePointAddressType'
+        arguments:
+            - '@oro_address.form.listener.address'
+        tags:
+            - { name: form.type }
+
+    marello_servicepoint.form_type.facility_select:
+        class: 'Marello\Bundle\ServicePointBundle\Form\Type\FacilitySelectType'
+        arguments:
+            - '@oro_locale.helper.localization'
+        tags:
+            - { name: form.type }
