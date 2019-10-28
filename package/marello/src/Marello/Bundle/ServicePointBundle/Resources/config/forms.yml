@@ -19,3 +19,42 @@ services:
             - '@oro_locale.helper.localization'
         tags:
             - { name: form.type }
+
+    marello_servicepoint.form.facility:
+        class: 'Symfony\Component\Form\FormInterface'
+        factory: ['@form.factory', 'create']
+        arguments:
+            - 'Marello\Bundle\ServicePointBundle\Form\Type\FacilityType'
+
+    marello_servicepoint.form_handler.facility:
+        class: 'Marello\Bundle\ServicePointBundle\Form\Handler\FacilityFormHandler'
+        arguments:
+            - '@marello_servicepoint.form.facility'
+            - '@request_stack'
+            - '@doctrine.orm.entity_manager'
+
+    marello_servicepoint.form.servicepoint:
+        class: 'Symfony\Component\Form\FormInterface'
+        factory: ['@form.factory', 'create']
+        arguments:
+            - 'Marello\Bundle\ServicePointBundle\Form\Type\ServicePointType'
+
+    marello_servicepoint.form_handler.servicepoint:
+        class: 'Marello\Bundle\ServicePointBundle\Form\Handler\ServicePointFormHandler'
+        arguments:
+            - '@marello_servicepoint.form.servicepoint'
+            - '@request_stack'
+            - '@doctrine.orm.entity_manager'
+
+    marello_servicepoint.form.servicepoint_facility:
+        class: 'Symfony\Component\Form\FormInterface'
+        factory: ['@form.factory', 'create']
+        arguments:
+            - 'Marello\Bundle\ServicePointBundle\Form\Type\ServicePointFacilityType'
+
+    marello_servicepoint.form_handler.servicepoint_facility:
+        class: 'Marello\Bundle\ServicePointBundle\Form\Handler\ServicePointFacilityFormHandler'
+        arguments:
+            - '@marello_servicepoint.form.servicepoint_facility'
+            - '@request_stack'
+            - '@doctrine.orm.entity_manager'

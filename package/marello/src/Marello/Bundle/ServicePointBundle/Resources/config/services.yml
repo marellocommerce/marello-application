@@ -17,3 +17,10 @@ services:
             - '@marello_servicepoint.provider.day_of_week'
         tags:
             - { name: form.type }
+
+    marello_servicepoint.twig_extension.day_of_week:
+        class: 'Marello\Bundle\ServicePointBundle\Twig\DayOfWeekExtension'
+        arguments:
+            - '@marello_servicepoint.provider.day_of_week'
+        tags:
+            - { name: twig.extension }
