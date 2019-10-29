@@ -17,12 +17,24 @@ use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
  * @ORM\Entity(repositoryClass="Marello\Bundle\ServicePointBundle\Entity\Repository\ServicePointRepository")
  * @ORM\Table(name="marello_sp_servicepoint")
  * @ORM\HasLifecycleCallbacks
- * @Config(defaultValues={
- *     "entity"={
- *         "label"="marello.servicepoint.entity_label",
- *         "plural_label"="marello.servicepoint.entity_plural_label"
+ * @Config(
+ *     routeName="marello_servicepoint_servicepoint_index",
+ *     routeView="marello_servicepoint_servicepoint_view",
+ *     routeCreate="marello_servicepoint_servicepoint_create",
+ *     defaultValues={
+ *         "entity"={
+ *             "label"="marello.servicepoint.entity_label",
+ *             "plural_label"="marello.servicepoint.entity_plural_label"
+ *         },
+ *         "dataaudit"={
+ *              "auditable"=true
+ *         },
+ *         "security"={
+ *              "type"="ACL",
+ *              "group_name"=""
+ *         }
  *     }
- * })
+ * )
  */
 class ServicePoint extends ExtendServicePoint implements DatesAwareInterface
 {
