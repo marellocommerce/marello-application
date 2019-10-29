@@ -15,12 +15,24 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
  * @ORM\Entity
  * @ORM\Table(name="marello_sp_servicepoint_fac")
  * @ORM\HasLifecycleCallbacks
- * @Config(defaultValues={
- *     "entity"={
- *         "label"="marello.servicepoint.servicepoint_facility.entity_label",
- *         "plural_label"="marello.servicepoint.servicepoint_facility.entity_plural_label"
+ * @Config(
+ *     routeName="marello_servicepoint_servicepoint_view",
+ *     routeView="marello_servicepoint_servicepointfacility_view",
+ *     routeCreate="marello_servicepoint_servicepointfacility_create",
+ *     defaultValues={
+ *         "entity"={
+ *             "label"="marello.servicepoint.servicepoint_facility.entity_label",
+ *             "plural_label"="marello.servicepoint.servicepoint_facility.entity_plural_label"
+ *         },
+ *         "dataaudit"={
+ *             "auditable"=true
+ *         },
+ *         "security"={
+ *             "type"="ACL",
+ *             "group_name"=""
+ *         },
  *     }
- * })
+ * )
  */
 class ServicePointFacility extends ExtendServicePointFacility implements DatesAwareInterface
 {
