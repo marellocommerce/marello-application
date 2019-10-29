@@ -19,12 +19,25 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
  *     }
  * )
  * @ORM\HasLifecycleCallbacks
- * @Config(defaultValues={
- *     "entity"={
- *         "label"="marello.servicepoint.timeperiod.entity_label",
- *         "plural_label"="marello.servicepoint.timeperiod.entity_plural_label"
+ * @Config(
+ *     defaultValues={
+ *         "entity"={
+ *             "label"="marello.servicepoint.timeperiod.entity_label",
+ *             "plural_label"="marello.servicepoint.timeperiod.entity_plural_label"
+ *         },
+ *         "dataaudit"={
+ *             "auditable"=true
+ *         },
+ *         "security"={
+ *             "type"="ACL",
+ *             "group_name"=""
+ *         },
+ *         "form"={
+ *             "form_type"="Marello\Bundle\PaymentTermBundle\Form\Type\PaymentTermSelectType",
+ *             "grid_name"="marello-payment-terms-select-grid",
+ *         }
  *     }
- * })
+ * )
  */
 class TimePeriod extends ExtendTimePeriod implements DatesAwareInterface
 {

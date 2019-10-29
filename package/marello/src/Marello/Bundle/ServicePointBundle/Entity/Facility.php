@@ -19,12 +19,21 @@ use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
  *     }
  * )
  * @ORM\HasLifecycleCallbacks
- * @Config(defaultValues={
- *     "entity"={
- *         "label"="marello.servicepoint.facility.entity_label",
- *         "plural_label"="marello.servicepoint.facility.entity_plural_label"
+ * @Config(
+ *     routeName="marello_servicepoint_facility_index",
+ *     routeView="marello_servicepoint_facility_view",
+ *     routeCreate="marello_servicepoint_facility_create",
+ *     defaultValues={
+ *         "entity"={
+ *             "label"="marello.servicepoint.facility.entity_label",
+ *             "plural_label"="marello.servicepoint.facility.entity_plural_label"
+ *         },
+ *         "security"={
+ *            "type"="ACL",
+ *            "group_name"="",
+ *         }
  *     }
- * })
+ * )
  */
 class Facility extends ExtendFacility
 {
