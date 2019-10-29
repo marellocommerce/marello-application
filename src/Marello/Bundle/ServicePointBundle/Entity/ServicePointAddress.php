@@ -16,12 +16,21 @@ use Oro\Bundle\LocaleBundle\Model\AddressInterface;
  * @ORM\Entity
  * @ORM\Table(name="marello_sp_address")
  * @ORM\HasLifecycleCallbacks
- * @Config(defaultValues={
- *     "entity"={
- *         "label"="marello.servicepoint.servicepoint_address.entity_label",
- *         "plural_label"="marello.servicepoint.servicepoint_address.entity_plural_label"
+ * @Config(
+ *     defaultValues={
+ *         "entity"={
+ *             "label"="marello.servicepoint.servicepoint_address.entity_label",
+ *             "plural_label"="marello.servicepoint.servicepoint_address.entity_plural_label"
+ *         },
+ *         "dataaudit"={
+ *             "auditable"=true
+ *         },
+ *         "security"={
+ *             "type"="ACL",
+ *             "group_name"=""
+ *         }
  *     }
- * })
+ * )
  */
 class ServicePointAddress extends ExtendServicePointAddress implements AddressInterface, DatesAwareInterface
 {
