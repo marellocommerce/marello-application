@@ -15,6 +15,7 @@ services:
         class: Marello\Bundle\SupplierBundle\Provider\SupplierProvider
         arguments:
             - '@doctrine.orm.entity_manager'
+            - '@oro_currency.locale_settings'
 
     marello_supplier.twig.supplier_extension:
         class: Marello\Bundle\SupplierBundle\Twig\SupplierExtension

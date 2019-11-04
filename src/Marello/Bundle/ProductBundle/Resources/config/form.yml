@@ -83,6 +83,8 @@ services:
 
     marello_product.form.type.product_supplier_relation:
         class: Marello\Bundle\ProductBundle\Form\Type\ProductSupplierRelationType
+        arguments:
+            - '@oro_currency.locale_settings'
         tags:
             - { name: form.type }
 
