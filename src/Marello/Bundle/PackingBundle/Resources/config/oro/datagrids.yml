@@ -127,6 +127,9 @@ datagrids:
         columns:
             productSku:
                 label:            marello.packing.packingslipitem.product_sku.label
+                type:             twig
+                frontend_type:    html
+                template:         MarelloProductBundle:Product/Datagrid:productSku.html.twig
             productName:
                 label:            marello.packing.packingslipitem.product_name.label
             quantity:

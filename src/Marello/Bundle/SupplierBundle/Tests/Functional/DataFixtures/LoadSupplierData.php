@@ -6,6 +6,7 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class LoadSupplierData extends AbstractFixture
 {
@@ -92,6 +93,10 @@ class LoadSupplierData extends AbstractFixture
             $supplier->setIsActive($values['is_active']);
             $supplier->setEmail($values['email']);
             $supplier->setCurrency($values['currency']);
+            $organization = $this->manager
+                ->getRepository(Organization::class)
+                ->getFirst();
+            $supplier->setOrganization($organization);
 
             $address = new MarelloAddress();
             $address->setStreet($values['address']['street_address']);

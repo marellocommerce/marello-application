@@ -3,14 +3,15 @@
 namespace Marello\Bundle\PackingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as JMS;
-use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
-use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
-use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use Marello\Bundle\OrderBundle\Migrations\Data\ORM\LoadOrderItemStatusData;
-use Marello\Bundle\PackingBundle\Model\ExtendPackingSlipItem;
-use Marello\Bundle\ProductBundle\Entity\Product;
+
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
+use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
+
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\PackingBundle\Model\ExtendPackingSlipItem;
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 
 /**
  * @ORM\Entity()
@@ -18,16 +19,22 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  *      defaultValues={
  *          "dataaudit"={
  *              "auditable"=true
+ *          },
+ *          "ownership"={
+ *              "owner_type"="ORGANIZATION",
+ *              "owner_field_name"="organization",
+ *              "owner_column_name"="organization_id"
  *          }
  *      }
  * )
  * @ORM\Table(name="marello_packing_pack_slip_item")
  * @ORM\HasLifecycleCallbacks()
  */
-class PackingSlipItem extends ExtendPackingSlipItem
+class PackingSlipItem extends ExtendPackingSlipItem implements OrganizationAwareInterface
 {
     use EntityCreatedUpdatedAtTrait;
-    
+    use AuditableOrganizationAwareTrait;
+
     /**
      * @var int
      *

@@ -68,6 +68,10 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
         // deliberately return a different entity than the initial imported entity,
         // during errors with multiple runs of import
         $product = $this->getProduct($entity);
+        if (!$product) {
+            return null;
+        }
+
         return $this->getInventoryItem($product);
     }
 
@@ -81,6 +85,9 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
         if ($warehouse = $this->getWarehouse($entity)) {
             $this->checkEntityAcl($entity, null, $itemData);
             $product = $this->getProduct($entity);
+            if (!$product) {
+                return $this->addProductNotExistValidationError($itemData);
+            }
             $inventoryItem = $this->getInventoryItem($product);
             $inventoryUpdateQty = $entity->getInventoryQty();
 
@@ -172,6 +179,21 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
     }
 
     /**
+     * @param $itemData
+     * @return null
+     */
+    protected function addProductNotExistValidationError(array $itemData)
+    {
+        $error[] = $this->translator->trans(
+            'marello.inventory.messages.error.inventorylevel.product_not_found',
+            ['%entity_sku%' => $itemData['inventoryItem']['product']['sku']]
+        );
+        $this->strategyHelper->addValidationErrors($error, $this->context);
+
+        return null;
+    }
+
+    /**
      * @param InventoryLevel $entity
      *
      * @return null|object|InventoryLevel
@@ -180,9 +202,12 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
     {
         /** @var Product $product */
         $product = $this->getProduct($entity);
+        if (!$product) {
+            return null;
+        }
+
         /** @var InventoryItem $inventoryItem */
         $inventoryItem = $this->getInventoryItem($product);
-
         if (!$inventoryItem) {
             return null;
         }
@@ -219,7 +244,6 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
     {
         return $this->databaseHelper->findOneBy(InventoryItem::class, ['product' => $entity->getId()]);
     }
-
 
     /**
      * @param InventoryLevel $entity
