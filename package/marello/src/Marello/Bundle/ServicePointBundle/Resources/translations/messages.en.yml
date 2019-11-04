@@ -54,6 +54,7 @@ marello:
                 saved.message: "The Service Point was saved."
                 sections:
                     additional: "Additional Fields"
+                    image: "Image"
             servicepoint_facility:
                 saved.message: "The Service Point Facility was saved."
                 sections:
