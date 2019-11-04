@@ -36,6 +36,7 @@ marello:
             order_item.label:       Order Item
             comment.label:          Comment
             status.label:           Status
+            organization.label:     Organization
 
         datagrid:
             columns:

@@ -214,13 +214,13 @@ workflows:
                         - '@sales_channel_has_valid_integration':
                             salesChannel: $order.salesChannel
                 post_actions:
+                    - '@extendable':
+                       events: [extendable_action.order_ship]
                     - '@marello_ship_order': ~
                     - '@marello_notification_send':
                         entity: $order
                         recipient: $order.customer
                         template: marello_order_shipped_confirmation
-                    - '@extendable':
-                       events: [extendable_action.order_shipped]
             payment_reminder_definition:
                 post_actions:
                     - '@marello_notification_send':
@@ -426,13 +426,13 @@ workflows:
                         - '@sales_channel_has_valid_integration':
                             salesChannel: $order.salesChannel
                 post_actions:
+                    - '@extendable':
+                       events: [extendable_action.order_ship]
                     - '@marello_ship_order': ~
                     - '@marello_notification_send':
                         entity: $order
                         recipient: $order.customer
                         template: marello_order_shipped_confirmation
-                    - '@extendable':
-                       events: [extendable_action.order_shipped]
             payment_reminder_definition:
                 post_actions:
                     - '@marello_notification_send':

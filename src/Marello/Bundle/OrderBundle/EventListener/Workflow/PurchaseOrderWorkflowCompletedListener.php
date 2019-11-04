@@ -131,12 +131,17 @@ class PurchaseOrderWorkflowCompletedListener
             if ($order) {
                 $hasShippedItems = false;
                 $hasPackedItems = false;
+                $entityManager = $this->doctrine->getManagerForClass(OrderItem::class);
                 foreach ($order->getItems() as $item) {
+                    $status = $item->getStatus()->getId();
                     if (!in_array($item->getId(), $data[$orderOnDemandKey]['orderItems'])) {
                         $statuses = [LoadOrderItemStatusData::DROPSHIPPING, LoadOrderItemStatusData::SHIPPED];
-                        if (in_array($item->getStatus(), $statuses, true)) {
+                        if (in_array($status, $statuses, true)) {
                             $hasShippedItems = true;
                         }
+                    } else if ($status === LoadOrderItemStatusData::WAITING_FOR_SUPPLY) {
+                        $item->setStatus($this->findStatusByName(LoadOrderItemStatusData::PROCESSING));
+                        $entityManager->persist($item);
                     }
                     $packingSlipItem = $this->doctrine
                         ->getManagerForClass(PackingSlipItem::class)
@@ -149,6 +154,7 @@ class PurchaseOrderWorkflowCompletedListener
                         break;
                     }
                 }
+                $entityManager->flush();
                 if ($hasPackedItems || $hasShippedItems) {
                     foreach ($order->getItems() as $item) {
                         if (!in_array($item->getId(), $data[$orderOnDemandKey]['orderItems'])) {
