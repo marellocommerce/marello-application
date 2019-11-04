@@ -36,6 +36,31 @@
     {% set id = 'marello-servicepoint-view' %}
     {% set generalSubblocks = [] %}
 
+    {% set mapData %}
+        {% set options = {
+            'view': 'marelloservicepoint/js/app/views/embed-map-view',
+            'address': entity.address.__toString(),
+            'mapOptions': {
+                'center': entity.latitude ~ ',' ~ entity.longitude,
+                'zoom': 17,
+            },
+            'iframeOptions': {
+                'width': '100%',
+                'height': 400
+            }
+        } %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    <div
+                        data-page-component-module="oroui/js/app/components/view-component"
+                        data-page-component-options="{{ options|json_encode }}"
+                    ></div>
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
     {% set imageData %}
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
@@ -68,6 +93,10 @@
     {% endset %}
 
     {% set generalSubblocks = generalSubblocks|merge([{'data' : [generalInformation] }]) %}
+    {% set generalSubblocks = generalSubblocks|merge([{
+        'title': 'marello.servicepoint.ui.servicepoint.sections.map'|trans,
+        'data': [mapData]
+    }]) %}
     {% set dataBlocks = [{
         'title': 'General'|trans,
         'subblocks': generalSubblocks
