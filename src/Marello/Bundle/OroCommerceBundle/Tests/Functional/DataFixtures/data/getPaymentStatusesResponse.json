@@ -1,0 +1,13 @@
+{
+  "data": [
+    {
+      "type": "paymentstatuses",
+      "id": "1",
+      "attributes": {
+        "entityClass": "Oro\\Bundle\\OrderBundle\\Entity\\Order",
+        "entityIdentifier": 1,
+        "paymentStatus": "full"
+      }
+    }
+  ]
+}
