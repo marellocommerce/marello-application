@@ -147,7 +147,7 @@
     </td>
     <td class="supplier-line-item-cost">
         <div class="fields-row">
-            {{ form_widget(form.cost) }}
+            {{ form_widget(form.cost) }}{{ form.vars.currency }}
         </div>
         {{ form_errors(form.cost) }}
     </td>
