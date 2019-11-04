@@ -1,0 +1,5 @@
+marello:
+    orocommerce:
+        orocommercesettings:
+            messages:
+                error.no_warehouse_for_enterprise_edition: For integration with OroCommerce EE at least one warehouse should be created on OroCommerce side

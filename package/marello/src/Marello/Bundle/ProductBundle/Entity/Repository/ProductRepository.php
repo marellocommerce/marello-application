@@ -94,7 +94,7 @@ class ProductRepository extends EntityRepository
         $queryBuilder->andWhere('UPPER(product.sku) = :sku')
             ->setParameter('sku', strtoupper($sku));
 
-        return $queryBuilder->getQuery()->getOneOrNullResult();
+        return $this->aclHelper->apply($queryBuilder->getQuery())->getOneOrNullResult();
     }
 
     /**

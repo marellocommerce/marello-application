@@ -38,7 +38,7 @@ class MarelloPackingBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_1';
+        return 'v1_2';
     }
 
     /**
@@ -88,6 +88,7 @@ class MarelloPackingBundleInstaller implements
     {
         $table = $schema->createTable(self::MARELLO_PACKING_SLIP_ITEM_TABLE);
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('packing_slip_id', 'integer', ['notnull' => true]);
         $table->addColumn('product_id', 'integer', ['notnull' => true]);
         $table->addColumn('product_name', 'string', ['length' => 255]);
@@ -111,6 +112,7 @@ class MarelloPackingBundleInstaller implements
         );
         
         $table->setPrimaryKey(['id']);
+        $table->addIndex(['organization_id']);
         $table->addUniqueIndex(['order_item_id'], 'UNIQ_DBF8FC2AE415FB15', []);
     }
 
@@ -187,6 +189,12 @@ class MarelloPackingBundleInstaller implements
             ['packing_slip_id'],
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_organization'),
+            ['organization_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
     }
 

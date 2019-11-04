@@ -101,6 +101,7 @@ class MarelloInvoiceBundleInstaller implements Installation
     {
         $table = $schema->createTable('marello_invoice_invoice_item');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('invoice_item_type', 'string', []);
         $table->addColumn('invoice_id', 'integer', ['notnull' => false]);
         $table->addColumn('product_id', 'integer', ['notnull' => false]);
@@ -204,6 +205,12 @@ class MarelloInvoiceBundleInstaller implements Installation
             ['invoice_id'],
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_organization'),
+            ['organization_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
     }
 }

@@ -1,0 +1,4 @@
+config:
+    paths:
+        'marelloorocommerce/js/app/components/orocommerce-connection-validator-component': 'marelloorocommerce/js/app/components/orocommerce-connection-validator-component.js'
+        'marelloorocommerce/js/app/components/orocommerce-settings-component': 'marelloorocommerce/js/app/components/orocommerce-settings-component.js'

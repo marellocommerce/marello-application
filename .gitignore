@@ -28,3 +28,5 @@ phpunit.xml
 .npm/
 .viminfo
 php-semver-checker.phar
+.composer
+.vim
