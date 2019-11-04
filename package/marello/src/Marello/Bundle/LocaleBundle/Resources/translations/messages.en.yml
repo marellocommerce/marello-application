@@ -1,7 +1,0 @@
-marello.locale:
-    system_configuration:
-        fields:
-            languages_email.label: 'Supported Email languages'
-    form:
-        tooltip:
-            languages_email: "Select the languages that can be used for EmailTemplates that are not marked as 'system' templates."

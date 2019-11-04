@@ -1,2 +1,0 @@
-bundles:
-    - { name: Marello\Bundle\LayoutBundle\MarelloLayoutBundle, priority: 20 }
