@@ -35,6 +35,21 @@
 {% block content_data %}
     {% set id = 'marello-servicepoint-view' %}
     {% set generalSubblocks = [] %}
+
+    {% set imageData %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    <div class="thumbnail">
+                        <a href="{{ file_url(entity, 'image', entity.image) }}" data-gallery="servicepoint-view-{{ entity.id }}" class="no-hash" title="{{ entity.labels|localized_value }}">
+                            <span class="thumbnail servicepoint-thumbnail" style="background-image: url('{{ filtered_image_url(entity.image, 'servicepoint_view') }}')"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
     {% set generalInformation %}
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
@@ -45,6 +60,7 @@
                         {{ UI.renderHtmlProperty('marello.servicepoint.address.label'|trans, entity.address|oro_format_address|nl2br) }}
                         {{ UI.renderProperty('marello.servicepoint.latitude.label'|trans, entity.latitude) }}
                         {{ UI.renderProperty('marello.servicepoint.longitude.label'|trans, entity.longitude) }}
+                        {{ UI.renderHtmlProperty('marello.servicepoint.image.label'|trans, imageData) }}
                     </div>
                 </div>
             </div>
