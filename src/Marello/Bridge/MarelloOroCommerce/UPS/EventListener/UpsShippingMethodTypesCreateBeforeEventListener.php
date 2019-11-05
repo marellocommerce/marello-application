@@ -38,7 +38,7 @@ class UpsShippingMethodTypesCreateBeforeEventListener
                     ->setCountry($shippingService->getCountry());
                 $validShippingServices[] = $validShippingService;
             } else {
-                $validShippingServices = $shippingService;
+                $validShippingServices[] = $shippingService;
             }
         }
 
