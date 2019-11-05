@@ -2,24 +2,24 @@
 
 namespace Marello\Bundle\OroCommerceBundle\Integration\Connector;
 
-use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\CustomerBundle\Entity\Company;
 use Oro\Bundle\IntegrationBundle\Provider\OrderedConnectorInterface;
 use Oro\Bundle\IntegrationBundle\Provider\TwoWaySyncConnectorInterface;
 
-class OroCommerceOrderConnector extends AbstractOroCommerceConnector implements
+class OroCommerceCustomerConnector extends AbstractOroCommerceConnector implements
     TwoWaySyncConnectorInterface,
     OrderedConnectorInterface
 {
-    const TYPE = 'order';
-    const IMPORT_JOB = 'orocommerce_order_import';
-    const EXPORT_JOB = 'orocommerce_order_export';
+    const TYPE = 'customer';
+    const IMPORT_JOB = 'orocommerce_customer_import';
+    const EXPORT_JOB = 'orocommerce_customer_export';
     
     /**
      * {@inheritdoc}
      */
     protected function getConnectorSource()
     {
-        return $this->transport->getOrders($this->getLastSyncDate());
+        return $this->transport->getCustomers($this->getLastSyncDate());
     }
     
     /**
@@ -27,7 +27,7 @@ class OroCommerceOrderConnector extends AbstractOroCommerceConnector implements
      */
     public function getLabel()
     {
-        return 'marello.orocommerce.connector.order.label';
+        return 'marello.orocommerce.connector.customer.label';
     }
 
     /**
@@ -35,7 +35,7 @@ class OroCommerceOrderConnector extends AbstractOroCommerceConnector implements
      */
     public function getImportEntityFQCN()
     {
-        return Order::class;
+        return Company::class;
     }
 
     /**
@@ -67,6 +67,6 @@ class OroCommerceOrderConnector extends AbstractOroCommerceConnector implements
      */
     public function getOrder()
     {
-        return 20;
+        return 10;
     }
 }
