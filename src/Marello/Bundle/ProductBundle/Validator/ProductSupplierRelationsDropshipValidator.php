@@ -85,8 +85,7 @@ class ProductSupplierRelationsDropshipValidator extends ConstraintValidator
 
             $inventoryLevel = $inventoryItem->getInventoryLevel($warehouse);
             if ($inventoryLevel) {
-                if ($inventoryLevel->isManagedInventory() &&
-                    ($inventoryLevel->getInventoryQty() > 0 || $inventoryLevel->getAllocatedInventoryQty() > 0)) {
+                if ($inventoryLevel->getInventoryQty() > 0 || $inventoryLevel->getAllocatedInventoryQty() > 0) {
                     $this->context->buildViolation($constraint->message)
                         ->atPath('suppliers')
                         ->addViolation();
