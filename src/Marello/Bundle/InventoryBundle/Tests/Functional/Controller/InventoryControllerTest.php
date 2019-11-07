@@ -49,7 +49,7 @@ class InventoryControllerTest extends WebTestCase
             $this->getUrl(
                 'marello_inventory_inventory_view',
                 [
-                    'id' => $this->getReference(LoadProductData::PRODUCT_1_REF)
+                    'id' => $this->getReference(LoadProductData::PRODUCT_1_REF)->getId()
                 ]
             )
         );
@@ -67,7 +67,7 @@ class InventoryControllerTest extends WebTestCase
             $this->getUrl(
                 'marello_inventory_inventory_update',
                 [
-                    'id' => $this->getReference(LoadProductData::PRODUCT_1_REF)
+                    'id' => $this->getReference(LoadProductData::PRODUCT_1_REF)->getId()
                 ]
             )
         );
