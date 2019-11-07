@@ -4,6 +4,7 @@ namespace MarelloOroCommerce\src\Marello\Bundle\OroCommerceBundle\Tests\Function
 
 use Marello\Bundle\OroCommerceBundle\Client\Factory\OroCommerceRestClientFactory;
 use Marello\Bundle\OroCommerceBundle\Client\OroCommerceRestClient;
+use Marello\Bundle\OroCommerceBundle\Tests\Functional\DataFixtures\LoadChannelData;
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Exception\RestException;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
@@ -18,6 +19,9 @@ abstract class AbstractConnectionValidationTest extends WebTestCase
     {
         $this->initClient([], $this->generateBasicAuthHeader());
         $this->client->useHashNavigation(true);
+        $this->loadFixtures([
+            LoadChannelData::class
+        ]);
     }
 
     /** {@inheritdoc} */
@@ -41,7 +45,7 @@ abstract class AbstractConnectionValidationTest extends WebTestCase
                 'name' => 'OroCommerce',
                 'transportType' => 'orocommerce',
                 'transport' => [
-                    'url' => 'http://orocommerce.com/admin',
+                    'url' => 'http://mono-marello-orocommerce-ee.local/index.php/admin',
                     'username' => $user,
                     'key' => 'qwerty',
                     'currency' => 'USD',
@@ -80,7 +84,10 @@ abstract class AbstractConnectionValidationTest extends WebTestCase
 
         $this->client->request(
             'POST',
-            $this->getUrl('marello_orocommerce_validate_connection', ['channelId' => 0]),
+            $this->getUrl(
+                'marello_orocommerce_validate_connection',
+                ['channelId' => $this->getReference('orocommerce_channel:first_test_channel')]
+            ),
             $request
         );
         $response = $this->client->getResponse();
