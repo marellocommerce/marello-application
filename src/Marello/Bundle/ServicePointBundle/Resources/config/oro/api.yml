@@ -1,0 +1,44 @@
+api:
+    entity_aliases:
+        Marello\Bundle\ServicePointBundle\Entity\Facility:
+            alias: marellofacility
+            plural_alias: marellofacilities
+        Marello\Bundle\ServicePointBundle\Entity\ServicePoint:
+            alias: marelloservicepoint
+            plural_alias: marelloservicepoints
+        Marello\Bundle\ServicePointBundle\Entity\ServicePointAddress:
+            alias: marelloservicepointaddress
+            plural_alias: marelloservicepointaddresses
+        Marello\Bundle\ServicePointBundle\Entity\ServicePointFacility:
+            alias: marelloservicepointfacility
+            plural_alias: marelloservicepointfacilities
+        Marello\Bundle\ServicePointBundle\Entity\TimePeriod:
+            alias: marellotimeperiod
+            plural_alias: marellotimeperiods
+
+    entities:
+        Marello\Bundle\ServicePointBundle\Entity\Facility:
+            filters:
+                exclusion_policy: all
+            actions:
+                delete_relationship: false
+        Marello\Bundle\ServicePointBundle\Entity\ServicePoint:
+            filters:
+                exclusion_policy: all
+            actions:
+                delete_relationship: false
+        Marello\Bundle\ServicePointBundle\Entity\ServicePointAddress:
+            filters:
+                exclusion_policy: all
+            actions:
+                delete_relationship: true
+        Marello\Bundle\ServicePointBundle\Entity\ServicePointFacility:
+            filters:
+                exclusion_policy: all
+            actions:
+                delete_relationship: false
+        Marello\Bundle\ServicePointBundle\Entity\TimePeriod:
+            filters:
+                exclusion_policy: all
+            actions:
+                delete_relationship: true
