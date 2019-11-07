@@ -5,24 +5,21 @@ namespace Marello\Bundle\InventoryBundle\Tests\Functional\DataFixtures;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
-use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
-use Marello\Bundle\InventoryBundle\Model\InventoryBalancer\InventoryBalancer;
 use Marello\Bundle\InventoryBundle\Model\BalancedInventory\BalancedInventoryHandler;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
+use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
+use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesChannelGroupData;
 
 class LoadInventoryData extends AbstractFixture implements DependentFixtureInterface, ContainerAwareInterface
 {
@@ -89,9 +86,6 @@ class LoadInventoryData extends AbstractFixture implements DependentFixtureInter
             ->get('marello_inventory.repository.warehouse')
             ->getDefault();
 
-        $replenishmentClass = ExtendHelper::buildEnumValueClassName('marello_inv_reple');
-        $this->replenishments = $this->manager->getRepository($replenishmentClass)->findAll();
-
         $this->loadProductInventory();
     }
 
@@ -135,8 +129,17 @@ class LoadInventoryData extends AbstractFixture implements DependentFixtureInter
             if (!$inventoryItem) {
                 return;
             }
+            if ($data['orderOnDemandAllowed'] === 'true') {
+                $inventoryItem->setOrderOnDemandAllowed(true);
+                $this->manager->persist($inventoryItem);
+            }
 
-            $inventoryItem->setReplenishment($this->replenishments[rand(0, count($this->replenishments) - 1)]);
+            $replenishmentClass = ExtendHelper::buildEnumValueClassName('marello_inv_reple');
+            $replenishment = $this->manager->getRepository($replenishmentClass)->find($data['replenishment']);
+            $inventoryItem->setReplenishment($replenishment);
+            $inventoryItem->setPurchaseInventory($data['purchaseInventory']);
+            $inventoryItem->setDesiredInventory($data['desiredInventory']);
+
             $this->handleInventoryUpdate($product, $inventoryItem, $data['inventory_qty'], 0, null);
             $this->balanceInventory($product, $data['inventory_qty']);
         }

@@ -81,6 +81,7 @@ class ProductRepository extends EntityRepository
 
         return $this->aclHelper->apply($qb->getQuery())->getResult();
     }
+
     /**
      * @param string $sku
      *
@@ -93,7 +94,7 @@ class ProductRepository extends EntityRepository
         $queryBuilder->andWhere('UPPER(product.sku) = :sku')
             ->setParameter('sku', strtoupper($sku));
 
-        return $queryBuilder->getQuery()->getOneOrNullResult();
+        return $this->aclHelper->apply($queryBuilder->getQuery())->getOneOrNullResult();
     }
 
     /**
@@ -135,6 +136,32 @@ class ProductRepository extends EntityRepository
         $qb
             ->where(sprintf('%s LIKE :key', $formattedDataField))
             ->setParameter('key', '%' . $key . '%');
+
+        return $this->aclHelper->apply($qb->getQuery())->getResult();
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getPurchaseOrderItemsCandidates()
+    {
+        $qb = $this
+            ->createQueryBuilder('p')
+            ->select(
+                'sup.name AS supplier,
+                p.sku,
+                (i.desiredInventory - COALESCE(SUM(l.inventory - l.allocatedInventory), 0)) AS orderAmount,
+                i.purchaseInventory'
+            )
+            ->innerJoin('p.preferredSupplier', 'sup')
+            ->innerJoin('p.status', 's')
+            ->innerJoin('p.inventoryItems', 'i')
+            ->innerJoin('i.inventoryLevels', 'l')
+            ->where("sup.name <> ''")
+            ->andWhere("s.name = 'enabled'")
+            ->andWhere("i.replenishment = 'never_out_of_stock'")
+            ->groupBy('p.sku')
+            ->having('SUM(l.inventory - l.allocatedInventory) < i.purchaseInventory');
 
         return $this->aclHelper->apply($qb->getQuery())->getResult();
     }

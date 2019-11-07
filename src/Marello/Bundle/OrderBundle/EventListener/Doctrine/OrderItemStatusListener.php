@@ -3,6 +3,7 @@
 namespace Marello\Bundle\OrderBundle\EventListener\Doctrine;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Provider\AvailableInventoryProvider;
 use Marello\Bundle\OrderBundle\Entity\Order;
@@ -10,6 +11,8 @@ use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\OrderBundle\Event\OrderItemStatusUpdateEvent;
 use Marello\Bundle\OrderBundle\Migrations\Data\ORM\LoadOrderItemStatusData;
 use Marello\Bundle\PackingBundle\Entity\PackingSlipItem;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
@@ -23,7 +26,7 @@ class OrderItemStatusListener
      * @var DoctrineHelper
      */
     protected $doctrineHelper;
-    
+
     /**
      * @var AvailableInventoryProvider
      */
@@ -70,11 +73,14 @@ class OrderItemStatusListener
                         $inventoryItem->getMaxQtyToBackorder() >= $entity->getQuantity()
                     ) || ($inventoryItem->isCanPreorder() &&
                         $inventoryItem->getMaxQtyToPreorder() >= $entity->getQuantity())
+                    || $inventoryItem->isOrderOnDemandAllowed()
                 )
             ) {
                 $entity->setStatus($this->findStatusByName(LoadOrderItemStatusData::WAITING_FOR_SUPPLY));
             } else {
-                $entity->setStatus($this->findDefaultStatus());
+                if (!$entity->getStatus()) {
+                    $entity->setStatus($this->findDefaultStatus());
+                }
             }
         }
         if ($entity instanceof PackingSlipItem) {
@@ -95,17 +101,25 @@ class OrderItemStatusListener
         /** @var Order $entity */
         $entity = $event->getContext()->getData()->get('order');
         foreach ($entity->getItems() as $orderItem) {
-            $event = new OrderItemStatusUpdateEvent($orderItem, LoadOrderItemStatusData::PROCESSING);
-            $this->eventDispatcher->dispatch(
-                OrderItemStatusUpdateEvent::NAME,
-                $event
+            $product = $orderItem->getProduct();
+            /** @var InventoryItem $inventoryItem */
+            $availableInventory = $this->availableInventoryProvider->getAvailableInventory(
+                $product,
+                $entity->getSalesChannel()
             );
-            $orderItem->setStatus($this->findStatusByName($event->getStatusName()));
-            $entityManager->persist($orderItem);
+            if ($availableInventory >= $orderItem->getQuantity()) {
+                $event = new OrderItemStatusUpdateEvent($orderItem, LoadOrderItemStatusData::PROCESSING);
+                $this->eventDispatcher->dispatch(
+                    OrderItemStatusUpdateEvent::NAME,
+                    $event
+                );
+                $orderItem->setStatus($this->findStatusByName($event->getStatusName()));
+                $entityManager->persist($orderItem);
+            }
         }
         $entityManager->flush();
     }
-    
+
     /**
      * @param ExtendableActionEvent $event
      */
@@ -118,13 +132,19 @@ class OrderItemStatusListener
         /** @var Order $entity */
         $entity = $event->getContext()->getData()->get('order');
         foreach ($entity->getItems() as $orderItem) {
-            $event = new OrderItemStatusUpdateEvent($orderItem, LoadOrderItemStatusData::SHIPPED);
-            $this->eventDispatcher->dispatch(
-                OrderItemStatusUpdateEvent::NAME,
-                $event
-            );
-            $orderItem->setStatus($this->findStatusByName($event->getStatusName()));
-            $entityManager->persist($orderItem);
+            $product = $orderItem->getProduct();
+            $salesChannel = $entity->getSalesChannel();
+            $balancedInventoryLevel = $this->getBalancedInventoryLevel($product, $salesChannel->getGroup());
+            if ($balancedInventoryLevel->getBalancedInventoryQty() >= $orderItem->getQuantity() ||
+                $balancedInventoryLevel->getReservedInventoryQty() >= $orderItem->getQuantity()) {
+                $event = new OrderItemStatusUpdateEvent($orderItem, LoadOrderItemStatusData::SHIPPED);
+                $this->eventDispatcher->dispatch(
+                    OrderItemStatusUpdateEvent::NAME,
+                    $event
+                );
+                $orderItem->setStatus($this->findStatusByName($event->getStatusName()));
+                $entityManager->persist($orderItem);
+            }
         }
         $entityManager->flush();
     }
@@ -141,7 +161,7 @@ class OrderItemStatusListener
             && $context->getData()->get('order') instanceof Order
         );
     }
-    
+
     /**
      * @return null|object
      */
@@ -159,7 +179,7 @@ class OrderItemStatusListener
 
         return null;
     }
-    
+
     /**
      * @param string $name
      * @return null|object
@@ -177,5 +197,19 @@ class OrderItemStatusListener
         }
 
         return null;
+    }
+
+    /**
+     * Get associated BalancedInventoryLevel
+     * @param Product $product
+     * @param SalesChannelGroup $salesChannelGroup
+     * @return BalancedInventoryLevel
+     */
+    protected function getBalancedInventoryLevel(Product $product, SalesChannelGroup $salesChannelGroup)
+    {
+        return $this->doctrineHelper
+            ->getEntityManagerForClass(BalancedInventoryLevel::class)
+            ->getRepository(BalancedInventoryLevel::class)
+            ->findExistingBalancedInventory($product, $salesChannelGroup);
     }
 }

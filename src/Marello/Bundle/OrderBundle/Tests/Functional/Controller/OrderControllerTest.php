@@ -97,6 +97,7 @@ class OrderControllerTest extends WebTestCase
 
         $orderItem = $order->getItems()[0];
         static::assertSame($product->getSku(), $orderItem->getProductSku());
+        static::assertSame($order->getOrganization(), $orderItem->getOrganization());
 
         return $order->getId();
     }

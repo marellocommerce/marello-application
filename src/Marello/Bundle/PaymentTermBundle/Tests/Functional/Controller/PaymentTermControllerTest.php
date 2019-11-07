@@ -49,6 +49,10 @@ class PaymentTermControllerTest extends WebTestCase
 
         $this->assertResponseStatusCodeEquals($this->client->getResponse(), Response::HTTP_OK);
         $this->assertContains('marello-paymentterm-grid', $crawler->html());
+
+        $response = $this->client->requestGrid('marello-paymentterm-grid');
+        $result = $this->getJsonResponseContent($response, Response::HTTP_OK);
+        $this->assertCount(4, $result['data']);
     }
 
     /**

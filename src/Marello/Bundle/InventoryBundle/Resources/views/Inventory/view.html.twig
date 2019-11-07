@@ -138,6 +138,16 @@
         </div>
     {% endset %}
 
+    {% set orderOnDemandInfoWidget %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ UI.renderProperty('marello.inventory.inventoryitem.order_on_demand_allowed.label'|trans, entity.orderOnDemandAllowed ? 'marello.core.yes.label'|trans : 'marello.core.no.label'|trans) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
     {% set dataBlocks = dataBlocks|merge([{
             'title': 'marello.inventory.inventoryitem.replenishment.label'|trans,
             'useSpan': false,
@@ -159,8 +169,8 @@
             {
                 'title': 'marello.inventory.inventoryitem.section.preorder.label'|trans,
                 'data': [
-                preOrderInfoWidget
-            ]
+                    preOrderInfoWidget
+                ]
             }]
         }])
     %}

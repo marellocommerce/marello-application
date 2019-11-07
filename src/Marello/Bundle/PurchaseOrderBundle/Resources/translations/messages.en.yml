@@ -3,7 +3,6 @@ marello:
         id.label:                                       Id
         entity_label:                                   Purchase Order
         entity_plural_label:                            Purchase Orders
-        id.label:                                       Id
         organization.label:                             Organization
         supplier.label:                                 Supplier
         purchase_order_number.label:                    PO Number
@@ -24,9 +23,8 @@ marello:
         all_items_have_been_received:                   All items have been received, please proceed to click "Fully received"
         has_item.label:                                 Has Product
         billing_and_shipping.label:                     Billing & Shipping Info
-        supplier.label:                                 Supplier
-        organization.label:                             Organization
         shipping_address.label:                         Shipping Address
+        data.label:                                     Data
 
         ui:
             continue:                                   Continue
@@ -52,15 +50,10 @@ marello:
             purchase_stock_level.label:                 Purchase Level
             desired_stock_level.label:                  Desired Level
             virtual_stock_level.label:                  Virtual Level
-            product.label:                              Product
             purchase_price.label:                       Purchase Price
             purchase_price_value.label:                 Purchase Price
             row_total.label:                            Row Total
-            order.label:                                Order
-            supplier.label:                             Supplier
-            product_sku.label:                          Product Sku
-            product_name.label:                         Product Name
-            data.label:                                 Data
+            organization.label:                         Organization
             validation:
                 received_amount:                        Total amount received can only be as many items as ordered amount.
 
@@ -77,3 +70,8 @@ marello:
             purchaseorder:
                 saved:                                  Purchase Order saved succesfully
                 not_saved:                              Something went wrong, Purchase Order was not saved
+
+        system_configuration:
+            fields:
+                purchaseorder_notification.label:          Purchase Order notification
+                purchaseorder_notification_address.label:  Purchase Order notification email address

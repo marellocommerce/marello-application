@@ -12,7 +12,9 @@ use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
 
 class AvailableInventoryProvider
 {
-    /** @var DoctrineHelper $doctrineHelper */
+    /**
+     * @var DoctrineHelper
+     */
     protected $doctrineHelper;
 
     /**
@@ -47,7 +49,7 @@ class AvailableInventoryProvider
         $salesChannelGroup = $salesChannel->getGroup();
         $result = $this->getBalancedInventoryLevel($product, $salesChannelGroup);
 
-        return ($result) ? $result->getInventoryQty() : 0;
+        return ($result) ? $result->getBalancedInventoryQty() : 0;
     }
 
     /**

@@ -15,6 +15,7 @@ marello:
         payment_method.label:       Payment Method
         payment_reference.label:    Payment Reference
         payment_details.label:      Payment Details
+        payment_term.label:         Payment Term
         shipping_method.label:      Shipping Method
         shipping_method_type.label: Shipping Method Type
         order.label:                Order
@@ -92,6 +93,7 @@ marello:
             product_sku.label:        Product Sku
             row_total_incl_tax.label: Row Total Including Tax
             row_total_excl_tax.label: Row Total Excluding Tax
+            organization.label:       Organization
 
         creditmemoitem:
             id.label:                 Id
@@ -107,6 +109,7 @@ marello:
             product_sku.label:        Product Sku
             row_total_incl_tax.label: Row Total Including Tax
             row_total_excl_tax.label: Row Total Excluding Tax
+            organization.label:       Organization
 
         abstractinvoice:
             id.label:                   Id
@@ -155,3 +158,4 @@ marello:
             product_sku.label:        Product Sku
             row_total_incl_tax.label: Row Total Including Tax
             row_total_excl_tax.label: Row Total Excluding Tax
+            organization.label:       Organization

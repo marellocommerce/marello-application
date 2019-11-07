@@ -43,7 +43,7 @@ class MarelloOrderBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_8_1';
+        return 'v1_9';
     }
 
     /**
@@ -104,6 +104,7 @@ class MarelloOrderBundleInstaller implements
         $table->addColumn('name_suffix', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('email', 'text', []);
         $table->addColumn('tax_identification_number', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('company_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['primary_address_id'], 'UNIQ_75C456C9F5B7AF75');
         $table->addUniqueIndex(['shipping_address_id'], 'UNIQ_75C456C94D4CFF2B');
@@ -204,6 +205,7 @@ class MarelloOrderBundleInstaller implements
     {
         $table = $schema->createTable('marello_order_order_item');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('product_id', 'integer', ['notnull' => false]);
         $table->addColumn('order_id', 'integer', ['notnull' => false]);
         $table->addColumn('product_name', 'string', ['length' => 255]);
@@ -268,6 +270,7 @@ class MarelloOrderBundleInstaller implements
             ]
         );
         $table->setPrimaryKey(['id']);
+        $table->addIndex(['organization_id']);
     }
 
     /**
@@ -295,6 +298,12 @@ class MarelloOrderBundleInstaller implements
             ['shipping_address_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_customer_company'),
+            ['company_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
     }
 
@@ -374,6 +383,12 @@ class MarelloOrderBundleInstaller implements
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_tax_tax_code'),
             ['tax_code_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_organization'),
+            ['organization_id'],
             ['id'],
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );

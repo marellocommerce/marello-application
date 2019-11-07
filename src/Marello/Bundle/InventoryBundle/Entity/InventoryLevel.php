@@ -30,7 +30,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
  *              "owner_column_name"="organization_id"
  *          },
  *          "dataaudit"={
- *              "auditable"=true
+ *              "auditable"=false
  *          }
  *      }
  * )
@@ -68,7 +68,7 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
      *              "full"=true
      *          },
      *          "dataaudit"={
-     *              "auditable"=true
+     *              "auditable"=false
      *          }
      *      }
      * )
@@ -87,7 +87,7 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
      *              "full"=true,
      *          },
      *          "dataaudit"={
-     *              "auditable"=true
+     *              "auditable"=false
      *          }
      *      }
      * )
@@ -104,7 +104,7 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
      *              "header"="Inventory Qty"
      *          },
      *          "dataaudit"={
-     *              "auditable"=true
+     *              "auditable"=false
      *          }
      *      }
      * )
@@ -121,7 +121,7 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
      *              "excluded"=true
      *          },
      *          "dataaudit"={
-     *              "auditable"=true
+     *              "auditable"=false
      *          }
      *      }
      * )
@@ -141,7 +141,7 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
      *              "excluded"=true
      *          },
      *          "dataaudit"={
-     *              "auditable"=true
+     *              "auditable"=false
      *          }
      *      }
      * )
@@ -160,7 +160,7 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
      *              "label"="oro.ui.updated_at"
      *          },
      *          "dataaudit"={
-     *              "auditable"=true
+     *              "auditable"=false
      *          }
      *      }
      * )
@@ -175,7 +175,7 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
      *              "header"="Managed Inventory"
      *          },
      *          "dataaudit"={
-     *              "auditable"=true
+     *              "auditable"=false
      *          }
      *      }
      * )
@@ -183,6 +183,23 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
      * @var boolean
      */
     protected $managedInventory;
+
+    /**
+     * @ORM\Column(name="pick_location", type="string", nullable=true, length=100)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "header"="Pick Location"
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var string
+     */
+    protected $pickLocation;
 
     /**
      * @return int
@@ -320,10 +337,31 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
      * @param mixed $managedInventory
      * @return $this
      */
-    public function setManagedInventory($managedInventory)
+    public function setManagedInventory($managedInventory): InventoryLevel
     {
         $this->managedInventory = $managedInventory;
         
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @param $pickLocation
+     * @return string
+     */
+    public function setPickLocation($pickLocation): InventoryLevel
+    {
+        $this->pickLocation = $pickLocation;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return string
+     */
+    public function getPickLocation(): ?string
+    {
+        return $this->pickLocation;
     }
 }

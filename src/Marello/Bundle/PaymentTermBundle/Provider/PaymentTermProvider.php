@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\PaymentTermBundle\Provider;
 
+use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\PaymentTermBundle\DependencyInjection\Configuration;
 use Marello\Bundle\PaymentTermBundle\Entity\PaymentTerm;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
@@ -35,6 +36,19 @@ class PaymentTermProvider
         $this->doctrineHelper = $doctrineHelper;
     }
 
+    public function getCustomerPaymentTerm(Customer $customer)
+    {
+        $paymentTerm = null;
+        if ($customer->getCompany() !== null) {
+            $paymentTerm = $customer->getCompany()->getPaymentTerm();
+        }
+        if ($paymentTerm === null) {
+            $paymentTerm = $this->getDefaultPaymentTerm();
+        }
+
+        return $paymentTerm;
+    }
+
     /**
      * @return PaymentTerm|null
      */
@@ -53,6 +67,9 @@ class PaymentTermProvider
     protected function fetchDefaultPaymentTerm()
     {
         $id = $this->config->get(Configuration::DEFAULT_PAYMENT_TERM_CONFIG_PATH);
+        if (!$id) {
+            return null;
+        }
 
         return $this->doctrineHelper->getEntityRepositoryForClass(PaymentTerm::class)->find($id);
     }

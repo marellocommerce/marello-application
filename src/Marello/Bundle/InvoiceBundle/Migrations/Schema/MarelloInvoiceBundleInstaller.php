@@ -17,7 +17,7 @@ class MarelloInvoiceBundleInstaller implements Installation
      */
     public function getMigrationVersion()
     {
-        return 'v1_0';
+        return 'v1_1';
     }
 
     /**
@@ -55,6 +55,7 @@ class MarelloInvoiceBundleInstaller implements Installation
         $table->addColumn('shipping_method', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('shipping_method_type', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('order_id', 'integer', ['notnull' => true]);
+        $table->addColumn('payment_term_id', 'integer', ['notnull' => false]);
         $table->addColumn('currency', 'string', ['notnull' => false, 'length' => 10]);
         $table->addColumn('type', 'string', ['notnull' => true]);
         $table->addColumn('invoice_type', 'string', ['notnull' => false]);
@@ -100,6 +101,7 @@ class MarelloInvoiceBundleInstaller implements Installation
     {
         $table = $schema->createTable('marello_invoice_invoice_item');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('invoice_item_type', 'string', []);
         $table->addColumn('invoice_id', 'integer', ['notnull' => false]);
         $table->addColumn('product_id', 'integer', ['notnull' => false]);
@@ -153,6 +155,12 @@ class MarelloInvoiceBundleInstaller implements Installation
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
         $table->addForeignKeyConstraint(
+            $schema->getTable('marello_payment_term'),
+            ['payment_term_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
             $schema->getTable('marello_address'),
             ['billing_address_id'],
             ['id'],
@@ -197,6 +205,12 @@ class MarelloInvoiceBundleInstaller implements Installation
             ['invoice_id'],
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_organization'),
+            ['organization_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
     }
 }
