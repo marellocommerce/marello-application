@@ -57,19 +57,8 @@ class AddOroProcessorsCompilerPass implements CompilerPassInterface
         'oro_api.initialize_entity_mapper',
         'oro_api.convert_entity_to_model',
         'oro_api.remove_entity_mapper',
-        /*'oro_order.api.handle_order_included_data',
-        'oro_order.api.set_price_by_value_and_currency',
-        'oro_order.api.update_request_data_for_order_line_item',
-        'oro_pricing.api.set_price_by_value_and_currency',
-        /*'oro_rfp.api.processor.update_request_data_for_request_entity',
-        'oro_rfp.api.processor.update_request_data_for_request_product_item',*/
         'oro_pricing.update.load_normalized_entity',
-        /*'oro_api.create.rest.set_location_header',
-        'oro_api.create.rest.remove_location_header',
-        'oro_customer.api.frontend.login.normalize',
-        'oro_customer.api.frontend.login.set_http_ok_response_status_code',
-        'oro_customer.api.frontend.handle_access_denied_for_visitors',
-        'oro_frontend.api.rest.cors.set_allow_and_expose_headers',*/
+        'oro_product.api.create.related_product.security_check',
     ];
 
     /**
