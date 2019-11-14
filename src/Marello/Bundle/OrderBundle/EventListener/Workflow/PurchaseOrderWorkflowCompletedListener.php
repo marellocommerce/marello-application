@@ -139,7 +139,7 @@ class PurchaseOrderWorkflowCompletedListener
                         if (in_array($status, $statuses, true)) {
                             $hasShippedItems = true;
                         }
-                    } else if ($status === LoadOrderItemStatusData::WAITING_FOR_SUPPLY) {
+                    } elseif ($status === LoadOrderItemStatusData::WAITING_FOR_SUPPLY) {
                         $item->setStatus($this->findStatusByName(LoadOrderItemStatusData::PROCESSING));
                         $entityManager->persist($item);
                     }
