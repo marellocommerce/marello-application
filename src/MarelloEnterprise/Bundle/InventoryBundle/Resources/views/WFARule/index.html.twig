@@ -4,7 +4,7 @@
 {% set pageTitle = 'marelloenterprise.inventory.wfarule.entity_short_plural_label'|trans %}
 
 {% block navButtons %}
-    {% if resource_granted('marelloenterprise_inventory_wfa_rule_create') %}
+    {% if is_granted('marelloenterprise_inventory_wfa_rule_create') %}
         <div class="btn-group pull-right">
             {{ UI.addButton({
                 'path': path('marelloenterprise_inventory_wfa_rule_create'),

@@ -52,11 +52,13 @@ abstract class AbstractWHCalculatorChainElementTest extends TestCase
         if (empty($this->warehouses)) {
             $globalWarehouseType = $this->getEntity(
                 WarehouseType::class,
-                ['name' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL]
+                [],
+                [WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL]
             );
             $externalWarehouseType = $this->getEntity(
                 WarehouseType::class,
-                ['name' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL]
+                [],
+                [WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL]
             );
 
             $this->warehouses[1] = $this->getEntity(

@@ -5,18 +5,53 @@ namespace MarelloEnterprise\Bundle\AddressBundle\Command;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use MarelloEnterprise\Bundle\AddressBundle\Entity\MarelloEnterpriseAddress;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Context\Factory\GoogleApiContextFactory;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Provider\GoogleApiResultsProviderInterface;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\GeocodingApiResultFactory;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Result\GoogleApiResult;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+use Oro\Bundle\FeatureToggleBundle\Checker\FeatureChecker;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class AddressGeocodingCommand extends ContainerAwareCommand
+class AddressGeocodingCommand extends Command
 {
     /**
      * Command name
      */
     const COMMAND_NAME = 'marello:address-geocoding';
+
+    /**
+     * @var FeatureChecker
+     */
+    private $featureChecker;
+
+    /**
+     * @var DoctrineHelper
+     */
+    private $doctrineHelper;
+
+    /**
+     * @var GoogleApiResultsProviderInterface
+     */
+    private $geocodingApiResultsProvider;
+
+    /**
+     * @param FeatureChecker $featureChecker
+     * @param DoctrineHelper $doctrineHelper
+     * @param GoogleApiResultsProviderInterface $geocodingApiResultsProvider
+     */
+    public function __construct(
+        FeatureChecker $featureChecker,
+        DoctrineHelper $doctrineHelper,
+        GoogleApiResultsProviderInterface $geocodingApiResultsProvider
+    ) {
+        $this->featureChecker = $featureChecker;
+        $this->doctrineHelper = $doctrineHelper;
+        $this->geocodingApiResultsProvider = $geocodingApiResultsProvider;
+
+        parent::__construct();
+    }
 
     /**
      * {@internaldoc}
@@ -33,20 +68,16 @@ class AddressGeocodingCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $featureChecker = $this->getContainer()->get('oro_featuretoggle.checker.feature_checker');
-        if (!$featureChecker->isFeatureEnabled('address_geocoding')) {
+        if (!$this->featureChecker->isFeatureEnabled('address_geocoding')) {
             $output->writeln('The address geocoding feature is disabled. The command will not run.');
 
             return 0;
         }
-        $doctrineHelper = $this->getContainer()->get('oro_entity.doctrine_helper');
-        $geocodingApiResultsProvider = $this->getContainer()
-            ->get('marelloenterprise.google_api.result_provider.geocoding');
-        $em = $doctrineHelper->getEntityManagerForClass(MarelloAddress::class);
+        $em = $this->doctrineHelper->getEntityManagerForClass(MarelloAddress::class);
         $addresses = $em
             ->getRepository(MarelloAddress::class)
             ->findAll();
-        $eeAddresses = $doctrineHelper
+        $eeAddresses = $this->doctrineHelper
             ->getEntityManagerForClass(MarelloEnterpriseAddress::class)
             ->getRepository(MarelloEnterpriseAddress::class)
             ->findAll();
@@ -61,7 +92,7 @@ class AddressGeocodingCommand extends ContainerAwareCommand
             array_splice($addresses, array_search($ga, $addresses), 1);
         }
         foreach ($addresses as $address) {
-            $results = $geocodingApiResultsProvider
+            $results = $this->geocodingApiResultsProvider
                 ->getApiResults(GoogleApiContextFactory::createContext($address));
             if (!$results) {
                 continue;
