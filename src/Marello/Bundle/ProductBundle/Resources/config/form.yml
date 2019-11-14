@@ -28,7 +28,6 @@ services:
             - '@marello_sales.form.event_listener.default_sales_channel_subscriber'
             - '@marello_productprice.pricing.form.event_listener.pricing_subscriber'
             - '@marello_productprice.pricing.form.event_listener.channel_pricing_subscriber'
-            - '@marello_product.product.form.event_listener.attribute_family'
         calls:
             - ['setEventSubscriberInterface', ['@?marello_subscription.form.event_listener.subscription_product']]
         tags:
@@ -124,7 +123,7 @@ services:
     ## form handlers
     marello_product.product_form.handler:
         class: '%marello_product.product_form.handler.class%'
-        scope: request
+        public: true
         arguments:
             - '@marello_product.product.form'
             - '@request_stack'
@@ -132,7 +131,7 @@ services:
 
     marello_product.product_variant_form.handler:
         class: '%marello_product.product_variant_form.handler.class%'
-        scope: request
+        public: true
         arguments:
             - '@marello_product.product_variant.form'
             - '@request_stack'
@@ -141,6 +140,7 @@ services:
 
     marello_product.sales_channels_assign.handler:
         class: 'Marello\Bundle\ProductBundle\Form\Handler\ProductsSalesChannelsAssignHandler'
+        public: true
         arguments:
             - '@marello_product.products_assign_sales_channels.form'
             - '@request_stack'

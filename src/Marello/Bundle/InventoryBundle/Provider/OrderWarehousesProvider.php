@@ -60,6 +60,7 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
             $orderItemsByProducts[$key] = $orderItem;
             $inventoryItems = $product->getInventoryItems();
             $invLevToWh = [];
+            $invLevelQtyKey = null;
             foreach ($inventoryItems as $inventoryItem) {
                 /** @var InventoryLevel $inventoryLevel */
                 foreach ($inventoryItem->getInventoryLevels() as $inventoryLevel) {
@@ -177,18 +178,5 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
         }
 
         return $preferredSupplier;
-    }
-
-    /**
-     * keep for BC
-     * @deprecated will be removed in 3.0
-     * @return Warehouse
-     */
-    protected function getWarehouse()
-    {
-        return $this->doctrineHelper
-            ->getEntityManagerForClass(Warehouse::class)
-            ->getRepository(Warehouse::class)
-            ->getDefault();
     }
 }

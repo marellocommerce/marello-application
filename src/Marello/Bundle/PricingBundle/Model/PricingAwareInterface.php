@@ -5,7 +5,6 @@ namespace Marello\Bundle\PricingBundle\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use Marello\Bundle\PricingBundle\Entity\AssembledChannelPriceList;
 use Marello\Bundle\PricingBundle\Entity\AssembledPriceList;
-use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
 
 interface PricingAwareInterface
 {

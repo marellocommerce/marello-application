@@ -31,7 +31,7 @@ class MarelloReturnBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_3';
+        return 'v1_4';
     }
 
     /**
@@ -113,7 +113,6 @@ class MarelloReturnBundleInstaller implements
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->addColumn('sales_channel_name', 'string', ['length' => 255]);
         $table->addColumn('sales_channel_id', 'integer', ['notnull' => false]);
-        $table->addColumn('locale', 'string', ['notnull' => false, 'length' => 5]);
         $table->addColumn('localization_id', 'integer', ['notnull' => false]);
         $table->addColumn('shipment_id', 'integer', ['notnull' => false]);
         $table->addColumn('return_reference', 'string', ['notnull' => false, 'length' => 255]);

@@ -3,7 +3,7 @@
 namespace Marello\Bundle\ShippingBundle\Context;
 
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\ShippingBundle\Context\LineItem\Collection\ShippingLineItemCollectionInterface;
 use Oro\Bundle\CurrencyBundle\Entity\Price;
 use Symfony\Component\HttpFoundation\ParameterBag;

@@ -2,8 +2,9 @@
 
 namespace Marello\Bundle\OrderBundle\Tests\Unit\Provider\OrderItem;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 use PHPUnit\Framework\TestCase;
 
@@ -37,7 +38,7 @@ class OrderItemFormChangesProviderTest extends TestCase
 
     /**
      * @param $data
-     * @return FormChangesProviderInterface|\PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     * @return FormChangesProviderInterface|MockObject
      */
     protected function createProviderMock($data)
     {

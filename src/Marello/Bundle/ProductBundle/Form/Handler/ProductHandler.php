@@ -8,7 +8,6 @@ use Marello\Bundle\CatalogBundle\Entity\Category;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation;
 use Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation;
-use Marello\Bundle\ProductBundle\Form\Type\ProductType;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;

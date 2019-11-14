@@ -53,7 +53,7 @@
     </td>
 {% endblock %}
 
-{% macro marello_order_item_refund_prototype(widget) %}
+{% macro marello_order_item_refund_prototype(widget, attributes) %}
     {% if 'collection' in widget.vars.block_prefixes %}
         {% set form = widget.vars.prototype %}
         {% set name = widget.vars.full_name ~ '[' ~ widget.vars.prototype.vars.name ~ ']' %}
@@ -72,13 +72,13 @@
 
     {% set page_component_options = { 'disabled': not allow_delete } %}
 
-    <tr data-content="{{ name }}" data-validation-optional-group {{ block('widget_container_attributes') }}
+    <tr data-content="{{ name }}"
         class="marello-line-item">
         {{ form_widget(form) }}
     </tr>
 {% endmacro %}
 
-{% macro marello_additional_refund_prototype(widget) %}
+{% macro marello_additional_refund_prototype(widget, attributes) %}
     {% if 'collection' in widget.vars.block_prefixes %}
         {% set form = widget.vars.prototype %}
         {% set name = widget.vars.full_name ~ '[' ~ widget.vars.prototype.vars.name ~ ']' %}
@@ -97,7 +97,7 @@
 
     {% set page_component_options = { 'disabled': not allow_delete } %}
 
-    <tr data-content="{{ name }}" data-validation-optional-group {{ block('widget_container_attributes') }}
+    <tr data-content="{{ name }}"
         class="marello-line-item"
         data-page-component-module="oroui/js/app/components/view-component"
         data-page-component-options="{{ {view: 'marellolayout/js/app/views/abstract-item-view'}|json_encode }}"
@@ -120,9 +120,12 @@
 {% endmacro %}
 
 {% block marello_order_item_refund_collection_widget %}
+    {% import _self as fields %}
+
     {% spaceless %}
+        {% set widgetContainerAttributes = block('widget_container_attributes') %}
         {% if prototype is defined %}
-            {% set prototype_html = _self.marello_order_item_refund_prototype(form) %}
+            {% set prototype_html = fields.marello_order_item_refund_prototype(form, widgetContainerAttributes) %}
         {% endif %}
         {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'marello-item-collection grid-container' }) %}
         {% set id = id ~ '_collection' %}
@@ -144,7 +147,7 @@
                            data-prototype="{{ prototype_html|escape }}" {% endif %}>
                         {% if form.children|length %}
                             {% for child in form.children %}
-                                {{ _self.marello_order_item_refund_prototype(child) }}
+                                {{ fields.marello_order_item_refund_prototype(child, widgetContainerAttributes) }}
                             {% endfor %}
                         {% elseif show_form_when_empty and prototype_html is defined %}
                             {{ prototype_html|replace({(prototype_name): '0'})|raw }}
@@ -157,9 +160,12 @@
 {% endblock %}
 
 {% block marello_additional_refund_collection_widget %}
+    {% import _self as fields %}
+
     {% spaceless %}
+        {% set widgetContainerAttributes = block('widget_container_attributes') %}
         {% if prototype is defined %}
-            {% set prototype_html = _self.marello_additional_refund_prototype(form) %}
+            {% set prototype_html = fields.marello_additional_refund_prototype(form, widgetContainerAttributes) %}
         {% endif %}
         {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'marello-item-collection grid-container' }) %}
         {% set id = id ~ '_collection' %}
@@ -180,7 +186,7 @@
                     <tbody data-last-index="{{ form.children|length}}" data-prototype-name="{{ prototype_name }}"{% if prototype_html is defined %} data-prototype="{{ prototype_html|escape }}"{% endif %}>
                     {% if form.children|length %}
                         {% for child in form.children %}
-                            {{ _self.marello_additional_refund_prototype(child) }}
+                            {{ fields.marello_additional_refund_prototype(child, widgetContainerAttributes) }}
                         {% endfor %}
                     {% elseif show_form_when_empty and prototype_html is defined %}
                         {{ prototype_html|replace({(prototype_name): '0'})|raw }}

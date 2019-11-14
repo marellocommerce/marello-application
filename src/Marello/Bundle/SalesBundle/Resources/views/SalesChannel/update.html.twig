@@ -1,4 +1,5 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
 {% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
 
 {% oro_title_set({params : {'%name%': entity.name, '%entityName%': 'marello.sales.saleschannel.entity_label'|trans }}) %}
@@ -13,9 +14,9 @@
     {{ parent() }}
 
     {{ UI.cancelButton(path('marello_sales_saleschannel_index')) }}
-    {% if entity.id and resource_granted('marello_sales_saleschannel_update') or resource_granted('marello_sales_saleschannel_create') %}
+    {% if entity.id and is_granted('marello_sales_saleschannel_update') or is_granted('marello_sales_saleschannel_create') %}
         {% set html = '' %}
-        {% if resource_granted('marello_sales_saleschannel_view') %}
+        {% if is_granted('marello_sales_saleschannel_view') %}
             {% set html = UI.saveAndCloseButton({
             'route': 'marello_sales_saleschannel_view',
             'params': {'id': '$id'}

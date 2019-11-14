@@ -174,7 +174,7 @@ define(function(require) {
                 return;
             }
 
-            mediator.trigger('order:form-changes:trigger', {updateFields: ['items', 'inventory','totals', 'possible_shipping_methods']});
+            mediator.trigger('order:form-changes:trigger', {updateFields: ['items', 'inventory','totals', 'possible_shipping_methods', 'possible_payment_methods']});
         },
 
         /**

@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\ShippingBundle\Context\Builder;
 
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\ShippingBundle\Context\LineItem\Collection\ShippingLineItemCollectionInterface;
 use Marello\Bundle\ShippingBundle\Context\ShippingContextInterface;
 use Oro\Bundle\CurrencyBundle\Entity\Price;

@@ -59,6 +59,7 @@ class LoadCategoryData extends AbstractFixture implements DependentFixtureInterf
 
     /**
      * Close all open files.
+     * @param resource $handle
      */
     protected function closeFiles($handle)
     {

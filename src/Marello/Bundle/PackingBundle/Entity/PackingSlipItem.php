@@ -3,15 +3,14 @@
 namespace Marello\Bundle\PackingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use JMS\Serializer\Annotation as JMS;
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Marello\Bundle\PackingBundle\Model\ExtendPackingSlipItem;
+use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
-
-use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\PackingBundle\Model\ExtendPackingSlipItem;
-use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 
 /**
  * @ORM\Entity()

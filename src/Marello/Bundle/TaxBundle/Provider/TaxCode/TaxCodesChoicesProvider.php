@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\TaxBundle\Provider\TaxCode;
 
-use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 

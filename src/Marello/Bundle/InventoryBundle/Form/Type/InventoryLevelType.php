@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\InventoryBundle\Form\Type;
 
-use Doctrine\ORM\EntityRepository;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Event\InventoryLevelFinishFormViewEvent;

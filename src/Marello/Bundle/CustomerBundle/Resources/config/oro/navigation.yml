@@ -1,6 +1,20 @@
 navigation:
     menu_config:
         items:
+            customers_tab:
+                label: marello.customer.navigation.customers.label
+                uri: '#'
+                extras:
+                    icon: fa-users
+                    position: 40
+
+            customers:
+                label: marello.customer.entity_plural_label
+                route: marello_customer_index
+                extras:
+                    routes: ['marello_customer_*']
+                    position: 10
+
             companies:
                 label: marello.customer.company.entity_plural_label
                 route: marello_customer_company_index
@@ -27,6 +41,7 @@ navigation:
                 children:
                     customers_tab:
                         children:
+                            customers: ~
                             companies: ~
             shortcuts:
                 children:
@@ -34,6 +49,10 @@ navigation:
                     shortcut_list_companies: ~
 
     titles:
+        marello_customer_index: marello.customer.entity_plural_label
+        marello_customer_view: 'Customer %name%'
+        marello_customer_update: 'Customer %name% - Update'
+        marello_customer_create: 'New Customer'
         marello_customer_company_index: marello.customer.company.entity_plural_label
         marello_customer_company_view: 'Company %companyName%'
         marello_customer_company_update: 'Company %companyName% - Update'

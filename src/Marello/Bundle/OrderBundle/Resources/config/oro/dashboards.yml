@@ -9,9 +9,9 @@ dashboards:
                     acl:        marello_order_view
                     position:   25
                 customers:
-                    label:      marello.order.customer.entity_plural_label
+                    label:      marello.customer.entity_plural_label
                     icon:       group
-                    route:      marello_order_customer_index
+                    route:      marello_customer_index
                     acl:        marello_customer_view
                     position:   30
 

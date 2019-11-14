@@ -2,20 +2,38 @@
 
 namespace Marello\Bundle\InventoryBundle\Command;
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
+use Marello\Bundle\InventoryBundle\Model\InventoryBalancer\InventoryBalancer;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
-use Marello\Bundle\InventoryBundle\Async\Topics;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
-
-class InventoryBalanceCommand extends ContainerAwareCommand
+class InventoryBalanceCommand extends Command
 {
     const NAME = 'marello:inventory:rebalance';
     const ALL = 'all';
     const PRODUCT = 'product';
+
+    /**
+     * @var Registry
+     */
+    private $registry;
+
+    /**
+     * @var InventoryBalancer
+     */
+    private $inventoryBalancer;
+    
+    public function __construct(Registry $registry, InventoryBalancer $inventoryBalancer)
+    {
+        parent::__construct();
+        
+        $this->registry = $registry;
+        $this->inventoryBalancer = $inventoryBalancer;
+    }
 
     /**
      * {@inheritdoc}
@@ -61,9 +79,8 @@ class InventoryBalanceCommand extends ContainerAwareCommand
     {
         $output->writeln('<info>Start processing of all Products for rebalancing</info>');
 
-        $registry = $this->getContainer()->get('doctrine');
         /** @var Product[] $products */
-        $products = $registry
+        $products = $this->registry
             ->getManagerForClass(Product::class)
             ->getRepository(Product::class)
             ->findAll();
@@ -98,9 +115,8 @@ class InventoryBalanceCommand extends ContainerAwareCommand
     protected function getProducts(InputInterface $input)
     {
         $productIds = $input->getOption(self::PRODUCT);
-        $registry = $this->getContainer()->get('doctrine');
         /** @var ProductRepository $productRepository */
-        $productRepository = $registry
+        $productRepository = $this->registry
             ->getManagerForClass(Product::class)
             ->getRepository(Product::class);
 
@@ -120,16 +136,14 @@ class InventoryBalanceCommand extends ContainerAwareCommand
      */
     protected function triggerInventoryBalancer($products, OutputInterface $output)
     {
-        $inventoryBalancer = $this->getContainer()->get('marello_inventory.model.balancer.inventory_balancer');
-
         /** @var Product $product */
         foreach ($products as $product) {
             $output->writeln(sprintf('<info>processing product sku %s</info>', $product->getSku()));
             // balance 'Global' && 'Virtual' Warehouses
-            $inventoryBalancer->balanceInventory($product, false, true);
+            $this->inventoryBalancer->balanceInventory($product, false, true);
 
             // balance 'Fixed' warehouses
-            $inventoryBalancer->balanceInventory($product, true, true);
+            $this->inventoryBalancer->balanceInventory($product, true, true);
         }
     }
 }

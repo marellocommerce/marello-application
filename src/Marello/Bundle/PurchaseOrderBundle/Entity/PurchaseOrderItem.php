@@ -270,14 +270,14 @@ class PurchaseOrderItem implements
     }
 
     /**
-     * @param ProductInterface $product
+     * @param ProductInterface|Product $product
      *
      * @return $this
      */
     public function setProduct(ProductInterface $product)
     {
         $this->product = $product;
-        $this->productName = $this->product->getName();
+        $this->productName = $this->product->getDenormalizedDefaultName();
         $this->productSku = $this->product->getSku();
 
         return $this;

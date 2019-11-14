@@ -1,0 +1,6 @@
+marello:
+    payment:
+        number.error: This value should be a number.
+        paymentrule:
+            type.config.count.message: 'You must select at least {{ limit }} payment method type|You must select at least {{ limit }} payment method types'
+            method.config.count.message: 'You must select at least {{ limit }} payment method|You must select at least {{ limit }} payment methods'

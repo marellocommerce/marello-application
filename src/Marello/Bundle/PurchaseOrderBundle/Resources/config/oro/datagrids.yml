@@ -135,7 +135,7 @@ datagrids:
                 select:
                     - p.id
                     - p.sku
-                    - p.name
+                    - p.denormalizedDefaultName as productName
                     - p.manufacturingCode
                     - sup.id AS preferredSupplierId
                     - sup.name AS preferredSupplier
@@ -179,9 +179,10 @@ datagrids:
             sku:
                 label:              marello.product.sku.label
                 frontend_type:      string
-            name:
+            productName:
                 label:              marello.product.name.label
                 frontend_type:      string
+                data_name:          productName
             manufacturingCode:
                 label:              marello.product.manufacturing_code.label
                 frontend_type:      string
@@ -207,7 +208,7 @@ datagrids:
             columns:
                 hasProduct:             { data_name: hasProduct }
                 sku:                    { data_name: p.sku }
-                name:                   { data_name: p.name }
+                productName:            { data_name: p.denormalizedDefaultName }
                 manufacturingCode:      { data_name: p.manufacturingCode }
                 preferredSupplier:      { data_name: preferredSupplier }
                 purchaseInventory:      { data_name: i.purchaseInventory }
@@ -224,9 +225,9 @@ datagrids:
                 sku:
                     type:             string
                     data_name:        p.sku
-                name:
+                productName:
                     type:             string
-                    data_name:        p.name
+                    data_name:        productName
                 manufacturingCode:
                     type:             string
                     data_name:        p.manufacturingCode

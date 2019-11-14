@@ -13,7 +13,7 @@ use Oro\Bundle\AddressBundle\Entity\Country;
 use Oro\Bundle\SecurityBundle\Encoder\SymmetricCrypterInterface;
 
 use Marello\Bundle\UPSBundle\Model\Package;
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\UPSBundle\Entity\UPSSettings;
 use Marello\Bundle\UPSBundle\Entity\ShippingService;

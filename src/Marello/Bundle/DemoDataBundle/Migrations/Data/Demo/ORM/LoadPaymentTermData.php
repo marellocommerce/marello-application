@@ -4,15 +4,11 @@ namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
-
-use Oro\Bundle\ConfigBundle\Config\ConfigManager;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-
-use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
-
-use Marello\Bundle\PaymentTermBundle\Entity\PaymentTerm;
 use Marello\Bundle\PaymentTermBundle\DependencyInjection\Configuration;
+use Marello\Bundle\PaymentTermBundle\Entity\PaymentTerm;
+use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 class LoadPaymentTermData extends AbstractFixture implements ContainerAwareInterface
 {

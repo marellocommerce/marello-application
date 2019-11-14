@@ -12,7 +12,7 @@ trait HasShipmentTrait
     protected $shipment;
 
     /**
-     * @return Shipment
+     * @return Shipment|null
      */
     public function getShipment()
     {
@@ -24,7 +24,7 @@ trait HasShipmentTrait
      *
      * @return $this
      */
-    public function setShipment(?Shipment $shipment = null)
+    public function setShipment(Shipment $shipment = null)
     {
         $this->shipment = $shipment;
 

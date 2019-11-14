@@ -86,10 +86,10 @@
                             <span class="widget-title">{{ 'marello.order.datablock.customer_information'|trans }}</span>
                         </div>
                         {{ UI.renderHtmlProperty(
-                            'marello.order.customer.entity_label'|trans,
-                            UI.entityViewLink(entity.customer, entity.customer|oro_format_name, 'marello_order_customer_view')
+                            'marello.customer.entity_label'|trans,
+                            UI.entityViewLink(entity.customer, entity.customer|oro_format_name, 'marello_customer_view')
                         )}}
-                        {{ UI.renderProperty('marello.order.customer.email.label'|trans, entity.customer.email) }}
+                        {{ UI.renderProperty('marello.customer.email.label'|trans, entity.customer.email) }}
                         {% if entity.customer.company %}
                             {{ UI.renderHtmlProperty(
                             'marello.customer.company.entity_label'|trans,
@@ -118,7 +118,20 @@
                 <div class="responsive-block">
                     {{ UI.renderProperty('marello.order.invoiced_at.label'|trans, entity.invoicedAt|oro_format_datetime) }}
                     {{ UI.renderProperty('marello.order.invoice_reference.label'|trans, entity.invoiceReference) }}
-                    {{ UI.renderProperty('marello.order.payment_method.label'|trans, entity.paymentMethod) }}
+                    <div class="attribute-item">
+                        <label class="attribute-item__term">{{ 'marello.order.payment_method.label'|trans }}</label>
+                        <div class="attribute-item__description">
+                            <div class="control-label">
+                                {% include marello_payment_method_config_template(entity.paymentMethod) with {
+                                'currency': null,
+                                'methodData': {
+                                'identifier': entity.paymentMethod,
+                                'options': entity.paymentMethodOptions,
+                                }
+                                } %}
+                            </div>
+                        </div>
+                    </div>
                     {{ UI.renderProperty('marello.order.payment_reference.label'|trans, entity.paymentReference) }}
                     {{ UI.renderHtmlProperty('marello.order.payment_details.label'|trans, entity.paymentDetails|nl2br) }}
                 </div>

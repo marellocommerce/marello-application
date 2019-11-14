@@ -15,7 +15,7 @@ datagrids:
                 label: marello.refund.refund_number.label
                 frontend_type: string
             customer:
-                label: marello.order.customer.entity_label
+                label: marello.customer.entity_label
                 frontend_type: string
             orderNumber:
                 data_name: order.orderNumber
