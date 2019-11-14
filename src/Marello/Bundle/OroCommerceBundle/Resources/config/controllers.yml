@@ -1,0 +1,14 @@
+services:
+    _defaults:
+        public: true
+
+    Marello\Bundle\OroCommerceBundle\Controller\AjaxOroCommerceController:
+        arguments:
+            - '@marello_orocommerce.cache'
+            - '@marello_orocommerce.cache_key_generator'
+            - '@marello_orocommerce.integration.transport'
+            - '@translator.default'
+        calls:
+            - ['setContainer', ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }

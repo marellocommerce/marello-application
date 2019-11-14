@@ -171,28 +171,15 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
     }
     
     /**
-     * @param \DateTime|null $lastSyncDate
      * @return \ArrayIterator
      */
-    public function getPaymentTerms(\DateTime $lastSyncDate = null)
+    public function getPaymentTerms()
     {
-        if (!$lastSyncDate) {
-            $lastSyncDate = \DateTime::createFromFormat('j-M-Y', '15-Feb-2017');
-        }
-        $lastSyncStr = $lastSyncDate->format('Y-m-d H:i:s');
-        $lastSyncArr = explode(' ', $lastSyncStr);
-        $lastSyncStr = sprintf('%sT%s', $lastSyncArr[0], $lastSyncArr[1]);
         $paymentTermsRequest = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_GET,
             $this->settings,
             self::PAYMENTTERMS_ALIAS,
-            [
-                /*new FilterValue(
-                    'updatedAt',
-                    $lastSyncStr,
-                    OroCommerceRequestFactory::GT
-                )*/
-            ],
+            [],
             []
         );
 
