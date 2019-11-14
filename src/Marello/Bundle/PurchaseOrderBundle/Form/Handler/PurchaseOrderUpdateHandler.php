@@ -37,7 +37,7 @@ class PurchaseOrderUpdateHandler
     }
 
     /**
-     *
+     * @param PurchaseOrder $entity
      * @return bool
      */
     public function process(PurchaseOrder $entity)

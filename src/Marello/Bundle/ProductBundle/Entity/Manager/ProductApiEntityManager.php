@@ -12,7 +12,7 @@ class ProductApiEntityManager extends ApiEntityManager
             'exclusion_policy' => 'all',
             'fields'           => [
                 'id'             => null,
-                'name'           => null,
+                'names'           => null,
                 'sku'            => null,
                 'status'         => [
                     'exclusion_policy' => 'all',

@@ -45,7 +45,6 @@ marello:
                                     No configured channels found for the current product.
                                     Please make sure Sales Channels exist and linked.
             no_prices_configured:       No prices configured for current product
-            type.label:                 Price Type
 
         pricetype:
             entity_label:               Price Type

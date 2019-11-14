@@ -13,9 +13,4 @@ interface ProductTypeInterface
      * @return string
      */
     public function getLabel();
-
-    /**
-     * @return string
-     */
-    public function getAttributeFamilyCode();
 }

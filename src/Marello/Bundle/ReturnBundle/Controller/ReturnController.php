@@ -7,16 +7,20 @@ use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
 use Marello\Bundle\ReturnBundle\Form\Type\ReturnType;
 use Marello\Bundle\ReturnBundle\Form\Type\ReturnUpdateType;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\SecurityBundle\Exception\ForbiddenException;
+use Symfony\Component\Routing\Annotation\Route;
 
-class ReturnController extends Controller
+class ReturnController extends AbstractController
 {
     /**
-     * @Config\Route("/", name="marello_return_return_index")
-     * @Config\Template
+     * @Route(
+     *     path="/", 
+     *     name="marello_return_return_index"
+     * )
+     * @Template
      * @AclAncestor("marello_return_view")
      */
     public function indexAction()
@@ -25,8 +29,12 @@ class ReturnController extends Controller
     }
 
     /**
-     * @Config\Route("/create/{id}", requirements={"id"="\d+"}, name="marello_return_return_create")
-     * @Config\Template
+     * @Route(
+     *     path="/create/{id}", 
+     *     requirements={"id"="\d+"}, 
+     *     name="marello_return_return_create"
+     * )
+     * @Template
      * @AclAncestor("marello_return_create")
      *
      * @param Order   $order
@@ -81,8 +89,12 @@ class ReturnController extends Controller
     }
 
     /**
-     * @Config\Route("/view/{id}", requirements={"id"="\d+"}, name="marello_return_return_view")
-     * @Config\Template
+     * @Route(
+     *     path="/view/{id}", 
+     *     requirements={"id"="\d+"}, 
+     *     name="marello_return_return_view"
+     * )
+     * @Template
      * @AclAncestor("marello_return_view")
      *
      * @param ReturnEntity $return
@@ -95,8 +107,12 @@ class ReturnController extends Controller
     }
 
     /**
-     * @Config\Route("/update/{id}", requirements={"id"="\d+"}, name="marello_return_return_update")
-     * @Config\Template
+     * @Route(
+     *     path="/update/{id}", 
+     *     requirements={"id"="\d+"}, 
+     *     name="marello_return_return_update"
+     * )
+     * @Template
      * @AclAncestor("marello_return_update")
      *
      * @param ReturnEntity $return

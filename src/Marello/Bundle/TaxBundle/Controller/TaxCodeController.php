@@ -5,18 +5,22 @@ namespace Marello\Bundle\TaxBundle\Controller;
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class TaxCodeController
  * @package Marello\Bundle\TaxBundle\Controller
  */
-class TaxCodeController extends Controller
+class TaxCodeController extends AbstractController
 {
     /**
-     * @Config\Route("/", name="marello_tax_taxcode_index")
-     * @Config\Template
+     * @Route(
+     *     path="/", 
+     *     name="marello_tax_taxcode_index"
+     * )
+     * @Template
      * @AclAncestor("marello_tax_taxcode_view")
      */
     public function indexAction()
@@ -25,8 +29,12 @@ class TaxCodeController extends Controller
     }
 
     /**
-     * @Config\Route("/view/{id}", requirements={"id"="\d+"}, name="marello_tax_taxcode_view")
-     * @Config\Template
+     * @Route(
+     *     path="/view/{id}", 
+     *     requirements={"id"="\d+"}, 
+     *     name="marello_tax_taxcode_view"
+     * )
+     * @Template
      * @Acl(
      *      id="marello_tax_taxcode_view",
      *      type="entity",
@@ -44,9 +52,12 @@ class TaxCodeController extends Controller
     }
 
     /**
-     * @Config\Route("/create", name="marello_tax_taxcode_create")
-     * @Config\Method({"GET", "POST"})
-     * @Config\Template
+     * @Route(
+     *     path="/create",
+     *     methods={"GET", "POST"},
+     *     name="marello_tax_taxcode_create"
+     * )
+     * @Template
      * @Acl(
      *      id="marello_tax_taxcode_create",
      *      type="entity",
@@ -62,9 +73,13 @@ class TaxCodeController extends Controller
     }
 
     /**
-     * @Config\Route("/update/{id}", requirements={"id"="\d+"}, name="marello_tax_taxcode_update")
-     * @Config\Method({"GET", "POST"})
-     * @Config\Template
+     * @Route(
+     *     path="/update/{id}", 
+     *     methods={"GET", "POST"},
+     *     requirements={"id"="\d+"}, 
+     *     name="marello_tax_taxcode_update"
+     * )
+     * @Template
      * @Acl(
      *      id="marello_tax_taxcode_update",
      *      type="entity",

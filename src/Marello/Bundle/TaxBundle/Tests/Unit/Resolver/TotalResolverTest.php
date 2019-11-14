@@ -117,11 +117,11 @@ class TotalResolverTest extends TestCase
             'no shipping taxes' => [
                 'items' => [
                     [
-                        Result::ROW => ResultElement::create('21.50', '20.00', '1.50'),
+                        Result::ROW => ResultElement::create('21.5', '20', '1.5'),
                     ],
                 ],
                 'shippingResult' => null,
-                'expectedTotalResult' => ResultElement::create('21.50', '20.00', '1.50'),
+                'expectedTotalResult' => ResultElement::create('21.5', '20', '1.5'),
             ],
         ];
     }

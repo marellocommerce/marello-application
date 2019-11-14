@@ -13,18 +13,3 @@ acls:
         type: entity
         class: MarelloOrderBundle:Order
         permission: EDIT
-
-    marello_customer_view:
-        type: entity
-        class: MarelloOrderBundle:Customer
-        permission: VIEW
-
-    marello_customer_create:
-        type: entity
-        class: MarelloOrderBundle:Customer
-        permission: CREATE
-
-    marello_customer_update:
-        type: entity
-        class: MarelloOrderBundle:Customer
-        permission: EDIT

@@ -113,14 +113,14 @@ class SupplierControllerTest extends WebTestCase
             'marello-supplier-products-grid',
             [
                 'marello-supplier-products-grid[supplierId]' => $supplier->getId(),
-                'marello-supplier-products-grid[_filter][name][value]' => $product->getName()
+                'marello-supplier-products-grid[_filter][name][value]' => $product->getDenormalizedDefaultName()
             ]
         );
 
         $result = $this->getJsonResponseContent($response, Response::HTTP_OK);
         $result = reset($result['data']);
 
-        $this->assertContains($product->getName(), $result['name']);
+        $this->assertContains($product->getDenormalizedDefaultName(), $result['name']);
         $this->assertContains($product->getSku(), $result['sku']);
     }
 

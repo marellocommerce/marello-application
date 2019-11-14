@@ -4,15 +4,16 @@ namespace Marello\Bundle\CatalogBundle\Controller;
 
 use Marello\Bundle\CatalogBundle\Entity\Category;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Annotation\Route;
 
-class CategoryController extends Controller
+class CategoryController extends AbstractController
 {
     /**
-     * @Config\Route("/", name="marello_category_index")
+     * @Route(path="/", name="marello_category_index")
      * @AclAncestor("marello_category_view")
-     * @Config\Template
+     * @Template
      */
     public function indexAction()
     {
@@ -20,9 +21,9 @@ class CategoryController extends Controller
     }
 
     /**
-     * @Config\Route("/create", name="marello_category_create")
+     * @Route(path="/create", name="marello_category_create")
      * @AclAncestor("marello_category_create")
-     * @Config\Template("MarelloCatalogBundle:Category:update.html.twig")
+     * @Template("MarelloCatalogBundle:Category:update.html.twig")
      *
      * @return array
      */
@@ -32,9 +33,9 @@ class CategoryController extends Controller
     }
 
     /**
-     * @Config\Route("/update/{id}", requirements={"id"="\d+"}, name="marello_category_update")
+     * @Route(path="/update/{id}", requirements={"id"="\d+"}, name="marello_category_update")
      * @AclAncestor("marello_category_update")
-     * @Config\Template("MarelloCatalogBundle:Category:update.html.twig")
+     * @Template("MarelloCatalogBundle:Category:update.html.twig")
      *
      * @param Category $category
      *
@@ -70,9 +71,9 @@ class CategoryController extends Controller
     }
 
     /**
-     * @Config\Route("/view/{id}", requirements={"id"="\d+"}, name="marello_category_view")
+     * @Route(path="/view/{id}", requirements={"id"="\d+"}, name="marello_category_view")
      * @AclAncestor("marello_category_view")
-     * @Config\Template("MarelloCatalogBundle:Category:view.html.twig")
+     * @Template("MarelloCatalogBundle:Category:view.html.twig")
      *
      * @param Category $category
      *

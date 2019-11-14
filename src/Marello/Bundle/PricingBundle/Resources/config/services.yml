@@ -1,6 +1,7 @@
 services:
     marello_productprice.pricing.provider.currency_provider:
         class: Marello\Bundle\PricingBundle\Provider\CurrencyProvider
+        public: true
         arguments:
             - '@doctrine'
             - '@oro_locale.settings'
@@ -64,3 +65,17 @@ services:
             - '@marello_productprice.pricing.formatter.vat_aware_label'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-productchannelprice-grid, method: onBuildBefore }
+
+    marello_productprice.pricing.listener.datagrid.products_grid.prices:
+        class: 'Marello\Bundle\PricingBundle\EventListener\Datagrid\PricesDatagridListener'
+        arguments:
+            - '%marello_product.entity.class%'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-products-grid, method: onBuildBefore }
+
+    marello_productprice.pricing.listener.datagrid.products_grid.channel_prices:
+        class: 'Marello\Bundle\PricingBundle\EventListener\Datagrid\ChannelPricesDatagridListener'
+        arguments:
+            - '%marello_product.entity.class%'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-products-grid, method: onBuildBefore }

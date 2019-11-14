@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\OrderBundle\Tests\Functional\EventListener\Doctrine;
 
+use Marello\Bundle\PaymentBundle\Method\PaymentMethodInterface;
 use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -10,7 +11,7 @@ use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
@@ -159,6 +160,10 @@ class OrderWorkflowStartListenerTest extends WebTestCase
      */
     private function getSubmittedData($form, $orderCustomer, $salesChannel, $orderItems)
     {
+        $paymentMethodProvider = $this->getContainer()->get('marello_payment.payment_method.composite_provider');
+        $paymentMethods = $paymentMethodProvider->getPaymentMethods();
+        /** @var PaymentMethodInterface $paymentMethod */
+        $paymentMethod = reset($paymentMethods);
         /** @var ShippingMethodProviderInterface $shippingMethodsProvider */
         $shippingMethodsProvider = $this->getContainer()->get('marello_shipping.shipping_method_provider');
         $shippingMethods = $shippingMethodsProvider->getShippingMethods();
@@ -177,6 +182,7 @@ class OrderWorkflowStartListenerTest extends WebTestCase
                 'billingAddress' => $this->getAddressFormData($orderCustomer->getPrimaryAddress()),
                 'shippingAddress' => $this->getAddressFormData($orderCustomer->getPrimaryAddress()),
                 'calculateShipping' => true,
+                'paymentMethod' => $paymentMethod->getIdentifier(),
                 'shippingMethod' => $shippingMethod->getIdentifier(),
                 'shippingMethodType' => $shippingMethodType->getIdentifier(),
                 'estimatedShippingCostAmount' => 5.00
