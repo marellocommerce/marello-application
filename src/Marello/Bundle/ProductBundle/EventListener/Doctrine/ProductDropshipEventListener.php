@@ -59,6 +59,17 @@ class ProductDropshipEventListener
         }
     }
 
+    /**
+     * @param LifecycleEventArgs $args
+     */
+    public function preRemove(LifecycleEventArgs $args)
+    {
+        $entity = $args->getEntity();
+        if ($entity instanceof ProductSupplierRelation && $entity->getCanDropship() === true) {
+            $this->event= new ProductDropshipEvent($entity, false);
+        }
+    }
+
     public function postFlush()
     {
         if ($this->event !== null) {
