@@ -4,7 +4,7 @@ namespace Marello\Bundle\OroCommerceBundle\ImportExport\Serializer;
 
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\CustomerBundle\Entity\Company;
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractExportWriter;
@@ -101,7 +101,6 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
-        $channel = $this->getIntegrationChannel(4);
         /** @var Order $order */
         $order = $this->createOrder($data);
 
@@ -132,6 +131,7 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
         }
         $order
             ->setOrderReference($this->getProperty($data, 'id'))
+            ->setPaymentMethod($this->getProperty($data, 'paymentMethod'))
             ->setShippingMethod(
                 sprintf(
                     '%s, %s',
