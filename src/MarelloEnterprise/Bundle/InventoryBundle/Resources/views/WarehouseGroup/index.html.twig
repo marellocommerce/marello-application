@@ -4,7 +4,7 @@
 {% set pageTitle = 'marello.inventory.warehousegroup.entity_plural_label'|trans %}
 
 {% block navButtons %}
-    {% if resource_granted('marelloenterprise_inventory_warehousegroup_create') %}
+    {% if is_granted('marelloenterprise_inventory_warehousegroup_create') %}
         <div class="btn-group">
             {{ UI.addButton({
                 'path': path('marelloenterprise_inventory_warehousegroup_create'),

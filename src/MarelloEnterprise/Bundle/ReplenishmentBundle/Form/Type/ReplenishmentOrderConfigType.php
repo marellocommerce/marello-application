@@ -4,12 +4,9 @@ namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Type;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderConfig;
 use MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseMultiSelectType;
-use Oro\Bundle\FormBundle\Form\Type\MultipleEntityType;
+use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderConfig;
 use Oro\Bundle\FormBundle\Form\Type\OroDateTimeType;
-use Oro\Bundle\FormBundle\Form\Type\OroDateType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;

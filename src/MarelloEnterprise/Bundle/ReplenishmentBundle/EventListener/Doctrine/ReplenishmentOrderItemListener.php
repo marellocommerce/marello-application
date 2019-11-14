@@ -7,7 +7,7 @@ use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderItem;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ReplenishmentOrderItemListener
 {

@@ -32,7 +32,7 @@ class ApiUserLoadedTest extends WebTestCase
         /** @var UserManager $userManager */
         $userManager = $this->getContainer()->get('oro_user.manager');
         /** @var User $user */
-        $user = $userManager->loadUserByUsername(LoadApiUser::INSTORE_API_USERNAME);
+        $user = $userManager->findUserByUsername(LoadApiUser::INSTORE_API_USERNAME);
 
         $this->assertTrue(
             (bool)$user->getRole(LoadApiUserRole::ROLE_INSTORE_ASSISTANT_API_USER),
@@ -51,7 +51,7 @@ class ApiUserLoadedTest extends WebTestCase
         /** @var UserManager $userManager */
         $userManager = $this->getContainer()->get('oro_user.manager');
         /** @var User $user */
-        $user = $userManager->loadUserByUsername(LoadApiUser::INSTORE_API_USERNAME);
+        $user = $userManager->findUserByUsername(LoadApiUser::INSTORE_API_USERNAME);
         $securityContext = $this->getContainer()->get('security.authorization_checker');
         if (!$this->getContainer()->get('security.token_storage')->getToken()) {
             $this->updateUserSecurityToken($user->getEmail());
