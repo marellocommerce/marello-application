@@ -63,8 +63,9 @@ class ProductSupplierRelationsDropshipValidator extends ConstraintValidator
     {
         $supplierRelationsByIds = [];
         foreach ($supplierRelations as $supplierRelation) {
-            if ($id = $supplierRelation->getId())
-            $supplierRelationsByIds[$id] = $supplierRelation;
+            if ($id = $supplierRelation->getId()) {
+                $supplierRelationsByIds[$id] = $supplierRelation;
+            }
         }
         
         return $supplierRelationsByIds;
