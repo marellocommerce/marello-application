@@ -2,25 +2,29 @@
 
 namespace Marello\Bundle\ProductBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
-use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
+use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\Variant;
 
-class VariantController extends Controller
+class VariantController extends AbstractController
 {
     /**
-     * @Config\Route("/create/parent/{id}", requirements={"id"="\d+"}, name="marello_product_create_variant")
-     * @Config\Method({"GET", "POST"})
+     * @Route(
+     *     path="/create/parent/{id}",
+     *     methods={"GET", "POST"},
+     *     requirements={"id"="\d+"},
+     *     name="marello_product_create_variant"
+     * )
      * @AclAncestor("marello_product_create_variant")
-     * @Config\Template("MarelloProductBundle:Variant:update.html.twig")
+     * @Template("MarelloProductBundle:Variant:update.html.twig")
      *
      * @param Product $product
      * @return array
@@ -31,12 +35,12 @@ class VariantController extends Controller
     }
 
     /**
-     * @Config\Route(
-     *     "/add/{id}/parent/{parentId}",
+     * @Route(
+     *     path="/add/{id}/parent/{parentId}",
      *     requirements={"id"="\d+","parentId"="\d+"}, name="marello_product_add_variant"
      * )
      * @AclAncestor("marello_product_add_variant")
-     * @Config\Template("MarelloProductBundle:Variant:update.html.twig")
+     * @Template("MarelloProductBundle:Variant:update.html.twig")
      *
      * @param Request $request
      * @param Variant $variant
@@ -108,9 +112,9 @@ class VariantController extends Controller
     }
 
     /**
-     * @Config\Route("/widget/info/{id}", name="marello_product_variant_widget_info", requirements={"id"="\d+"})
+     * @Route(path="/widget/info/{id}", name="marello_product_variant_widget_info", requirements={"id"="\d+"})
      * @AclAncestor("marello_product_view")
-     * @Config\Template
+     * @Template
      *
      * @param Product $product
      * @return array

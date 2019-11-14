@@ -2,28 +2,17 @@
 
 namespace Marello\Bundle\ProductBundle\Model;
 
-use Oro\Bundle\BusinessEntitiesBundle\Entity\BaseProduct;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\LocaleBundle\Entity\Localization;
+use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 
 /**
- * Class ExtendProduct
- * @package Marello\Bundle\ProductBundle\Model
- *
+ * @method LocalizedFallbackValue getName(Localization $localization = null)
+ * @method LocalizedFallbackValue getDefaultName()
+ * @method setDefaultName(string $value)
  */
-class ExtendProduct extends BaseProduct
+class ExtendProduct
 {
-    /**
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "excluded"=true
-     *          }
-     *      }
-     * )
-     */
-    protected $price;
-
-
     public function __construct()
     {
     }

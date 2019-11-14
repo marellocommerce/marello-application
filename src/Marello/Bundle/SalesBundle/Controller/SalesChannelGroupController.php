@@ -6,16 +6,19 @@ use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\SalesBundle\Form\Type\SalesChannelGroupType;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class SalesChannelGroupController extends Controller
+class SalesChannelGroupController extends AbstractController
 {
     /**
-     * @Route("/", name="marello_sales_saleschannelgroup_index")
+     * @Route(
+     *     path="/", 
+     *     name="marello_sales_saleschannelgroup_index"
+     * )
      * @Template
      * @AclAncestor("marello_sales_saleschannelgroup_view")
      *
@@ -29,7 +32,10 @@ class SalesChannelGroupController extends Controller
     }
 
     /**
-     * @Route("/create", name="marello_sales_saleschannelgroup_create")
+     * @Route(
+     *     path="/create", 
+     *     name="marello_sales_saleschannelgroup_create"
+     * )
      * @Template("MarelloSalesBundle:SalesChannelGroup:update.html.twig")
      * @Acl(
      *     id="marello_sales_saleschannelgroup_create",
@@ -47,7 +53,11 @@ class SalesChannelGroupController extends Controller
     }
 
     /**
-     * @Route("/view/{id}", name="marello_sales_saleschannelgroup_view", requirements={"id"="\d+"})
+     * @Route(
+     *     path="/view/{id}", 
+     *     name="marello_sales_saleschannelgroup_view", 
+     *     requirements={"id"="\d+"}
+     * )
      * @Template
      * @Acl(
      *      id="marello_sales_saleschannelgroup_view",
@@ -68,7 +78,11 @@ class SalesChannelGroupController extends Controller
     }
 
     /**
-     * @Route("/update/{id}", name="marello_sales_saleschannelgroup_update", requirements={"id"="\d+"})
+     * @Route(
+     *     path="/update/{id}", 
+     *     name="marello_sales_saleschannelgroup_update", 
+     *     requirements={"id"="\d+"}
+     * )
      * @Template
      * @Acl(
      *     id="marello_sales_saleschannelgroup_update",

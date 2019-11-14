@@ -1,4 +1,4 @@
-# Marello\Bundle\OrderBundle\Entity\Customer
+# Marello\Bundle\CustomerBundle\Entity\Customer
 
 ## ACTIONS
 

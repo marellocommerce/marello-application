@@ -24,15 +24,10 @@ services:
         tags:
             - { name: form.type }
 
-    marello_order.form.type.customer:
-        class: Marello\Bundle\OrderBundle\Form\Type\CustomerType
-        tags:
-            - { name: form.type }
-
     marello_order.form.type.address:
         arguments:
             - '@oro_locale.formatter.address'
-            - '@marello_order.provider.customer_address'
+            - '@marello_customer.provider.customer_address'
             - '@oro_importexport.serializer'
         abstract: true
 
@@ -48,22 +43,6 @@ services:
         tags:
             - { name: form.type }
 
-    marello_order.form.type.company_aware_customer_select:
-        class: Marello\Bundle\OrderBundle\Form\Type\CompanyAwareCustomerSelectType
-        tags:
-            - { name: form.type }
-
-    marello_order.form.type.customer_select:
-        class: Marello\Bundle\OrderBundle\Form\Type\CustomerSelectType
-        tags:
-            - { name: form.type }
-
-    marello_order.form.customer:
-        class: Symfony\Component\Form\Form
-        factory: ['@form.factory', 'create']
-        arguments:
-            - Marello\Bundle\OrderBundle\Form\Type\CustomerType
-
     marello_order.form.type.widget_order_item_statuses_select:
         class: 'Marello\Bundle\OrderBundle\Form\Type\WidgetOrderItemStatusesSelectType'
         arguments:
@@ -71,16 +50,9 @@ services:
         tags:
             - { name: form.type }
 
-    marello_order.form.handler.customer:
-        class: Marello\Bundle\OrderBundle\Form\Handler\CustomerHandler
-        scope: request
-        arguments:
-            - '@marello_order.form.customer'
-            - '@request_stack'
-            - '@doctrine.orm.entity_manager'
-
     marello_order.form.data_transformer.product_to_sku:
         class: Marello\Bundle\OrderBundle\Form\DataTransformer\ProductToSkuTransformer
+        public: true
         arguments:
             - '@doctrine.orm.entity_manager'
 
@@ -92,5 +64,6 @@ services:
 
     marello_order.form.data_transformer.tax_code_to_code:
         class: Marello\Bundle\OrderBundle\Form\DataTransformer\TaxCodeToCodeTransformer
+        public: true
         arguments:
             - '@doctrine.orm.entity_manager'

@@ -19,6 +19,7 @@ class LoadDefaultAttributeFamilyData extends AbstractFixture implements Dependen
 {
     const DEFAULT_FAMILY_CODE = 'marello_default';
     const GENERAL_GROUP_CODE = 'general';
+    const GENERAL_GROUP_LABEL = 'General';
 
     /** @var ObjectManager $manager */
     protected $manager;
@@ -28,7 +29,7 @@ class LoadDefaultAttributeFamilyData extends AbstractFixture implements Dependen
      */
     protected $data = [
         [
-            'groupLabel' => 'General',
+            'groupLabel' => self::GENERAL_GROUP_LABEL,
             'groupCode' => self::GENERAL_GROUP_CODE,
             'attributes' => [],
             'groupVisibility' => false

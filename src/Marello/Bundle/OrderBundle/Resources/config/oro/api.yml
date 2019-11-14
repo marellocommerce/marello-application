@@ -1,6 +1,6 @@
 api:
     entity_aliases:
-        Marello\Bundle\OrderBundle\Entity\Customer:
+        Marello\Bundle\CustomerBundle\Entity\Customer:
             alias: marellocustomer
             plural_alias: marellocustomers
 
@@ -66,7 +66,7 @@ api:
                 update_relationship: false
                 delete_relationship: false
 
-        Marello\Bundle\OrderBundle\Entity\Customer:
+        Marello\Bundle\CustomerBundle\Entity\Customer:
             documentation_resource: '@MarelloOrderBundle/Resources/doc/api/customer.md'
             fields:
                 createdAt:

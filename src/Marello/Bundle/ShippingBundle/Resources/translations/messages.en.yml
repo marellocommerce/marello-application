@@ -56,17 +56,6 @@ marello:
             shipper_address_postal_code: 'Postal Code'
             shipper_address_country_code: 'Country'
 
-        shipment:
-            id.label: Id
-            entity_label: Shipment
-            entity_plural_label: Shipments
-            base64_encoded_label.label: Base 64 Encoded Label
-            identification_number.label: Identification Service
-            shipping_service.label: Shipping Service
-            ups_package_tracking_number.label: Ups Tracking number
-            ups_shipment_digest.label: Ups Shipment Digest
-            shipping_label.label: Shipping Label
-
         notification:
             channel:
                 enabled: Shipping rule has been enabled successfully

@@ -211,7 +211,7 @@ class InventoryControllerTest extends WebTestCase
         ];
         
         $this->client->followRedirects(true);
-        $crawler = $this->client->request($form->getMethod(), $form->getUri(), $formData);
+        $this->client->request($form->getMethod(), $form->getUri(), $formData);
 
         $result = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, 200);

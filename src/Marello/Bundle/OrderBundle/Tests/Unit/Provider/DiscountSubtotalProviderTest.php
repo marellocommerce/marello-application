@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\OrderBundle\Tests\Unit\Provider;
 
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 use PHPUnit\Framework\TestCase;
 

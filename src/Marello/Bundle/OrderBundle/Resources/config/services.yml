@@ -3,22 +3,14 @@ parameters:
     marello_order.entity.order_item.class: Marello\Bundle\OrderBundle\Entity\OrderItem
     marello_order.provider.order_statistic_provider.class: Marello\Bundle\OrderBundle\Provider\OrderDashboardStatisticProvider
     marello_order.provider.order_item_statistic_provider.class: Marello\Bundle\OrderBundle\Provider\OrderItem\OrderItemDashboardStatisticProvider
-    marello_order_customer.class: Marello\Bundle\OrderBundle\Entity\Customer
 
 services:
-    marello_order.listener.datagrid.company-customers-select_listener:
-        class: Marello\Bundle\OrderBundle\EventListener\Datagrid\CompanyCustomersSelectGridListener
-        arguments:
-            - '@marello_customer.repository.company'
-        tags:
-            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.before_query.marello-company-customers-select-grid, method: onResultBeforeQuery }
-
     marello_order.listener.datagrid.order_grid_address_filter_listener:
         class: Marello\Bundle\OrderBundle\EventListener\Datagrid\OrderGridAddressFilterListener
         arguments:
             - '@oro_locale.dql.formatter.name'
         tags:
-            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-order, method: onBuildBefore }
+            - { name: kernmarello_order.provider.shipping_order_items_for_notificationsel.event_listener, event: oro_datagrid.datagrid.build.before.marello-order, method: onBuildBefore }
 
     marello_order.email_processor_link:
         tags:
@@ -101,14 +93,6 @@ services:
             - '@marello_inventory.provider.order_warehouse'
             - '@event_dispatcher'
 
-    marello_order.provider.customer_email_owner:
-        class: Marello\Bundle\OrderBundle\Provider\CustomerEmailOwnerProvider
-        tags:
-            - { name: oro_email.owner.provider, order: 1 }
-
-    marello_order.provider.customer_address:
-        class: Marello\Bundle\OrderBundle\Provider\OrderCustomerAddressProvider
-
     marello_order.provider.form_changes.billing_address:
         class: Marello\Bundle\OrderBundle\Provider\OrderAddressFormChangesProvider
         arguments:
@@ -134,6 +118,14 @@ services:
         tags:
             - { name: marello.form_changes_data_provider, class: '%marello_order.entity.order.class%', type: totals, priority: 40 }
 
+    marello_order.provider.form_changes.possible_payment_methods:
+        class: Marello\Bundle\OrderBundle\Provider\PossiblePaymentMethodsProvider
+        arguments:
+            - '@marello_order.factory.payment_context'
+            - '@marello_payment.provider.payment_methods_views'
+        tags:
+            - { name: marello.form_changes_data_provider, class: '%marello_order.entity.order.class%', type: possible_payment_methods, priority: 45 }
+
     marello_order.provider.form_changes.possible_shipping_methods:
         class: Marello\Bundle\OrderBundle\Provider\PossibleShippingMethodsProvider
         arguments:
@@ -144,8 +136,24 @@ services:
         tags:
             - { name: marello.form_changes_data_provider, class: '%marello_order.entity.order.class%', type: possible_shipping_methods, priority: 50 }
 
+    marello_order.factory.payment_context:
+        class: 'Marello\Bundle\OrderBundle\Factory\OrderPaymentContextFactory'
+        public: true
+        arguments:
+            - '@marello_inventory.provider.order_warehouse'
+            - '@marello_order.payment_line_item.converter_basic'
+            - '@event_dispatcher'
+            - '@marello_payment.context.builder_factory_basic'
+
+    marello_order.payment_line_item.converter_basic:
+        class: 'Marello\Bundle\OrderBundle\Converter\BasicOrderPaymentLineItemConverter'
+        arguments:
+            - '@marello_payment.context.doctrine_line_item_collection_factory'
+            - '@marello_payment.line_item.builder_factory_basic'
+
     marello_order.factory.shipping_context:
         class: 'Marello\Bundle\OrderBundle\Factory\OrderShippingContextFactory'
+        public: true
         arguments:
             - '@marello_inventory.provider.order_warehouse'
             - '@marello_order.shipping_line_item.converter_basic'
@@ -195,20 +203,19 @@ services:
     marello_order.search_handler.customer:
         parent: oro_form.autocomplete.search_handler
         arguments:
-            - '%marello_order_customer.class%'
+            - '%marello_customer_customer.class%'
             - ["namePrefix", "firstName", "middleName", "lastName", "nameSuffix"]
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: marello_customers, acl_resource: marello_customer_view }
 
     marello_order.datagrid.action_permission_provider:
         class: Marello\Bundle\OrderBundle\Datagrid\OrderActionPermissionProvider
+        public: true
         arguments:
             - '@doctrine.orm.entity_manager'
 
     marello_order.twig.order_extension:
         class: Marello\Bundle\OrderBundle\Twig\OrderExtension
-        arguments:
-            - '@oro_workflow.manager'
         calls:
             - [setRegistry, ['@doctrine']]
             - [setItemsForNotificationProvider, ['@marello_order.provider.shipping_order_items_for_notifications']]
@@ -299,15 +306,6 @@ services:
         arguments: ['marello_item_status']
         tags:
             - { name: oro_dashboard.value.converter, form_type: Marello\Bundle\OrderBundle\Form\Type\WidgetOrderItemStatusesSelectType }
-
-    marello_order.form.autocomplete.company_customer.search_handler:
-        class: 'Marello\Bundle\OrderBundle\Autocomplete\CompanyCustomerHandler'
-        parent: oro_form.autocomplete.search_handler
-        arguments:
-            - '%marello_order_customer.class%'
-            - ['namePrefix', 'firstName', 'middleName', 'lastName', 'nameSuffix']
-        tags:
-            - { name: oro_form.autocomplete.search_handler, alias: marello_company_customers, acl_resource: marello_order_customer_view }
 
     marello_order.listener.start_workflow:
         class: 'Marello\Bundle\OrderBundle\EventListener\Doctrine\OrderWorkflowStartListener'

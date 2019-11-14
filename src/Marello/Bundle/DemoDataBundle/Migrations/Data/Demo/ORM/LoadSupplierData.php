@@ -83,17 +83,6 @@ class LoadSupplierData extends AbstractFixture implements DependentFixtureInterf
     {
         $this->manager = $manager;
         $this->loadSuppliers();
-        $this->addProductsToSuppliers();
-    }
-
-    /**
-     * @deprecated will be removed in 3.x
-     * Product suppliers are now loaded via the LoadProductSupplierData fixture
-     */
-    public function addProductsToSuppliers()
-    {
-        // keep for BC
-        return;
     }
 
     /**

@@ -1,9 +1,12 @@
 data:
       type: marelloproducts
       id: 'my-sku'
-      attributes:
-          name: 'My name'
       relationships:
+          names:
+              data:
+                  -
+                      type: localizedfallbackvalues
+                      id: 'names-1'
           saleschannels:
               data:
                   -
@@ -17,3 +20,14 @@ data:
               data:
                   type: marellotaxcodes
                   id: '<toString(@product1->taxCode->code)>'
+included:
+    -
+        type: localizedfallbackvalues
+        id: 'names-1'
+        attributes:
+            fallback: null
+            string: 'My name'
+            text: null
+        relationships:
+            localization:
+                data: null
