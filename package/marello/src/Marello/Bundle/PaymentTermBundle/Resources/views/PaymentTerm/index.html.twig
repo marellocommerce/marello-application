@@ -5,7 +5,7 @@
 {% set gridName  = 'marello-paymentterm-grid' %}
 
 {% block navButtons %}
-    {% if resource_granted('marello_paymentterm_paymentterm_create') %}
+    {% if is_granted('marello_paymentterm_paymentterm_create') %}
         {{ UI.addButton({
             'path': path('marello_paymentterm_paymentterm_create'),
             'entity_label': 'marello.paymentterm.entity_label'|trans

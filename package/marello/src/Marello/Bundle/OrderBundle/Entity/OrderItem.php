@@ -5,23 +5,20 @@ namespace Marello\Bundle\OrderBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
 use JMS\Serializer\Annotation as JMS;
-
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
-use Oro\Bundle\CurrencyBundle\Entity\PriceAwareInterface;
-use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
-use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
-
-use Marello\Bundle\ProductBundle\Model\ProductAwareInterface;
 use Marello\Bundle\OrderBundle\Model\ExtendOrderItem;
+use Marello\Bundle\OrderBundle\Model\QuantityAwareInterface;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\OrderBundle\Model\QuantityAwareInterface;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
+use Marello\Bundle\ProductBundle\Model\ProductAwareInterface;
 use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
 use Marello\Bundle\TaxBundle\Model\TaxAwareInterface;
+use Oro\Bundle\CurrencyBundle\Entity\PriceAwareInterface;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
+use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\OrderBundle\Entity\Repository\OrderItemRepository")

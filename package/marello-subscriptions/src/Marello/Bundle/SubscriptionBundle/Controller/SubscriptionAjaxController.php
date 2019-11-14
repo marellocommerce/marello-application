@@ -7,17 +7,21 @@ use Marello\Bundle\SubscriptionBundle\Entity\Subscription;
 use Marello\Bundle\SubscriptionBundle\Form\Type\SubscriptionType;
 use Marello\Bundle\SubscriptionBundle\Form\Type\SubscriptionUpdateType;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
-class SubscriptionAjaxController extends Controller
+class SubscriptionAjaxController extends AbstractController
 {
     /**
-     * @Config\Route("/form-changes/{id}", name="marello_subscription_form_changes", defaults={"id" = 0})
-     * @Config\Method({"POST"})
+     * @Route(
+     *     path="/form-changes/{id}", 
+     *     methods={"POST"},
+     *     name="marello_subscription_form_changes", 
+     *     defaults={"id" = 0}
+     * )
      * @AclAncestor("marello_subscription_create")
      *
      * @param Request $request

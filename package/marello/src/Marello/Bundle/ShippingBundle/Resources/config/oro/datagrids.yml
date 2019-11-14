@@ -98,14 +98,14 @@ datagrids:
         action_configuration: ['@marello_shipping.datagrid.shipping_rule_actions_visibility_provider', getActionsVisibility]
         mass_actions:
             enable:
-                type:         shippingruleenable
+                type:         marelloshippingruleenable
                 acl_resource: marello_shipping_methods_configs_rule_update
                 label:        marello.shipping.datagrid.action.enable
                 icon:         check
                 entity_name:  '%marello_shipping.entity.shipping_methods_configs_rule.class%'
                 data_identifier: shipping_methods_configs_rule.id
             disable:
-                type:         shippingruledisable
+                type:         marelloshippingruledisable
                 acl_resource: marello_shipping_methods_configs_rule_update
                 label:        marello.shipping.datagrid.action.disable
                 icon:         close

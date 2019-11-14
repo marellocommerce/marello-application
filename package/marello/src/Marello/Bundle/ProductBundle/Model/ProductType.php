@@ -8,7 +8,6 @@ class ProductType extends ParameterBag implements ProductTypeInterface
 {
     const NAME_FIELD = 'name';
     const LABEL_FIELD = 'label';
-    const ATTRIBUTE_FAMILY_CODE = 'attribute_family_code';
 
     /**
      * @inheritDoc
@@ -24,13 +23,5 @@ class ProductType extends ParameterBag implements ProductTypeInterface
     public function getLabel()
     {
         return $this->get(self::LABEL_FIELD);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getAttributeFamilyCode()
-    {
-        return $this->get(self::ATTRIBUTE_FAMILY_CODE);
     }
 }

@@ -5,6 +5,8 @@ imports:
 
 parameters:
     doctrine.dbal.connection_factory.class: 'Oro\Component\Testing\Doctrine\PersistentConnectionFactory'
+    message_queue_transport: 'dbal'
+    message_queue_transport_config: {}
 
 framework:
     test: ~
@@ -25,16 +27,16 @@ monolog:
             path: "%kernel.logs_dir%/%kernel.environment%.log"
             level: debug
 
-swiftmailer:
-    logging: true
-    disable_delivery: true
-
 services:
     oro_message_queue.test.message_collector:
         class: Oro\Bundle\MessageQueueBundle\Test\Functional\MessageCollector
         decorates: oro_message_queue.client.message_producer
         arguments:
             - '@oro_message_queue.test.message_collector.inner'
+
+swiftmailer:
+    logging: true
+    disable_delivery: true
 
 # configure loose default password requirements for auto-generated test users
 oro_user:
@@ -53,16 +55,3 @@ oro_user:
 twig:
     strict_variables: true
     debug: false
-
-oro_message_queue:
-    transport:
-        dbal: null
-
-oro_search:
-    engine_parameters:
-        force_refresh: true
-
-oro_health_check:
-    maintenance_driver:
-        options:
-            ttl: 3

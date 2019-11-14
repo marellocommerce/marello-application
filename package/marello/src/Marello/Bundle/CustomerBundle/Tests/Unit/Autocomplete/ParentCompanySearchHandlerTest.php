@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Marello\Bundle\CustomerBundle\Autocomplete\ParentCompanySearchHandler;
 use Marello\Bundle\CustomerBundle\Entity\Repository\CompanyRepository;
 use Oro\Bundle\SearchBundle\Engine\Indexer;
+use Oro\Bundle\SearchBundle\Provider\SearchMappingProvider;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use PHPUnit\Framework\TestCase;
 
@@ -76,8 +77,14 @@ class ParentCompanySearchHandlerTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $searchMappingProvider = $this->createMock(SearchMappingProvider::class);
+        $searchMappingProvider->expects($this->once())
+            ->method('getEntityAlias')
+            ->with(self::TEST_ENTITY_CLASS)
+            ->willReturn('alias');
+
         $this->searchHandler = new ParentCompanySearchHandler(self::TEST_ENTITY_CLASS, ['name']);
-        $this->searchHandler->initSearchIndexer($this->indexer, [self::TEST_ENTITY_CLASS => ['alias' => 'alias']]);
+        $this->searchHandler->initSearchIndexer($this->indexer, $searchMappingProvider);
         $this->searchHandler->initDoctrinePropertiesByManagerRegistry($this->managerRegistry);
         $this->searchHandler->setAclHelper($this->aclHelper);
     }

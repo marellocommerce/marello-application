@@ -2,14 +2,12 @@
 
 namespace MarelloEnterprise\Bundle\InstoreAssistantBundle\Manager;
 
-use Symfony\Component\Security\Core\User\UserProviderInterface;
-
-use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\UserBundle\Entity\User;
 
-interface OroUserManagerInterface extends UserProviderInterface
+interface OroUserManagerInterface
 {
-    public function findUserByUsernameOrEmail($usernameOrEmail);
+    public function findUserByUsernameOrEmail(string $usernameOrEmail);
 
     public function getApi(User $user, Organization $organization);
 }

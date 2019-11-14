@@ -6,17 +6,21 @@ use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Form\Type\SalesChannelType;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
-class SalesChannelController extends Controller
+class SalesChannelController extends AbstractController
 {
     /**
-     * @Config\Route("/", name="marello_sales_saleschannel_index")
-     * @Config\Method("GET")
-     * @Config\Template
+     * @Route(
+     *     path="/", 
+     *     methods={"GET"},
+     *     name="marello_sales_saleschannel_index"
+     * )
+     * @Template
      * @AclAncestor("marello_sales_saleschannel_view")
      */
     public function indexAction()
@@ -27,9 +31,12 @@ class SalesChannelController extends Controller
     }
 
     /**
-     * @Config\Route("/create", name="marello_sales_saleschannel_create")
-     * @Config\Method({"GET", "POST"})
-     * @Config\Template("MarelloSalesBundle:SalesChannel:update.html.twig")
+     * @Route(
+     *     path="/create", 
+     *     methods={"GET", "POST"},
+     *     name="marello_sales_saleschannel_create"
+     * )
+     * @Template("MarelloSalesBundle:SalesChannel:update.html.twig")
      * @AclAncestor("marello_saleschannel_create")
      *
      * @param Request $request
@@ -41,8 +48,12 @@ class SalesChannelController extends Controller
     }
     
     /**
-     * @Config\Route("/view/{id}", name="marello_sales_saleschannel_view", requirements={"id"="\d+"})
-     * @Config\Template
+     * @Route(
+     *     path="/view/{id}", 
+     *     name="marello_sales_saleschannel_view", 
+     *     requirements={"id"="\d+"}
+     * )
+     * @Template
      * @Acl(
      *      id="marello_sales_saleschannel_view",
      *      type="entity",
@@ -61,9 +72,13 @@ class SalesChannelController extends Controller
     }
 
     /**
-     * @Config\Route("/update/{id}", requirements={"id"="\d+"}, name="marello_sales_saleschannel_update")
-     * @Config\Method({"GET", "POST"})
-     * @Config\Template
+     * @Route(
+     *     path="/update/{id}",
+     *     methods={"GET", "POST"},
+     *     requirements={"id"="\d+"}, 
+     *     name="marello_sales_saleschannel_update"
+     * )
+     * @Template
      * @AclAncestor("marello_saleschannel_update")
      *
      * @param Request $request

@@ -2,16 +2,16 @@
 
 namespace Marello\Bundle\OrderBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
-class OrderDashboardController extends Controller
+class OrderDashboardController extends AbstractController
 {
     /**
      * @Route(
-     *      "/orderitems_by_status/chart/{widget}",
+     *      path="/orderitems_by_status/chart/{widget}",
      *      name="marello_order_dashboard_orderitems_by_status_chart",
      *      requirements={"widget"="[\w-]+"}
      * )

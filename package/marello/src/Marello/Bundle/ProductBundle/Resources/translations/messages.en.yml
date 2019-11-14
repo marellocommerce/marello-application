@@ -3,13 +3,11 @@ marello:
         id.label:                   Id
         entity_plural_label:        Products
         entity_label:               Product
-        name.label:                 Name
+        names.label:                Name
         sku.label:                  SKU
         weight.label:               Weight (in Kg)
         warranty.label:             Product Warranty
-        price.label:                Default price
         status.label:               Status
-        cost.label:                 Cost
         data.label:                 Data
         type.label:                 Product Type
         preferred_supplier.label:   Preferred Supplier
@@ -72,7 +70,7 @@ marello:
                     assignment: There was failure during Sales Channels assignment
 
         sections:
-            general:                General Information
+            general:                General
             additional:             Additional
 
         form.choose_product:        Select Product

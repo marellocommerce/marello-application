@@ -21,6 +21,7 @@ services:
 
     marello_sales.provider.basic_sales_channels_choices:
         class: Marello\Bundle\SalesBundle\Provider\BasicSalesChannelsChoicesProvider
+        public: true
         arguments:
             - '@oro_entity.doctrine_helper'
 
@@ -111,8 +112,17 @@ services:
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.after.marello-sales-channel-groups, method: onResultAfter }
 
+    marello_sales.event_listener.datagrid.products_grid:
+        class: 'Marello\Bundle\SalesBundle\EventListener\Datagrid\SalesChannelsDatagridListener'
+        arguments:
+            - '%marello_product.entity.class%'
+            - '@marello_sales.provider.basic_sales_channels_choices'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-products-grid, method: onBuildBefore }
+
     marello_sales.datagrid.saleschannelgroup.action_permission_provider:
         class: 'Marello\Bundle\SalesBundle\Datagrid\SalesChannelGroupActionPermissionProvider'
+        public: true
 
     marello_sales.condition.sales_channel_has_valid_integration:
         class: 'Marello\Bundle\SalesBundle\Condition\HasValidIntegration'

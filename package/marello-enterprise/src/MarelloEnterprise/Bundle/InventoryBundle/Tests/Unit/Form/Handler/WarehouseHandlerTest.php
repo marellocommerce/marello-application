@@ -112,14 +112,16 @@ class WarehouseHandlerTest extends TestCase
 
         $typeBefore = $this->getEntity(
             WarehouseType::class,
+            [],
             [
-                'name' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED
+                WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED
             ]
         );
         $typeAfter = $this->getEntity(
             WarehouseType::class,
+            [],
             [
-                'name' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL
+                WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL
             ]
         );
 
@@ -189,14 +191,16 @@ class WarehouseHandlerTest extends TestCase
 
         $typeBefore = $this->getEntity(
             WarehouseType::class,
+            [],
             [
-                'name' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL
+                WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL
             ]
         );
         $typeAfter = $this->getEntity(
             WarehouseType::class,
+            [],
             [
-                'name' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED
+                WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED
             ]
         );
 
@@ -243,14 +247,16 @@ class WarehouseHandlerTest extends TestCase
 
         $typeBefore = $this->getEntity(
             WarehouseType::class,
+            [],
             [
-                'name' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL
+                WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL
             ]
         );
         $typeAfter = $this->getEntity(
             WarehouseType::class,
+            [],
             [
-                'name' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED
+                WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED
             ]
         );
 

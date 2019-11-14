@@ -3,8 +3,10 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\Twig;
 
 use MarelloEnterprise\Bundle\InventoryBundle\Formatter\WFAStrategyLabelFormatter;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class WFAStrategyExtension extends \Twig_Extension
+class WFAStrategyExtension extends AbstractExtension
 {
     const NAME = 'marello_wfa_strategy';
 
@@ -35,7 +37,7 @@ class WFAStrategyExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_inventory_wfa_strategy_label',
                 [$this->wfaStrategyLabelFormatter, 'formatLabel']
             )

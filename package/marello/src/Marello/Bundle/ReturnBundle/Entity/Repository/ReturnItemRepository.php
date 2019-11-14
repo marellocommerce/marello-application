@@ -3,10 +3,6 @@
 namespace Marello\Bundle\ReturnBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\Expr\Join;
-use Doctrine\ORM\Query\ResultSetMapping;
-use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
 
 class ReturnItemRepository extends EntityRepository
 {

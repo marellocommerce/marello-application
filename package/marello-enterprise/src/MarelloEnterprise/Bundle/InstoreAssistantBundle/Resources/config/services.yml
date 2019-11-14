@@ -20,6 +20,7 @@ services:
 
     marelloenterprise_instoreassistant.api.handler.request_action_handler:
         class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Handler\InstoreAssistantRequestActionHandler
+        public: true
         arguments:
             - ['rest']
             - '@oro_api.action_processor_bag'

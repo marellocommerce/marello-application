@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\SubscriptionBundle\Tests\Functional\Controller;
 
-use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadCustomerData;
+use Marello\Bundle\CustomerBundle\Tests\Functional\DataFixtures\LoadCustomerData;
 use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
 use Marello\Bundle\SubscriptionBundle\Form\Type\SubscriptionType;
 use Marello\Bundle\SubscriptionBundle\Tests\Functional\DataFixtures\LoadSubscriptionProductData;

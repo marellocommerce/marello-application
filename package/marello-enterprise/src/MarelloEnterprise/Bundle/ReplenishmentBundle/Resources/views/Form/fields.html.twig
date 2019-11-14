@@ -50,9 +50,11 @@
 {% endmacro %}
 
 {% block marello_replenishment_order_item_collection_widget %}
+    {% import _self as fields %}
+
     {% spaceless %}
         {% if prototype is defined %}
-            {% set prototype_html = _self.marello_replenishment_order_item_prototype(form) %}
+            {% set prototype_html = fields.marello_replenishment_order_item_prototype(form) %}
         {% endif %}
         {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'marello-item-collection grid-container' }) %}
         {% set id = id ~ '_collection' %}
@@ -71,7 +73,7 @@
                     <tbody data-last-index="{{ form.children|length}}" data-prototype-name="{{ prototype_name }}"{% if prototype_html is defined %} data-prototype="{{ prototype_html|escape }}"{% endif %}>
                     {% if form.children|length %}
                         {% for child in form.children %}
-                            {{ _self.marello_replenishment_order_item_prototype(child) }}
+                            {{ fields.marello_replenishment_order_item_prototype(child) }}
                         {% endfor %}
                     {% elseif show_form_when_empty and prototype_html is defined %}
                         {{ prototype_html|replace({(prototype_name): '0'})|raw }}

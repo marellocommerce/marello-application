@@ -52,3 +52,4 @@ services:
 
     marello_invoice.provider.invoice_type_choices:
         class: 'Marello\Bundle\InvoiceBundle\Provider\InvoiceTypeChoicesProvider'
+        public: true

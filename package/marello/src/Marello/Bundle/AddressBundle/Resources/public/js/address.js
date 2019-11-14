@@ -4,20 +4,16 @@ define([
     'orotranslation/js/translator',
     'oroui/js/mediator',
     'oroui/js/messenger',
-    'oro/dialog-widget',
-    'oroaddress/js/address/view'
+    'oro/dialog-widget'
 ], function(
     _,
     Backbone,
     __,
     mediator,
     messenger,
-    DialogWidget,
-    AddressView
+    DialogWidget
 ) {
     'use strict';
-
-    var $ = Backbone.$;
 
     /**
      * @export  marelloaddress/js/address
@@ -26,7 +22,7 @@ define([
      */
     return Backbone.View.extend({
         options: {
-            'addressUpdateUrl': null,
+            'addressUpdateUrl': null
         },
 
         initialize: function(options) {
@@ -87,6 +83,6 @@ define([
 
         reloadAddress: function() {
             this.getAddressWidget().render();
-        },
+        }
     });
 });

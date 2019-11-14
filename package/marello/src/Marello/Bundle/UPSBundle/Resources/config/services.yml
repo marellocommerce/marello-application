@@ -9,6 +9,7 @@ services:
     # Providers
     marello_ups.provider.channel:
         class: 'Marello\Bundle\UPSBundle\Provider\ChannelType'
+        public: true
         tags:
             - { name: oro_integration.channel, type: '%marello_ups.integration.channel.type%'}
 
@@ -34,6 +35,7 @@ services:
 
     marello_ups.method.identifier_generator.method:
         parent: oro_integration.generator.prefixed_identifier_generator
+        public: true
         arguments:
             - '%marello_ups.integration.channel.type%'
 

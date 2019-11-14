@@ -8,7 +8,6 @@ services:
         arguments:
             - name: 'subscription'
               label: 'Subscription'
-              attribute_family_code: 'marello_subscription'
         tags:
             - {name: marello_product.product_type}
 
@@ -24,7 +23,7 @@ services:
     marello_subscription.form.type.address:
         arguments:
             - '@oro_locale.formatter.address'
-            - '@marello_order.provider.customer_address'
+            - '@marello_customer.provider.customer_address'
             - '@oro_importexport.serializer'
         abstract: true
 

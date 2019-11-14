@@ -5,9 +5,10 @@ services:
             - 'marello_shipping.mass_action.status_handler'
             - 'marello_status_shipping_rule_massaction'
             - true
+        public: true
         shared: false
         tags:
-            - { name: oro_datagrid.extension.mass_action.type, type: shippingruleenable }
+            - { name: oro_datagrid.extension.mass_action.type, type: marelloshippingruleenable }
 
     marello_shipping.mass_action.status.disable:
         class: 'Marello\Bundle\RuleBundle\Datagrid\Extension\MassAction\Actions\StatusEnableMassAction'
@@ -15,12 +16,14 @@ services:
             - 'marello_shipping.mass_action.status_handler'
             - 'marello_status_shipping_rule_massaction'
             - false
+        public: true
         shared: false
         tags:
-            - { name: oro_datagrid.extension.mass_action.type, type: shippingruledisable }
+            - { name: oro_datagrid.extension.mass_action.type, type: marelloshippingruledisable }
 
     marello_shipping.mass_action.status_handler:
         class: 'Marello\Bundle\RuleBundle\Datagrid\Extension\MassAction\StatusMassActionHandler'
+        public: true
         arguments:
             - 'marello.shipping.datagrid.status.success_message'
             - 'MarelloShippingBundle:ShippingMethodsConfigsRule'

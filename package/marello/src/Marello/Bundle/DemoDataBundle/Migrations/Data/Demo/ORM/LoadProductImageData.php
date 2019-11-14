@@ -128,5 +128,7 @@ class LoadProductImageData extends AbstractFixture implements DependentFixtureIn
                 }
             }
         }
+        
+        return null;
     }
 }

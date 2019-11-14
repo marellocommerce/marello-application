@@ -3,15 +3,20 @@
 namespace Marello\Bundle\InventoryBundle\Controller;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
-class InventoryLevelController extends Controller
+class InventoryLevelController extends AbstractController
 {
     /**
-     * @Config\Route("/{id}", requirements={"id"="\d+"}, name="marello_inventory_inventorylevel_index")
-     * @Config\Template
+     * @Route(
+     *     path="/{id}", 
+     *     requirements={"id"="\d+"}, 
+     *     name="marello_inventory_inventorylevel_index"
+     * )
+     * @Template
      *
      * @param InventoryItem $inventoryItem
      *
@@ -26,8 +31,12 @@ class InventoryLevelController extends Controller
     }
 
     /**
-     * @Config\Route("/chart/{id}", requirements={"id"="\d+"}, name="marello_inventory_inventorylevel_chart")
-     * @Config\Template
+     * @Route(
+     *     path="/chart/{id}", 
+     *     requirements={"id"="\d+"}, 
+     *     name="marello_inventory_inventorylevel_chart"
+     * )
+     * @Template
      *
      * @param InventoryItem $inventoryItem
      * @param Request $request

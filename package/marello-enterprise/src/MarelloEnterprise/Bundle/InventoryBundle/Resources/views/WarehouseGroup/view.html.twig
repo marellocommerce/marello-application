@@ -16,10 +16,10 @@
 
 {% block navButtons %}
     {% if entity.id and not entity.system %}
-        {% if resource_granted('DELETE', entity) and not marello_inventory_is_fixed_warehousegroup(entity) %}
+        {% if is_granted('DELETE', entity) and not marello_inventory_is_fixed_warehousegroup(entity) %}
             {{ parent() }}
         {% endif %}
-        {% if resource_granted('marelloenterprise_inventory_warehousegroup_update') or resource_granted('marelloenterprise_inventory_warehousegroup_create') %}
+        {% if is_granted('marelloenterprise_inventory_warehousegroup_update') or is_granted('marelloenterprise_inventory_warehousegroup_create') %}
             {{ UI.editButton({
                 'path' : path('marelloenterprise_inventory_warehousegroup_update', { id: entity.id }),
                 'entity_label': 'marello.inventory.warehousegroup.entity_label'|trans

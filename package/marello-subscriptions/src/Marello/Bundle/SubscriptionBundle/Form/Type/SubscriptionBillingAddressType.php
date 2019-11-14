@@ -13,6 +13,6 @@ class SubscriptionBillingAddressType extends AbstractSubscriptionAddressType
      */
     protected function getAddresses(Subscription $entity)
     {
-        return $this->orderCustomerAddressProvider->getCustomerBillingAddresses($entity->getCustomer());
+        return $this->customerAddressProvider->getCustomerBillingAddresses($entity->getCustomer());
     }
 }

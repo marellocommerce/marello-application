@@ -5,7 +5,7 @@ namespace Marello\Bundle\CustomerBundle\Form\Type;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\AddressBundle\Form\Type\AddressType;
 use Marello\Bundle\CustomerBundle\Entity\Company;
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\PaymentTermBundle\Form\Type\PaymentTermSelectType;
 use Oro\Bundle\AddressBundle\Form\Type\AddressCollectionType;
 use Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType;

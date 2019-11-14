@@ -25,7 +25,7 @@
     </div>
     <div class="address-block subscription-address">
         <div id="subscription-address-{{ subscriptionAddress.id }}">
-            {% if marello_subscription_update is not defined or resource_granted(marello_subscription_update) %}
+            {% if marello_subscription_update is not defined or is_granted(marello_subscription_update) %}
                 <div class="address-edit">
                     <button class="btn address-edit-button" id="edit-address-{{ subscriptionAddress.id }}" title="{{ 'marello.subscription.address.edit_action'|trans }}"><i class="fa-edit hide-text">{{ 'marello.subscription.address.edit_action'|trans }}</i></button>
                 </div>
