@@ -463,9 +463,9 @@
                                 <tr class="email-summary">
                                     <td style="font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
                                         <p style="font-size: 16px; margin: 1em 0;">Replenishment Order Number <span class="no-link">#{{ entity.replOrderNumber }}</span></p>
-                                        {% if entity.description %}
+                                        <!--{% if entity.description %}-->
                                             <p style="font-size: 16px; margin: 1em 0;">Description <span class="no-link">#{{ entity.description }}</span></p>
-                                        {% endif %}
+                                        <!--{% endif %}-->
                                         <p style="font-size: 16px; margin: 1em 0;">Execution dateTime {{ entity.executionDateTime|date('d-m-Y H:i:s') }}</p>
                                         <div class="control-group attribute-row" style="font-size: 16px; margin: 1em 0;">
                                             <label class="control-label">Origin Address:</label>
@@ -503,7 +503,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            {% for item in entity.replOrderItems %}
+                                            <!--{% for item in entity.replOrderItems %}-->
                                                 <tr>
                                                     <td class="item-info" style="border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px;">
                                                         {{ item.productName }}
@@ -518,7 +518,7 @@
                                                         {{ item.inventoryQty }}
                                                     </td>
                                                 </tr>
-                                            {% endfor %}
+                                            <!--{% endfor %}-->
                                             </tbody>
                                         </table>
                                     </td>

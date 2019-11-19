@@ -10,9 +10,7 @@
         }
     ],
     "autoload": {
-        "psr-0": {
-            "MarelloEnterprise\\Bundle": "src/"
-        }
+        "psr-4": {"": "src/"}
     },
     "repositories": {
         "oro": {
@@ -29,15 +27,15 @@
         }
     },
     "require": {
-        "php": ">=7.1",
-        "oro/platform-enterprise": "3.1.*",
-        "marellocommerce/marello": "2.0.*"
+        "php": ">=7.1.26",
+        "oro/platform-enterprise": "~3.1.1",
+        "marellocommerce/marello": "~2.2.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-master": "2.0.x-dev"
+            "dev-master": "2.2-dev"
         }
     }
 }
