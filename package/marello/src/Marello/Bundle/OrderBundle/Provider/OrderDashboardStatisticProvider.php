@@ -3,6 +3,7 @@
 namespace Marello\Bundle\OrderBundle\Provider;
 
 use Marello\Bundle\OrderBundle\Entity\Repository\OrderRepository;
+use Oro\Bundle\DashboardBundle\Model\WidgetOptionBag;
 use Oro\Bundle\DashboardBundle\Provider\BigNumber\BigNumberDateHelper;
 
 class OrderDashboardStatisticProvider
@@ -31,33 +32,35 @@ class OrderDashboardStatisticProvider
 
     /**
      * @param array $dateRange
+     * @param WidgetOptionBag $widgetOptions
      * @return int
      */
-    public function getTotalRevenueValues($dateRange)
+    public function getTotalRevenueValues($dateRange, WidgetOptionBag $widgetOptions)
     {
         list($start, $end) = $this->dateHelper->getPeriod($dateRange, 'MarelloOrderBundle:Order', 'createdAt');
-        return $this->orderRepository->getTotalRevenueValue($start, $end);
+        return $this->orderRepository->getTotalRevenueValue($start, $end, $widgetOptions->get('salesChannel'));
     }
 
     /**
      * @param array $dateRange
+     * @param WidgetOptionBag $widgetOptions
      * @return int
      */
-    public function getTotalOrdersNumberValues($dateRange)
+    public function getTotalOrdersNumberValues($dateRange, WidgetOptionBag $widgetOptions)
     {
         list($start, $end) = $this->dateHelper->getPeriod($dateRange, 'MarelloOrderBundle:Order', 'createdAt');
-
-        return $this->orderRepository->getTotalOrdersNumberValue($start, $end);
+        return $this->orderRepository->getTotalOrdersNumberValue($start, $end, $widgetOptions->get('salesChannel'));
     }
 
     /**
      * @param array $dateRange
+     * @param WidgetOptionBag $widgetOptions
      * @return int
      */
-    public function getAverageOrderValues($dateRange)
+    public function getAverageOrderValues($dateRange, WidgetOptionBag $widgetOptions)
     {
         list($start, $end) = $this->dateHelper->getPeriod($dateRange, 'MarelloOrderBundle:Order', 'createdAt');
 
-        return $this->orderRepository->getAverageOrderValue($start, $end);
+        return $this->orderRepository->getAverageOrderValue($start, $end, $widgetOptions->get('salesChannel'));
     }
 }
