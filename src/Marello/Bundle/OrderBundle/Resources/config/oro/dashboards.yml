@@ -24,12 +24,12 @@ dashboards:
             icon:        bundles/orodashboard/img/no_icon.png
             data_items:
                 revenue:
-                    data_provider: '@oro_dashboard.provider.big_number.processor->getBigNumberValues($widgetOptions$, marello-order, getTotalRevenueValues, currency)'
+                    data_provider: '@marello_order.provider.order_statistic.currency_number.processor->getBigNumberValues($widgetOptions$, getTotalRevenueValues)'
                     label:         marello.order.dashboard.order_statistics.revenue.label
                     acl:           marello_order_view
                     template:      OroDashboardBundle:Dashboard:bigNumberSubwidget.html.twig
                 average_order_value:
-                    data_provider: '@oro_dashboard.provider.big_number.processor->getBigNumberValues($widgetOptions$, marello-order, getAverageOrderValues, currency)'
+                    data_provider: '@marello_order.provider.order_statistic.currency_number.processor->getBigNumberValues($widgetOptions$, getAverageOrderValues)'
                     label:         marello.order.dashboard.order_statistics.average_order_value.label
                     acl:           marello_order_view
                     template:      OroDashboardBundle:Dashboard:bigNumberSubwidget.html.twig
@@ -53,6 +53,12 @@ dashboards:
                     converter_attributes:
                         dateRangeField: dateRange
                         default_checked: true
+                salesChannel:
+                    type: Marello\Bundle\SalesBundle\Form\Type\SalesChannelSelectType
+                    options:
+                       label: marello.sales.saleschannel.entity_label
+                       required: false
+                    show_on_widget: true
                 subWidgets:
                     type: Oro\Bundle\DashboardBundle\Form\Type\WidgetItemsType
                     options:
