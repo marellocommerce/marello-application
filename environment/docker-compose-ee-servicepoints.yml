@@ -70,13 +70,11 @@ services:
         volumes_from:
             - data
         volumes:
-            - ../applications/marello-application-ee:/var/www:cached
+            - ../applications/marello-application-ee-servicepoints:/var/www:cached
             - ../package/marello:/package/marello
-            - ../package/marello-enterprise:/package/marello-servicepoints
+            - ../package/marello-servicepoints:/package/marello-servicepoints
             - ../package/marello-enterprise:/package/marello-enterprise
         environment:
-            - PHP_IDE_CONFIG=serverName=PHPSTORM
-            - XDEBUG_CONFIG="remote_enable=1 remote_mode=req remote_port=9005 remote_host=172.16.1.45 remote_connect_back=0 idekey=PHPSTORM profiler_enable=1"
             - VIRTUAL_HOST=marello-ee.docker
             - IS_LOCAL=true
             - CMD_INIT_BEFORE=

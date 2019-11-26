@@ -1,8 +1,8 @@
 {
-    "name": "marellocommerce/servicepoints",
+    "name": "marellocommerce/marello-servicepoints",
     "description": "Marello Unified Commerce Management",
     "homepage": "//github.com/marellocommerce/marello-servicepoints.git",
-    "license": "OSL-3.0",
+    "license": "Commercial",
     "authors": [
         {
             "name": "Marello B.V.",
@@ -29,7 +29,7 @@
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-master": "2.1-dev"
+            "dev-master": "2.2-dev"
         }
     },
     "autoload": {
