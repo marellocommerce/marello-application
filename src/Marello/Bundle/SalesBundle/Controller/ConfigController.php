@@ -3,6 +3,7 @@
 namespace Marello\Bundle\SalesBundle\Controller;
 
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -20,6 +21,11 @@ class ConfigController extends Controller
      * )
      * @Template()
      * @AclAncestor("marello_sales_saleschannel_update")
+     * @param Request $request
+     * @param SalesChannel $entity
+     * @param mixed $activeGroup
+     * @param mixed $activeSubGroup
+     * @return array
      */
     public function salesChannelAction(
         Request $request,
@@ -28,6 +34,7 @@ class ConfigController extends Controller
         $activeSubGroup = null
     ) {
         $provider = $this->get('marello_sales.config_form_provider.saleschannel');
+        /** @var ConfigManager $manager */
         $manager = $this->get('oro_config.saleschannel');
         $prevScopeId = $manager->getScopeId();
         $manager->setScopeIdFromEntity($entity);
@@ -69,7 +76,9 @@ class ConfigController extends Controller
             'form'           => $form ? $form->createView() : null,
             'activeGroup'    => $activeGroup,
             'activeSubGroup' => $activeSubGroup,
-            'scopeInfo'      => $manager->getScopeInfo(),
+            'scopeEntity'    => $entity,
+            'scopeEntityClass' => SalesChannel::class,
+            'scopeEntityId'  => $entity->getId()
         ];
     }
 }
