@@ -12,10 +12,13 @@
         'path': path('marello_sales_saleschannel_view', {id: entity.id}),
         'label': entity.name
     }),
-    'marello.sales.config.saleschannel.label'|trans ~ (scopeInfo ? UI.tooltip(scopeInfo|trans) : '')
-] %}
+    'marello.sales.config.saleschannel.label'|trans
+]
+%}
 
+{% set formAction = path(
+    'marello_sales_config_saleschannel',
+    {id:entity.id, activeGroup: activeGroup, activeSubGroup: activeSubGroup}
+) %}
 {% set routeName = 'marello_sales_config_saleschannel' %}
-{% set routeParameters = {'id': entity.id, 'activeGroup': activeGroup, 'activeSubGroup': activeSubGroup} %}
-
-{% set formAction = path(routeName, routeParameters) %}
+{% set routeParameters = {id: entity.id} %}
