@@ -90,7 +90,7 @@ if [[ ! -z ${CMD_INIT_AFTER} ]]; then
 fi
 
 # Starting services
-if php -r 'foreach(json_decode(file_get_contents("'${APP_ROOT}'/dev.lock"))->{"packages"} as $p) { echo $p->{"name"} . ":" . $p->{"version"} . PHP_EOL; };' | grep 'platform:3' > /dev/null
+if php -r 'foreach(json_decode(file_get_contents("'${APP_ROOT}'/dev.lock"))->{"packages"} as $p) { echo $p->{"name"} . ":" . $p->{"version"} . PHP_EOL; };' | grep 'platform:4' > /dev/null
 then
   info "Starting supervisord..."
   exec /usr/local/bin/supervisord -n -c /etc/supervisord.conf
