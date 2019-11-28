@@ -245,7 +245,7 @@ datagrids:
                         - { join: balancedInventoryLevel.salesChannelGroup, alias: scg }
         columns:
             productName:
-                label:              marello.product.name.label
+                label:              marello.product.names.label
                 frontend_type:      string
                 data_name:          productName
                 renderable:         false
