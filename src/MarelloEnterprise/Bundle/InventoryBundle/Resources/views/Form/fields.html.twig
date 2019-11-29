@@ -18,20 +18,30 @@
     </td>
     <td class="inventorylevel-adjustment {{ form.quantity.vars.errors|length ? 'has-errors' : '' }}">
         <div class="fields-row">
-            <div class="marello-line-item-related-field">
-                {{ form_widget(form.adjustmentOperator) }}
-            </div>
-            <div class="marello-line-item-related-field">
-                {{ form_widget(form.quantity) }}
-            </div>
-            {{ form_errors(form.quantity) }}
+            {% if form.vars.manageBatches is same as(false) %}
+                <div class="marello-line-item-related-field">
+                    {{ form_widget(form.adjustmentOperator) }}
+                </div>
+                <div class="marello-line-item-related-field">
+                    {{ form_widget(form.quantity) }}
+                </div>
+                {{ form_errors(form.quantity) }}
+            {% else %}
+                <div class="marello-line-item-related-field">
+                    <a href="{{ path('marello_inventory_inventorylevel_manage_batches', {'id': form.vars.value.id}) }}">
+                        {{ 'marello.inventory.inventorylevel.form.manage_batches.label'|trans }}
+                    </a>
+                </div>
+            {% endif %}
         </div>
     </td>
     <td class="inventorylevel-managed-inventory {{ form.warehouse.vars.errors|length ? 'has-errors' : '' }}">
-        <div class="fields-row">
-            {{ form_widget(form.managedInventory) }}
-        </div>
-        {{ form_errors(form.managedInventory) }}
+        {% if form.vars.manageBatches is same as(false) %}
+            <div class="fields-row">
+                {{ form_widget(form.managedInventory) }}
+            </div>
+            {{ form_errors(form.managedInventory) }}
+        {% endif %}
     </td>
 {% endblock %}
 
