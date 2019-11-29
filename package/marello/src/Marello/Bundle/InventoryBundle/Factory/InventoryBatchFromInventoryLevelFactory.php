@@ -16,9 +16,7 @@ class InventoryBatchFromInventoryLevelFactory
         $inventoryBatch = new InventoryBatch();
         $inventoryBatch
             ->setInventoryLevel($inventoryLevel)
-            ->setQuantity($inventoryLevel->getInventoryQty())
-            ->setPurchasePrice(50)
-            ->setTotalPrice($inventoryBatch->getQuantity() * $inventoryBatch->getPurchasePrice());
+            ->setQuantity($inventoryLevel->getInventoryQty());
 
         return $inventoryBatch;
     }
