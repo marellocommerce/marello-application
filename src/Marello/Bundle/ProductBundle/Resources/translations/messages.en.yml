@@ -3,7 +3,8 @@ marello:
         id.label:                   Id
         entity_plural_label:        Products
         entity_label:               Product
-        names.label:                Name
+        name.label:                 Name
+        names.label:                Names
         sku.label:                  SKU
         weight.label:               Weight (in Kg)
         warranty.label:             Product Warranty

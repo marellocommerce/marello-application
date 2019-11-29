@@ -3,12 +3,14 @@
 namespace Marello\Bundle\OrderBundle\Workflow;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
+use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 use Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProviderInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Marello\Bundle\PackingBundle\Entity\PackingSlipItem;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Component\ConfigExpression\ContextAccessor;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -79,7 +81,19 @@ class OrderShipAction extends OrderTransitionAction
             'order_workflow.shipped',
             $entity
         );
-
+        $packingSlipItem = $this->doctrine
+            ->getManagerForClass(PackingSlipItem::class)
+            ->getRepository(PackingSlipItem::class)
+            ->findOneBy(['orderItem' => $item]);
+        if ($packingSlipItem) {
+            if ($batchNumber = $packingSlipItem->getInventoryBatchNumber()) {
+                $inventoryBatch = $this->doctrine
+                    ->getManagerForClass(InventoryBatch::class)
+                    ->getRepository(InventoryBatch::class)
+                    ->findOneBy(['batchNumber' => $batchNumber]);
+                $context->setInventoryBatch($inventoryBatch);
+            }
+        }
         $context->setValue('warehouse', $warehouse);
 
         $this->eventDispatcher->dispatch(

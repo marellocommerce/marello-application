@@ -55,6 +55,22 @@
     {% endset %}
     {% set generalSubblocks = generalSubblocks|merge([{'data' : [totalsWidget] }]) %}
 
+    {% set inventoryBatchInfoWidget %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ UI.renderProperty('marello.inventory.inventoryitem.enable_batch_inventory.label'|trans, entity.enableBatchInventory ? 'marello.core.yes.label'|trans : 'marello.core.no.label'|trans) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+    {% set generalSubblocks = generalSubblocks|merge([
+        {
+            'title': 'marello.inventory.inventoryitem.section.inventorybatch.label'|trans,
+            'data' : [inventoryBatchInfoWidget]
+        }])
+    %}
+
     {% set dataBlocks = [
         {
             'title': 'General Information'|trans,
