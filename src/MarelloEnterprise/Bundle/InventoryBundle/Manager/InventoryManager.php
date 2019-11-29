@@ -56,6 +56,12 @@ class InventoryManager extends BaseInventoryManager
 
         $updatedLevel = $this->updateInventory($level, $inventory, $allocatedInventory);
         $context->setInventoryLevel($updatedLevel);
+        $batch = $context->getInventoryBatch();
+        if ($batch) {
+            $batchInventory = ($batch->getQuantity() + $context->getInventory());
+            $updatedBatch = $this->updateInventoryBatch($batch, $batchInventory);
+            $context->setInventoryBatch($updatedBatch);
+        }
 
         $this->eventDispatcher->dispatch(
             InventoryUpdateEvent::INVENTORY_UPDATE_AFTER,
