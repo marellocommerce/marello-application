@@ -4,17 +4,17 @@ namespace Marello\Bundle\PackingBundle\Mapper;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-
-use Oro\Bundle\EntityBundle\Provider\EntityFieldProvider;
-
+use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProviderInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\PackingBundle\Entity\PackingSlip;
 use Marello\Bundle\PackingBundle\Entity\PackingSlipItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProviderInterface;
+use Oro\Bundle\EntityBundle\Provider\EntityFieldProvider;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 class OrderToPackingSlipMapper extends AbstractPackingSlipMapper
 {
@@ -48,8 +48,9 @@ class OrderToPackingSlipMapper extends AbstractPackingSlipMapper
             $packingSlip = new PackingSlip();
             $data = $this->getData($sourceEntity, PackingSlip::class);
             $data['order'] = $sourceEntity;
-            $data['warehouse'] = $result->getWarehouse();
-            $data['items'] = $this->getItems($result->getOrderItems());
+            $warehouse = $result->getWarehouse();
+            $data['warehouse'] = $warehouse;
+            $data['items'] = $this->getItems($result->getOrderItems(), $warehouse);
 
             $this->assignData($packingSlip, $data);
             $packingSlips[] = $packingSlip;
@@ -59,15 +60,16 @@ class OrderToPackingSlipMapper extends AbstractPackingSlipMapper
 
     /**
      * @param Collection $items
+     * @param Warehouse $warehouse
      * @return ArrayCollection
      */
-    protected function getItems(Collection $items)
+    protected function getItems(Collection $items, Warehouse $warehouse)
     {
         $orderItems = $items->toArray();
         $packingSlipItems = [];
         /** @var OrderItem $item */
         foreach ($orderItems as $item) {
-            $packingSlipItems[] = $this->mapItem($item);
+            $packingSlipItems[] = $this->mapItem($item, $warehouse);
         }
 
         return new ArrayCollection($packingSlipItems);
@@ -75,17 +77,30 @@ class OrderToPackingSlipMapper extends AbstractPackingSlipMapper
 
     /**
      * @param OrderItem $orderItem
+     * @param Warehouse $warehouse
      * @return PackingSlipItem
      */
-    protected function mapItem(OrderItem $orderItem)
+    protected function mapItem(OrderItem $orderItem, Warehouse $warehouse)
     {
         $packingSlipItem = new PackingSlipItem();
-        $packingSlipData = $this->getData($orderItem, PackingSlipItem::class);
+        $packingSlipItemData = $this->getData($orderItem, PackingSlipItem::class);
         /** @var Product $product */
         $product = $orderItem->getProduct();
-        $packingSlipData['weight'] = $product->getWeight();
-        $packingSlipData['orderItem'] = $orderItem;
-        $this->assignData($packingSlipItem, $packingSlipData);
+        /** @var InventoryItem $inventoryItem */
+        $inventoryItem = $product->getInventoryItems()->first();
+        if ($inventoryItem) {
+            if ($inventoryLevel = $inventoryItem->getInventoryLevel($warehouse)) {
+                $inventoryBatches = $inventoryLevel->getInventoryBatches();
+                if ($inventoryBatches->count() > 0) {
+                    /** @var InventoryBatch $inventoryBatch */
+                    $inventoryBatch = $inventoryBatches->first();
+                    $packingSlipItemData['inventoryBatchNumber'] = $inventoryBatch->getBatchNumber();
+                }
+            }
+        }
+        $packingSlipItemData['weight'] = $product->getWeight();
+        $packingSlipItemData['orderItem'] = $orderItem;
+        $this->assignData($packingSlipItem, $packingSlipItemData);
 
         return $packingSlipItem;
     }

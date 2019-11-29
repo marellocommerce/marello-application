@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\InventoryBundle\Manager;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
@@ -79,14 +80,19 @@ class InventoryManager implements InventoryManagerInterface
         $level->setManagedInventory($context->getValue('isInventoryManaged'));
         $updatedLevel = $this->updateInventory($level, $inventory, $allocatedInventory);
         $context->setInventoryLevel($updatedLevel);
+        $batch = $context->getInventoryBatch();
+        if ($batch) {
+            $batchInventory = ($batch->getQuantity() + $context->getInventory());
+            $updatedBatch = $this->updateInventoryBatch($batch, $batchInventory);
+            $context->setInventoryBatch($updatedBatch);
+        }
 
         $this->eventDispatcher->dispatch(
             InventoryUpdateEvent::INVENTORY_UPDATE_AFTER,
             new InventoryUpdateEvent($context)
         );
     }
-
-
+    
     /**
      * @param InventoryLevel    $level                  InventoryLevel to be updated
      * @param int|null          $inventory              New inventory or null if it should remain unchanged
@@ -129,6 +135,37 @@ class InventoryManager implements InventoryManagerInterface
         }
 
         return $level;
+    }
+
+    /**
+     * @param InventoryBatch $batch
+     * @param int|null $quantity
+     * @throws \Exception
+     * @return InventoryBatch
+     */
+    protected function updateInventoryBatch(
+        InventoryBatch $batch,
+        $quantity = null
+    ) {
+        if ($quantity === null) {
+            return $batch;
+        }
+
+        if ($batch->getQuantity() === $quantity) {
+            return $batch;
+        }
+
+        try {
+            $batch
+                ->setQuantity($quantity);
+
+            $em = $this->doctrineHelper->getEntityManager($batch);
+            $em->persist($batch);
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+
+        return $batch;
     }
 
     /**

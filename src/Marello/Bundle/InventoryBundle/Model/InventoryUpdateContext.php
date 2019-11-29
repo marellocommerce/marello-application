@@ -101,6 +101,27 @@ class InventoryUpdateContext
 
     /**
      * {@inheritdoc}
+     * @param $item
+     * @return $this
+     */
+    public function setInventoryBatch($inventoryBatch)
+    {
+        $this->setValue('inventory_batch', $inventoryBatch);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return mixed|null
+     */
+    public function getInventoryBatch()
+    {
+        return $this->getValue('inventory_batch');
+    }
+    
+    /**
+     * {@inheritdoc}
      * @param $entity
      * @return $this
      */
