@@ -49,6 +49,7 @@ class InventoryUpdateContextFactory
     /**
      * @param InventoryLevel $inventoryLevel
      * @param null $inventoryItem
+     * @param null $inventoryBatch
      * @param $inventoryUpdateQty
      * @param $allocatedInventoryQty
      * @param $trigger
@@ -59,6 +60,7 @@ class InventoryUpdateContextFactory
     public static function createInventoryLevelUpdateContext(
         InventoryLevel $inventoryLevel,
         $inventoryItem,
+        $inventoryBatch,
         $inventoryUpdateQty,
         $allocatedInventoryQty,
         $trigger,
@@ -72,6 +74,7 @@ class InventoryUpdateContextFactory
             ->setChangeTrigger($trigger)
             ->setInventoryLevel($inventoryLevel)
             ->setInventoryItem($inventoryItem)
+            ->setInventoryBatch($inventoryBatch)
             ->setRelatedEntity($relatedEntity)
             ->setIsVirtual($virtual)
         ;
