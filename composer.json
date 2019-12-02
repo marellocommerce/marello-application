@@ -21,15 +21,15 @@
     },
     "require": {
         "php": ">=7.1.26",
-        "oro/platform": "4.0.*",
-        "oro/platform-serialised-fields": "4.0.*",
-        "oro/calendar-bundle": "4.0.*"
+        "oro/platform": "4.1.*",
+        "oro/platform-serialised-fields": "4.1.*",
+        "oro/calendar-bundle": "4.1.*"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-master": "2.1-dev"
+            "dev-master": "3.0-dev"
         }
     },
     "autoload": {
