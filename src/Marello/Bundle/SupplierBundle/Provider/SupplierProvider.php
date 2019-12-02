@@ -7,19 +7,30 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
+use Oro\Bundle\CurrencyBundle\Model\LocaleSettings;
+use Oro\Bundle\LocaleBundle\Twig\NumberExtension;
 
 class SupplierProvider
 {
-    /** @var ObjectManager $manager */
+    /**
+     * @var ObjectManager
+     */
     protected $manager;
 
     /**
+     * @var LocaleSettings
+     */
+    protected $localeSettings;
+    
+    /**
      * SupplierProvider constructor.
      * @param ObjectManager $manager
+     * @param LocaleSettings $localeSettings
      */
-    public function __construct(ObjectManager $manager)
+    public function __construct(ObjectManager $manager, LocaleSettings $localeSettings)
     {
         $this->manager = $manager;
+        $this->localeSettings = $localeSettings;
     }
 
     /**
@@ -55,7 +66,8 @@ class SupplierProvider
         return [
             'name' => $supplier->getName(),
             'priority' => $supplier->getPriority(),
-            'canDropship' => $supplier->getCanDropship()
+            'canDropship' => $supplier->getCanDropship(),
+            'currency' => $this->localeSettings->getCurrencySymbolByCurrency($supplier->getCurrency())
         ];
     }
 }
