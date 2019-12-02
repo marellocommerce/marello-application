@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6316cea0c5c4e8d627f6beb549e77912",
+    "content-hash": "f2942060ff59387ff5f6dcddb296d488",
     "packages": [
         {
             "name": "akeneo/batch-bundle",
@@ -586,6 +586,24 @@
             "license": [
                 "MIT"
             ]
+        },
+        {
+            "name": "bower-asset/jquery.nicescroll",
+            "version": "3.6.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/inuyaksa/jquery.nicescroll.git",
+                "reference": "f599466737ca88d4413014f9d30485d1e7720572"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/inuyaksa/jquery.nicescroll/zipball/f599466737ca88d4413014f9d30485d1e7720572",
+                "reference": "f599466737ca88d4413014f9d30485d1e7720572"
+            },
+            "require": {
+                "bower-asset/jquery": ">=1.8.3"
+            },
+            "type": "bower-asset"
         },
         {
             "name": "bower-asset/jquery.numeric",
@@ -2244,16 +2262,16 @@
         },
         {
             "name": "doctrine/orm",
-            "version": "v2.6.6",
+            "version": "v2.6.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/orm.git",
-                "reference": "2d9b9351831d1230881c52f006011cbf72fe944e"
+                "reference": "434820973cadf2da2d66e7184be370084cc32ca8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/orm/zipball/2d9b9351831d1230881c52f006011cbf72fe944e",
-                "reference": "2d9b9351831d1230881c52f006011cbf72fe944e",
+                "url": "https://api.github.com/repos/doctrine/orm/zipball/434820973cadf2da2d66e7184be370084cc32ca8",
+                "reference": "434820973cadf2da2d66e7184be370084cc32ca8",
                 "shasum": ""
             },
             "require": {
@@ -2268,8 +2286,9 @@
                 "symfony/console": "~3.0|~4.0"
             },
             "require-dev": {
-                "doctrine/coding-standard": "^5.0",
-                "phpunit/phpunit": "^7.5",
+                "doctrine/coding-standard": "^1.0",
+                "phpunit/phpunit": "^6.5",
+                "squizlabs/php_codesniffer": "^3.2",
                 "symfony/yaml": "~3.4|~4.0"
             },
             "suggest": {
@@ -2295,16 +2314,16 @@
             ],
             "authors": [
                 {
-                    "name": "Guilherme Blanco",
-                    "email": "guilhermeblanco@gmail.com"
-                },
-                {
                     "name": "Roman Borschel",
                     "email": "roman@code-factory.org"
                 },
                 {
                     "name": "Benjamin Eberlei",
                     "email": "kontakt@beberlei.de"
+                },
+                {
+                    "name": "Guilherme Blanco",
+                    "email": "guilhermeblanco@gmail.com"
                 },
                 {
                     "name": "Jonathan Wage",
@@ -2321,7 +2340,7 @@
                 "database",
                 "orm"
             ],
-            "time": "2019-11-18T22:01:21+00:00"
+            "time": "2018-11-20T23:46:46+00:00"
         },
         {
             "name": "doctrine/persistence",
@@ -2902,16 +2921,16 @@
         },
         {
             "name": "gedmo/doctrine-extensions",
-            "version": "v2.4.37",
+            "version": "v2.4.38",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Atlantic18/DoctrineExtensions.git",
-                "reference": "5dd471f656e46d815f063bf3f12c667649ec7ffb"
+                "reference": "81681364331b131518060e4776300a5346df1eb5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/5dd471f656e46d815f063bf3f12c667649ec7ffb",
-                "reference": "5dd471f656e46d815f063bf3f12c667649ec7ffb",
+                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/81681364331b131518060e4776300a5346df1eb5",
+                "reference": "81681364331b131518060e4776300a5346df1eb5",
                 "shasum": ""
             },
             "require": {
@@ -2920,14 +2939,15 @@
                 "php": ">=5.3.2"
             },
             "conflict": {
-                "doctrine/annotations": "<1.2"
+                "doctrine/annotations": "<1.2",
+                "doctrine/mongodb-odm": ">=2.0"
             },
             "require-dev": {
                 "doctrine/common": ">=2.5.0",
-                "doctrine/mongodb-odm": ">=1.0.2",
+                "doctrine/mongodb-odm": ">=1.0.2 <2.0",
                 "doctrine/orm": ">=2.5.0",
-                "phpunit/phpunit": "^4.8.35|^5.7|^6.5",
-                "symfony/yaml": "~2.6|~3.0|~4.0"
+                "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.5",
+                "symfony/yaml": "~2.6 || ~3.0 || ~4.0"
             },
             "suggest": {
                 "doctrine/mongodb-odm": "to use the extensions with the MongoDB ODM",
@@ -2950,16 +2970,16 @@
             ],
             "authors": [
                 {
-                    "name": "David Buchmann",
-                    "email": "david@liip.ch"
-                },
-                {
                     "name": "Gediminas Morkevicius",
                     "email": "gediminas.morkevicius@gmail.com"
                 },
                 {
                     "name": "Gustavo Falco",
                     "email": "comfortablynumb84@gmail.com"
+                },
+                {
+                    "name": "David Buchmann",
+                    "email": "david@liip.ch"
                 }
             ],
             "description": "Doctrine2 behavioral extensions",
@@ -2979,7 +2999,7 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2019-03-17T18:16:12+00:00"
+            "time": "2019-11-08T22:33:07+00:00"
         },
         {
             "name": "gos/pnctl-event-loop-emitter",
@@ -4835,12 +4855,12 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/marello",
-                "reference": "4ab21d88f03aef664c47d7f18d1247ddf59a5030"
+                "reference": "338bd7ad961011cca852940dc647cfcfe8385a64"
             },
             "require": {
-                "oro/calendar-bundle": "4.0.*",
-                "oro/platform": "4.0.*",
-                "oro/platform-serialised-fields": "4.0.*",
+                "oro/calendar-bundle": "4.1.*",
+                "oro/platform": "4.1.*",
+                "oro/platform-serialised-fields": "4.1.*",
                 "php": ">=7.1.26"
             },
             "type": "library",
@@ -4875,11 +4895,11 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/marello-enterprise",
-                "reference": "3b46b5945f5fe4161035cc12909f3e5ef449aa77"
+                "reference": "898a2e42942603bb339fa5869fb89e167597a033"
             },
             "require": {
                 "marellocommerce/marello": "self.version",
-                "oro/platform-enterprise": "4.0.*",
+                "oro/platform-enterprise": "4.1.*",
                 "php": ">=7.1.26"
             },
             "type": "library",
@@ -5345,6 +5365,18 @@
             ]
         },
         {
+            "name": "npm-asset/css-vars-ponyfill",
+            "version": "2.0.2",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/css-vars-ponyfill/-/css-vars-ponyfill-2.0.2.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
             "name": "npm-asset/jquery",
             "version": "3.4.1",
             "dist": {
@@ -5413,6 +5445,21 @@
             "dist": {
                 "type": "tar",
                 "url": "https://registry.npmjs.org/requirejs/-/requirejs-2.3.3.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/slick-carousel",
+            "version": "1.6.0",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/slick-carousel/-/slick-carousel-1.6.0.tgz"
+            },
+            "require": {
+                "npm-asset/jquery": ">=1.7.2"
             },
             "type": "npm-asset",
             "license": [
@@ -5564,26 +5611,26 @@
         },
         {
             "name": "oro/calendar-bundle",
-            "version": "4.0.0",
+            "version": "4.1.0-beta",
             "source": {
                 "type": "git",
                 "url": "https://github.com/oroinc/OroCalendarBundle.git",
-                "reference": "92d4010e459c8508d99ac7ece7674fdeaf931d5d"
+                "reference": "01e3b2a2461b85f1199cc8c461f7313ffb44733b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/OroCalendarBundle/zipball/92d4010e459c8508d99ac7ece7674fdeaf931d5d",
-                "reference": "92d4010e459c8508d99ac7ece7674fdeaf931d5d",
+                "url": "https://api.github.com/repos/oroinc/OroCalendarBundle/zipball/01e3b2a2461b85f1199cc8c461f7313ffb44733b",
+                "reference": "01e3b2a2461b85f1199cc8c461f7313ffb44733b",
                 "shasum": ""
             },
             "require": {
                 "bower-asset/fullcalendar": "3.4.0",
-                "oro/platform": "4.0.*"
+                "oro/platform": "4.1.*"
             },
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.0-dev"
+                    "dev-master": "4.1-dev"
                 }
             },
             "autoload": {
@@ -5612,10 +5659,10 @@
                 "OroPlatform"
             ],
             "support": {
-                "source": "https://github.com/oroinc/OroCalendarBundle/tree/4.0",
+                "source": "https://github.com/oroinc/OroCalendarBundle/tree/4.1-beta",
                 "issues": "https://github.com/oroinc/OroCalendarBundle/issues"
             },
-            "time": "2019-08-08T16:40:46+00:00"
+            "time": "2019-09-30T18:53:56+00:00"
         },
         {
             "name": "oro/doctrine-extensions",
@@ -5674,27 +5721,27 @@
         },
         {
             "name": "oro/health-check-bundle",
-            "version": "4.0.0",
+            "version": "4.1.0-beta",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/OroHealthCheckBundle.git",
-                "reference": "ecdf29cafea0e471cee7add815e6ad53a3c4a93b"
+                "reference": "75143992264c146dcd3efbfe0659c297928d87b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/OroHealthCheckBundle/zipball/ecdf29cafea0e471cee7add815e6ad53a3c4a93b",
-                "reference": "ecdf29cafea0e471cee7add815e6ad53a3c4a93b",
+                "url": "https://api.github.com/repos/oroinc/OroHealthCheckBundle/zipball/75143992264c146dcd3efbfe0659c297928d87b8",
+                "reference": "75143992264c146dcd3efbfe0659c297928d87b8",
                 "shasum": ""
             },
             "require": {
                 "lexik/maintenance-bundle": "2.*",
                 "liip/monitor-bundle": "2.*",
-                "oro/platform-enterprise": "4.0.*"
+                "oro/platform-enterprise": "4.1.*"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.0-dev"
+                    "dev-master": "4.1-dev"
                 }
             },
             "autoload": {
@@ -5721,22 +5768,22 @@
                 "Oro"
             ],
             "support": {
-                "source": "https://github.com/oroinc/OroHealthCheckBundle/tree/master"
+                "source": "https://github.com/oroinc/OroHealthCheckBundle/tree/4.1-beta"
             },
-            "time": "2019-07-05T17:29:41+00:00"
+            "time": "2019-09-30T18:53:56+00:00"
         },
         {
             "name": "oro/platform",
-            "version": "4.0.0",
+            "version": "4.1.0-beta",
             "source": {
                 "type": "git",
                 "url": "https://github.com/oroinc/platform.git",
-                "reference": "97a21e3563e5ecbd39f1ea61b444a0cbb23cca40"
+                "reference": "f0cfd01afcf3a52a06cb5f216f5c7c8be9566872"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/platform/zipball/97a21e3563e5ecbd39f1ea61b444a0cbb23cca40",
-                "reference": "97a21e3563e5ecbd39f1ea61b444a0cbb23cca40",
+                "url": "https://api.github.com/repos/oroinc/platform/zipball/f0cfd01afcf3a52a06cb5f216f5c7c8be9566872",
+                "reference": "f0cfd01afcf3a52a06cb5f216f5c7c8be9566872",
                 "shasum": ""
             },
             "require": {
@@ -5762,6 +5809,7 @@
                 "bower-asset/jquery-mousewheel": "3.1.13",
                 "bower-asset/jquery-ui-multiselect-widget": "2.0.1",
                 "bower-asset/jquery-validate": "1.16.0",
+                "bower-asset/jquery.nicescroll": "3.6.6",
                 "bower-asset/jquery.numeric": "1.5.0",
                 "bower-asset/jsplumb": "1.7.*",
                 "bower-asset/jstree": "3.3.*",
@@ -5782,7 +5830,7 @@
                 "doctrine/dbal": "2.7.*",
                 "doctrine/doctrine-bundle": "1.9.*",
                 "doctrine/doctrine-fixtures-bundle": "2.4.*",
-                "doctrine/orm": "2.6.*",
+                "doctrine/orm": "2.6.3",
                 "ext-gd": "*",
                 "ext-intl": "*",
                 "ext-mbstring": "*",
@@ -5813,23 +5861,26 @@
                 "nesbot/carbon": "1.29.*",
                 "npm-asset/backbone": "1.4.*",
                 "npm-asset/bootstrap": "4.3.1",
+                "npm-asset/css-vars-ponyfill": "^2.0",
                 "npm-asset/jquery": "3.4.*",
                 "npm-asset/jquery-ui": "1.12.*",
                 "npm-asset/jquery.uniform": "4.3.*",
                 "npm-asset/overlayscrollbars": "1.6.*",
                 "npm-asset/popper.js": "1.14.7",
                 "npm-asset/requirejs": "2.3.*",
+                "npm-asset/slick-carousel": "1.6.0",
                 "npm-asset/underscore": "1.9.*",
                 "npm-asset/xregexp": "3.2.*",
                 "ocramius/proxy-manager": "2.1.1",
                 "oro/doctrine-extensions": "1.2.*",
-                "oro/redis-config": "4.0.*",
+                "oro/redis-config": "4.1.*",
                 "php": ">=7.1.26",
                 "php-http/httplug-bundle": "1.15.2",
                 "phpdocumentor/reflection-docblock": "4.3.*",
                 "piwik/device-detector": "3.10.*",
                 "psr/container": "^1.0",
                 "robloach/component-installer": "0.2.*",
+                "salsify/json-streaming-parser": "8.0.1",
                 "sensio/framework-extra-bundle": "5.2.*",
                 "stof/doctrine-extensions-bundle": "1.3.*",
                 "symfony/acl-bundle": "1.0.*",
@@ -5841,6 +5892,7 @@
                 "tinymce/tinymce": "4.6.*",
                 "twig/extensions": "1.5.*",
                 "twig/twig": "2.9.*",
+                "xemlock/htmlpurifier-html5": "0.1.10",
                 "zendframework/zend-mail": "2.10.0"
             },
             "require-dev": {
@@ -5864,8 +5916,11 @@
             },
             "type": "library",
             "extra": {
+                "symfony": {
+                    "require": "4.2.*"
+                },
                 "branch-alias": {
-                    "dev-master": "4.0-dev"
+                    "dev-master": "4.1-dev"
                 }
             },
             "autoload": {
@@ -5888,34 +5943,34 @@
             "description": "Business Application Platform (BAP)",
             "homepage": "https://github.com/oroinc/platform.git",
             "support": {
-                "source": "https://github.com/oroinc/platform/tree/4.0",
+                "source": "https://github.com/oroinc/platform/tree/4.1-beta",
                 "issues": "https://github.com/oroinc/platform/issues"
             },
-            "time": "2019-08-08T16:40:46+00:00"
+            "time": "2019-09-30T22:11:07+00:00"
         },
         {
             "name": "oro/platform-enterprise",
-            "version": "4.0.0",
+            "version": "4.1.0-beta",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/platform-enterprise.git",
-                "reference": "e326d033dfce43893ad973433827b7cfe70c13c3"
+                "reference": "6d9b7d9bc2aa8d7853f15909331436854352c787"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/platform-enterprise/zipball/e326d033dfce43893ad973433827b7cfe70c13c3",
-                "reference": "e326d033dfce43893ad973433827b7cfe70c13c3",
+                "url": "https://api.github.com/repos/oroinc/platform-enterprise/zipball/6d9b7d9bc2aa8d7853f15909331436854352c787",
+                "reference": "6d9b7d9bc2aa8d7853f15909331436854352c787",
                 "shasum": ""
             },
             "require": {
                 "elasticsearch/elasticsearch": "6.0.*",
-                "oro/platform": "4.0.*",
+                "oro/platform": "4.1.*",
                 "php-amqplib/php-amqplib": "2.7.*"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.0-dev"
+                    "dev-master": "4.1-dev"
                 }
             },
             "autoload": {
@@ -5935,31 +5990,31 @@
             "description": "OroPlatform Enterprise",
             "homepage": "https://github.com/oroinc/platform-enterprise.git",
             "support": {
-                "source": "https://github.com/oroinc/platform-enterprise/tree/4.0"
+                "source": "https://github.com/oroinc/platform-enterprise/tree/4.1-beta"
             },
-            "time": "2019-08-08T16:40:46+00:00"
+            "time": "2019-09-30T18:53:56+00:00"
         },
         {
             "name": "oro/platform-serialised-fields",
-            "version": "4.0.0",
+            "version": "4.1.0-beta",
             "source": {
                 "type": "git",
                 "url": "https://github.com/oroinc/OroEntitySerializedFieldsBundle.git",
-                "reference": "b2652e6f511b8c4042b39521985890f5268d796a"
+                "reference": "4e5d73ba536949dff3453fe10d51aed203d72b1f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/OroEntitySerializedFieldsBundle/zipball/b2652e6f511b8c4042b39521985890f5268d796a",
-                "reference": "b2652e6f511b8c4042b39521985890f5268d796a",
+                "url": "https://api.github.com/repos/oroinc/OroEntitySerializedFieldsBundle/zipball/4e5d73ba536949dff3453fe10d51aed203d72b1f",
+                "reference": "4e5d73ba536949dff3453fe10d51aed203d72b1f",
                 "shasum": ""
             },
             "require": {
-                "oro/platform": "4.0.*"
+                "oro/platform": "4.1.*"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.0-dev"
+                    "dev-master": "4.1-dev"
                 }
             },
             "autoload": {
@@ -5988,29 +6043,29 @@
                 "fields"
             ],
             "support": {
-                "source": "https://github.com/oroinc/OroEntitySerializedFieldsBundle/tree/4.0",
+                "source": "https://github.com/oroinc/OroEntitySerializedFieldsBundle/tree/4.1-beta",
                 "issues": "https://github.com/oroinc/OroEntitySerializedFieldsBundle/issues"
             },
-            "time": "2019-07-10T14:00:52+00:00"
+            "time": "2019-09-30T18:53:56+00:00"
         },
         {
             "name": "oro/redis-config",
-            "version": "4.0.0",
+            "version": "4.1.0-beta",
             "target-dir": "Oro/Bundle/RedisConfigBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/oroinc/redis-config.git",
-                "reference": "7c971c233c603a27b854aadb324b4f42571ca85b"
+                "reference": "f6a76db6f12508ddf1c19010e6587764ce74cd60"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/redis-config/zipball/7c971c233c603a27b854aadb324b4f42571ca85b",
-                "reference": "7c971c233c603a27b854aadb324b4f42571ca85b",
+                "url": "https://api.github.com/repos/oroinc/redis-config/zipball/f6a76db6f12508ddf1c19010e6587764ce74cd60",
+                "reference": "f6a76db6f12508ddf1c19010e6587764ce74cd60",
                 "shasum": ""
             },
             "require": {
-                "predis/predis": "~1.0",
-                "snc/redis-bundle": "~2.0.6"
+                "predis/predis": "^1.0",
+                "snc/redis-bundle": "~2.1.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "5.7.*"
@@ -6018,7 +6073,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.0-dev"
+                    "dev-master": "4.1-dev"
                 }
             },
             "autoload": {
@@ -6038,10 +6093,10 @@
                 "Redis"
             ],
             "support": {
-                "source": "https://github.com/oroinc/redis-config/tree/master",
+                "source": "https://github.com/oroinc/redis-config/tree/4.1-beta",
                 "issues": "https://github.com/oroinc/redis-config/issues"
             },
-            "time": "2019-07-25T10:07:17+00:00"
+            "time": "2019-09-30T18:53:56+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -7923,6 +7978,73 @@
             "time": "2015-08-10T12:35:38+00:00"
         },
         {
+            "name": "salsify/json-streaming-parser",
+            "version": "v8.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/salsify/jsonstreamingparser.git",
+                "reference": "7d3bc67f495ba161de40f033d6bda5959542bbd0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/salsify/jsonstreamingparser/zipball/7d3bc67f495ba161de40f033d6bda5959542bbd0",
+                "reference": "7d3bc67f495ba161de40f033d6bda5959542bbd0",
+                "shasum": ""
+            },
+            "require": {
+                "ext-ctype": "*",
+                "ext-mbstring": "*",
+                "php": "^7.1"
+            },
+            "require-dev": {
+                "ext-json": "*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "8.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "JsonStreamingParser\\": "src",
+                    "JsonStreamingParser\\Test\\": "tests"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Maxim Gnatenko",
+                    "email": "mgnatenko@gmail.com"
+                },
+                {
+                    "name": "Rob Gonzalez",
+                    "email": "rob@salsify.com",
+                    "homepage": "http://salsify.com/"
+                },
+                {
+                    "name": "ThePanz",
+                    "email": "thepanz@gmail.com"
+                },
+                {
+                    "name": "Max Grigorian",
+                    "email": "maxakawizard@gmail.com",
+                    "homepage": "http://wizardcat.com/"
+                }
+            ],
+            "description": "A streaming parser for JSON in PHP.",
+            "homepage": "https://github.com/salsify/jsonstreamingparser",
+            "keywords": [
+                "json",
+                "parser",
+                "streaming"
+            ],
+            "time": "2018-10-26T13:33:34+00:00"
+        },
+        {
             "name": "seld/cli-prompt",
             "version": "1.0.3",
             "source": {
@@ -8136,26 +8258,26 @@
         },
         {
             "name": "snc/redis-bundle",
-            "version": "2.0.6",
+            "version": "2.1.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/snc/SncRedisBundle.git",
-                "reference": "73c87c435f87e08c2d564c3d9ad35f38cd8d3a0e"
+                "reference": "1f4d2980e56366d875fd3db8c64e58fef04a4e7d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/snc/SncRedisBundle/zipball/73c87c435f87e08c2d564c3d9ad35f38cd8d3a0e",
-                "reference": "73c87c435f87e08c2d564c3d9ad35f38cd8d3a0e",
+                "url": "https://api.github.com/repos/snc/SncRedisBundle/zipball/1f4d2980e56366d875fd3db8c64e58fef04a4e7d",
+                "reference": "1f4d2980e56366d875fd3db8c64e58fef04a4e7d",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3",
+                "php": "^5.3.3 || ^7.0",
                 "symfony/framework-bundle": "^2.7 || ^3.0 || ^4.0",
                 "symfony/yaml": "^2.7 || ^3.0 || ^4.0"
             },
             "require-dev": {
                 "doctrine/cache": "1.*",
-                "phpunit/phpunit": "^4.8 || ^5.4",
+                "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.5",
                 "predis/predis": "^1.0",
                 "symfony/console": "^2.7 || ^3.0 || ^4.0",
                 "symfony/phpunit-bridge": "^2.7 || ^3.0 || ^4.0"
@@ -8163,7 +8285,8 @@
             "suggest": {
                 "monolog/monolog": "If you want to use the monolog redis handler.",
                 "predis/predis": "If you want to use predis.",
-                "symfony/console": "If you want to use commands to interact with the redis database"
+                "symfony/console": "If you want to use commands to interact with the redis database",
+                "symfony/proxy-manager-bridge": "If you want to lazy-load some services"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -8197,7 +8320,7 @@
                 "redis",
                 "symfony"
             ],
-            "time": "2017-12-01T10:40:06+00:00"
+            "time": "2019-10-09T07:26:03+00:00"
         },
         {
             "name": "stof/doctrine-extensions-bundle",
@@ -9625,6 +9748,55 @@
                 "negotiation"
             ],
             "time": "2017-05-14T17:21:12+00:00"
+        },
+        {
+            "name": "xemlock/htmlpurifier-html5",
+            "version": "v0.1.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/xemlock/htmlpurifier-html5.git",
+                "reference": "32cef47500fb77c2be0f160372095bec15bf0052"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/xemlock/htmlpurifier-html5/zipball/32cef47500fb77c2be0f160372095bec15bf0052",
+                "reference": "32cef47500fb77c2be0f160372095bec15bf0052",
+                "shasum": ""
+            },
+            "require": {
+                "ezyang/htmlpurifier": "^4.7",
+                "php": ">=5.2"
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "^1.1|^2.1",
+                "phpunit/phpunit": ">=4.7 <8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "library/HTMLPurifier/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "xemlock",
+                    "email": "xemlock@gmail.com"
+                }
+            ],
+            "description": "HTML Purifier definitions for HTML5 elements",
+            "keywords": [
+                "HTML5",
+                "Purifier",
+                "html",
+                "htmlpurifier",
+                "security",
+                "xss"
+            ],
+            "time": "2019-04-26T08:53:59+00:00"
         },
         {
             "name": "zendframework/zend-code",
