@@ -78,11 +78,21 @@ define(function(require) {
                 this.options.canDropship = data.canDropship;
             }
 
+            if (data.currency.length !== 0) {
+                this.options.currency = ' ' + data.currency;
+            }
+
             this.fieldsByName.priority
                 .val(this.options.priority);
 
             this.fieldsByName.canDropship
                 .prop('checked', this.options.canDropship);
+
+            var parent = $(this.fieldsByName.cost).parent();
+            parent.contents().filter(function(){
+                return (this.nodeType == 3);
+            }).remove();
+            parent.append(this.options.currency);
         },
 
         /**
