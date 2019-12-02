@@ -129,6 +129,7 @@ datagrids:
                 - channelId
         mass_actions: ~
         options:
+            entityHint: marello.product.entity_plural_label
             export: false
             entity_pagination: false
 
