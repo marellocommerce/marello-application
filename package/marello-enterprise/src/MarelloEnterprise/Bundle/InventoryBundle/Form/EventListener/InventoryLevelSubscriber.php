@@ -39,7 +39,7 @@ class InventoryLevelSubscriber extends BaseInventoryLevelSubscriber
         $context = InventoryUpdateContextFactory::createInventoryLevelUpdateContext(
             $inventoryLevel,
             $inventoryLevel->getInventoryItem(),
-            null,
+            [],
             $adjustment,
             0,
             'manual'
