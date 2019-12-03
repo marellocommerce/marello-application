@@ -96,7 +96,7 @@ class MarelloPackingBundleInstaller implements
         $table->addColumn('order_item_id', 'integer', []);
         $table->addColumn('weight', 'float', ['notnull' => true]);
         $table->addColumn('quantity', 'float', ['notnull' => true]);
-        $table->addColumn('inventory_batches', 'json_array', ['notnull' => true, 'comment' => '(DC2Type:json_array)']);
+        $table->addColumn('inventory_batches', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
         $table->addColumn('comment', 'text', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
