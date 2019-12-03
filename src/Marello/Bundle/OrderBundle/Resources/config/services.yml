@@ -308,12 +308,16 @@ services:
 
     marello_order.provider.orderitems_by_status:
         class: 'Marello\Bundle\OrderBundle\Provider\OrderDashboardOrderItemsByStatusProvider'
+        public: true
         arguments:
             - '@doctrine'
             - '@oro_security.acl_helper'
             - '@oro_dashboard.widget_provider.filter_manager'
             - '@oro_dashboard.filter.date_filter_processor'
             - '@oro_currency.query.currency_transformer'
+
+    Marello\Bundle\OrderBundle\Provider\OrderDashboardOrderItemsByStatusProvider:
+        alias: marello_order.provider.orderitems_by_status
 
     marello_order.widget_config_value.widget_orderitems_by_status.converter:
         parent: oro_dashboard.widget_config_value.widget_enum_select.converter

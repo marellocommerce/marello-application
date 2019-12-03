@@ -5,7 +5,7 @@
         {% for k, val in item.value %}
             {% set productImage = asset('bundles/marelloproduct/img/no_image_available.jpg') %}
             {% if val.image is not null %}
-                {% set productImage = file_url(val.product, 'image', val.image) %}
+                {% set productImage = filtered_image_url(val.image, 'product_grid') %}
             {% endif %}
             <tr {% if k is even %} class="grid-row row-even" {% endif %}>
                 <td class="string-cell grid-cell grid-body-cell medal">
