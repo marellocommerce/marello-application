@@ -88,6 +88,7 @@ services:
 
     marello_order.provider.order_item_statistic_provider:
         class: '%marello_order.provider.order_item_statistic_provider.class%'
+        public: true
         arguments:
             - '@marello_order.repository.order_item'
             - '@marello_order.repository.order'

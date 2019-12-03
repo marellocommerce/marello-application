@@ -6,9 +6,20 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Oro\Bundle\DashboardBundle\Model\WidgetConfigs;
 
 class OrderDashboardController extends AbstractController
 {
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedServices()
+    {
+        return array_merge(parent::getSubscribedServices(), [
+            WidgetConfigs::class
+        ]);
+    }
+
     /**
      * @Route(
      *      path="/orderitems_by_status/chart/{widget}",
@@ -29,7 +40,7 @@ class OrderDashboardController extends AbstractController
         ];
         $items = $this->get('marello_order.provider.orderitems_by_status')
             ->getOrderItemsGroupedByStatus($options);
-        $widgetAttr              = $this->get('oro_dashboard.widget_configs')->getWidgetAttributesForTwig($widget);
+        $widgetAttr              = $this->get(WidgetConfigs::class)->getWidgetAttributesForTwig($widget);
         $widgetAttr['chartView'] = $this->get('oro_chart.view_builder')
             ->setArrayData($items)
             ->setOptions(
