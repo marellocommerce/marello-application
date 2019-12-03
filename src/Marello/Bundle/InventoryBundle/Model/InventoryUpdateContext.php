@@ -29,11 +29,11 @@ class InventoryUpdateContext
      * @param $name
      * @return mixed|null
      */
-    public function getValue($name)
+    public function getValue($name, $default = null)
     {
         return isset($this->values[$name])
             ? $this->values[$name]
-            : null;
+            : $default;
     }
 
     /**
@@ -101,23 +101,23 @@ class InventoryUpdateContext
 
     /**
      * {@inheritdoc}
-     * @param $item
+     * @param array $batches
      * @return $this
      */
-    public function setInventoryBatch($inventoryBatch)
+    public function setInventoryBatches(array $batches)
     {
-        $this->setValue('inventory_batch', $inventoryBatch);
+        $this->setValue('inventory_batches', $batches);
 
         return $this;
     }
 
     /**
      * {@inheritdoc}
-     * @return mixed|null
+     * @return array
      */
-    public function getInventoryBatch()
+    public function getInventoryBatches()
     {
-        return $this->getValue('inventory_batch');
+        return $this->getValue('inventory_batches', []);
     }
     
     /**

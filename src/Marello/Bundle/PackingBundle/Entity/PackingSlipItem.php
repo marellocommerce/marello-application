@@ -172,9 +172,7 @@ class PackingSlipItem extends ExtendPackingSlipItem implements OrganizationAware
     protected $status;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="inventory_batch_number", type="string", nullable=true)
+     * @ORM\Column(name="inventory_batches", type="json_array")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -182,8 +180,10 @@ class PackingSlipItem extends ExtendPackingSlipItem implements OrganizationAware
      *          }
      *      }
      * )
+     *
+     * @var array
      */
-    protected $inventoryBatchNumber;
+    protected $inventoryBatches;
 
     /**
      * @ORM\PrePersist
@@ -385,20 +385,20 @@ class PackingSlipItem extends ExtendPackingSlipItem implements OrganizationAware
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getInventoryBatchNumber()
+    public function getInventoryBatches()
     {
-        return $this->inventoryBatchNumber;
+        return $this->inventoryBatches;
     }
 
     /**
-     * @param string $batchNumber
+     * @param array $batches
      * @return $this
      */
-    public function setInventoryBatchNumber($batchNumber)
+    public function setInventoryBatches(array $batches)
     {
-        $this->inventoryBatchNumber = $batchNumber;
+        $this->inventoryBatches = $batches;
 
         return $this;
     }

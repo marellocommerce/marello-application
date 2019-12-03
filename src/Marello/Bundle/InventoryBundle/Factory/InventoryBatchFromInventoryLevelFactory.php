@@ -16,7 +16,8 @@ class InventoryBatchFromInventoryLevelFactory
         $inventoryBatch = new InventoryBatch();
         $inventoryBatch
             ->setInventoryLevel($inventoryLevel)
-            ->setQuantity($inventoryLevel->getInventoryQty());
+            ->setQuantity($inventoryLevel->getInventoryQty())
+            ->setDeliveryDate(new \DateTime('now', new \DateTimeZone('UTC')));
 
         return $inventoryBatch;
     }

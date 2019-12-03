@@ -4,8 +4,6 @@ namespace Marello\Bundle\OrderBundle\Workflow;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
-use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
-use Marello\Bundle\PackingBundle\Entity\PackingSlipItem;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
@@ -89,19 +87,7 @@ class OrderPickAndPackAction extends OrderTransitionAction
             'order_workflow.inventory_allocated',
             $entity
         );
-        $packingSlipItem = $this->doctrine
-            ->getManagerForClass(PackingSlipItem::class)
-            ->getRepository(PackingSlipItem::class)
-            ->findOneBy(['orderItem' => $item]);
-        if ($packingSlipItem) {
-            if ($batchNumber = $packingSlipItem->getInventoryBatchNumber()) {
-                $inventoryBatch = $this->doctrine
-                    ->getManagerForClass(InventoryBatch::class)
-                    ->getRepository(InventoryBatch::class)
-                    ->findOneBy(['batchNumber' => $batchNumber]);
-                $context->setInventoryBatch($inventoryBatch);
-            }
-        }
+
         $context->setValue('warehouse', $warehouse);
 
         $this->eventDispatcher->dispatch(
