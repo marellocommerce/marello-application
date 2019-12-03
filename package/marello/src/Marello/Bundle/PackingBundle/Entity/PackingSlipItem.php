@@ -172,7 +172,7 @@ class PackingSlipItem extends ExtendPackingSlipItem implements OrganizationAware
     protected $status;
 
     /**
-     * @ORM\Column(name="inventory_batches", type="json_array")
+     * @ORM\Column(name="inventory_batches", type="json_array", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={

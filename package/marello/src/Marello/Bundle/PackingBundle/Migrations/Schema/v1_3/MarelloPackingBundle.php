@@ -43,7 +43,7 @@ class MarelloPackingBundle implements Migration, OrderedMigrationInterface
     protected function updateMarelloPackingSlipItemTable(Schema $schema)
     {
         $table = $schema->getTable('marello_packing_pack_slip_item');
-        $table->addColumn('inventory_batches', 'json_array', ['notnull' => true, 'comment' => '(DC2Type:json_array)']);
+        $table->addColumn('inventory_batches', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
     }
     
     /**
