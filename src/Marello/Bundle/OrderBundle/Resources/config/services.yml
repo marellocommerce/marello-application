@@ -73,6 +73,19 @@ services:
         tags:
             - { name: oro_dashboard.big_number.provider, alias: marello-order }
 
+    marello_order.provider.order_statistic.formatter:
+        class: 'Marello\Bundle\OrderBundle\Provider\OrderStatisticsCurrencyNumberFormatter'
+        arguments:
+            - '@oro_locale.formatter.number'
+
+    marello_order.provider.order_statistic.currency_number.processor:
+        class: 'Marello\Bundle\OrderBundle\Provider\OrderStatisticsCurrencyNumberProcessor'
+        public: true
+        arguments:
+            - '@marello_order.provider.order_statistic.formatter'
+            - '@oro_dashboard.provider.big_number.date_helper'
+            - '@marello_order.provider.order_statistic_provider'
+
     marello_order.provider.order_item_statistic_provider:
         class: '%marello_order.provider.order_item_statistic_provider.class%'
         arguments:
