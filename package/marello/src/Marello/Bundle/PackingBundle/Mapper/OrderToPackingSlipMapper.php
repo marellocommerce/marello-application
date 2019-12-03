@@ -90,11 +90,30 @@ class OrderToPackingSlipMapper extends AbstractPackingSlipMapper
         $inventoryItem = $product->getInventoryItems()->first();
         if ($inventoryItem) {
             if ($inventoryLevel = $inventoryItem->getInventoryLevel($warehouse)) {
-                $inventoryBatches = $inventoryLevel->getInventoryBatches();
-                if ($inventoryBatches->count() > 0) {
-                    /** @var InventoryBatch $inventoryBatch */
-                    $inventoryBatch = $inventoryBatches->first();
-                    $packingSlipItemData['inventoryBatchNumber'] = $inventoryBatch->getBatchNumber();
+                $inventoryBatches = $inventoryLevel->getInventoryBatches()->toArray();
+                if (count($inventoryBatches) > 0) {
+                    usort($inventoryBatches, function (InventoryBatch $a, InventoryBatch $b) {
+                        if ($a->getDeliveryDate() < $b->getDeliveryDate()) {
+                            return -1;
+                        } elseif ($a->getDeliveryDate() > $b->getDeliveryDate()) {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+                    });
+                    $data = [];
+                    $quantity = $orderItem->getQuantity();
+                    /** @var InventoryBatch[] $inventoryBatches */
+                    foreach ($inventoryBatches as $inventoryBatch) {
+                        if ($inventoryBatch->getQuantity() >= $quantity) {
+                            $data[$inventoryBatch->getBatchNumber()] = $quantity;
+                            break;
+                        } elseif ($batchQty = $inventoryBatch->getQuantity() > 0) {
+                            $data[$inventoryBatch->getBatchNumber()] = $batchQty;
+                            $quantity = $quantity - $batchQty;
+                        }
+                    }
+                    $packingSlipItemData['inventoryBatches'] = $data;
                 }
             }
         }

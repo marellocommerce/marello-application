@@ -74,11 +74,16 @@ class InventoryBatchSubscriber implements EventSubscriberInterface
         if ($adjustment === 0) {
             return;
         }
-
+        $batches = [
+            [
+                'batch' => $inventoryBatch,
+                'qty' => $adjustment
+            ]
+        ];
         $context = InventoryUpdateContextFactory::createInventoryLevelUpdateContext(
             $inventoryLevel,
             $inventoryLevel->getInventoryItem(),
-            $inventoryBatch,
+            $batches,
             $adjustment,
             0,
             'manual'

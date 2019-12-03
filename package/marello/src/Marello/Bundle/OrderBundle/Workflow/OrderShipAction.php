@@ -86,12 +86,16 @@ class OrderShipAction extends OrderTransitionAction
             ->getRepository(PackingSlipItem::class)
             ->findOneBy(['orderItem' => $item]);
         if ($packingSlipItem) {
-            if ($batchNumber = $packingSlipItem->getInventoryBatchNumber()) {
-                $inventoryBatch = $this->doctrine
-                    ->getManagerForClass(InventoryBatch::class)
-                    ->getRepository(InventoryBatch::class)
-                    ->findOneBy(['batchNumber' => $batchNumber]);
-                $context->setInventoryBatch($inventoryBatch);
+            if (!empty($packingSlipItem->getInventoryBatches())) {
+                $contextBranches = [];
+                foreach ($packingSlipItem->getInventoryBatches() as $batchNumber => $qty) {
+                    $inventoryBatch = $this->doctrine
+                        ->getManagerForClass(InventoryBatch::class)
+                        ->getRepository(InventoryBatch::class)
+                        ->findOneBy(['batchNumber' => $batchNumber]);
+                    $contextBranches[] = ['batch' => $inventoryBatch, 'qty' => -$qty];
+                }
+                $context->setInventoryBatches($contextBranches);
             }
         }
         $context->setValue('warehouse', $warehouse);
