@@ -50,7 +50,7 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
             $context = InventoryUpdateContextFactory::createInventoryLevelUpdateContext(
                 $existingEntity,
                 $existingEntity->getInventoryItem(),
-                null,
+                [],
                 $inventoryUpdateQty,
                 self::ALLOCATED_QTY,
                 self::IMPORT_TRIGGER
