@@ -98,7 +98,7 @@ class OrderToPackingSlipMapperTest extends TestCase
         $product3 = $this->getEntity(Product::class, ['id' => 3, 'weight' => 5]);
 
         $inventoryLevel1 = $this->getEntity(InventoryLevel::class, ['id' => 1, 'warehouse' => $warehouse]);
-        $inventoryBatch1 = $this->getEntity(InventoryBatch::class, ['id' => 1, 'batchNumber' => '000001']);
+        $inventoryBatch1 = $this->getEntity(InventoryBatch::class, ['id' => 1, 'batchNumber' => '000001', 'quantity' => 5]);
         $inventoryItem1 = new InventoryItem($warehouse, $product1);
         $inventoryLevel1->addInventoryBatch($inventoryBatch1);
         $inventoryItem1->addInventoryLevel($inventoryLevel1);
@@ -120,7 +120,7 @@ class OrderToPackingSlipMapperTest extends TestCase
             $this->getEntity(PackingSlipItem::class, [
                 'orderItem' => $orderItem1,
                 'product' => $product1,
-                'inventoryBatchNumber' => '000001',
+                'inventoryBatches' => ['000001' => 5],
                 'quantity' => $orderItem1->getQuantity(),
                 'weight' => $product1->getWeight()
             ]),
