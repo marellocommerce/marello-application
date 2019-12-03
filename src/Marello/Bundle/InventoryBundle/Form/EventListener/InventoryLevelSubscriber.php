@@ -75,7 +75,7 @@ class InventoryLevelSubscriber implements EventSubscriberInterface
         $context = InventoryUpdateContextFactory::createInventoryLevelUpdateContext(
             $inventoryLevel,
             $inventoryLevel->getInventoryItem(),
-            null,
+            [],
             $adjustment,
             0,
             'manual'
