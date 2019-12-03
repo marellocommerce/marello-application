@@ -7,6 +7,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\DashboardBundle\Model\WidgetConfigs;
+use Oro\Bundle\ChartBundle\Model\ChartViewBuilder;
+use Marello\Bundle\OrderBundle\Provider\OrderDashboardOrderItemsByStatusProvider;
 
 class OrderDashboardController extends AbstractController
 {
@@ -16,7 +18,9 @@ class OrderDashboardController extends AbstractController
     public static function getSubscribedServices()
     {
         return array_merge(parent::getSubscribedServices(), [
-            WidgetConfigs::class
+            WidgetConfigs::class,
+            ChartViewBuilder::class,
+            OrderDashboardOrderItemsByStatusProvider::class
         ]);
     }
 
@@ -33,15 +37,15 @@ class OrderDashboardController extends AbstractController
      */
     public function orderitemsByStatusAction(Request $request, $widget)
     {
-        $options = $this->get('oro_dashboard.widget_configs')
+        $options = $this->get(WidgetConfigs::class)
             ->getWidgetOptions($request->query->get('_widgetId', null));
         $valueOptions = [
             'field_name' => 'quantity'
         ];
-        $items = $this->get('marello_order.provider.orderitems_by_status')
+        $items = $this->get(OrderDashboardOrderItemsByStatusProvider::class)
             ->getOrderItemsGroupedByStatus($options);
         $widgetAttr              = $this->get(WidgetConfigs::class)->getWidgetAttributesForTwig($widget);
-        $widgetAttr['chartView'] = $this->get('oro_chart.view_builder')
+        $widgetAttr['chartView'] = $this->get(ChartViewBuilder::class)
             ->setArrayData($items)
             ->setOptions(
                 [
