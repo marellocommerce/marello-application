@@ -112,7 +112,21 @@ class InventoryBatch extends ExtendInventoryBatch implements
      * )
      */
     protected $quantity = 0;
-
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="delivery_date", type="datetime", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $deliveryDate;
+    
     /**
      * @var \DateTime
      *
@@ -130,7 +144,7 @@ class InventoryBatch extends ExtendInventoryBatch implements
     /**
      * @var int
      *
-     * @ORM\Column(name="purchase_price", type="money")
+     * @ORM\Column(name="purchase_price", type="money", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -144,7 +158,7 @@ class InventoryBatch extends ExtendInventoryBatch implements
     /**
      * @var int
      *
-     * @ORM\Column(name="total_price", type="money")
+     * @ORM\Column(name="total_price", type="money", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -282,6 +296,25 @@ class InventoryBatch extends ExtendInventoryBatch implements
     {
         $this->quantity = $quantity;
         
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDeliveryDate()
+    {
+        return $this->deliveryDate;
+    }
+
+    /**
+     * @param \DateTime $deliveryDate
+     * @return InventoryBatch
+     */
+    public function setDeliveryDate($deliveryDate)
+    {
+        $this->deliveryDate = $deliveryDate;
+
         return $this;
     }
 

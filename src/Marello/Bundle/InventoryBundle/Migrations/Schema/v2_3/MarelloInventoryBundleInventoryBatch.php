@@ -52,9 +52,10 @@ class MarelloInventoryBundleInventoryBatch implements Migration, OrderedMigratio
         $table->addColumn('batch_reference', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('purchase_reference', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('quantity', 'integer', []);
+        $table->addColumn('delivery_date', 'datetime', ['notnull' => false, 'comment' => '(DC2Type:datetime)']);
         $table->addColumn('expiration_date', 'datetime', ['notnull' => false, 'comment' => '(DC2Type:datetime)']);
-        $table->addColumn('purchase_price', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
-        $table->addColumn('total_price', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+        $table->addColumn('purchase_price', 'money', ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+        $table->addColumn('total_price', 'money', ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('inventory_level_id', 'integer', ['notnull' => false]);
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime', ['comment' => '(DC2Type:datetime)']);

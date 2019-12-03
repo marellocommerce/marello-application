@@ -7,6 +7,7 @@ use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Factory\InventoryBatchFromInventoryLevelFactory;
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 
 class InventoryBatchCreationEventListener
 {
@@ -23,8 +24,11 @@ class InventoryBatchCreationEventListener
         if ($inventoryItem->isEnableBatchInventory() === true &&
             count($inventoryItem->getInventoryLevels()->toArray()) > 0) {
             foreach ($inventoryItem->getInventoryLevels() as $inventoryLevel) {
-                $this->inventoryBatches[] =
-                    InventoryBatchFromInventoryLevelFactory::createInventoryBatch($inventoryLevel);
+                $warehouseType = $inventoryLevel->getWarehouse()->getWarehouseType()->getName();
+                if ($warehouseType !== WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
+                    $this->inventoryBatches[] =
+                        InventoryBatchFromInventoryLevelFactory::createInventoryBatch($inventoryLevel);
+                }
             }
         }
     }
