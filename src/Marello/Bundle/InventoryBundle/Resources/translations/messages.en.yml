@@ -111,6 +111,7 @@ marello:
             batch_reference.label:          Batch Reference
             purchase_reference.label:       Purchase Reference
             quantity.label:                 Quantity
+            delivery_date.label:            Delivery Date
             expiration_date.label:          Expiration Date
             purchase_price.label:           Purchase Price
             total_price.label:              Total Price

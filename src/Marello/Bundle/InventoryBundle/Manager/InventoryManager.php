@@ -3,6 +3,8 @@
 namespace Marello\Bundle\InventoryBundle\Manager;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
+use Marello\Bundle\InventoryBundle\Factory\InventoryBatchFromInventoryLevelFactory;
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
@@ -53,7 +55,8 @@ class InventoryManager implements InventoryManagerInterface
         if (!$this->contextValidator->validateContext($context)) {
             throw new \Exception('Context structure not valid.');
         }
-
+        /** @var InventoryItem $item */
+        $item = $this->getInventoryItem($context);
         /** @var InventoryLevel $level */
         $level = $this->getInventoryLevel($context);
         if (!$level) {
@@ -61,10 +64,28 @@ class InventoryManager implements InventoryManagerInterface
             $level
                 ->setWarehouse($this->getWarehouse())
                 ->setOrganization($context->getProduct()->getOrganization());
-            
-            /** @var InventoryItem $item */
-            $item = $this->getInventoryItem($context);
             $item->addInventoryLevel($level);
+        }
+        $warehouseType = $level->getWarehouse()->getWarehouseType()->getName();
+        if ($item->isEnableBatchInventory() &&
+            $warehouseType !== WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
+            if (empty($context->getInventoryBatches())) {
+                $batch = InventoryBatchFromInventoryLevelFactory::createInventoryBatch($level);
+                $batch->setQuantity(0);
+                $batchInventory = ($batch->getQuantity() + $context->getInventory());
+                $updatedBatch = $this->updateInventoryBatch($batch, $batchInventory);
+                $context->setInventoryBatches([$updatedBatch]);
+            } else {
+                $updatedBatches = [];
+                foreach ($context->getInventoryBatches() as $batchData) {
+                    /** @var InventoryBatch $batch */
+                    $batch = $batchData['batch'];
+                    $qty = $batchData['qty'];
+                    $batchInventory = ($batch->getQuantity() + $qty);
+                    $updatedBatches[] = $this->updateInventoryBatch($batch, $batchInventory);
+                }
+                $context->setInventoryBatches($updatedBatches);
+            }
         }
 
         $inventory = null;
@@ -76,16 +97,14 @@ class InventoryManager implements InventoryManagerInterface
         if ($context->getAllocatedInventory()) {
             $allocatedInventory = ($level->getAllocatedInventoryQty() + $context->getAllocatedInventory());
         }
-
         $level->setManagedInventory($context->getValue('isInventoryManaged'));
+        /** @var InventoryBatch[] $updatedBatches */
+        $updatedBatches = $context->getInventoryBatches();
+        if (count($updatedBatches) === 1 && $updatedBatches[0]->getId() === null) {
+            $level->addInventoryBatch($updatedBatches[0]);
+        }
         $updatedLevel = $this->updateInventory($level, $inventory, $allocatedInventory);
         $context->setInventoryLevel($updatedLevel);
-        $batch = $context->getInventoryBatch();
-        if ($batch) {
-            $batchInventory = ($batch->getQuantity() + $context->getInventory());
-            $updatedBatch = $this->updateInventoryBatch($batch, $batchInventory);
-            $context->setInventoryBatch($updatedBatch);
-        }
 
         $this->eventDispatcher->dispatch(
             InventoryUpdateEvent::INVENTORY_UPDATE_AFTER,
@@ -161,6 +180,7 @@ class InventoryManager implements InventoryManagerInterface
 
             $em = $this->doctrineHelper->getEntityManager($batch);
             $em->persist($batch);
+            $em->flush($batch);
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
