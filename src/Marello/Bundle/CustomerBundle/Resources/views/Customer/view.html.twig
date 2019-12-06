@@ -82,43 +82,19 @@
     {% endset %}
 
     {% set order %}
-        <div class="widget-content">
-            <div class="row-fluid form-horizontal">
-                <div class="responsive-block">
-                    {{ dataGrid.renderGrid('marello-order-customer', {'customerId': entity.id}) }}
-                </div>
-            </div>
-        </div>
+        {{ dataGrid.renderGrid('marello-order-customer', {'customerId': entity.id}) }}
     {% endset %}
 
     {% set return %}
-        <div class="widget-content">
-            <div class="row-fluid form-horizontal">
-                <div class="responsive-block">
-                    {{ dataGrid.renderGrid('marello-return-customer', {'customerId': entity.id}) }}
-                </div>
-            </div>
-        </div>
+        {{ dataGrid.renderGrid('marello-return-customer', {'customerId': entity.id}) }}
     {% endset %}
 
     {% set refund %}
-        <div class="widget-content">
-            <div class="row-fluid form-horizontal">
-                <div class="responsive-block">
-                    {{ dataGrid.renderGrid('marello-refund-customer', {'customerId': entity.id}) }}
-                </div>
-            </div>
-        </div>
+        {{ dataGrid.renderGrid('marello-refund-customer', {'customerId': entity.id}) }}
     {% endset %}
 
     {% set additionalData %}
-        <div class="widget-content">
-            <div class="row-fluid form-horizontal">
-                <div class="responsive-block">
-                    {{ entityConfig.renderDynamicFields(entity) }}
-                </div>
-            </div>
-        </div>
+        {{ entityConfig.renderDynamicFields(entity) }}
     {% endset %}
 
     {% set dataBlocks = [
