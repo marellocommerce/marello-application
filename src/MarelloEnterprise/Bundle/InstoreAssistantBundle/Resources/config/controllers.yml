@@ -1,0 +1,13 @@
+services:
+    _defaults:
+        public: true
+
+    MarelloEnterprise\Bundle\InstoreAssistantBundle\Controller\Api\CorsOptionsController:
+        arguments:
+            - '@oro_api.rest.request_handler'
+            - '@marelloenterprise_instoreassistant.api.handler.request_action_handler'
+
+    MarelloEnterprise\Bundle\InstoreAssistantBundle\Controller\Api\InstoreAssistantUserController:
+        arguments:
+            - '@oro_api.rest.request_handler'
+            - '@marelloenterprise_instoreassistant.api.handler.request_action_handler'
