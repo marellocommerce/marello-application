@@ -177,3 +177,4 @@ marello:
             error:
                 warehouse.not_found:    No warehouse found, cannot update a new level without existing warehouse
                 inventorylevel.duplicate_entry: Duplicate entry found for entity "%entity_sku%", please correct the import file before continuing.
+                inventorylevel.product_not_found: Product not found for sku "%entity_sku%", please correct the import file before continuing.

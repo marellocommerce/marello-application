@@ -5,6 +5,7 @@ marello:
                 names.blank:        Product Name should not be blank.
                 sku:                SKU already exists, please provide a unique SKU
                 channels:           Please select a Sales Channel. There should be at least one Sales Channel per product.
+                suppliers.dropship: It is forbidden to remove the ProductSupplierRelation with dropship enabled or disable dropship if it has inventory in external warehouse. Please allocate or remove inventory before deletion
 
     productchanneltaxrelation:
         messages:

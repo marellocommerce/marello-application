@@ -19,23 +19,6 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
     private $estimation = false;
 
     /**
-     * keeping property for BC
-     * @var DoctrineHelper
-     * @deprecated will be removed in 3.0
-     */
-    protected $doctrineHelper;
-
-    /**
-     * keeping property for BC
-     * @deprecated will be removed in 3.0
-     * @param DoctrineHelper $doctrineHelper
-     */
-    public function __construct(DoctrineHelper $doctrineHelper)
-    {
-        $this->doctrineHelper = $doctrineHelper;
-    }
-
-    /**
      * {@inheritDoc}
      */
     public function setEstimation($estimation = false)

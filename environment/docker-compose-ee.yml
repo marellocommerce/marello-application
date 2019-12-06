@@ -58,7 +58,7 @@ services:
             context: ./.docker
             args:
                 - SYMFONY_ENV=prod
-                - PHP_VERSION=7.2
+                - PHP_VERSION=7.1
         container_name: enterprise-web
         working_dir: /var/www/
         links:

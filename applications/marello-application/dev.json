@@ -33,9 +33,9 @@
     },
     "require": {
         "php": ">=7.1",
-        "oro/platform": "4.0.*",
-        "oro/platform-serialised-fields": "4.0.*",
-        "oro/calendar-bundle": "4.0.*",
+        "oro/platform": "4.1.*",
+        "oro/platform-serialised-fields": "4.1.*",
+        "oro/calendar-bundle": "4.1.*",
         "marellocommerce/marello": "self.version"
     },
     "require-dev": {
@@ -132,6 +132,9 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "extra": {
+        "symfony": {
+            "require": "4.2.*"
+        },
         "symfony-web-dir": "public",
         "symfony-var-dir": "var",
         "symfony-bin-dir": "bin",
