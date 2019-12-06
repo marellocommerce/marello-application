@@ -19,7 +19,7 @@ class WarehouseGroupController extends AbstractController
      *     path="/", 
      *     name="marelloenterprise_inventory_warehousegroup_index"
      * )
-     * @Template
+     * @Template("MarelloEnterpriseInventoryBundle:WarehouseGroup:index.html.twig")
      * @AclAncestor("marelloenterprise_inventory_warehousegroup_view")
      *
      * @return array
@@ -58,7 +58,7 @@ class WarehouseGroupController extends AbstractController
      *     name="marelloenterprise_inventory_warehousegroup_view", 
      *     requirements={"id"="\d+"}
      * )
-     * @Template
+     * @Template("MarelloEnterpriseInventoryBundle:WarehouseGroup:view.html.twig")
      * @Acl(
      *      id="marelloenterprise_inventory_warehousegroup_view",
      *      type="entity",
@@ -83,7 +83,7 @@ class WarehouseGroupController extends AbstractController
      *     name="marelloenterprise_inventory_warehousegroup_update", 
      *     requirements={"id"="\d+"}
      * )
-     * @Template
+     * @Template("MarelloEnterpriseInventoryBundle:WarehouseGroup:update.html.twig")
      * @Acl(
      *     id="marelloenterprise_inventory_warehousegroup_update",
      *     type="entity",
