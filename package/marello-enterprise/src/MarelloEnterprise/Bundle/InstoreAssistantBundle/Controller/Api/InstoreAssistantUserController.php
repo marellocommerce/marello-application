@@ -7,9 +7,27 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Oro\Bundle\ApiBundle\Controller\RestApiController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Oro\Bundle\ApiBundle\Request\Rest\RequestHandler;
 
 class InstoreAssistantUserController extends RestApiController
 {
+    /**
+     * @var InstoreAssistantRequestActionHandler
+     */
+    private $requestActionHandler;
+
+    /**
+     * @param RequestHandler $requestHandler
+     * @param InstoreAssistantRequestActionHandler $requestActionHandler
+     */
+    public function __construct(
+        RequestHandler $requestHandler,
+        InstoreAssistantRequestActionHandler $requestActionHandler
+    ) {
+        parent::__construct($requestHandler);
+        $this->requestActionHandler = $requestActionHandler;
+    }
+
     /**
      * Authenticate a specific user by either an Email or Username and return the API key for the user
      * when successful
@@ -72,14 +90,6 @@ class InstoreAssistantUserController extends RestApiController
         // this is because the order in which the bundles are loaded probably, all the other actions are defined
         // in the same bundle and are being loaded after they are being included in the OroApiExtension.php
         // of the OroApiBundle...
-        return $this->getHandler()->handleAuthenticate($request);
-    }
-
-    /**
-     * @return InstoreAssistantRequestActionHandler
-     */
-    private function getHandler(): InstoreAssistantRequestActionHandler
-    {
-        return $this->get('marelloenterprise_instoreassistant.api.handler.request_action_handler');
+        return $this->requestActionHandler->handleAuthenticate($request);
     }
 }

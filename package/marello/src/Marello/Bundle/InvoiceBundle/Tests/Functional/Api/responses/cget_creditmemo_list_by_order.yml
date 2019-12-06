@@ -2,8 +2,6 @@ data:
     -
         type: marellocreditmemos
         id: '<toString(@marello_creditmemo_1->id)>'
-        meta:
-            __class__: Marello\Bundle\InvoiceBundle\Entity\Creditmemo
         attributes:
             invoiceNumber: '<toString(@marello_creditmemo_1->invoiceNumber)>'
             invoicedAt: '@marello_creditmemo_1->invoicedAt->format("Y-m-d\TH:i:s\Z")'
