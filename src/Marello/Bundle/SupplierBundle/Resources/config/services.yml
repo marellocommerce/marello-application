@@ -16,6 +16,7 @@ services:
         public: true
         arguments:
             - '@doctrine.orm.entity_manager'
+            - '@oro_currency.locale_settings'
 
     marello_supplier.twig.supplier_extension:
         class: Marello\Bundle\SupplierBundle\Twig\SupplierExtension
@@ -36,3 +37,4 @@ services:
         tags:
             - { name: doctrine.event_listener, event: prePersist }
             - { name: doctrine.event_listener, event: preUpdate }
+            - { name: doctrine.event_listener, event: preRemove }
