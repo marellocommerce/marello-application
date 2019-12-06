@@ -62,10 +62,19 @@ class InventoryBalanceCommand extends Command
                 self::EXECUTION_TYPE,
                 null,
                 InputOption::VALUE_REQUIRED,
-                sprintf('for selecting execution type (possible values: %s, %s)',self::BACKGROUND, self::IMMEDIATELY),
+                sprintf(
+                    'for selecting execution type (possible values: %s, %s)',
+                    self::BACKGROUND,
+                    self::IMMEDIATELY
+                ),
                 self::BACKGROUND
             )
-            ->addOption(self::ALL, null, null, 'for all products inventory rebalancing')
+            ->addOption(
+                self::ALL,
+                null,
+                null,
+                'for all products inventory rebalancing'
+            )
             ->addOption(
                 self::PRODUCT,
                 null,
