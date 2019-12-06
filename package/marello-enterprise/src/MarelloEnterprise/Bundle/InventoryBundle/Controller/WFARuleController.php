@@ -21,7 +21,7 @@ class WFARuleController extends AbstractController
      *     path="/", 
      *     name="marelloenterprise_inventory_wfa_rule_index"
      * )
-     * @Template
+     * @Template("MarelloEnterpriseInventoryBundle:WFARule:index.html.twig")
      * @AclAncestor("marelloenterprise_inventory_wfa_rule_view")
      *
      * @return array
@@ -60,7 +60,7 @@ class WFARuleController extends AbstractController
      *     name="marelloenterprise_inventory_wfa_rule_view", 
      *     requirements={"id"="\d+"}
      * )
-     * @Template
+     * @Template("MarelloEnterpriseInventoryBundle:WFARule:view.html.twig")
      * @Acl(
      *      id="marelloenterprise_inventory_wfa_rule_view",
      *      type="entity",
@@ -85,7 +85,7 @@ class WFARuleController extends AbstractController
      *     name="marelloenterprise_inventory_wfa_rule_update", 
      *     requirements={"id"="\d+"}
      * )
-     * @Template
+     * @Template("MarelloEnterpriseInventoryBundle:WFARule:update.html.twig")
      * @Acl(
      *     id="marelloenterprise_inventory_wfa_rule_update",
      *     type="entity",
