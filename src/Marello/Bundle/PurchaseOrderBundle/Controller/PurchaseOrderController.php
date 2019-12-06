@@ -24,7 +24,7 @@ class PurchaseOrderController extends AbstractController
      *     path="/", 
      *     name="marello_purchaseorder_purchaseorder_index"
      * )
-     * @Config\Template
+     * @Config\Template("MarelloPurchaseOrderBundle:PurchaseOrder:index.html.twig")
      * @AclAncestor("marello_purchase_order_view")
      */
     public function indexAction()
@@ -38,7 +38,7 @@ class PurchaseOrderController extends AbstractController
      *     requirements={"id"="\d+"}, 
      *     name="marello_purchaseorder_purchaseorder_view"
      * )
-     * @Config\Template
+     * @Config\Template("MarelloPurchaseOrderBundle:PurchaseOrder:view.html.twig")
      * @AclAncestor("marello_purchase_order_view")
      *
      * @param PurchaseOrder $purchaseOrder
@@ -89,7 +89,7 @@ class PurchaseOrderController extends AbstractController
      *     name="marello_purchaseorder_purchaseorder_update"
      * )
      * @AclAncestor("marello_purchase_order_update")
-     * @Config\Template
+     * @Config\Template("MarelloPurchaseOrderBundle:PurchaseOrder:update.html.twig")
      *
      * @param PurchaseOrder $purchaseOrder
      *
