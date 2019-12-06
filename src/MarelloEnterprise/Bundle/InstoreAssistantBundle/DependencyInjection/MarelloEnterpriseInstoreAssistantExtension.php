@@ -28,5 +28,6 @@ class MarelloEnterpriseInstoreAssistantExtension extends Extension
         $loader->load('services.yml');
         $loader->load('processors.options.yml');
         $loader->load('processors.authenticate.yml');
+        $loader->load('controllers.yml');
     }
 }
