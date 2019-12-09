@@ -104,7 +104,6 @@ class MarelloServicePointBundle implements Migration
         $table->addIndex(['day_of_week']);
         $table->addIndex(['servicepoint_facility_id']);
         $table->addIndex(['open_time', 'close_time']);
-        $table->addUniqueIndex(['day_of_week', 'servicepoint_facility_id']);
     }
 
     protected function createFacilityLabelsTable(Schema $schema, QueryBag $queries)
