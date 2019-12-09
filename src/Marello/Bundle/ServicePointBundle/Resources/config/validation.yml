@@ -89,6 +89,9 @@ Marello\Bundle\ServicePointBundle\Entity\Facility:
 
 Marello\Bundle\ServicePointBundle\Entity\TimePeriod:
     constraints:
+        - 'Marello\Bundle\ServicePointBundle\Constraint\TimeInterval':
+            startField: openTime
+            endField: closeTime
     properties:
         dayOfWeek:
             - 'NotBlank': ~
