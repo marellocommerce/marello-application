@@ -142,3 +142,6 @@ services:
         class: 'Marello\Bundle\SalesBundle\EventListener\Datagrid\SalesChannelGridListener'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-sales-channel, method: onBuildBefore }
+
+    marello_sales.placeholder.filter:
+        class: 'Marello\Bundle\SalesBundle\Placeholder\PlaceholderFilter'
