@@ -1,0 +1,11 @@
+title: oro.sidebar.sticky_note_widget.title
+module: "orosidebar/widget/sticky-note"
+cssClass: 'sidebar-widget-sticky-note'
+description: oro.sidebar.sticky_note_widget.description
+placement: "both"
+dialogIcon: "bundles/marellolayout/images/marello.ico"
+icon: "bundles/marellolayout/images/marello.ico"
+settings:
+    content: |
+        Welcome to Marello!
+        Marello Unified Commerce Management provides capabilities to meet and exceed rising expectations in commerce. Learn more at www.marello.com
