@@ -7,6 +7,7 @@ use Marello\Bundle\LocaleBundle\Manager\EmailTemplateManager;
 use Marello\Bundle\NotificationBundle\Entity\Notification;
 use Marello\Bundle\NotificationBundle\Exception\MarelloNotificationException;
 use Marello\Bundle\NotificationBundle\Provider\EntityNotificationConfigurationProviderInterface;
+use Marello\Bundle\NotificationBundle\Provider\NotificationAttachmentProvider;
 use Oro\Bundle\ActivityBundle\Manager\ActivityManager;
 use Oro\Bundle\EmailBundle\Model\EmailTemplateCriteria;
 use Oro\Bundle\EmailBundle\Provider\EmailRenderer;
@@ -41,6 +42,9 @@ class SendProcessor
     /** @var EmailNotificationSender $emailNotificationSender */
     protected $emailNotificationSender;
 
+    /** @var NotificationAttachmentProvider */
+    protected $attachmentProvider;
+
     /** @var bool $saveNotificationAsActivity */
     protected $saveNotificationAsActivity = true;
 
@@ -53,6 +57,7 @@ class SendProcessor
      * @param EmailRenderer                                    $renderer
      * @param EmailTemplateManager                             $emailTemplateManager
      * @param EntityNotificationConfigurationProviderInterface $entityNotificationConfigurationProvider
+     * @param NotificationAttachmentProvider                   $attachmentProvider
      */
     public function __construct(
         EmailNotificationManager $emailNotificationManager,
@@ -60,7 +65,8 @@ class SendProcessor
         ActivityManager $activityManager,
         EmailRenderer $renderer,
         EmailTemplateManager $emailTemplateManager,
-        EntityNotificationConfigurationProviderInterface $entityNotificationConfigurationProvider
+        EntityNotificationConfigurationProviderInterface $entityNotificationConfigurationProvider,
+        NotificationAttachmentProvider $attachmentProvider
     ) {
         $this->emailNotificationManager                = $emailNotificationManager;
         $this->manager                                 = $manager;
@@ -68,6 +74,7 @@ class SendProcessor
         $this->renderer                                = $renderer;
         $this->emailTemplateManager                    = $emailTemplateManager;
         $this->entityNotificationConfigurationProvider = $entityNotificationConfigurationProvider;
+        $this->attachmentProvider                      = $attachmentProvider;
     }
 
     /**
@@ -123,6 +130,7 @@ class SendProcessor
          * This depends on application configuration.
          */
         $notification = new Notification($template, $recipients, $templateRendered, $entity->getOrganization());
+        $this->processNotificationAttachments($notification, $data);
         try {
             // send compiled notification
             $this->emailNotificationSender->send(
@@ -168,6 +176,15 @@ class SendProcessor
             $recipients,
             $entity
         );
+    }
+
+    /**
+     * @param Notification $notification
+     * @param array $data
+     */
+    protected function processNotificationAttachments(Notification $notification, array $data)
+    {
+        $this->attachmentProvider->processNotificationAttachments($notification, $data);
     }
 
     /**
