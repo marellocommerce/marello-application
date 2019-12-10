@@ -51,7 +51,7 @@ class SendProcessor
      * @param ObjectManager                                    $manager
      * @param ActivityManager                                  $activityManager
      * @param EmailRenderer                                    $renderer
-     * @param EmailTemplateManager                             $emailTeplateManager
+     * @param EmailTemplateManager                             $emailTemplateManager
      * @param EntityNotificationConfigurationProviderInterface $entityNotificationConfigurationProvider
      */
     public function __construct(
@@ -59,14 +59,14 @@ class SendProcessor
         ObjectManager $manager,
         ActivityManager $activityManager,
         EmailRenderer $renderer,
-        EmailTemplateManager $emailTeplateManager,
+        EmailTemplateManager $emailTemplateManager,
         EntityNotificationConfigurationProviderInterface $entityNotificationConfigurationProvider
     ) {
         $this->emailNotificationManager                = $emailNotificationManager;
         $this->manager                                 = $manager;
         $this->activityManager                         = $activityManager;
         $this->renderer                                = $renderer;
-        $this->emailTemplateManager                    = $emailTeplateManager;
+        $this->emailTemplateManager                    = $emailTemplateManager;
         $this->entityNotificationConfigurationProvider = $entityNotificationConfigurationProvider;
     }
 
