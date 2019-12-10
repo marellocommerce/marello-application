@@ -1,10 +1,10 @@
 title: oro.sidebar.sticky_note_widget.title
+iconClass: "fa-sticky-note-o"
+dialogIcon: "bundles/orosidebar/sidebar_widgets/sticky_note/img/icon-sticky.png"
 module: "orosidebar/widget/sticky-note"
+placement: "both"
 cssClass: 'sidebar-widget-sticky-note'
 description: oro.sidebar.sticky_note_widget.description
-placement: "both"
-dialogIcon: "bundles/marellolayout/images/marello.ico"
-icon: "bundles/marellolayout/images/marello.ico"
 settings:
     content: |
         Welcome to Marello!
