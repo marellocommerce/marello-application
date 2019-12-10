@@ -8,6 +8,7 @@ services:
             - '@oro_email.email_renderer'
             - '@marello_locale.manager.email_template'
             - '@marello_notification.provider.entity_notification_configuration'
+            - '@marello_notification.provider.notification_attachment'
         calls:
             - ['setEmailNotificationSender', ['@oro_notification.manager.email_notification_sender']]
 
@@ -35,3 +36,8 @@ services:
 
     marello_notification.provider.entity_notification_configuration:
         class: Marello\Bundle\NotificationBundle\Provider\EntityNotificationConfigurationProvider
+
+    marello_notification.provider.notification_attachment:
+        class: 'Marello\Bundle\NotificationBundle\Provider\NotificationAttachmentProvider'
+        arguments:
+            - '@oro_attachment.file.manager'
