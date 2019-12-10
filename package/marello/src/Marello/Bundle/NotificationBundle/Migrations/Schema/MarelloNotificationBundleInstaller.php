@@ -17,7 +17,7 @@ class MarelloNotificationBundleInstaller implements Installation
      */
     public function getMigrationVersion()
     {
-        return 'v1_0';
+        return 'v1_1';
     }
 
     /**
@@ -30,6 +30,9 @@ class MarelloNotificationBundleInstaller implements Installation
 
         /** Foreign keys generation **/
         $this->addMarelloNotificationForeignKeys($schema);
+
+        $this->createAttachmentsTable($schema);
+        $this->addAttachmentForeignKeys($schema);
     }
 
     /**
@@ -70,6 +73,39 @@ class MarelloNotificationBundleInstaller implements Installation
             ['organization_id'],
             ['id'],
             ['onUpdate' => null, 'onDelete' => 'SET NULL']
+        );
+    }
+
+    /**
+     * Create marello_notification_attachment table
+     *
+     * @param Schema $schema
+     */
+    protected function createAttachmentsTable(Schema $schema)
+    {
+        $table = $schema->createTable('marello_notification_attach');
+        $table->addColumn('notification_id', 'integer');
+        $table->addColumn('attachment_id', 'integer');
+        $table->setPrimaryKey(['notification_id', 'attachment_id']);
+    }
+
+    /**
+     * Add foreign keys.
+     *
+     * @param Schema $schema
+     */
+    protected function addAttachmentForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('marello_notification_attach');
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_notification'),
+            ['notification_id'],
+            ['id']
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_attachment_file'),
+            ['attachment_id'],
+            ['id']
         );
     }
 }
