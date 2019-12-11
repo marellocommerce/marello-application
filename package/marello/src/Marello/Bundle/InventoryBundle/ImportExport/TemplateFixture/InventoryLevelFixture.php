@@ -69,7 +69,7 @@ class InventoryLevelFixture extends AbstractTemplateRepository implements Templa
     public function createProduct()
     {
         $entity = new Product();
-        $entity->setName('SKU 1');
+        $entity->setDefaultName('SKU 1');
         $entity->setSku('sku_001');
 
         return $entity;
