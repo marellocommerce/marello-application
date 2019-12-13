@@ -140,6 +140,11 @@ datagrids:
                 label:            marello.order.orderitem.status.label
                 frontend_type:    string
                 data_name:        status
+            inventoryBatches:
+                label:            marello.packing.packingslipitem.inventory_batches.label
+                type:             twig
+                frontend_type:    html
+                template:         MarelloPackingBundle:PackingSlip/Datagrid:inventoryBatches.html.twig
             createdAt:
                 label:            oro.ui.created_at
                 frontend_type:    datetime
@@ -164,14 +169,14 @@ datagrids:
                     data_name: ps.updatedAt
             default:
                 productSku: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
-        totals:
-            grand_total:
-                columns:
-                    productSku:
-                        label: marello.packing.datagrid.columns.grand_total
-                    quantity:
-                        expr: SUM( CASE WHEN ps.id != :id THEN 0 ELSE psi.quantity END )
-                        formatter: integer
-                    weight:
-                        expr: SUM( CASE WHEN ps.id != :id THEN 0 ELSE psi.weight END )
-                        formatter: decimal
+#        totals:
+#            grand_total:
+#                columns:
+#                    productSku:
+#                        label: marello.packing.datagrid.columns.grand_total
+#                    quantity:
+#                        expr: SUM( CASE WHEN ps.id != :id THEN 0 ELSE psi.quantity END )
+#                        formatter: integer
+#                    weight:
+#                        expr: SUM( CASE WHEN ps.id != :id THEN 0 ELSE psi.weight END )
+#                        formatter: decimal

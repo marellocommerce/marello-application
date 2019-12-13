@@ -8,6 +8,10 @@
     {{ UI.cancelButton(path('marello_inventory_inventory_update', { 'id': entity.inventoryItem.id })) }}
     {% if entity.id and is_granted('marello_inventory_inventory_update') %}
         {% set html = '' %}
+        {% set html = UI.saveAndCloseButton({
+        'route': 'marello_inventory_inventory_update',
+        'params': {'id': entity.inventoryItem.id}
+        }) %}
         {% set html = html ~ UI.saveAndStayButton({
         'route': 'marello_inventory_inventorylevel_manage_batches',
         'params': {'id': entity.id}
