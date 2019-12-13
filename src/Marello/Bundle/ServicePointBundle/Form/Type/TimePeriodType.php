@@ -20,10 +20,14 @@ class TimePeriodType extends AbstractType
             ->add('openTime', TimeType::class, [
                 'label' => 'marello.servicepoint.timeperiod.open_time.label',
                 'required' => true,
+                'model_timezone' => 'UTC',
+                'view_timezone' => 'UTC',
             ])
             ->add('closeTime', TimeType::class, [
                 'label' => 'marello.servicepoint.timeperiod.close_time.label',
                 'required' => true,
+                'model_timezone' => 'UTC',
+                'view_timezone' => 'UTC',
             ])
         ;
     }
