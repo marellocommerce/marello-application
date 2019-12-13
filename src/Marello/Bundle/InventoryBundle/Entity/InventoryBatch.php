@@ -9,6 +9,7 @@ use Marello\Bundle\InventoryBundle\Model\ExtendInventoryBatch;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
+use Oro\Bundle\SecurityBundle\Tools\UUIDGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -203,7 +204,7 @@ class InventoryBatch extends ExtendInventoryBatch implements
     public function setDerivedProperty($id)
     {
         if (!$this->batchNumber) {
-            $this->setBatchNumber(sprintf('%09d', $id));
+            $this->setBatchNumber(UUIDGenerator::v4());
         }
     }
     
