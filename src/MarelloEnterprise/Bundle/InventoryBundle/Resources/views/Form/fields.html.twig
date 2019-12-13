@@ -16,7 +16,7 @@
             {{ form.inventoryQty.vars.value|default(0) }}
         </div>
     </td>
-    <td class="inventorylevel-adjustment {{ form.quantity.vars.errors|length ? 'has-errors' : '' }}">
+    <td class="inventorylevel-adjustment{{ form.quantity.vars.errors|length ? 'has-errors' : '' }}">
         <div class="fields-row">
             {% if form.vars.manageBatches is same as(true) %}
                 <div class="marello-line-item-related-field">
@@ -35,7 +35,7 @@
             {% endif %}
         </div>
     </td>
-    <td class="inventorylevel-managed-inventory {{ form.warehouse.vars.errors|length ? 'has-errors' : '' }}">
+    <td class="inventorylevel-managed-inventory{{ form.warehouse.vars.errors|length ? 'has-errors' : '' }}">
         {% if ((form.vars.manageBatches is same as(false)) and (form.vars.externalWarehouse is same as(false))) %}
             <div class="fields-row">
                 {{ form_widget(form.managedInventory) }}
