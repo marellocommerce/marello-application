@@ -10,6 +10,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TimePeriodType extends AbstractType
 {
+    const NAME = 'time_period';
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -37,5 +39,10 @@ class TimePeriodType extends AbstractType
         $resolver->setDefaults([
             'data_class' => TimePeriod::class,
         ]);
+    }
+
+    public function getBlockPrefix()
+    {
+        return self::NAME;
     }
 }

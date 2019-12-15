@@ -1,0 +1,80 @@
+{% block _service_point_facility_businessHours_row %}
+    <div class="control-group">
+        <div class="control-label wrap">
+            {{ form_label(form) }}
+        </div>
+    </div>
+    <div class="control-group control-group-collection">
+        {{ form_widget(form) }}
+    </div>
+{% endblock %}
+
+{% block _service_point_facility_businessHours_widget %}
+    {% import 'OroFormBundle:Form:fields.html.twig' as formFields %}
+    {% if prototype is defined %}
+        {% set prototype_html = formFields.oro_collection_item_prototype(form) %}
+    {% endif %}
+    {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'oro-item-collection collection-fields-list' }) %}
+    {% set id = id ~ '_collection' %}
+    {% set prototype_name = form.vars.prototype_name %}
+    <div class="oro-row">
+    <div {{ block('widget_container_attributes') }} data-last-index="{{ form.children|length}}" data-row-count-add="{{ form.vars.row_count_add }}" data-prototype-name="{{ prototype_name }}"{% if prototype_html is defined %} data-prototype="{{ prototype_html|escape }}"{% endif %}>
+        <input type="hidden" name="validate_{{ full_name }}" data-collection-name="{{ full_name }}" data-name="collection-validation" disabled data-validate-element>
+        <table>
+            <thead>
+                <tr>
+                    <th>{{ 'marello.servicepoint.timeperiod.day_of_week.label'|trans }}</th>
+                    <th>{{ 'marello.servicepoint.timeperiod.open_time.label'|trans }}</th>
+                    <th>{{ 'marello.servicepoint.timeperiod.close_time.label'|trans }}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% if form.children|length %}
+                {% for child in form.children %}
+                    {{ formFields.oro_collection_item_prototype(child) }}
+                {% endfor %}
+            {% elseif show_form_when_empty and prototype_html is defined %}
+                {% for i in 0..(form.vars.row_count_initial - 1) %}
+                    {{ prototype_html|replace({(prototype_name): i})|raw }}
+                {% endfor %}
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+    {% if allow_add %}
+        <a class="btn add-list-item" href="#" role="button">{{ form.vars.add_label|default('oro.form.collection.add')|trans }}</a>
+    {% endif %}
+    {% if handle_primary and (prototype is not defined or prototype.primary is defined) %}
+        {{ formFields.oro_collection_validate_primary_js(_context) }}
+    {% endif %}
+    </div>
+{% endblock %}
+
+{% block time_period_widget %}
+    {% set attr = layout_attr_defaults(attr, {'~class': '.oro-multiselect-holder'}) %}
+    <tr>
+        <td>{{ form_widget(form.dayOfWeek) }}</td>
+        <td>{{ form_widget(form.openTime) }}</td>
+        <td>{{ form_widget(form.closeTime) }}</td>
+        <td><button type="button" class="removeRow btn btn-icon btn-square-lighter" aria-label="{{ 'Remove row'|trans }}"><span class="fa-trash-o" aria-hidden="true"></span></button></td>
+    </tr>
+{% endblock %}
+
+{% block _service_point_facility_businessHours_entry_dayOfWeek_widget %}
+    <div class="oro-row oro-multiselect-holder">
+        {{ form_widget(form) }}
+    </div>
+{% endblock %}
+
+{% block _service_point_facility_businessHours_entry_openTime_widget %}
+    <div class="oro-row oro-multiselect-holder">
+        {{ form_widget(form) }}
+    </div>
+{% endblock %}
+
+{% block _service_point_facility_businessHours_entry_closeTime_widget %}
+    <div class="oro-row oro-multiselect-holder">
+        {{ form_widget(form) }}
+    </div>
+{% endblock %}
