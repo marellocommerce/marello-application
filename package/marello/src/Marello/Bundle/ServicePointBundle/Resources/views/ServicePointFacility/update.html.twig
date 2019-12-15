@@ -8,6 +8,8 @@
     {% set formAction = path('marello_servicepoint_servicepointfacility_create', {'servicepoint_id': form.vars.value.servicePoint.id }) %}
 {% endif %}
 
+{% form_theme form 'MarelloServicePointBundle:Form:fields.html.twig' %}
+
 {% block navButtons %}
     {{ parent() }}
 
