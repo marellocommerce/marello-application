@@ -44,7 +44,7 @@ datagrids:
                 term:
                     data_name: term
             default:
-                label: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+                label: 'ASC'
         properties:
             id: ~
             view_link:

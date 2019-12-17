@@ -1,8 +1,7 @@
 define(function(require) {
     'use strict';
 
-    var OrderItemsView,
-        $ = require('jquery'),
+    const $ = require('jquery'),
         _ = require('underscore'),
         __ = require('orotranslation/js/translator'),
         DeleteConfirmation = require('oroui/js/delete-confirmation'),
@@ -16,7 +15,7 @@ define(function(require) {
      * @extends marellolayout.app.views.AbstractItemsView
      * @class marelloorder.app.views.OrderItemsView
      */
-    OrderItemsView = AbstractItemsView.extend({
+    const OrderItemsView = AbstractItemsView.extend({
         /**
          * @property {Object}
          */
