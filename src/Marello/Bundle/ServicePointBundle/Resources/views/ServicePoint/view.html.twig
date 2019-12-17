@@ -62,6 +62,7 @@
     {% endset %}
 
     {% set imageData %}
+        {% if entity.image is not empty %}
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
@@ -73,6 +74,9 @@
                 </div>
             </div>
         </div>
+        {% else %}
+            {{ 'N/A'|trans }}
+        {% endif %}
     {% endset %}
 
     {% set generalInformation %}
