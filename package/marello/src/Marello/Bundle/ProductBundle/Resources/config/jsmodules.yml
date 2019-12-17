@@ -5,11 +5,7 @@ dynamic-imports:
         - marelloproduct/js/app/components/select-create-inline-type-component
         - marelloproduct/js/app/components/select-create-inline-type-async-component
         - marelloproduct/js/app/components/select2-autocomplete-sales-channel-aware-component
+        - marelloproduct/js/app/views/product-channel-taxcode-view
+        - marelloproduct/js/app/views/product-channel-taxcodes-view
     commons:
         - oro/select2-autocomplete-sales-channel-aware-component
-#config:
-#    paths:
-#        '': 'bundles/marelloproduct/js/app/components/select-create-inline-type-component.js'
-#        '': 'bundles/marelloproduct/js/app/components/select-create-inline-type-async-component.js'
-#        'oro/select2-autocomplete-sales-channel-aware-component': 'bundles/marelloproduct/js/app/components/select2-autocomplete-sales-channel-aware-component.js'
-#

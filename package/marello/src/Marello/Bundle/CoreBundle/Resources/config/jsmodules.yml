@@ -1,0 +1,3 @@
+dynamic-imports:
+    marellocore:
+        - marellocore/js/app/elements-helper
