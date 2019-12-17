@@ -51,7 +51,7 @@ datagrids:
                 orderTotal:
                     data_name:      po.orderTotal
             default:
-                purchaseOrderNumber: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+                purchaseOrderNumber: "DESC"
         filters:
             columns:
                 purchaseOrderNumber:
@@ -216,7 +216,7 @@ datagrids:
                 virtualInventory:       { data_name: virtualInventory }
                 orderAmount:            { data_name: orderAmount }
             default:
-                hasProduct: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+                hasProduct: 'DESC'
         filters:
             columns:
                 hasProduct:

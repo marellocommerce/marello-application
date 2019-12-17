@@ -1,11 +1,11 @@
 define(function(require) {
     'use strict';
 
-    var selectCreateComponentMixin,
+    const
         $ = require('jquery'),
         mediator = require('oroui/js/mediator');
 
-    selectCreateComponentMixin = {
+    const selectCreateComponentMixin = {
 
         options: {
             companyDataContainer: '.marello-customer-company-select-container',

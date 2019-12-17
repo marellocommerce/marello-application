@@ -48,7 +48,7 @@ datagrids:
                 allocatedInventoryQty:  { data_name: allocatedInventoryQty }
                 virtualInventoryQty:    { data_name: virtualInventoryQty }
             default:
-                productSku: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+                productSku: 'DESC'
         filters:
             columns:
                 productSku:

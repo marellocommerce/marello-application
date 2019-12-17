@@ -52,7 +52,7 @@ datagrids:
                 updatedAt:
                     data_name: r.updatedAt
             default:
-                refundNumber: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+                refundNumber: "DESC"
         filters:
             columns:
                 refundNumber:
@@ -155,7 +155,7 @@ datagrids:
                 updatedAt:
                     data_name: r.updatedAt
             default:
-                refundNumber: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+                refundNumber: "DESC"
         filters:
             columns:
                 refundNumber:

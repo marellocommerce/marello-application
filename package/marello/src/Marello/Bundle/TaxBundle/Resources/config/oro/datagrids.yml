@@ -21,7 +21,7 @@ datagrids:
                 description:
                     data_name: t.description
             default:
-                code: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+                code: "ASC"
         filters:
             columns:
                 code:
@@ -69,7 +69,7 @@ datagrids:
                 rate:
                     data_name: t.rate
             default:
-                code: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+                code: "ASC"
         filters:
             columns:
                 code:
@@ -130,7 +130,7 @@ datagrids:
                 jurisdiction:
                     data_name: jurisdiction
             default:
-                code: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+                code: "ASC"
         filters:
             columns:
                 code:
