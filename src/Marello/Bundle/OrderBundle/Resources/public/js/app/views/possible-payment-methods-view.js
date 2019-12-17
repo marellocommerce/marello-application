@@ -1,20 +1,19 @@
 define(function(require) {
     'use strict';
 
-    var PossiblePaymentMethodsView;
-    var $ = require('jquery');
-    var _ = require('underscore');
-    var mediator = require('oroui/js/mediator');
-    var BaseView = require('oroui/js/app/views/base/view');
-    var ElementsHelper = require('marellocore/js/app/elements-helper');
-    var LoadingMaskView = require('oroui/js/app/views/loading-mask-view');
-    var StandardConfirmation = require('oroui/js/standart-confirmation');
-    var possiblePaymentMethodsTemplate = require('tpl!./../templates/possible-payment-methods-template.html');
-    var selectedPaymentMethodTemplate = require('tpl!./../templates/selected-payment-method-template.html');
-    var noPaymentMethodsAvailableTemplate = require('tpl!./../templates/no-payment-methods-available.html');
-    var NumberFormatter = require('orolocale/js/formatter/number');
+    const $ = require('jquery');
+    const _ = require('underscore');
+    const mediator = require('oroui/js/mediator');
+    const BaseView = require('oroui/js/app/views/base/view');
+    const ElementsHelper = require('marellocore/js/app/elements-helper');
+    const LoadingMaskView = require('oroui/js/app/views/loading-mask-view');
+    const StandardConfirmation = require('oroui/js/standart-confirmation');
+    const possiblePaymentMethodsTemplate = require('tpl-loader!./../templates/possible-payment-methods-template.html');
+    const selectedPaymentMethodTemplate = require('tpl-loader!./../templates/selected-payment-method-template.html');
+    const noPaymentMethodsAvailableTemplate = require('tpl-loader!./../templates/no-payment-methods-available.html');
+    const NumberFormatter = require('orolocale/js/formatter/number');
 
-    PossiblePaymentMethodsView = BaseView.extend(_.extend({}, ElementsHelper, {
+    const PossiblePaymentMethodsView = BaseView.extend(_.extend({}, ElementsHelper, {
         autoRender: true,
 
         options: {

@@ -1,8 +1,7 @@
 define(function(require) {
     'use strict';
 
-    var AbstractItemView,
-        $ = require('jquery'),
+    const $ = require('jquery'),
         _ = require('underscore'),
         BaseView = require('oroui/js/app/views/base/view');
 
@@ -11,7 +10,7 @@ define(function(require) {
      * @extends oroui.app.views.base.View
      * @class marellolayout.app.views.AbstractItemView
      */
-    AbstractItemView = BaseView.extend({
+    const AbstractItemView = BaseView.extend({
         options: {
             ftid: ''
         },

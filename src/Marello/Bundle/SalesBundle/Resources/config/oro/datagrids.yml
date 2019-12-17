@@ -61,7 +61,7 @@ datagrids:
                 default:
                     data_name: sc.default
             default:
-                name: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+                name: "ASC"
         properties:
             id: ~
             view_link:
@@ -229,7 +229,7 @@ datagrids:
                 default:
                     data_name: sc.default
             default:
-                name: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+                name: "ASC"
         properties:
             id: ~
         actions: ~

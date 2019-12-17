@@ -76,7 +76,7 @@ datagrids:
                 updatedAt:
                     data_name: c.updatedAt
             default:
-                createdAt: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+                createdAt: 'DESC'
         properties:
             view_link:
                 type:   url
@@ -150,7 +150,7 @@ datagrids:
                 parent_name:
                     data_name: parent_name
             default:
-                name: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+                name: 'ASC'
         filters:
             columns:
                 name:
@@ -265,7 +265,7 @@ datagrids:
                 belongsToCompany:
                     data_name: belongsToCompany
             default:
-                belongsToCompany: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+                belongsToCompany: 'DESC'
         filters:
             columns:
                 belongsToCompany:
