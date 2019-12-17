@@ -1,0 +1,15 @@
+aliases:
+    oro/select2-autocomplete-sales-channel-aware-component$: marelloproduct/js/app/components/select2-autocomplete-sales-channel-aware-component
+dynamic-imports:
+    marelloproduct:
+        - marelloproduct/js/app/components/select-create-inline-type-component
+        - marelloproduct/js/app/components/select-create-inline-type-async-component
+        - marelloproduct/js/app/components/select2-autocomplete-sales-channel-aware-component
+    commons:
+        - oro/select2-autocomplete-sales-channel-aware-component
+#config:
+#    paths:
+#        '': 'bundles/marelloproduct/js/app/components/select-create-inline-type-component.js'
+#        '': 'bundles/marelloproduct/js/app/components/select-create-inline-type-async-component.js'
+#        'oro/select2-autocomplete-sales-channel-aware-component': 'bundles/marelloproduct/js/app/components/select2-autocomplete-sales-channel-aware-component.js'
+#

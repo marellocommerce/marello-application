@@ -1,7 +1,7 @@
 define(function(require) {
     'use strict';
 
-    var ProductChannelTaxView,
+    const
         $ = require('jquery'),
         _ = require('underscore'),
         mediator = require('oroui/js/mediator'),
@@ -12,7 +12,7 @@ define(function(require) {
      * @extends marellolayout.app.views.AbstractItemView
      * @class marelloproduct.app.views.ProductChannelTaxView
      */
-    ProductChannelTaxView = AbstractItemView.extend({
+    const ProductChannelTaxView = AbstractItemView.extend({
         options: {
             priority: 0,
             canDropship: false
