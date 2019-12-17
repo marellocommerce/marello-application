@@ -3,14 +3,13 @@
 define(function(require) {
     'use strict';
 
-    var UPSTransportSettingsComponent;
-    var $ = require('jquery');
-    var _ = require('underscore');
-    var routing = require('routing');
-    var LoadingMaskView = require('oroui/js/app/views/loading-mask-view');
-    var BaseComponent = require('oroui/js/app/components/base/component');
+    const $ = require('jquery');
+    const _ = require('underscore');
+    const routing = require('routing');
+    const LoadingMaskView = require('oroui/js/app/views/loading-mask-view');
+    const BaseComponent = require('oroui/js/app/components/base/component');
 
-    UPSTransportSettingsComponent = BaseComponent.extend({
+    const UPSTransportSettingsComponent = BaseComponent.extend({
         /**
          * @property {Object}
          */
