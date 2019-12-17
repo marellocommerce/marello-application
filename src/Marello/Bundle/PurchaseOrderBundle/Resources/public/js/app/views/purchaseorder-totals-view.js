@@ -1,19 +1,18 @@
 define(function(require) {
     'use strict';
 
-    var PurchaseOrderTotalsView;
-    var template =  require('tpl!marellopurchaseorder/templates/purchaseorder/totals.html');
-    var $ = require('jquery');
-    var _ = require('underscore');
-    var mediator = require('oroui/js/mediator');
-    var BaseView = require('oroui/js/app/views/base/view');
+    const template =  require('tpl-loader!marellopurchaseorder/templates/purchaseorder/totals.html');
+    const $ = require('jquery');
+    const _ = require('underscore');
+    const mediator = require('oroui/js/mediator');
+    const BaseView = require('oroui/js/app/views/base/view');
 
     /**
      * @export marellopurchaseorder/js/app/views/purchaseorder-totals-view
      * @extends oroui.app.views.base.View
      * @class marellopurchaseorder.app.views.PurchaseOrderTotalsView
      */
-    PurchaseOrderTotalsView = BaseView.extend({
+    const PurchaseOrderTotalsView = BaseView.extend({
         /**
          * @property {Object}
          */

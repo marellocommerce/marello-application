@@ -1,8 +1,8 @@
 define(function(require) {
     'use strict';
 
-    var mediator = require('oroui/js/mediator');
-    var SelectAllHeaderCell = require('marellodatagrid/js/datagrid/header-cell/select-all-header-cell');
+    const mediator = require('oroui/js/mediator');
+    const SelectAllHeaderCell = require('marellodatagrid/js/datagrid/header-cell/select-all-header-cell');
 
     return {
         processDatagridOptions: function(deferred, options) {

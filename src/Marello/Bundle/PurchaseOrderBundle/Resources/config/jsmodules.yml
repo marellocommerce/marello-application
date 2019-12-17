@@ -1,0 +1,3 @@
+dynamic-imports:
+    marellopurchaseorder:
+        - marellopurchaseorder/js/app/views/purchaseorder-totals-view
