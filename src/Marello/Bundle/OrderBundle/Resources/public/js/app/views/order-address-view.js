@@ -1,19 +1,18 @@
 define(function(require) {
     'use strict';
 
-    var OrderAddressView;
-    var $ = require('jquery');
-    var _ = require('underscore');
-    var mediator = require('oroui/js/mediator');
-    var LoadingMaskView = require('oroui/js/app/views/loading-mask-view');
-    var BaseView = require('oroui/js/app/views/base/view');
+    const $ = require('jquery');
+    const _ = require('underscore');
+    const mediator = require('oroui/js/mediator');
+    const LoadingMaskView = require('oroui/js/app/views/loading-mask-view');
+    const BaseView = require('oroui/js/app/views/base/view');
 
     /**
      * @export marelloorder/js/app/views/order-address-view
      * @extends oroui.app.views.base.View
      * @class marelloorder.app.views.OrderAddressView
      */
-    OrderAddressView = BaseView.extend({
+    const OrderAddressView = BaseView.extend({
         /**
          * @property {Object}
          */

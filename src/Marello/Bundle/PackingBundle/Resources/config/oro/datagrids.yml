@@ -58,7 +58,7 @@ datagrids:
                 updatedAt:
                     data_name: ps.updatedAt
             default:
-                packingSlipNumber: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+                packingSlipNumber: "DESC"
         filters:
             columns:
                 packingSlipNumber:
@@ -163,7 +163,7 @@ datagrids:
                 updatedAt:
                     data_name: ps.updatedAt
             default:
-                productSku: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+                productSku: "ASC"
         totals:
             grand_total:
                 columns:
