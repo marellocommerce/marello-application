@@ -45,7 +45,7 @@ datagrids:
                 percentage:
                     data_name: ro.percentage
             default:
-                replOrderNumber: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+                replOrderNumber: 'DESC'
         properties:
             view_link:
                 type:   url
@@ -153,7 +153,7 @@ datagrids:
                 categories:             { data_name: categoriesCount }
                 createdAt:              { data_name: p.createdAt }
             default:
-                hasProduct: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+                hasProduct: 'DESC'
         filters:
             columns:
                 image:
