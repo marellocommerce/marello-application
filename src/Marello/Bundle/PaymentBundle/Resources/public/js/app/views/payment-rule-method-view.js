@@ -1,15 +1,14 @@
 define(function(require) {
     'use strict';
 
-    var PaymentRuleMethodsView;
-    var _ = require('underscore');
-    var $ = require('jquery');
-    var BaseView = require('oroui/js/app/views/base/view');
-    var Popover = require('bootstrap-popover');
-    var mediator = require('oroui/js/mediator');
-    var layout = require('oroui/js/layout');
+    const _ = require('underscore');
+    const $ = require('jquery');
+    const BaseView = require('oroui/js/app/views/base/view');
+    const Popover = require('bootstrap-popover');
+    const mediator = require('oroui/js/mediator');
+    const layout = require('oroui/js/layout');
 
-    PaymentRuleMethodsView = BaseView.extend({
+    const PaymentRuleMethodsView = BaseView.extend({
         options: {
             addSelector: '.add-method',
             addAllSelector: '.add-all-methods',
