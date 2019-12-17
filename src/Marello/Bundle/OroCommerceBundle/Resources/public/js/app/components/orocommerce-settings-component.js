@@ -3,15 +3,14 @@
 define(function(require) {
     'use strict';
 
-    var OroCommerceSettingsComponent;
-    var $ = require('jquery');
-    var _ = require('underscore');
-    var routing = require('routing');
-    var mediator = require('oroui/js/mediator');
-    var LoadingMaskView = require('oroui/js/app/views/loading-mask-view');
-    var BaseComponent = require('oroui/js/app/components/base/component');
+    const $ = require('jquery');
+    const _ = require('underscore');
+    const routing = require('routing');
+    const mediator = require('oroui/js/mediator');
+    const LoadingMaskView = require('oroui/js/app/views/loading-mask-view');
+    const BaseComponent = require('oroui/js/app/components/base/component');
 
-    OroCommerceSettingsComponent = BaseComponent.extend({
+    const OroCommerceSettingsComponent = BaseComponent.extend({
         /**
          * @property {Object}
          */
