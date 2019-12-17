@@ -3,13 +3,12 @@
 define(function(require) {
     'use strict';
 
-    var CustomerCompanySelectComponent;
-    var $ = require('jquery');
-    var _ = require('underscore');
-    var BaseComponent = require('oroui/js/app/components/base/component');
-    var mediator = require('oroui/js/mediator');
+    const $ = require('jquery');
+    const _ = require('underscore');
+    const BaseComponent = require('oroui/js/app/components/base/component');
+    const mediator = require('oroui/js/mediator');
 
-    CustomerCompanySelectComponent = BaseComponent.extend({
+    const CustomerCompanySelectComponent = BaseComponent.extend({
         /**
          * @property {Object}
          */

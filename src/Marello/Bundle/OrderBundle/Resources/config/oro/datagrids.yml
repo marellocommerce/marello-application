@@ -81,7 +81,7 @@ datagrids:
                 updatedAt:
                     data_name: o.updatedAt
             default:
-                orderNumber: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+                orderNumber: 'DESC'
         filters:
             columns:
                 orderNumber:
@@ -212,7 +212,7 @@ datagrids:
                 updatedAt:
                     data_name: o.updatedAt
             default:
-                orderNumber: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+                orderNumber: "DESC"
         filters:
             columns:
                 orderNumber:
@@ -378,7 +378,7 @@ datagrids:
                     orderNumber:
                         data_name: o.orderNumber
                 default:
-                    orderNumber: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+                    orderNumber: 'DESC'
             options:
                 export: false
                 toolbarOptions:
@@ -422,7 +422,7 @@ datagrids:
                 totalOrders:            { data_name: totalOrders }
                 totalRevenue:           { data_name: totalRevenue }
             default:
-                totalOrders: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+                totalOrders: 'DESC'
         options:
             entityHint: orders
             export: false
@@ -480,7 +480,7 @@ datagrids:
                 purchaseDate:           { data_name: purchaseDate }
                 status:                 { data_name: oi.status }
             default:
-                orderNumber: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+                orderNumber: 'ASC'
         filters:
             columns:
                 productSku:
