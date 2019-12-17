@@ -31,7 +31,7 @@ datagrids:
                 warehouseType:      { data_name: wt.label }
                 default:            { data_name: w.default }
             default:
-                label: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+                label: 'DESC'
         filters:
             columns:
                 label:
@@ -244,7 +244,7 @@ datagrids:
                 hasLink:
                     data_name: hasLink
             default:
-                hasLink: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+                hasLink: 'DESC'
         properties:
             id: ~
         options:
