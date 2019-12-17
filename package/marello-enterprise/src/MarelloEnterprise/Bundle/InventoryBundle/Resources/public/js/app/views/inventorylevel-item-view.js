@@ -1,7 +1,7 @@
 define(function(require) {
     'use strict';
 
-    var InventoryLevelItemView,
+    const
         _ = require('underscore'),
         __ = require('orotranslation/js/translator'),
         $ = require('jquery'),
@@ -13,7 +13,7 @@ define(function(require) {
      * @extends marellolayout.app.views.AbstractItemView
      * @class marelloenterpriseinventory.app.views.InventoryLevelItemView
      */
-    InventoryLevelItemView = AbstractItemView.extend({
+    const InventoryLevelItemView = AbstractItemView.extend({
         /**
          * @property {Object}
          */

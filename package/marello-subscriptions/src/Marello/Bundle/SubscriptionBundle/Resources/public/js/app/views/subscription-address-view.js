@@ -1,19 +1,18 @@
 define(function(require) {
     'use strict';
 
-    var SubscriptionAddressView;
-    var $ = require('jquery');
-    var _ = require('underscore');
-    var mediator = require('oroui/js/mediator');
-    var LoadingMaskView = require('oroui/js/app/views/loading-mask-view');
-    var BaseView = require('oroui/js/app/views/base/view');
+    const $ = require('jquery');
+    const _ = require('underscore');
+    const mediator = require('oroui/js/mediator');
+    const LoadingMaskView = require('oroui/js/app/views/loading-mask-view');
+    const BaseView = require('oroui/js/app/views/base/view');
 
     /**
      * @export marellosubscriptions/js/app/views/subscription-address-view
      * @extends oroui.app.views.base.View
      * @class marellosubscriptions.app.views.SubscriptionAddressView
      */
-    SubscriptionAddressView = BaseView.extend({
+    const SubscriptionAddressView = BaseView.extend({
         /**
          * @property {Object}
          */
