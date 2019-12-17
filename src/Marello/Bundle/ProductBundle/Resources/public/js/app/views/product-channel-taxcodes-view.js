@@ -1,7 +1,7 @@
 define(function(require) {
     'use strict';
 
-    var ProductChannelTaxCodesView,
+    const
         $ = require('jquery'),
         _ = require('underscore'),
         routing = require('routing'),
@@ -13,7 +13,7 @@ define(function(require) {
      * @extends marellolayout.app.views.AbstractItemsView
      * @class marelloproduct.app.views.ProductChannelTaxCodesView
      */
-    ProductChannelTaxCodesView = AbstractItemsView.extend({
+    const ProductChannelTaxCodesView = AbstractItemsView.extend({
         /**
          * @property {Object}
          */
