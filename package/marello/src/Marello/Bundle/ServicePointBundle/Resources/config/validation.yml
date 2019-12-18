@@ -62,9 +62,6 @@ Marello\Bundle\ServicePointBundle\Entity\ServicePointFacility:
         email:
             - 'Email': ~
         businessHours:
-            - 'Count':
-                min: 1
-                max: 7
             - 'Valid':
                 traverse: true
             - 'All':
