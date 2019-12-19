@@ -22,7 +22,7 @@ framework:
         version_format: '%%s?version=%%s'
     default_locale: en
     session:
-        name:                 BAPID
+        name:                 CRMID
         handler_id:           '%session_handler%'
         save_path:            '%kernel.project_dir%/var/sessions/%kernel.environment%'
         gc_maxlifetime:       3600
@@ -57,18 +57,18 @@ fos_rest:
         decoders:
             json: fos_rest.decoder.json
     view:
-        failed_validation:    HTTP_BAD_REQUEST
-        default_engine:       php
+        failed_validation: HTTP_BAD_REQUEST
+        default_engine: php
         formats:
-            json:             true
-            xml:              false
+            json: true
+            xml: false
     format_listener:
         rules:
             - { path: '^/api/rest', priorities: [ json ], fallback_format: json, prefer_extension: false }
             - { path: '^/api/soap', stop: true }
             - { path: '^/', stop: true }
     routing_loader:
-        default_format:       json
+        default_format: json
 
 fos_js_routing:
     routes_to_expose:         [oro_*]
@@ -83,18 +83,18 @@ stof_doctrine_extensions:
 
 services:
     twig.extension.intl:
-         class:               Twig_Extensions_Extension_Intl
-         tags:
-             - { name: twig.extension }
+        class: Twig_Extensions_Extension_Intl
+        tags:
+            - { name: twig.extension }
 
 oro_translation:
-    locales: [en, fr]
-    templating: "OroUIBundle:Form:translatable.html.twig"
+    locales:                  [en, fr]
+    templating:               "OroUIBundle:Form:translatable.html.twig"
 
 lexik_maintenance:
     authorized:
         path:                 'maintenance|.*\.js'             # "maintenance" is only for demo purposes, remove in production!
-#        ips:                  ["127.0.0.1"]                   # Optional. Authorized ip addresses
+    #        ips:                  ["127.0.0.1"]                   # Optional. Authorized ip addresses
     driver:
         class:                Lexik\Bundle\MaintenanceBundle\Drivers\FileDriver
         options:
@@ -116,11 +116,10 @@ liip_imagine:
 oro_distribution:
     entry_point: ~
 
-oro_require_js:
-    build_path:               "js/oro.min.js"
-    build_timeout:            3600
-    build:
-        preserveLicenseComments: true
+oro_ui:
+    settings:
+        organization_name:
+            value:            "Marello"
 
 oro_theme:
     active_theme: oro

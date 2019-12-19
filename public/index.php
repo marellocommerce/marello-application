@@ -1,5 +1,6 @@
 <?php
 
+use Symfony\Component\ClassLoader\ApcClassLoader;
 use Symfony\Component\HttpFoundation\Request;
 
 /** @var \Composer\Autoload\ClassLoader $loader */
