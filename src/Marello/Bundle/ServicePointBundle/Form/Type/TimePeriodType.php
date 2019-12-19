@@ -2,47 +2,12 @@
 
 namespace Marello\Bundle\ServicePointBundle\Form\Type;
 
-use Marello\Bundle\ServicePointBundle\Entity\AbstractTimePeriod;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TimeType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Marello\Bundle\ServicePointBundle\Entity\TimePeriod;
 
-class TimePeriodType extends AbstractType
+class TimePeriodType extends AbstractTimePeriodType
 {
-    const NAME = 'time_period';
-
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    protected function getDataClass()
     {
-        $builder
-            ->add('dayOfWeek', DayOfWeekType::class, [
-                'label' => 'marello.servicepoint.timeperiod.day_of_week.label',
-                'required' => true,
-            ])
-            ->add('openTime', TimeType::class, [
-                'label' => 'marello.servicepoint.timeperiod.open_time.label',
-                'required' => true,
-                'model_timezone' => 'UTC',
-                'view_timezone' => 'UTC',
-            ])
-            ->add('closeTime', TimeType::class, [
-                'label' => 'marello.servicepoint.timeperiod.close_time.label',
-                'required' => true,
-                'model_timezone' => 'UTC',
-                'view_timezone' => 'UTC',
-            ])
-        ;
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'data_class' => AbstractTimePeriod::class,
-        ]);
-    }
-
-    public function getBlockPrefix()
-    {
-        return self::NAME;
+        return TimePeriod::class;
     }
 }

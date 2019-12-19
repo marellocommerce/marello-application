@@ -8,7 +8,7 @@
     {% set formAction = path('marello_servicepoint_servicepointfacility_create', {'servicepoint_id': form.vars.value.servicePoint.id }) %}
 {% endif %}
 
-{% form_theme form 'MarelloServicePointBundle:Form:fields.html.twig' %}
+{#{% form_theme form 'MarelloServicePointBundle:Form:fields.html.twig' %}#}
 
 {% block navButtons %}
     {{ parent() }}
@@ -49,16 +49,6 @@
 {% block content_data %}
     {% set id = 'marello-servicepointfacility-update' %}
 
-    {% set businessHours %}
-        <div class="servicepointfacility-businesshours"
-             data-page-component-module="oroui/js/app/components/view-component"
-             data-page-component-options="{{ {view: 'marelloservicepoint/js/app/views/servicepointfacility-businesshours-view'}|json_encode }}"
-             data-layout="separate">
-            {{ form_widget(form.businessHours) }}
-            {{ form_errors(form.businessHours) }}
-        </div>
-    {% endset %}
-
     {% set dataBlocks = [{
         'title': 'General'|trans,
         'class': 'active',
@@ -68,14 +58,7 @@
                 form_row(form.facility),
                 form_row(form.phone),
                 form_row(form.email),
-            ]
-        }]}, {
-        'title': 'marello.servicepoint.servicepoint_facility.business_hours.label'|trans,
-        'class': 'active',
-        'subblocks': [{
-            'title': '',
-            'data': [
-                businessHours
+                form_row(form.businessHours),
             ]
         }]
     }] %}

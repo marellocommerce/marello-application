@@ -84,21 +84,24 @@ Marello\Bundle\ServicePointBundle\Entity\Facility:
         code:
             - 'NotBlank': ~
 
-Marello\Bundle\ServicePointBundle\Entity\TimePeriod:
+Marello\Bundle\ServicePointBundle\Entity\AbstractTimePeriod:
     constraints:
         - 'Marello\Bundle\ServicePointBundle\Constraint\TimeInterval':
             startField: openTime
             endField: closeTime
     properties:
-        dayOfWeek:
-            - 'NotBlank': ~
-            - 'Marello\Bundle\ServicePointBundle\Constraint\DayOfWeek': ~
         openTime:
             - 'Type': 'DateTime'
             - 'NotNull': ~
         closeTime:
             - 'Type': 'DateTime'
             - 'NotNull': ~
-        servicePointFacility:
+
+Marello\Bundle\ServicePointBundle\Entity\BusinessHours:
+    constraints:
+        - 'Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity':
+            fields: ['dayOfWeek', 'servicePointFacility']
+    properties:
+        dayOfWeek:
             - 'NotNull': ~
-            - 'Type': 'Marello\Bundle\ServicePointBundle\Entity\ServicePointFacility'
+            - 'Marello\Bundle\ServicePointBundle\Constraints\DayOfWeek': ~
