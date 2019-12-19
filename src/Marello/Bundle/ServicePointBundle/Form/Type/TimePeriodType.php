@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\ServicePointBundle\Form\Type;
 
-use Marello\Bundle\ServicePointBundle\Entity\TimePeriod;
+use Marello\Bundle\ServicePointBundle\Entity\AbstractTimePeriod;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -37,7 +37,7 @@ class TimePeriodType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => TimePeriod::class,
+            'data_class' => AbstractTimePeriod::class,
         ]);
     }
 

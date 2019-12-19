@@ -3,7 +3,7 @@
 namespace Marello\Bundle\ServicePointBundle\Constraint;
 
 use Doctrine\Common\Collections\Collection;
-use Marello\Bundle\ServicePointBundle\Entity\TimePeriod;
+use Marello\Bundle\ServicePointBundle\Entity\AbstractTimePeriod;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -21,7 +21,7 @@ class NoOverlappingBusinessHoursValidator extends ConstraintValidator
         }
 
         foreach ($value as $i => $item) {
-            $sameDayHours = $value->filter(function (TimePeriod $x) use ($item) {
+            $sameDayHours = $value->filter(function (AbstractTimePeriod $x) use ($item) {
                 return $item !== $x && $item->getDayOfWeek() === $x->getDayOfWeek();
             });
             foreach ($sameDayHours as $sameDayItem) {
@@ -36,7 +36,7 @@ class NoOverlappingBusinessHoursValidator extends ConstraintValidator
         }
     }
 
-    protected function isHoursOverlap(TimePeriod $first, TimePeriod $second)
+    protected function isHoursOverlap(AbstractTimePeriod $first, AbstractTimePeriod $second)
     {
         if ($first->getOpenTime() <= $second->getOpenTime()) {
             if ($first->getCloseTime() >= $second->getOpenTime()) {

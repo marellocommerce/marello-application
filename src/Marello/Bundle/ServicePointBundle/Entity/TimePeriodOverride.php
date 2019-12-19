@@ -3,7 +3,7 @@
 namespace Marello\Bundle\ServicePointBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Marello\Bundle\ServicePointBundle\Model\ExtendTimePeriod;
+use Marello\Bundle\ServicePointBundle\Model\ExtendTimePeriodOverride;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
@@ -25,13 +25,13 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
  *     }
  * )
  */
-class TimePeriod extends ExtendTimePeriod
+class TimePeriodOverride extends ExtendTimePeriodOverride
 {
     /**
-     * @var ?BusinessHours
+     * @var ?BusinessHoursOverride
      *
-     * @ORM\ManyToOne(targetEntity="Marello\Bundle\ServicePointBundle\Entity\BusinessHours", inversedBy="timePeriods")
-     * @ORM\JoinColumn(name="business_hours_id", nullable=true, onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\ServicePointBundle\Entity\BusinessHoursOverride", mappedBy="timePeriods")
+     * @ORM\JoinColumn(name="business_hours_override_id", nullable=true, onDelete="CASCADE")
      * @ConfigField(defaultValues={
      *     "entity"={
      *         "label" = "marello.servicepoint.timeperiod.business_hours.label"
@@ -47,22 +47,22 @@ class TimePeriod extends ExtendTimePeriod
     {
         parent::__construct();
 
-        $this->timePeriodType = self::TYPE_REGULAR;
+        $this->timePeriodType = self::TYPE_OVERRIDE;
     }
 
     /**
-     * @return ?BusinessHours
+     * @return ?BusinessHoursOverride
      */
-    public function getBusinessHours(): ?BusinessHours
+    public function getBusinessHours(): ?BusinessHoursOverride
     {
         return $this->businessHours;
     }
 
     /**
-     * @param mixed $businessHours
-     * @return TimePeriod
+     * @param BusinessHoursOverride $businessHours
+     * @return TimePeriodOverride
      */
-    public function setBusinessHours(BusinessHours $businessHours): TimePeriod
+    public function setBusinessHours(BusinessHoursOverride $businessHours): TimePeriodOverride
     {
         $this->businessHours = $businessHours;
 
