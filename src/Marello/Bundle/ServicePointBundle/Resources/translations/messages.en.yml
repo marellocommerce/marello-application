@@ -60,3 +60,4 @@ marello:
                 saved.message: "The Service Point Facility was saved."
                 sections:
                     additional: "Additional Fields"
+                business_hours.add.label: "Add Business Hours"
