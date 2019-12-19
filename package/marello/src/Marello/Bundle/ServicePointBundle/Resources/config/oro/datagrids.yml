@@ -183,20 +183,23 @@ datagrids:
             type: orm
             query:
                 select:
-                    - tp.id
-                    - tp.dayOfWeek AS dayOfWeek
+                    - bh.id
+                    - bh.dayOfWeek AS dayOfWeek
                     - tp.openTime AS openTime
                     - tp.closeTime AS closeTime
                 from:
-                    - { table: 'MarelloServicePointBundle:TimePeriod', alias: tp }
+                    - { table: 'MarelloServicePointBundle:BusinessHours', alias: bh }
+                join:
+                    left:
+                        - { join: bh.timePeriods, alias: tp }
                 where:
                     and:
-                        - tp.servicePointFacility = :servicePointFacility
+                        - bh.servicePointFacility = :servicePointFacility
             bind_parameters:
                 - servicePointFacility
         columns:
             day_of_week:
-                label: marello.servicepoint.timeperiod.day_of_week.label
+                label: marello.servicepoint.businesshours.day_of_week.label
                 type: twig
                 frontend_type: html
                 template: 'MarelloServicePointBundle:TimePeriod:Datagrid/dayOfWeek.html.twig'
