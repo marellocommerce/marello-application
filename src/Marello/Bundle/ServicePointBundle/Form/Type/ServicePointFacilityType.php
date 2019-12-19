@@ -3,7 +3,6 @@
 namespace Marello\Bundle\ServicePointBundle\Form\Type;
 
 use Marello\Bundle\ServicePointBundle\Entity\ServicePointFacility;
-use Marello\Bundle\ServicePointBundle\Entity\AbstractTimePeriod;
 use Oro\Bundle\FormBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -28,8 +27,7 @@ class ServicePointFacilityType extends AbstractType
             ])
             ->add('businessHours', CollectionType::class, [
                 'label' => 'marello.servicepoint.servicepoint_facility.business_hours.label',
-                'entry_type' => TimePeriodType::class,
-//                'entry_data_class' => TimePeriod::class,
+                'entry_type' => BusinessHoursType::class,
             ])
         ;
     }
