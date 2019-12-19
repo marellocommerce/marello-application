@@ -3,7 +3,7 @@
 namespace Marello\Bundle\ServicePointBundle\Form\Type;
 
 use Marello\Bundle\ServicePointBundle\Entity\ServicePointFacility;
-use Marello\Bundle\ServicePointBundle\Entity\TimePeriod;
+use Marello\Bundle\ServicePointBundle\Entity\AbstractTimePeriod;
 use Oro\Bundle\FormBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
