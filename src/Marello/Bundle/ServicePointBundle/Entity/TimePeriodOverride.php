@@ -30,7 +30,7 @@ class TimePeriodOverride extends ExtendTimePeriodOverride
     /**
      * @var ?BusinessHoursOverride
      *
-     * @ORM\ManyToOne(targetEntity="Marello\Bundle\ServicePointBundle\Entity\BusinessHoursOverride", mappedBy="timePeriods")
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\ServicePointBundle\Entity\BusinessHoursOverride", inversedBy="timePeriods")
      * @ORM\JoinColumn(name="business_hours_override_id", nullable=true, onDelete="CASCADE")
      * @ConfigField(defaultValues={
      *     "entity"={
