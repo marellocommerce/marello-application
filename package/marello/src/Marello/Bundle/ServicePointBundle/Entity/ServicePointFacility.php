@@ -103,9 +103,9 @@ class ServicePointFacility extends ExtendServicePointFacility implements DatesAw
     protected $email;
 
     /**
-     * @var Collection|TimePeriod[]
+     * @var Collection|BusinessHours[]
      *
-     * @ORM\OneToMany(targetEntity="Marello\Bundle\ServicePointBundle\Entity\TimePeriod", mappedBy="servicePointFacility", cascade={"ALL"})
+     * @ORM\OneToMany(targetEntity="Marello\Bundle\ServicePointBundle\Entity\BusinessHours", mappedBy="servicePointFacility", cascade={"ALL"})
      * @ConfigField(defaultValues={
      *     "entity"={
      *         "label" = "marello.servicepoint.servicepoint_facility.business_hours.label"
@@ -206,7 +206,7 @@ class ServicePointFacility extends ExtendServicePointFacility implements DatesAw
     }
 
     /**
-     * @return Collection|TimePeriod[]
+     * @return Collection|BusinessHours[]
      */
     public function getBusinessHours(): Collection
     {
@@ -214,7 +214,7 @@ class ServicePointFacility extends ExtendServicePointFacility implements DatesAw
     }
 
     /**
-     * @param Collection|TimePeriod[] $businessHours
+     * @param Collection|BusinessHours[] $businessHours
      * @return ServicePointFacility
      */
     public function setBusinessHours(Collection $businessHours): ServicePointFacility

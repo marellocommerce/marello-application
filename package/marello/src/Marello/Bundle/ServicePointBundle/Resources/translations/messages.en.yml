@@ -20,17 +20,23 @@ marello:
             code.label: "Code"
             labels.label: "Name"
 
+        businesshours:
+            id.label: "ID"
+            day_of_week.label: "Day"
+            date.label: "Date"
+            time_periods.label: "Time Periods"
+            servicepoint_facility.label: "Service Point Facility"
+
         timeperiod:
             entity_label: "Time Period"
             entity_plural_label: "Time Periods"
 
             id.label: "Id"
-            day_of_week.label: "Day"
             open_time.label: "Opening Time"
             close_time.label: "Closing Time"
-            servicepoint_facility.label: "Service Point Facility"
+            business_hours.label: "Business Hours"
 
-        serviecpoint_address:
+        servicepoint_address:
             entity_label: "Service Point Address"
             entity_plural_label: "Service Point Addresses"
 
