@@ -38,7 +38,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
  *     }
  * )
  */
-class AbstractTimePeriod implements DatesAwareInterface
+abstract class AbstractTimePeriod implements DatesAwareInterface
 {
     use DatesAwareTrait;
 

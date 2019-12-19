@@ -71,7 +71,7 @@ class MarelloServicePointBundle implements Migration
         $table->changeColumn('servicepoint_facility_id', ['notnull' => false]);
         $table->addIndex(['type']);
 
-        $queries->addPostQuery('UPDATE marello_sp_timeperiod a LEFT JOIN marello_sp_businesshours b ON a.servicepointfacility_id = b.servicepointfacility_id AND a.date = b.date SET a.business_hours_id = b.id');
+        $queries->addPostQuery('UPDATE marello_sp_timeperiod a LEFT JOIN marello_sp_businesshours b ON a.servicepoint_facility_id = b.servicepoint_facility_id AND a.day_of_week = b.day_of_week SET a.business_hours_id = b.id, a.type = \'regular\'');
         $queries->addQuery(new RemoveFieldQuery(TimePeriod::class, 'servicepointFacility'));
         $queries->addQuery(new RemoveFieldQuery(TimePeriod::class, 'dayOfWeek'));
     }
