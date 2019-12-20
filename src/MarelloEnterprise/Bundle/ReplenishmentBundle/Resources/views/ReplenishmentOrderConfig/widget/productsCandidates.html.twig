@@ -24,63 +24,76 @@
         <input type="hidden" name="removeProducts" id="removeProducts" value="{{ app.request.get('removed') }}" />
     {% endblock %}
 
-    <script type="text/javascript">
-        {% set wid = app.request.get('_wid') %}
-        require(
-                [
-                    'jquery',
-                    'routing',
-                    'orodatagrid/js/datagrid/listener/callback-listener',
-                    'oroui/js/widget-manager',
-                    'marelloenterprisereplenishment/js/multiple-entity/model'
-                ],
-                function($, routing, CallbackListener, WidgetManager, MultipleEntityModel) {
-                    var addedModels = {};
-                    WidgetManager.getWidgetInstance({{ wid|json_encode|raw }}, function(widget) {
-                        widget.getAction('select', 'adopted', function(selectBtn) {
-                            selectBtn.click(function() {
-                                var addedVal = $('#appendProducts').val();
-                                var removedVal = $('#removeProducts').val();
-                                var appendedIds = addedVal.length ? addedVal.split(',') : [];
-                                var removedIds = removedVal.length ? removedVal.split(',') : [];
-                                widget.trigger('completeSelection', appendedIds, addedModels, removedIds);
-                            });
-                        });
-                    });
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
 
-                    var gridName = {{ gridName|json_encode|raw }};
+    <div {{ UI.renderPageComponentAttributes({
+        module: 'marelloenterprisereplenishment/js/app/components/replenishment-product-component',
+        options: {
+            wid: app.request.get('_wid'),
+            gridName: gridName,
+            addedVal: '#appendProducts',
+            removedVal: '#removeProducts',
+            columnName: 'hasProduct'
+        }
+    }) }}></div>
 
-                    $(function () {
-                        /** @type {orodatagrid.datagrid.listener.CallbackListener} */
-                        new CallbackListener({
-                            $gridContainer: $('[data-wid="{{ wid }}"]'),
-                            gridName: gridName,
-                            dataField: 'id',
-                            columnName: 'hasProduct',
-                            processCallback: function (value, model, listener) {
-                                var isActive = model.get(listener.columnName);
-                                var id = model.get('id');
-                                if (isActive) {
-                                    addedModels[id] = new MultipleEntityModel({
-                                        'id': model.get('id'),
-                                        'isDefault': false,
-                                        'name': model.get('name'),
-                                        'sku': model.get('sku'),
-                                        'manufacturingCode': model.get('manufacturingCode'),
-                                        'status': model.get('status'),
-                                        'categories': model.get('categories'),
-                                        'image': model.get('image'),
-                                        'createdAt': model.get('createdAt')
-                                    });
-                                } else if (addedModels.hasOwnProperty(id)) {
-                                    delete addedModels[id];
-                                }
-                            }
-                        });
+    {#<script type="text/javascript">#}
+        {#{% set wid = app.request.get('_wid') %}#}
+        {#loadModules(#}
+                {#[#}
+                    {#'jquery',#}
+                    {#'routing',#}
+                    {#'orodatagrid/js/datagrid/listener/callback-listener',#}
+                    {#'oroui/js/widget-manager',#}
+                    {#'marelloenterprisereplenishment/js/multiple-entity/model'#}
+                {#],#}
+                {#function($, routing, CallbackListener, WidgetManager, MultipleEntityModel) {#}
+                    {#var addedModels = {};#}
+                    {#WidgetManager.getWidgetInstance({{ wid|json_encode|raw }}, function(widget) {#}
+                        {#widget.getAction('select', 'adopted', function(selectBtn) {#}
+                            {#selectBtn.click(function() {#}
+                                {#var addedVal = $('#appendProducts').val();#}
+                                {#var removedVal = $('#removeProducts').val();#}
+                                {#var appendedIds = addedVal.length ? addedVal.split(',') : [];#}
+                                {#var removedIds = removedVal.length ? removedVal.split(',') : [];#}
+                                {#widget.trigger('completeSelection', appendedIds, addedModels, removedIds);#}
+                            {#});#}
+                        {#});#}
+                    {#});#}
 
-                    });
-                });
-    </script>
+                    {#var gridName = {{ gridName|json_encode|raw }};#}
+
+                    {#$(function () {#}
+                        {#/** @type {orodatagrid.datagrid.listener.CallbackListener} */#}
+                        {#new CallbackListener({#}
+                            {#$gridContainer: $('[data-wid="{{ wid }}"]'),#}
+                            {#gridName: gridName,#}
+                            {#dataField: 'id',#}
+                            {#columnName: 'hasProduct',#}
+                            {#processCallback: function (value, model, listener) {#}
+                                {#var isActive = model.get(listener.columnName);#}
+                                {#var id = model.get('id');#}
+                                {#if (isActive) {#}
+                                    {#addedModels[id] = new MultipleEntityModel({#}
+                                        {#'id': model.get('id'),#}
+                                        {#'isDefault': false,#}
+                                        {#'name': model.get('name'),#}
+                                        {#'sku': model.get('sku'),#}
+                                        {#'manufacturingCode': model.get('manufacturingCode'),#}
+                                        {#'status': model.get('status'),#}
+                                        {#'categories': model.get('categories'),#}
+                                        {#'image': model.get('image'),#}
+                                        {#'createdAt': model.get('createdAt')#}
+                                    {#});#}
+                                {#} else if (addedModels.hasOwnProperty(id)) {#}
+                                    {#delete addedModels[id];#}
+                                {#}#}
+                            {#}#}
+                        {#});#}
+
+                    {#});#}
+                {#});#}
+    {#</script>#}
 
     <div class="widget-actions">
         <button type="reset" class="btn">{{ 'Cancel'|trans }}</button>
