@@ -110,7 +110,7 @@ datagrids:
                 join:
                     left:
                         - { join: p.status, alias: s }
-                        - { join: p.categories, alias: cat }
+#                        - { join: p.categories, alias: cat }
                 groupBy: p.id, s.label
         columns:
             hasProduct:
@@ -135,11 +135,11 @@ datagrids:
             status:
                 label:              marello.product.status.label
                 frontend_type:      string
-            categories:
-                label:              marello.product.categories.label
-                type:               twig
-                frontend_type:      html
-                template:           MarelloProductBundle:Product/Datagrid/Property:categories.html.twig
+#            categories:
+#                label:              marello.product.categories.label
+#                type:               twig
+#                frontend_type:      html
+#                template:           MarelloProductBundle:Product/Datagrid/Property:categories.html.twig
             createdAt:
                 label:              oro.ui.created_at
                 frontend_type:      datetime
@@ -150,7 +150,7 @@ datagrids:
                 productName:            { data_name: p.denormalizedDefaultName }
                 manufacturingCode:      { data_name: p.manufacturingCode }
                 status:                 { data_name: s.label }
-                categories:             { data_name: categoriesCount }
+#                categories:             { data_name: categoriesCount }
                 createdAt:              { data_name: p.createdAt }
             default:
                 hasProduct: 'DESC'
@@ -174,13 +174,13 @@ datagrids:
                 manufacturingCode:
                     data_name:          p.manufacturingCode
                     type:               string
-                categories:
-                    type:               choice
-                    data_name:          cat.code
-                    options:
-                        field_options:
-                            multiple:   true
-                            choices:    '@marello_catalog.provider.categories_choices->getCategories()'
+#                categories:
+#                    type:               choice
+#                    data_name:          cat.code
+#                    options:
+#                        field_options:
+#                            multiple:   true
+#                            choices:    '@marello_catalog.provider.categories_choices->getCategories()'
         properties:
             id: ~
             view_link:
