@@ -4,4 +4,5 @@ dynamic-imports:
         - marelloenterprisereplenishment/js/multiple-entity/model
         - marelloenterprisereplenishment/js/multiple-entity/view
         - marelloenterprisereplenishment/js/multiple-entity
+        - marelloenterprisereplenishment/js/app/components/replenishment-product-component
         - marelloenterprisereplenishment/js/datagrid/marello-replenishment-products-candidates-builder

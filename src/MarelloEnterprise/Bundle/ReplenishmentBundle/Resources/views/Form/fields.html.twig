@@ -91,15 +91,12 @@
     <div id="{{ id }}-container"></div>
 
     <script type="text/javascript">
-        require([
+        loadModules([
                     'jquery',
                     'marelloenterprisereplenishment/js/multiple-entity',
-                    'marelloenterprisereplenishment/js/multiple-entity/collection',
-                    'marelloenterprisereplenishment/js/multiple-entity/model',
-                    'text!{{ asset('bundles/marelloenterprisereplenishment/js/multiple-entity/templates/multiple-entities.html') }}',
-                    'text!{{ asset('bundles/marelloenterprisereplenishment/js/multiple-entity/templates/multiple-entity.html') }}'
+                    'marelloenterprisereplenishment/js/multiple-entity/collection'
                 ],
-                function($, MultipleEntity, MultipleEntityCollection, MultipleEntityModel, EntitiesTpl, EntityTpl) {
+                function($, MultipleEntity, MultipleEntityCollection) {
                     {% set selectionUrl = null %}
                     {% set originalFieldId = attr['data-ftid'] %}
                     {% if form.vars.grid_url is defined and form.vars.grid_url %}
@@ -112,8 +109,6 @@
 
                     var widget = new MultipleEntity({
                         el: '#{{ id }}-container',
-                        template: EntitiesTpl,
-                        elementTemplate: EntityTpl,
                         addedElement: 'input[data-ftid="{{ originalFieldId }}_added"]',
                         removedElement: 'input[data-ftid="{{ originalFieldId }}_removed"]',
                         name: {{ id|json_encode|raw }},
