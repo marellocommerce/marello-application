@@ -3,7 +3,6 @@
 namespace Marello\Bundle\ServicePointBundle\Form\Type;
 
 use Marello\Bundle\ServicePointBundle\Entity\ServicePointFacility;
-use Oro\Bundle\FormBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -25,9 +24,8 @@ class ServicePointFacilityType extends AbstractType
             ->add('email', EmailType::class, [
                 'label' => 'marello.servicepoint.servicepoint_facility.email.label',
             ])
-            ->add('businessHours', CollectionType::class, [
+            ->add('businessHours', BusinessHoursCollectionType::class, [
                 'label' => 'marello.servicepoint.servicepoint_facility.business_hours.label',
-                'entry_type' => BusinessHoursType::class,
             ])
         ;
     }
