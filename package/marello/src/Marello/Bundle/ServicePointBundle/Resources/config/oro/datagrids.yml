@@ -234,3 +234,69 @@ datagrids:
         options:
             entityHint: marello.servicepoint.timeperiod.entity_plural_label
             entity_pagination: true
+
+    marello-businesshours-overrides-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - bho.id
+                    - bho.date AS date
+                    - bho.openStatus AS openStatus
+                    - tp.openTime AS openTime
+                    - tp.closeTime AS closeTime
+                from:
+                    - { table: 'MarelloServicePointBundle:BusinessHoursOverride', alias: bho }
+                join:
+                    left:
+                        - { join: bho.timePeriods, alias: tp }
+                where:
+                    and:
+                        - bho.servicePointFacility = :servicePointFacility
+            bind_parameters:
+                - servicePointFacility
+        columns:
+            date:
+                label: marello.servicepoint.businesshours.date.label
+                type: twig
+                frontend_type: html
+                template: 'MarelloServicePointBundle:TimePeriod:Datagrid/date.html.twig'
+            open_status:
+                label: marello.servicepoint.businesshours.open_status.label
+                type: twig
+                frontend_type: html
+                template: 'MarelloServicePointBundle:TimePeriod:Datagrid/openStatus.html.twig'
+            open_time:
+                label: marello.servicepoint.timeperiod.open_time.label
+                type: twig
+                frontend_type: html
+                template: 'MarelloServicePointBundle:TimePeriod:Datagrid/openTime.html.twig'
+            close_time:
+                label: marello.servicepoint.timeperiod.close_time.label
+                type: twig
+                frontend_type: html
+                template: 'MarelloServicePointBundle:TimePeriod:Datagrid/closeTime.html.twig'
+
+        filters:
+            columns:
+                date:
+                    type: date
+                    data_name: date
+#                open_status:
+#                    type: choice
+#                    data_name: date
+
+        sorters:
+            columns:
+                date:
+                    data_name: date
+#                open_status:
+#                    data_name: open_status
+            default:
+                label: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+
+        properties:
+            id: ~
+        options:
+            entityHint: marello.servicepoint.timeperiod.entity_plural_label
+            entity_pagination: true

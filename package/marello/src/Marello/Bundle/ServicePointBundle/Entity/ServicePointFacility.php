@@ -114,9 +114,22 @@ class ServicePointFacility extends ExtendServicePointFacility implements DatesAw
      */
     protected $businessHours;
 
+    /**
+     * @var Collection|BusinessHoursOverride[]
+     *
+     * @ORM\OneToMany(targetEntity="Marello\Bundle\ServicePointBundle\Entity\BusinessHoursOverride", mappedBy="servicePointFacility", cascade={"ALL"})
+     * @ConfigField(defaultValues={
+     *     "entity"={
+     *         "label" = "marello.servicepoint.servicepoint_facility.business_hours_overrides.label"
+     *     }
+     * })
+     */
+    protected $businessHoursOverrides;
+
     public function __construct()
     {
         $this->businessHours = new ArrayCollection();
+        $this->businessHoursOverrides = new ArrayCollection();
 
         parent::__construct();
     }
@@ -220,6 +233,25 @@ class ServicePointFacility extends ExtendServicePointFacility implements DatesAw
     public function setBusinessHours(Collection $businessHours): ServicePointFacility
     {
         $this->businessHours = $businessHours;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|BusinessHoursOverride[]
+     */
+    public function getBusinessHoursOverrides()
+    {
+        return $this->businessHoursOverrides;
+    }
+
+    /**
+     * @param Collection|BusinessHoursOverride[] $businessHoursOverrides
+     * @return ServicePointFacility
+     */
+    public function setBusinessHoursOverrides($businessHoursOverrides)
+    {
+        $this->businessHoursOverrides = $businessHoursOverrides;
 
         return $this;
     }

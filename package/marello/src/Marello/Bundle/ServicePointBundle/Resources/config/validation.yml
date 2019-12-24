@@ -108,3 +108,20 @@ Marello\Bundle\ServicePointBundle\Entity\BusinessHours:
             - 'All':
                 - 'Type': 'Marello\Bundle\ServicePointBundle\Entity\TimePeriod'
             - 'Marello\Bundle\ServicePointBundle\Constraint\NoOverlappingBusinessHours': ~
+
+Marello\Bundle\ServicePointBundle\Entity\BusinessHoursOverride:
+    constraints:
+        - 'Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity':
+            fields: ['date', 'servicePointFacility']
+    properties:
+        date:
+            - 'Date': ~
+            - 'NotNull': ~
+        openStatus:
+            - 'NotBlank': ~
+            - 'Choice':
+                choices: ['open', 'closed']
+        timePeriods:
+            - 'All':
+                - 'Type': 'Marello\Bundle\ServicePointBundle\Entity\TimePeriod'
+            - 'Marello\Bundle\ServicePointBundle\Constraint\NoOverlappingBusinessHours': ~
