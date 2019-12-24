@@ -220,9 +220,6 @@ class ServicePointFacility extends ExtendServicePointFacility implements DatesAw
     public function setBusinessHours(Collection $businessHours): ServicePointFacility
     {
         $this->businessHours = $businessHours;
-        foreach ($this->businessHours as $businessHour) {
-            $businessHour->setServicePointFacility($this);
-        }
 
         return $this;
     }
