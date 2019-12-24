@@ -21,6 +21,8 @@ class BusinessHoursType extends AbstractType
                 'label' => 'marello.servicepoint.businesshours.time_periods.label',
                 'entry_type' => TimePeriodType::class,
                 'prototype_name' => '__timeperiods_name__',
+                'row_count_initial' => 0,
+                'show_form_when_empty' => false,
             ])
         ;
     }
