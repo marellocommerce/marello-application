@@ -26,6 +26,10 @@ marello:
             date.label: "Date"
             time_periods.label: "Time Periods"
             servicepoint_facility.label: "Service Point Facility"
+            open_status:
+                label: "Open Status"
+                open.label: "Open"
+                closed.label: "Closed"
 
         timeperiod:
             entity_label: "Time Period"
@@ -48,6 +52,7 @@ marello:
             service_point.label: "Service Point"
             facility.label: "Facility"
             business_hours.label: "Business Hours"
+            business_hours_overrides.label: "Business Hours Overrides"
             phone.label: "Phone Number"
             email.label: "E-mail address"
 

@@ -73,6 +73,16 @@ class ServicePointFacilityController extends Controller
         return ['entity' => $entity];
     }
 
+    /**
+     * @Route("/businesshoursoverrides/{id}", requirements={"id" = "\d+"}, name="marello_servicepoint_servicepointfacility_businesshoursoverrides")
+     * @Template("MarelloServicePointBundle:ServicePointFacility:widget/businessHoursOverrides.html.twig")
+     * @AclAncestor("marello_servicepoint_servicepointfacility_view")
+     */
+    public function businesHoursOverridesAction(Request $request, ServicePointFacility $entity)
+    {
+        return ['entity' => $entity];
+    }
+
     protected function update(ServicePointFacility $entity)
     {
         $handler = $this->get('marello_servicepoint.form_handler.servicepoint_facility');
