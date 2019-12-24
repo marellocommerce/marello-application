@@ -20,6 +20,13 @@ services:
         tags:
             - { name: form.type }
 
+    marello_serviceepoint.form_type.business_hours_collection:
+        class: 'Marello\Bundle\ServicePointBundle\Form\Type\BusinessHoursCollectionType'
+        arguments:
+            - '@marello_servicepoint.provider.day_of_week'
+        tags:
+            - { name: form.type }
+
     marello_servicepoint.form.facility:
         class: 'Symfony\Component\Form\FormInterface'
         factory: ['@form.factory', 'create']
