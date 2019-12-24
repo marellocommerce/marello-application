@@ -65,8 +65,7 @@ Marello\Bundle\ServicePointBundle\Entity\ServicePointFacility:
             - 'Valid':
                 traverse: true
             - 'All':
-                  - 'Type': 'Marello\Bundle\ServicePointBundle\Entity\TimePeriod'
-            - 'Marello\Bundle\ServicePointBundle\Constraint\NoOverlappingBusinessHours': ~
+                - 'Type': 'Marello\Bundle\ServicePointBundle\Entity\BusinessHours'
 
 Marello\Bundle\ServicePointBundle\Entity\Facility:
     constraints:
@@ -103,5 +102,9 @@ Marello\Bundle\ServicePointBundle\Entity\BusinessHours:
             fields: ['dayOfWeek', 'servicePointFacility']
     properties:
         dayOfWeek:
+            - 'Marello\Bundle\ServicePointBundle\Constraint\DayOfWeek': ~
             - 'NotNull': ~
-            - 'Marello\Bundle\ServicePointBundle\Constraints\DayOfWeek': ~
+        timePeriods:
+            - 'All':
+                - 'Type': 'Marello\Bundle\ServicePointBundle\Entity\TimePeriod'
+            - 'Marello\Bundle\ServicePointBundle\Constraint\NoOverlappingBusinessHours': ~
