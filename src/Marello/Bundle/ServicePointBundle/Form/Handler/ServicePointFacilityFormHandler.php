@@ -91,6 +91,16 @@ class ServicePointFacilityFormHandler
             }
         }
 
+        foreach ($entity->getBusinessHoursOverrides() as $businessHoursOverride) {
+            $businessHoursOverride->setServicePointFacility($entity);
+            $this->manager->persist($businessHoursOverride);
+
+            foreach ($businessHoursOverride->getTimePeriods() as $timePeriod) {
+                $timePeriod->setBusinessHours($businessHoursOverride);
+                $this->manager->persist($timePeriod);
+            }
+        }
+
         foreach ($originalBusinessHours as $businessHours) {
             $newBusinessHours = $entity->getBusinessHours()->filter(function (BusinessHours $bh) use ($businessHours) {
                 return $bh->getId() === $businessHours->getId();

@@ -13,7 +13,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 /**
  * @ORM\Entity
  * @ORM\Table(
- *     name="marello_sp_bhoverride",
+ *     name="marello_sp_bh_override",
  *     indexes={
  *         @ORM\Index(columns={"date"})
  *     },
