@@ -20,12 +20,12 @@ class NoOverlappingBusinessHoursValidator extends ConstraintValidator
             throw new UnexpectedTypeException($value, Collection::class);
         }
 
-        foreach ($value as $i => $item) {
-            $sameDayHours = $value->filter(function (AbstractTimePeriod $x) use ($item) {
-                return $item !== $x && $item->getDayOfWeek() === $x->getDayOfWeek();
-            });
-            foreach ($sameDayHours as $sameDayItem) {
-                if ($this->isHoursOverlap($sameDayItem, $item)) {
+        $itemCount = count($value);
+        for ($i = 0; $i < $itemCount; $i++) {
+            $item = $value[$i];
+            for ($j = $i + 1; $j < $itemCount; $j++) {
+                $compareItem = $value[$j];
+                if ($this->isHoursOverlap($compareItem, $item)) {
                     $this->context
                         ->buildViolation($constraint->message)
                         ->atPath('['.$i.'].openTime')
@@ -38,6 +38,10 @@ class NoOverlappingBusinessHoursValidator extends ConstraintValidator
 
     protected function isHoursOverlap(AbstractTimePeriod $first, AbstractTimePeriod $second)
     {
+        if ($first === $second) {
+            return false;
+        }
+
         if ($first->getOpenTime() <= $second->getOpenTime()) {
             if ($first->getCloseTime() >= $second->getOpenTime()) {
                 return true;
