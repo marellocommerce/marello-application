@@ -22,7 +22,7 @@ class PaymentMethodsConfigsRuleController extends AbstractController
 {
     /**
      * @Route("/", name="marello_payment_methods_configs_rule_index")
-     * @Template
+     * @Template("MarelloPaymentBundle:PaymentMethodsConfigsRule:index.html.twig")
      * @AclAncestor("marello_payment_methods_configs_rule_view")
      *
      * @return array
@@ -54,7 +54,7 @@ class PaymentMethodsConfigsRuleController extends AbstractController
 
     /**
      * @Route("/view/{id}", name="marello_payment_methods_configs_rule_view", requirements={"id"="\d+"})
-     * @Template
+     * @Template("MarelloPaymentBundle:PaymentMethodsConfigsRule:view.html.twig")
      * @Acl(
      *      id="marello_payment_methods_configs_rule_view",
      *      type="entity",
@@ -75,7 +75,7 @@ class PaymentMethodsConfigsRuleController extends AbstractController
 
     /**
      * @Route("/update/{id}", name="marello_payment_methods_configs_rule_update", requirements={"id"="\d+"})
-     * @Template
+     * @Template("MarelloPaymentBundle:PaymentMethodsConfigsRule:update.html.twig")
      * @Acl(
      *     id="marello_payment_methods_configs_rule_update",
      *     type="entity",

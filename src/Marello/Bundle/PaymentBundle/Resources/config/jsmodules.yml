@@ -1,0 +1,3 @@
+dynamic-imports:
+    marellopayment:
+        - marellopayment/js/app/views/payment-rule-method-view

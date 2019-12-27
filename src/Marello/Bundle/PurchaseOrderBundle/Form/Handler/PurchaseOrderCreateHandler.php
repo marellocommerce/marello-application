@@ -6,6 +6,7 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\SecurityBundle\Authentication\Token\OrganizationAwareTokenInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -56,9 +57,13 @@ class PurchaseOrderCreateHandler
         /*
          * Get organization of currently logged in user, or use first one.
          */
+        $organization = null;
         if ($token = $this->tokenStorage->getToken()) {
-            $organization = $token->getOrganizationContext();
-        } else {
+            if ($token instanceof OrganizationAwareTokenInterface) {
+                $organization = $token->getOrganization();
+            }
+        }
+        if (!$organization) {
             $organization = $this->doctrine->getRepository(Organization::class)->getFirst();
         }
 
