@@ -63,7 +63,7 @@ datagrids:
                 createdAt:              { data_name: p.createdAt }
                 updatedAt:              { data_name: p.updatedAt }
             default:
-                name: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+                name: 'DESC'
         filters:
             columns:
                 type:
@@ -83,7 +83,7 @@ datagrids:
                     data_name:          p.weight
                     type:               number
                     options:
-                        data_type:      '%oro_filter.form.type.filter.number.class%::DATA_DECIMAL'
+                        data_type:      'Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType::DATA_DECIMAL'
                     enabled:            false
         actions:
             view:
@@ -185,7 +185,7 @@ datagrids:
                 sku:            { data_name: p.sku }
                 inventoryQty:   { data_name: inventoryQty }
             default:
-                name:  "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+                name:  "DESC"
         options:
             entityHint: product
             toolbarOptions:
@@ -268,7 +268,7 @@ datagrids:
                 sku:            { data_name: p.sku }
                 hasVariant:     { data_name: hasVariant }
             default:
-                hasVariant:  "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+                hasVariant:  "DESC"
         properties:
             id: ~
             name:
@@ -388,7 +388,7 @@ datagrids:
         sorters:
             columns:
                 hasChannel:           { data_name: hasChannel }
-            default:                  { hasChannel: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC' }
+            default:                  { hasChannel: 'DESC' }
         filters:
             columns:
                 hasChannel:
@@ -501,7 +501,7 @@ datagrids:
                 productName:          { data_name: productName }
                 manufacturingCode:    { data_name: p.manufacturingCode }
             default:
-                name:  '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+                name:  'ASC'
         properties:
             id: ~
         options:
@@ -573,7 +573,7 @@ datagrids:
                 - categories
         sorters:
             default:
-                name: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+                name: 'DESC'
 
     marello-product-categories-extend-grid:
         extends: marello-product-categories-base-grid
@@ -614,7 +614,7 @@ datagrids:
                 inCategory:
                     data_name: inCategory
             default:
-                inCategory: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+                inCategory: 'DESC'
         filters:
             columns:
                 inCategory:

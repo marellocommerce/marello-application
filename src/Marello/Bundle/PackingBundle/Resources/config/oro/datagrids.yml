@@ -58,7 +58,7 @@ datagrids:
                 updatedAt:
                     data_name: ps.updatedAt
             default:
-                packingSlipNumber: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+                packingSlipNumber: "DESC"
         filters:
             columns:
                 packingSlipNumber:
@@ -168,15 +168,15 @@ datagrids:
                 updatedAt:
                     data_name: ps.updatedAt
             default:
-                productSku: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
-#        totals:
-#            grand_total:
-#                columns:
-#                    productSku:
-#                        label: marello.packing.datagrid.columns.grand_total
-#                    quantity:
-#                        expr: SUM( CASE WHEN ps.id != :id THEN 0 ELSE psi.quantity END )
-#                        formatter: integer
-#                    weight:
-#                        expr: SUM( CASE WHEN ps.id != :id THEN 0 ELSE psi.weight END )
-#                        formatter: decimal
+                productSku: "ASC"
+        totals:
+            grand_total:
+                columns:
+                    productSku:
+                        label: marello.packing.datagrid.columns.grand_total
+                    quantity:
+                        expr: SUM( CASE WHEN ps.id != :id THEN 0 ELSE psi.quantity END )
+                        formatter: integer
+                    weight:
+                        expr: SUM( CASE WHEN ps.id != :id THEN 0 ELSE psi.weight END )
+                        formatter: decimal

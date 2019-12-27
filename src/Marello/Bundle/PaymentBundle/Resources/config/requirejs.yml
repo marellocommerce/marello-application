@@ -1,3 +1,0 @@
-config:
-    paths:
-        'marellopayment/js/app/views/payment-rule-method-view': 'bundles/marellopayment/js/app/views/payment-rule-method-view.js'

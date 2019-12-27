@@ -36,7 +36,7 @@ datagrids:
                 totalOrders:            { data_name: totalOrders }
                 totalRevenue:           { data_name: totalRevenue }
             default:
-                totalRevenue: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+                totalRevenue: 'DESC'
         options:
             entityHint: report data
             export: false
@@ -82,7 +82,7 @@ datagrids:
                 inventoryQty:   { data_name: inventoryQty }
                 status:         { data_name: s.label }
             default:
-                inventoryQty:  '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+                inventoryQty:  'ASC'
         options:
             entityHint: report data
             export: false
@@ -125,7 +125,7 @@ datagrids:
                     createdAt:             { data_name: createdAt }
                     quantitySold:          { data_name: quantitySold }
                 default:
-                    quantitySold:  '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+                    quantitySold:  'DESC'
             options:
                 entityHint: report data
                 export: false
@@ -173,7 +173,7 @@ datagrids:
                     createdAt:             { data_name: createdAt }
                     quantitySold:          { data_name: quantitySold }
                 default:
-                    quantitySold: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+                    quantitySold: 'ASC'
             options:
                 entityHint: report data
                 export: false
@@ -222,7 +222,7 @@ datagrids:
                     returnReason:           { data_name: returnReason }
                     percentageReturned:     { data_name: percentageReturned }
                 default:
-                    productSku: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+                    productSku: 'ASC'
             filters:
                 columns:
                     productSku:
@@ -286,7 +286,7 @@ datagrids:
                     quantityOrdered:        { data_name: quantityOrdered }
                     percentageReturned:     { data_name: percentageReturned }
                 default:
-                    productSku: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+                    productSku: 'ASC'
             filters:
                 columns:
                     productSku:

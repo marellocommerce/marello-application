@@ -69,7 +69,7 @@ datagrids:
                 updatedAt:
                     data_name: r.updatedAt
             default:
-                returnNumber: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+                returnNumber: 'DESC'
         properties:
             view_link:
                 type:   url
@@ -161,7 +161,7 @@ datagrids:
                 updatedAt:
                     data_name: r.updatedAt
             default:
-                returnNumber: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+                returnNumber: 'DESC'
         properties:
             view_link:
                 type:   url
