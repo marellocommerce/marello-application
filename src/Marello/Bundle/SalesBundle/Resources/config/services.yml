@@ -136,3 +136,19 @@ services:
         class: 'Marello\Bundle\SalesBundle\Provider\SalesChannelLocalizationProvider'
         tags:
             - {name: marello_entity_localization_provider, priority: 10}
+
+    marello_sales.scope.saleschannel:
+        class: 'Marello\Bundle\SalesBundle\Config\SalesChannelScopeManager'
+        parent: oro_config.scope_manager.abstract
+        tags:
+            - { name: oro_config.scope, scope: saleschannel, priority: 60 }
+
+    marello_sales.config_form_provider.saleschannel:
+        class: 'Marello\Bundle\SalesBundle\Provider\SalesChannelConfigurationFormProvider'
+        parent: 'oro_config.provider.abstract_provider'
+        lazy: true
+
+    marello_sales.event_listener.saleschannel_grid_listener:
+        class: 'Marello\Bundle\SalesBundle\EventListener\Datagrid\SalesChannelGridListener'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-sales-channel, method: onBuildBefore }

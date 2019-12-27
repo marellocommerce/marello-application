@@ -1,0 +1,55 @@
+marello:
+    pdf:
+        config:
+            groups:
+                documents.label: Documents
+                document_configuration.label: Document Configuration
+                template.label: Template Settings
+                dimensions.label: Dimensions
+                workflow.label: Workflow
+                email.label: Email
+            fields:
+                paper_size:
+                    label: "Paper size"
+                    a4.label: "A4"
+                    letter.label: "Letter"
+                language:
+                    label: "Language"
+                    tooltip: "Language applied to certain language-specific fields on invoice PDF."
+                locale:
+                    label: "Localization"
+                    tooltip: "Localization applied number- and date-fields on invoice PDF."
+                logo:
+                    label: "Company logo"
+                    tooltip: "Upload a logo that will be displayed on top of your invoices."
+                company_address:
+                    label: "Company address"
+                    tooltip: "Enter company address information here, including the company name and country."
+                company_email:
+                    label: "Company e-mail address"
+                    tooltip: "Enter the company invoice-related e-mail address here."
+                company_phone:
+                    label: "Company phone number"
+                    tooltip: "Enter the company invoice-related phone number here."
+                company_bank:
+                    label: "Bank information"
+                    tooltip: "Bank information such as bank name, IBAN or BIC."
+                company_coc:
+                    label: "Chamber Of Commerce information"
+                    tooltip: "Chamber Of Commerce-related information, such as Chamber Of Commerce number."
+                email_workflow_transition:
+                    label: "Send invoice in workflow transition"
+                    tooltip: "Select the workflow transition in which the invoice is e-mailed to the customer."
+                    placeholder: "Don't send invoice via e-mail"
+                email_sender_email:
+                    label: "E-mail sender address"
+                    tooltip: "The e-mail address the invoice is sent from"
+                email_sender_name:
+                    label: "E-mail sender name"
+                    tooltip: "The name displayed as sender of the invoice"
+                email_bcc:
+                    label: "BCC address"
+                    tooltip: "Receive a copy of the invoice e-mail at this address"
+
+        filename:
+            invoice: "Invoice_%entityNumber%"
