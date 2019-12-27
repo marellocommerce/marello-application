@@ -138,13 +138,15 @@ class OrderItemStatusListener
             if ($balancedInventoryLevel->getBalancedInventoryQty() >= $orderItem->getQuantity() ||
                 $balancedInventoryLevel->getReservedInventoryQty() >= $orderItem->getQuantity()) {
                 $event = new OrderItemStatusUpdateEvent($orderItem, LoadOrderItemStatusData::SHIPPED);
-                $this->eventDispatcher->dispatch(
-                    OrderItemStatusUpdateEvent::NAME,
-                    $event
-                );
-                $orderItem->setStatus($this->findStatusByName($event->getStatusName()));
-                $entityManager->persist($orderItem);
+            } else {
+                $event = new OrderItemStatusUpdateEvent($orderItem, LoadOrderItemStatusData::COULD_NOT_ALLOCATE);
             }
+            $this->eventDispatcher->dispatch(
+                OrderItemStatusUpdateEvent::NAME,
+                $event
+            );
+            $orderItem->setStatus($this->findStatusByName($event->getStatusName()));
+            $entityManager->persist($orderItem);
         }
         $entityManager->flush();
     }
