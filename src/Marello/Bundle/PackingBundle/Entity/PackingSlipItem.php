@@ -172,6 +172,20 @@ class PackingSlipItem extends ExtendPackingSlipItem implements OrganizationAware
     protected $status;
 
     /**
+     * @ORM\Column(name="inventory_batches", type="json_array", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var array
+     */
+    protected $inventoryBatches;
+
+    /**
      * @ORM\PrePersist
      */
     public function prePersist()
@@ -367,6 +381,25 @@ class PackingSlipItem extends ExtendPackingSlipItem implements OrganizationAware
     {
         $this->status = $status;
         
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getInventoryBatches()
+    {
+        return $this->inventoryBatches;
+    }
+
+    /**
+     * @param array $batches
+     * @return $this
+     */
+    public function setInventoryBatches(array $batches)
+    {
+        $this->inventoryBatches = $batches;
+
         return $this;
     }
 }

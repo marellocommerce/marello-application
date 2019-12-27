@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\InventoryBundle\Form\EventListener;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
@@ -13,7 +14,7 @@ use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryLevelCalculator;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 
-class InventoryLevelSubscriber implements EventSubscriberInterface
+class InventoryBatchSubscriber implements EventSubscriberInterface
 {
     /**
      * @var InventoryLevelCalculator
@@ -54,14 +55,16 @@ class InventoryLevelSubscriber implements EventSubscriberInterface
      */
     public function handleUnMappedFields(FormEvent $event)
     {
+        /** @var InventoryBatch $inventoryBatch */
+        $inventoryBatch = $event->getData();
         /** @var InventoryLevel $inventoryLevel */
-        $inventoryLevel = $event->getData();
+        $inventoryLevel = $inventoryBatch->getInventoryLevel();
         if (!$this->isApplicable($inventoryLevel)) {
             return;
         }
 
         $form = $event->getForm();
-        if (!$form->has('adjustmentOperator') || !$form->has('quantity')) {
+        if (!$form->has('adjustmentOperator') || !$form->has('adjustmentQuantity')) {
             return;
         }
 
@@ -71,11 +74,16 @@ class InventoryLevelSubscriber implements EventSubscriberInterface
         if ($adjustment === 0) {
             return;
         }
-
+        $batches = [
+            [
+                'batch' => $inventoryBatch,
+                'qty' => $adjustment
+            ]
+        ];
         $context = InventoryUpdateContextFactory::createInventoryLevelUpdateContext(
             $inventoryLevel,
             $inventoryLevel->getInventoryItem(),
-            [],
+            $batches,
             $adjustment,
             0,
             'manual'
@@ -108,11 +116,11 @@ class InventoryLevelSubscriber implements EventSubscriberInterface
      */
     protected function getAdjustmentQuantity(FormInterface $form)
     {
-        if (!$form->has('quantity')) {
-            throw new \InvalidArgumentException(sprintf('%s form child is missing', 'quantity'));
+        if (!$form->has('adjustmentQuantity')) {
+            throw new \InvalidArgumentException(sprintf('%s form child is missing', 'adjustmentQuantity'));
         }
 
-        return $form->get('quantity')->getData();
+        return $form->get('adjustmentQuantity')->getData();
     }
 
     /**
@@ -123,21 +131,6 @@ class InventoryLevelSubscriber implements EventSubscriberInterface
     protected function isApplicable(InventoryLevel $inventoryLevel = null)
     {
         if (!$inventoryLevel) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Determine whether whe should disable the InventoryLevel's ability to be updated
-     * If the inventory is managed, we should not disable the fields related to updating the InventoryLevel
-     * @param InventoryLevel $inventoryLevel
-     * @return bool
-     */
-    protected function isInventoryLevelDisabled(InventoryLevel $inventoryLevel)
-    {
-        if ($inventoryLevel->isManagedInventory()) {
             return false;
         }
 

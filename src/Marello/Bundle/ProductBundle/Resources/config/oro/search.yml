@@ -2,7 +2,7 @@ search:
     Marello\Bundle\ProductBundle\Entity\Product:
         alias: marello_product
         label: marello.product.entity_plural_label
-        title_fields: [name]
+        title_fields: [denormalizedDefaultName]
         route:
             name: marello_product_view
             parameters:
@@ -10,9 +10,17 @@ search:
         search_template: MarelloProductBundle:Product:searchResult.html.twig
         fields:
             -
-                name: name
+                name: denormalizedDefaultName
                 target_type: text
-                target_fields: [name]
+                target_fields: [denormalizedDefaultName]
+            -
+                name: names
+                relation_type: many-to-many
+                relation_fields:
+                    -
+                        name: string
+                        target_type: text
+                        target_fields: [names]
             -
                 name: sku
                 target_type: text

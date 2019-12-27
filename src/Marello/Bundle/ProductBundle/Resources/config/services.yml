@@ -7,7 +7,7 @@ services:
         parent: oro_form.autocomplete.search_handler
         arguments:
             - '%marello_product.entity.class%'
-            - ["name", "sku"]
+            - ["denormalizedDefaultName", "sku"]
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: products, acl_resource: marello_product_view }
 
@@ -16,7 +16,7 @@ services:
         parent: oro_form.autocomplete.search_handler
         arguments:
             - '%marello_product.entity.class%'
-            - ["name", "sku"]
+            - ["denormalizedDefaultName", "sku"]
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: sales_channel_products, acl_resource: marello_product_view }
 

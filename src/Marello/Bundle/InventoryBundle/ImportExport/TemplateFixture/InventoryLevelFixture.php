@@ -8,6 +8,7 @@ use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\ImportExportBundle\TemplateFixture\AbstractTemplateRepository;
 use Oro\Bundle\ImportExportBundle\TemplateFixture\TemplateFixtureInterface;
+use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 
 class InventoryLevelFixture extends AbstractTemplateRepository implements TemplateFixtureInterface
 {
@@ -68,8 +69,12 @@ class InventoryLevelFixture extends AbstractTemplateRepository implements Templa
      */
     public function createProduct()
     {
+        $name = new LocalizedFallbackValue();
+        $name->setString('SKU 1');
+        
         $entity = new Product();
         $entity->setDefaultName('SKU 1');
+        $entity->addName($name);
         $entity->setSku('sku_001');
 
         return $entity;
