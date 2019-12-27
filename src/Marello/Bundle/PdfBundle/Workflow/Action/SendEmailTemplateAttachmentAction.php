@@ -22,9 +22,11 @@ class SendEmailTemplateAttachmentAction extends SendEmailTemplate
     const OPTION_ATTACHMENT_MIMETYPE = 'mimetype';
     const OPTION_BCC = 'bcc';
 
+    private $options;
+
     protected $mime_type_guesser;
 
-    public function initialize(array $options)
+    public function initialize(array $options): SendEmailTemplate
     {
         if (isset($options[self::OPTION_BCC])) {
             $this->assertEmailAddressOption($options[self::OPTION_BCC]);
@@ -61,11 +63,11 @@ class SendEmailTemplateAttachmentAction extends SendEmailTemplate
                 }
             }
         }
-
+        $this->options = $options;
         parent::initialize($options);
     }
 
-    public function executeAction($context)
+    public function executeAction($context): void
     {
         $emailModel = $this->getEmailModel();
 
