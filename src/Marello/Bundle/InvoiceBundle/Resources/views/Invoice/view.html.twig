@@ -15,7 +15,11 @@
     {{ parent() }}
 {% endblock pageHeader %}
 
-{% block navButtons %}{% endblock navButtons %}
+{% block navButtons %}
+    <a href="{{ path('marello_pdf_download_invoice', {'id': entity.id}) }}" target="_blank" class="btn operation-button action-button">
+        <i class="fa fa-download"></i> {{ 'marello.invoice.download_pdf.label'|trans }}
+    </a>
+{% endblock %}
 
 {% block content_data %}
     {% set id = 'marello-invoice-view' %}
