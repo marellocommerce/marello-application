@@ -1,7 +1,7 @@
 define(function(require) {
     'use strict';
 
-    var mediator = require('oroui/js/mediator');
+    const mediator = require('oroui/js/mediator');
 
     return {
         init: function(deferred, options) {

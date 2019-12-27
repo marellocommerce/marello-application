@@ -1,7 +1,7 @@
 define(function(require) {
     'use strict';
 
-    var ChannelPricingItemView,
+    const
         $ = require('jquery'),
         _ = require('underscore'),
         mediator = require('oroui/js/mediator'),
@@ -12,7 +12,7 @@ define(function(require) {
      * @extends marellolayout.app.views.AbstractItemView
      * @class marellopricing.app.views.ChannelPricingItemView
      */
-    ChannelPricingItemView = AbstractItemView.extend({
+    const ChannelPricingItemView = AbstractItemView.extend({
         /**
          * @property {Object}
          */

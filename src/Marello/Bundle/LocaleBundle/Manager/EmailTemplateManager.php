@@ -2,18 +2,19 @@
 
 namespace Marello\Bundle\LocaleBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Marello\Bundle\LocaleBundle\Model\LocalizationAwareInterface;
 use Marello\Bundle\LocaleBundle\Provider\EntityLocalizationProviderInterface;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
+use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\EmailBundle\Model\EmailTemplateCriteria;
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 
 class EmailTemplateManager
 {
-    /** @var ObjectManager */
-    protected $objectManager;
+    /** @var DoctrineHelper */
+    protected $doctrineHelper;
 
     /** @var  ConfigManager */
     protected $configManager;
@@ -22,14 +23,14 @@ class EmailTemplateManager
     protected $entityLocalizationProvider;
 
     /**
-     * @param ObjectManager $objectManager
+     * @param DoctrineHelper $doctrineHelper
      * @param ConfigManager $configManager
      */
     public function __construct(
-        ObjectManager $objectManager,
+        DoctrineHelper $doctrineHelper,
         ConfigManager $configManager
     ) {
-        $this->objectManager = $objectManager;
+        $this->doctrineHelper = $doctrineHelper;
         $this->configManager = $configManager;
     }
 
@@ -72,9 +73,9 @@ class EmailTemplateManager
             $entityName = ClassUtils::getRealClass(get_class($entity));
             $criteria = new EmailTemplateCriteria($templateName, $entityName);
 
-            return $this->objectManager
-                ->getRepository(EmailTemplate::class)
-                ->findOneLocalized($criteria, $localization->getLanguageCode());
+            return $this
+                ->getEmailTemplateRepository()
+                ->findWithLocalizations($criteria, $localization->getLanguageCode());
         }
 
         return null;
@@ -89,8 +90,18 @@ class EmailTemplateManager
     {
         $entityName = ClassUtils::getRealClass(get_class($entity));
 
-        return $this->objectManager
-            ->getRepository(EmailTemplate::class)
+        return $this
+            ->getEmailTemplateRepository()
             ->findOneBy(['name' => $templateName, 'entityName' => $entityName]);
+    }
+
+    /**
+     * Get email template repository to find localized versions of templates
+     * @return EntityRepository
+     */
+    private function getEmailTemplateRepository()
+    {
+        return $this->doctrineHelper
+            ->getEntityRepository(EmailTemplate::class);
     }
 }

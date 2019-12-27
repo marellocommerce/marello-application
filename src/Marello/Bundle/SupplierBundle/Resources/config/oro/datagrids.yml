@@ -39,7 +39,7 @@ datagrids:
                 currency:
                     data_name: s.currency
             default:
-                priority: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+                priority: "ASC"
         filters:
             columns:
                 name:
@@ -148,7 +148,7 @@ datagrids:
                 cost:
                     data_name:    psr.cost
             default:
-                sku: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+                sku: "ASC"
         filters:
             columns:
                 sku:

@@ -35,7 +35,7 @@ datagrids:
                 createdAt:      { data_name: c.createdAt }
                 updatedAt:      { data_name: c.updatedAt }
             default:
-                name: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+                name: 'ASC'
         properties:
             id: ~
             view_link:
@@ -119,7 +119,7 @@ datagrids:
                 - products
         sorters:
             default:
-                sku: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+                sku: 'DESC'
 
     marello-category-products-extend-grid:
         extends: marello-category-products-base-grid
@@ -163,7 +163,7 @@ datagrids:
                 inCategory:
                     data_name: inCategory
             default:
-                inCategory: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+                inCategory: 'DESC'
         filters:
             columns:
                 inCategory:
