@@ -1,0 +1,8 @@
+dynamic-imports:
+    marelloenterprisereplenishment:
+        - marelloenterprisereplenishment/js/multiple-entity/collection
+        - marelloenterprisereplenishment/js/multiple-entity/model
+        - marelloenterprisereplenishment/js/multiple-entity/view
+        - marelloenterprisereplenishment/js/multiple-entity
+        - marelloenterprisereplenishment/js/app/components/replenishment-product-component
+        - marelloenterprisereplenishment/js/datagrid/marello-replenishment-products-candidates-builder
