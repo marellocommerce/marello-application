@@ -97,6 +97,7 @@ class InventoryItemTest extends WebTestCase
         $context = InventoryUpdateContextFactory::createInventoryLevelUpdateContext(
             $inventoryLevel,
             $inventoryItem,
+            [],
             -5,
             -10,
             'manual'

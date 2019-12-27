@@ -36,6 +36,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         /** Tables generation **/
         $this->createMarelloInventoryItemTable($schema);
         $this->createMarelloInventoryInventoryLevelTable($schema);
+        $this->createMarelloInventoryInventoryBatchTable($schema);
         $this->createMarelloInventoryInventoryLogLevelTable($schema);
         $this->createMarelloInventoryWarehouseTable($schema);
         $this->createMarelloInventoryWarehouseTypeTable($schema);
@@ -47,6 +48,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         /** Foreign keys generation **/
         $this->addMarelloInventoryItemForeignKeys($schema);
         $this->addMarelloInventoryInventoryLevelForeignKeys($schema);
+        $this->addMarelloInventoryInventoryBatchForeignKeys($schema);
         $this->addMarelloInventoryWarehouseForeignKeys($schema);
         $this->addMarelloInventoryWarehouseGroupForeignKeys($schema);
         $this->addMarelloInventoryInventoryLevelLogForeignKeys($schema);
@@ -75,6 +77,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addColumn('back_orders_datetime', 'datetime', ['notnull' => false]);
         $table->addColumn('pre_orders_datetime', 'datetime', ['notnull' => false]);
         $table->addColumn('order_on_demand_allowed', 'boolean', ['notnull' => false, 'default' => false]);
+        $table->addColumn('enable_batch_inventory', 'boolean', ['notnull' => false, 'default' => false]);
         $this->extendExtension->addEnumField(
             $schema,
             $table,
@@ -114,6 +117,33 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addColumn('warehouse_id', 'integer', []);
         $table->addUniqueIndex(['inventory_item_id', 'warehouse_id'], 'uniq_40b8d0414584665a5080ecde');
         $table->addIndex(['warehouse_id'], 'idx_40b8d0415080ecde', []);
+    }
+
+    /**
+     * Create marello_inventory_batch table
+     *
+     * @param Schema $schema
+     */
+    protected function createMarelloInventoryInventoryBatchTable(Schema $schema)
+    {
+        $table = $schema->createTable('marello_inventory_batch');
+        $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('batch_number', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('batch_reference', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('purchase_reference', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('quantity', 'integer', []);
+        $table->addColumn('delivery_date', 'datetime', ['notnull' => false, 'comment' => '(DC2Type:datetime)']);
+        $table->addColumn('expiration_date', 'datetime', ['notnull' => false, 'comment' => '(DC2Type:datetime)']);
+        $table->addColumn('purchase_price', 'money', ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+        $table->addColumn('total_price', 'money', ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+        $table->addColumn('inventory_level_id', 'integer', ['notnull' => false]);
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
+        $table->addColumn('created_at', 'datetime', ['comment' => '(DC2Type:datetime)']);
+        $table->addColumn('updated_at', 'datetime', ['notnull' => false, 'comment' => '(DC2Type:datetime)']);
+
+        $table->setPrimaryKey(['id']);
+        $table->addIndex(['inventory_level_id']);
+        $table->addUniqueIndex(['batch_number'], 'UNIQ_380BD44456B7924');
     }
 
     /**
@@ -285,6 +315,28 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_inventory_warehouse'),
             ['warehouse_id'],
+            ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_organization'),
+            ['organization_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+    }
+
+    /**
+     * Add marello_inventory_batch foreign keys.
+     *
+     * @param Schema $schema
+     */
+    protected function addMarelloInventoryInventoryBatchForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('marello_inventory_batch');
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_inventory_level'),
+            ['inventory_level_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
         );

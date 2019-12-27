@@ -16,8 +16,25 @@ services:
         tags:
              - { name: form.type }
 
+    marello_inventory.form.type.inventory_inventorybatch_collection:
+        class: 'Marello\Bundle\InventoryBundle\Form\Type\InventoryBatchCollectionType'
+        tags:
+            - { name: form.type }
+
     marello_inventory.form.type.inventory_inventorylevel_collection:
         class: 'Marello\Bundle\InventoryBundle\Form\Type\InventoryLevelCollectionType'
+        tags:
+            - { name: form.type }
+
+    marello_inventory.form.type.inventory_level_manage_batches:
+        class: 'Marello\Bundle\InventoryBundle\Form\Type\InventoryLevelManageBatchesType'
+        tags:
+             - { name: form.type }
+
+    marello_inventory.form.type.inventory_inventorybatch:
+        class: 'Marello\Bundle\InventoryBundle\Form\Type\InventoryBatchType'
+        arguments:
+            - '@marello_inventory.form.event_listener.inventory_batch_subscriber'
         tags:
             - { name: form.type }
 
@@ -34,6 +51,13 @@ services:
         class: 'Marello\Bundle\InventoryBundle\Form\EventListener\InventoryItemSubscriber'
         arguments:
             - '@doctrine'
+
+    marello_inventory.form.event_listener.inventory_batch_subscriber:
+        class: 'Marello\Bundle\InventoryBundle\Form\EventListener\InventoryBatchSubscriber'
+        arguments:
+            - '@marello_inventory.model.inventory_level_calculator'
+            - '@event_dispatcher'
+
 
     marello_inventory.form.event_listener.inventory_level_subscriber:
         class: 'Marello\Bundle\InventoryBundle\Form\EventListener\InventoryLevelSubscriber'

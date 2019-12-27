@@ -2,13 +2,17 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Manager;
 
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
-use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
+use Marello\Bundle\InventoryBundle\Factory\InventoryBatchFromInventoryLevelFactory;
 use Marello\Bundle\InventoryBundle\Manager\InventoryManager as BaseInventoryManager;
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
+use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 
 class InventoryManager extends BaseInventoryManager
 {
@@ -27,7 +31,8 @@ class InventoryManager extends BaseInventoryManager
         if (!$this->contextValidator->validateContext($context)) {
             throw new \Exception('Context structure not valid.');
         }
-
+        /** @var InventoryItem $item */
+        $item = $this->getInventoryItem($context);
         /** @var InventoryLevel $level */
         $level = $this->getInventoryLevel($context);
         if (!$level) {
@@ -35,9 +40,28 @@ class InventoryManager extends BaseInventoryManager
             $level
                 ->setWarehouse($this->getWarehouse($context))
                 ->setOrganization($context->getProduct()->getOrganization());
-            /** @var InventoryItem $item */
-            $item = $this->getInventoryItem($context);
             $item->addInventoryLevel($level);
+        }
+        $warehouseType = $level->getWarehouse()->getWarehouseType()->getName();
+        if ($item->isEnableBatchInventory() &&
+            $warehouseType !== WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
+            if (empty($context->getInventoryBatches()) && $context->getRelatedEntity() instanceof PurchaseOrder) {
+                $batch = InventoryBatchFromInventoryLevelFactory::createInventoryBatch($level);
+                $batch->setQuantity(0);
+                $batchInventory = ($batch->getQuantity() + $context->getInventory());
+                $updatedBatch = $this->updateInventoryBatch($batch, $batchInventory);
+                $context->setInventoryBatches([$updatedBatch]);
+            } else {
+                $updatedBatches = [];
+                foreach ($context->getInventoryBatches() as $batchData) {
+                    /** @var InventoryBatch $batch */
+                    $batch = $batchData['batch'];
+                    $qty = $batchData['qty'];
+                    $batchInventory = ($batch->getQuantity() + $qty);
+                    $updatedBatches[] = $this->updateInventoryBatch($batch, $batchInventory);
+                }
+                $context->setInventoryBatches($updatedBatches);
+            }
         }
 
         $inventory = null;
@@ -53,7 +77,11 @@ class InventoryManager extends BaseInventoryManager
         if ($isManagedInventory = $context->getValue('isInventoryManaged')) {
             $level->setManagedInventory($isManagedInventory);
         }
-
+        /** @var InventoryBatch[] $updatedBatches */
+        $updatedBatches = $context->getInventoryBatches();
+        if (count($updatedBatches) === 1 && $updatedBatches[0]->getId() === null) {
+            $level->addInventoryBatch($updatedBatches[0]);
+        }
         $updatedLevel = $this->updateInventory($level, $inventory, $allocatedInventory);
         $context->setInventoryLevel($updatedLevel);
 

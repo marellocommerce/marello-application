@@ -3,6 +3,8 @@
 namespace Marello\Bundle\InventoryBundle\Controller;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
+use Marello\Bundle\InventoryBundle\Form\Type\InventoryLevelManageBatchesType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -75,5 +77,31 @@ class InventoryLevelController extends AbstractController
             ->getView();
 
         return compact('chartView', 'inventoryItem');
+    }
+
+
+    /**
+     * @Route(
+     *     path="/manage-batches/{id}",
+     *     requirements={"id"="\d+"},
+     *     name="marello_inventory_inventorylevel_manage_batches"
+     * )
+     * @Template
+     *
+     * @param InventoryLevel $inventoryLevel
+     * @param Request $request
+     *
+     * @return array
+     */
+    public function manageBatchesAction(InventoryLevel $inventoryLevel, Request $request)
+    {
+        $result = $this->get('oro_form.update_handler')->update(
+            $inventoryLevel,
+            $this->createForm(InventoryLevelManageBatchesType::class, $inventoryLevel),
+            $this->get('translator')->trans('marello.inventory.messages.success.inventorybatches.saved'),
+            $request
+        );
+
+        return $result;
     }
 }
