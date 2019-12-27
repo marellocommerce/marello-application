@@ -1,5 +1,6 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
 {% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
 
 {% oro_title_set({params : {'%entityName%': 'marelloenterprise.replenishment.replenishmentorder.entity_label'|trans }}) %}
 
