@@ -43,8 +43,7 @@ class LoadSubscriptionAttributeFamilyData extends AbstractFixture implements Dep
         $attributeFamily->setCode(self::SUBSCRIPTION_FAMILY_CODE);
         $attributeFamily->setEntityClass(Product::class);
         $attributeFamily->setDefaultLabel('Subscription');
-        $attributeFamily->setOrganization($organization);
-        $attributeFamily->setOwner($user);
+        $attributeFamily->setOwner($organization);
 
         $manager->persist($attributeFamily);
         $manager->flush();
