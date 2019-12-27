@@ -1,7 +1,7 @@
 define(function(require) {
     'use strict';
 
-    var ProductSupplierView,
+    const
         $ = require('jquery'),
         _ = require('underscore'),
         mediator = require('oroui/js/mediator'),
@@ -12,7 +12,7 @@ define(function(require) {
      * @extends marellolayout.app.views.AbstractItemView
      * @class marellosupplier.app.views.ProductSupplierView
      */
-    ProductSupplierView = AbstractItemView.extend({
+    const ProductSupplierView = AbstractItemView.extend({
         options: {
             priority: 0,
             canDropship: false

@@ -1,0 +1,4 @@
+dynamic-imports:
+    marelloaddress:
+        - marelloaddress/js/address
+        - marelloaddress/js/app/components/address-component

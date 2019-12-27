@@ -18,7 +18,7 @@ class BalancedInventoryLevelController extends AbstractController
      *     name="marello_inventory_balancedinventorylevel_index"
      * )
      * @AclAncestor("marello_inventory_inventory_view")
-     * @Template
+     * @Template("@MarelloInventory/BalancedInventoryLevel/index.html.twig")
      *
      * @return array
      */
