@@ -142,8 +142,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addColumn('updated_at', 'datetime', ['notnull' => false, 'comment' => '(DC2Type:datetime)']);
 
         $table->setPrimaryKey(['id']);
-        $table->addIndex(['inventory_level_id']);
-        $table->addUniqueIndex(['batch_number'], 'UNIQ_380BD44456B7924');
+        $table->addUniqueIndex(['batch_number', 'inventory_level_id'], 'UNIQ_380BD44456B7924');
     }
 
     /**
