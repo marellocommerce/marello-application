@@ -140,6 +140,11 @@ datagrids:
                 label:            marello.order.orderitem.status.label
                 frontend_type:    string
                 data_name:        status
+            inventoryBatches:
+                label:            marello.packing.packingslipitem.inventory_batches.label
+                type:             twig
+                frontend_type:    html
+                template:         MarelloPackingBundle:PackingSlip/Datagrid:inventoryBatches.html.twig
             createdAt:
                 label:            oro.ui.created_at
                 frontend_type:    datetime

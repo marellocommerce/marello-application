@@ -22,6 +22,11 @@ services:
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-packingslips, method: onBuildBefore }
 
+    marello_packing.listener.datagrid.packingslipitems_batchnumbers_column_listener:
+        class: 'Marello\Bundle\PackingBundle\EventListener\Datagrid\PackingslipItemsBatchNumbersColumnListener'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.marello-packingslip-items, method: onBuildAfter }
+
     marello_packing.listener.doctrine.packing_slip_item_status:
         class: 'Marello\Bundle\PackingBundle\EventListener\Doctrine\PackingSlipItemStatusListener'
         arguments:
