@@ -36,8 +36,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          }
  *      }
  * )
- * @ORM\Table(
- *      name="marello_inventory_batch"
+ * @ORM\Table(name="marello_inventory_batch",
+ *    uniqueConstraints={
+ *        @ORM\UniqueConstraint(name="UNIQ_380BD44456B7924",
+ *            columns={"batch_number", "inventory_level_id"})
+ *    }
  * )
  * @ORM\HasLifecycleCallbacks()
  */
@@ -60,7 +63,7 @@ class InventoryBatch extends ExtendInventoryBatch implements
     /**
      * @var string
      *
-     * @ORM\Column(name="batch_number", type="string", unique=true, nullable=true)
+     * @ORM\Column(name="batch_number", type="string", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
