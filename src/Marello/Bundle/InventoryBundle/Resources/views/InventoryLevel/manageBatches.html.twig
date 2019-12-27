@@ -1,0 +1,60 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
+
+{% set formAction = path('marello_inventory_inventorylevel_manage_batches', { 'id': entity.id }) %}
+
+{% block navButtons %}
+    {{ UI.cancelButton(path('marello_inventory_inventory_update', { 'id': entity.inventoryItem.id })) }}
+    {% if entity.id and is_granted('marello_inventory_inventory_update') %}
+        {% set html = '' %}
+        {% set html = UI.saveAndCloseButton({
+        'route': 'marello_inventory_inventory_update',
+        'params': {'id': entity.inventoryItem.id}
+        }) %}
+        {% set html = html ~ UI.saveAndStayButton({
+        'route': 'marello_inventory_inventorylevel_manage_batches',
+        'params': {'id': entity.id}
+        }) %}
+
+        {{ UI.dropdownSaveButton({'html': html}) }}
+    {% endif %}
+{% endblock navButtons %}
+
+{% block content_data %}
+    {% set id = 'marello-inventory-level-manage-batches' %}
+    {% set inventoryBatchesWidget %}
+        <div class="responsive-block">
+            <div class="box-type1">
+                <div class="inventoryitem"
+                     data-page-component-module="oroui/js/app/components/view-component"
+                     data-page-component-options="{{ {
+                         view: 'marellolayout/js/app/views/abstract-items-view'
+                     }|json_encode }}"
+                     data-layout="separate">
+                    {{ form_widget(form.inventoryBatches) }}
+                    {{ form_errors(form.inventoryBatches) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
+    {% set dataBlocks = [
+        {
+            'title': 'marello.inventory.inventorybatch.entity_plural_label'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    inventoryBatchesWidget
+                ]
+            }]
+        }
+    ] %}
+
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': dataBlocks,
+    } %}
+    {{ parent() }}
+{% endblock content_data %}

@@ -6,6 +6,7 @@ use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Event\InventoryLevelFinishFormViewEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryLevelCalculator;
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -124,6 +125,27 @@ class InventoryLevelType extends AbstractType
             InventoryLevelFinishFormViewEvent::NAME,
             new InventoryLevelFinishFormViewEvent($view)
         );
+        $vars = $view->vars;
+        $value = $vars['value'];
+        if ($value instanceof InventoryLevel) {
+            $warehouseType = $value->getWarehouse()->getWarehouseType()->getName();
+            if ($warehouseType === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
+                $vars['externalWarehouse'] = true;
+            } else {
+                $vars['externalWarehouse'] = false;
+            }
+            $isInventoryBatchEnabled = $value->getInventoryItem()->isEnableBatchInventory();
+            if ($isInventoryBatchEnabled &&
+                $warehouseType !== WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
+                $vars['manageBatches'] = true;
+            } else {
+                $vars['manageBatches'] = false;
+            }
+        } else {
+            $vars['externalWarehouse'] = false;
+            $vars['manageBatches'] = false;
+        }
+        $view->vars = $vars;
     }
 
     /**
