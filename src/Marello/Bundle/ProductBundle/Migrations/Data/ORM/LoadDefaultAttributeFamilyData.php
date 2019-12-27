@@ -59,7 +59,6 @@ class LoadDefaultAttributeFamilyData extends AbstractFixture implements Dependen
         $attributeFamily->setCode(self::DEFAULT_FAMILY_CODE);
         $attributeFamily->setEntityClass(Product::class);
         $attributeFamily->setDefaultLabel('Default');
-//        $attributeFamily->setOrganization($organization);
         $attributeFamily->setOwner($organization);
 
         $this->setReference(self::DEFAULT_FAMILY_CODE, $attributeFamily);
