@@ -11,6 +11,8 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\Valid;
@@ -124,9 +126,40 @@ class InventoryItemType extends AbstractType
             ->add(
                 'inventoryLevels',
                 InventoryLevelCollectionType::class
-            );
+            )
+            ->add(
+                'enableBatchInventory',
+                CheckboxType::class,
+                [
+                    'required' => false,
+                    'label' => 'marello.inventory.inventoryitem.enable_batch_inventory.label'
+                ]
+            )
+            ->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'preSetDataListener']);;
         if ($this->subscriber !== null) {
             $builder->addEventSubscriber($this->subscriber);
+        }
+    }
+
+    /**
+     * @param FormEvent $event
+     */
+    public function preSetDataListener(FormEvent $event)
+    {
+        /** @var InventoryItem $inventoryItem */
+        $inventoryItem = $event->getData();
+        $form = $event->getForm();
+
+        if ($inventoryItem->isEnableBatchInventory() === true) {
+            $form->remove('enableBatchInventory');
+            $form->add('enableBatchInventory',
+                CheckboxType::class,
+                [
+                    'disabled' => true,
+                    'required' => false,
+                    'label' => 'marello.inventory.inventoryitem.enable_batch_inventory.label'
+                ]
+            );
         }
     }
 

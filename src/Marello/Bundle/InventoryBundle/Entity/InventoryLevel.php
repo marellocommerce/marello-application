@@ -2,7 +2,10 @@
 
 namespace Marello\Bundle\InventoryBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\InventoryBundle\Model\ExtendInventoryLevel;
 use Marello\Bundle\InventoryBundle\Model\InventoryQtyAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
@@ -36,7 +39,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
  * )
  * @ORM\HasLifecycleCallbacks()
  */
-class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInterface
+class InventoryLevel extends ExtendInventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInterface
 {
     use AuditableOrganizationAwareTrait;
     
@@ -202,6 +205,36 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
     protected $pickLocation;
 
     /**
+     * @ORM\OneToMany(
+     *     targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryBatch",
+     *     mappedBy="inventoryLevel",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
+     * )
+     * @ORM\OrderBy({"createdAt" = "DESC"})
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var InventoryLevel[]|Collection
+     */
+    protected $inventoryBatches;
+    
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->inventoryBatches = new ArrayCollection();
+    }
+    
+    /**
      * @return int
      */
     public function getId()
@@ -342,6 +375,41 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
         $this->managedInventory = $managedInventory;
         
         return $this;
+    }
+
+    /**
+     * @param InventoryBatch $inventoryBatch
+     * @return $this
+     */
+    public function addInventoryBatch(InventoryBatch $inventoryBatch)
+    {
+        if (!$this->inventoryBatches->contains($inventoryBatch)) {
+            $inventoryBatch->setInventoryLevel($this);
+            $this->inventoryBatches->add($inventoryBatch);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param InventoryBatch $inventoryBatch
+     * @return $this
+     */
+    public function removeInventoryBatch(InventoryBatch $inventoryBatch)
+    {
+        if ($this->inventoryBatches->contains($inventoryBatch)) {
+            $this->inventoryBatches->removeElement($inventoryBatch);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection|InventoryBatch[]
+     */
+    public function getInventoryBatches()
+    {
+        return $this->inventoryBatches;
     }
 
     /**

@@ -264,7 +264,24 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
      * @var boolean
      */
     protected $orderOnDemandAllowed;
-    
+
+    /**
+     * @ORM\Column(name="enable_batch_inventory", type="boolean", nullable=true, options={"default"=false})
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "header"="Enable Batch Inventory"
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var boolean
+     */
+    protected $enableBatchInventory;
+
     /**
      * @var Warehouse
      */
@@ -586,4 +603,24 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
 
         return $this;
     }
+
+    /**
+     * @return bool
+     */
+    public function isEnableBatchInventory()
+    {
+        return $this->enableBatchInventory;
+    }
+
+    /**
+     * @param mixed $enableBatchInventory
+     * @return InventoryItem
+     */
+    public function setEnableBatchInventory($enableBatchInventory)
+    {
+        $this->enableBatchInventory = $enableBatchInventory;
+        
+        return $this;
+    }
+    
 }
