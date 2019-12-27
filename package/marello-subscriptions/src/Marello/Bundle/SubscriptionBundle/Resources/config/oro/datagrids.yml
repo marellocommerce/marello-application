@@ -114,7 +114,7 @@ datagrids:
                 updatedAt:
                     data_name: o.updatedAt
             default:
-                subscriptionNumber: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+                subscriptionNumber: 'DESC'
         filters:
             columns:
                 subscriptionNumber:

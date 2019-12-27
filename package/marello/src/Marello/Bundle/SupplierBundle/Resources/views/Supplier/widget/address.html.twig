@@ -1,7 +1,18 @@
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'MarelloAddressBundle::macros.html.twig' as address %}
 {% set label = 'marello.supplier.supplier_address.label' %}
-<div class="widget-content">
+<div class="widget-content" {{ UI.renderPageComponentAttributes({
+    module: 'marelloaddress/js/app/components/address-component',
+    options: {
+        wid: app.request.get('_wid'),
+        el: '#supplier-address-' ~ supplierAddress.id,
+        addressId: supplierAddress.id,
+        addressUpdateRoute: {
+            route: 'marello_supplier_supplier_updateaddress',
+            id: supplierAddress.id
+        }
+    }
+}) }}>
     <div class="address-block supplier-address">
         <div id="supplier-address-{{ supplierAddress.id }}">
             {% if marello_supplier_supplier_address is not defined or is_granted(marello_supplier_supplier_address) %}
@@ -9,27 +20,10 @@
                     <button class="btn address-edit-button" id="edit-address-{{ supplierAddress.id }}" title="{{ 'marello.supplier.address.edit_action'|trans }}"><i class="fa-edit hide-text">{{ 'marello.supplier.address.edit_action'|trans }}</i></button>
                 </div>
             {% endif %}
-
             <address>
                 {{ UI.renderHtmlProperty(label|trans, address.renderAddress(supplierAddress)) }}
                 {{ UI.renderProperty('marello.order.address.phone.label'|trans, supplierAddress.phone) }}
             </address>
-            <script type="text/javascript">
-                require(['jquery', 'underscore', 'routing', 'marelloaddress/js/address', 'oroui/js/widget-manager'],
-                    function($, _, routing, Address, widgetManager) {
-                        widgetManager.getWidgetInstance({{ app.request.get('_wid')|json_encode|raw }}, function(widget){
-                            /** @type marelloaddress.Address */
-                            var supplierAddress = new Address({
-                                el: '#supplier-address-{{ supplierAddress.id }}',
-                                addressId: {{ supplierAddress.id }},
-                                addressUpdateUrl: function() {
-                                    return routing.generate('marello_supplier_supplier_updateaddress', {'id': {{ supplierAddress.id }} })
-                                },
-                                widget: widget
-                            });
-                        });
-                    });
-            </script>
         </div>
     </div>
 </div>

@@ -1,18 +1,17 @@
 define(function(require) {
     'use strict';
 
-    var OrderItemView,
-        $ = require('jquery'),
-        _ = require('underscore'),
-        mediator = require('oroui/js/mediator'),
-        AbstractItemView = require('marellolayout/js/app/views/abstract-item-view');
+    const $ = require('jquery');
+    const _ = require('underscore');
+    const mediator = require('oroui/js/mediator');
+    const AbstractItemView = require('marellolayout/js/app/views/abstract-item-view');
 
     /**
      * @export marelloorder/js/app/views/order-item-view
      * @extends marellolayout.app.views.AbstractItemView
      * @class marelloorder.app.views.OrderItemView
      */
-    OrderItemView = AbstractItemView.extend({
+    const OrderItemView = AbstractItemView.extend({
         options: {
             ftid: '',
             salable: null

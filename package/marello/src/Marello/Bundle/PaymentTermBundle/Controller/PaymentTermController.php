@@ -16,7 +16,7 @@ class PaymentTermController extends AbstractController
      *     path="/", 
      *     name="marello_paymentterm_paymentterm_index"
      * )
-     * @Template
+     * @Template("MarelloPaymentTermBundle:PaymentTerm:index.html.twig")
      */
     public function indexAction()
     {
@@ -89,7 +89,7 @@ class PaymentTermController extends AbstractController
      *     requirements={"id" = "\d+"}, 
      *     name="marello_paymentterm_paymentterm_view"
      * )
-     * @Template
+     * @Template("MarelloPaymentTermBundle:PaymentTerm:view.html.twig")
      */
     public function viewAction(PaymentTerm $entity)
     {

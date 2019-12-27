@@ -303,6 +303,7 @@ services:
 
     marello_order.provider.order_item_status_choices:
         class: 'Marello\Bundle\OrderBundle\Provider\OrderItemStatusesChoicesProvider'
+        public: true
         arguments:
             - '@oro_entity.doctrine_helper'
 

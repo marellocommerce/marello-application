@@ -17,7 +17,7 @@ class ReplenishmentOrderConfigController extends AbstractController
      *     methods={"GET", "POST"},
      *     name="marello_replenishment_order_config_create"
      * )
-     * @Template
+     * @Template("MarelloEnterpriseReplenishmentBundle:ReplenishmentOrderConfig:create.html.twig")
      * @AclAncestor("marello_replenishment_order_config_create")
      *
      * @return array

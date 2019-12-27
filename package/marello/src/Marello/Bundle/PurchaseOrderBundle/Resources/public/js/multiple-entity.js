@@ -2,7 +2,7 @@ define(['underscore', 'routing', 'backbone', './multiple-entity/view', './multip
     ], function(_, routing, Backbone, EntityView, MultipleEntityModel, DialogWidget, mediator) {
     'use strict';
 
-    var $ = Backbone.$;
+    const $ = Backbone.$;
 
     /**
      * @export  oroform/js/multiple-entity

@@ -4,15 +4,11 @@
 fos_js_routing:
     routes_to_expose:         [marello_*]
 
-help:
+oro_help:
     defaults:
-        link: 'http://www.marello.com/'
-        server: http://www.marello.com/
+        link: 'https://knowledgebase.marello.com/'
+        server: https://knowledgebase.marello.com/
         prefix: Third_Party
-    vendors:
-        Marello:
-            prefix: ~
-            alias: Marello
 
 oro_theme:
     active_theme: oro
@@ -21,15 +17,6 @@ oro_theme:
             icon: bundles/marellolayout/images/marello.ico
             logo: bundles/marellocore/img/marello-logo.png
 
-#oro_sidebar:
-#    sidebar_widgets:
-#        sticky_note:
-#            icon: "bundles/marellolayout/images/marello.svg"
-#            iconClass: ~
-#            settings:
-#                content: |
-#                    Welcome to Marello!
-#                    Marello Unified Commerce Management provides capabilities to meet and exceed rising expectations in commerce. Learn more at www.marello.com
 oro_ui:
     settings:
         organization_name:

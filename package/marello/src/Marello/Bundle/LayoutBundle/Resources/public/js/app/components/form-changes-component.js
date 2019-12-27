@@ -1,19 +1,18 @@
 define(function(require) {
     'use strict';
 
-    var FormChangesComponent;
-    var _ = require('underscore');
-    var $ = require('jquery');
-    var routing = require('routing');
-    var mediator = require('oroui/js/mediator');
-    var BaseComponent = require('oroui/js/app/components/base/component');
+    const _ = require('underscore');
+    const $ = require('jquery');
+    const routing = require('routing');
+    const mediator = require('oroui/js/mediator');
+    const BaseComponent = require('oroui/js/app/components/base/component');
 
     /**
      * @export marellolayout/js/app/components/form-changes-component
      * @extends oroui.app.components.base.Component
      * @class marellolayout.app.components.FormChangesComponent
      */
-    FormChangesComponent = BaseComponent.extend({
+    const FormChangesComponent = BaseComponent.extend({
         /**
          * @property {Object}
          */

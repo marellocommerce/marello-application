@@ -4,10 +4,12 @@ namespace Marello\Bundle\SupplierBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
-use Symfony\Bridge\Doctrine\Tests\Fixtures\ContainerAwareFixture;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class UpdateCurrentSupplierWithCurrency extends ContainerAwareFixture
+class UpdateCurrentSupplierWithCurrency
 {
+    use ContainerAwareTrait;
+
     /**
      * @var ObjectManager
      */

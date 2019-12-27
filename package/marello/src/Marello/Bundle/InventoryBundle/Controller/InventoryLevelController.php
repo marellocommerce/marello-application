@@ -18,7 +18,7 @@ class InventoryLevelController extends AbstractController
      *     requirements={"id"="\d+"}, 
      *     name="marello_inventory_inventorylevel_index"
      * )
-     * @Template
+     * @Template("MarelloInventoryBundle:InventoryLevel:index.html.twig")
      *
      * @param InventoryItem $inventoryItem
      *
@@ -38,7 +38,7 @@ class InventoryLevelController extends AbstractController
      *     requirements={"id"="\d+"}, 
      *     name="marello_inventory_inventorylevel_chart"
      * )
-     * @Template
+     * @Template("MarelloInventoryBundle:InventoryLevel:chart.html.twig")
      *
      * @param InventoryItem $inventoryItem
      * @param Request $request

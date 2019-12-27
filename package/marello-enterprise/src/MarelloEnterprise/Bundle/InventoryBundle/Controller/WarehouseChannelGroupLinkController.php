@@ -18,7 +18,7 @@ class WarehouseChannelGroupLinkController extends AbstractController
      *     path="/", 
      *     name="marelloenterprise_inventory_warehousechannelgrouplink_index"
      * )
-     * @Template
+     * @Template("MarelloEnterpriseInventoryBundle:WarehouseChannelGroupLink:index.html.twig")
      * @Acl(
      *      id="marelloenterprise_inventory_warehousechannelgrouplink_view",
      *      type="entity",
@@ -62,7 +62,7 @@ class WarehouseChannelGroupLinkController extends AbstractController
      *     name="marelloenterprise_inventory_warehousechannelgrouplink_update",
      *     requirements={"id"="\d+"}
      * )
-     * @Template
+     * @Template("MarelloEnterpriseInventoryBundle:WarehouseChannelGroupLink:update.html.twig")
      * @Acl(
      *     id="marelloenterprise_inventory_warehousechannelgrouplink_update",
      *     type="entity",
