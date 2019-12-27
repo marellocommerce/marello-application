@@ -1,0 +1,112 @@
+parameters:
+    marello_pdf.document.invoice.total_rows:
+        a4: 36
+        letter: 33
+    marello_pdf.document.invoice.description_width:
+        a4: 20
+        letter: 20
+    marello_pdf.document.invoice.header_rows: 13
+    marello_pdf.document.invoice.footer_rows: 3
+
+services:
+    marello_pdf.factory.pdf_writer:
+        class: 'Marello\Bundle\PdfBundle\Factory\PdfWriterFactory'
+        arguments: []
+
+    marello_pdf.renderer.html:
+        class: 'Marello\Bundle\PdfBundle\Renderer\HtmlRenderer'
+        arguments:
+            - '@marello_pdf.factory.pdf_writer'
+
+    marello_pdf.renderer.twig:
+        class: 'Marello\Bundle\PdfBundle\Renderer\TwigRenderer'
+        arguments:
+            - '@marello_pdf.renderer.html'
+            - '@twig'
+
+    marello_pdf.provider.logo:
+        class: 'Marello\Bundle\PdfBundle\Provider\LogoProvider'
+        arguments:
+            - '@oro_config.manager'
+            - '@oro_entity.doctrine_helper'
+            - '@oro_attachment.manager'
+            - '@oro_attachment.media_cache_manager'
+            - '@oro_attachment.image_resizer'
+            - '%kernel.project_dir%'
+
+    marello_pdf.provider.render_parameters:
+        class: 'Marello\Bundle\PdfBundle\Provider\RenderParametersProvider'
+
+    marello_pdf.param_provider.entity:
+        class: 'Marello\Bundle\PdfBundle\Provider\Render\EntityProvider'
+        tags:
+            - { name: marello_pdf.render_parameter_provider }
+
+    marello_pdf.param_provider.logo:
+        class: 'Marello\Bundle\PdfBundle\Provider\Render\LogoProvider'
+        arguments:
+            - '@marello_pdf.provider.logo'
+        tags:
+            - { name: marello_pdf.render_parameter_provider }
+
+    marello_pdf.param_provider.saleschannel_config_values:
+        class: 'Marello\Bundle\PdfBundle\Provider\Render\ConfigValuesProvider'
+        arguments:
+            - '@oro_config.saleschannel'
+            -
+                language: marello_pdf.language
+                locale: marello_pdf.locale
+                company_address: marello_pdf.company_address
+                company_email: marello_pdf.company_email
+                company_phone: marello_pdf.company_phone
+                company_bank: marello_pdf.company_bank
+                company_coc: marello_pdf.company_coc
+                paper_size: marello_pdf.paper_size
+        tags:
+            - { name: marello_pdf.render_parameter_provider }
+
+    marello_pdf.provider.document_table:
+        class: 'Marello\Bundle\PdfBundle\Provider\DocumentTableProvider'
+
+    marello_pdf.twig_extension.document_table:
+        class: 'Marello\Bundle\PdfBundle\Twig\Extension\DocumentTableExtension'
+        arguments:
+            - '@marello_pdf.provider.document_table'
+        tags:
+            - { name: twig.extension }
+
+    marello_pdf.table_provider.invoice:
+        class: 'Marello\Bundle\PdfBundle\Provider\Table\InvoiceTableProvider'
+        arguments:
+            - '@marello_pdf.provider.table_size'
+        tags:
+            - { name: marello_pdf.document_table_provider }
+
+    marello_pdf.provider.table_size:
+        class: 'Marello\Bundle\PdfBundle\Provider\TableSizeProvider'
+        arguments:
+            - '@oro_config.saleschannel'
+            - '%marello_pdf.document.invoice.total_rows%'
+            - '%marello_pdf.document.invoice.description_width%'
+            - '%marello_pdf.document.invoice.header_rows%'
+            - '%marello_pdf.document.invoice.footer_rows%'
+
+    marello_pdf.workflow_action.send_email_template_attachment:
+        parent: 'oro_email.workflow.action.send_email_template'
+        class: 'Marello\Bundle\PdfBundle\Workflow\Action\SendEmailTemplateAttachmentAction'
+        tags:
+            - { name: oro_action.action, alias: send_email_template_attachment }
+
+    marello_pdf.form_type.workflow_transition_select:
+        class: 'Marello\Bundle\PdfBundle\Form\Type\WorkflowTransitionSelectType'
+        arguments:
+            - '@oro_workflow.manager'
+        tags:
+            - { name: form.type }
+
+    marello_pdf.condition.is_send_email_transition:
+        class: 'Marello\Bundle\PdfBundle\Workflow\Condition\IsSendEmailTransition'
+        arguments:
+            - '@oro_config.manager'
+        tags:
+            - { name: oro_action.condition, alias: is_send_email_transition }
