@@ -2,8 +2,11 @@
 
 namespace Marello\Bundle\NotificationBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+use Oro\Bundle\AttachmentBundle\Entity\File;
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
@@ -86,6 +89,18 @@ class Notification extends ExtendNotification
     protected $organization;
 
     /**
+     * @var Collection|File
+     *
+     * @ORM\ManyToMany(targetEntity="Oro\Bundle\AttachmentBundle\Entity\Attachment", cascade={"all"})
+     * @ORM\JoinTable(
+     *     name="marello_notification_attach",
+     *     joinColumns={@ORM\JoinColumn(name="notification_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="attachment_id", referencedColumnName="id")}
+     * )
+     */
+    protected $attachments;
+
+    /**
      * Notification constructor.
      *
      * @param EmailTemplate $template
@@ -101,6 +116,7 @@ class Notification extends ExtendNotification
         $this->recipients   = $recipients;
         $this->organization = $organization;
         $this->body         = $body;
+        $this->attachments  = new ArrayCollection();
     }
 
     /**
@@ -161,5 +177,37 @@ class Notification extends ExtendNotification
     public function getBody()
     {
         return $this->body;
+    }
+
+    /**
+     * @return Collection|File
+     */
+    public function getAttachments()
+    {
+        return $this->attachments;
+    }
+
+    /**
+     * @param File $attachment
+     * @return $this
+     */
+    public function addAttachment(File $attachment)
+    {
+        if (!$this->attachments->contains($attachment)) {
+            $this->attachments[] = $attachment;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param File $attachment
+     * @return $this
+     */
+    public function removeAttachment(File $attachment)
+    {
+        $this->attachments->removeElement($attachment);
+
+        return $this;
     }
 }

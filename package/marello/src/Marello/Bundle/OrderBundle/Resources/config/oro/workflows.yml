@@ -124,6 +124,12 @@ workflows:
                 actions:
                     - '@assign_value':
                         - [$update_balanced_inventory, true]
+                post_actions:
+                    - '@run_action_group':
+                        action_group: send_order_invoice_email
+                        parameters_mapping:
+                            order: $order
+                            current_transition: pending
             cancel_definition:
                 conditions:
                     '@and':
@@ -139,6 +145,11 @@ workflows:
                         entity: $order
                         recipient: $order.customer
                         template: marello_order_cancelled
+                    - '@run_action_group':
+                        action_group: send_order_invoice_email
+                        parameters_mapping:
+                            order: $order
+                            current_transition: cancel
             hold_definition:
                 actions:
                     - '@tree':
@@ -149,7 +160,19 @@ workflows:
                                 message: $note
                                 target_entity: $order
                             - '@assign_value': [$note, ~]
-            un_hold_definition: []
+                post_actions:
+                    - '@run_action_group':
+                        action_group: send_order_invoice_email
+                        parameters_mapping:
+                            order: $order
+                            current_transition: hold
+            un_hold_definition:
+                post_actions:
+                    - '@run_action_group':
+                        action_group: send_order_invoice_email
+                        parameters_mapping:
+                            order: $order
+                            current_transition: un_hold
             invoice_definition:
                 conditions:
                     '@and':
@@ -165,6 +188,11 @@ workflows:
                         template: marello_order_invoiced
                     - '@extendable':
                         events: [extendable_action.order_invoiced]
+                    - '@run_action_group':
+                        action_group: send_order_invoice_email
+                        parameters_mapping:
+                            order: $order
+                            current_transition: invoice
             payment_received_definition:
                 conditions:
                     '@and':
@@ -179,6 +207,11 @@ workflows:
                         value: $payment_details
                     - '@extendable':
                         events: [extendable_action.order_paid]
+                    - '@run_action_group':
+                        action_group: send_order_invoice_email
+                        parameters_mapping:
+                            order: $order
+                            current_transition: payment_received
             prepare_shipping_definition:
                 conditions:
                     '@and':
@@ -204,6 +237,11 @@ workflows:
                         entity: $order
                         recipient: $order.customer
                         template: marello_order_shipping_prepared
+                    - '@run_action_group':
+                        action_group: send_order_invoice_email
+                        parameters_mapping:
+                            order: $order
+                            current_transition: prepare_shipping
             ship_definition:
                 conditions:
                     '@and':
@@ -221,6 +259,13 @@ workflows:
                         entity: $order
                         recipient: $order.customer
                         template: marello_order_shipped_confirmation
+                    - '@extendable':
+                       events: [extendable_action.order_shipped]
+                    - '@run_action_group':
+                        action_group: send_order_invoice_email
+                        parameters_mapping:
+                            order: $order
+                            current_transition: ship
             payment_reminder_definition:
                 post_actions:
                     - '@marello_notification_send':
@@ -229,6 +274,11 @@ workflows:
                         template: marello_order_payment_reminder
                     - '@flash_message':
                         message: 'Reminder has been sent.'
+                    - '@run_action_group':
+                        action_group: send_order_invoice_email
+                        parameters_mapping:
+                            order: $order
+                            current_transition: payment_reminder
 
     marello_order_b2c_workflow_2:
         entity:       Marello\Bundle\OrderBundle\Entity\Order
@@ -341,7 +391,13 @@ workflows:
                 transition_definition: payment_reminder_definition
 
         transition_definitions:
-            pending_definition: []
+            pending_definition:
+                post_actions:
+                    - '@run_action_group':
+                        action_group: send_order_invoice_email
+                        parameters_mapping:
+                            order: $order
+                            current_transition: pending
             cancel_definition:
                 conditions:
                     '@and':
@@ -356,8 +412,25 @@ workflows:
                         entity: $order
                         recipient: $order.customer
                         template: marello_order_cancelled
-            hold_definition: []
-            un_hold_definition: []
+                    - '@run_action_group':
+                        action_group: send_order_invoice_email
+                        parameters_mapping:
+                            order: $order
+                            current_transition: cancel
+            hold_definition:
+                post_actions:
+                    - '@run_action_group':
+                        action_group: send_order_invoice_email
+                        parameters_mapping:
+                            order: $order
+                            current_transition: hold
+            un_hold_definition:
+                post_actions:
+                    - '@run_action_group':
+                        action_group: send_order_invoice_email
+                        parameters_mapping:
+                            order: $order
+                            current_transition: un_hold
             invoice_definition:
                 conditions:
                     '@and':
@@ -373,6 +446,11 @@ workflows:
                         template: marello_order_invoiced
                     - '@extendable':
                         events: [extendable_action.order_invoiced]
+                    - '@run_action_group':
+                        action_group: send_order_invoice_email
+                        parameters_mapping:
+                            order: $order
+                            current_transition: invoice
             payment_received_definition:
                 conditions:
                     '@and':
@@ -391,6 +469,11 @@ workflows:
                         template: marello_order_invoiced
                     - '@extendable':
                         events: [extendable_action.order_paid]
+                    - '@run_action_group':
+                        action_group: send_order_invoice_email
+                        parameters_mapping:
+                            order: $order
+                            current_transition: payment_received
             prepare_shipping_definition:
                 conditions:
                     '@and':
@@ -416,6 +499,11 @@ workflows:
                         entity: $order
                         recipient: $order.customer
                         template: marello_order_shipping_prepared
+                    - '@run_action_group':
+                        action_group: send_order_invoice_email
+                        parameters_mapping:
+                            order: $order
+                            current_transition: prepare_shipping
             ship_definition:
                 conditions:
                     '@and':
@@ -433,6 +521,13 @@ workflows:
                         entity: $order
                         recipient: $order.customer
                         template: marello_order_shipped_confirmation
+                    - '@extendable':
+                       events: [extendable_action.order_shipped]
+                    - '@run_action_group':
+                        action_group: send_order_invoice_email
+                        parameters_mapping:
+                            order: $order
+                            current_transition: ship
             payment_reminder_definition:
                 post_actions:
                     - '@marello_notification_send':
@@ -441,3 +536,8 @@ workflows:
                         template: marello_order_payment_reminder
                     - '@flash_message':
                         message: 'Reminder has been sent.'
+                    - '@run_action_group':
+                        action_group: send_order_invoice_email
+                        parameters_mapping:
+                            order: $order
+                            current_transition: payment_reminder
