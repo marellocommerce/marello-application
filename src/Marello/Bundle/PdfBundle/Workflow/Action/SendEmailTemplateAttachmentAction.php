@@ -64,7 +64,7 @@ class SendEmailTemplateAttachmentAction extends SendEmailTemplate
             }
         }
         $this->options = $options;
-        parent::initialize($options);
+        return parent::initialize($options);
     }
 
     public function executeAction($context): void
