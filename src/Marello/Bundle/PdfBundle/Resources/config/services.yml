@@ -19,6 +19,7 @@ services:
             - '@marello_pdf.factory.pdf_writer'
 
     marello_pdf.renderer.twig:
+        public: true
         class: 'Marello\Bundle\PdfBundle\Renderer\TwigRenderer'
         arguments:
             - '@marello_pdf.renderer.html'
@@ -30,11 +31,12 @@ services:
             - '@oro_config.manager'
             - '@oro_entity.doctrine_helper'
             - '@oro_attachment.manager'
-            - '@oro_attachment.media_cache_manager'
-            - '@oro_attachment.image_resizer'
+            - '@oro_attachment.manager.media_cache_manager_registry'
+            - '@oro_attachment.manager.image_resize'
             - '%kernel.project_dir%'
 
     marello_pdf.provider.render_parameters:
+        public: true
         class: 'Marello\Bundle\PdfBundle\Provider\RenderParametersProvider'
 
     marello_pdf.param_provider.entity:

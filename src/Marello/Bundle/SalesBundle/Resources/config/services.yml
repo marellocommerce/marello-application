@@ -144,6 +144,7 @@ services:
             - { name: oro_config.scope, scope: saleschannel, priority: 60 }
 
     marello_sales.config_form_provider.saleschannel:
+        public: true
         class: 'Marello\Bundle\SalesBundle\Provider\SalesChannelConfigurationFormProvider'
         parent: 'oro_config.provider.abstract_provider'
         lazy: true
