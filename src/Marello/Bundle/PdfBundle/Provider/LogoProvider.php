@@ -6,8 +6,8 @@ use Marello\Bundle\PdfBundle\DependencyInjection\Configuration;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\AttachmentBundle\Entity\File;
 use Oro\Bundle\AttachmentBundle\Manager\AttachmentManager;
-use Oro\Bundle\AttachmentBundle\Manager\MediaCacheManager;
-use Oro\Bundle\AttachmentBundle\Resizer\ImageResizer;
+use Oro\Bundle\AttachmentBundle\Manager\MediaCacheManagerRegistryInterface;
+use Oro\Bundle\AttachmentBundle\Manager\ImageResizeManagerInterface;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 
@@ -31,8 +31,8 @@ class LogoProvider
         ConfigManager $configManager,
         DoctrineHelper $doctrineHelper,
         AttachmentManager $attachmentManager,
-        MediaCacheManager $mediaCacheManager,
-        ImageResizer $imageResizer,
+        MediaCacheManagerRegistryInterface $mediaCacheManager,
+        ImageResizeManagerInterface $imageResizer,
         $projectDir
     ) {
         $this->configManager = $configManager;
@@ -91,7 +91,6 @@ class LogoProvider
 
     protected function fetchImage(File $entity, $path)
     {
-        $resized = $this->imageResizer->resizeImage($entity, self::IMAGE_FILTER);
-        $this->mediaCacheManager->store($resized->getContent(), $path);
+        $this->imageResizer->applyFilter($entity, self::IMAGE_FILTER);
     }
 }
