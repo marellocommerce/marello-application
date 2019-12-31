@@ -1,13 +1,16 @@
-define(['underscore', 'backbone', 'oro/dialog-widget'
-    ], function(_, Backbone, DialogWidget) {
+define(function(require) {
     'use strict';
+
+    const _ = require('underscore');
+    const Backbone = require('backbone');
+    const DialogWidget = require('oro/dialog-widget');
 
     /**
      * @export  oroform/js/multiple-entity/view
      * @class   oroform.MultipleEntity.View
      * @extends Backbone.View
      */
-    return Backbone.View.extend({
+    const EntityView = Backbone.View.extend({
 
         tagName: "tr",
 
@@ -98,4 +101,6 @@ define(['underscore', 'backbone', 'oro/dialog-widget'
             }
         }
     });
+
+    return EntityView;
 });
