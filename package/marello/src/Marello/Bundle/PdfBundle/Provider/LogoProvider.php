@@ -6,7 +6,6 @@ use Marello\Bundle\PdfBundle\DependencyInjection\Configuration;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\AttachmentBundle\Entity\File;
 use Oro\Bundle\AttachmentBundle\Manager\AttachmentManager;
-use Oro\Bundle\AttachmentBundle\Manager\MediaCacheManagerRegistryInterface;
 use Oro\Bundle\AttachmentBundle\Manager\ImageResizeManagerInterface;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
@@ -21,8 +20,6 @@ class LogoProvider
 
     protected $attachmentManager;
 
-    protected $mediaCacheManager;
-
     protected $imageResizer;
 
     protected $projectDir;
@@ -31,18 +28,21 @@ class LogoProvider
         ConfigManager $configManager,
         DoctrineHelper $doctrineHelper,
         AttachmentManager $attachmentManager,
-        MediaCacheManagerRegistryInterface $mediaCacheManager,
         ImageResizeManagerInterface $imageResizer,
         $projectDir
     ) {
         $this->configManager = $configManager;
         $this->doctrineHelper = $doctrineHelper;
         $this->attachmentManager = $attachmentManager;
-        $this->mediaCacheManager = $mediaCacheManager;
         $this->imageResizer = $imageResizer;
         $this->projectDir = $projectDir;
     }
 
+    /**
+     * @param SalesChannel $salesChannel
+     * @param bool $absolute
+     * @return string|null
+     */
     public function getInvoiceLogo(SalesChannel $salesChannel, $absolute = false)
     {
         $path = null;
@@ -58,6 +58,10 @@ class LogoProvider
         return $path;
     }
 
+    /**
+     * @param SalesChannel $salesChannel
+     * @return mixed
+     */
     protected function getInvoiceLogoId(SalesChannel $salesChannel)
     {
         $key = sprintf('%s.%s', Configuration::CONFIG_NAME, Configuration::CONFIG_KEY_LOGO);
@@ -65,6 +69,10 @@ class LogoProvider
         return $this->configManager->get($key, false, false, $salesChannel);
     }
 
+    /**
+     * @param $id
+     * @return object|null
+     */
     protected function getInvoiceLogoEntity($id)
     {
         return $this->doctrineHelper
@@ -73,13 +81,18 @@ class LogoProvider
         ;
     }
 
+    /**
+     * @param File $entity
+     * @param $absolute
+     * @return string
+     */
     protected function getInvoiceLogoAttachment(File $entity, $absolute)
     {
         $path = $this->attachmentManager->getFilteredImageUrl($entity, self::IMAGE_FILTER);
         $absolutePath = $this->projectDir.'/public'.$path;
 
         if (!file_exists($absolutePath)) {
-            $this->fetchImage($entity, $path);
+            $this->fetchImage($entity);
         }
 
         if ($absolute) {
@@ -89,7 +102,10 @@ class LogoProvider
         return $path;
     }
 
-    protected function fetchImage(File $entity, $path)
+    /**
+     * @param File $entity
+     */
+    protected function fetchImage(File $entity)
     {
         $this->imageResizer->applyFilter($entity, self::IMAGE_FILTER);
     }

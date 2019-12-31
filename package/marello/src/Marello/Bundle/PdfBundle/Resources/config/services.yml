@@ -31,7 +31,6 @@ services:
             - '@oro_config.manager'
             - '@oro_entity.doctrine_helper'
             - '@oro_attachment.manager'
-            - '@oro_attachment.manager.media_cache_manager_registry'
             - '@oro_attachment.manager.image_resize'
             - '%kernel.project_dir%'
 
