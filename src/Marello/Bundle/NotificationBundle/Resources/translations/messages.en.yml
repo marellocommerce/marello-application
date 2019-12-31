@@ -7,6 +7,7 @@ marello:
         recipients.label:       Recipients
         organization.label:     Organization
         template.label:         Template
+        attachments.label:      Attachments
 
         system_configuration:
             groups:
