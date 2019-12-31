@@ -227,7 +227,7 @@ datagrids:
                 day_of_week:
                     data_name: dayOfWeek
             default:
-                label: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+                day_of_week: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
 
         properties:
             id: ~
@@ -293,7 +293,7 @@ datagrids:
 #                open_status:
 #                    data_name: open_status
             default:
-                label: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+                date: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
 
         properties:
             id: ~
