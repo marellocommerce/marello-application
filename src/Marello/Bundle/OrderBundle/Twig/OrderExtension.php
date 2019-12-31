@@ -66,7 +66,7 @@ class OrderExtension extends AbstractExtension
     public function canReturn(Order $order)
     {
         foreach ($order->getItems() as $orderItem) {
-            if (!in_array($orderItem->getStatus(), $this->getOrderItemStatuses())) {
+            if (!in_array($orderItem->getStatus()->getId(), $this->getOrderItemStatuses(), true)) {
                 return false;
             }
         }
@@ -80,7 +80,7 @@ class OrderExtension extends AbstractExtension
      */
     public function isShippedOrderItem(OrderItem $orderItem)
     {
-        if (in_array($orderItem->getStatus(), $this->getOrderItemStatuses())) {
+        if (in_array($orderItem->getStatus()->getId(), $this->getOrderItemStatuses(),true)) {
             return true;
         }
 
