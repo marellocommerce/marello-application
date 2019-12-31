@@ -3,10 +3,9 @@
 namespace Marello\Bundle\ServicePointBundle\Form\Type;
 
 use Marello\Bundle\ServicePointBundle\Entity\BusinessHoursOverride;
-use Oro\Bundle\EntityConfigBundle\Form\Type\ChoiceType;
 use Oro\Bundle\FormBundle\Form\Type\CollectionType;
+use Oro\Bundle\FormBundle\Form\Type\OroDateType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -15,7 +14,7 @@ class BusinessHoursOverrideType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('date', DateType::class, [
+            ->add('date', OroDateType::class, [
                 'label' => 'marello.servicepoint.businesshours.date.label',
                 'required' => true,
             ])
