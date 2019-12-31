@@ -1,13 +1,13 @@
 define(function(require) {
     'use strict';
 
-    const $ = Backbone.$;
     const _ = require('underscore');
     const routing = require('routing');
     const Backbone = require('backbone');
     const EntityView = require('./multiple-entity/view');
     const DialogWidget = require('oro/dialog-widget');
     const mediator = require('oroui/js/mediator');
+    const $ = Backbone.$;
 
     /**
      * @export  oroform/js/multiple-entity
