@@ -13,7 +13,7 @@ define(function(require) {
      * @extends marellolayout.app.views.AbstractItemView
      * @class marellopurchaseorder.app.views.PurchaseOrderItemView
      */
-    cosnt PurchaseOrderItemView = AbstractItemView.extend({
+    const PurchaseOrderItemView = AbstractItemView.extend({
         /**
          * @property {Object}
          */
