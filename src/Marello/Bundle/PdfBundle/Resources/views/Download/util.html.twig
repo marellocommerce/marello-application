@@ -1,7 +1,9 @@
 {% block header %}
 <div class="header">
     <div class="company-logo">
-        <img src="{{ logo }}">
+        {% if logo is not null %}
+            <img src="{{ logo }}">
+        {% endif %}
     </div>
 </div>
 {% endblock header %}

@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\PdfBundle\Controller;
 
-use Marello\Bundle\InvoiceBundle\Entity\Invoice;
+use Marello\Bundle\InvoiceBundle\Entity\AbstractInvoice;
 use Marello\Bundle\PdfBundle\Provider\Render\ConfigValuesProvider;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -15,7 +15,7 @@ class DownloadController extends Controller
     /**
      * @Route("/invoice/{id}", name="marello_pdf_download_invoice", requirements={"id"="\d+"})
      */
-    public function invoiceAction(Request $request, Invoice $entity)
+    public function invoiceAction(Request $request, AbstractInvoice $entity)
     {
         if ($request->query->has('download') && $request->query->get('download')) {
             $disposition = ResponseHeaderBag::DISPOSITION_ATTACHMENT;
