@@ -330,7 +330,7 @@ class OrderItem extends ExtendOrderItem implements
     protected $taxCode;
     
     /**
-     * @var string
+     * @var \Extend\Entity\EV_Marello_Item_Status
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -732,7 +732,7 @@ class OrderItem extends ExtendOrderItem implements
     }
 
     /**
-     * @return string
+     * @return \Extend\Entity\EV_Marello_Item_Status
      */
     public function getStatus()
     {
