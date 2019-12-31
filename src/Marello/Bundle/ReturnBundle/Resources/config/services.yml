@@ -31,6 +31,7 @@ services:
             - '@service_container'
 
     marello_return.manager.businessrule_manager:
+        public: true
         class: Marello\Bundle\ReturnBundle\Manager\BusinessRuleManager
         arguments:
             - '@marello_return.manager.return_businessrule_registry'
