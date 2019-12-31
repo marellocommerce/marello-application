@@ -1,3 +1,7 @@
 dynamic-imports:
     marellopurchaseorder:
+        - marellopurchaseorder/js/multiple-entity
+        - marellopurchaseorder/js/app/views/purchaseorder-item-view
+        - marellopurchaseorder/js/app/views/purchaseorder-items-view
         - marellopurchaseorder/js/app/views/purchaseorder-totals-view
+        - marellopurchaseorder/js/datagrid/marello-purchase-order-item-candidates-builder
