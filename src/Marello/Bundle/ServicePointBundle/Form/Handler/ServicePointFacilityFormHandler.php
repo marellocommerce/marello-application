@@ -6,9 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
-use Marello\Bundle\ServicePointBundle\Entity\BusinessHours;
 use Marello\Bundle\ServicePointBundle\Entity\ServicePointFacility;
-use Marello\Bundle\ServicePointBundle\Entity\TimePeriod;
 use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -52,15 +50,21 @@ class ServicePointFacilityFormHandler
     {
         $this->form->setData($entity);
         $originalBusinessHours = clone $entity->getBusinessHours();
-        $originalTimePeriods = new ArrayCollection();
-        foreach ($originalBusinessHours as $businessHours) {
-            $originalTimePeriods[$businessHours->getId()] = clone $businessHours->getTimePeriods();
-        }
+        $originalTimePeriods = $this->cloneTimePeriods($entity->getBusinessHours());
+
+        $originalBusinessHoursOverrides = clone $entity->getBusinessHoursOverrides();
+        $originalTimePeriodsOverrides = $this->cloneTimePeriods($entity->getBusinessHoursOverrides());
 
         if (in_array($this->request->getMethod(), ['POST', 'PUT'])) {
             $this->submitPostPutRequest($this->form, $this->request);
             if ($this->form->isValid()) {
-                $this->onSuccess($entity, $originalBusinessHours, $originalTimePeriods);
+                $this->onSuccess(
+                    $entity,
+                    $originalBusinessHours,
+                    $originalTimePeriods,
+                    $originalBusinessHoursOverrides,
+                    $originalTimePeriodsOverrides
+                );
 
                 return true;
             }
@@ -73,42 +77,69 @@ class ServicePointFacilityFormHandler
      * @param ServicePointFacility $entity
      * @param Collection $originalBusinessHours
      * @param Collection $originalTimePeriods
+     * @param Collection $originalBusinessHoursOverrides
+     * @param Collection $originalTimePeriodsOverrides
      */
     protected function onSuccess(
         ServicePointFacility $entity,
         Collection $originalBusinessHours,
-        Collection $originalTimePeriods
+        Collection $originalTimePeriods,
+        Collection $originalBusinessHoursOverrides,
+        Collection $originalTimePeriodsOverrides
     ) {
         $this->manager->persist($entity);
 
-        foreach ($entity->getBusinessHours() as $businessHours) {
-            $businessHours->setServicePointFacility($entity);
-            $this->manager->persist($businessHours);
+        $this->persistBusinessHours($entity);
+        $this->persistBusinessHoursOverrides($entity);
+        $this->pruneBusinessHours($entity, $originalBusinessHours, $originalTimePeriods);
+        $this->pruneBusinessHoursOverrides($entity, $originalBusinessHoursOverrides, $originalTimePeriodsOverrides);
 
-            foreach ($businessHours->getTimePeriods() as $timePeriod) {
-                $timePeriod->setBusinessHours($businessHours);
-                $this->manager->persist($timePeriod);
-            }
-        }
+        $this->manager->flush();
+    }
 
-        foreach ($entity->getBusinessHoursOverrides() as $businessHoursOverride) {
-            $businessHoursOverride->setServicePointFacility($entity);
-            $this->manager->persist($businessHoursOverride);
+    protected function pruneBusinessHours(
+        ServicePointFacility $entity,
+        Collection $originalBusinessHours,
+        Collection $originalTimePeriods
+    ) {
+        $this->doPruneBusinessHours($entity->getBusinessHours(), $originalBusinessHours, $originalTimePeriods);
+    }
 
-            foreach ($businessHoursOverride->getTimePeriods() as $timePeriod) {
-                $timePeriod->setBusinessHours($businessHoursOverride);
-                $this->manager->persist($timePeriod);
-            }
-        }
+    protected function pruneBusinessHoursOverrides(
+        ServicePointFacility $entity,
+        Collection $originalBusinessHoursOverrides,
+        Collection $originalTimePeriodsOverrides
+    ) {
+        $this->doPruneBusinessHours(
+            $entity->getBusinessHoursOverrides(),
+            $originalBusinessHoursOverrides,
+            $originalTimePeriodsOverrides
+        );
+    }
 
+    protected function persistBusinessHours(ServicePointFacility $entity)
+    {
+        $this->doPersistBusinessHours($entity, $entity->getBusinessHours());
+    }
+
+    protected function persistBusinessHoursOverrides(ServicePointFacility $entity)
+    {
+        $this->doPersistBusinessHours($entity, $entity->getBusinessHoursOverrides());
+    }
+
+    protected function doPruneBusinessHours(
+        Collection $newBusinessHours,
+        Collection $originalBusinessHours,
+        Collection $originalTimePeriods
+    ) {
         foreach ($originalBusinessHours as $businessHours) {
-            $newBusinessHours = $entity->getBusinessHours()->filter(function (BusinessHours $bh) use ($businessHours) {
+            $matchingBusinessHours = $newBusinessHours->filter(function ($bh) use ($businessHours) {
                 return $bh->getId() === $businessHours->getId();
             })->first();
 
-            if ($newBusinessHours) {
+            if ($matchingBusinessHours) {
                 foreach ($originalTimePeriods[$businessHours->getId()] as $timePeriod) {
-                    if (!$newBusinessHours->getTimePeriods()->exists(function ($x, TimePeriod $tp) use ($timePeriod) {
+                    if (!$matchingBusinessHours->getTimePeriods()->exists(function ($x, $tp) use ($timePeriod) {
                         return $tp->getId() === $timePeriod->getId();
                     })) {
                         $this->manager->remove($timePeriod);
@@ -123,8 +154,29 @@ class ServicePointFacilityFormHandler
                 unset($originalTimePeriods[$businessHours->getId()]);
             }
         }
+    }
 
-        $this->manager->flush();
+    protected function doPersistBusinessHours(ServicePointFacility $entity, Collection $businessHours)
+    {
+        foreach ($businessHours as $businessHour) {
+            $businessHour->setServicePointFacility($entity);
+            $this->manager->persist($businessHour);
+
+            foreach ($businessHour->getTimePeriods() as $timePeriod) {
+                $timePeriod->setBusinessHours($businessHour);
+                $this->manager->persist($timePeriod);
+            }
+        }
+    }
+
+    protected function cloneTimePeriods(Collection $businessHours)
+    {
+        $timePeriods = new ArrayCollection();
+        foreach ($businessHours as $businessHour) {
+            $timePeriods[$businessHour->getId()] = clone $businessHour->getTimePeriods();
+        }
+
+        return $timePeriods;
     }
 
     /**
