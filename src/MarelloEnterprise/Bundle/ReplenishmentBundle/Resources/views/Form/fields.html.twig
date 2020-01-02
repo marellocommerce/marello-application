@@ -100,9 +100,9 @@
                     {% set selectionUrl = null %}
                     {% set originalFieldId = attr['data-ftid'] %}
                     {% if form.vars.grid_url is defined and form.vars.grid_url %}
-                    {% set selectionUrl = form.vars.grid_url %}
+                        {% set selectionUrl = form.vars.grid_url %}
                     {% elseif form.vars.selection_url is defined and form.vars.selection_url %}
-                    {% set selectionUrl = form.vars.selection_url %}
+                        {% set selectionUrl = form.vars.selection_url %}
                     {% endif %}
                     {% set selectionRouteName = form.vars.selection_route|default(null) %}
                     {% set selectionRouteParameters = form.vars.selection_route_parameters|default({}) %}
