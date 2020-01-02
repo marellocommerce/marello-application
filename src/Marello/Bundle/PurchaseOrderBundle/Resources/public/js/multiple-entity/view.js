@@ -11,9 +11,7 @@ define(function(require) {
      * @extends Backbone.View
      */
     const EntityView = Backbone.View.extend({
-
         tagName: "tr",
-
         className: "purchase-order-line-item display-values marello-line-item",
 
         events: {
@@ -29,9 +27,20 @@ define(function(require) {
             template: null
         },
 
+        /**
+         * @inheritDoc
+         */
+        constructor: function EntityView(options) {
+            EntityView.__super__.constructor.call(this, options);
+        },
+
         initialize: function(options) {
             this.options = _.defaults(options || {}, this.options);
-            this.template = _.template(this.options.template);
+            if (typeof this.options.template === 'string') {
+                this.template = _.template(this.options.template);
+            } else {
+                this.template = this.options.template;
+            }
             this.listenTo(this.model, 'destroy', this.remove);
             if (this.options.defaultRequired) {
                 this.listenTo(this.model, 'change:isDefault', this.toggleDefault);
@@ -46,7 +55,7 @@ define(function(require) {
         viewDetails: function(e) {
             e.stopImmediatePropagation();
             e.preventDefault();
-            var widget = new DialogWidget({
+            let widget = new DialogWidget({
                 'url': this.options.model.get('link'),
                 'title': this.options.model.get('label'),
                 dialogOptions: {
@@ -75,8 +84,8 @@ define(function(require) {
         },
 
         render: function() {
-            var data = this.model.toJSON();
-            data.purchasePrice = parseFloat(data.purchasePrice).toFixed(2)
+            let data = this.model.toJSON();
+            data.purchasePrice = parseFloat(data.purchasePrice).toFixed(2);
             this.$el.append(this.template(data));
             this.$el.find('a.entity-info').click(_.bind(this.viewDetails, this));
             this.$el.find('td.purchase-order-line-item-ordered-amount').find('input').change(_.bind(this.updateRowTotal, this));
@@ -87,14 +96,14 @@ define(function(require) {
         },
 
         updateRowTotal: function() {
-            var amount = this.$el.find('td.purchase-order-line-item-ordered-amount').find('input').val();
-            var price = this.$el.find('td.purchase-order-line-item-purchase-price').find('input[name*="value"]').val();
+            let amount = this.$el.find('td.purchase-order-line-item-ordered-amount').find('input').val();
+            let price = this.$el.find('td.purchase-order-line-item-purchase-price').find('input[name*="value"]').val();
             this.model.set('orderAmount', amount);
             this.model.set('purchasePrice', price);
-            
-            var rowTotal = parseFloat(amount) * parseFloat(price);
+
+            let rowTotal = parseFloat(amount) * parseFloat(price);
             if (!isNaN(rowTotal)) {
-                var currencySymbol = this.model.get('currency');
+                let currencySymbol = this.model.get('currency');
                 this.$el.find('td.purchase-order-line-item-row-total').html(currencySymbol + rowTotal.toFixed(2));
             } else {
                 this.$el.find('td.purchase-order-line-item-row-total').html('');
