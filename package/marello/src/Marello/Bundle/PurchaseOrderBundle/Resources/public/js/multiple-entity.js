@@ -39,6 +39,13 @@ define(function(require) {
             'click .add-btn': 'addEntities'
         },
 
+        /**
+         * @inheritDoc
+         */
+        constructor: function PurchaseOrderMultipleEntityView(options) {
+            PurchaseOrderMultipleEntityView.__super__.constructor.call(this, options);
+        },
+
         initialize: function(options) {
             this.options = _.defaults(options || {}, this.options);
             if (typeof this.options.template === 'string') {
@@ -136,21 +143,21 @@ define(function(require) {
         },
 
         _isInitialCollectionItem: function(itemId) {
-            var isInitial = !!_.find(this.initialCollectionItems, function(id) {
+            const isInitial = !!_.find(this.initialCollectionItems, function(id) {
                 return String(id) === String(itemId);
             });
             return isInitial;
         },
 
         _isAddedCollectionItem: function(itemId) {
-            var isAdded = !!_.find(this.addedCollectionItems, function(id) {
+            const isAdded = !!_.find(this.addedCollectionItems, function(id) {
                 return String(id) === String(itemId);
             });
             return isAdded;
         },
 
         _isRemovedCollectionItem: function(itemId) {
-            var isRemoved = !!_.find(this.removedCollectionItems, function(id) {
+            const isRemoved = !!_.find(this.removedCollectionItems, function(id) {
                 return String(id) === String(itemId);
             });
             return isRemoved;
@@ -171,11 +178,11 @@ define(function(require) {
             if (item.get('id') === this.$defaultEl.val()) {
                 item.set('isDefault', true);
             }
-            var entityView = new EntityView({
+            const entityView = new EntityView({
                 model: item,
                 name: this.options.name,
                 hasDefault: this.options.defaultElement,
-                template: this.options.elementTemplate
+                template: this.elementTemplate
             });
             entityView.on('removal', _.bind(this.handleRemove, this));
             this.$entitiesContainer.append(entityView.render().$el);
@@ -184,21 +191,21 @@ define(function(require) {
 
         addEntities: function(e) {
             if (!this.selectorDialog) {
-                var url = this._getSelectionWidgetUrl();
-                var routeAdditionalParams = $(e.target).data('route_additional_params');
+                let url = this._getSelectionWidgetUrl();
+                const routeAdditionalParams = $(e.target).data('route_additional_params');
                 if (routeAdditionalParams) {
                     url = url + (url.indexOf('?') === -1 ? '?' : '&') + $.param(routeAdditionalParams);
                 }
 
                 this.selectorDialog = new DialogWidget({
-                    url:   url,
+                    url: url,
                     title: this.options.selectorWindowTitle,
                     stateEnabled: false,
                     dialogOptions: {
-                        'modal': true,
-                        'width': 1024,
-                        'height': 500,
-                        'close': _.bind(function() {
+                        modal: true,
+                        width: 1024,
+                        height: 500,
+                        close: _.bind(function() {
                             this.selectorDialog = null;
                         }, this)
                     }
@@ -209,21 +216,27 @@ define(function(require) {
         },
 
         _getSelectionWidgetUrl: function() {
-            var url = this.options.selectionUrl ||
+            const url = this.options.selectionUrl ||
                 routing.generate(this.options.selectionRouteName, this.options.selectionRouteParams);
-            var separator = url.indexOf('?') > -1 ? '&' : '?';
-            var added = this.$addedEl.val();
-            var removed = this.$removedEl.val();
-            var defaultEl = this.$defaultEl.val();
+            const separator = url.indexOf('?') > -1 ? '&' : '?';
+            const added = this.$addedEl.val();
+            const removed = this.$removedEl.val();
+            const defaultEl = this.$defaultEl.val();
 
             return url + separator +
                 'added=' + (added || '') +
                 '&removed=' + (removed || '') +
-                '&default=' + (defaultEl || '') ;
+                '&default=' + (defaultEl || '');
+        },
+
+        _initWidgets: function() {
+            _.delay(_.bind(function() {
+                this.$el.inputWidget('seekAndCreate');
+            }, this));
         },
 
         processSelectedEntities: function(added, addedModels, removed) {
-            var self = this;
+            const self = this;
 
             _.intersection(added, removed).forEach(function(itemId) {
                 if (self._isInitialCollectionItem(itemId)) {
@@ -251,8 +264,8 @@ define(function(require) {
             _.each(addedModels, _.bind(function(model) {
                 this.getCollection().add(model);
             }, this));
-            for (var i = 0; i < removed.length; i++) {
-                var model = this.getCollection().get(removed[i]);
+            for (let i = 0; i < removed.length; i++) {
+                const model = this.getCollection().get(removed[i]);
                 if (model) {
                     model.set('id', null);
                     model.destroy();
@@ -260,15 +273,16 @@ define(function(require) {
             }
 
             this.selectorDialog.remove();
+
+            this._initWidgets();
         },
 
         triggerTotalsUpdateEvent: function() {
-            var total = 0;
-            var currency = null;
-            var self = this;
+            let total = 0;
+            let currency = null;
             this.getCollection().each(function(model) {
                 if (model.id !== null) {
-                    var rowTotal = parseFloat(model.get('orderAmount')) * parseFloat(model.get('purchasePrice'));
+                    let rowTotal = parseFloat(model.get('orderAmount')) * parseFloat(model.get('purchasePrice'));
                     currency = model.get('currency');
                     if (!isNaN(rowTotal)) {
                         total = total + rowTotal;
@@ -287,6 +301,7 @@ define(function(require) {
 
             this.$entitiesContainer = this.$el.find(this.options.entitiesContainerSelector);
 
+            this._initWidgets();
             return this;
         }
     });
