@@ -1,0 +1,151 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% import 'OroEntityConfigBundle::macros.html.twig' as entityConfig %}
+
+{% oro_title_set({params : {"%label%": entity.labels|localized_value } }) %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity': entity,
+        'indexPath': path('marello_servicepoint_servicepoint_index'),
+        'indexLabel': 'marello.servicepoint.entity_plural_label'|trans,
+        'entityTitle': (entity.labels|localized_value)|default('N/A')
+    } %}
+
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block navButtons %}
+    {%-  if is_granted('EDIT', entity) -%}
+        <div class="pull-left btn-group icons-holder">
+            {{  UI.addButton({
+                'path': path('marello_servicepoint_servicepointfacility_create', {'servicepoint_id': entity.id}),
+                'entity_label': 'marello.servicepoint.servicepoint_facility.entity_label'|trans
+            }) }}
+        </div>
+        {{ UI.editButton({
+            'path': path('marello_servicepoint_servicepoint_update', { id: entity.id }),
+            'entity_label': 'marello.servicepoint.entity_label'|trans
+        }) }}
+    {%- endif -%}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block content_data %}
+    {% set id = 'marello-servicepoint-view' %}
+    {% set generalSubblocks = [] %}
+
+    {% set mapData %}
+        {% set options = {
+            'view': 'marelloservicepoint/js/app/views/embed-map-view',
+            'address': entity.address.__toString(),
+            'mapOptions': {
+                'center': entity.latitude ~ ',' ~ entity.longitude,
+                'zoom': 17,
+            },
+            'iframeOptions': {
+                'width': '100%',
+                'height': 400
+            }
+        } %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    <div
+                        data-page-component-module="oroui/js/app/components/view-component"
+                        data-page-component-options="{{ options|json_encode }}"
+                    ></div>
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
+    {% set imageData %}
+        {% if entity.image is not empty %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    <div class="thumbnail">
+                        <a href="{{ file_url(entity, 'image', entity.image) }}" data-gallery="servicepoint-view-{{ entity.id }}" class="no-hash" title="{{ entity.labels|localized_value }}">
+                            <span class="thumbnail servicepoint-thumbnail" style="background-image: url('{{ filtered_image_url(entity.image, 'servicepoint_view') }}')"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+            {{ 'N/A'|trans }}
+        {% endif %}
+    {% endset %}
+
+    {% set generalInformation %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    <div class="box-type1">
+                        {{ UI.renderProperty('marello.servicepoint.labels.label'|trans, entity.labels|localized_value) }}
+                        {{ UI.renderProperty('marello.servicepoint.descriptions.label'|trans, entity.descriptions|localized_value) }}
+                        {{ UI.renderHtmlProperty('marello.servicepoint.address.label'|trans, entity.address|oro_format_address|nl2br) }}
+                        {{ UI.renderProperty('marello.servicepoint.latitude.label'|trans, entity.latitude) }}
+                        {{ UI.renderProperty('marello.servicepoint.longitude.label'|trans, entity.longitude) }}
+                        {{ UI.renderHtmlProperty('marello.servicepoint.image.label'|trans, imageData) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
+    {% set generalSubblocks = generalSubblocks|merge([{'data' : [generalInformation] }]) %}
+    {% set generalSubblocks = generalSubblocks|merge([{
+        'title': 'marello.servicepoint.ui.servicepoint.sections.map'|trans,
+        'data': [mapData]
+    }]) %}
+    {% set dataBlocks = [{
+        'title': 'General'|trans,
+        'subblocks': generalSubblocks
+    }] %}
+
+    {% set facilitiesData %}
+        {{ oro_widget_render({
+            'widgetType': 'block',
+            'url': path('marello_servicepoint_servicepoint_facilities', {id: entity.id}),
+            'title': 'marello.servicepoint.service_point_facilities.label'|trans
+        }) }}
+    {% endset %}
+
+    {% set dataBlocks = dataBlocks|merge([{
+        'title': 'marello.servicepoint.service_point_facilities.label'|trans,
+        'subblocks': [{
+            'title': null,
+            'useSpan': false,
+            'data': [
+                facilitiesData
+            ]
+        }]
+    }]) %}
+
+    {% set additionalData %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ entityConfig.renderDynamicFields(entity) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
+    {% set dataBlocks = dataBlocks|merge([{
+        'title' : 'marello.servicepoint.ui.servicepoint.sections.additional'|trans,
+        'subblocks': [{
+            'title' : null,
+            'useSpan': false,
+            'data' : [
+                additionalData
+            ]
+        }]
+    }]) %}
+
+    {% set data = { 'dataBlocks': dataBlocks } %}
+    {{ parent() }}
+{% endblock content_data %}

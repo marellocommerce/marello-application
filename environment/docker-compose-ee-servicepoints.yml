@@ -1,0 +1,101 @@
+version: "2"
+services:
+    data:
+        build:
+            context: ./.docker-data
+        container_name: enterprise-data
+    db:
+        image: percona:5.7
+        container_name: enterprise-db
+        expose:
+            - "3306"
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_DATABASE=marellocommerce
+            - MYSQL_USER=marellocommerce
+            - MYSQL_PASSWORD=marellocommerce
+        volumes_from:
+            - data
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: enterprise-phpmyadmin
+        ports:
+            - "5082:80"
+        links:
+            - db
+        environment:
+            - PMA_HOST=db
+
+    db_postgres:
+        expose:
+            - "5432"
+        image: postgres:9.6.9
+        container_name: marello-ee-pgsql-db
+        environment:
+            - POSTGRES_PASSWORD=root
+            - POSTGRES_USER=root
+            - POSTGRES_DB=marellocommerce
+        volumes_from:
+            - data
+
+    adminer:
+        image: adminer
+        container_name: marello-ee-pgsql-adminer
+        ports:
+            - "5084:8080"
+        links:
+            - db
+
+    mailhog:
+        image: mailhog/mailhog
+        container_name: enterprise-mailhog
+        ports:
+          - "5083:8025"
+        logging:
+            driver: "none"
+    web:
+        build:
+            context: ./.docker
+            args:
+                - SYMFONY_ENV=prod
+                - PHP_VERSION=7.1
+        container_name: enterprise-web
+        working_dir: /var/www/
+        links:
+            - "db"
+            - "mailhog"
+        ports:
+            - "5080:80"
+            - "5081:8080"
+        volumes_from:
+            - data
+        volumes:
+            - ../applications/marello-application-ee:/var/www:cached
+            - ../package/marello:/package/marello
+            - ../package/marello-enterprise:/package/marello-servicepoints
+            - ../package/marello-enterprise:/package/marello-enterprise
+        environment:
+            - PHP_IDE_CONFIG=serverName=PHPSTORM
+            - XDEBUG_CONFIG="remote_enable=1 remote_mode=req remote_port=9005 remote_host=172.16.1.45 remote_connect_back=0 idekey=PHPSTORM profiler_enable=1"
+            - VIRTUAL_HOST=marello-ee.docker
+            - IS_LOCAL=true
+            - CMD_INIT_BEFORE=
+            - CMD_INIT_CLEAN=runuser -s /bin/sh -c '/usr/bin/php /var/www/bin/console oro:install --timeout 3600 --sample-data=y --drop-database --env=prod --user-name=admin --user-firstname=John --user-lastname=Doe --user-password="marello123" --user-email="johndoe@example.com" --organization-name="Marello"' www-data
+            - CMD_INIT_INSTALLED=
+            - CMD_INIT_AFTER=
+            - APP_DB_DRIVER=pdo_mysql
+            - APP_DB_HOST=db
+            - APP_DB_PORT=3306
+            - APP_DB_USER=marellocommerce
+            - APP_DB_PASSWORD=marellocommerce
+            - APP_DB_NAME=marellocommerce
+            - APP_HOSTNAME=localhost
+            - APP_MAILER_TRANSPORT=smtp
+            - APP_MAILER_HOST=mailhog
+            - APP_MAILER_PORT=1025
+            - APP_MAILER_ENCRYPTION=
+            - APP_MAILER_USER=user
+            - APP_MAILER_PASSWORD=password
+            - APP_WEBSOCKET_HOST=
+            - APP_WEBSOCKET_PORT=5081
+            - APP_IS_INSTALLED=

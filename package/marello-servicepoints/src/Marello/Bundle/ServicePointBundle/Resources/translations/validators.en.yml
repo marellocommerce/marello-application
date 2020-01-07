@@ -1,0 +1,4 @@
+marello:
+    servicepoint:
+        no_overlapping_business_hours.message: "These business hours overlap with others"
+        time_interval.message: "This is not a valid time interval"

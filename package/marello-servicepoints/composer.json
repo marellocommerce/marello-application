@@ -1,0 +1,39 @@
+{
+    "name": "marellocommerce/servicepoints",
+    "description": "Marello Unified Commerce Management",
+    "homepage": "//github.com/marellocommerce/marello-servicepoints.git",
+    "license": "OSL-3.0",
+    "authors": [
+        {
+            "name": "Marello B.V.",
+            "homepage": "https://www.marello.com"
+        }
+    ],
+    "repositories": {
+        "oro": {
+            "type": "composer",
+            "url": "https://packagist.orocrm.com"
+        },
+        "asset-packagist": {
+            "type": "composer",
+            "url": "https://asset-packagist.orocrm.com"
+        }
+    },
+    "require": {
+        "php": ">=7.1.26",
+        "oro/platform": "~3.1.1",
+        "oro/platform-serialised-fields": "~3.1.1",
+        "oro/calendar-bundle": "~3.1.1"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.1-dev"
+        }
+    },
+    "autoload": {
+        "psr-4": {"": "src/"},
+        "exclude-from-classmap": ["/Tests/"]
+    }
+}
