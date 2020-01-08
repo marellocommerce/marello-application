@@ -2,11 +2,12 @@
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
 
-{% if form.vars.value.id %}
-    {% set formAction = path('marello_customer_update', { 'id': form.vars.value.id }) %}
-{% else %}
-    {% set formAction = path('marello_customer_create') %}
+{% set entity = form.vars.value %}
+{% if entity.id %}
+    {% oro_title_set({params : {"%name%": entity.fullName } }) %}
 {% endif %}
+
+{% set formAction = entity.id ? path('marello_customer_update', { id: entity.id }) : path('marello_customer_create') %}
 
 {% block navButtons %}
     {{ UI.cancelButton(path('marello_customer_index')) }}
@@ -18,12 +19,12 @@
 {% endblock navButtons %}
 
 {% block pageHeader %}
-    {% if form.vars.value.id %}
+    {% if entity.id %}
         {% set breadcrumbs = {
             'entity':      entity,
             'indexPath':   path('marello_customer_index'),
             'indexLabel': 'marello.customer.entity_plural_label'|trans,
-            'entityTitle': entity
+            'entityTitle': entity.fullName|default('N/A')
         } %}
         {{ parent() }}
     {% else %}
