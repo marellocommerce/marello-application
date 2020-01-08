@@ -80,13 +80,11 @@ class InvoiceTableProvider implements TableProviderInterface
     {
         $line = $this->createLineObject();
 
-        $description = sprintf('%s - %s', $invoiceItem->getProductSku(), $invoiceItem->getProductName());
-
-        $line['description'] = $this->wrapLine($description, $this->getEntitySalesChannel($invoice));
+        $line['productSku'] = $invoiceItem->getProductSku();
+        $line['productName'] = $invoiceItem->getProductName();
         $line['quantity'] = $invoiceItem->getQuantity();
         $line['price'] = $invoiceItem->getPrice();
-        $line['discount'] = $invoiceItem->getDiscountAmount();
-        $line['tax'] = $invoiceItem->getTax();
+        $line['vat'] = $invoiceItem->getTax();
         $line['total_inc_tax'] = $invoiceItem->getRowTotalInclTax();
         $line['total_ex_tax'] = $invoiceItem->getRowTotalExclTax();
 
@@ -96,11 +94,11 @@ class InvoiceTableProvider implements TableProviderInterface
     protected function createLineObject()
     {
         return new Line([
-            'description',
+            'productSku',
+            'productName',
             'quantity',
             'price',
-            'discount',
-            'tax',
+            'vat',
             'total_inc_tax',
             'total_ex_tax',
         ]);
