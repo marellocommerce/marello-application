@@ -12,7 +12,7 @@
             body {
                 font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
                 font-weight: 300;
-                font-size: 14px;
+                font-size: 11px;
                 line-height: 1.5em;
                 background-color: #fff;
             }
@@ -53,6 +53,7 @@
             }
             .invoice-dl {
                 margin-top: 30px;
+                margin-bottom: 25px;
             }
             .customer-vat-dl {
                 margin-bottom: 20px;
@@ -106,7 +107,7 @@
             }
             table.invoice-lines tr.line-bottom,
             table.invoice-lines tr.line-bottom td {
-                border-bottom: 1px solid black;
+                border-bottom: 1px solid #fff;
             }
             table.invoice-totals th {
                 text-align: right;
@@ -141,6 +142,7 @@
             }
             .customer-address {
                 margin-top: 40px;
+                font-size: 13px;
             }
             table.invoice-totals {
                 border-right: 2px solid #f4f4f4;
@@ -161,7 +163,7 @@
             }
             .page-number {
                 text-align: right;
-                font-size: 12px;
+                font-size: 11px;
             }
             @page {
                 sheet-size: {{ paper_size }};
@@ -190,7 +192,7 @@
                         {{ company_address|nl2br }}
                     </p>
                     <p class="company-phone">
-                        Tel: <a href="tel:{{ company_phone }}">{{ company_phone }}</a>
+                        <a href="tel:{{ company_phone }}">{{ company_phone }}</a>
                     </p>
                     <p class="company-email">
                         <a href="mailto:{{ company_email }}">{{ company_email }}</a>
@@ -255,11 +257,11 @@
             <table class="invoice-lines" autosize="0">
                 <thead>
                     <tr>
-                        <th>{{ 'marello.pdf.invoice_line.title.label'|trans({}, 'pdf', language) }}</th>
-                        <th class="quantity_price" colspan="3">{{ 'marello.pdf.invoice_line.quantity_and_price.label'|trans({}, 'pdf', language) }}</th>
-                        <th class="amount r">{{ 'marello.pdf.invoice_line.discount.label'|trans({}, 'pdf', language) }}</th>
-                        <th class="amount r">{{ 'marello.pdf.invoice_line.total_ex_tax.label'|trans({}, 'pdf', language) }}</th>
-                        <th class="amount r">{{ 'marello.pdf.invoice_line.tax.label'|trans({}, 'pdf', language) }}</th>
+                        <th>{{ 'marello.pdf.invoice_line.productSku.label'|trans({}, 'pdf', language) }}</th>
+                        <th>{{ 'marello.pdf.invoice_line.productName.label'|trans({}, 'pdf', language) }}</th>
+                        <th class="quantity c">{{ 'marello.pdf.invoice_line.quantity.label'|trans({}, 'pdf', language) }}</th>
+                        <th class="price c">{{ 'marello.pdf.invoice_line.price.label'|trans({}, 'pdf', language) }}</th>
+                        <th class="amount c">{{ 'marello.pdf.invoice_line.vat.label'|trans({}, 'pdf', language) }}</th>
                         <th class="amount r">{{ 'marello.pdf.invoice_line.total_inc_tax.label'|trans({}, 'pdf', language) }}</th>
                     </tr>
                 </thead>
@@ -267,42 +269,32 @@
                 {%- for invoiceLine in table.lines %}
                     {% set total = total + invoiceLine['total_ex_tax'][0] %}
                     {% set subtotal = subtotal + invoiceLine['total_ex_tax'][0] %}
-                    {% set taxtotal = taxtotal + invoiceLine['tax'][0] %}
+                    {% set taxtotal = taxtotal + invoiceLine['vat'][0] %}
 
                     {% for line in invoiceLine.getDisplayLines() %}
                     <tr{% if loop.last and not invoiceLine.isEmpty() %} class="line-bottom"{% endif %}>
-                        <td class="title">
-                            {{- line['description'] -}}
+                        <td class="productSku">
+                            {{- line['productSku'] -}}
                         </td>
-                        <td class="r quantity">
+                        <td class="productName">
+                            {{- line['productName'] -}}
+                        </td>
+                        <td class="quantity c">
                             {%- if line['quantity'] is not empty -%}
                                 {{- line['quantity'] -}}
                             {%- else -%}
                                 &nbsp;
                             {%- endif -%}
                         </td>
-                        <td class="times c">
-                            {%- if line['quantity'] is not empty and line['price'] is not empty -%}
-                                &times;
-                            {%- else -%}
-                                &nbsp;
-                            {%- endif -%}
-                        </td>
-                        <td class="price">
+                        <td class="price c">
                             {%- if line['price'] is not empty -%}
                                 {{ line['price']|oro_format_currency({'locale': locale, 'currency':entity.currency}) -}}
                             {%- else -%}
                                 &nbsp;
                             {%- endif -%}
                         </td>
-                        <td class="r">
-                            {%- if line['discount'] is not empty %}{{ line['discount']|oro_format_currency({'locale': locale, 'currency':entity.currency}) }}{% else %}&nbsp;{% endif -%}
-                        </td>
-                        <td class="r">
-                            {%- if line['total_ex_tax'] is not empty %}{{ line['total_ex_tax']|oro_format_currency({'locale': locale, 'currency':entity.currency}) }}{% else %}&nbsp;{% endif -%}
-                        </td>
-                        <td class="r">
-                            {%- if line['tax'] is not empty %}{{ line['tax']|oro_format_currency({'locale': locale, 'currency':entity.currency}) }}{% else %}&nbsp;{% endif -%}
+                        <td class="c">
+                            {%- if line['vat'] is not empty %}{{ line['vat']|oro_format_currency({'locale': locale, 'currency':entity.currency}) }}{% else %}&nbsp;{% endif -%}
                         </td>
                         <td class="r total">
                             {%- if line['total_inc_tax'] is not empty %}{{ line['total_inc_tax']|oro_format_currency({'locale': locale, 'currency':entity.currency}) }}{% else %}&nbsp;{% endif -%}
