@@ -3,6 +3,13 @@
 namespace Marello\Bundle\PdfBundle\Workflow\Action;
 
 use Doctrine\ORM\EntityNotFoundException;
+use Doctrine\Common\Persistence\ManagerRegistry;
+
+use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
+use Symfony\Component\Validator\Constraints\Email as EmailConstraints;
+use Symfony\Component\Validator\Exception\ValidatorException;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+
 use Oro\Bundle\EmailBundle\Entity\EmailAttachmentContent;
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\EmailBundle\Entity\EmailUser;
@@ -10,10 +17,17 @@ use Oro\Bundle\EmailBundle\Entity\EmailAttachment as AttachmentEntity;
 use Oro\Bundle\EmailBundle\Form\Model\Email;
 use Oro\Bundle\EmailBundle\Form\Model\EmailAttachment;
 use Oro\Bundle\EmailBundle\Workflow\Action\SendEmailTemplate;
+use Oro\Bundle\EmailBundle\Workflow\Action\AbstractSendEmail;
 use Oro\Component\Action\Exception\InvalidArgumentException;
-use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
+use Oro\Component\Action\Exception\InvalidParameterException;
+use Oro\Bundle\EmailBundle\Tools\EmailOriginHelper;
+use Oro\Bundle\EmailBundle\Provider\EmailRenderer;
+use Oro\Bundle\EmailBundle\Tools\EmailAddressHelper;
+use Oro\Bundle\EntityBundle\Provider\EntityNameResolver;
+use Oro\Component\ConfigExpression\ContextAccessor;
+use Oro\Bundle\EmailBundle\Mailer\Processor;
 
-class SendEmailTemplateAttachmentAction extends SendEmailTemplate
+class SendEmailTemplateAttachmentAction extends AbstractSendEmail
 {
     const OPTION_ATTACHMENTS = 'attachments';
     const OPTION_ATTACHMENT_BODY = 'body';
@@ -22,14 +36,78 @@ class SendEmailTemplateAttachmentAction extends SendEmailTemplate
     const OPTION_ATTACHMENT_MIMETYPE = 'mimetype';
     const OPTION_BCC = 'bcc';
 
-    private $options;
+    protected $options;
 
-    protected $mime_type_guesser;
+    protected $mimeTypeGuesser;
 
-    public function initialize(array $options): SendEmailTemplate
+    protected $emailConstraint;
+
+    protected $renderer;
+
+    /** @var ManagerRegistry */
+    protected $registry;
+
+    /** @var ValidatorInterface */
+    protected $validator;
+
+    /** @var EmailOriginHelper */
+    protected $emailOriginHelper;
+
+    /**
+     * @param ContextAccessor $contextAccessor
+     * @param Processor $emailProcessor
+     * @param EmailAddressHelper $emailAddressHelper
+     * @param EntityNameResolver $entityNameResolver
+     * @param ManagerRegistry $registry
+     * @param ValidatorInterface $validator
+     * @param EmailOriginHelper $emailOriginHelper
+     * @param EmailRenderer $renderer
+     */
+    public function __construct(
+        ContextAccessor $contextAccessor,
+        Processor $emailProcessor,
+        EmailAddressHelper $emailAddressHelper,
+        EntityNameResolver $entityNameResolver,
+        ManagerRegistry $registry,
+        ValidatorInterface $validator,
+        EmailOriginHelper $emailOriginHelper,
+        EmailRenderer $renderer
+    ) {
+        parent::__construct($contextAccessor, $emailProcessor, $emailAddressHelper, $entityNameResolver);
+
+        $this->registry = $registry;
+        $this->validator = $validator;
+        $this->renderer = $renderer;
+        $this->emailOriginHelper = $emailOriginHelper;
+    }
+
+    /**
+     * @param array $options
+     * @return SendEmailTemplate
+     */
+    public function initialize(array $options): self
     {
         if (isset($options[self::OPTION_BCC])) {
             $this->assertEmailAddressOption($options[self::OPTION_BCC]);
+        }
+        if (empty($options['from'])) {
+            throw new InvalidParameterException('From parameter is required');
+        }
+
+        $this->assertEmailAddressOption($options['from']);
+
+        if (empty($options['to'])) {
+            throw new InvalidParameterException('Need to specify "to" parameters');
+        }
+
+        $options = $this->normalizeToOption($options);
+
+        if (empty($options['template'])) {
+            throw new InvalidParameterException('Template parameter is required');
+        }
+
+        if (empty($options['entity'])) {
+            throw new InvalidParameterException('Entity parameter is required');
         }
 
         if (isset($options[self::OPTION_ATTACHMENTS])) {
@@ -63,30 +141,42 @@ class SendEmailTemplateAttachmentAction extends SendEmailTemplate
                 }
             }
         }
+
         $this->options = $options;
-        return parent::initialize($options);
+        $this->emailConstraint = new EmailConstraints(['message' => 'Invalid email address']);
+
+        return $this;
     }
 
+    /**
+     * @param mixed $context
+     * @throws EntityNotFoundException
+     * @throws \Twig\Error\Error
+     * @throws \Twig_Error
+     */
     public function executeAction($context): void
     {
-        $emailModel = $this->getEmailModel();
+        $emailModel = new Email();
 
         $from = $this->getEmailAddress($context, $this->options['from']);
         $this->validateAddress($from);
         $emailModel->setFrom($from);
         $to = [];
+
         foreach ($this->options['to'] as $email) {
             if ($email) {
                 $address = $this->getEmailAddress($context, $email);
                 $this->validateAddress($address);
-                $to[] = $this->getEmailAddress($context, $address);
+                $to[] = $address;
             }
         }
         $emailModel->setTo($to);
         $entity = $this->contextAccessor->getValue($context, $this->options['entity']);
         $template = $this->contextAccessor->getValue($context, $this->options['template']);
 
-        $emailTemplate = $this->objectManager
+        $emailTemplate = $this
+            ->registry
+            ->getManagerForClass(\get_class($entity))
             ->getRepository(EmailTemplate::class)
             ->findByName($template)
         ;
@@ -108,10 +198,12 @@ class SendEmailTemplateAttachmentAction extends SendEmailTemplate
 
         $emailUser = null;
         try {
-            $emailUser = $this->emailProcessor->process(
-                $emailModel,
-                $this->emailProcessor->getEmailOrigin($emailModel->getFrom(), $emailModel->getOrganization())
+            $emailOrigin = $this->emailOriginHelper->getEmailOrigin(
+                $emailModel->getFrom(),
+                $emailModel->getOrganization()
             );
+
+            $emailUser = $this->emailProcessor->process($emailModel, $emailOrigin);
         } catch (\Swift_SwiftException $exception) {
             $this->logger->error('Workflow send email template action.', ['exception' => $exception]);
         }
@@ -121,6 +213,10 @@ class SendEmailTemplateAttachmentAction extends SendEmailTemplate
         }
     }
 
+    /**
+     * @param $context
+     * @return array|string
+     */
     protected function getBcc($context)
     {
         if (isset($this->options[self::OPTION_BCC])) {
@@ -135,6 +231,10 @@ class SendEmailTemplateAttachmentAction extends SendEmailTemplate
         return array_filter($bcc);
     }
 
+    /**
+     * @param Email $emailModel
+     * @param $context
+     */
     protected function addAttachments(Email $emailModel, $context)
     {
         if (isset($this->options[self::OPTION_ATTACHMENTS])) {
@@ -145,6 +245,11 @@ class SendEmailTemplateAttachmentAction extends SendEmailTemplate
         }
     }
 
+    /**
+     * @param $attachment
+     * @param $context
+     * @return EmailAttachment
+     */
     protected function buildAttachment($attachment, $context)
     {
         if (isset($attachment[self::OPTION_ATTACHMENT_FILE])) {
@@ -156,6 +261,11 @@ class SendEmailTemplateAttachmentAction extends SendEmailTemplate
         return $emailAttachment;
     }
 
+    /**
+     * @param $attachment
+     * @param $context
+     * @return EmailAttachment
+     */
     protected function buildFileAttachment($attachment, $context)
     {
         $path = $this->contextAccessor->getValue($context, $attachment[self::OPTION_ATTACHMENT_FILE]);
@@ -175,6 +285,11 @@ class SendEmailTemplateAttachmentAction extends SendEmailTemplate
         return $this->buildAttachmentFromString($content, $filename, $mimetype);
     }
 
+    /**
+     * @param $attachment
+     * @param $context
+     * @return EmailAttachment
+     */
     protected function buildStringAttachment($attachment, $context)
     {
         $content = $this->contextAccessor->getValue($context, $attachment[self::OPTION_ATTACHMENT_BODY]);
@@ -184,6 +299,12 @@ class SendEmailTemplateAttachmentAction extends SendEmailTemplate
         return $this->buildAttachmentFromString($content, $filename, $mimetype);
     }
 
+    /**
+     * @param $content
+     * @param $filename
+     * @param $mimetype
+     * @return EmailAttachment
+     */
     protected function buildAttachmentFromString($content, $filename, $mimetype)
     {
         $attachmentEntity = new AttachmentEntity();
@@ -204,12 +325,51 @@ class SendEmailTemplateAttachmentAction extends SendEmailTemplate
         return $emailAttachment;
     }
 
+    /**
+     * @return MimeTypeGuesser
+     */
     protected function getMimeTypeGuesser()
     {
-        if ($this->mime_type_guesser === null) {
-            $this->mime_type_guesser = MimeTypeGuesser::getInstance();
+        if ($this->mimeTypeGuesser === null) {
+            $this->mimeTypeGuesser = MimeTypeGuesser::getInstance();
         }
 
-        return $this->mime_type_guesser;
+        return $this->mimeTypeGuesser;
+    }
+
+    /**
+     * @param string $email
+     * @throws ValidatorException
+     */
+    protected function validateAddress($email): void
+    {
+        $errorList = $this->validator->validate($email, $this->emailConstraint);
+
+        if ($errorList && $errorList->count() > 0) {
+            throw new ValidatorException($errorList->get(0)->getMessage());
+        }
+    }
+
+    /**
+     * @param array $options
+     * @return array
+     */
+    protected function normalizeToOption(array $options): array
+    {
+        if (empty($options['to'])) {
+            $options['to'] = [];
+        }
+        if (!is_array($options['to'])
+            || array_key_exists('name', $options['to'])
+            || array_key_exists('email', $options['to'])
+        ) {
+            $options['to'] = [$options['to']];
+        }
+
+        foreach ($options['to'] as $to) {
+            $this->assertEmailAddressOption($to);
+        }
+
+        return $options;
     }
 }
