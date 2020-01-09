@@ -1,9 +1,3 @@
-@name = marello_send_invoice
-@entityName = 'Marello\Bundle\InvoiceBundle\Entity\Invoice'
-@subject = Invoice {{ entity.invoiceNumber }}
-@isSystem = 1
-@isEditable = 1
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" style="background-color: #fff;">
 <head>
@@ -463,11 +457,149 @@
                                 <tr class="email-intro">
                                     <td style="font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
                                         <h1>Dear {{ entity.customer.firstName ~ ' ' ~ entity.customer.middleName ~ ' ' ~ entity.customer.lastName }},</h1>
-                                        <p class="greeting" style="font-size: 16px; margin: 1em 0;">Thank you for your order from {{ entity.salesChannel }}.</p>
-                                        <p class="greeting" style="font-size: 16px; margin: 1em 0;">You will find the invoice for your order attached to this email.</p>
+                                        <p class="greeting" style="font-size: 16px; margin: 1em 0;">Thank you for your order from {{ entity.salesChannel.name }}.</p>
+                                        <p class="greeting" style="font-size: 16px; margin: 1em 0;">Once your package ships we will send an email with a link to track your order. Your order summary is below.</p>
                                     </td>
                                 </tr>
-
+                                <tr class="email-summary">
+                                    <td style="font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+                                        <p style="font-size: 16px; margin: 1em 0;">Your order <span class="no-link">#{{ entity.order.orderNumber }}</span></p>
+                                        <p style="font-size: 16px; margin: 1em 0;">Placed on {{ entity.order.createdAt|date('d-m-Y H:i:s') }}</p>
+                                    </td>
+                                </tr>
+                                <tr class="email-information">
+                                    <td style="font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+                                        <table class="order-details" style="border-collapse: collapse; width: 100%;">
+                                            <tr>
+                                                <td class="address-details" style="font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 16px 16px 16px 0; width: 50%;">
+                                                    <h3 style="display: block; font-size: 20px; font-weight: 600; margin: 0; margin-bottom: 16px; margin-top: 0; padding: 0;">Bill to:</h3>
+                                                    <p style="font-size: 16px; margin: 1em 0;">{{ entity.billingAddress | oro_format_address | escape | nl2br }}</p>
+                                                </td>
+                                                <td class="address-details" style="font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 16px 16px 16px 0; width: 50%;">
+                                                    <h3 style="display: block; font-size: 20px; font-weight: 600; margin: 0; margin-bottom: 16px; margin-top: 0; padding: 0;">Ship to:</h3>
+                                                    <p style="font-size: 16px; margin: 1em 0;">{{ entity.shippingAddress | oro_format_address | escape | nl2br }}</p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <!--{% if entity.shippingMethod is not null %}-->
+                                                <td class="method-info" style="font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 16px 16px 16px 0; width: 50%;">
+                                                    <h3 style="display: block; font-size: 20px; font-weight: 600; margin: 0; margin-bottom: 16px; margin-top: 0; padding: 0;">Shipping method:</h3>
+                                                    <p style="font-size: 16px; margin: 1em 0;">{{ marello_shipping_method_with_type_label(entity.shippingMethod, entity.shippingMethodType) }}</p>
+                                                </td>
+                                                <!--{% endif %}-->
+                                                <td class="method-info" style="font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 16px 16px 16px 0; width: 50%;">
+                                                    <h3 style="display: block; font-size: 20px; font-weight: 600; margin: 0; margin-bottom: 16px; margin-top: 0; padding: 0;">Payment method:</h3>
+                                                    <p style="font-size: 16px; margin: 1em 0;">{{ entity.paymentMethod }}</p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <table class="email-items" style="border: 1px solid #d6d7d7; border-collapse: collapse; width: 100%;">
+                                            <thead>
+                                            <tr>
+                                                <th class="item-info item-info-left" style="background-color: #f8f8f8; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px;">
+                                                    Product Name
+                                                </th>
+                                                <th class="item-info item-info-left" style="background-color: #f8f8f8; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px;">
+                                                    Product SKU
+                                                </th>
+                                                <th class="item-info item-info-right" style="background-color: #f8f8f8; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px;">
+                                                    Quantity
+                                                </th>
+                                                <th class="item-info" style="background-color: #f8f8f8; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; text-align:right;">
+                                                    Price excl Tax
+                                                </th>
+                                                <th class="item-info" style="background-color: #f8f8f8; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; text-align:right;">
+                                                    Tax
+                                                </th>
+                                                <th class="item-info" style="background-color: #f8f8f8; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; text-align:right;">
+                                                    Row Total Incl Tax
+                                                </th>
+                                                <th class="item-info" style="background-color: #f8f8f8; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; text-align:right;">
+                                                    Details
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <!--{% for item in entity.order.items %}-->
+                                            <tr>
+                                                <td class="item-info" style="border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px;">
+                                                    {{ item.productName }}
+                                                </td>
+                                                <td class="item-info" style="border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px;">
+                                                    {{ item.productSku }}
+                                                </td>
+                                                <td class="item-info item-info-right" style="border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px;">
+                                                    {{ item.quantity }}
+                                                </td>
+                                                <td class="item-info" style="border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px; text-align:right;">
+                                                    {{ item.price|oro_format_currency({'currency': entity.currency}) }}
+                                                </td>
+                                                <td class="item-info" style="border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px; text-align:right;">
+                                                    {{ item.tax|oro_format_currency({'currency': entity.currency}) }}
+                                                </td>
+                                                <td class="item-info" style="border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px; text-align:right;">
+                                                    {{ item.rowTotalInclTax|oro_format_currency({'currency': entity.currency}) }}
+                                                </td>
+                                                <td class="item-info" style="border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px; text-align:right;">
+                                                    {% if item.status == marello_get_order_item_status('waiting_for_supply') %}
+                                                        item will be shipped later
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                            <!--{% endfor %}-->
+                                            </tbody>
+                                            <tfoot class="order-totals">
+                                            <tr class="subtotal">
+                                                <th colspan="6" scope="row" style="background-color: #f8f8f8; border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; text-align: right;">
+                                                    Subtotal:
+                                                </th>
+                                                <td data-th="subtotaal" style="background-color: #f8f8f8; border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px; text-align: right;">
+                                                    <span class="price" style="white-space: nowrap;">{{ entity.subtotal|oro_format_currency({'currency': entity.currency}) }}</span>
+                                                </td>
+                                            </tr>
+                                            <tr class="tax">
+                                                <th colspan="6" scope="row" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; padding-top: 0; text-align: right;">
+                                                    Tax:
+                                                </th>
+                                                <td data-th="tax" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px; padding-top: 0; text-align: right;">
+                                                    <span class="price" style="white-space: nowrap;">{{ entity.totalTax|oro_format_currency({'currency': entity.currency}) }}</span>
+                                                </td>
+                                            </tr>
+                                            <!--{% if entity.order.discountAmount %}-->
+                                            <tr class="discount">
+                                                <th colspan="6" scope="row" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; padding-top: 0; text-align: right;">
+                                                    Discount:
+                                                </th>
+                                                <td data-th="discount" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px; padding-top: 0; text-align: right;">
+                                                    <span class="price" style="white-space: nowrap;">{{ entity.order.discountAmount|oro_format_currency({'currency': entity.currency}) }}</span>
+                                                </td>
+                                            </tr>
+                                            <!--{% endif %}-->
+                                            <tr class="shipping">
+                                                <th colspan="6" scope="row" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; padding-top: 0; text-align: right;">
+                                                    Shipping cost:
+                                                </th>
+                                                <td data-th="Verzending en verwerking" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px; padding-top: 0; text-align: right;">
+                                                    <span class="price" style="white-space: nowrap;">{{ entity.shippingAmountInclTax|oro_format_currency({'currency': entity.currency}) }}</span>
+                                                </td>
+                                            </tr>
+                                            <tr class="grand_total">
+                                                <th colspan="6" scope="row" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; padding-top: 0; text-align: right;">
+                                                    <strong style="font-weight: 600;">
+                                                        Total:
+                                                    </strong>
+                                                </th>
+                                                <td data-th="Groot Totaal" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px; padding-top: 0; text-align: right;">
+                                                    <strong style="font-weight: 600;">
+                                                        <span class="price" style="white-space: nowrap;">{{ entity.grandTotal|oro_format_currency({'currency': entity.currency}) }}</span>
+                                                    </strong>
+                                                </td>
+                                            </tr>
+                                            </tfoot>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
                             <!-- End Content -->
                         </td>
                     </tr>
