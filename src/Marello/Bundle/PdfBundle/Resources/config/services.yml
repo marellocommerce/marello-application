@@ -93,8 +93,18 @@ services:
             - '%marello_pdf.document.invoice.footer_rows%'
 
     marello_pdf.workflow_action.send_email_template_attachment:
-        parent: 'oro_email.workflow.action.send_email_template'
         class: 'Marello\Bundle\PdfBundle\Workflow\Action\SendEmailTemplateAttachmentAction'
+        arguments:
+            - '@oro_action.expression.context_accessor'
+            - '@oro_email.mailer.processor'
+            - '@oro_email.email.address.helper'
+            - '@oro_entity.entity_name_resolver'
+            - '@doctrine'
+            - '@validator'
+            - '@oro_email.tools.email_origin_helper'
+            - '@oro_email.email_renderer'
+        calls:
+            - [setLogger, ['@logger']]
         tags:
             - { name: oro_action.action, alias: send_email_template_attachment }
 
