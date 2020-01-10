@@ -72,3 +72,4 @@ marello:
                 sections:
                     additional: "Additional Fields"
                 business_hours.add.label: "Add Business Hours"
+                business_hours_override.add.label: "Add Business Hours Override"

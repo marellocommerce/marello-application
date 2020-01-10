@@ -18,8 +18,8 @@
 }
 
 table {
-  thead tr th.businesshours-line-item-timeperiods,
-  thead tr th.businesshoursoverrides-line-item-timeperiods {
+  thead .businesshours-line-item-timeperiods,
+  thead .businesshoursoverrides-line-item-timeperiods {
     .businesshours-line-item-opentime,
     .businesshours-line-item-closetime,
     .businesshoursoverrides-line-item-opentime,
@@ -33,9 +33,8 @@ table {
     }
   }
 
-  &,
-  tbody tr td.businesshours-line-item-timeperiods,
-  tbody tr td.businesshoursoverrides-line-item-timeperiods {
+  .businesshours-line-item-timeperiods,
+  .businesshoursoverrides-line-item-timeperiods {
     .businesshours-line-item-opentime,
     .businesshours-line-item-closetime,
     .businesshoursoverrides-line-item-opentime,
@@ -50,11 +49,15 @@ table {
       width: 10%;
       text-align: right;
     }
+  }
 
-    .businesshours-line-item-dayofweek,
-    .businesshoursoverrides-line-item-date,
-    .businesshoursoverrides-line-item-openstatus {
-      vertical-align: top;
-    }
+  .businesshours-line-item-dayofweek,
+  .businesshoursoverrides-line-item-date,
+  .businesshoursoverrides-line-item-openstatus {
+    vertical-align: top;
+  }
+
+  .businesshoursoverrides-line-item-remove {
+    vertical-align: bottom;
   }
 }

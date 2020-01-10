@@ -9,6 +9,7 @@
 {% endif %}
 
 {% form_theme form.businessHours 'MarelloServicePointBundle:Form:businessHours.html.twig' %}
+{% form_theme form.businessHoursOverrides 'MarelloServicePointBundle:Form:businessHoursOverrides.html.twig' %}
 
 {% block navButtons %}
     {{ parent() }}
@@ -59,6 +60,10 @@
 
     {% set businessHoursOverrides %}
     <div class="servicepointfacility-businesshours-overrides"
+         data-page-component-module="oroui/js/app/components/view-component"
+         data-page-component-options="{{ {
+             view: 'marelloservicepoint/js/app/views/businesshoursoverrides-items-view'
+         }|json_encode }}"
          data-layout="separate">
         {{ form_widget(form.businessHoursOverrides) }}
         {{ form_errors(form.businessHoursOverrides) }}

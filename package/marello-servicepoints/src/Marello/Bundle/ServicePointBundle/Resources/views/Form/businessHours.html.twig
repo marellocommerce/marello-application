@@ -48,7 +48,7 @@
     {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'businesshours-line-item-timeperiods'}) %}
 <td {{ block('widget_attributes') }}>
     {{ form_widget(form) }}
-    {{ form_widget(form) }}
+    {{ form_errors(form) }}
 </td>
 {% endblock %}
 
@@ -69,7 +69,7 @@
         {% endfor %}
             </div>
         {% if allow_add %}
-            <a class="btn add-list-item" href="#">{{ form.vars.add_label|default('oro.form.collection.add')|trans }}</a>
+            <a class="btn add-list-item" href="#"><i class="fa fa-plus"></i> {{ 'marello.servicepoint.ui.servicepoint_facility.business_hours.add.label'|trans }}</a>
         {% endif %}
         </div>
     {% endspaceless %}
@@ -114,11 +114,11 @@
 {{- form_errors(child) -}}
         {%- endfor -%}
 <div class="businesshours-line-item-actions">
-    <button class="removeRow btn btn-icon btn-square-light"
+    <button class="removeRow btn btn-sm btn-icon"
             aria-label="{{ 'oro.form.collection.remove'|trans }}"
             type="button"
             data-related="{{ name }}">
-        <span class="fa-trash-o" aria-hidden="true"></span>
+        <span class="fa fa-remove" aria-hidden="true"></span>
     </button>
 </div>
     {%- endspaceless -%}
