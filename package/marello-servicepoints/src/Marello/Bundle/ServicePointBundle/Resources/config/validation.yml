@@ -1,0 +1,127 @@
+Marello\Bundle\ServicePointBundle\Entity\ServicePoint:
+    properties:
+        labels:
+            - 'Type': 'Doctrine\Common\Collections\Collection'
+            - 'Count':
+                min: 1
+            - 'Valid':
+                traverse: true
+            - 'All':
+                - 'Type': 'Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue'
+        descriptions:
+            - 'Type': 'Doctrine\Common\Collections\Collection'
+            - 'Valid':
+                traverse: true
+            - 'All':
+                - 'Type': 'Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue'
+        address:
+            - 'Type': 'Marello\Bundle\ServicePointBundle\Entity\ServicePointAddress'
+            - 'NotNull': ~
+            - 'Valid': ~
+        latitude:
+            - 'NotBlank': ~
+            - 'Type': 'numeric'
+            - 'Range':
+                min: -90
+                max: 90
+        longitude:
+            - 'NotBlank': ~
+            - 'Type': 'numeric'
+            - 'Range':
+                min: -180
+                max: 180
+        image:
+            - 'Type': 'Oro\Bundle\AttachmentBundle\Entity\File'
+            - 'Valid': ~
+
+Marello\Bundle\ServicePointBundle\Entity\ServicePointAddress:
+    properties:
+        street:
+            - 'NotBlank': ~
+        city:
+            - 'NotBlank': ~
+        region:
+            - 'Type': 'Oro\Bundle\AddressBundle\Entity\Region'
+        country:
+            - 'NotBlank': ~
+            - 'Type': 'Oro\Bundle\AddressBundle\Entity\Country'
+        organization:
+            - 'Type': 'string'
+
+Marello\Bundle\ServicePointBundle\Entity\ServicePointFacility:
+    properties:
+        servicePoint:
+            - 'NotNull': ~
+            - 'Type': 'Marello\Bundle\ServicePointBundle\Entity\ServicePoint'
+        facility:
+            - 'NotNull': ~
+            - 'Type': 'Marello\Bundle\ServicePointBundle\Entity\Facility'
+        phone:
+            - 'Regex':
+                pattern: '/^[-+\ \.()0-9]+$/'
+        email:
+            - 'Email': ~
+        businessHours:
+            - 'Valid':
+                traverse: true
+            - 'All':
+                - 'Type': 'Marello\Bundle\ServicePointBundle\Entity\BusinessHours'
+
+Marello\Bundle\ServicePointBundle\Entity\Facility:
+    constraints:
+        - 'Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity':
+            fields: ['code']
+    properties:
+        labels:
+            - 'Type': 'Doctrine\Common\Collections\Collection'
+            - 'Count':
+                min: 1
+            - 'Valid':
+                traverse: true
+            - 'All':
+                - 'Type': 'Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue'
+        code:
+            - 'NotBlank': ~
+
+Marello\Bundle\ServicePointBundle\Entity\AbstractTimePeriod:
+    constraints:
+        - 'Marello\Bundle\ServicePointBundle\Constraint\TimeInterval':
+            startField: openTime
+            endField: closeTime
+    properties:
+        openTime:
+            - 'Type': 'DateTime'
+            - 'NotNull': ~
+        closeTime:
+            - 'Type': 'DateTime'
+            - 'NotNull': ~
+
+Marello\Bundle\ServicePointBundle\Entity\BusinessHours:
+    constraints:
+        - 'Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity':
+            fields: ['dayOfWeek', 'servicePointFacility']
+    properties:
+        dayOfWeek:
+            - 'Marello\Bundle\ServicePointBundle\Constraint\DayOfWeek': ~
+            - 'NotNull': ~
+        timePeriods:
+            - 'All':
+                - 'Type': 'Marello\Bundle\ServicePointBundle\Entity\TimePeriod'
+            - 'Marello\Bundle\ServicePointBundle\Constraint\NoOverlappingBusinessHours': ~
+
+Marello\Bundle\ServicePointBundle\Entity\BusinessHoursOverride:
+    constraints:
+        - 'Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity':
+            fields: ['date', 'servicePointFacility']
+    properties:
+        date:
+            - 'Date': ~
+            - 'NotNull': ~
+        openStatus:
+            - 'NotBlank': ~
+            - 'Choice':
+                choices: ['open', 'closed']
+        timePeriods:
+            - 'All':
+                - 'Type': 'Marello\Bundle\ServicePointBundle\Entity\TimePeriod'
+            - 'Marello\Bundle\ServicePointBundle\Constraint\NoOverlappingBusinessHours': ~
