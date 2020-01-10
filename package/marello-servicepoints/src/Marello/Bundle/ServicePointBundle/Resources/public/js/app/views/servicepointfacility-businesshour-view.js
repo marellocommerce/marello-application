@@ -1,7 +1,7 @@
 define(function(require) {
     'use strict';
 
-    var ServicePointFacilityBusinessHourView,
+    const
         $ = require('jquery'),
         _ = require('underscore'),
         BaseView = require('oroui/js/app/views/base/view');
@@ -11,13 +11,11 @@ define(function(require) {
      * @extends oroui.app.views.base.View
      * @class marelloservicepoint.app.views.ServicePointFacilityBusinessHourView
      */
-    ServicePointFacilityBusinessHourView = BaseView.extend({
+    const ServicePointFacilityBusinessHourView = BaseView.extend({
         /**
          * @inheritDoc
          */
         initialize: function(options) {
-            console.log('initialize');
-
             this.options = $.extend(true, {}, this.options, options || {});
             this.delegate('click', '.businesshours-remove-line-item', this.removeRow);
 

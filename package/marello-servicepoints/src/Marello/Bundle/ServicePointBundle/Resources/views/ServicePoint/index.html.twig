@@ -5,7 +5,7 @@
 {% set gridName  = 'marello-servicepoint-grid' %}
 
 {% block navButtons %}
-    {% if resource_granted('marello_servicepoint_servicepoint_create') %}
+    {% if is_granted('marello_servicepoint_servicepoint_create') %}
         {{ UI.addButton({
             'path': path('marello_servicepoint_servicepoint_create'),
             'entity_label': 'marello.servicepoint.entity_label'|trans

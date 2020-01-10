@@ -1,5 +1,6 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
 {% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
 {% if form.vars.value.id %}
     {% set formAction = path('marello_servicepoint_facility_update', { 'id': form.vars.value.id }) %}
@@ -12,9 +13,9 @@
     {{ parent() }}
 
     {{ UI.cancelButton(path('marello_servicepoint_facility_index')) }}
-    {% if resource_granted('marello_servicepiont_facility_update') %}
+    {% if is_granted('marello_servicepiont_facility_update') %}
         {% set html = '' %}
-        {% if resource_granted('marello_servicepoint_facility_view') %}
+        {% if is_granted('marello_servicepoint_facility_view') %}
             {% set html = UI.saveAndCloseButton({
                 'route': 'marello_servicepoint_facility_index'
             }) %}

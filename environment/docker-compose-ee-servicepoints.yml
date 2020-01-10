@@ -73,6 +73,7 @@ services:
             - ../applications/marello-application-ee-servicepoints:/var/www:cached
             - ../package/marello:/package/marello
             - ../package/marello-servicepoints:/package/marello-servicepoints
+            - ../package/marello-subscriptions:/package/marello-subscriptions
             - ../package/marello-enterprise:/package/marello-enterprise
         environment:
             - VIRTUAL_HOST=marello-ee.docker

@@ -20,7 +20,7 @@ services:
         tags:
             - { name: form.type }
 
-    marello_serviceepoint.form_type.business_hours_collection:
+    marello_servicepoint.form_type.business_hours_collection:
         class: 'Marello\Bundle\ServicePointBundle\Form\Type\BusinessHoursCollectionType'
         arguments:
             - '@marello_servicepoint.provider.day_of_week'
@@ -35,6 +35,7 @@ services:
 
     marello_servicepoint.form_handler.facility:
         class: 'Marello\Bundle\ServicePointBundle\Form\Handler\FacilityFormHandler'
+        public: true
         arguments:
             - '@marello_servicepoint.form.facility'
             - '@request_stack'
@@ -48,6 +49,7 @@ services:
 
     marello_servicepoint.form_handler.servicepoint:
         class: 'Marello\Bundle\ServicePointBundle\Form\Handler\ServicePointFormHandler'
+        public: true
         arguments:
             - '@marello_servicepoint.form.servicepoint'
             - '@request_stack'
@@ -61,6 +63,7 @@ services:
 
     marello_servicepoint.form_handler.servicepoint_facility:
         class: 'Marello\Bundle\ServicePointBundle\Form\Handler\ServicePointFacilityFormHandler'
+        public: true
         arguments:
             - '@marello_servicepoint.form.servicepoint_facility'
             - '@request_stack'

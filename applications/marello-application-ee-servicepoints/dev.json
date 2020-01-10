@@ -42,12 +42,13 @@
     },
     "require": {
         "php": ">=7.1",
-        "oro/platform-enterprise": "~3.1.1",
-        "oro/platform-serialised-fields": "~3.1.1",
-        "oro/calendar-bundle": "~3.1.1",
-        "oro/health-check-bundle": "~3.1.1",
+        "oro/platform-enterprise": "4.1.*",
+        "oro/platform-serialised-fields": "4.1.*",
+        "oro/calendar-bundle": "4.1.*",
+        "oro/health-check-bundle": "4.1.*",
         "marellocommerce/marello": "self.version",
         "marellocommerce/marello-enterprise": "self.version",
+        "marellocommerce/marello-subscriptions": "self.version",
         "marellocommerce/marello-servicepoints": "self.version"
     },
     "require-dev": {

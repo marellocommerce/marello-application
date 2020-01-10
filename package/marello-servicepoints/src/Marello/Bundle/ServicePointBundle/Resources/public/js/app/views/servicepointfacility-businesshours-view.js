@@ -1,7 +1,7 @@
 define(function(require) {
     'use strict';
 
-    var ServicePointFacilityBusinessHoursView,
+    const
         $ = require('jquery'),
         BaseView = require('oroui/js/app/views/base/view');
 
@@ -10,7 +10,7 @@ define(function(require) {
      * @extends oroui.app.views.base.View
      * @class marelloservicepoint.app.views.ServicePointFacilityBusinessHoursView
      */
-    ServicePointFacilityBusinessHoursView = BaseView.extend({
+    const ServicePointFacilityBusinessHoursView = BaseView.extend({
         /**
          * @property {Object}
          */
@@ -45,10 +45,10 @@ define(function(require) {
          * @returns {{nextIndex: *, nextItemHtml: *}}
          */
         getCollectionInfo: function($listContainer) {
-            var index = $listContainer.data('last-index') || $listContainer.children().length;
+            let index = $listContainer.data('last-index') || $listContainer.children().length;
 
-            var prototypeName = $listContainer.attr('data-prototype-name') || '__name__';
-            var html = $listContainer.attr('data-prototype').replace(new RegExp(prototypeName, 'g'), index);
+            let prototypeName = $listContainer.attr('data-prototype-name') || '__name__';
+            let html = $listContainer.attr('data-prototype').replace(new RegExp(prototypeName, 'g'), index);
             return {
                 nextIndex: index,
                 nextItemHtml: html
@@ -59,10 +59,10 @@ define(function(require) {
          * handle add button
          */
         addRow: function() {
-            var _self = this.$el.find('.marello-add-line-item');
-            var containerSelector = $(_self).data('container') || '.collection-fields-list';
-            var $listContainer = this.$el.find('.row-oro').find(containerSelector).first();
-            var collectionInfo = this.getCollectionInfo($listContainer);
+            let _self = this.$el.find('.marello-add-line-item');
+            let containerSelector = $(_self).data('container') || '.collection-fields-list';
+            let $listContainer = this.$el.find('.row-oro').find(containerSelector).first();
+            let collectionInfo = this.getCollectionInfo($listContainer);
             $listContainer.append(collectionInfo.nextItemHtml)
                 .trigger('content:changed')
                 .data('last-index', collectionInfo.nextIndex + 1);

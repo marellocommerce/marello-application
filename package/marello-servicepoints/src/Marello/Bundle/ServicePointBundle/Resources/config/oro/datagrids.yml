@@ -33,7 +33,7 @@ datagrids:
                 code:
                     data_name: code
             default:
-                label: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+                label: 'ASC'
         properties:
             id: ~
             update_link:
@@ -80,7 +80,7 @@ datagrids:
                 label:
                     data_name: label_localized
             default:
-                label: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+                label: 'ASC'
         properties:
             id: ~
             update_link:
@@ -145,7 +145,7 @@ datagrids:
                 label:
                     data_name: facility_label_localized
             default:
-                label: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+                label: 'ASC'
         properties:
             id: ~
             view_link:
@@ -227,7 +227,7 @@ datagrids:
                 day_of_week:
                     data_name: dayOfWeek
             default:
-                day_of_week: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+                day_of_week: 'ASC'
 
         properties:
             id: ~
@@ -293,7 +293,7 @@ datagrids:
 #                open_status:
 #                    data_name: open_status
             default:
-                date: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+                date: 'DESC'
 
         properties:
             id: ~

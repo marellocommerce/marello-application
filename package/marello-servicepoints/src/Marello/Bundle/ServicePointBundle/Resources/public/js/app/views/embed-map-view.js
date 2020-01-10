@@ -1,17 +1,16 @@
 define(function(require) {
     'use strict';
 
-    var EmbedMapView;
-    var _ = require('underscore');
-    var Backbone = require('backbone');
-    var __ = require('orotranslation/js/translator');
-    var localeSettings = require('orolocale/js/locale-settings');
-    var LoadingMaskView = require('oroui/js/app/views/loading-mask-view');
-    var BaseView = require('oroui/js/app/views/base/view');
-    var messenger = require('oroui/js/messenger');
-    var $ = Backbone.$;
+    const _ = require('underscore');
+    const Backbone = require('backbone');
+    const __ = require('orotranslation/js/translator');
+    const localeSettings = require('orolocale/js/locale-settings');
+    const LoadingMaskView = require('oroui/js/app/views/loading-mask-view');
+    const BaseView = require('oroui/js/app/views/base/view');
+    const messenger = require('oroui/js/messenger');
+    const $ = Backbone.$;
 
-    EmbedMapView = BaseView.extend({
+    const EmbedMapView = BaseView.extend({
         baseUrl: "https://www.google.com/maps/embed/v1/",
 
         apiKey: null,
@@ -78,8 +77,8 @@ define(function(require) {
         },
 
         _buildUrl: function(address, params) {
-            var url = new URL(this.options.mode, this.baseUrl);
-            var query = new URLSearchParams();
+            let url = new URL(this.options.mode, this.baseUrl);
+            let query = new URLSearchParams();
             query.set('q', this.options.address);
             query.set('key', this.options.apiKey);
 

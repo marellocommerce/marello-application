@@ -1,0 +1,6 @@
+dynamic-imports:
+    marelloservicepoint:
+        - marelloservicepoint/js/app/views/embed-map-view
+        - marelloservicepoint/js/app/views/image-popup-view
+        - marelloservicepoint/js/app/views/servicepointfacility-businesshour-view
+        - marelloservicepoint/js/app/views/servicepointfacility-businesshours-view

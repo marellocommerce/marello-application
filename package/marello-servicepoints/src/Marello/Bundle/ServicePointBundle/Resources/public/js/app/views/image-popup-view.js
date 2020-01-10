@@ -1,9 +1,7 @@
 define(['jquery', 'underscore', 'oroui/js/app/views/base/view', 'lightgallery', 'lightgallery.print'], function($, _, BaseView) {
     'use strict';
 
-    var ImagePopupView;
-
-    ImagePopupView = BaseView.extend({
+    const ImagePopupView = BaseView.extend({
         options: {
         },
 
