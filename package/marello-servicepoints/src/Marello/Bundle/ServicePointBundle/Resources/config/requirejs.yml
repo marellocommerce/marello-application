@@ -2,5 +2,3 @@ config:
     paths:
         'marelloservicepoint/js/app/views/embed-map-view': 'marelloservicepoint/js/app/views/embed-map-view.js'
         'marelloservicepoint/js/app/views/image-popup-view': 'marelloservicepoint/js/app/views/image-popup-view.js'
-        'marelloservicepoint/js/app/views/servicepointfacility-businesshour-view': 'marelloservicepoint/js/app/views/servicepointfacility-businesshour-view.js'
-        'marelloservicepoint/js/app/views/servicepointfacility-businesshours-view': 'marelloservicepoint/js/app/views/servicepointfacility-businesshours-view.js'

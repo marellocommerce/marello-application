@@ -55,7 +55,11 @@ class BusinessHoursCollectionEventListener implements EventSubscriberInterface
         $dowCount = count($this->dayOfWeekProvider->getDaysOfWeek());
 
         for ($i = $form->count(); $i < $dowCount; $i++) {
-            $form->add($i, BusinessHoursType::class, []);
+            $form->add($i, BusinessHoursType::class, [
+                'auto_initialize' => false,
+                'block_name' => 'entry',
+                'property_path' => sprintf('[%d]', $i),
+            ]);
         }
     }
 
@@ -75,8 +79,6 @@ class BusinessHoursCollectionEventListener implements EventSubscriberInterface
                 $modelValue->add($businessHours);
             }
         }
-
-//        dump($modelValue);
 
         return $this->getSortedCollection($modelValue);
     }

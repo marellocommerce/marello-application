@@ -1,3 +1,12 @@
+/* @theme: admin.oro; */
+
+// Should be refactored when style builder will updated
+@import "oroui/css/scss/bootstrap/functions";
+@import "oroui/css/scss/bootstrap/variables";
+@import "oroui/css/scss/bootstrap/mixins";
+@import "oroui/css/scss/variables";
+@import "oroui/css/scss/oro/variables/tables-variables";
+
 .servicepoint-thumbnail {
   background-position-x: 50%;
   background-position-y: 50%;
@@ -6,4 +15,46 @@
 
   height: 227px;
   display: block;
+}
+
+table {
+  thead tr th.businesshours-line-item-timeperiods,
+  thead tr th.businesshoursoverrides-line-item-timeperiods {
+    .businesshours-line-item-opentime,
+    .businesshours-line-item-closetime,
+    .businesshoursoverrides-line-item-opentime,
+    .businesshoursoverrides-line-item-closetime {
+      > span {
+        display: $table-thead-th-a-display;
+        line-height: $table-thead-th-a-line-height;
+        padding: $table-thead-th-a-inner-offset;
+        text-transform: $table-thead-th-a-text-transform;
+      }
+    }
+  }
+
+  &,
+  tbody tr td.businesshours-line-item-timeperiods,
+  tbody tr td.businesshoursoverrides-line-item-timeperiods {
+    .businesshours-line-item-opentime,
+    .businesshours-line-item-closetime,
+    .businesshoursoverrides-line-item-opentime,
+    .businesshoursoverrides-line-item-closetime {
+      display: inline-block;
+      width: 45%;
+    }
+
+    .businesshours-line-item-actions,
+    .businesshoursoverrides-line-item-actions {
+      display: inline-block;
+      width: 10%;
+      text-align: right;
+    }
+
+    .businesshours-line-item-dayofweek,
+    .businesshoursoverrides-line-item-date,
+    .businesshoursoverrides-line-item-openstatus {
+      vertical-align: top;
+    }
+  }
 }

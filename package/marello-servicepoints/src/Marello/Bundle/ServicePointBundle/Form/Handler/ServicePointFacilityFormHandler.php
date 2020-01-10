@@ -79,6 +79,8 @@ class ServicePointFacilityFormHandler
      * @param Collection $originalTimePeriods
      * @param Collection $originalBusinessHoursOverrides
      * @param Collection $originalTimePeriodsOverrides
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     protected function onSuccess(
         ServicePointFacility $entity,
@@ -97,6 +99,12 @@ class ServicePointFacilityFormHandler
         $this->manager->flush();
     }
 
+    /**
+     * @param ServicePointFacility $entity
+     * @param Collection $originalBusinessHours
+     * @param Collection $originalTimePeriods
+     * @throws \Doctrine\ORM\ORMException
+     */
     protected function pruneBusinessHours(
         ServicePointFacility $entity,
         Collection $originalBusinessHours,
@@ -105,6 +113,12 @@ class ServicePointFacilityFormHandler
         $this->doPruneBusinessHours($entity->getBusinessHours(), $originalBusinessHours, $originalTimePeriods);
     }
 
+    /**
+     * @param ServicePointFacility $entity
+     * @param Collection $originalBusinessHoursOverrides
+     * @param Collection $originalTimePeriodsOverrides
+     * @throws \Doctrine\ORM\ORMException
+     */
     protected function pruneBusinessHoursOverrides(
         ServicePointFacility $entity,
         Collection $originalBusinessHoursOverrides,
@@ -117,16 +131,30 @@ class ServicePointFacilityFormHandler
         );
     }
 
+    /**
+     * @param ServicePointFacility $entity
+     * @throws \Doctrine\ORM\ORMException
+     */
     protected function persistBusinessHours(ServicePointFacility $entity)
     {
         $this->doPersistBusinessHours($entity, $entity->getBusinessHours());
     }
 
+    /**
+     * @param ServicePointFacility $entity
+     * @throws \Doctrine\ORM\ORMException
+     */
     protected function persistBusinessHoursOverrides(ServicePointFacility $entity)
     {
         $this->doPersistBusinessHours($entity, $entity->getBusinessHoursOverrides());
     }
 
+    /**
+     * @param Collection $newBusinessHours
+     * @param Collection $originalBusinessHours
+     * @param Collection $originalTimePeriods
+     * @throws \Doctrine\ORM\ORMException
+     */
     protected function doPruneBusinessHours(
         Collection $newBusinessHours,
         Collection $originalBusinessHours,
@@ -156,6 +184,11 @@ class ServicePointFacilityFormHandler
         }
     }
 
+    /**
+     * @param ServicePointFacility $entity
+     * @param Collection $businessHours
+     * @throws \Doctrine\ORM\ORMException
+     */
     protected function doPersistBusinessHours(ServicePointFacility $entity, Collection $businessHours)
     {
         foreach ($businessHours as $businessHour) {
@@ -169,6 +202,10 @@ class ServicePointFacilityFormHandler
         }
     }
 
+    /**
+     * @param Collection $businessHours
+     * @return ArrayCollection
+     */
     protected function cloneTimePeriods(Collection $businessHours)
     {
         $timePeriods = new ArrayCollection();
