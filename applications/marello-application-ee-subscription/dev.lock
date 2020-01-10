@@ -4854,6 +4854,42 @@
             "homepage": "https://github.com/marellocommerce/marello-subscriptions.git"
         },
         {
+            "name": "marellocommerce/marello-servicepoints",
+            "version": "3.0.x-dev",
+            "dist": {
+                "type": "path",
+                "url": "../../package/marello-servicepoints",
+                "reference": "b1902a517210782e869a1b47587ddc1dff99609c"
+            },
+            "require": {
+                "marellocommerce/marello-enterprise": "self.version",
+                "oro/platform-enterprise": "4.1.*",
+                "php": ">=7.1.26"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "": "src/"
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "authors": [
+                {
+                    "name": "Marello B.V.",
+                    "homepage": "https://www.marello.com"
+                }
+            ],
+            "description": "Marello Unified Commerce Management Servicepoints extension",
+            "homepage": "https://github.com/marellocommerce/marello-servicepoints.git"
+        },
+        {
             "name": "michelf/php-markdown",
             "version": "1.9.0",
             "source": {
