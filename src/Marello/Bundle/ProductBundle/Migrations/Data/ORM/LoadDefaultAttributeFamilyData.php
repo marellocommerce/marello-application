@@ -5,15 +5,13 @@ namespace Marello\Bundle\ProductBundle\Migrations\Data\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-
-use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Oro\Bundle\UserBundle\Migrations\Data\ORM\LoadAdminUserData;
-use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeGroup;
-use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
-use Oro\Bundle\OrganizationBundle\Migrations\Data\ORM\LoadOrganizationAndBusinessUnitData;
-
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
+use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeGroup;
+use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\OrganizationBundle\Migrations\Data\ORM\LoadOrganizationAndBusinessUnitData;
+use Oro\Bundle\UserBundle\Migrations\Data\ORM\LoadAdminUserData;
 
 class LoadDefaultAttributeFamilyData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -51,16 +49,14 @@ class LoadDefaultAttributeFamilyData extends AbstractFixture implements Dependen
      */
     public function load(ObjectManager $manager)
     {
-        /** @var User $user */
-        $user = $manager
-            ->getRepository(User::class)->findOneBy(['username' => 'admin']);
         $organization = $this->getOrganization($manager);
+        $user = $organization->getUsers()->first();
         $attributeFamily = new AttributeFamily();
         $attributeFamily->setCode(self::DEFAULT_FAMILY_CODE);
         $attributeFamily->setEntityClass(Product::class);
-        $attributeFamily->setDefaultLabel('Default');
-//        $attributeFamily->setOrganization($organization);
-        $attributeFamily->setOwner($organization);
+        $attributeFamily->addLabel((new LocalizedFallbackValue())->setString('Default'));
+        $attributeFamily->setOrganization($organization);
+        $attributeFamily->setOwner($user);
 
         $this->setReference(self::DEFAULT_FAMILY_CODE, $attributeFamily);
 
@@ -96,7 +92,7 @@ class LoadDefaultAttributeFamilyData extends AbstractFixture implements Dependen
     ) {
         foreach ($groupsData as $groupData) {
             $attributeGroup = new AttributeGroup();
-            $attributeGroup->setDefaultLabel($groupData['groupLabel']);
+            $attributeGroup->addLabel(((new LocalizedFallbackValue())->setString($groupData['groupLabel'])));
             $attributeGroup->setIsVisible($groupData['groupVisibility']);
             $attributeGroup->setCode($groupData['groupCode']);
             $attributeFamily->addAttributeGroup($attributeGroup);

@@ -7,6 +7,7 @@ datagrids:
                     - i.id
                     - p.denormalizedDefaultName as productName
                     - p.sku as productSku
+                    - i.enableBatchInventory as enableBatchInventory
                     - COALESCE(SUM(il.inventory), 0) AS inventoryQty
                     - COALESCE(SUM(il.allocatedInventory), 0) AS allocatedInventoryQty
                     - COALESCE(SUM(il.inventory - il.allocatedInventory), 0) AS virtualInventoryQty
@@ -28,6 +29,10 @@ datagrids:
                 label:              marello.product.entity_label
                 frontend_type:      string
                 data_name:          productName
+            enableBatchInventory:
+                label:              marello.inventory.inventoryitem.enable_batch_inventory.label
+                frontend_type:      boolean
+                data_name:          enableBatchInventory
             inventoryQty:
                 label:              marello.inventory.inventorylevel.inventory.label
                 frontend_type:      number
@@ -44,6 +49,7 @@ datagrids:
             columns:
                 productSku:             { data_name: p.sku }
                 productName:            { data_name: p.denormalizedDefaultName }
+                enableBatchInventory:   { data_name: enableBatchInventory }
                 inventoryQty:           { data_name: inventoryQty }
                 allocatedInventoryQty:  { data_name: allocatedInventoryQty }
                 virtualInventoryQty:    { data_name: virtualInventoryQty }
@@ -57,6 +63,9 @@ datagrids:
                 productName:
                     type:             string
                     data_name:        p.denormalizedDefaultName
+                enableBatchInventory:
+                    type:             boolean
+                    data_name:        enableBatchInventory
                 inventoryQty:
                     type:             number
                     data_name:        inventoryQty
