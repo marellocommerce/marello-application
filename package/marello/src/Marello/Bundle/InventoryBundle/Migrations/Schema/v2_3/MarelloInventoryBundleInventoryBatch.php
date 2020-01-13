@@ -22,7 +22,7 @@ class MarelloInventoryBundleInventoryBatch implements Migration, OrderedMigratio
      */
     public function up(Schema $schema, QueryBag $queries)
     {
-        $this->updateMarelloInventoryItemTable($schema);
+        $this->updateMarelloInventoryItemTable($schema, $queries);
         $this->createMarelloInventoryInventoryBatchTable($schema);
         $this->addMarelloInventoryInventoryBatchForeignKeys($schema);
     }
@@ -33,10 +33,15 @@ class MarelloInventoryBundleInventoryBatch implements Migration, OrderedMigratio
      *
      * @param Schema $schema
      */
-    protected function updateMarelloInventoryItemTable(Schema $schema)
+    protected function updateMarelloInventoryItemTable(Schema $schema, QueryBag $queries)
     {
         $table = $schema->getTable('marello_inventory_item');
         $table->addColumn('enable_batch_inventory', 'boolean', ['notnull' => false, 'default' => false]);
+        $sql = <<<EOF
+UPDATE marello_inventory_item SET enable_batch_inventory = false
+WHERE enable_batch_inventory IS NULL
+EOF;
+        $queries->addPostQuery($sql);
     }
 
     /**

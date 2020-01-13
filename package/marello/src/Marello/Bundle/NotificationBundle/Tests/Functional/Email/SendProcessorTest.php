@@ -74,7 +74,7 @@ class SendProcessorTest extends WebTestCase
         /** @var Order $order */
         $order = $this->getReference('marello_order_0');
 
-        $this->expectException(NoResultException::class);
+        $this->expectException(MarelloNotificationException::class);
 
 
         $this->sendProcessor->sendNotification(
