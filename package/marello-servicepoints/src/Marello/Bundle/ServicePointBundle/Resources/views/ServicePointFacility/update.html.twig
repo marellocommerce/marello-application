@@ -9,6 +9,9 @@
     {% set formAction = path('marello_servicepoint_servicepointfacility_create', {'servicepoint_id': form.vars.value.servicePoint.id }) %}
 {% endif %}
 
+{% form_theme form.businessHours with 'MarelloServicePointBundle:Form:businessHours.html.twig' %}
+{% form_theme form.businessHoursOverrides with 'MarelloServicePointBundle:Form:businessHoursOverrides.html.twig' %}
+
 {% block navButtons %}
     {{ parent() }}
 
@@ -48,6 +51,26 @@
 {% block content_data %}
     {% set id = 'marello-servicepointfacility-update' %}
 
+    {% set businessHours %}
+        <div class="servicepointfacility-businesshours"
+             data-layout="separate">
+            {{ form_widget(form.businessHours) }}
+            {{ form_errors(form.businessHours) }}
+        </div>
+    {% endset %}
+
+    {% set businessHoursOverrides %}
+        <div class="servicepointfacility-businesshours-overrides"
+             data-page-component-module="oroui/js/app/components/view-component"
+             data-page-component-options="{{ {
+                 view: 'marelloservicepoint/js/app/views/businesshoursoverrides-items-view'
+             }|json_encode }}"
+             data-layout="separate">
+            {{ form_widget(form.businessHoursOverrides) }}
+            {{ form_errors(form.businessHoursOverrides) }}
+        </div>
+    {% endset %}
+
     {% set dataBlocks = [{
         'title': 'General'|trans,
         'class': 'active',
@@ -57,8 +80,24 @@
                 form_row(form.facility),
                 form_row(form.phone),
                 form_row(form.email),
-                form_row(form.businessHours),
-                form_row(form.businessHoursOverrides),
+            ]
+        }
+    ]}, {
+        'title': 'marello.servicepoint.servicepoint_facility.business_hours.label'|trans,
+        'class': 'active',
+        'subblocks': [{
+            'title': '',
+            'data': [
+                businessHours,
+            ]
+        }
+    ]}, {
+        'title': 'marello.servicepoint.servicepoint_facility.business_hours_overrides.label'|trans,
+        'class': 'active',
+        'subblocks': [{
+            'title': '',
+            'data': [
+                businessHoursOverrides,
             ]
         }]
     }] %}

@@ -73,13 +73,14 @@ Marello\Bundle\ServicePointBundle\Entity\Facility:
             fields: ['code']
     properties:
         labels:
-            - 'Type': 'Doctrine\Common\Collections\Collection'
-            - 'Count':
-                min: 1
-            - 'Valid':
-                traverse: true
-            - 'All':
-                - 'Type': 'Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue'
+            - Oro\Bundle\PlatformBundle\Validator\Constraints\ValidLoadedItems: ~
+#            - 'Type': 'Doctrine\Common\Collections\Collection'
+#            - 'Count':
+#                min: 1
+#            - 'Valid':
+#                traverse: true
+#            - 'All':
+#                - 'Type': 'Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue'
         code:
             - 'NotBlank': ~
 
