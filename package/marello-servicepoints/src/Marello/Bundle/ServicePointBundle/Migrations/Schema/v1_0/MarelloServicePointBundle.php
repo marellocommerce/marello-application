@@ -62,8 +62,8 @@ class MarelloServicePointBundle implements Migration
         $table = $schema->createTable(self::TABLE_SERVICEPOINT);
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('address_id', 'integer');
-        $table->addColumn('latitude', 'decimal', ['precision' => 10, 'scale' => 7]);
-        $table->addColumn('longitude', 'decimal', ['precision' => 10, 'scale' => 7]);
+        $table->addColumn('latitude', 'decimal', ['precision' => 10, 'scale' => 7, 'notnull' => false]);
+        $table->addColumn('longitude', 'decimal', ['precision' => 10, 'scale' => 7, 'notnull' => false]);
         $table->addColumn('image_id', 'integer', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime');

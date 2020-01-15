@@ -120,7 +120,7 @@ class ServicePoint extends ExtendServicePoint implements DatesAwareInterface
     /**
      * @var float
      *
-     * @ORM\Column(name="latitude", type="decimal", precision=10, scale=7)
+     * @ORM\Column(name="latitude", type="decimal", precision=10, scale=7, nullable=true)
      * @ConfigField(defaultValues={
      *     "entity"={
      *         "label" = "marello.servicepoint.latitude.label"
@@ -132,7 +132,7 @@ class ServicePoint extends ExtendServicePoint implements DatesAwareInterface
     /**
      * @var float
      *
-     * @ORM\Column(name="longitude", type="decimal", precision=10, scale=7)
+     * @ORM\Column(name="longitude", type="decimal", precision=10, scale=7, nullable=true)
      * @ConfigField(defaultValues={
      *     "entity"={
      *         "label" = "marello.servicepoint.longitude.label"
