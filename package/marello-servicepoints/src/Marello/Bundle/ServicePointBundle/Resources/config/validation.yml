@@ -19,13 +19,11 @@ Marello\Bundle\ServicePointBundle\Entity\ServicePoint:
             - 'NotNull': ~
             - 'Valid': ~
         latitude:
-            - 'NotBlank': ~
             - 'Type': 'numeric'
             - 'Range':
                 min: -90
                 max: 90
         longitude:
-            - 'NotBlank': ~
             - 'Type': 'numeric'
             - 'Range':
                 min: -180

@@ -32,6 +32,16 @@ class BusinessHoursOverrideType extends AbstractType
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
+    {
+        $x = parent::getBlockPrefix();
+        var_dump($x);
+        return $x;
+    }
+
     public function configureOptions(OptionsResolver $resolver)
     {
         return $resolver->setDefaults([

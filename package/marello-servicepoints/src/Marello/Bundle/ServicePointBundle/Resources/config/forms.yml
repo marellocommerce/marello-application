@@ -27,6 +27,11 @@ services:
         tags:
             - { name: form.type }
 
+    marello_servicepoint.form_type.business_hours_override_collection:
+        class: 'Marello\Bundle\ServicePointBundle\Form\Type\BusinessHoursOverrideCollectionType'
+        tags:
+            - { name: form.type }
+
     marello_servicepoint.form.facility:
         class: 'Symfony\Component\Form\FormInterface'
         factory: ['@form.factory', 'create']

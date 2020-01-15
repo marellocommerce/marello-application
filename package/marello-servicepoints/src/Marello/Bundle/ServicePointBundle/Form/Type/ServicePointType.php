@@ -21,7 +21,7 @@ class ServicePointType extends AbstractType
             ])
             ->add('descriptions', LocalizedFallbackValueCollectionType::class, [
                 'label' => 'marello.servicepoint.descriptions.label',
-                'required' => true,
+                'required' => false,
             ])
             ->add('address', ServicePointAddressType::class, [
                 'label' => 'marello.servicepoint.address.label',
@@ -29,12 +29,12 @@ class ServicePointType extends AbstractType
             ])
             ->add('latitude', NumberType::class, [
                 'label' => 'marello.servicepoint.latitude.label',
-                'required' => true,
+                'required' => false,
                 'scale' => 6,
             ])
             ->add('longitude', NumberType::class, [
                 'label' => 'marello.servicepoint.longitude.label',
-                'required' => true,
+                'required' => false,
                 'scale' => 6,
             ])
             ->add('image', ImageType::class, [

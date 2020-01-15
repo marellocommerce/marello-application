@@ -9,8 +9,8 @@
     {% set formAction = path('marello_servicepoint_servicepointfacility_create', {'servicepoint_id': form.vars.value.servicePoint.id }) %}
 {% endif %}
 
-{% form_theme form.businessHours with 'MarelloServicePointBundle:Form:businessHours.html.twig' %}
-{% form_theme form.businessHoursOverrides with 'MarelloServicePointBundle:Form:businessHoursOverrides.html.twig' %}
+{% form_theme form.businessHours 'MarelloServicePointBundle:Form:businessHours.html.twig' %}
+{% form_theme form.businessHoursOverrides 'MarelloServicePointBundle:Form:businessHoursOverrides.html.twig' %}
 
 {% block navButtons %}
     {{ parent() }}
@@ -52,23 +52,24 @@
     {% set id = 'marello-servicepointfacility-update' %}
 
     {% set businessHours %}
-        <div class="servicepointfacility-businesshours"
-             data-layout="separate">
-            {{ form_widget(form.businessHours) }}
-            {{ form_errors(form.businessHours) }}
-        </div>
+    <div class="servicepointfacility-businesshours"
+         data-layout="separate">
+        {{ form_widget(form.businessHours) }}
+        {{ form_errors(form.businessHours) }}
+    </div>
     {% endset %}
 
     {% set businessHoursOverrides %}
-        <div class="servicepointfacility-businesshours-overrides"
-             data-page-component-module="oroui/js/app/components/view-component"
-             data-page-component-options="{{ {
-                 view: 'marelloservicepoint/js/app/views/businesshoursoverrides-items-view'
-             }|json_encode }}"
-             data-layout="separate">
-            {{ form_widget(form.businessHoursOverrides) }}
-            {{ form_errors(form.businessHoursOverrides) }}
-        </div>
+    <div class="servicepointfacility-businesshours-overrides"
+         data-page-component-module="oroui/js/app/components/view-component"
+         data-page-component-options="{{ {
+             view: 'marellolayout/js/app/views/abstract-items-view',
+             options: {}
+         }|json_encode }}"
+         data-layout="separate">
+        {{ form_widget(form.businessHoursOverrides) }}
+        {{ form_errors(form.businessHoursOverrides) }}
+    </div>
     {% endset %}
 
     {% set dataBlocks = [{

@@ -2,27 +2,27 @@
     {% spaceless %}
         {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'marello-item-collection grid-container' }) %}
         {% set id = id ~ '_collection' %}
-<div class="row-oro">
-    <div {{ block('widget_container_attributes') }}>
-        <table class="grid table-hover table table-bordered table-condensed">
-            <thead>
-                <tr>
-                    <th class="businesshours-line-item-dayofweek"><span>{{ 'marello.servicepoint.businesshours.day_of_week.label'|trans }}</span></th>
-                    <th class="businesshours-line-item-timeperiods">
-                        <div class="businesshours-line-item-opentime"><span>{{ 'marello.servicepoint.timeperiod.open_time.label'|trans }}</span></div>
-                        <div class="businesshours-line-item-closetime"><span>{{ 'marello.servicepoint.timeperiod.close_time.label'|trans }}</span></div>
-                        <div class="businesshours-line-item-actions"><span>&nbsp;</span></div>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-        {% for child in form.children %}
-                {{ form_row(child) }}
-        {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
+        <div class="row-oro">
+            <div {{ block('widget_container_attributes') }}>
+                <table class="grid table-hover table table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th class="businesshours-line-item-dayofweek"><span>{{ 'marello.servicepoint.businesshours.day_of_week.label'|trans }}</span></th>
+                            <th class="businesshours-line-item-timeperiods">
+                                <div class="businesshours-line-item-opentime"><span>{{ 'marello.servicepoint.timeperiod.open_time.label'|trans }}</span></div>
+                                <div class="businesshours-line-item-closetime"><span>{{ 'marello.servicepoint.timeperiod.close_time.label'|trans }}</span></div>
+                                <div class="businesshours-line-item-actions"><span>&nbsp;</span></div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for child in form.children %}
+                            {{ form_row(child) }}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     {% endspaceless %}
 {% endblock %}
 
@@ -64,9 +64,9 @@
             {% set prototype_name = form.vars.prototype_name %}
             <div {{ block('widget_container_attributes') }} data-last-index="{{ form.children|length }}" data-row-count-add="{{ form.vars.row_count_add }}" data-prototype-name="{{ prototype_name }}"{% if prototype_html is defined %} data-prototype="{{ prototype_html|escape }}"{% endif %}>
                 <input type="hidden" name="validate_{{ full_name }}" data-collection-name="{{ full_name }}" data-name="collection-validation" disabled data-validate-element>
-        {% for child in form.children %}
-                {{ oro_collection_item_prototype(child) }}
-        {% endfor %}
+                {% for child in form.children %}
+                    {{ oro_collection_item_prototype(child) }}
+                {% endfor %}
             </div>
         {% if allow_add %}
             <a class="btn add-list-item" href="#"><i class="fa fa-plus"></i> {{ 'marello.servicepoint.ui.servicepoint_facility.business_hours.add.label'|trans }}</a>
@@ -110,8 +110,8 @@
 {% block _service_point_facility_businessHours_entry_timePeriods_entry_widget %}
     {%- spaceless -%}
         {%- for child in form.children -%}
-{{- form_widget(child) -}}
-{{- form_errors(child) -}}
+            {{- form_widget(child) -}}
+            {{- form_errors(child) -}}
         {%- endfor -%}
 <div class="businesshours-line-item-actions">
     <button class="removeRow btn btn-sm btn-icon"
@@ -126,12 +126,12 @@
 
 {% block _service_point_facility_businessHours_entry_timePeriods_entry_openTime_widget %}
     {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'businesshours-line-item-opentime'}) %}
-{{ form_widget(form, {'attr': attr}) }}
-{{ form_errors(form, {'attr': attr}) }}
+    {{ form_widget(form, {'attr': attr}) }}
+    {{ form_errors(form, {'attr': attr}) }}
 {% endblock %}
 
 {% block _service_point_facility_businessHours_entry_timePeriods_entry_closeTime_widget %}
     {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'businesshours-line-item-closetime'}) %}
-{{ form_widget(form, {'attr': attr}) }}
-{{ form_errors(form, {'attr': attr}) }}
+    {{ form_widget(form, {'attr': attr}) }}
+    {{ form_errors(form, {'attr': attr}) }}
 {% endblock %}

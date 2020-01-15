@@ -17,7 +17,8 @@
         {% set html = '' %}
         {% if is_granted('marello_servicepoint_servicepoint_view') %}
             {% set html = UI.saveAndCloseButton({
-                'route': 'marello_servicepoint_servicepoint_index'
+                'route': 'marello_servicepoint_servicepoint_view',
+                'params': {'id': '$id'}
             }) %}
         {% endif %}
         {% set html = html ~ UI.saveAndStayButton({

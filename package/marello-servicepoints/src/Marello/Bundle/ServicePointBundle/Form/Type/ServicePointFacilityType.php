@@ -28,9 +28,8 @@ class ServicePointFacilityType extends AbstractType
             ->add('businessHours', BusinessHoursCollectionType::class, [
                 'label' => 'marello.servicepoint.servicepoint_facility.business_hours.label',
             ])
-            ->add('businessHoursOverrides', CollectionType::class, [
-                'label' => 'marello.servicepoint.servicepoint_facility.business_hours_overrides.label',
-                'entry_type' => BusinessHoursOverrideType::class,
+            ->add('businessHoursOverrides', BusinessHoursOverrideCollectionType::class, [
+                'label' => 'marello.servicepoint.servicepoint_facility.business_hours_overrides.label'
             ])
         ;
     }

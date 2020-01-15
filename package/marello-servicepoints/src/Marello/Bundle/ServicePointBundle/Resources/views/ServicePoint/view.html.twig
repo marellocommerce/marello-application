@@ -61,14 +61,13 @@
             </div>
         </div>
     {% endset %}
-
     {% set imageData %}
         {% if entity.image is not empty %}
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
                     <div class="thumbnail">
-                        <a href="{{ file_url(entity, 'image', entity.image) }}" data-gallery="servicepoint-view-{{ entity.id }}" class="no-hash" title="{{ entity.labels|localized_value }}">
+                        <a href="{{ filtered_image_url(entity.image, 'servicepoint_view') }}" data-gallery="servicepoint-view-{{ entity.id }}" class="no-hash" title="{{ entity.labels|localized_value }}">
                             <span class="thumbnail servicepoint-thumbnail" style="background-image: url('{{ filtered_image_url(entity.image, 'servicepoint_view') }}')"></span>
                         </a>
                     </div>
