@@ -33,15 +33,9 @@ class BusinessHoursOverrideType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+     * @param OptionsResolver $resolver
+     * @return $this
      */
-    public function getBlockPrefix()
-    {
-        $x = parent::getBlockPrefix();
-        var_dump($x);
-        return $x;
-    }
-
     public function configureOptions(OptionsResolver $resolver)
     {
         return $resolver->setDefaults([

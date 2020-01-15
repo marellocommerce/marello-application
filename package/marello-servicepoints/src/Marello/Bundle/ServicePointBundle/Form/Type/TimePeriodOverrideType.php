@@ -10,15 +10,4 @@ class TimePeriodOverrideType extends AbstractTimePeriodType
     {
         return TimePeriodOverride::class;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        $x = parent::getBlockPrefix();
-        var_dump($x);
-        return $x;
-    }
-
 }

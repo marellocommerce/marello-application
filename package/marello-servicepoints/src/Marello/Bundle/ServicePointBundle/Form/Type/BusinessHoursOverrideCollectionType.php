@@ -21,15 +21,8 @@ class BusinessHoursOverrideCollectionType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+     * @return mixed
      */
-    public function getBlockPrefix()
-    {
-        $x = parent::getBlockPrefix();
-        var_dump($x);
-        return $x;
-    }
-
     public function getParent()
     {
         return CollectionType::class;
