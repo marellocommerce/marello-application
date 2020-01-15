@@ -6,19 +6,19 @@ use Oro\Bundle\FormBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class BusinessHoursOverrideCollectionType extends AbstractType
+class TimePeriodOverrideCollectionType extends AbstractType
 {
-    const BLOCK_PREFIX = 'marello_servicepoint_business_hours_override_collection';
+    const BLOCK_PREFIX = 'marello_servicepoint_business_hours_override_time_period_override_collection';
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'entry_type'           => BusinessHoursOverrideType::class,
+            'entry_type'           => TimePeriodOverrideType::class,
             'show_form_when_empty' => true,
             'allow_add'            => true,
-            'prototype_name'       => '__namebusinessoverridecollection__',
+            'prototype_name'       => '__timeperiods_name__',
             'prototype'            => true,
-            'handle_primary'       => true,
+            'handle_primary'       => true
         ]);
     }
 

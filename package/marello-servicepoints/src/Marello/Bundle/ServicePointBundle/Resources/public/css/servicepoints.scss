@@ -41,6 +41,10 @@ table {
     .businesshoursoverrides-line-item-closetime {
       display: inline-block;
       width: 45%;
+
+      .selector {
+        width: 80px;
+      }
     }
 
     .businesshours-line-item-actions,
@@ -59,5 +63,9 @@ table {
 
   .businesshoursoverrides-line-item-remove {
     vertical-align: bottom;
+  }
+
+  td:first-child {
+    height: 48px;
   }
 }

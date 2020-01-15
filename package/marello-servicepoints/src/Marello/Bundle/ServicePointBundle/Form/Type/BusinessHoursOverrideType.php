@@ -3,7 +3,6 @@
 namespace Marello\Bundle\ServicePointBundle\Form\Type;
 
 use Marello\Bundle\ServicePointBundle\Entity\BusinessHoursOverride;
-use Oro\Bundle\FormBundle\Form\Type\CollectionType;
 use Oro\Bundle\FormBundle\Form\Type\OroDateType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -11,6 +10,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BusinessHoursOverrideType extends AbstractType
 {
+    const BLOCK_PREFIX = 'marello_servicepoint_business_hours_override';
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -22,12 +23,8 @@ class BusinessHoursOverrideType extends AbstractType
                 'label' => 'marello.servicepoint.businesshours.open_status.label',
                 'required' => true,
             ])
-            ->add('timePeriods', CollectionType::class, [
-                'label' => 'marello.servicepoint.businesshours.time_periods.label',
-                'entry_type' => TimePeriodOverrideType::class,
-                'prototype_name' => '__timeperiods_name__',
-                'row_count_initial' => 0,
-                'show_form_when_empty' => false,
+            ->add('timePeriods', TimePeriodOverrideCollectionType::class, [
+                'label' => 'marello.servicepoint.businesshours.time_periods.label'
             ])
         ;
     }
@@ -41,5 +38,13 @@ class BusinessHoursOverrideType extends AbstractType
         return $resolver->setDefaults([
             'data_class' => BusinessHoursOverride::class,
         ]);
+    }
+
+    /**
+     * @return string
+     */
+    public function getBlockPrefix()
+    {
+        return self::BLOCK_PREFIX;
     }
 }
