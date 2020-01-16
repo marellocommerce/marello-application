@@ -174,7 +174,8 @@ class InventoryBatch extends ExtendInventoryBatch implements
     protected $totalPrice;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryLevel", inversedBy="inventoryBatches")
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryLevel",
+     *     inversedBy="inventoryBatches", cascade={"persist"})
      * @ORM\JoinColumn(name="inventory_level_id", referencedColumnName="id")
      * @Oro\ConfigField(
      *      defaultValues={
@@ -182,7 +183,7 @@ class InventoryBatch extends ExtendInventoryBatch implements
      *              "label"="marello.inventory.inventorylevel.entity_label"
      *          },
      *          "importexport"={
-     *              "full"=true
+     *              "exclude"=true
      *          },
      *          "dataaudit"={
      *              "auditable"=false

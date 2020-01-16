@@ -3,13 +3,28 @@ parameters:
     marello_inventory.importexport.template_fixture.warehouse.class: Marello\Bundle\InventoryBundle\ImportExport\TemplateFixture\WarehouseFixture
     marello_inventory.inventoryitem.entity.class: Marello\Bundle\InventoryBundle\Entity\InventoryItem
     marello_inventory.inventorylevel.entity.class: Marello\Bundle\InventoryBundle\Entity\InventoryLevel
+    marello_inventory.inventorybatch.entity.class: Marello\Bundle\InventoryBundle\Entity\InventoryBatch
 
 services:
     marello_inventory.importexport.data_converter:
-        class: Marello\Bundle\InventoryBundle\ImportExport\DataConverter\InventoryLevelDataConverter
+        class: Marello\Bundle\InventoryBundle\ImportExport\DataConverter\InventoryLevelImportDataConverter
 
     marello_inventory.importexport.template_fixture.data_converter.inventorylevel:
         parent: oro_importexport.data_converter.template_fixture.configurable
+
+    # Inventory level Reader
+    marello_inventory.importexport.reader.inventory_level:
+        class: Marello\Bundle\InventoryBundle\ImportExport\Reader\InventoryLevelReader
+        arguments:
+            - '@oro_importexport.context_registry'
+            - '@doctrine'
+
+    # Inventory level template Reader
+    marello_inventory.importexport.reader.inventory_level_template:
+        class: Marello\Bundle\InventoryBundle\ImportExport\Reader\InventoryLevelTemplateReader
+        arguments:
+            - '@oro_importexport.context_registry'
+            - '@oro_importexport.template_fixture.manager'
 
     # Strategy
     marello_inventory.importexport.strategy.inventory.add_or_replace:
@@ -31,20 +46,17 @@ services:
     # Export processor
     marello_inventory.importexport.processor.export:
         parent: oro_importexport.processor.export_abstract
-        calls:
-            - [setDataConverter, ['@marello_inventory.importexport.data_converter']]
         tags:
             - { name: oro_importexport.processor, type: export, entity: '%marello_inventory.inventorylevel.entity.class%', alias: marello_inventorlevel_export }
 
     marello_inventory.importexport.processor.export_template:
         parent: oro_importexport.processor.export_abstract
-        calls:
-            - [setDataConverter, ['@marello_inventory.importexport.data_converter']]
         tags:
             - { name: oro_importexport.processor, type: export_template, entity: '%marello_inventory.inventorylevel.entity.class%', alias: marello_inventorlevel_export }
 
     marello_inventory.importexport.template_fixture.inventorylevel:
         class: '%marello_inventory.importexport.template_fixture.inventorylevel.class%'
+
         tags:
             - { name: oro_importexport.template_fixture }
 
