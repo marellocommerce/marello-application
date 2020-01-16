@@ -45,7 +45,8 @@ class InventoryManager extends BaseInventoryManager
         $warehouseType = $level->getWarehouse()->getWarehouseType()->getName();
         if ($item->isEnableBatchInventory() &&
             $warehouseType !== WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
-            if (empty($context->getInventoryBatches()) && $context->getRelatedEntity() instanceof PurchaseOrder) {
+            if (empty($context->getInventoryBatches()) && ($context->getRelatedEntity() instanceof PurchaseOrder ||
+                    $context->getChangeTrigger() === 'import')) {
                 $batch = InventoryBatchFromInventoryLevelFactory::createInventoryBatch($level);
                 $batch->setQuantity(0);
                 $batchInventory = ($batch->getQuantity() + $context->getInventory());
