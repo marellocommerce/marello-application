@@ -42,7 +42,7 @@ class InventoryBatchCollectionType extends AbstractType
     {
         $resolver->setDefaults([
             'entry_type'           => InventoryBatchType::class,
-            'allow_add'            => false,
+            'allow_add'            => true,
             'allow_remove'         => false,
             'show_form_when_empty' => true,
             'error_bubbling'       => false,
