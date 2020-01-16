@@ -268,12 +268,13 @@ class ExternalWarehouseEventListener
             ->getEntityManagerForClass(InventoryItem::class)
             ->getRepository(InventoryItem::class)
             ->findOneByProduct($productSupplierRelation->getProduct());
-
-        $inventoryLevel = $inventoryItem->getInventoryLevel($warehouse);
-        if ($inventoryLevel) {
-            $entityManager->remove($inventoryLevel);
-            if ($flush) {
-                $entityManager->flush($inventoryLevel);
+        if ($inventoryItem) {
+            $inventoryLevel = $inventoryItem->getInventoryLevel($warehouse);
+            if ($inventoryLevel) {
+                $entityManager->remove($inventoryLevel);
+                if ($flush) {
+                    $entityManager->flush($inventoryLevel);
+                }
             }
         }
     }
