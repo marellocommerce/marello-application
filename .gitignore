@@ -24,7 +24,6 @@ behat.yml
 !var/SymfonyRequirements.php
 !var/OroRequirements.php
 /vendor
-node_modules/
 build/
 /cov
 /public/bundles
@@ -38,7 +37,6 @@ build/
 /public/build.js
 /config/parameters.yml
 /config/parameters_test.yml
-behat.yml
 *~
 bin/*
 !bin/console
@@ -47,3 +45,5 @@ phpunit.xml
 /public/uploads/behat
 /.web-server-pid
 /.vagrant
+/node_modules
+/package.json
