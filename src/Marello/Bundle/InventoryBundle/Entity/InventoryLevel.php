@@ -209,6 +209,7 @@ class InventoryLevel extends ExtendInventoryLevel implements OrganizationAwareIn
      *     targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryBatch",
      *     mappedBy="inventoryLevel",
      *     cascade={"persist"},
+     *     fetch="EAGER",
      *     orphanRemoval=true
      * )
      * @ORM\OrderBy({"createdAt" = "DESC"})
@@ -218,8 +219,9 @@ class InventoryLevel extends ExtendInventoryLevel implements OrganizationAwareIn
      *              "auditable"=true
      *          },
      *          "importexport"={
-     *              "excluded"=true
-     *          }
+     *              "order"=50,
+     *              "full"=true
+     *          },
      *      }
      * )
      *
