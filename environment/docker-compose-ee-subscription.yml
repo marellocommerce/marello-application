@@ -54,6 +54,7 @@ services:
             - ../package/marello:/package/marello
             - ../package/marello-enterprise:/package/marello-enterprise
             - ../package/marello-subscriptions:/package/marello-subscriptions
+            - ../package/marello-servicepoints:/package/marello-servicepoints
         environment:
             - VIRTUAL_HOST=marello-ee.docker
             - IS_LOCAL=true
