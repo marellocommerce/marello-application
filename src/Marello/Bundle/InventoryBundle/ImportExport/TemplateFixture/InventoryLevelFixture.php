@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\InventoryBundle\ImportExport\TemplateFixture;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
@@ -39,11 +40,20 @@ class InventoryLevelFixture extends AbstractTemplateRepository implements Templa
         $product = $this->createProduct();
         $warehouse = $warehouseRepo->getEntity('default');
         $inventoryItem = new InventoryItem($warehouse, $product);
+        $inventoryItem->setEnableBatchInventory(true);
 
+        $inventoryBatch = new InventoryBatch();
+        $inventoryBatch
+            ->setBatchNumber('aaa-bbb-ccc-1')
+            ->setQuantity(5)
+            ->setPurchasePrice(10)
+            ->setExpirationDate(new \DateTime());
+        
         $inventoryLevel = new InventoryLevel();
         $inventoryLevel->setInventoryItem($inventoryItem);
         $inventoryLevel->setWarehouse($warehouse);
         $inventoryLevel->setInventoryQty(5);
+        $inventoryLevel->addInventoryBatch($inventoryBatch);
 
         return $inventoryLevel;
     }
