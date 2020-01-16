@@ -283,45 +283,17 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
     protected $enableBatchInventory;
 
     /**
-     * @var Warehouse
-     */
-    protected $warehouse;
-
-    /**
      * InventoryItem constructor.
      *
-     * @param Warehouse $warehouse
      * @param ProductInterface|Product $product
      */
-    public function __construct(Warehouse $warehouse = null, ProductInterface $product)
+    public function __construct(ProductInterface $product)
     {
         parent::__construct();
         
         $this->product = $product;
         $product->addInventoryItem($this);
-        $this->warehouse = $warehouse;
         $this->inventoryLevels = new ArrayCollection();
-    }
-
-    /**
-     * @deprecated
-     * @return Warehouse
-     */
-    public function getWarehouse()
-    {
-        return $this->warehouse;
-    }
-
-    /**
-     * @deprecated
-     * @param Warehouse $warehouse
-     * @return $this
-     */
-    public function setWarehouse(Warehouse $warehouse)
-    {
-        $this->warehouse = $warehouse;
-
-        return $this;
     }
 
     /**
@@ -622,5 +594,4 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
         
         return $this;
     }
-    
 }
