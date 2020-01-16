@@ -38,7 +38,7 @@ services:
             context: ./.docker
             args:
                 - SYMFONY_ENV=prod
-                - PHP_VERSION=7.2
+                - PHP_VERSION=7.3
         working_dir: /var/www/
         container_name: subscription-web
         links:

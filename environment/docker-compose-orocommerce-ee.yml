@@ -37,10 +37,8 @@ services:
         build:
             context: ./.docker
             args:
-              - SYMFONY_ENV=prod
-              - COMPOSERFILE=dev.json
-              - TIMEOUT=3000
-              - APP_ROOT=/var/www
+                - SYMFONY_ENV=prod
+                - PHP_VERSION=7.3
         working_dir: /var/www/
         container_name: orocommerce-web
         links:
