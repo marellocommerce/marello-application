@@ -3,7 +3,6 @@
 namespace Marello\Bundle\InventoryBundle\Manager;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
@@ -35,12 +34,7 @@ class InventoryItemManager implements InventoryItemManagerInterface
         }
 
         if (!$this->hasInventoryItem($product)) {
-            //set a default warehouse for inventory item to prevent BC break until the field $warehouse is removed
-            $defaultWarehouse = $this->doctrineHelper
-                ->getEntityManagerForClass(Warehouse::class)
-                ->getRepository(Warehouse::class)
-                ->getDefault();
-            $inventoryItem = new InventoryItem($defaultWarehouse, $product);
+            $inventoryItem = new InventoryItem($product);
             $inventoryItem->setOrganization($product->getOrganization());
             
             return $inventoryItem;
