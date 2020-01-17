@@ -115,8 +115,7 @@
             <div class="marello-line-item-related-field">
                 {{ form_widget(form.adjustmentQuantity) }}
             </div>
-            {{ form_errors(form.adjustmentQuantity
-            ) }}
+            {{ form_errors(form.adjustmentQuantity) }}
         </div>
     </td>
 {% endblock %}
@@ -174,6 +173,9 @@
                     </tbody>
                 </table>
             </div>
+            {% if allow_add %}
+                <a class="btn marello-add-line-item" data-container=".marello-item-collection tbody" href="javascript: void(0);"><i class="fa-plus"></i>{{ 'marello.layout.add_entity'|trans({'%entityName%': 'marello.inventory.inventorybatch.entity_label'|trans}) }}</a>
+            {% endif %}
         </div>
     {% endspaceless %}
 {% endblock %}
