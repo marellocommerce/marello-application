@@ -39,7 +39,7 @@ class InventoryLevelFixture extends AbstractTemplateRepository implements Templa
 
         $product = $this->createProduct();
         $warehouse = $warehouseRepo->getEntity('default');
-        $inventoryItem = new InventoryItem($warehouse, $product);
+        $inventoryItem = new InventoryItem($product);
         $inventoryItem->setEnableBatchInventory(true);
 
         $inventoryBatch = new InventoryBatch();
