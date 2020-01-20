@@ -75,7 +75,7 @@ class EmailTemplateManager
 
             return $this
                 ->getEmailTemplateRepository()
-                ->findOneLocalized($criteria, $localization->getLanguageCode());
+                ->findWithLocalizations($criteria, $localization->getLanguageCode());
         }
 
         return null;
