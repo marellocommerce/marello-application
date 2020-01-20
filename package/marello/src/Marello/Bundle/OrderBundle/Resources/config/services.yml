@@ -10,7 +10,7 @@ services:
         arguments:
             - '@oro_locale.dql.formatter.name'
         tags:
-            - { name: kernmarello_order.provider.shipping_order_items_for_notificationsel.event_listener, event: oro_datagrid.datagrid.build.before.marello-order, method: onBuildBefore }
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-order, method: onBuildBefore }
 
     marello_order.email_processor_link:
         tags:
