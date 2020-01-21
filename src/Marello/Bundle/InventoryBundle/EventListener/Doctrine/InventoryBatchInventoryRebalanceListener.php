@@ -7,9 +7,6 @@ use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
 use Marello\Bundle\InventoryBundle\Async\Topics;
 use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 
 class InventoryBatchInventoryRebalanceListener
