@@ -50,13 +50,11 @@ class LoadDefaultAttributeFamilyData extends AbstractFixture implements Dependen
     public function load(ObjectManager $manager)
     {
         $organization = $this->getOrganization($manager);
-        $user = $organization->getUsers()->first();
         $attributeFamily = new AttributeFamily();
         $attributeFamily->setCode(self::DEFAULT_FAMILY_CODE);
         $attributeFamily->setEntityClass(Product::class);
         $attributeFamily->addLabel((new LocalizedFallbackValue())->setString('Default'));
-        $attributeFamily->setOrganization($organization);
-        $attributeFamily->setOwner($user);
+        $attributeFamily->setOwner($organization);
 
         $this->setReference(self::DEFAULT_FAMILY_CODE, $attributeFamily);
 
