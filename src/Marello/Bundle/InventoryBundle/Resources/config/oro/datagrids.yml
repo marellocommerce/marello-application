@@ -119,7 +119,7 @@ datagrids:
                         - { join: lr.inventoryLevel, alias: il }
                 where:
                     and:
-                        - IDENTITY(il.inventoryItem) = :inventoryItemId
+                        - IDENTITY(lr.inventoryItem) = :inventoryItemId
             bind_parameters:
                 inventoryItemId: inventoryItemId
         columns:
