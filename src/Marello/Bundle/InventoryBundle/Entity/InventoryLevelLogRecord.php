@@ -38,8 +38,27 @@ class InventoryLevelLogRecord
 
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryLevel",
-     *     cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="inventory_level_id", referencedColumnName="id", onDelete="CASCADE")
+     *     cascade={"persist"})
+     * @ORM\JoinColumn(name="inventory_level_id", referencedColumnName="id")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="marello.inventory.inventorylevel.entity_label"
+     *          },
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var InventoryLevel
+     */
+    protected $inventoryLevel;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryItem",
+     *     cascade={"persist"})
+     * @ORM\JoinColumn(name="inventory_item_id", referencedColumnName="id")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={
@@ -51,9 +70,23 @@ class InventoryLevelLogRecord
      *      }
      * )
      *
-     * @var InventoryLevel
+     * @var InventoryItem
      */
-    protected $inventoryLevel;
+    protected $inventoryItem;
+
+    /**
+     * @ORM\Column(name="warehouse_name", type="string", nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var string
+     */
+    protected $warehouseName;
 
     /**
      * @ORM\Column(name="inventory_alteration", type="integer")
@@ -206,12 +239,14 @@ class InventoryLevelLogRecord
         $this->changeTrigger                = $changeTrigger;
         $this->user                         = $user;
         $this->subject                      = $subject;
+        $this->inventoryItem                = $inventoryLevel->getInventoryItem();
+        $this->warehouseName                = $inventoryLevel->getWarehouse()->getLabel();
     }
 
     /**
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -219,7 +254,7 @@ class InventoryLevelLogRecord
     /**
      * @return InventoryLevel
      */
-    public function getInventoryLevel()
+    public function getInventoryLevel(): InventoryLevel
     {
         return $this->inventoryLevel;
     }
@@ -227,7 +262,7 @@ class InventoryLevelLogRecord
     /**
      * @return int
      */
-    public function getInventoryDiff()
+    public function getInventoryDiff(): int
     {
         return $this->inventoryAlteration;
     }
@@ -235,7 +270,7 @@ class InventoryLevelLogRecord
     /**
      * @return int
      */
-    public function getAllocatedInventoryDiff()
+    public function getAllocatedInventoryDiff(): int
     {
         return $this->allocatedInventoryAlteration;
     }
@@ -243,7 +278,7 @@ class InventoryLevelLogRecord
     /**
      * @return string
      */
-    public function getChangeTrigger()
+    public function getChangeTrigger(): string
     {
         return $this->changeTrigger;
     }
@@ -251,7 +286,7 @@ class InventoryLevelLogRecord
     /**
      * @return User
      */
-    public function getUser()
+    public function getUser(): ?User
     {
         return $this->user;
     }
@@ -267,7 +302,7 @@ class InventoryLevelLogRecord
     /**
      * @return string
      */
-    public function getSubjectType()
+    public function getSubjectType(): ?string
     {
         return $this->subjectType;
     }
@@ -275,7 +310,7 @@ class InventoryLevelLogRecord
     /**
      * @return int
      */
-    public function getSubjectId()
+    public function getSubjectId(): ?int
     {
         return $this->subjectId;
     }
@@ -283,7 +318,7 @@ class InventoryLevelLogRecord
     /**
      * @ORM\PreUpdate
      */
-    public function preUpdateTimestamp()
+    public function preUpdateTimestamp(): void
     {
         $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
     }
@@ -291,7 +326,7 @@ class InventoryLevelLogRecord
     /**
      * @ORM\PrePersist
      */
-    public function prePersistTimestamp()
+    public function prePersistTimestamp(): void
     {
         $this->createdAt = $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
     }
@@ -299,7 +334,7 @@ class InventoryLevelLogRecord
     /**
      * @return \DateTime
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
@@ -307,8 +342,24 @@ class InventoryLevelLogRecord
     /**
      * @return \DateTime
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * @return InventoryItem
+     */
+    public function getInventoryItem(): InventoryItem
+    {
+        return $this->inventoryItem;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWarehouseName(): string
+    {
+        return $this->warehouseName;
     }
 }
