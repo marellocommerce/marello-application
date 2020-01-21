@@ -28,7 +28,7 @@ services:
            - '@marello_notification.link.entity_manager'
            - '@oro_activity.association_helper'
         tags:
-           - { name: oro_activity_list.provider, priority: 80 }
+           - { name: oro_activity_list.provider, class: Marello\Bundle\NotificationBundle\Entity\Notification, priority: 80 }
 
     marello_notification.link.entity_manager:
         tags:
