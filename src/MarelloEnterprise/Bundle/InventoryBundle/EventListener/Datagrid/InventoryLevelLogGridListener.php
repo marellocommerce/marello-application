@@ -14,8 +14,7 @@ class InventoryLevelLogGridListener
     {
         $qb =  $event->getQueryBuilder();
         $qb
-            ->addSelect('warehouse.label as warehouseLabel')
-            ->leftJoin('il.warehouse', 'warehouse');
+            ->addSelect('lr.warehouseName as warehouseLabel');
     }
 
     /**
