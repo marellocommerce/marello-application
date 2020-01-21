@@ -20,7 +20,7 @@ class MarelloEnterpriseReplenishmentBundleInstaller implements Installation, Act
      */
     public function getMigrationVersion()
     {
-        return 'v1_1';
+        return 'v2_0';
     }
 
     /**
@@ -103,6 +103,7 @@ class MarelloEnterpriseReplenishmentBundleInstaller implements Installation, Act
         $table->addColumn('note', 'text', ['notnull' => false]);
         $table->addColumn('inventory_qty', 'integer', ['notnull' => false]);
         $table->addColumn('total_inventory_qty', 'integer', ['notnull' => false]);
+        $table->addColumn('inventory_batches', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
         $table->addIndex(['organization_id']);
         $table->setPrimaryKey(['id']);
     }
