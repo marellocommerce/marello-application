@@ -4,20 +4,29 @@ namespace Marello\Bundle\InventoryBundle\Migrations\Schema\v2_4;
 
 use Doctrine\DBAL\Schema\Schema;
 
-use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
+use Oro\Bundle\MigrationBundle\Migration\Migration;
+use Oro\Bundle\MigrationBundle\Migration\OrderedMigrationInterface;
 
-class MarelloInventoryBundle implements Migration
+class CreateAndUpdateInventoryLevelLog implements Migration, OrderedMigrationInterface
 {
     const INVENTORY_LEVEL_LOG_TABLE_NAME = 'marello_inventory_level_log';
-    const INVENTORY_ITEM_TABLE_NAME = 'marello_inventory_item';
 
     /**
-     * @inheritdoc
+     * @return int
+     */
+    public function getOrder()
+    {
+        return 10;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function up(Schema $schema, QueryBag $queries)
     {
-        $this->addColumnsToInventoryLogLevelTable($schema, $queries);
+        $this->updateInventoryLogLevelTable($schema, $queries);
+        $this->updateInventoryItemsOnInventoryLevelLog($schema, $queries);
     }
 
     /**
@@ -26,12 +35,25 @@ class MarelloInventoryBundle implements Migration
      * @param QueryBag $queries
      * @throws \Doctrine\DBAL\Schema\SchemaException
      */
-    protected function addColumnsToInventoryLogLevelTable(Schema $schema, $queries)
+    protected function updateInventoryLogLevelTable(Schema $schema, $queries)
     {
         $table = $schema->getTable(self::INVENTORY_LEVEL_LOG_TABLE_NAME);
         $table->addColumn('inventory_item_id', 'integer', ['notnull' => true]);
         $table->addColumn('warehouse_name', 'string', ['notnull' => false, 'length' => 255]);
         $table->addIndex(['inventory_item_id']);
+
+        // remove old foreign key of inventory level
+        if ($table->hasForeignKey('FK_41E09B7BEBFBF136')) {
+            $table->removeForeignKey('FK_41E09B7BEBFBF136');
+        }
+    }
+
+    /**
+     * @param Schema $schema
+     * @param $queries
+     */
+    protected function updateInventoryItemsOnInventoryLevelLog(Schema $schema, $queries)
+    {
         // update all inventory_item_id's in the inventoryLevelLog to be able to create the FK later on it
         $query = "
             UPDATE marello_inventory_level_log as inventoryLevelLog
@@ -43,18 +65,7 @@ class MarelloInventoryBundle implements Migration
                 )
             "
         ;
-        //        UPDATE marello_inventory_level_log as main set inventory_item_id = (select t1.id from marello_inventory_item t1, marello_inventory_level as t2 where main.inventory_level_id = t2.id and t2.inventory_item_id = t1.id)
-        $queries->addQuery($query);
-//        $table->addForeignKeyConstraint(
-//            $schema->getTable('marello_inventory_item'),
-//            ['inventory_item_id'],
-//            ['id'],
-//            ['onDelete' => null, 'onUpdate' => null]
-//        );
 
-        // remove old foreign key of inventory level
-        if ($table->hasForeignKey('FK_41E09B7BEBFBF136')) {
-            $table->removeForeignKey('FK_41E09B7BEBFBF136');
-        }
+        $queries->addQuery($query);
     }
 }
