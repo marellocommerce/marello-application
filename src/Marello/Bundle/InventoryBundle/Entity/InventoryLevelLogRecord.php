@@ -57,8 +57,8 @@ class InventoryLevelLogRecord
 
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryItem",
-     *     cascade={"persist"})
-     * @ORM\JoinColumn(name="inventory_item_id", referencedColumnName="id")
+     *     cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="inventory_item_id", referencedColumnName="id", onDelete="CASCADE")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={
@@ -356,10 +356,21 @@ class InventoryLevelLogRecord
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getWarehouseName(): string
+    public function getWarehouseName(): ?string
     {
         return $this->warehouseName;
+    }
+
+    /**
+     * @param string $warehouseName
+     * @return $this
+     */
+    public function setWarehouseName(string $warehouseName)
+    {
+        $this->warehouseName = $warehouseName;
+
+        return $this;
     }
 }
