@@ -1,9 +1,0 @@
-oro_entity:
-    entity_aliases:
-        Marello\Bundle\PackingBundle\Entity\PackingSlip:
-            alias: marellopackingslip
-            plural_alias: marellopackingslips
-
-        Marello\Bundle\PackingBundle\Entity\PackingSlipItem:
-            alias: marellopackingslipitem
-            plural_alias: marellopackingslipitems
