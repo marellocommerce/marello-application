@@ -1,9 +1,0 @@
-oro_entity:
-    entity_aliases:
-        MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrder:
-            alias: marelloreplenishmentorder
-            plural_alias: marelloreplenishmentorders
-
-        MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderItem:
-            alias: marelloreplenishmentorderitem
-            plural_alias: marelloreplenishmentorderitems

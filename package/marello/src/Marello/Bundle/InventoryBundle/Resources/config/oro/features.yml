@@ -1,6 +1,0 @@
-features:
-    po_duedate_as_back_orders_datetime:
-        label: marello.inventory.feature.po_duedate_as_back_orders_datetime.label
-        description: marello.inventory.feature.po_duedate_as_back_orders_datetime.description
-        toggle: marello_inventory.po_duedate_as_back_orders_datetime
-
