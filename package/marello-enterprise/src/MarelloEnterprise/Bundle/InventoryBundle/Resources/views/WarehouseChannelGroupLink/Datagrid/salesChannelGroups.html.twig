@@ -1,5 +1,0 @@
-{% spaceless %}
-    {% set channels = record.getValue('salesChannelGroups').toArray() %}
-
-    {{ channels|join('</br>')|raw }}
-{% endspaceless %}
