@@ -167,6 +167,13 @@ datagrids:
             query:
                 select:
                     - sc
+                    - sc.id
+                    - sc.name
+                    - sc.code
+                    - sc.channelType
+                    - sc.currency
+                    - sc.active
+                    - sc.default
                     - (CASE WHEN (sc.id IN (:data_in)) AND sc.id NOT IN (:data_not_in) THEN true ELSE false END) as hasChannel
                 from:
                     - { table: MarelloSalesBundle:SalesChannel, alias: sc }
