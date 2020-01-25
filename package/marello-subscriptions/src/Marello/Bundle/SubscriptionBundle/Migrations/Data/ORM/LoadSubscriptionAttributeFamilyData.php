@@ -7,9 +7,9 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
+use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\OrganizationBundle\Migrations\Data\ORM\LoadOrganizationAndBusinessUnitData;
-use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Migrations\Data\ORM\LoadAdminUserData;
 
 class LoadSubscriptionAttributeFamilyData extends AbstractFixture implements DependentFixtureInterface
@@ -36,15 +36,13 @@ class LoadSubscriptionAttributeFamilyData extends AbstractFixture implements Dep
      */
     public function load(ObjectManager $manager)
     {
-        $user = $manager
-            ->getRepository(User::class)->findOneBy(['username' => 'admin']);
         $organization = $this->getOrganization($manager);
+        $label = (new LocalizedFallbackValue())->setString('Subscription');
         $attributeFamily = new AttributeFamily();
         $attributeFamily->setCode(self::SUBSCRIPTION_FAMILY_CODE);
         $attributeFamily->setEntityClass(Product::class);
-        $attributeFamily->setDefaultLabel('Subscription');
-        $attributeFamily->setOrganization($organization);
-        $attributeFamily->setOwner($user);
+        $attributeFamily->addLabel($label);
+        $attributeFamily->setOwner($organization);
 
         $manager->persist($attributeFamily);
         $manager->flush();
