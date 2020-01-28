@@ -57,10 +57,17 @@ class InventoryBatchSubscriber implements EventSubscriberInterface
     {
         /** @var InventoryBatch $inventoryBatch */
         $inventoryBatch = $event->getData();
+        $form = $event->getForm();
         /** @var InventoryLevel $inventoryLevel */
         $inventoryLevel = $inventoryBatch->getInventoryLevel();
-        if (!$this->isApplicable($inventoryLevel)) {
-            return;
+        if (!$inventoryLevel) {
+            $parentData = $form->getParent()->getParent()->getData();
+            if ($parentData instanceof InventoryLevel) {
+                $inventoryLevel = $parentData;
+                $inventoryBatch->setInventoryLevel($inventoryLevel);
+            } else {
+                return;
+            }
         }
 
         $form = $event->getForm();
@@ -121,19 +128,5 @@ class InventoryBatchSubscriber implements EventSubscriberInterface
         }
 
         return $form->get('adjustmentQuantity')->getData();
-    }
-
-    /**
-     * @param InventoryLevel $inventoryLevel
-     *
-     * @return bool
-     */
-    protected function isApplicable(InventoryLevel $inventoryLevel = null)
-    {
-        if (!$inventoryLevel) {
-            return false;
-        }
-
-        return true;
     }
 }
