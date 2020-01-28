@@ -186,13 +186,6 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
             OroCommerceRequestFactory::METHOD_GET,
             $this->settings,
             self::PAYMENTTERMS_ALIAS,
-            [
-                /*new FilterValue(
-                    'updatedAt',
-                    $lastSyncStr,
-                    OroCommerceRequestFactory::GT
-                )*/
-            ],
             []
         );
 
