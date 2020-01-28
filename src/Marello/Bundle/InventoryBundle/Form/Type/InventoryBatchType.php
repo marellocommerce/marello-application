@@ -4,6 +4,8 @@ namespace Marello\Bundle\InventoryBundle\Form\Type;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
 use Marello\Bundle\InventoryBundle\Model\InventoryLevelCalculator;
+use Oro\Bundle\FormBundle\Form\Type\OroDateTimeType;
+use Oro\Bundle\FormBundle\Form\Type\OroDateType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -72,6 +74,20 @@ class InventoryBatchType extends AbstractType
                 NumberType::class,
                 [
                     'disabled' => true
+                ]
+            )
+            ->add(
+                'purchasePrice',
+                NumberType::class,
+                [
+                    'required' => false
+                ]
+            )
+            ->add(
+                'expirationDate',
+                OroDateType::class,
+                [
+                    'required' => false
                 ]
             );
 

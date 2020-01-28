@@ -85,7 +85,15 @@ services:
         tags:
             - { name: doctrine.event_listener, event: onFlush }
 
-    marello_inventory.event_listener.doctrine.inventory_batch_creation:
+    marello_inventory.event_listener.doctrine.inventory_batch.inventory_rebalance:
+        class: 'Marello\Bundle\InventoryBundle\EventListener\Doctrine\InventoryBatchInventoryRebalanceListener'
+        arguments:
+            - '@oro_message_queue.client.message_producer'
+        lazy:  true
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+
+    marello_inventory.event_listener.doctrine.inventory_batch.creation:
         class: 'Marello\Bundle\InventoryBundle\EventListener\Doctrine\InventoryBatchCreationEventListener'
         tags:
             - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\InventoryBundle\Entity\InventoryItem', event: postPersist }

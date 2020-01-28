@@ -6,6 +6,7 @@ use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
 use Marello\Bundle\InventoryBundle\Factory\InventoryBatchFromInventoryLevelFactory;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
+use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrder;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
@@ -68,10 +69,12 @@ class InventoryManager implements InventoryManagerInterface
             $item->addInventoryLevel($level);
         }
         $warehouseType = $level->getWarehouse()->getWarehouseType()->getName();
-        if ($item->isEnableBatchInventory() &&
+        if ($item && $item->isEnableBatchInventory() &&
             $warehouseType !== WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
-            if (empty($context->getInventoryBatches()) && ($context->getRelatedEntity() instanceof PurchaseOrder ||
-                    $context->getChangeTrigger() === 'import')) {
+            if (empty($context->getInventoryBatches()) && (
+                $context->getRelatedEntity() instanceof PurchaseOrder ||
+                $context->getChangeTrigger() === 'import')
+            ) {
                 $batch = InventoryBatchFromInventoryLevelFactory::createInventoryBatch($level);
                 $batch->setQuantity(0);
                 $batchInventory = ($batch->getQuantity() + $context->getInventory());
