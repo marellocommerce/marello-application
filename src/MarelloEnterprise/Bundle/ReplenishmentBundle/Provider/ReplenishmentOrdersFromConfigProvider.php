@@ -2,6 +2,8 @@
 
 namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Provider;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrder;
@@ -69,6 +71,38 @@ class ReplenishmentOrdersFromConfigProvider
                 $orderItem
                     ->setInventoryQty($result['quantity'])
                     ->setTotalInventoryQty($result['total_quantity']);
+                /** @var InventoryItem $inventoryItem */
+                $inventoryItem = $product->getInventoryItems()->first();
+                if ($inventoryItem && $inventoryItem->isEnableBatchInventory()) {
+                    if ($inventoryLevel = $inventoryItem->getInventoryLevel($origin)) {
+                        /** @var InventoryBatch[] $inventoryBatches */
+                        $inventoryBatches = $inventoryLevel->getInventoryBatches()->toArray();
+                        if (count($inventoryBatches) > 0) {
+                            usort($inventoryBatches, function (InventoryBatch $a, InventoryBatch $b) {
+                                if ($a->getDeliveryDate() < $b->getDeliveryDate()) {
+                                    return -1;
+                                } elseif ($a->getDeliveryDate() > $b->getDeliveryDate()) {
+                                    return 1;
+                                } else {
+                                    return 0;
+                                }
+                            });
+                            $data = [];
+                            $quantity = $orderItem->getInventoryQty();
+                            /** @var InventoryBatch[] $inventoryBatches */
+                            foreach ($inventoryBatches as $inventoryBatch) {
+                                if ($inventoryBatch->getQuantity() >= $quantity) {
+                                    $data[$inventoryBatch->getBatchNumber()] = $quantity;
+                                    break;
+                                } elseif ($batchQty = $inventoryBatch->getQuantity() > 0) {
+                                    $data[$inventoryBatch->getBatchNumber()] = $batchQty;
+                                    $quantity = $quantity - $batchQty;
+                                }
+                            }
+                            $orderItem->setInventoryBatches($data);
+                        }
+                    }
+                }
             }
             $order->addReplOrderItem($orderItem);
         }
