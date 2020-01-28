@@ -46,4 +46,4 @@ phpunit.xml
 /.web-server-pid
 /.vagrant
 /node_modules
-/package.json
+package.json
