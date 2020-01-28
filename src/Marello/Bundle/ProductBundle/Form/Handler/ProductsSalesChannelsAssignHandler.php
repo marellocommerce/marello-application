@@ -3,23 +3,31 @@
 namespace Marello\Bundle\ProductBundle\Form\Handler;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\QueryBuilder;
-use Marello\Bundle\ProductBundle\Async\ProductsAssignSalesChannelsProcessor;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+
+use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+
+use Oro\Component\MessageQueue\Util\JSON;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
+
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\ProductBundle\Async\ProductsAssignSalesChannelsProcessor;
 
 class ProductsSalesChannelsAssignHandler
 {
     use RequestHandlerTrait;
 
+    /** @var int size that will determine wether the products should be saved immediately or send to the queue  */
     const FLUSH_BATCH_SIZE = 100;
+
+    /** @var int max size of product ids per message to prevent having a single big message */
+    const MESSAGE_PRODUCT_ID_SIZE = 1000;
 
     /**
      * @var FormInterface
@@ -68,15 +76,20 @@ class ProductsSalesChannelsAssignHandler
     }
 
     /**
-     * @return bool
+     * @return array
      * @throws \Exception
      */
-    public function process()
+    public function process(): array
     {
+        $filtersFromRequest = null;
+        if (null !== $this->request->query->get('filters')) {
+            $filtersFromRequest = JSON::encode($this->request->query->get('filters'));
+        }
+
         $this->form->setData([
             'inset' => $this->request->query->get('inset'),
             'products' => $this->request->query->get('values'),
-            'filters' => json_encode($this->request->query->get('filters')),
+            'filters' => $filtersFromRequest
         ]);
 
         if (in_array($this->request->getMethod(), ['POST', 'PUT'])) {
@@ -85,9 +98,11 @@ class ProductsSalesChannelsAssignHandler
             if ($this->form->isValid()) {
                 $inset = $this->form->get('inset')->getData();
                 $products = $this->form->get('products')->getData();
-                $filters = json_decode($this->form->get('filters')->getData(), true);
                 $addChannels = $this->form->get('addSalesChannels')->getData();
-
+                $filters = null;
+                if (null !== $this->form->get('filters')->getData()) {
+                    JSON::decode($this->form->get('filters')->getData());
+                }
                 return $this->onSuccess(
                     $addChannels,
                     $inset,
@@ -101,13 +116,14 @@ class ProductsSalesChannelsAssignHandler
     }
 
     /**
-     * @param array $addChannels
-     * @param string $inset
-     * @param string|null $products
-     * @param array|null $filters
+     * @param $addChannels
+     * @param $inset
+     * @param null $products
+     * @param null $filters
      * @return array
+     * @throws \Oro\Component\MessageQueue\Transport\Exception\Exception
      */
-    private function onSuccess($addChannels, $inset, $products = null, $filters = null)
+    private function onSuccess($addChannels, $inset, $products = null, $filters = null): array
     {
         $isAllSelected = $this->isAllSelected($inset);
         $productIds = explode(',', $products);
@@ -127,32 +143,29 @@ class ProductsSalesChannelsAssignHandler
                 $queryBuilder->andWhere($queryBuilder->expr()->notIn('p.id', $productIds));
             }
 
-            $countQueryBuilder = clone $queryBuilder;
-
-            $result =  $countQueryBuilder
-                ->resetDQLParts(['select', 'groupBy'])
-                ->select(['COUNT(DISTINCT p.id) AS count'])
+            $queryResult = $queryBuilder
                 ->getQuery()
                 ->setFirstResult(0)
                 ->setMaxResults(null)
-                ->getOneOrNullResult();
-            if ((int)$result['count'] <= self::FLUSH_BATCH_SIZE) {
-                $this->processSmallData($queryBuilder, $addChannels);
+                ->getArrayResult();
+
+            if ((int)count($queryResult) <= self::FLUSH_BATCH_SIZE) {
+                $this->processSmallData($queryResult, $addChannels);
 
                 return [
                     'success' => true,
                     'type' => 'success',
                     'message' => 'marello.product.messages.success.sales_channels.assignment'
                 ];
-            } else {
-                $this->processBigData($inset, $productIds, $filters, $addChannels);
-
-                return [
-                    'success' => true,
-                    'type' => 'info',
-                    'message' => 'marello.product.messages.success.sales_channels.assignment_started'
-                ];
             }
+
+            $this->processBigData($queryResult, $addChannels);
+            return [
+                'success' => true,
+                'type' => 'info',
+                'message' => 'marello.product.messages.success.sales_channels.assignment_started'
+            ];
+
         }
 
         return ['success' => false, 'message' => 'marello.product.messages.error.sales_channels.assignment'];
@@ -162,35 +175,32 @@ class ProductsSalesChannelsAssignHandler
      * @param string $inset
      * @return bool
      */
-    protected function isAllSelected($inset)
+    protected function isAllSelected($inset): bool
     {
         return $inset === '0';
     }
 
     /**
-     * @param QueryBuilder $queryBuilder
+     * @param array $queryResult
      * @param SalesChannel[] $salesChannels
      */
-    private function processSmallData($queryBuilder, array $salesChannels)
+    private function processSmallData(array $queryResult, array $salesChannels): void
     {
-        $result = $queryBuilder
-            ->getQuery()
-            ->setFirstResult(0)
-            ->setMaxResults(null)
-            ->getResult();
+        $productIds = $this->getProductIdsFromResult($queryResult);
+        $products = $this->entityManager
+            ->getRepository(Product::class)
+            ->findBy(['id' => $productIds]);
+
         $iteration = 1;
-        foreach ($result as $entity) {
-            /** @var Product $entity */
-            $entity = $entity[0];
+        /** @var Product $product */
+        foreach ($products as $product) {
             $addedChannels = 0;
             foreach ($salesChannels as $salesChannel) {
-                if (!$entity->hasChannel($salesChannel)) {
-                    $entity->addChannel($salesChannel);
+                if (!$product->hasChannel($salesChannel)) {
+                    $product->addChannel($salesChannel);
+                    $this->entityManager->persist($product);
                     $addedChannels++;
                 }
-            }
-            if ($addedChannels > 0) {
-                $this->entityManager->persist($entity);
             }
 
             if (($iteration % self::FLUSH_BATCH_SIZE) === 0) {
@@ -200,27 +210,46 @@ class ProductsSalesChannelsAssignHandler
                 $iteration++;
             }
         }
+
         $this->entityManager->flush();
     }
 
     /**
-     * @param int $inset
-     * @param array|null $products
-     * @param array|null $filters
-     * @param SalesChannel[]|null $salesChannels
+     * @param array $queryResult
+     * @param SalesChannel[] $salesChannels
+     * @throws \Oro\Component\MessageQueue\Transport\Exception\Exception
      */
-    private function processBigData($inset, array $products = null, array $filters = null, array $salesChannels = null)
+    private function processBigData(array $queryResult, array $salesChannels): void
     {
-        $channelIds = [];
-        foreach ($salesChannels as $salesChannel) {
-            $channelIds[] = $salesChannel->getCode();
+        $channelIds = array_map(
+            static function (SalesChannel $channel) {
+                return $channel->getId();
+            },
+            $salesChannels
+        );
+
+        $productIds = $this->getProductIdsFromResult($queryResult);
+        if (count($productIds) > self::MESSAGE_PRODUCT_ID_SIZE) {
+            $chunks = array_chunk($productIds, self::MESSAGE_PRODUCT_ID_SIZE);
+            foreach ($chunks as $chunk) {
+                $this->sendProductsToMessageQueue($chunk, $channelIds);
+            }
+        } else {
+            $this->sendProductsToMessageQueue($productIds, $channelIds);
         }
+    }
+
+    /**
+     * @param array $productIds
+     * @param array $channelIds
+     * @throws \Oro\Component\MessageQueue\Transport\Exception\Exception
+     */
+    private function sendProductsToMessageQueue(array $productIds, array $channelIds)
+    {
         $this->messageProducer->send(
             ProductsAssignSalesChannelsProcessor::TOPIC,
             [
-                'inset' => $inset,
-                'products' => $products,
-                'filters' => $filters,
+                'products' => $productIds,
                 'salesChannels' => $channelIds,
                 'jobId' => md5(rand(1, 5))
             ]
@@ -228,12 +257,29 @@ class ProductsSalesChannelsAssignHandler
     }
 
     /**
-     * Returns form instance
+     * Returns form view instance
      *
-     * @return FormInterface
+     * @return FormView
      */
-    public function getFormView()
+    public function getFormView(): FormView
     {
         return $this->form->createView();
+    }
+
+    /**
+     * @param array $result
+     * @return array
+     */
+    private function getProductIdsFromResult(array $result): array
+    {
+        return array_map(
+            static function ($entityAsArray) {
+                if (array_key_exists('id', $entityAsArray)) {
+                    return $entityAsArray['id'];
+                }
+                return null;
+            },
+            $result
+        );
     }
 }
