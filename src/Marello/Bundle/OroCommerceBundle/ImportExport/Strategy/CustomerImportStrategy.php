@@ -76,7 +76,6 @@ class CustomerImportStrategy extends AbstractImportStrategy
                 $company->setParent($existingParent);
             } else {
                 $parent->setOrganization($organization);
-                $company->setPaymentTerm($parent);
             }
         }
         $paymentTerm = $entity->getPaymentTerm();
