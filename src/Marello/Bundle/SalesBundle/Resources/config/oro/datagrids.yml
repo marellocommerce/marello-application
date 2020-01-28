@@ -166,7 +166,6 @@ datagrids:
             type: orm
             query:
                 select:
-                    - sc
                     - sc.id
                     - sc.name
                     - sc.code
