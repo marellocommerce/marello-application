@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "67a71795b73847852e1bfee032bd0d84",
+    "content-hash": "51bbf1ba2c052892b923491845942cd4",
     "packages": [
         {
             "name": "akeneo/batch-bundle",
@@ -164,588 +164,6 @@
                 "transliterator"
             ],
             "time": "2020-01-14T16:39:13+00:00"
-        },
-        {
-            "name": "bower-asset/autobahnjs",
-            "version": "v0.8.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/crossbario/autobahn-js.git",
-                "reference": "5561cb7d39004cb764a01454d922c2b4a083d010"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/crossbario/autobahn-js/zipball/5561cb7d39004cb764a01454d922c2b4a083d010",
-                "reference": "5561cb7d39004cb764a01454d922c2b4a083d010"
-            },
-            "type": "bower-asset"
-        },
-        {
-            "name": "bower-asset/autolinker.js",
-            "version": "1.6.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/gregjacobs/Autolinker.js.git",
-                "reference": "f99f4943b3f1fdab604659966c9903a775b03182"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/gregjacobs/Autolinker.js/zipball/f99f4943b3f1fdab604659966c9903a775b03182",
-                "reference": "f99f4943b3f1fdab604659966c9903a775b03182"
-            },
-            "type": "bower-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "bower-asset/backbone",
-            "version": "1.2.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/jashkenas/backbone.git",
-                "reference": "05fde9e201f7e2137796663081105cd6dad12a98"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jashkenas/backbone/zipball/05fde9e201f7e2137796663081105cd6dad12a98",
-                "reference": "05fde9e201f7e2137796663081105cd6dad12a98"
-            },
-            "require": {
-                "bower-asset/underscore": ">=1.7.0"
-            },
-            "type": "bower-asset"
-        },
-        {
-            "name": "bower-asset/backbone-pageable",
-            "version": "1.2.3",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:wyuenho/backbone-pageable.git",
-                "reference": "d1063263056195d2534fd7d56595c1816eec2173"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/wyuenho/backbone-pageable/zipball/d1063263056195d2534fd7d56595c1816eec2173",
-                "reference": "d1063263056195d2534fd7d56595c1816eec2173"
-            },
-            "type": "bower-asset"
-        },
-        {
-            "name": "bower-asset/backbone.paginator",
-            "version": "2.0.5",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:addyosmani/backbone.paginator.git",
-                "reference": "71123a819b2b0fd549da6699f4f0e46b48223025"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/addyosmani/backbone.paginator/zipball/71123a819b2b0fd549da6699f4f0e46b48223025",
-                "reference": "71123a819b2b0fd549da6699f4f0e46b48223025"
-            },
-            "require": {
-                "bower-asset/backbone": ">=1.2.3,<2.0.0",
-                "bower-asset/underscore": ">=1.8.3,<2.0.0"
-            },
-            "type": "bower-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "bower-asset/backgrid",
-            "version": "0.3.7",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:wyuenho/backgrid.git",
-                "reference": "9a45dbc4a2af4a555e8274b7cc1a966a7586cfea"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/wyuenho/backgrid/zipball/9a45dbc4a2af4a555e8274b7cc1a966a7586cfea",
-                "reference": "9a45dbc4a2af4a555e8274b7cc1a966a7586cfea"
-            },
-            "require": {
-                "bower-asset/backbone": "~1.2.3",
-                "bower-asset/underscore": ">=1.8.3,<2.0.0"
-            },
-            "type": "bower-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "bower-asset/backgrid-paginator",
-            "version": "v0.3.8",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:wyuenho/backgrid-paginator.git",
-                "reference": "77ec7004d0dd0e72d81a11a797bd19e69aa8dfb7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/wyuenho/backgrid-paginator/zipball/77ec7004d0dd0e72d81a11a797bd19e69aa8dfb7",
-                "reference": "77ec7004d0dd0e72d81a11a797bd19e69aa8dfb7"
-            },
-            "require": {
-                "bower-asset/backbone": ">=1.1.2,<2.0.0",
-                "bower-asset/backbone.paginator": ">=2.0.0,<3.0.0",
-                "bower-asset/backgrid": "~0.3.5",
-                "bower-asset/underscore": ">=1.5.0,<2.0.0"
-            },
-            "type": "bower-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "bower-asset/base64",
-            "version": "1.0.1",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:davidchambers/Base64.js.git",
-                "reference": "b2d49f347ed1bce61000a82769bffc837b7c79dc"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/davidchambers/Base64.js/zipball/b2d49f347ed1bce61000a82769bffc837b7c79dc",
-                "reference": "b2d49f347ed1bce61000a82769bffc837b7c79dc"
-            },
-            "type": "bower-asset",
-            "license": [
-                "WTFPL"
-            ]
-        },
-        {
-            "name": "bower-asset/bean",
-            "version": "v1.0.6",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:fat/bean.git",
-                "reference": "0bbb3911ec2bb15333fdcf3a0a7904a1d4f62dea"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/fat/bean/zipball/0bbb3911ec2bb15333fdcf3a0a7904a1d4f62dea",
-                "reference": "0bbb3911ec2bb15333fdcf3a0a7904a1d4f62dea"
-            },
-            "type": "bower-asset"
-        },
-        {
-            "name": "bower-asset/crypto-js",
-            "version": "3.1.7",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:brix/crypto-js.git",
-                "reference": "67d2e996e25e00f66118b3b8ab7f7fc8eae6e8d6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/brix/crypto-js/zipball/67d2e996e25e00f66118b3b8ab7f7fc8eae6e8d6",
-                "reference": "67d2e996e25e00f66118b3b8ab7f7fc8eae6e8d6"
-            },
-            "type": "bower-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "bower-asset/datepair",
-            "version": "0.4.15",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:jonthornton/Datepair.js.git",
-                "reference": "5d243d5d513c42dfc07e27db80484e91bc15b9d1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jonthornton/Datepair.js/zipball/5d243d5d513c42dfc07e27db80484e91bc15b9d1",
-                "reference": "5d243d5d513c42dfc07e27db80484e91bc15b9d1"
-            },
-            "type": "bower-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "bower-asset/flotr2",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/HumbleSoftware/Flotr2.git",
-                "reference": "df0ddedcab1a8fdb3a7abafc5fe97819931e7bd5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/HumbleSoftware/Flotr2/zipball/df0ddedcab1a8fdb3a7abafc5fe97819931e7bd5",
-                "reference": "df0ddedcab1a8fdb3a7abafc5fe97819931e7bd5"
-            },
-            "type": "bower-asset",
-            "time": "2014-07-21T18:45:41+00:00"
-        },
-        {
-            "name": "bower-asset/fuse",
-            "version": "v3.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/krisk/Fuse.git",
-                "reference": "f68a18a9b94eedfc82dfc7d7def8a8966c9f5b33"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/krisk/Fuse/zipball/f68a18a9b94eedfc82dfc7d7def8a8966c9f5b33",
-                "reference": "f68a18a9b94eedfc82dfc7d7def8a8966c9f5b33"
-            },
-            "type": "bower-asset"
-        },
-        {
-            "name": "bower-asset/jquery",
-            "version": "3.4.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/jquery/jquery-dist.git",
-                "reference": "15bc73803f76bc53b654b9fdbbbc096f56d7c03d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jquery/jquery-dist/zipball/15bc73803f76bc53b654b9fdbbbc096f56d7c03d",
-                "reference": "15bc73803f76bc53b654b9fdbbbc096f56d7c03d"
-            },
-            "type": "bower-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "bower-asset/jquery-ajax-queue",
-            "version": "v0.0.1",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:flydreamers/ajaxQueue.git",
-                "reference": "50ffe758abe1a365ad228851ee7028677bfb07b4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/flydreamers/ajaxQueue/zipball/50ffe758abe1a365ad228851ee7028677bfb07b4",
-                "reference": "50ffe758abe1a365ad228851ee7028677bfb07b4"
-            },
-            "type": "bower-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "bower-asset/jquery-cookie",
-            "version": "v1.4.1",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:carhartl/jquery-cookie.git",
-                "reference": "7f88a4e631aba8a8c688fd8999ce6b9bcfd50718"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/carhartl/jquery-cookie/zipball/7f88a4e631aba8a8c688fd8999ce6b9bcfd50718",
-                "reference": "7f88a4e631aba8a8c688fd8999ce6b9bcfd50718"
-            },
-            "require": {
-                "bower-asset/jquery": ">=1.2"
-            },
-            "type": "bower-asset"
-        },
-        {
-            "name": "bower-asset/jquery-form",
-            "version": "v4.2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/jquery-form/form.git",
-                "reference": "c15a69251b36544cda48892c23e0dcec21fff838"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jquery-form/form/zipball/c15a69251b36544cda48892c23e0dcec21fff838",
-                "reference": "c15a69251b36544cda48892c23e0dcec21fff838"
-            },
-            "require": {
-                "bower-asset/jquery": ">=1.7"
-            },
-            "type": "bower-asset",
-            "license": [
-                "(MIT OR LGPL-3.0)"
-            ]
-        },
-        {
-            "name": "bower-asset/jquery-mousewheel",
-            "version": "3.1.13",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/jquery/jquery-mousewheel.git",
-                "reference": "67289b6b2aa0066d7d78a5807f520387135ffb22"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jquery/jquery-mousewheel/zipball/67289b6b2aa0066d7d78a5807f520387135ffb22",
-                "reference": "67289b6b2aa0066d7d78a5807f520387135ffb22"
-            },
-            "require": {
-                "bower-asset/jquery": ">=1.2.2"
-            },
-            "type": "bower-asset"
-        },
-        {
-            "name": "bower-asset/jquery-ui-multiselect-widget",
-            "version": "v2.0.1",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:ehynds/jquery-ui-multiselect-widget.git",
-                "reference": "a5f3e0cffa6cc1d9fcd75c5977e3185b4bd5d635"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ehynds/jquery-ui-multiselect-widget/zipball/a5f3e0cffa6cc1d9fcd75c5977e3185b4bd5d635",
-                "reference": "a5f3e0cffa6cc1d9fcd75c5977e3185b4bd5d635"
-            },
-            "type": "bower-asset"
-        },
-        {
-            "name": "bower-asset/jquery-validate",
-            "version": "1.16.0",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:jzaefferer/jquery-validation.git",
-                "reference": "29b9c702b9c831419f9f774d2acb86f42f803e11"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jzaefferer/jquery-validation/zipball/29b9c702b9c831419f9f774d2acb86f42f803e11",
-                "reference": "29b9c702b9c831419f9f774d2acb86f42f803e11"
-            },
-            "require": {
-                "bower-asset/jquery": ">=1.7.2"
-            },
-            "type": "bower-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "bower-asset/jquery.nicescroll",
-            "version": "3.6.6",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/inuyaksa/jquery.nicescroll.git",
-                "reference": "f599466737ca88d4413014f9d30485d1e7720572"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/inuyaksa/jquery.nicescroll/zipball/f599466737ca88d4413014f9d30485d1e7720572",
-                "reference": "f599466737ca88d4413014f9d30485d1e7720572"
-            },
-            "require": {
-                "bower-asset/jquery": ">=1.8.3"
-            },
-            "type": "bower-asset"
-        },
-        {
-            "name": "bower-asset/jquery.numeric",
-            "version": "v1.5",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:SamWM/jquery-numeric.git",
-                "reference": "bb9ef0cfbddcd815d21bff6cdbae0133f85e57e9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/SamWM/jquery-numeric/zipball/bb9ef0cfbddcd815d21bff6cdbae0133f85e57e9",
-                "reference": "bb9ef0cfbddcd815d21bff6cdbae0133f85e57e9"
-            },
-            "require": {
-                "bower-asset/jquery": ">=1.6"
-            },
-            "type": "bower-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "bower-asset/jsplumb",
-            "version": "1.7.10",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:sporritt/jsPlumb.git",
-                "reference": "b2b347b3d20a172d4f73528365bcf01ef953017c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sporritt/jsPlumb/zipball/b2b347b3d20a172d4f73528365bcf01ef953017c",
-                "reference": "b2b347b3d20a172d4f73528365bcf01ef953017c"
-            },
-            "type": "bower-asset",
-            "license": [
-                "MIT/GPL2"
-            ]
-        },
-        {
-            "name": "bower-asset/jstree",
-            "version": "3.3.8",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/vakata/jstree.git",
-                "reference": "c9d7c1425f2272c5400536fa631eba8657522ecf"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/vakata/jstree/zipball/c9d7c1425f2272c5400536fa631eba8657522ecf",
-                "reference": "c9d7c1425f2272c5400536fa631eba8657522ecf"
-            },
-            "require": {
-                "bower-asset/jquery": ">=1.9.1"
-            },
-            "type": "bower-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "bower-asset/lightgallery",
-            "version": "1.4.0",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:sachinchoolur/lightGallery.git",
-                "reference": "7b7603e9b1bbabee2228fb8411f34ad67993c130"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sachinchoolur/lightGallery/zipball/7b7603e9b1bbabee2228fb8411f34ad67993c130",
-                "reference": "7b7603e9b1bbabee2228fb8411f34ad67993c130"
-            },
-            "require": {
-                "bower-asset/jquery": ">=1.7.0"
-            },
-            "type": "bower-asset",
-            "license": [
-                "GPLv3"
-            ]
-        },
-        {
-            "name": "bower-asset/moment",
-            "version": "2.18.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/moment/moment.git",
-                "reference": "b8a7fc310eb3625e83fc0c8f1ea2840fa83c7378"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/moment/moment/zipball/b8a7fc310eb3625e83fc0c8f1ea2840fa83c7378",
-                "reference": "b8a7fc310eb3625e83fc0c8f1ea2840fa83c7378"
-            },
-            "type": "bower-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "bower-asset/moment-timezone",
-            "version": "0.5.13",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:moment/moment-timezone.git",
-                "reference": "2b8da8f103f019949d45dc86fd6763960c8474d8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/moment/moment-timezone/zipball/2b8da8f103f019949d45dc86fd6763960c8474d8",
-                "reference": "2b8da8f103f019949d45dc86fd6763960c8474d8"
-            },
-            "require": {
-                "bower-asset/moment": ">=2.9.0"
-            },
-            "type": "bower-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "bower-asset/numeral",
-            "version": "2.0.6",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:adamwdraper/Numeral-js.git",
-                "reference": "7de892ffb438af6e63b9c4f6aff0c9bc3932f09f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/adamwdraper/Numeral-js/zipball/7de892ffb438af6e63b9c4f6aff0c9bc3932f09f",
-                "reference": "7de892ffb438af6e63b9c4f6aff0c9bc3932f09f"
-            },
-            "type": "bower-asset"
-        },
-        {
-            "name": "bower-asset/select2",
-            "version": "3.4.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/select2/select2.git",
-                "reference": "13dc8a1ff3af6515c23dbca1ae3dcc0b0dc1b0c1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/select2/select2/zipball/13dc8a1ff3af6515c23dbca1ae3dcc0b0dc1b0c1",
-                "reference": "13dc8a1ff3af6515c23dbca1ae3dcc0b0dc1b0c1"
-            },
-            "type": "bower-asset"
-        },
-        {
-            "name": "bower-asset/timepicker",
-            "version": "1.11.11",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:jonthornton/jquery-timepicker.git",
-                "reference": "3f26316a6f417c77737488d763e9a9055c20d8ae"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jonthornton/jquery-timepicker/zipball/3f26316a6f417c77737488d763e9a9055c20d8ae",
-                "reference": "3f26316a6f417c77737488d763e9a9055c20d8ae"
-            },
-            "require": {
-                "bower-asset/jquery": ">=1.7"
-            },
-            "type": "bower-asset",
-            "license": [
-                "http://opensource.org/licenses/MIT"
-            ]
-        },
-        {
-            "name": "bower-asset/underscore",
-            "version": "1.9.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/jashkenas/underscore.git",
-                "reference": "ae037f7c41323807ae6f1533c45512e6d31a1574"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jashkenas/underscore/zipball/ae037f7c41323807ae6f1533c45512e6d31a1574",
-                "reference": "ae037f7c41323807ae6f1533c45512e6d31a1574"
-            },
-            "type": "bower-asset"
-        },
-        {
-            "name": "bower-asset/when",
-            "version": "2.4.0",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:cujojs/when.git",
-                "reference": "a2acf1d86d150f5e9617e761b4c69c3158ed01ea"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cujojs/when/zipball/a2acf1d86d150f5e9617e761b4c69c3158ed01ea",
-                "reference": "a2acf1d86d150f5e9617e761b4c69c3158ed01ea"
-            },
-            "type": "bower-asset"
         },
         {
             "name": "box/spout",
@@ -2429,21 +1847,22 @@
         },
         {
             "name": "egulias/email-validator",
-            "version": "2.1.14",
+            "version": "2.1.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "c4b8d12921999d8a561004371701dbc2e05b5ece"
+                "reference": "e834eea5306d85d67de5a05db5882911d5b29357"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/c4b8d12921999d8a561004371701dbc2e05b5ece",
-                "reference": "c4b8d12921999d8a561004371701dbc2e05b5ece",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/e834eea5306d85d67de5a05db5882911d5b29357",
+                "reference": "e834eea5306d85d67de5a05db5882911d5b29357",
                 "shasum": ""
             },
             "require": {
                 "doctrine/lexer": "^1.0.1",
-                "php": ">=5.5"
+                "php": ">=5.5",
+                "symfony/polyfill-intl-idn": "^1.10"
             },
             "require-dev": {
                 "dominicsayers/isemail": "^3.0.7",
@@ -2482,7 +1901,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2020-01-05T14:11:20+00:00"
+            "time": "2020-01-20T21:40:59+00:00"
         },
         {
             "name": "elasticsearch/elasticsearch",
@@ -2797,16 +2216,16 @@
         },
         {
             "name": "gedmo/doctrine-extensions",
-            "version": "v2.4.38",
+            "version": "v2.4.39",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Atlantic18/DoctrineExtensions.git",
-                "reference": "81681364331b131518060e4776300a5346df1eb5"
+                "reference": "c549b40bff560380c53812283d25ce42ee0992e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/81681364331b131518060e4776300a5346df1eb5",
-                "reference": "81681364331b131518060e4776300a5346df1eb5",
+                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/c549b40bff560380c53812283d25ce42ee0992e4",
+                "reference": "c549b40bff560380c53812283d25ce42ee0992e4",
                 "shasum": ""
             },
             "require": {
@@ -2823,7 +2242,7 @@
                 "doctrine/mongodb-odm": ">=1.0.2 <2.0",
                 "doctrine/orm": ">=2.5.0",
                 "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.5",
-                "symfony/yaml": "~2.6 || ~3.0 || ~4.0"
+                "symfony/yaml": "^2.6 || ^3.0 || ^4.0 || ^5.0"
             },
             "suggest": {
                 "doctrine/mongodb-odm": "to use the extensions with the MongoDB ODM",
@@ -2875,7 +2294,7 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2019-11-08T22:33:07+00:00"
+            "time": "2020-01-18T06:26:05+00:00"
         },
         {
             "name": "gos/pnctl-event-loop-emitter",
@@ -4430,6 +3849,132 @@
             "time": "2019-04-17T18:49:52+00:00"
         },
         {
+            "name": "laminas/laminas-diagnostics",
+            "version": "1.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laminas/laminas-diagnostics.git",
+                "reference": "9434b93ca7fc66999e0a2f01400e7f20214169c4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laminas/laminas-diagnostics/zipball/9434b93ca7fc66999e0a2f01400e7f20214169c4",
+                "reference": "9434b93ca7fc66999e0a2f01400e7f20214169c4",
+                "shasum": ""
+            },
+            "require": {
+                "laminas/laminas-zendframework-bridge": "^1.0",
+                "php": "^5.6 || ^7.0"
+            },
+            "conflict": {
+                "guzzlehttp/ringphp": "<1.1.1"
+            },
+            "replace": {
+                "zendframework/zenddiagnostics": "self.version"
+            },
+            "require-dev": {
+                "doctrine/migrations": "^1.0 || ^2.0",
+                "guzzlehttp/guzzle": "^5.3.3 || ^6.3.3",
+                "laminas/laminas-coding-standard": "~1.0.0",
+                "laminas/laminas-loader": "^2.0",
+                "mikey179/vfsstream": "^1.6",
+                "php-amqplib/php-amqplib": "^2.0",
+                "phpunit/phpunit": "^5.7.27 || 6.5.8 || ^7.1.2",
+                "predis/predis": "^1.0",
+                "sensiolabs/security-checker": "^5.0 || ^6.0.3",
+                "symfony/yaml": "^2.7 || ^3.0 || ^4.0 || ^5.0"
+            },
+            "suggest": {
+                "doctrine/migrations": "Required by Check\\DoctrineMigration",
+                "ext-bcmath": "Required by Check\\CpuPerformance",
+                "guzzlehttp/guzzle": "Required by Check\\GuzzleHttpService",
+                "predis/predis": "Required by Check\\Redis",
+                "sensiolabs/security-checker": "Required by Check\\SecurityAdvisory",
+                "symfony/yaml": "Required by Check\\YamlFile",
+                "videlalvaro/php-amqplib": "Required by Check\\RabbitMQ"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.6.x-dev",
+                    "dev-develop": "1.7.x-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/autoload.php"
+                ],
+                "psr-4": {
+                    "Laminas\\Diagnostics\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "A set of components for performing diagnostic tests in PHP applications",
+            "homepage": "https://laminas.dev",
+            "keywords": [
+                "diagnostics",
+                "laminas",
+                "php",
+                "test"
+            ],
+            "time": "2019-12-31T16:42:23+00:00"
+        },
+        {
+            "name": "laminas/laminas-zendframework-bridge",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laminas/laminas-zendframework-bridge.git",
+                "reference": "0fb9675b84a1666ab45182b6c5b29956921e818d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laminas/laminas-zendframework-bridge/zipball/0fb9675b84a1666ab45182b6c5b29956921e818d",
+                "reference": "0fb9675b84a1666ab45182b6c5b29956921e818d",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.6 || ^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.7 || ^6.5 || ^7.5 || ^8.1",
+                "squizlabs/php_codesniffer": "^3.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev",
+                    "dev-develop": "1.1.x-dev"
+                },
+                "laminas": {
+                    "module": "Laminas\\ZendFrameworkBridge"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/autoload.php"
+                ],
+                "psr-4": {
+                    "Laminas\\ZendFrameworkBridge\\": "src//"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Alias legacy ZF class names to Laminas Project equivalents.",
+            "keywords": [
+                "ZendFramework",
+                "autoloading",
+                "laminas",
+                "zf"
+            ],
+            "time": "2020-01-07T22:58:31+00:00"
+        },
+        {
             "name": "leafo/scssphp",
             "version": "v0.6.7",
             "source": {
@@ -4645,22 +4190,22 @@
         },
         {
             "name": "liip/monitor-bundle",
-            "version": "2.11.1",
+            "version": "2.12.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipMonitorBundle.git",
-                "reference": "f2406b35ee6423c1e70e913a5bbe2be4d4b31722"
+                "reference": "a1e2df0227dbaf724315c7203741d91acbe22cd0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipMonitorBundle/zipball/f2406b35ee6423c1e70e913a5bbe2be4d4b31722",
-                "reference": "f2406b35ee6423c1e70e913a5bbe2be4d4b31722",
+                "url": "https://api.github.com/repos/liip/LiipMonitorBundle/zipball/a1e2df0227dbaf724315c7203741d91acbe22cd0",
+                "reference": "a1e2df0227dbaf724315c7203741d91acbe22cd0",
                 "shasum": ""
             },
             "require": {
+                "laminas/laminas-diagnostics": "^1.5",
                 "php": "^7.1",
-                "symfony/framework-bundle": "^3.4 || ^4.0 || ^5.0",
-                "zendframework/zenddiagnostics": "^1.5"
+                "symfony/framework-bundle": "^3.4 || ^4.0 || ^5.0"
             },
             "require-dev": {
                 "doctrine/doctrine-migrations-bundle": "^2.0",
@@ -4722,18 +4267,18 @@
                 "monitor",
                 "monitoring"
             ],
-            "time": "2019-12-16T13:24:52+00:00"
+            "time": "2020-01-16T17:57:52+00:00"
         },
         {
             "name": "marellocommerce/marello",
-            "version": "3.0.x-dev",
+            "version": "3.0.9999999.9999999-dev",
             "dist": {
                 "type": "path",
                 "url": "../../package/marello",
-                "reference": "fc4eeddc27fb8f3a02e37d736034388b33e56ab6"
+                "reference": "f8fc0021c230ac29ba12e6bb474af618bc014863",
+                "shasum": null
             },
             "require": {
-                "mpdf/mpdf": "^7.1",
                 "oro/calendar-bundle": "4.1.*",
                 "oro/platform": "4.1.*",
                 "oro/platform-serialised-fields": "4.1.*",
@@ -4767,11 +4312,12 @@
         },
         {
             "name": "marellocommerce/marello-enterprise",
-            "version": "3.0.x-dev",
+            "version": "3.0.9999999.9999999-dev",
             "dist": {
                 "type": "path",
                 "url": "../../package/marello-enterprise",
-                "reference": "a24b4b8b9f2f1567eea336457e989a6edcb3df30"
+                "reference": "a24b4b8b9f2f1567eea336457e989a6edcb3df30",
+                "shasum": null
             },
             "require": {
                 "marellocommerce/marello": "self.version",
@@ -4803,11 +4349,12 @@
         },
         {
             "name": "marellocommerce/marello-subscriptions",
-            "version": "3.0.x-dev",
+            "version": "3.0.9999999.9999999-dev",
             "dist": {
                 "type": "path",
                 "url": "../../package/marello-subscriptions",
-                "reference": "b1902a517210782e869a1b47587ddc1dff99609c"
+                "reference": "b1902a517210782e869a1b47587ddc1dff99609c",
+                "shasum": null
             },
             "require": {
                 "marellocommerce/marello-enterprise": "self.version",
@@ -4965,74 +4512,6 @@
             "time": "2017-06-19T01:22:40+00:00"
         },
         {
-            "name": "mpdf/mpdf",
-            "version": "v7.1.9",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/mpdf/mpdf.git",
-                "reference": "a0fc1215d2306aa3b4ba6e97bd6ebe4bab6a88fb"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/mpdf/mpdf/zipball/a0fc1215d2306aa3b4ba6e97bd6ebe4bab6a88fb",
-                "reference": "a0fc1215d2306aa3b4ba6e97bd6ebe4bab6a88fb",
-                "shasum": ""
-            },
-            "require": {
-                "ext-gd": "*",
-                "ext-mbstring": "*",
-                "myclabs/deep-copy": "^1.7",
-                "paragonie/random_compat": "^1.4|^2.0|9.99.99",
-                "php": "^5.6 || ~7.0.0 || ~7.1.0 || ~7.2.0 || ~7.3.0",
-                "psr/log": "^1.0",
-                "setasign/fpdi": "1.6.*"
-            },
-            "require-dev": {
-                "mockery/mockery": "^0.9.5",
-                "phpunit/phpunit": "^5.0",
-                "squizlabs/php_codesniffer": "^2.7.0",
-                "tracy/tracy": "^2.4"
-            },
-            "suggest": {
-                "ext-bcmath": "Needed for generation of some types of barcodes",
-                "ext-xml": "Needed mainly for SVG manipulation",
-                "ext-zlib": "Needed for compression of embedded resources, such as fonts"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-development": "7.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Mpdf\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0-only"
-            ],
-            "authors": [
-                {
-                    "name": "Matěj Humpál",
-                    "role": "Developer, maintainer"
-                },
-                {
-                    "name": "Ian Back",
-                    "role": "Developer (retired)"
-                }
-            ],
-            "description": "PHP library generating PDF files from UTF-8 encoded HTML",
-            "homepage": "https://mpdf.github.io",
-            "keywords": [
-                "pdf",
-                "php",
-                "utf-8"
-            ],
-            "time": "2019-02-06T13:32:19+00:00"
-        },
-        {
             "name": "mtdowling/cron-expression",
             "version": "v1.2.3",
             "source": {
@@ -5126,54 +4605,6 @@
                 "yml"
             ],
             "time": "2019-09-10T13:16:29+00:00"
-        },
-        {
-            "name": "myclabs/deep-copy",
-            "version": "1.9.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "579bb7356d91f9456ccd505f24ca8b667966a0a7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/579bb7356d91f9456ccd505f24ca8b667966a0a7",
-                "reference": "579bb7356d91f9456ccd505f24ca8b667966a0a7",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.1"
-            },
-            "replace": {
-                "myclabs/deep-copy": "self.version"
-            },
-            "require-dev": {
-                "doctrine/collections": "^1.0",
-                "doctrine/common": "^2.6",
-                "phpunit/phpunit": "^7.1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "DeepCopy\\": "src/DeepCopy/"
-                },
-                "files": [
-                    "src/DeepCopy/deep_copy.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Create deep copies (clones) of your objects",
-            "keywords": [
-                "clone",
-                "copy",
-                "duplicate",
-                "object",
-                "object graph"
-            ],
-            "time": "2019-12-15T19:12:40+00:00"
         },
         {
             "name": "nelmio/api-doc-bundle",
@@ -5368,195 +4799,6 @@
                 "time"
             ],
             "time": "2018-05-29T15:23:46+00:00"
-        },
-        {
-            "name": "npm-asset/asap",
-            "version": "2.0.6",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/asap/-/asap-2.0.6.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/backbone",
-            "version": "1.4.0",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/backbone/-/backbone-1.4.0.tgz"
-            },
-            "require": {
-                "npm-asset/underscore": ">=1.8.3"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/bootstrap",
-            "version": "4.3.1",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/bootstrap/-/bootstrap-4.3.1.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/css-vars-ponyfill",
-            "version": "2.0.2",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/css-vars-ponyfill/-/css-vars-ponyfill-2.0.2.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/focus-visible",
-            "version": "5.0.2",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/focus-visible/-/focus-visible-5.0.2.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "W3C"
-            ]
-        },
-        {
-            "name": "npm-asset/font-awesome",
-            "version": "4.7.0",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/font-awesome/-/font-awesome-4.7.0.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "(OFL-1.1 AND MIT)"
-            ]
-        },
-        {
-            "name": "npm-asset/jquery",
-            "version": "3.4.1",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/jquery/-/jquery-3.4.1.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/jquery-ui",
-            "version": "1.12.1",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/jquery-ui/-/jquery-ui-1.12.1.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/jquery.uniform",
-            "version": "4.3.0",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/jquery.uniform/-/jquery.uniform-4.3.0.tgz"
-            },
-            "require": {
-                "npm-asset/jquery": ">=3.3.1,<4.0.0"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/overlayscrollbars",
-            "version": "1.6.3",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/overlayscrollbars/-/overlayscrollbars-1.6.3.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/popper.js",
-            "version": "1.14.7",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/popper.js/-/popper.js-1.14.7.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/scriptjs",
-            "version": "2.5.9",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/scriptjs/-/scriptjs-2.5.9.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/slick-carousel",
-            "version": "1.6.0",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/slick-carousel/-/slick-carousel-1.6.0.tgz"
-            },
-            "require": {
-                "npm-asset/jquery": ">=1.7.2"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/underscore",
-            "version": "1.9.1",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/underscore/-/underscore-1.9.1.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/xregexp",
-            "version": "3.2.0",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/xregexp/-/xregexp-3.2.0.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
         },
         {
             "name": "nyholm/psr7",
@@ -8398,55 +7640,6 @@
             "time": "2018-12-11T16:59:23+00:00"
         },
         {
-            "name": "setasign/fpdi",
-            "version": "1.6.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Setasign/FPDI.git",
-                "reference": "a6ad58897a6d97cc2d2cd2adaeda343b25a368ea"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Setasign/FPDI/zipball/a6ad58897a6d97cc2d2cd2adaeda343b25a368ea",
-                "reference": "a6ad58897a6d97cc2d2cd2adaeda343b25a368ea",
-                "shasum": ""
-            },
-            "suggest": {
-                "setasign/fpdf": "FPDI will extend this class but as it is also possible to use \"tecnickcom/tcpdf\" as an alternative there's no fixed dependency configured.",
-                "setasign/fpdi-fpdf": "Use this package to automatically evaluate dependencies to FPDF.",
-                "setasign/fpdi-tcpdf": "Use this package to automatically evaluate dependencies to TCPDF."
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "filters/",
-                    "fpdi.php",
-                    "fpdf_tpl.php",
-                    "fpdi_pdf_parser.php",
-                    "pdf_context.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jan Slabon",
-                    "email": "jan.slabon@setasign.com",
-                    "homepage": "https://www.setasign.com"
-                }
-            ],
-            "description": "FPDI is a collection of PHP classes facilitating developers to read pages from existing PDF documents and use them as templates in FPDF. Because it is also possible to use FPDI with TCPDF, there are no fixed dependencies defined. Please see suggestions for packages which evaluates the dependencies automatically.",
-            "homepage": "https://www.setasign.com/fpdi",
-            "keywords": [
-                "fpdf",
-                "fpdi",
-                "pdf"
-            ],
-            "time": "2017-05-11T14:25:49+00:00"
-        },
-        {
             "name": "snc/redis-bundle",
             "version": "2.1.13",
             "source": {
@@ -10461,78 +9654,6 @@
             ],
             "abandoned": "laminas/laminas-validator",
             "time": "2019-12-28T04:07:18+00:00"
-        },
-        {
-            "name": "zendframework/zenddiagnostics",
-            "version": "v1.6.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zendframework/zend-diagnostics.git",
-                "reference": "9ad04e7a911c3895071cfb7ec22c5f354a0099fe"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-diagnostics/zipball/9ad04e7a911c3895071cfb7ec22c5f354a0099fe",
-                "reference": "9ad04e7a911c3895071cfb7ec22c5f354a0099fe",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^5.6 || ^7.0"
-            },
-            "conflict": {
-                "guzzlehttp/ringphp": "<1.1.1"
-            },
-            "require-dev": {
-                "doctrine/migrations": "^1.0 || ^2.0",
-                "guzzlehttp/guzzle": "^5.3.3 || ^6.3.3",
-                "mikey179/vfsstream": "^1.6",
-                "php-amqplib/php-amqplib": "^2.0",
-                "phpunit/phpunit": "^5.7.27 || 6.5.8 || ^7.1.2",
-                "predis/predis": "^1.0",
-                "sensiolabs/security-checker": "^5.0 || ^6.0.3",
-                "symfony/yaml": "^2.7 || ^3.0 || ^4.0 || ^5.0",
-                "zendframework/zend-coding-standard": "~1.0.0",
-                "zendframework/zend-loader": "^2.0"
-            },
-            "suggest": {
-                "doctrine/migrations": "Required by Check\\DoctrineMigration",
-                "ext-bcmath": "Required by Check\\CpuPerformance",
-                "guzzlehttp/guzzle": "Required by Check\\GuzzleHttpService",
-                "predis/predis": "Required by Check\\Redis",
-                "sensiolabs/security-checker": "Required by Check\\SecurityAdvisory",
-                "symfony/yaml": "Required by Check\\YamlFile",
-                "videlalvaro/php-amqplib": "Required by Check\\RabbitMQ"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.6.x-dev",
-                    "dev-develop": "1.7.x-dev"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "src/autoload.php"
-                ],
-                "psr-4": {
-                    "ZendDiagnostics\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "A set of components for performing diagnostic tests in PHP applications",
-            "homepage": "https://github.com/zendframework/zend-diagnostics",
-            "keywords": [
-                "ZendFramework",
-                "diagnostics",
-                "php",
-                "test",
-                "zf"
-            ],
-            "abandoned": "laminas/laminas-diagnostics",
-            "time": "2019-11-22T19:06:24+00:00"
         }
     ],
     "packages-dev": [
@@ -11254,6 +10375,54 @@
             "time": "2018-06-08T12:31:55+00:00"
         },
         {
+            "name": "myclabs/deep-copy",
+            "version": "1.9.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/myclabs/DeepCopy.git",
+                "reference": "b2c28789e80a97badd14145fda39b545d83ca3ef"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/b2c28789e80a97badd14145fda39b545d83ca3ef",
+                "reference": "b2c28789e80a97badd14145fda39b545d83ca3ef",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1"
+            },
+            "replace": {
+                "myclabs/deep-copy": "self.version"
+            },
+            "require-dev": {
+                "doctrine/collections": "^1.0",
+                "doctrine/common": "^2.6",
+                "phpunit/phpunit": "^7.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DeepCopy\\": "src/DeepCopy/"
+                },
+                "files": [
+                    "src/DeepCopy/deep_copy.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Create deep copies (clones) of your objects",
+            "keywords": [
+                "clone",
+                "copy",
+                "duplicate",
+                "object",
+                "object graph"
+            ],
+            "time": "2020-01-17T21:11:47+00:00"
+        },
+        {
             "name": "nelmio/alice",
             "version": "v3.5.8",
             "source": {
@@ -11660,24 +10829,24 @@
         },
         {
             "name": "phpspec/prophecy",
-            "version": "1.10.1",
+            "version": "v1.10.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "cbe1df668b3fe136bcc909126a0f529a78d4cbbc"
+                "reference": "b4400efc9d206e83138e2bb97ed7f5b14b831cd9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/cbe1df668b3fe136bcc909126a0f529a78d4cbbc",
-                "reference": "cbe1df668b3fe136bcc909126a0f529a78d4cbbc",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/b4400efc9d206e83138e2bb97ed7f5b14b831cd9",
+                "reference": "b4400efc9d206e83138e2bb97ed7f5b14b831cd9",
                 "shasum": ""
             },
             "require": {
                 "doctrine/instantiator": "^1.0.2",
                 "php": "^5.3|^7.0",
                 "phpdocumentor/reflection-docblock": "^2.0|^3.0.2|^4.0|^5.0",
-                "sebastian/comparator": "^1.2.3|^2.0|^3.0",
-                "sebastian/recursion-context": "^1.0|^2.0|^3.0"
+                "sebastian/comparator": "^1.2.3|^2.0|^3.0|^4.0",
+                "sebastian/recursion-context": "^1.0|^2.0|^3.0|^4.0"
             },
             "require-dev": {
                 "phpspec/phpspec": "^2.5 || ^3.2",
@@ -11719,7 +10888,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2019-12-22T21:05:45+00:00"
+            "time": "2020-01-20T15:57:02+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
