@@ -11,8 +11,7 @@ services:
         class: Marello\Bundle\RefundBundle\Twig\RefundExtension
         arguments:
             - '@oro_workflow.manager'
-        calls:
-            - ['setRefundBalanceCalculator',  ['@marello_refund.calculator.refund_balance']]
+            - '@marello_refund.calculator.refund_balance'
         tags:
             - { name: twig.extension }
 

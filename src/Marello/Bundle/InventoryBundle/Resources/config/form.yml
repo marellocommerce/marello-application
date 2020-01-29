@@ -42,8 +42,7 @@ services:
         class: 'Marello\Bundle\InventoryBundle\Form\Type\InventoryLevelType'
         arguments:
             - '@marello_inventory.form.event_listener.inventory_level_subscriber'
-        calls:
-            - ['setEventDispatcher', ['@event_dispatcher']]
+            - '@event_dispatcher'
         tags:
             - { name: form.type }
 
