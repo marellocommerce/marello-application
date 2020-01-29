@@ -32,17 +32,6 @@ class InventoryManager implements InventoryManagerInterface
     protected $eventDispatcher;
 
     /**
-     * @deprecated use updateInventoryLevel instead
-     * Update inventory items based of context and calculate new inventory level
-     * @param InventoryUpdateContext $context
-     * @throws \Exception
-     */
-    public function updateInventoryItems(InventoryUpdateContext $context)
-    {
-        $this->updateInventoryLevel($context);
-    }
-
-    /**
      * Update inventory items based of context and calculate new inventory level
      * @param InventoryUpdateContext $context
      * @throws \Exception

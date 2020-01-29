@@ -30,8 +30,6 @@ services:
     marello_inventory.importexport.strategy.inventory.add_or_replace:
         class: Marello\Bundle\InventoryBundle\ImportExport\Strategy\InventoryLevelUpdateStrategy
         parent: oro_importexport.strategy.configurable_add_or_replace
-        calls:
-            - [setLevelCalculator, ['@marello_inventory.model.inventory_level_calculator']]
 
     # Import processor
     marello_inventory.importexport.processor.import.add_or_replace:

@@ -86,9 +86,9 @@ services:
             - APP_DB_DRIVER=pdo_mysql
             - APP_DB_HOST=db
             - APP_DB_PORT=3306
-            - APP_DB_USER=marellocommerce
+            - APP_DB_USER=root
             - APP_DB_PASSWORD=root
-            - APP_DB_NAME=root
+            - APP_DB_NAME=marellocommerce
             - APP_HOSTNAME=http://localhost:5080
             - APP_MAILER_TRANSPORT=smtp
             - APP_MAILER_HOST=mailhog
