@@ -42,6 +42,7 @@ class InventoryItemManager implements InventoryItemManagerInterface
                 ->getDefault();
             $inventoryItem = new InventoryItem($defaultWarehouse, $product);
             $inventoryItem->setOrganization($product->getOrganization());
+            $inventoryItem->setEnableBatchInventory(false);
             
             return $inventoryItem;
         }
