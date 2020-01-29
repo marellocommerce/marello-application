@@ -106,10 +106,10 @@ class ReplenishmentOrderAllocateDestinationInventoryAction extends Replenishment
                     /** @var InventoryItem $inventoryItem */
                     $inventoryItem = $item->getProduct()->getInventoryItems()->first();
                     if ($inventoryItem) {
+                        $destinationInventoryBatch = clone $originInventoryBatch;
+                        $destinationInventoryBatch->setQuantity(0);
                         $destinationInventoryLevel = $inventoryItem->getInventoryLevel($destinationWarehouse);
                         if ($destinationInventoryLevel) {
-                            $destinationInventoryBatch = clone $originInventoryBatch;
-                            $destinationInventoryBatch->setQuantity(0);
                             $destinationInventoryBatch->setInventoryLevel($destinationInventoryLevel);
                         }
                     }
