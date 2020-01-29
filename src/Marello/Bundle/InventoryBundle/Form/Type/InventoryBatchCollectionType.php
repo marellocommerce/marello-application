@@ -44,7 +44,7 @@ class InventoryBatchCollectionType extends AbstractType
             'entry_type'           => InventoryBatchType::class,
             'allow_add'            => true,
             'allow_remove'         => false,
-            'show_form_when_empty' => true,
+            'show_form_when_empty' => false,
             'error_bubbling'       => false,
             'constraints'          => [new Valid()],
             'prototype_name'       => '__nameinventorybatchcollection__',
