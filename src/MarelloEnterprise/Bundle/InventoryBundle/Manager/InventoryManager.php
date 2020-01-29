@@ -60,6 +60,7 @@ class InventoryManager extends BaseInventoryManager
                 foreach ($context->getInventoryBatches() as $batchData) {
                     /** @var InventoryBatch $batch */
                     $batch = $batchData['batch'];
+                    $batch->setInventoryLevel($level);
                     $qty = $batchData['qty'];
                     $batchInventory = ($batch->getQuantity() + $qty);
                     $updatedBatches[] = $this->updateInventoryBatch($batch, $batchInventory);
