@@ -302,7 +302,7 @@ class ReplenishmentOrderItem implements ProductAwareInterface, OrganizationAware
      */
     public function getInventoryBatches()
     {
-        return $this->inventoryBatches;
+        return $this->inventoryBatches ? : [];
     }
 
     /**
