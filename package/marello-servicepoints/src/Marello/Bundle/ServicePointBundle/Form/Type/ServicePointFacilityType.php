@@ -16,13 +16,15 @@ class ServicePointFacilityType extends AbstractType
         $builder
             ->add('facility', FacilitySelectType::class, [
                 'label' => 'marello.servicepoint.servicepoint_facility.facility.label',
-                'required' => true,
+                'required' => true
             ])
             ->add('phone', TextType::class, [
                 'label' => 'marello.servicepoint.servicepoint_facility.phone.label',
+                'required' => false
             ])
             ->add('email', EmailType::class, [
                 'label' => 'marello.servicepoint.servicepoint_facility.email.label',
+                'required' => false
             ])
             ->add('businessHours', BusinessHoursCollectionType::class, [
                 'label' => 'marello.servicepoint.servicepoint_facility.business_hours.label',

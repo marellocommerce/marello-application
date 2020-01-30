@@ -53,8 +53,8 @@ marello:
             facility.label: "Facility"
             business_hours.label: "Business Hours"
             business_hours_overrides.label: "Business Hours Overrides"
-            phone.label: "Phone Number"
-            email.label: "E-mail address"
+            phone.label: "Phone"
+            email.label: "Email"
 
         ui:
             facility:
