@@ -235,16 +235,16 @@
         },
         {
             "name": "brick/math",
-            "version": "0.8.9",
+            "version": "0.8.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/brick/math.git",
-                "reference": "2667c1659c1dcc681b4207f722180024d12a3626"
+                "reference": "bf4894d6373d396666d280a42ecdf1ad75f8222f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/brick/math/zipball/2667c1659c1dcc681b4207f722180024d12a3626",
-                "reference": "2667c1659c1dcc681b4207f722180024d12a3626",
+                "url": "https://api.github.com/repos/brick/math/zipball/bf4894d6373d396666d280a42ecdf1ad75f8222f",
+                "reference": "bf4894d6373d396666d280a42ecdf1ad75f8222f",
                 "shasum": ""
             },
             "require": {
@@ -275,7 +275,7 @@
                 "brick",
                 "math"
             ],
-            "time": "2020-01-08T09:40:28+00:00"
+            "time": "2020-01-23T00:19:01+00:00"
         },
         {
             "name": "cboden/ratchet",
@@ -2736,6 +2736,7 @@
                 }
             ],
             "description": "Provides a simple API and specification that abstracts away the details of HTTP into a single PHP function.",
+            "abandoned": true,
             "time": "2018-07-31T13:22:33+00:00"
         },
         {
@@ -9015,16 +9016,16 @@
         },
         {
             "name": "ua-parser/uap-php",
-            "version": "v3.9.3",
+            "version": "v3.9.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ua-parser/uap-php.git",
-                "reference": "a1d4e652eb67be705410433b0a6617d301553cd6"
+                "reference": "8c1e3c6c7698d197368bfaa0d16734c947d94e99"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ua-parser/uap-php/zipball/a1d4e652eb67be705410433b0a6617d301553cd6",
-                "reference": "a1d4e652eb67be705410433b0a6617d301553cd6",
+                "url": "https://api.github.com/repos/ua-parser/uap-php/zipball/8c1e3c6c7698d197368bfaa0d16734c947d94e99",
+                "reference": "8c1e3c6c7698d197368bfaa0d16734c947d94e99",
                 "shasum": ""
             },
             "require": {
@@ -9068,7 +9069,7 @@
                 }
             ],
             "description": "A multi-language port of Browserscope's user agent parser.",
-            "time": "2020-01-10T10:34:59+00:00"
+            "time": "2020-01-21T09:54:19+00:00"
         },
         {
             "name": "webmozart/assert",
@@ -10224,16 +10225,16 @@
         },
         {
             "name": "instaclick/php-webdriver",
-            "version": "1.4.6",
+            "version": "1.4.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/instaclick/php-webdriver.git",
-                "reference": "bd9405077ca04129a73059a06873bedb5e138402"
+                "reference": "b5f330e900e9b3edfc18024a5ec8c07136075712"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/instaclick/php-webdriver/zipball/bd9405077ca04129a73059a06873bedb5e138402",
-                "reference": "bd9405077ca04129a73059a06873bedb5e138402",
+                "url": "https://api.github.com/repos/instaclick/php-webdriver/zipball/b5f330e900e9b3edfc18024a5ec8c07136075712",
+                "reference": "b5f330e900e9b3edfc18024a5ec8c07136075712",
                 "shasum": ""
             },
             "require": {
@@ -10279,7 +10280,7 @@
                 "webdriver",
                 "webtest"
             ],
-            "time": "2019-09-23T15:50:44+00:00"
+            "time": "2019-09-25T09:05:11+00:00"
         },
         {
             "name": "johnkary/phpunit-speedtrap",
@@ -11990,16 +11991,16 @@
         },
         {
             "name": "symfony/class-loader",
-            "version": "v3.4.36",
+            "version": "v3.4.37",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/class-loader.git",
-                "reference": "e212b06996819a2bce026a63da03b7182d05a690"
+                "reference": "bcdf6ff46e115b29be3186391f29e0da82cd6f72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/class-loader/zipball/e212b06996819a2bce026a63da03b7182d05a690",
-                "reference": "e212b06996819a2bce026a63da03b7182d05a690",
+                "url": "https://api.github.com/repos/symfony/class-loader/zipball/bcdf6ff46e115b29be3186391f29e0da82cd6f72",
+                "reference": "bcdf6ff46e115b29be3186391f29e0da82cd6f72",
                 "shasum": ""
             },
             "require": {
@@ -12042,20 +12043,20 @@
             ],
             "description": "Symfony ClassLoader Component",
             "homepage": "https://symfony.com",
-            "time": "2019-08-20T13:31:17+00:00"
+            "time": "2020-01-04T12:05:51+00:00"
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v4.3.9",
+            "version": "v4.3.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "e1ce1695430a3c8ee876ff1d91ce64871786581f"
+                "reference": "60539d90c2e80d2f33cf6c42cb1ab70362f31cae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/e1ce1695430a3c8ee876ff1d91ce64871786581f",
-                "reference": "e1ce1695430a3c8ee876ff1d91ce64871786581f",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/60539d90c2e80d2f33cf6c42cb1ab70362f31cae",
+                "reference": "60539d90c2e80d2f33cf6c42cb1ab70362f31cae",
                 "shasum": ""
             },
             "require": {
@@ -12107,7 +12108,7 @@
             ],
             "description": "Symfony PHPUnit Bridge",
             "homepage": "https://symfony.com",
-            "time": "2019-11-28T10:34:19+00:00"
+            "time": "2020-01-21T08:20:29+00:00"
         },
         {
             "name": "theofidry/alice-data-fixtures",

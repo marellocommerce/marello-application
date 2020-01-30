@@ -64,13 +64,6 @@ define(function(require) {
             this.initLayout().done(_.bind(this.handleLayoutInit, this));
 
             this.loadingMaskView = new LoadingMaskView({container: this.$el});
-            if (this.options.selectors.subtotalsFields.length > 0) {
-                _.each(this.options.selectors.subtotalsFields, function(field) {
-                    $(field).on('change', function() {
-                        mediator.trigger('order:form-changes:trigger', {updateFields: ['items', 'totals', 'possible_shipping_methods', 'possible_payment_methods']});
-                    });
-                });
-            }
 
             mediator.on('order:form-changes:trigger', this.loadingStart, this);
             mediator.on('order:form-changes:load', this.loadFormChanges, this);
@@ -99,7 +92,7 @@ define(function(require) {
             if (this.options.selectors.address) {
                 this.setAddress(this.$el.find(this.options.selectors.address));
 
-                this.customerAddressChange();
+                //this.customerAddressChange();
             } else {
                 this._setReadOnlyMode(true);
             }
@@ -147,13 +140,29 @@ define(function(require) {
                 var address = this.$address.data('addresses')[this.$address.val()] || null;
                 if (address) {
                     var self = this;
-
+                    _.each(this.options.selectors.subtotalsFields, function (field) {
+                        $(field).off('change', function () {
+                            mediator.trigger('order:form-changes:trigger', {updateFields: ['items', 'totals', 'possible_shipping_methods', 'possible_payment_methods']});
+                        });
+                    });
                     _.each(address, function(value, name) {
                         if (_.isObject(value)) {
                             value = _.first(_.values(value));
                         }
                         var $field = self.fieldsByName[self.normalizeName(name)] || null;
                         if ($field) {
+                            if (self.options.selectors.subtotalsFields.length > 0 && name === 'region' && value !== null) {
+                                $field.on('change', function (e) {
+                                    self.triggered = false;
+                                    $( document ).ajaxComplete(function( event, request, settings ) {
+                                        if ($field.val() === value && self.triggered !== true) {
+                                            self.triggered = true;
+                                            $field.off('change');
+                                            mediator.trigger('order:form-changes:trigger', {updateFields: ['items', 'totals', 'possible_shipping_methods', 'possible_payment_methods']});
+                                        }
+                                    });
+                                });
+                            }
                             $field.val(value);
                             if ($field.data('select2')) {
                                 $field.data('selected-data', value).change();
@@ -167,9 +176,25 @@ define(function(require) {
         },
 
         _setReadOnlyMode: function(mode) {
+            const self = this;
             this.$fields.each(function() {
                 $(this).prop('readonly', mode).inputWidget('refresh');
             });
+            if (this.options.selectors.subtotalsFields.length > 0) {
+                if (mode === false) {
+                    _.each(this.options.selectors.subtotalsFields, function (field) {
+                        $(field).on('change', function () {
+                            mediator.trigger('order:form-changes:trigger', {updateFields: ['items', 'totals', 'possible_shipping_methods', 'possible_payment_methods']});
+                        });
+                    });
+                } else {
+                    _.each(this.options.selectors.subtotalsFields, function (field) {
+                        $(field).off('change', function () {
+                            mediator.trigger('order:form-changes:trigger', {updateFields: ['items', 'totals', 'possible_shipping_methods', 'possible_payment_methods']});
+                        });
+                    });
+                }
+            }
         },
 
         /**

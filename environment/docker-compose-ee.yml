@@ -14,8 +14,9 @@ services:
             - MYSQL_DATABASE=marellocommerce
             - MYSQL_USER=marellocommerce
             - MYSQL_PASSWORD=marellocommerce
-        volumes_from:
-            - data
+        volumes:
+            - dbdata:/var/lib/mysql
+
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
         container_name: enterprise-phpmyadmin
@@ -35,8 +36,8 @@ services:
             - POSTGRES_PASSWORD=root
             - POSTGRES_USER=root
             - POSTGRES_DB=marellocommerce
-        volumes_from:
-            - data
+        volumes:
+            - dbdata:/var/lib/postgresql/data
 
     adminer:
         image: adminer
@@ -98,3 +99,6 @@ services:
             - APP_WEBSOCKET_HOST=
             - APP_WEBSOCKET_PORT=5081
             - APP_IS_INSTALLED=
+
+volumes:
+    dbdata:

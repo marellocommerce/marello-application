@@ -13,8 +13,8 @@ services:
             - POSTGRES_PASSWORD=root
             - POSTGRES_USER=root
             - POSTGRES_DB=marellocommerce
-        volumes_from:
-            - data
+        volumes:
+            - dbdata:/var/lib/postgresql/data
     #todo:: install x-delayed messages plugin for supporting correct messages in Oro
 #    rabbitmq:
 #        image: rabbitmq:3-management-alpine
