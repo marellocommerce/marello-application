@@ -22,11 +22,6 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
     const ALLOCATED_QTY = 0;
 
     /**
-     * @var InventoryLevelCalculator
-     */
-    protected $levelCalculator;
-
-    /**
      * @param object|InventoryLevel $entity
      * @param bool                 $isFullData
      * @param bool                 $isPersistNew
@@ -167,37 +162,6 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
     }
 
     /**
-     * Get adjustment operator
-     * @param $inventoryQty
-     * @return string
-     * @deprecated since version 1.2.3, will be removed in 1.3
-     */
-    protected function getAdjustmentOperator($inventoryQty)
-    {
-        if ($inventoryQty < 0) {
-            return InventoryLevelCalculator::OPERATOR_DECREASE;
-        }
-
-        return InventoryLevelCalculator::OPERATOR_INCREASE;
-    }
-
-    /**
-     * @param $entityClass
-     * @return null
-     * @deprecated since version 1.2.3, will be removed in 1.3
-     */
-    protected function addAccessDeniedError($entityClass)
-    {
-        $error = $this->translator->trans(
-            'oro.importexport.import.errors.access_denied_entity',
-            ['%entity_name%' => $entityClass]
-        );
-        $this->context->addError($error);
-
-        return null;
-    }
-
-    /**
      * @param $itemData
      * @return null
      */
@@ -323,15 +287,5 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
         } else {
             $this->context->incrementAddCount();
         }
-    }
-
-    /**
-     * Set inventoryLevel calculator
-     * @param InventoryLevelCalculator $levelCalculator
-     * @deprecated since version 1.2.3, will be removed in 1.3
-     */
-    public function setLevelCalculator(InventoryLevelCalculator $levelCalculator)
-    {
-        $this->levelCalculator = $levelCalculator;
     }
 }
