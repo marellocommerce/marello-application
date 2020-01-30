@@ -8,7 +8,9 @@ use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(
+ *     repositoryClass="Marello\Bundle\AddressBundle\Entity\Repository\MarelloAddressRepository"
+ * )
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(name="marello_address")
  * @ORM\AssociationOverrides({
