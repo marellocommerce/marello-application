@@ -6,13 +6,7 @@ datagrids:
             acl_resource: marello_product_view
             query:
                 select:
-                    - p.id
-                    - p.sku
-                    - p.type
-                    - p.weight
-                    - p.manufacturingCode
-                    - p.createdAt
-                    - p.updatedAt
+                    - p
                 from:
                     - { table: MarelloProductBundle:Product, alias: p }
                 groupBy: p.id
