@@ -21,8 +21,8 @@ navigation:
                 children:
                     servicepoints_tab:
                         children:
-                            facilities: ~
                             servicepoints: ~
+                            facilities: ~
 
     titles:
         marello_servicepoint_facility_index: 'marello.servicepoint.facility.entity_plural_label'
