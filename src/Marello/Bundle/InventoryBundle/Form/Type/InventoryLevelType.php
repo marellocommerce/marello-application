@@ -37,11 +37,16 @@ class InventoryLevelType extends AbstractType
     protected $eventDispatcher;
 
     /**
+     * InventoryLevelType constructor.
      * @param EventSubscriberInterface $subscriber
+     * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(EventSubscriberInterface $subscriber)
-    {
+    public function __construct(
+        EventSubscriberInterface $subscriber,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->subscriber = $subscriber;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -146,19 +151,6 @@ class InventoryLevelType extends AbstractType
             $vars['manageBatches'] = false;
         }
         $view->vars = $vars;
-    }
-
-    /**
-     * Added to keep BC
-     * @deprecated will be removed in 3.0
-     * @param EventDispatcherInterface $eventDispatcher
-     * @return $this
-     */
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
-    {
-        $this->eventDispatcher = $eventDispatcher;
-
-        return $this;
     }
 
     /**

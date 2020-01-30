@@ -13,13 +13,6 @@ use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 
 class LoadSupplierData extends AbstractFixture implements DependentFixtureInterface
 {
-    // keep constants for BC
-    /** @deprecated will be removed in 3.x */
-    const SUPPLIER_COST_PERCENTAGE = 0.40;
-
-    /** @deprecated will be removed in 3.x */
-    const DEFAULT_SUPPLIER_COST = 0.00;
-
     /** @var ObjectManager $manager */
     protected $manager;
 
