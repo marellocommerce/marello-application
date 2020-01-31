@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\InventoryBundle\Form\EventListener;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
@@ -71,7 +72,12 @@ class InventoryLevelSubscriber implements EventSubscriberInterface
         if ($adjustment === 0) {
             return;
         }
-
+        if (!$inventoryLevel->getInventoryItem()) {
+            $inventoryItem = $this->getInventoryItem($event);
+            if ($inventoryItem) {
+                $inventoryLevel->setInventoryItem($inventoryItem);
+            }
+        }
         $context = InventoryUpdateContextFactory::createInventoryLevelUpdateContext(
             $inventoryLevel,
             $inventoryLevel->getInventoryItem(),
@@ -127,6 +133,31 @@ class InventoryLevelSubscriber implements EventSubscriberInterface
         }
 
         return true;
+    }
+
+    /**
+     * @param FormEvent $event
+     * @return InventoryItem
+     */
+    protected function getInventoryItem(FormEvent $event)
+    {
+        $form = $event->getForm();
+        $inventoryLevel = $event->getData();
+        if ($inventoryItem = $inventoryLevel->getInventoryItem()) {
+            return $inventoryItem;
+        }
+        $collectionForm = $form->getParent();
+        if ($collectionForm) {
+            $inventoryItemForm = $collectionForm->getParent();
+            if ($inventoryItemForm) {
+                $inventoryItem = $inventoryItemForm->getData();
+                if ($inventoryItem instanceof InventoryItem) {
+                    return $inventoryItem;
+                }
+            }
+        }
+
+        return null;
     }
 
     /**
