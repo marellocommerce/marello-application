@@ -45,7 +45,7 @@ services:
         ports:
             - "5084:8080"
         links:
-            - db
+            - db_postgres
 
     mailhog:
         image: mailhog/mailhog
@@ -64,6 +64,7 @@ services:
         working_dir: /var/www/
         links:
             - "db"
+            - "db_postgres"
             - "mailhog"
         ports:
             - "5080:80"

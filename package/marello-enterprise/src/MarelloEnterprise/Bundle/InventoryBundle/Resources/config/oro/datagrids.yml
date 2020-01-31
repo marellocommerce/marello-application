@@ -84,9 +84,6 @@ datagrids:
                     - whg
                 from:
                     - { table: MarelloInventoryBundle:WarehouseGroup, alias: whg }
-                join:
-                    left:
-                        - { join: whg.warehouses, alias: wh }
                 where:
                     and:
                         - whg.system != true
