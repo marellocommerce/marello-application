@@ -35,7 +35,12 @@ class InventoryLevelSubscriber extends BaseInventoryLevelSubscriber
         if ($adjustment === 0) {
             return;
         }
-
+        if (!$inventoryLevel->getInventoryItem()) {
+            $inventoryItem = $this->getInventoryItem($event);
+            if ($inventoryItem) {
+                $inventoryLevel->setInventoryItem($inventoryItem);
+            }
+        }
         $context = InventoryUpdateContextFactory::createInventoryLevelUpdateContext(
             $inventoryLevel,
             $inventoryLevel->getInventoryItem(),
