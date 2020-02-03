@@ -10,6 +10,8 @@ class ChannelPricesDatagridListener
 {
     const DATA_NAME = 'channelPrices';
     const JOIN_ALIAS = 'cpr';
+    const CHANNEL_DATA_NAME = 'channel';
+    const CHANNEL_JOIN_ALIAS = 'ch';
     const DEFAULT_DATA_NAME = 'defaultPrice';
     const DEFAULT_JOIN_ALIAS = 'defcpr';
     const SPECIAL_DATA_NAME = 'specialPrice';
@@ -89,6 +91,8 @@ class ChannelPricesDatagridListener
     {
         $ormQuery = $config->getOrmQuery();
         $ormQuery
+            ->addSelect(sprintf('GROUP_CONCAT(DISTINCT CONCAT_WS(\'|\', %1$s.name, %2$s.value, %2$s.currency) SEPARATOR \';\') as defaultChannelPrices', self::CHANNEL_JOIN_ALIAS, self::DEFAULT_JOIN_ALIAS))
+            ->addSelect(sprintf('GROUP_CONCAT(DISTINCT CONCAT_WS(\'|\', %1$s.name, %2$s.value, %2$s.currency) SEPARATOR \';\') as specialChannelPrices', self::CHANNEL_JOIN_ALIAS, self::SPECIAL_JOIN_ALIAS))
             ->addSelect(sprintf('sum(%s.value) as defaultChannelPricesSum', self::DEFAULT_JOIN_ALIAS))
             ->addSelect(sprintf('sum(%s.value) as specialChannelPricesSum', self::SPECIAL_JOIN_ALIAS));
     }
@@ -101,6 +105,7 @@ class ChannelPricesDatagridListener
         $ormQuery = $config->getOrmQuery();
         $ormQuery
             ->addLeftJoin(sprintf('%s.%s', $this->getAlias($config), self::DATA_NAME), $this->getJoinAlias())
+            ->addLeftJoin(sprintf('%s.%s', $this->getJoinAlias(), self::CHANNEL_DATA_NAME), self::CHANNEL_JOIN_ALIAS)
             ->addLeftJoin(sprintf('%s.%s', $this->getJoinAlias(), self::DEFAULT_DATA_NAME), self::DEFAULT_JOIN_ALIAS)
             ->addLeftJoin(sprintf('%s.%s', $this->getJoinAlias(), self::SPECIAL_DATA_NAME), self::SPECIAL_JOIN_ALIAS);
     }
