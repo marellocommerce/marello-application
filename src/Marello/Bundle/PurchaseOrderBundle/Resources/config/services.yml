@@ -9,7 +9,7 @@ services:
             - '@doctrine.orm.entity_manager'
 
     marello_purchaseorder.oro_note_entity_service:
-        class: '%oro_note.entity.class%'
+        class: 'Oro\Bundle\NoteBundle\Entity\Note'
 
     marello_purchaseorder.workflow.receive_purchase_order:
         class: Marello\Bundle\PurchaseOrderBundle\Workflow\Action\ReceivePurchaseOrderAction
