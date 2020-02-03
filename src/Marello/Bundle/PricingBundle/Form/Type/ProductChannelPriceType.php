@@ -9,6 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class ProductChannelPriceType extends AbstractType
 {
@@ -28,6 +29,7 @@ class ProductChannelPriceType extends AbstractType
             ])
             ->add('value', OroMoneyType::class, [
                 'required' => false,
+                'constraints' => $options['allowed_empty_value'] === false ? new NotNull() : null,
                 'label'    => 'marello.pricing.productprice.value.label',
             ]);
     }
@@ -41,7 +43,8 @@ class ProductChannelPriceType extends AbstractType
             'data_class'        => ProductChannelPrice::class,
             'intention'         => 'productchannelprice',
             'single_form'       => true,
-            'excluded_channels' => []
+            'excluded_channels' => [],
+            'allowed_empty_value' => true
         ]);
     }
 
