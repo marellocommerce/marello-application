@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "51bbf1ba2c052892b923491845942cd4",
+    "content-hash": "67a71795b73847852e1bfee032bd0d84",
     "packages": [
         {
             "name": "akeneo/batch-bundle",
@@ -279,16 +279,16 @@
         },
         {
             "name": "cboden/ratchet",
-            "version": "v0.4.1",
+            "version": "v0.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ratchetphp/Ratchet.git",
-                "reference": "0d31f3a8ad4795fd48397712709e55cd07f51360"
+                "reference": "57721e1f184f9e29378fc5363867c47ddda743fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ratchetphp/Ratchet/zipball/0d31f3a8ad4795fd48397712709e55cd07f51360",
-                "reference": "0d31f3a8ad4795fd48397712709e55cd07f51360",
+                "url": "https://api.github.com/repos/ratchetphp/Ratchet/zipball/57721e1f184f9e29378fc5363867c47ddda743fd",
+                "reference": "57721e1f184f9e29378fc5363867c47ddda743fd",
                 "shasum": ""
             },
             "require": {
@@ -296,8 +296,8 @@
                 "php": ">=5.4.2",
                 "ratchet/rfc6455": "^0.2",
                 "react/socket": "^1.0 || ^0.8 || ^0.7 || ^0.6 || ^0.5",
-                "symfony/http-foundation": "^2.6|^3.0|^4.0",
-                "symfony/routing": "^2.6|^3.0|^4.0"
+                "symfony/http-foundation": "^2.6|^3.0|^4.0|^5.0",
+                "symfony/routing": "^2.6|^3.0|^4.0|^5.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "~4.8"
@@ -328,7 +328,7 @@
                 "sockets",
                 "websocket"
             ],
-            "time": "2017-12-12T00:49:31+00:00"
+            "time": "2020-01-27T23:08:40+00:00"
         },
         {
             "name": "clue/stream-filter",
@@ -2787,6 +2787,7 @@
                 "Guzzle",
                 "stream"
             ],
+            "abandoned": true,
             "time": "2014-10-12T19:18:40+00:00"
         },
         {
@@ -4026,6 +4027,7 @@
                 "scss",
                 "stylesheet"
             ],
+            "abandoned": "scssphp/scssphp",
             "time": "2017-02-23T05:07:33+00:00"
         },
         {
@@ -4272,14 +4274,14 @@
         },
         {
             "name": "marellocommerce/marello",
-            "version": "3.0.9999999.9999999-dev",
+            "version": "3.0.x-dev",
             "dist": {
                 "type": "path",
                 "url": "../../package/marello",
-                "reference": "f8fc0021c230ac29ba12e6bb474af618bc014863",
-                "shasum": null
+                "reference": "fc4eeddc27fb8f3a02e37d736034388b33e56ab6"
             },
             "require": {
+                "mpdf/mpdf": "^7.1",
                 "oro/calendar-bundle": "4.1.*",
                 "oro/platform": "4.1.*",
                 "oro/platform-serialised-fields": "4.1.*",
@@ -4313,12 +4315,11 @@
         },
         {
             "name": "marellocommerce/marello-enterprise",
-            "version": "3.0.9999999.9999999-dev",
+            "version": "3.0.x-dev",
             "dist": {
                 "type": "path",
                 "url": "../../package/marello-enterprise",
-                "reference": "a24b4b8b9f2f1567eea336457e989a6edcb3df30",
-                "shasum": null
+                "reference": "a24b4b8b9f2f1567eea336457e989a6edcb3df30"
             },
             "require": {
                 "marellocommerce/marello": "self.version",
@@ -4349,13 +4350,52 @@
             "homepage": "https://github.com/marellocommerce/marello-ee.git"
         },
         {
+            "name": "marellocommerce/marello-servicepoints",
+            "version": "3.0.x-dev",
+            "dist": {
+                "type": "path",
+                "url": "../../package/marello-servicepoints",
+                "reference": "9c24fbd973b18678e9bdce0a0a01bcf655957d38"
+            },
+            "require": {
+                "oro/calendar-bundle": "4.1.*",
+                "oro/platform": "4.1.*",
+                "oro/platform-serialised-fields": "4.1.*",
+                "php": ">=7.1.26"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "": "src/"
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "license": [
+                "Commercial"
+            ],
+            "authors": [
+                {
+                    "name": "Marello B.V.",
+                    "homepage": "https://www.marello.com"
+                }
+            ],
+            "description": "Marello Unified Commerce Management",
+            "homepage": "//github.com/marellocommerce/marello-servicepoints.git"
+        },
+        {
             "name": "marellocommerce/marello-subscriptions",
-            "version": "3.0.9999999.9999999-dev",
+            "version": "3.0.x-dev",
             "dist": {
                 "type": "path",
                 "url": "../../package/marello-subscriptions",
-                "reference": "b1902a517210782e869a1b47587ddc1dff99609c",
-                "shasum": null
+                "reference": "b1902a517210782e869a1b47587ddc1dff99609c"
             },
             "require": {
                 "marellocommerce/marello-enterprise": "self.version",
@@ -4513,6 +4553,74 @@
             "time": "2017-06-19T01:22:40+00:00"
         },
         {
+            "name": "mpdf/mpdf",
+            "version": "v7.1.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mpdf/mpdf.git",
+                "reference": "a0fc1215d2306aa3b4ba6e97bd6ebe4bab6a88fb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mpdf/mpdf/zipball/a0fc1215d2306aa3b4ba6e97bd6ebe4bab6a88fb",
+                "reference": "a0fc1215d2306aa3b4ba6e97bd6ebe4bab6a88fb",
+                "shasum": ""
+            },
+            "require": {
+                "ext-gd": "*",
+                "ext-mbstring": "*",
+                "myclabs/deep-copy": "^1.7",
+                "paragonie/random_compat": "^1.4|^2.0|9.99.99",
+                "php": "^5.6 || ~7.0.0 || ~7.1.0 || ~7.2.0 || ~7.3.0",
+                "psr/log": "^1.0",
+                "setasign/fpdi": "1.6.*"
+            },
+            "require-dev": {
+                "mockery/mockery": "^0.9.5",
+                "phpunit/phpunit": "^5.0",
+                "squizlabs/php_codesniffer": "^2.7.0",
+                "tracy/tracy": "^2.4"
+            },
+            "suggest": {
+                "ext-bcmath": "Needed for generation of some types of barcodes",
+                "ext-xml": "Needed mainly for SVG manipulation",
+                "ext-zlib": "Needed for compression of embedded resources, such as fonts"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-development": "7.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Mpdf\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "Matěj Humpál",
+                    "role": "Developer, maintainer"
+                },
+                {
+                    "name": "Ian Back",
+                    "role": "Developer (retired)"
+                }
+            ],
+            "description": "PHP library generating PDF files from UTF-8 encoded HTML",
+            "homepage": "https://mpdf.github.io",
+            "keywords": [
+                "pdf",
+                "php",
+                "utf-8"
+            ],
+            "time": "2019-02-06T13:32:19+00:00"
+        },
+        {
             "name": "mtdowling/cron-expression",
             "version": "v1.2.3",
             "source": {
@@ -4606,6 +4714,54 @@
                 "yml"
             ],
             "time": "2019-09-10T13:16:29+00:00"
+        },
+        {
+            "name": "myclabs/deep-copy",
+            "version": "1.9.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/myclabs/DeepCopy.git",
+                "reference": "b2c28789e80a97badd14145fda39b545d83ca3ef"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/b2c28789e80a97badd14145fda39b545d83ca3ef",
+                "reference": "b2c28789e80a97badd14145fda39b545d83ca3ef",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1"
+            },
+            "replace": {
+                "myclabs/deep-copy": "self.version"
+            },
+            "require-dev": {
+                "doctrine/collections": "^1.0",
+                "doctrine/common": "^2.6",
+                "phpunit/phpunit": "^7.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DeepCopy\\": "src/DeepCopy/"
+                },
+                "files": [
+                    "src/DeepCopy/deep_copy.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Create deep copies (clones) of your objects",
+            "keywords": [
+                "clone",
+                "copy",
+                "duplicate",
+                "object",
+                "object graph"
+            ],
+            "time": "2020-01-17T21:11:47+00:00"
         },
         {
             "name": "nelmio/api-doc-bundle",
@@ -4985,16 +5141,16 @@
         },
         {
             "name": "oro/calendar-bundle",
-            "version": "4.1.0-rc4",
+            "version": "4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/oroinc/OroCalendarBundle.git",
-                "reference": "22bac8efe0568f7392d5fa8b2da94d2b9bdbf680"
+                "reference": "4dbfced1aa4b841286c0358410ff5d23858a25b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/OroCalendarBundle/zipball/22bac8efe0568f7392d5fa8b2da94d2b9bdbf680",
-                "reference": "22bac8efe0568f7392d5fa8b2da94d2b9bdbf680",
+                "url": "https://api.github.com/repos/oroinc/OroCalendarBundle/zipball/4dbfced1aa4b841286c0358410ff5d23858a25b1",
+                "reference": "4dbfced1aa4b841286c0358410ff5d23858a25b1",
                 "shasum": ""
             },
             "require": {
@@ -5035,10 +5191,10 @@
                 "OroPlatform"
             ],
             "support": {
-                "source": "https://github.com/oroinc/OroCalendarBundle/tree/master",
+                "source": "https://github.com/oroinc/OroCalendarBundle/tree/4.1",
                 "issues": "https://github.com/oroinc/OroCalendarBundle/issues"
             },
-            "time": "2020-01-09T13:58:54+00:00"
+            "time": "2020-01-29T13:42:07+00:00"
         },
         {
             "name": "oro/doctrine-extensions",
@@ -5097,7 +5253,7 @@
         },
         {
             "name": "oro/health-check-bundle",
-            "version": "4.1.0-rc4",
+            "version": "4.1.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/OroHealthCheckBundle.git",
@@ -5150,16 +5306,16 @@
         },
         {
             "name": "oro/platform",
-            "version": "4.1.0-rc4",
+            "version": "4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/oroinc/platform.git",
-                "reference": "f93b58253f8a4ba5b9334325a2b4c5c8bc0dd896"
+                "reference": "a0b69d8351842924c191d1572d5f9ffe467aab65"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/platform/zipball/f93b58253f8a4ba5b9334325a2b4c5c8bc0dd896",
-                "reference": "f93b58253f8a4ba5b9334325a2b4c5c8bc0dd896",
+                "url": "https://api.github.com/repos/oroinc/platform/zipball/a0b69d8351842924c191d1572d5f9ffe467aab65",
+                "reference": "a0b69d8351842924c191d1572d5f9ffe467aab65",
                 "shasum": ""
             },
             "require": {
@@ -5176,10 +5332,14 @@
                 "doctrine/doctrine-fixtures-bundle": "2.4.*",
                 "doctrine/orm": "2.6.3",
                 "doctrine/persistence": "1.3.1",
+                "ext-dom": "*",
                 "ext-gd": "*",
                 "ext-intl": "*",
+                "ext-json": "*",
                 "ext-mbstring": "*",
                 "ext-openssl": "*",
+                "ext-pcntl": "*",
+                "ext-pdo": "*",
                 "ext-xml": "*",
                 "ext-zip": "*",
                 "ezyang/htmlpurifier": "4.10.*",
@@ -5236,6 +5396,8 @@
                 "behat/mink-extension": "2.3.*",
                 "behat/mink-selenium2-driver": "1.*",
                 "behat/symfony2-extension": "2.1.*",
+                "ext-ftp": "*",
+                "ext-sqlite3": "*",
                 "friendsofphp/php-cs-fixer": "2.12.*",
                 "johnkary/phpunit-speedtrap": "3.0.*",
                 "mybuilder/phpunit-accelerator": "dev-master",
@@ -5248,6 +5410,11 @@
                 "squizlabs/php_codesniffer": "3.3.*",
                 "symfony/phpunit-bridge": "4.3.*",
                 "theofidry/alice-data-fixtures": "1.0.*"
+            },
+            "suggest": {
+                "ext-imap": "To improve parsing of email headers.",
+                "ext-soap": "To enable SOAP API calls.",
+                "ext-tidy": "To improve parsing of email content."
             },
             "type": "library",
             "extra": {
@@ -5325,24 +5492,25 @@
                 "source": "https://github.com/oroinc/platform/tree/4.1",
                 "issues": "https://github.com/oroinc/platform/issues"
             },
-            "time": "2020-01-13T14:55:57+00:00"
+            "time": "2020-01-28T16:02:48+00:00"
         },
         {
             "name": "oro/platform-enterprise",
-            "version": "4.1.0-rc4",
+            "version": "4.1.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/platform-enterprise.git",
-                "reference": "b7adde6d791a19e3ab54c4f4e20380f5c69ced34"
+                "reference": "36cd3511036f2a7346650f41b8d33e7730a6a59c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/platform-enterprise/zipball/b7adde6d791a19e3ab54c4f4e20380f5c69ced34",
-                "reference": "b7adde6d791a19e3ab54c4f4e20380f5c69ced34",
+                "url": "https://api.github.com/repos/oroinc/platform-enterprise/zipball/36cd3511036f2a7346650f41b8d33e7730a6a59c",
+                "reference": "36cd3511036f2a7346650f41b8d33e7730a6a59c",
                 "shasum": ""
             },
             "require": {
                 "elasticsearch/elasticsearch": "7.2.*",
+                "ext-curl": "*",
                 "oro/platform": "4.1.*",
                 "php-amqplib/php-amqplib": "2.7.*"
             },
@@ -5371,20 +5539,20 @@
             "support": {
                 "source": "https://github.com/oroinc/platform-enterprise/tree/4.1"
             },
-            "time": "2020-01-09T13:58:54+00:00"
+            "time": "2020-01-28T11:59:00+00:00"
         },
         {
             "name": "oro/platform-serialised-fields",
-            "version": "4.1.0-rc4",
+            "version": "4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/oroinc/OroEntitySerializedFieldsBundle.git",
-                "reference": "6d866d4ffbf7a4ad0a4c23ba0800d6fe7151afa3"
+                "reference": "0c9272930ca48da001ac1abf4df9fd7b8a6ed979"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/OroEntitySerializedFieldsBundle/zipball/6d866d4ffbf7a4ad0a4c23ba0800d6fe7151afa3",
-                "reference": "6d866d4ffbf7a4ad0a4c23ba0800d6fe7151afa3",
+                "url": "https://api.github.com/repos/oroinc/OroEntitySerializedFieldsBundle/zipball/0c9272930ca48da001ac1abf4df9fd7b8a6ed979",
+                "reference": "0c9272930ca48da001ac1abf4df9fd7b8a6ed979",
                 "shasum": ""
             },
             "require": {
@@ -5425,11 +5593,11 @@
                 "source": "https://github.com/oroinc/OroEntitySerializedFieldsBundle/tree/4.1",
                 "issues": "https://github.com/oroinc/OroEntitySerializedFieldsBundle/issues"
             },
-            "time": "2020-01-09T13:58:54+00:00"
+            "time": "2020-01-24T16:41:11+00:00"
         },
         {
             "name": "oro/redis-config",
-            "version": "4.1.0-rc4",
+            "version": "4.1.0",
             "target-dir": "Oro/Bundle/RedisConfigBundle",
             "source": {
                 "type": "git",
@@ -7359,6 +7527,7 @@
                 }
             ],
             "description": "Allows installation of Components via Composer.",
+            "abandoned": "oomphinc/composer-installers-extender",
             "time": "2015-08-10T12:35:38+00:00"
         },
         {
@@ -7639,6 +7808,55 @@
                 "controllers"
             ],
             "time": "2018-12-11T16:59:23+00:00"
+        },
+        {
+            "name": "setasign/fpdi",
+            "version": "1.6.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Setasign/FPDI.git",
+                "reference": "a6ad58897a6d97cc2d2cd2adaeda343b25a368ea"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Setasign/FPDI/zipball/a6ad58897a6d97cc2d2cd2adaeda343b25a368ea",
+                "reference": "a6ad58897a6d97cc2d2cd2adaeda343b25a368ea",
+                "shasum": ""
+            },
+            "suggest": {
+                "setasign/fpdf": "FPDI will extend this class but as it is also possible to use \"tecnickcom/tcpdf\" as an alternative there's no fixed dependency configured.",
+                "setasign/fpdi-fpdf": "Use this package to automatically evaluate dependencies to FPDF.",
+                "setasign/fpdi-tcpdf": "Use this package to automatically evaluate dependencies to TCPDF."
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "filters/",
+                    "fpdi.php",
+                    "fpdf_tpl.php",
+                    "fpdi_pdf_parser.php",
+                    "pdf_context.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jan Slabon",
+                    "email": "jan.slabon@setasign.com",
+                    "homepage": "https://www.setasign.com"
+                }
+            ],
+            "description": "FPDI is a collection of PHP classes facilitating developers to read pages from existing PDF documents and use them as templates in FPDF. Because it is also possible to use FPDI with TCPDF, there are no fixed dependencies defined. Please see suggestions for packages which evaluates the dependencies automatically.",
+            "homepage": "https://www.setasign.com/fpdi",
+            "keywords": [
+                "fpdf",
+                "fpdi",
+                "pdf"
+            ],
+            "time": "2017-05-11T14:25:49+00:00"
         },
         {
             "name": "snc/redis-bundle",
@@ -9016,16 +9234,16 @@
         },
         {
             "name": "ua-parser/uap-php",
-            "version": "v3.9.4",
+            "version": "v3.9.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ua-parser/uap-php.git",
-                "reference": "8c1e3c6c7698d197368bfaa0d16734c947d94e99"
+                "reference": "67f8f61bc7fc36fcd23dd6526f6ed5e7a32625c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ua-parser/uap-php/zipball/8c1e3c6c7698d197368bfaa0d16734c947d94e99",
-                "reference": "8c1e3c6c7698d197368bfaa0d16734c947d94e99",
+                "url": "https://api.github.com/repos/ua-parser/uap-php/zipball/67f8f61bc7fc36fcd23dd6526f6ed5e7a32625c7",
+                "reference": "67f8f61bc7fc36fcd23dd6526f6ed5e7a32625c7",
                 "shasum": ""
             },
             "require": {
@@ -9069,7 +9287,7 @@
                 }
             ],
             "description": "A multi-language port of Browserscope's user agent parser.",
-            "time": "2020-01-21T09:54:19+00:00"
+            "time": "2020-02-03T09:54:22+00:00"
         },
         {
             "name": "webmozart/assert",
@@ -10376,54 +10594,6 @@
             "time": "2018-06-08T12:31:55+00:00"
         },
         {
-            "name": "myclabs/deep-copy",
-            "version": "1.9.5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "b2c28789e80a97badd14145fda39b545d83ca3ef"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/b2c28789e80a97badd14145fda39b545d83ca3ef",
-                "reference": "b2c28789e80a97badd14145fda39b545d83ca3ef",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.1"
-            },
-            "replace": {
-                "myclabs/deep-copy": "self.version"
-            },
-            "require-dev": {
-                "doctrine/collections": "^1.0",
-                "doctrine/common": "^2.6",
-                "phpunit/phpunit": "^7.1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "DeepCopy\\": "src/DeepCopy/"
-                },
-                "files": [
-                    "src/DeepCopy/deep_copy.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Create deep copies (clones) of your objects",
-            "keywords": [
-                "clone",
-                "copy",
-                "duplicate",
-                "object",
-                "object graph"
-            ],
-            "time": "2020-01-17T21:11:47+00:00"
-        },
-        {
             "name": "nelmio/alice",
             "version": "v3.5.8",
             "source": {
@@ -10505,25 +10675,25 @@
         },
         {
             "name": "oro/twig-inspector",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/oroinc/twig-inspector.git",
-                "reference": "fe8294e16a4d358cf86b94a2c2e51333c80e5c65"
+                "reference": "5a66e476172b89c1f697fee2bf032acec63065a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/twig-inspector/zipball/fe8294e16a4d358cf86b94a2c2e51333c80e5c65",
-                "reference": "fe8294e16a4d358cf86b94a2c2e51333c80e5c65",
+                "url": "https://api.github.com/repos/oroinc/twig-inspector/zipball/5a66e476172b89c1f697fee2bf032acec63065a0",
+                "reference": "5a66e476172b89c1f697fee2bf032acec63065a0",
                 "shasum": ""
             },
             "require": {
-                "symfony/config": "^3.4 | ^4.0",
-                "symfony/dependency-injection": "^3.4 | ^4.0",
-                "symfony/http-foundation": "^3.4 | ^4.0",
-                "symfony/http-kernel": "^3.4 | ^4.0",
-                "symfony/routing": "^3.4 | ^4.0",
-                "twig/twig": "~1.34|~2.4"
+                "symfony/config": "^4.1.12 | ^5.0",
+                "symfony/dependency-injection": "^4.1.12 | ^5.0",
+                "symfony/http-foundation": "^4.1.12 | ^5.0",
+                "symfony/http-kernel": "^4.1.12 | ^5.0",
+                "symfony/routing": "^4.1.12 | ^5.0",
+                "twig/twig": "^1.34 | ^2.4 | ^3.0"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -10557,23 +10727,23 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/oroinc/twig-inspector/tree/master",
+                "source": "https://github.com/oroinc/twig-inspector/tree/1.0.2",
                 "issues": "https://github.com/oroinc/twig-inspector/issues"
             },
-            "time": "2019-05-27T10:05:30+00:00"
+            "time": "2020-01-28T10:20:35+00:00"
         },
         {
             "name": "pdepend/pdepend",
-            "version": "2.6.1",
+            "version": "2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pdepend/pdepend.git",
-                "reference": "395b0f356bc0881ef88864bffb4ba1423ca0d111"
+                "reference": "cba74e118ce806f97fcb108c00d61ebf2a5a936e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pdepend/pdepend/zipball/395b0f356bc0881ef88864bffb4ba1423ca0d111",
-                "reference": "395b0f356bc0881ef88864bffb4ba1423ca0d111",
+                "url": "https://api.github.com/repos/pdepend/pdepend/zipball/cba74e118ce806f97fcb108c00d61ebf2a5a936e",
+                "reference": "cba74e118ce806f97fcb108c00d61ebf2a5a936e",
                 "shasum": ""
             },
             "require": {
@@ -10607,7 +10777,7 @@
                 "BSD-3-Clause"
             ],
             "description": "Official version of pdepend to be handled with Composer",
-            "time": "2019-12-21T16:33:56+00:00"
+            "time": "2020-01-24T08:09:26+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -12047,16 +12217,16 @@
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v4.3.10",
+            "version": "v4.3.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "60539d90c2e80d2f33cf6c42cb1ab70362f31cae"
+                "reference": "692a73a2e0b76123150709f5eb7e2ea9bf2bad43"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/60539d90c2e80d2f33cf6c42cb1ab70362f31cae",
-                "reference": "60539d90c2e80d2f33cf6c42cb1ab70362f31cae",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/692a73a2e0b76123150709f5eb7e2ea9bf2bad43",
+                "reference": "692a73a2e0b76123150709f5eb7e2ea9bf2bad43",
                 "shasum": ""
             },
             "require": {
@@ -12108,7 +12278,7 @@
             ],
             "description": "Symfony PHPUnit Bridge",
             "homepage": "https://symfony.com",
-            "time": "2020-01-21T08:20:29+00:00"
+            "time": "2020-01-31T09:56:21+00:00"
         },
         {
             "name": "theofidry/alice-data-fixtures",
@@ -12270,6 +12440,7 @@
         "marellocommerce/marello": 20,
         "marellocommerce/marello-enterprise": 20,
         "marellocommerce/marello-subscriptions": 20,
+        "marellocommerce/marello-servicepoints": 20,
         "behat/mink": 20,
         "mybuilder/phpunit-accelerator": 20
     },
