@@ -43,3 +43,4 @@ navigation:
         marello_inventory_inventory_update: 'Update Inventory'
         marello_inventory_inventorylevel_index: 'marello.inventory.management.menu.inventory_level_log.label'
         marello_inventory_balancedinventorylevel_index: 'marello.inventory.management.menu.balanced_inventory.label'
+        marello_inventory_inventorylevel_manage_batches: 'marello.inventory.inventorybatch.entity_plural_label'
