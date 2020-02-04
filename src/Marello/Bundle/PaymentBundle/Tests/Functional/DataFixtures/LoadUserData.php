@@ -30,7 +30,7 @@ class LoadUserData extends AbstractLoadMultipleUserData implements ContainerAwar
                 ],
             ],
             [
-                'class' => 'oro_integration.entity.class',
+                'class' => 'Oro\Bundle\IntegrationBundle\Entity\Channel',
                 'acls'  => [
                     [
                         AbstractLoadMultipleUserData::ACL_PERMISSION => 'VIEW',
