@@ -38,7 +38,7 @@
 {% block content_data %}
     {% set id = 'marello-inventory-level-manage-batches' %}
     {% set generalSubblocks = [] %}
-    {% set inventoryInformationWidget %}
+    {% set productInformationWidget %}
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
@@ -53,7 +53,7 @@
             </div>
         </div>
     {% endset %}
-    {% set generalSubblocks = generalSubblocks|merge([{'data' : [inventoryInformationWidget] }]) %}
+    {% set generalSubblocks = generalSubblocks|merge([{'data' : [productInformationWidget] }]) %}
 
     {% set totalsWidget %}
         <div class="responsive-block">
@@ -63,6 +63,19 @@
         </div>
     {% endset %}
     {% set generalSubblocks = generalSubblocks|merge([{'data' : [totalsWidget] }]) %}
+
+    {% set inventoryLevelInformationWidget %}
+        <div class="responsive-block">
+            <div class="box-type1">
+                <div class="title">
+                    <span class="widget-title">{{ 'marello.inventory.information.label'|trans }}</span>
+                </div>
+                {{ UI.renderProperty('marello.inventory.inventorylevel.warehouse.label'|trans, entity.warehouse.label) }}
+                {{ UI.renderProperty('marello.inventory.inventorylevel.pick_location.label'|trans, entity.picklocation) }}
+            </div>
+        </div>
+    {% endset %}
+    {% set generalSubblocks = generalSubblocks|merge([{'data' : [inventoryLevelInformationWidget]}]) %}
 
     {% set inventoryBatchesWidget %}
         <div class="responsive-block">
