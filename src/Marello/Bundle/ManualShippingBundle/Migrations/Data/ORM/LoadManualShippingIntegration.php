@@ -43,10 +43,6 @@ class LoadManualShippingIntegration extends AbstractFixture implements
             return;
         }
 
-        if (!$this->container->hasParameter('oro_integration.entity.class')) {
-            return;
-        }
-
         $channel = $this->loadIntegration($manager);
 
         $this->addMethodConfigToDefaultShippingRule($manager, $channel);
