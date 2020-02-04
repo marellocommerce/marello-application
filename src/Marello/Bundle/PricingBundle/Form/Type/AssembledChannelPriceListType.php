@@ -8,6 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class AssembledChannelPriceListType extends AbstractType
 {
@@ -27,6 +28,7 @@ class AssembledChannelPriceListType extends AbstractType
             ])
             ->add('defaultPrice', ProductChannelPriceType::class, [
                 'required' => true,
+                'allowed_empty_value' => false
             ])
             ->add('specialPrice', ProductChannelPriceType::class, [
                 'required' => false,
