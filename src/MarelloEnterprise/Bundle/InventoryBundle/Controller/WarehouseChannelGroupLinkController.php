@@ -15,7 +15,7 @@ class WarehouseChannelGroupLinkController extends AbstractController
 {
     /**
      * @Route(
-     *     path="/", 
+     *     path="/",
      *     name="marelloenterprise_inventory_warehousechannelgrouplink_index"
      * )
      * @Template("MarelloEnterpriseInventoryBundle:WarehouseChannelGroupLink:index.html.twig")
@@ -37,7 +37,7 @@ class WarehouseChannelGroupLinkController extends AbstractController
 
     /**
      * @Route(
-     *     path="/create", 
+     *     path="/create",
      *     name="marelloenterprise_inventory_warehousechannelgrouplink_create"
      * )
      * @Template("MarelloEnterpriseInventoryBundle:WarehouseChannelGroupLink:update.html.twig")
@@ -58,7 +58,7 @@ class WarehouseChannelGroupLinkController extends AbstractController
 
     /**
      * @Route(
-     *     path="/update/{id}", 
+     *     path="/update/{id}",
      *     name="marelloenterprise_inventory_warehousechannelgrouplink_update",
      *     requirements={"id"="\d+"}
      * )
