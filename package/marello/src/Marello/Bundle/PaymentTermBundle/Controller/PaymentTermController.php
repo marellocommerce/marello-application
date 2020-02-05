@@ -13,7 +13,7 @@ class PaymentTermController extends AbstractController
      * @return array
      *
      * @Route(
-     *     path="/", 
+     *     path="/",
      *     name="marello_paymentterm_paymentterm_index"
      * )
      * @Template("MarelloPaymentTermBundle:PaymentTerm:index.html.twig")
@@ -29,7 +29,7 @@ class PaymentTermController extends AbstractController
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      *
      * @Route(
-     *     path="/create", 
+     *     path="/create",
      *     name="marello_paymentterm_paymentterm_create"
      * )
      * @Template("MarelloPaymentTermBundle:PaymentTerm:update.html.twig")
@@ -46,8 +46,8 @@ class PaymentTermController extends AbstractController
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      *
      * @Route(
-     *     path="/update/{id}", 
-     *     requirements={"id" = "\d+"}, 
+     *     path="/update/{id}",
+     *     requirements={"id" = "\d+"},
      *     name="marello_paymentterm_paymentterm_update"
      * )
      * @Template("MarelloPaymentTermBundle:PaymentTerm:update.html.twig")
@@ -85,8 +85,8 @@ class PaymentTermController extends AbstractController
      * @return array
      *
      * @Route(
-     *     path="/view/{id}", 
-     *     requirements={"id" = "\d+"}, 
+     *     path="/view/{id}",
+     *     requirements={"id" = "\d+"},
      *     name="marello_paymentterm_paymentterm_view"
      * )
      * @Template("MarelloPaymentTermBundle:PaymentTerm:view.html.twig")

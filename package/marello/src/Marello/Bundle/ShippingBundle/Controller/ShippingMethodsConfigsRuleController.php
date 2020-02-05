@@ -18,7 +18,7 @@ class ShippingMethodsConfigsRuleController extends AbstractController
 {
     /**
      * @Route(
-     *     path="/", 
+     *     path="/",
      *     name="marello_shipping_methods_configs_rule_index"
      * )
      * @Template
@@ -35,7 +35,7 @@ class ShippingMethodsConfigsRuleController extends AbstractController
 
     /**
      * @Route(
-     *     path="/create", 
+     *     path="/create",
      *     name="marello_shipping_methods_configs_rule_create"
      * )
      * @Template("MarelloShippingBundle:ShippingMethodsConfigsRule:update.html.twig")
@@ -56,8 +56,8 @@ class ShippingMethodsConfigsRuleController extends AbstractController
 
     /**
      * @Route(
-     *     path="/view/{id}", 
-     *     name="marello_shipping_methods_configs_rule_view", 
+     *     path="/view/{id}",
+     *     name="marello_shipping_methods_configs_rule_view",
      *     requirements={"id"="\d+"}
      * )
      * @Template
@@ -81,8 +81,8 @@ class ShippingMethodsConfigsRuleController extends AbstractController
 
     /**
      * @Route(
-     *     path="/update/{id}", 
-     *     name="marello_shipping_methods_configs_rule_update", 
+     *     path="/update/{id}",
+     *     name="marello_shipping_methods_configs_rule_update",
      *     requirements={"id"="\d+"}
      * )
      * @Template
@@ -133,7 +133,7 @@ class ShippingMethodsConfigsRuleController extends AbstractController
 
     /**
      * @Route(
-     *     path="/{gridName}/massAction/{actionName}", 
+     *     path="/{gridName}/massAction/{actionName}",
      *     name="marello_status_shipping_rule_massaction"
      * )
      * @Acl(
