@@ -20,7 +20,7 @@ class OrderController extends AbstractController
 {
     /**
      * @Route(
-     *     path="/", 
+     *     path="/",
      *     name="marello_order_order_index"
      * )
      * @Template
@@ -33,8 +33,8 @@ class OrderController extends AbstractController
 
     /**
      * @Route(
-     *     path="/view/{id}", 
-     *     requirements={"id"="\d+"}, 
+     *     path="/view/{id}",
+     *     requirements={"id"="\d+"},
      *     name="marello_order_order_view"
      * )
      * @Template
@@ -71,7 +71,7 @@ class OrderController extends AbstractController
      * @Route(
      *     path="/update/{id}",
      *     methods={"GET", "POST"},
-     *     requirements={"id"="\d+"}, 
+     *     requirements={"id"="\d+"},
      *     name="marello_order_order_update"
      * )
      * @Template
@@ -178,9 +178,9 @@ class OrderController extends AbstractController
     
     /**
      * @Route(
-     *     path="/update/address/{id}", 
+     *     path="/update/address/{id}",
      *     methods={"GET", "POST"},
-     *     requirements={"id"="\d+"}, 
+     *     requirements={"id"="\d+"},
      *     name="marello_order_order_updateaddress"
      * )
      * @Template("MarelloOrderBundle:Order:widget/updateAddress.html.twig")
