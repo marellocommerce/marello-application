@@ -15,8 +15,8 @@ class WarehouseController extends BaseController
 {
     /**
      * @Route(
-     *     path="/", 
-     *     methods={"GET"}, 
+     *     path="/",
+     *     methods={"GET"},
      *     name="marelloenterprise_inventory_warehouse_index"
      * )
      * @Template
@@ -31,8 +31,8 @@ class WarehouseController extends BaseController
 
     /**
      * @Route(
-     *     path="/create", 
-     *     methods={"GET", "POST"}, 
+     *     path="/create",
+     *     methods={"GET", "POST"},
      *     name="marelloenterprise_inventory_warehouse_create"
      * )
      * @Template("@MarelloEnterpriseInventory/Warehouse/update.html.twig")
@@ -49,8 +49,8 @@ class WarehouseController extends BaseController
 
     /**
      * @Route(
-     *     path="/update/{id}", 
-     *     methods={"GET", "POST"}, 
+     *     path="/update/{id}",
+     *     methods={"GET", "POST"},
      *     name="marelloenterprise_inventory_warehouse_update"
      * )
      * @Template
@@ -69,9 +69,9 @@ class WarehouseController extends BaseController
 
     /**
      * @Route(
-     *     path="/view/{id}", 
-     *     methods={"GET"}, 
-     *     requirements={"id"="\d+"}, 
+     *     path="/view/{id}",
+     *     methods={"GET"},
+     *     requirements={"id"="\d+"},
      *     name="marelloenterprise_inventory_warehouse_view"
      * )
      * @Template
