@@ -133,7 +133,7 @@ abstract class AbstractWHCalculatorChainElementTest extends TestCase
         /** @var Product $product */
         $product = $this->getEntity(Product::class, ['sku' => sprintf('TPD000%s', $id)]);
         /** @var InventoryItem $inventoryItem */
-        $inventoryItem = $this->getEntity(InventoryItem::class, ['id' => $id], [null, $product]);
+        $inventoryItem = $this->getEntity(InventoryItem::class, ['id' => $id], [$product]);
         foreach ($quantities as $k => $quantity) {
             /** @var InventoryLevel $inventoryLevel */
             $inventoryLevel = $this->getEntity(
