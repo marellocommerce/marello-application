@@ -21,7 +21,7 @@ class PurchaseOrderController extends AbstractController
 {
     /**
      * @Route(
-     *     path="/", 
+     *     path="/",
      *     name="marello_purchaseorder_purchaseorder_index"
      * )
      * @Config\Template("MarelloPurchaseOrderBundle:PurchaseOrder:index.html.twig")
@@ -34,8 +34,8 @@ class PurchaseOrderController extends AbstractController
 
     /**
      * @Route(
-     *     path="/view/{id}", 
-     *     requirements={"id"="\d+"}, 
+     *     path="/view/{id}",
+     *     requirements={"id"="\d+"},
      *     name="marello_purchaseorder_purchaseorder_view"
      * )
      * @Config\Template("MarelloPurchaseOrderBundle:PurchaseOrder:view.html.twig")
@@ -54,7 +54,7 @@ class PurchaseOrderController extends AbstractController
 
     /**
      * @Route(
-     *     path="/select-products", 
+     *     path="/select-products",
      *     name="marello_purchaseorder_purchaseorder_selectproducts"
      * )
      * @Config\Template
@@ -67,7 +67,7 @@ class PurchaseOrderController extends AbstractController
 
     /**
      * @Route(
-     *     path="/create", 
+     *     path="/create",
      *     name="marello_purchaseorder_purchaseorder_create"
      * )
      * @Config\Template("MarelloPurchaseOrderBundle:PurchaseOrder:createStepOne.html.twig")
@@ -84,8 +84,8 @@ class PurchaseOrderController extends AbstractController
 
     /**
      * @Route(
-     *     path="/update/{id}", 
-     *     requirements={"id"="\d+"}, 
+     *     path="/update/{id}",
+     *     requirements={"id"="\d+"},
      *     name="marello_purchaseorder_purchaseorder_update"
      * )
      * @AclAncestor("marello_purchase_order_update")
@@ -102,7 +102,7 @@ class PurchaseOrderController extends AbstractController
 
     /**
      * @Route(
-     *     path="/create/step-two", 
+     *     path="/create/step-two",
      *     name="marello_purchaseorder_purchaseorder_create_step_two"
      * )
      * @Config\Template("MarelloPurchaseOrderBundle:PurchaseOrder:createStepTwo.html.twig")
@@ -266,7 +266,7 @@ class PurchaseOrderController extends AbstractController
 
     /**
      * @Route(
-     *     path="/supplier-product-price/{productId}/{supplierId}", 
+     *     path="/supplier-product-price/{productId}/{supplierId}",
      *     methods={"GET"},
      *     name="marello_purchase_order_supplier_product_price"
      * )

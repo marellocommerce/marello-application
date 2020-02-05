@@ -25,8 +25,8 @@ class PackingSlipController extends AbstractController
 
     /**
      * @Route(
-     *     path="/view/{id}", 
-     *     requirements={"id"="\d+"}, 
+     *     path="/view/{id}",
+     *     requirements={"id"="\d+"},
      *     name="marello_packing_packingslip_view"
      * )
      * @Template("MarelloPackingBundle:PackingSlip:view.html.twig")

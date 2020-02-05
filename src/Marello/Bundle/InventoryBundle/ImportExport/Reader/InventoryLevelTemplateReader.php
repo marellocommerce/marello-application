@@ -31,4 +31,3 @@ class InventoryLevelTemplateReader extends AbstractInventoryLevelReader
         return $this->templateManager->getEntityFixture(InventoryLevel::class)->getData();
     }
 }
-

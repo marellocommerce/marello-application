@@ -45,7 +45,7 @@ class AjaxUPSController extends AbstractController
 
     /**
      * @Route(
-     *     path="/validate-connection/{channelId}/", 
+     *     path="/validate-connection/{channelId}/",
      *     methods={"POST"},
      *     name="marello_ups_validate_connection"
      * )

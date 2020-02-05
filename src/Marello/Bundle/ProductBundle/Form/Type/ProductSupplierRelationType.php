@@ -71,7 +71,6 @@ class ProductSupplierRelationType extends AbstractType
         } else {
             $view->vars['currency'] = null;
         }
-
     }
 
     /**

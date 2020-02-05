@@ -34,4 +34,3 @@ class InventoryLevelReader extends AbstractInventoryLevelReader
             ->findAll();
     }
 }
-
