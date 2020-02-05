@@ -91,8 +91,24 @@ class ChannelPricesDatagridListener
     {
         $ormQuery = $config->getOrmQuery();
         $ormQuery
-            ->addSelect(sprintf('GROUP_CONCAT(DISTINCT CONCAT_WS(\'|\', %1$s.name, %2$s.value, %2$s.currency) SEPARATOR \';\') as defaultChannelPrices', self::CHANNEL_JOIN_ALIAS, self::DEFAULT_JOIN_ALIAS))
-            ->addSelect(sprintf('GROUP_CONCAT(DISTINCT CONCAT_WS(\'|\', %1$s.name, %2$s.value, %2$s.currency) SEPARATOR \';\') as specialChannelPrices', self::CHANNEL_JOIN_ALIAS, self::SPECIAL_JOIN_ALIAS))
+            ->addSelect(
+                sprintf(
+                    'GROUP_CONCAT(
+                        DISTINCT CONCAT_WS(\'|\', %1$s.name, %2$s.value, %2$s.currency) SEPARATOR \';\'
+                    ) as defaultChannelPrices',
+                    self::CHANNEL_JOIN_ALIAS,
+                    self::DEFAULT_JOIN_ALIAS
+                )
+            )
+            ->addSelect(
+                sprintf(
+                    'GROUP_CONCAT(
+                        DISTINCT CONCAT_WS(\'|\', %1$s.name, %2$s.value, %2$s.currency) SEPARATOR \';\'
+                    ) as specialChannelPrices',
+                    self::CHANNEL_JOIN_ALIAS,
+                    self::SPECIAL_JOIN_ALIAS
+                )
+            )
             ->addSelect(sprintf('sum(%s.value) as defaultChannelPricesSum', self::DEFAULT_JOIN_ALIAS))
             ->addSelect(sprintf('sum(%s.value) as specialChannelPricesSum', self::SPECIAL_JOIN_ALIAS));
     }
