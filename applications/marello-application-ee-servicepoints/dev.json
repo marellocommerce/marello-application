@@ -1,11 +1,11 @@
 {
-    "name": "marellocommerce/marello-application-ee",
-    "description": "Marello Unified Commerce Management Enterprise",
-    "homepage": "https://github.com/marellocommerce/marello-application-ee.git",
+    "name": "marellocommerce/marello-application-ee-servicepoints",
+    "description": "Marello Unified Commerce Management Enterprise with subscriptions and servicepoint extensions",
+    "homepage": "https://github.com/marellocommerce/marello-application-ee-servicepoints.git",
     "license": "Commercial",
     "authors": [
         {
-            "name": "Madia B.V.",
+            "name": "Marello B.V.",
             "homepage": "https://www.marello.com"
         }
     ],
@@ -41,7 +41,6 @@
         }
     },
     "require": {
-        "php": ">=7.1",
         "oro/platform": "4.1.*",
         "oro/platform-enterprise": "4.1.*",
         "oro/platform-serialised-fields": "4.1.*",
@@ -103,10 +102,10 @@
             "bin/console oro:install --env test --organization-name Oro --user-name admin --user-email admin@example.com --user-firstname John --user-lastname Doe --user-password admin --sample-data n --application-url http://localhost --drop-database --timeout 3600 --skip-translations --skip-assets",
             "php ./bin/phpunit --color --testsuite=\"unit\"",
             "php ./bin/phpunit --color --testsuite=\"functional\"",
-            "php ./bin/phpcs vendor/marellocommerce/ -p --encoding=utf-8 --extensions=php --standard=psr2 --report=checkstyle --report-file=var/logs/phpcs.xml"
+            "php ./bin/phpcs --standard=vendor/marellocommerce/marello/phpcs.xml -p vendor/marellocommerce/ --report-file=var/logs/phpcs.xml"
         ],
         "test-psr": [
-            "php ./bin/phpcs vendor/marellocommerce/ -p --encoding=utf-8 --extensions=php --standard=psr2 --report=checkstyle --report-file=var/logs/phpcs.xml"
+            "php ./bin/phpcs --standard=vendor/marellocommerce/marello/phpcs.xml -p vendor/marellocommerce/ --report-file=var/logs/phpcs.xml"
         ],
         "post-install-cmd": [
             "@build-parameters",
@@ -146,6 +145,9 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "extra": {
+        "symfony": {
+            "require": "4.4.*"
+        },
         "symfony-web-dir": "public",
         "symfony-var-dir": "var",
         "symfony-bin-dir": "bin",

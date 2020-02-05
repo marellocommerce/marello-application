@@ -91,7 +91,11 @@ class BusinessHoursOverride extends ExtendBusinessHoursOverride implements Dates
     /**
      * @var ArrayCollection|TimePeriodOverride[]
      *
-     * @ORM\OneToMany(targetEntity="Marello\Bundle\ServicePointBundle\Entity\TimePeriodOverride", mappedBy="businessHours", cascade={"ALL"})
+     * @ORM\OneToMany(
+     *     targetEntity="Marello\Bundle\ServicePointBundle\Entity\TimePeriodOverride",
+     *     mappedBy="businessHours",
+     *     cascade={"ALL"}
+     * )
      * @ConfigField(defaultValues={
      *     "entity"={
      *         "label" = "marello.servicepoint.businesshours.time_periods.label"

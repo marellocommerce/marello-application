@@ -77,7 +77,11 @@ class BusinessHours extends ExtendBusinessHours implements DatesAwareInterface
     /**
      * @var Collection|TimePeriod[]
      *
-     * @ORM\OneToMany(targetEntity="Marello\Bundle\ServicePointBundle\Entity\TimePeriod", mappedBy="businessHours", cascade={"ALL"})
+     * @ORM\OneToMany(
+     *     targetEntity="Marello\Bundle\ServicePointBundle\Entity\TimePeriod",
+     *     mappedBy="businessHours",
+     *     cascade={"ALL"}
+     * )
      * @ORM\OrderBy({"closeTime": "ASC"})
      * @ConfigField(defaultValues={
      *     "entity"={
@@ -93,7 +97,10 @@ class BusinessHours extends ExtendBusinessHours implements DatesAwareInterface
     /**
      * @var ServicePointFacility
      *
-     * @ORM\ManyToOne(targetEntity="Marello\Bundle\ServicePointBundle\Entity\ServicePointFacility", inversedBy="businessHours")
+     * @ORM\ManyToOne(
+     *     targetEntity="Marello\Bundle\ServicePointBundle\Entity\ServicePointFacility",
+     *     inversedBy="businessHours"
+     * )
      * @ORM\JoinColumn(name="servicepoint_facility_id", nullable=false, onDelete="CASCADE")
      * @ConfigField(defaultValues={
      *     "entity"={

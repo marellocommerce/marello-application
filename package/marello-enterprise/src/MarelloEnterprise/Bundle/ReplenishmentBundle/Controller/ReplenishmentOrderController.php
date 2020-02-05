@@ -12,7 +12,7 @@ class ReplenishmentOrderController extends AbstractController
 {
     /**
      * @Route(
-     *     path="/", 
+     *     path="/",
      *     name="marelloenterprise_replenishmentorder_index"
      * )
      * @Template("MarelloEnterpriseReplenishmentBundle:ReplenishmentOrder:index.html.twig")
@@ -25,8 +25,8 @@ class ReplenishmentOrderController extends AbstractController
     
     /**
      * @Route(
-     *     path="/view/{id}", 
-     *     requirements={"id"="\d+"}, 
+     *     path="/view/{id}",
+     *     requirements={"id"="\d+"},
      *     name="marelloenterprise_replenishmentorder_view"
      * )
      * @Template("MarelloEnterpriseReplenishmentBundle:ReplenishmentOrder:view.html.twig")

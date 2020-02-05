@@ -18,7 +18,7 @@ class SubscriptionController extends AbstractController
 {
     /**
      * @Route(
-     *     path="/", 
+     *     path="/",
      *     name="marello_subscription_index"
      * )
      * @Template
@@ -31,8 +31,8 @@ class SubscriptionController extends AbstractController
 
     /**
      * @Route(
-     *     path="/view/{id}", 
-     *     requirements={"id"="\d+"}, 
+     *     path="/view/{id}",
+     *     requirements={"id"="\d+"},
      *     name="marello_subscription_view"
      * )
      * @Template
@@ -49,7 +49,7 @@ class SubscriptionController extends AbstractController
 
     /**
      * @Route(
-     *     path="/create", 
+     *     path="/create",
      *     methods={"GET", "POST"},
      *     name="marello_subscription_create"
      * )
@@ -67,9 +67,9 @@ class SubscriptionController extends AbstractController
 
     /**
      * @Route(
-     *     path="/update/{id}", 
+     *     path="/update/{id}",
      *     methods={"GET", "POST"},
-     *     requirements={"id"="\d+"}, 
+     *     requirements={"id"="\d+"},
      *     name="marello_subscription_update"
      * )
      * @Template
@@ -161,9 +161,9 @@ class SubscriptionController extends AbstractController
     
     /**
      * @Route(
-     *     path="/update/address/{id}", 
+     *     path="/update/address/{id}",
      *     methods={"GET", "POST"},
-     *     requirements={"id"="\d+"}, 
+     *     requirements={"id"="\d+"},
      *     name="marello_subscription_updateaddress"
      * )
      * @Template("MarelloSubscriptionBundle:Subscription:widget/updateAddress.html.twig")

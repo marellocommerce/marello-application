@@ -1,6 +1,6 @@
 {
     "name": "marellocommerce/marello-application",
-    "description": "Marello Unified Commerce Management",
+    "description": "Marello Unified Commerce Management Community Edition",
     "homepage": "https://github.com/marellocommerce/marello-application.git",
     "license": "Commercial",
     "authors": [
@@ -89,7 +89,7 @@
             "bin/console oro:install --env test --organization-name Oro --user-name admin --user-email admin@example.com --user-firstname John --user-lastname Doe --user-password admin --sample-data n --application-url http://localhost --drop-database --timeout 3600 --skip-translations --skip-assets",
             "php ./bin/phpunit --color --testsuite=\"unit\"",
             "php ./bin/phpunit --color --testsuite=\"functional\"",
-            "php ./bin/phpcs vendor/marellocommerce/ -p --encoding=utf-8 --extensions=php --standard=psr2 --report=checkstyle --report-file=var/logs/phpcs.xml"
+            "php ./bin/phpcs --standard=vendor/marellocommerce/marello/phpcs.xml -p vendor/marellocommerce/ --report-file=var/logs/phpcs.xml"
         ],
         "test-psr": [
             "php ./bin/phpcs --standard=vendor/marellocommerce/marello/phpcs.xml -p vendor/marellocommerce/ --report-file=var/logs/phpcs.xml"
