@@ -18,7 +18,13 @@ class MarelloOrderBundle implements Migration
     {
         $table = $schema->getTable('marello_order_order');
         $table->dropColumn('locale');
-        $table->addColumn('payment_method_options', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
+        $table->addColumn(
+            'payment_method_options',
+            'json_array',
+            [
+                'notnull' => false, 'comment' => '(DC2Type:json_array)'
+            ]
+        );
 
         $dropLocaleInConfigSql = <<<EOF
 DELETE FROM oro_entity_config_field

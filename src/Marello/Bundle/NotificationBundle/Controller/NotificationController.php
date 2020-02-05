@@ -12,8 +12,8 @@ class NotificationController extends AbstractController
 {
     /**
      * @Route(
-     *     path="/view/thread/{id}", 
-     *     name="marello_notification_thread_view", 
+     *     path="/view/thread/{id}",
+     *     name="marello_notification_thread_view",
      *     requirements={"id"="\d+"}
      * )
      * @Template("MarelloNotificationBundle:Notification/Thread:notificationItem.html.twig")

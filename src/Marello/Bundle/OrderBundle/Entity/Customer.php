@@ -23,7 +23,7 @@ use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 
 /**
  * @deprecated, use "Marello\Bundle\CustomerBundle\Entity\Customer" instead
- * 
+ *
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(name="marello_order_customer")
