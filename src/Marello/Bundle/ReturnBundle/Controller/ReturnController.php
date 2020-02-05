@@ -17,7 +17,7 @@ class ReturnController extends AbstractController
 {
     /**
      * @Route(
-     *     path="/", 
+     *     path="/",
      *     name="marello_return_return_index"
      * )
      * @Template
@@ -30,8 +30,8 @@ class ReturnController extends AbstractController
 
     /**
      * @Route(
-     *     path="/create/{id}", 
-     *     requirements={"id"="\d+"}, 
+     *     path="/create/{id}",
+     *     requirements={"id"="\d+"},
      *     name="marello_return_return_create"
      * )
      * @Template
@@ -90,8 +90,8 @@ class ReturnController extends AbstractController
 
     /**
      * @Route(
-     *     path="/view/{id}", 
-     *     requirements={"id"="\d+"}, 
+     *     path="/view/{id}",
+     *     requirements={"id"="\d+"},
      *     name="marello_return_return_view"
      * )
      * @Template
@@ -108,8 +108,8 @@ class ReturnController extends AbstractController
 
     /**
      * @Route(
-     *     path="/update/{id}", 
-     *     requirements={"id"="\d+"}, 
+     *     path="/update/{id}",
+     *     requirements={"id"="\d+"},
      *     name="marello_return_return_update"
      * )
      * @Template
