@@ -92,7 +92,7 @@
             "php ./bin/phpcs vendor/marellocommerce/ -p --encoding=utf-8 --extensions=php --standard=psr2 --report=checkstyle --report-file=var/logs/phpcs.xml"
         ],
         "test-psr": [
-            "php ./bin/phpcs vendor/marellocommerce/ -p --encoding=utf-8 --extensions=php --standard=psr2 --report=checkstyle --report-file=var/logs/phpcs.xml"
+            "php ./bin/phpcs --ignore=vendor/marellocommerce/*/*/*/*/*/Migrations/,vendor/marellocommerce/*/*/*/*/*/Tests vendor/marellocommerce/ -p --encoding=utf-8 --extensions=php --standard=psr2 --report=checkstyle --report-file=var/logs/phpcs.xml"
         ],
         "post-install-cmd": [
             "@build-parameters",
