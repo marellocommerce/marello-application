@@ -9,6 +9,7 @@ use Marello\Bundle\OrderBundle\Migrations\Data\ORM\LoadOrderItemStatusData;
 use Marello\Bundle\OrderBundle\Provider\OrderItem\ShippingPreparedOrderItemsForNotificationProvider;
 use Marello\Bundle\OrderBundle\Twig\OrderExtension;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+use Marello\Bundle\OrderBundle\Tests\Unit\Stub\StatusEnumClassStub;
 
 class OrderExtensionTest extends WebTestCase
 {
@@ -88,8 +89,18 @@ class OrderExtensionTest extends WebTestCase
         $order = $this->getMockBuilder(Order::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $orderItem = new OrderItem();
-        $orderItem->setStatus(LoadOrderItemStatusData::SHIPPED);
+
+        $orderItemStatusMock = $this->createMock(StatusEnumClassStub::class);
+        $orderItemStatusMock
+            ->expects(static::atLeastOnce())
+            ->method('getId')
+            ->willReturn(LoadOrderItemStatusData::SHIPPED);
+
+        $orderItem = $this->createMock(OrderItem::class);
+        $orderItem
+            ->expects(static::atLeastOnce())
+            ->method('getStatus')
+            ->willReturn($orderItemStatusMock);
         $order
             ->expects($this->once())
             ->method('getItems')
@@ -107,8 +118,19 @@ class OrderExtensionTest extends WebTestCase
         $order = $this->getMockBuilder(Order::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $orderItem = new OrderItem();
-        $orderItem->setStatus(LoadOrderItemStatusData::PROCESSING);
+
+        $orderItemStatusMock = $this->createMock(StatusEnumClassStub::class);
+        $orderItemStatusMock
+            ->expects(static::atLeastOnce())
+            ->method('getId')
+            ->willReturn(LoadOrderItemStatusData::PROCESSING);
+
+        $orderItem = $this->createMock(OrderItem::class);
+        $orderItem
+            ->expects(static::atLeastOnce())
+            ->method('getStatus')
+            ->willReturn($orderItemStatusMock);
+
         $order
             ->expects($this->once())
             ->method('getItems')
