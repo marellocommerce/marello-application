@@ -28,7 +28,8 @@ class UpdateInventoryLevelLogWithWarehouseName extends AbstractFixture
             $warehouseName = $existingInventoryLevelLog->getWarehouseName();
             if (!$warehouseName) {
                 /** @var InventoryLevel $inventoryLevel */
-                $inventoryLevel = $inventoryLevelRepository->find($existingInventoryLevelLog->getInventoryLevel()->getId());
+                $inventoryLevel = $inventoryLevelRepository
+                    ->find($existingInventoryLevelLog->getInventoryLevel()->getId());
 
                 if ($inventoryLevel) {
                     $existingInventoryLevelLog->setWarehouseName($inventoryLevel->getWarehouse()->getLabel());
