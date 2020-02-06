@@ -104,16 +104,6 @@ class InvoiceTableProvider implements TableProviderInterface
         ]);
     }
 
-    protected function wrapLine($text, SalesChannel $salesChannel)
-    {
-        $text = str_replace(['<br>', '<br/>', '<br />'], "\n", $text);
-        $text = str_replace(["\r\n"], "\n", $text);
-        $text = str_replace("\r", "\n", $text);
-        $text = wordwrap($text, $this->tableSizeProvider->getMaxTextWidth($salesChannel), "\n", true);
-
-        return explode("\n", $text);
-    }
-
     protected function getEntitySalesChannel(Invoice $entity)
     {
         return $entity->getSalesChannel();

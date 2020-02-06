@@ -5,7 +5,7 @@ namespace Marello\Bundle\PdfBundle\Tests\Unit\Provider\Table;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\InvoiceBundle\Entity\Invoice;
 use Marello\Bundle\InvoiceBundle\Entity\InvoiceItem;
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\PdfBundle\Lib\View\Table;
 use Marello\Bundle\PdfBundle\Provider\Table\InvoiceTableProvider;
@@ -50,7 +50,6 @@ class InvoiceTableProviderTest extends TestCase
      * @param $itemCount
      * @param $productNameLength
      * @param $maxHeight
-     * @param $maxTextWidth
      * @param $firstPageInfoHeight
      * @param $lastPageInfoHeight
      * @param $tableCount
@@ -62,17 +61,22 @@ class InvoiceTableProviderTest extends TestCase
         $itemCount,
         $productNameLength,
         $maxHeight,
-        $maxTextWidth,
         $firstPageInfoHeight,
         $lastPageInfoHeight,
         $tableCount,
         $firstItemHeight
     ) {
-        $country = $this->getEntity(Country::class, [
-            'iso2Code' => 'NL',
-            'iso3Code' => 'NLD',
-            'name' => 'Netherlands',
-        ]);
+        $country = $this->getEntity(
+            Country::class,
+            [
+                'iso2Code' => 'NL',
+                'iso3Code' => 'NLD',
+                'name' => 'Netherlands'
+            ],
+            [
+                'iso2Code' => 'NL'
+            ]
+        );
 
         $billingAddress = $this->getEntity(MarelloAddress::class, [
             'street' => 'Billing street 1',
@@ -161,11 +165,7 @@ class InvoiceTableProviderTest extends TestCase
             ->with($salesChannel)
             ->willReturn($maxHeight)
         ;
-        $tableSizeProvider->expects($this->atLeastOnce())
-            ->method('getMaxTextWidth')
-            ->with($salesChannel)
-            ->willReturn($maxTextWidth)
-        ;
+
         $tableSizeProvider->expects($this->atLeastOnce())
             ->method('getFirstPageInfoHeight')
             ->with($salesChannel)
@@ -200,7 +200,6 @@ class InvoiceTableProviderTest extends TestCase
                 'itemCount' => 2,
                 'productNameLength' => 10,
                 'maxHeight' => 36,
-                'maxTextWidth' => 20,
                 'firstPageInfoHeight' => 13,
                 'lastPageInfoHeight' => 3,
                 'tableCount' => 1,
@@ -210,7 +209,6 @@ class InvoiceTableProviderTest extends TestCase
                 'itemCount' => 40,
                 'productNameLength' => 10,
                 'maxHeight' => 36,
-                'maxTextWidth' => 20,
                 'firstPageInfoHeight' => 13,
                 'lastPageInfoHeight' => 3,
                 'tableCount' => 2,
@@ -220,7 +218,6 @@ class InvoiceTableProviderTest extends TestCase
                 'itemCount' => 80,
                 'productNameLength' => 10,
                 'maxHeight' => 36,
-                'maxTextWidth' => 20,
                 'firstPageInfoHeight' => 13,
                 'lastPageInfoHeight' => 3,
                 'tableCount' => 3,
@@ -230,11 +227,10 @@ class InvoiceTableProviderTest extends TestCase
                 'itemCount' => 1,
                 'productNameLength' => 30,
                 'maxHeight' => 36,
-                'maxTextWidth' => 20,
                 'firstPageInfoHeight' => 13,
                 'lastPageInfoHeight' => 3,
                 'tableCount' => 1,
-                'firstItemHeight' => 3,
+                'firstItemHeight' => 1,
             ],
         ];
     }
