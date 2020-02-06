@@ -44,11 +44,6 @@ class DocumentTableExtensionTest extends TestCase
         $this->assertCount(0, $this->extension->getTokenParsers());
     }
 
-    public function testGetGlobals()
-    {
-        $this->assertCount(0, $this->extension->getGlobals());
-    }
-
     public function testGetFunctions()
     {
         $functions = $this->extension->getFunctions();
