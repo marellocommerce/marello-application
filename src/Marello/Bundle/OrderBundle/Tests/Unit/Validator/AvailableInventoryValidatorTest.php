@@ -333,9 +333,10 @@ class AvailableInventoryValidatorTest extends TestCase
     {
         $validator = new AvailableInventoryValidator(
             $this->doctrineHelper,
-            $this->inventoryProvider
+            $this->inventoryProvider,
+            $this->eventDispatcher
         );
-        $validator->setEventDispatcher($this->eventDispatcher);
+
         $validator->initialize($this->context);
 
         return $validator;
