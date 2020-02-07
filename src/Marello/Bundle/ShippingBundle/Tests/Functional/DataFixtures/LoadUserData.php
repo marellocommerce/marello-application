@@ -21,7 +21,7 @@ class LoadUserData extends AbstractLoadMultipleUserData implements ContainerAwar
     protected $roles = [
         self::ROLE_VIEW => [
             [
-                'class' => 'marello_shipping.entity.shipping_methods_configs_rule.class',
+                'class' => 'Marello\Bundle\ShippingBundle\Entity\ShippingMethodsConfigsRule',
                 'acls'  => [
                     [
                         AbstractLoadMultipleUserData::ACL_PERMISSION => 'VIEW',
@@ -41,7 +41,7 @@ class LoadUserData extends AbstractLoadMultipleUserData implements ContainerAwar
         ],
         self::ROLE_EDIT => [
             [
-                'class' => 'marello_shipping.entity.shipping_methods_configs_rule.class',
+                'class' => 'Marello\Bundle\ShippingBundle\Entity\ShippingMethodsConfigsRule',
                 'acls'  => [
                     [
                         AbstractLoadMultipleUserData::ACL_PERMISSION => 'EDIT',
@@ -52,7 +52,7 @@ class LoadUserData extends AbstractLoadMultipleUserData implements ContainerAwar
         ],
         self::ROLE_CREATE => [
             [
-                'class' => 'marello_shipping.entity.shipping_methods_configs_rule.class',
+                'class' => 'Marello\Bundle\ShippingBundle\Entity\ShippingMethodsConfigsRule',
                 'acls'  => [
                     [
                         AbstractLoadMultipleUserData::ACL_PERMISSION => 'CREATE',
