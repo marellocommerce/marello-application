@@ -87,9 +87,9 @@ class MarelloServicePointBundleInstaller implements Installation
         $table->addColumn('updated_at', 'datetime', ['length' => 0, 'comment' => '(DC2Type:datetime)']);
         $table->addColumn('serialized_data', 'array', ['notnull' => false, 'length' => 0, 'comment' => '(DC2Type:array)']);
         $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['date', 'servicepoint_facility_id'], null);
         $table->addIndex(['date'], null, []);
         $table->addIndex(['servicepoint_facility_id'], null, []);
+        $table->addUniqueIndex(['servicepoint_facility_id', 'date'], 'uniq_marello_spf_date');
     }
 
     /**
@@ -107,9 +107,9 @@ class MarelloServicePointBundleInstaller implements Installation
         $table->addColumn('updated_at', 'datetime', ['length' => 0, 'comment' => '(DC2Type:datetime)']);
         $table->addColumn('serialized_data', 'array', ['notnull' => false, 'length' => 0, 'comment' => '(DC2Type:array)']);
         $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['day_of_week', 'servicepoint_facility_id'], null);
         $table->addIndex(['day_of_week'], null, []);
         $table->addIndex(['servicepoint_facility_id'], null, []);
+        $table->addUniqueIndex(['servicepoint_facility_id', 'day_of_week'], 'uniq_marello_spf_day_of_week');
     }
 
     /**
@@ -232,7 +232,6 @@ class MarelloServicePointBundleInstaller implements Installation
         $table->addColumn('serialized_data', 'array', ['notnull' => false, 'length' => 0, 'comment' => '(DC2Type:array)']);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['open_time', 'close_time'], null, []);
-        $table->addIndex(['type'], null, []);
         $table->addIndex(['business_hours_id'], null, []);
         $table->addIndex(['business_hours_override_id'], null, []);
     }

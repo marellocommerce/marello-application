@@ -18,7 +18,9 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
  *         @ORM\Index(columns={"date"})
  *     },
  *     uniqueConstraints={
- *         @ORM\UniqueConstraint(columns={"servicepoint_facility_id", "date"})
+ *         @ORM\UniqueConstraint(
+ *              name="uniq_marello_spf_date",
+ *              columns={"servicepoint_facility_id", "date"})
  *     }
  * )
  * @Config(

@@ -19,7 +19,9 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
  *         @ORM\Index(columns={"day_of_week"})
  *     },
  *     uniqueConstraints={
- *         @ORM\UniqueConstraint(columns={"servicepoint_facility_id", "day_of_week"})
+ *         @ORM\UniqueConstraint(
+ *              name="uniq_marello_spf_day_of_week",
+ *              columns={"servicepoint_facility_id", "day_of_week"})
  *     }
  * )
  * @Config(
