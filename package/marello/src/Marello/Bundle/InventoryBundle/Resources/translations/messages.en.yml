@@ -129,6 +129,8 @@ marello:
             user.label:                     User
             inventory_level_qty.label:      InventoryLevel Qty
             allocated_inventory_level_qty.label: Allocated InventoryLevel Qty
+            warehouse_name.label:           Warehouse
+
 
         balancedinventorylevel:
             id.label:                       Id

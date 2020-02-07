@@ -24,8 +24,8 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
  * @Config(
  *     defaultValues={
  *         "entity"={
- *             "label"="marello.servicepoint.businesshours.entity_label",
- *             "plural_label"="marello.servicepoint.businesshours.entity_plural_label"
+ *             "label"="marello.servicepoint.businesshoursoverride.entity_label",
+ *             "plural_label"="marello.servicepoint.businesshoursoverride.entity_plural_label"
  *         },
  *         "dataaudit"={
  *             "auditable"=true
