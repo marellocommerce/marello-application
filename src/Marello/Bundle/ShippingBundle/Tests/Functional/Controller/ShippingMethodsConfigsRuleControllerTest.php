@@ -47,14 +47,14 @@ class ShippingMethodsConfigsRuleControllerTest extends WebTestCase
         $this->translator = static::getContainer()->get('translator');
     }
 
-//    public function testIndexWithoutCreate()
-//    {
-//        $this->initClient([], static::generateBasicAuthHeader(LoadUserData::USER_VIEWER, LoadUserData::USER_VIEWER));
-//        $crawler = $this->client->request('GET', $this->getUrl('marello_shipping_methods_configs_rule_index'));
-//        $result = $this->client->getResponse();
-//        static::assertHtmlResponseStatusCodeEquals($result, 200);
-//        static::assertEquals(0, $crawler->selectLink('Create Shipping Rule')->count());
-//    }
+    public function testIndexWithoutCreate()
+    {
+        $this->initClient([], static::generateBasicAuthHeader(LoadUserData::USER_VIEWER, LoadUserData::USER_VIEWER));
+        $crawler = $this->client->request('GET', $this->getUrl('marello_shipping_methods_configs_rule_index'));
+        $result = $this->client->getResponse();
+        static::assertHtmlResponseStatusCodeEquals($result, 200);
+        static::assertEquals(0, $crawler->selectLink('Create Shipping Rule')->count());
+    }
 
     /**
      * @return string
@@ -68,12 +68,6 @@ class ShippingMethodsConfigsRuleControllerTest extends WebTestCase
         $crawler = $this->client->request('GET', $this->getUrl('marello_shipping_methods_configs_rule_create'));
 
         static::assertHtmlResponseStatusCodeEquals($this->client->getResponse(), 200);
-        file_put_contents(
-            '/var/www/var/logs/html.log',
-            print_r($crawler->html(), true) . "\r\n",
-            FILE_APPEND
-        );
-
         /** @var Form $form */
         $form = $crawler
             ->selectButton('Save and Close')
