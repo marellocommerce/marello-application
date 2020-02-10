@@ -82,7 +82,7 @@
             "rm -rf var/cache/*",
             "rm -rf var/logs/*",
             "sed -i -e 's/installed:.*/installed: ~/g' config/parameters.yml",
-            "bin/console oro:install --timeout 3600 --sample-data=y --drop-database --env=prod --user-name=admin --user-firstname=John --user-lastname=Doe --user-password=marello123 --user-email=johndoe@example.com  --organization-name=Marello --formatting-code=en --language=en"
+            "bin/console oro:install --timeout 3600 --sample-data=y --drop-database --env=prod --user-name=admin --user-firstname=John --user-lastname=Doe --user-password=marello123 --user-email=johndoe@example.com  --organization-name=Marello --formatting-code=en_US --language=en"
         ],
         "test": [
             "rm -rf var/cache/*",
@@ -99,7 +99,7 @@
             "rm -rf var/cache/*",
             "rm -rf var/logs/*",
             "sed -i -e 's/installed:.*/installed: ~/g' config/parameters_test.yml",
-            "bin/console oro:install --env test --organization-name Oro --user-name admin --user-email admin@example.com --user-firstname John --user-lastname Doe --user-password admin --sample-data n --application-url http://localhost --drop-database --timeout 3600 --skip-translations --skip-assets",
+            "bin/console oro:install --env test --organization-name Oro --user-name admin --user-email admin@example.com --user-firstname John --user-lastname Doe --user-password admin --sample-data n --application-url http://localhost --drop-database --timeout 3600 --skip-translations --skip-assets --formatting-code=en_US --language=en",
             "php ./bin/phpunit --color --testsuite=\"unit\"",
             "php ./bin/phpunit --color --testsuite=\"functional\"",
             "php ./bin/phpcs --standard=vendor/marellocommerce/marello/phpcs.xml -p vendor/marellocommerce/ --report-file=var/logs/phpcs.xml"
