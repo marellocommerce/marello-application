@@ -17,9 +17,9 @@ class SubscriptionAjaxController extends AbstractController
 {
     /**
      * @Route(
-     *     path="/form-changes/{id}", 
+     *     path="/form-changes/{id}",
      *     methods={"POST"},
-     *     name="marello_subscription_form_changes", 
+     *     name="marello_subscription_form_changes",
      *     defaults={"id" = 0}
      * )
      * @AclAncestor("marello_subscription_create")

@@ -14,7 +14,7 @@ class CompanyController extends AbstractController
 {
     /**
      * @Route(
-     *     path="/", 
+     *     path="/",
      *     name="marello_customer_company_index"
      * )
      * @Template
@@ -31,8 +31,8 @@ class CompanyController extends AbstractController
 
     /**
      * @Route(
-     *     path="/view/{id}", 
-     *     name="marello_customer_company_view", 
+     *     path="/view/{id}",
+     *     name="marello_customer_company_view",
      *     requirements={"id"="\d+"}
      * )
      * @Template
@@ -56,7 +56,7 @@ class CompanyController extends AbstractController
 
     /**
      * @Route(
-     *     path="/create", 
+     *     path="/create",
      *     name="marello_customer_company_create"
      * )
      * @Template("MarelloCustomerBundle:Company:update.html.twig")
@@ -76,8 +76,8 @@ class CompanyController extends AbstractController
 
     /**
      * @Route(
-     *     path="/update/{id}", 
-     *     name="marello_customer_company_update", 
+     *     path="/update/{id}",
+     *     name="marello_customer_company_update",
      *     requirements={"id"="\d+"}
      * )
      * @Template

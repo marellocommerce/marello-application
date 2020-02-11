@@ -14,7 +14,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 
 /**
- * @ORM\Entity(repositoryClass="Marello\Bundle\ServicePointBundle\Entity\Repository\ServicePointRepository")
+ * @ORM\Entity()
  * @ORM\Table(name="marello_sp_servicepoint")
  * @ORM\HasLifecycleCallbacks
  * @Config(

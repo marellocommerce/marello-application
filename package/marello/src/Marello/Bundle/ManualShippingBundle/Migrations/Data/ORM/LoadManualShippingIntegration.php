@@ -42,7 +42,9 @@ class LoadManualShippingIntegration extends AbstractFixture implements
         if (!$this->container) {
             return;
         }
+
         $channel = $this->loadIntegration($manager);
+
         $this->addMethodConfigToDefaultShippingRule($manager, $channel);
     }
 

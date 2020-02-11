@@ -16,7 +16,7 @@ class WarehouseGroupController extends AbstractController
 {
     /**
      * @Route(
-     *     path="/", 
+     *     path="/",
      *     name="marelloenterprise_inventory_warehousegroup_index"
      * )
      * @Template("MarelloEnterpriseInventoryBundle:WarehouseGroup:index.html.twig")
@@ -33,7 +33,7 @@ class WarehouseGroupController extends AbstractController
 
     /**
      * @Route(
-     *     path="/create", 
+     *     path="/create",
      *     name="marelloenterprise_inventory_warehousegroup_create"
      * )
      * @Template("MarelloEnterpriseInventoryBundle:WarehouseGroup:update.html.twig")
@@ -54,8 +54,8 @@ class WarehouseGroupController extends AbstractController
 
     /**
      * @Route(
-     *     path="/view/{id}", 
-     *     name="marelloenterprise_inventory_warehousegroup_view", 
+     *     path="/view/{id}",
+     *     name="marelloenterprise_inventory_warehousegroup_view",
      *     requirements={"id"="\d+"}
      * )
      * @Template("MarelloEnterpriseInventoryBundle:WarehouseGroup:view.html.twig")
@@ -79,8 +79,8 @@ class WarehouseGroupController extends AbstractController
 
     /**
      * @Route(
-     *     path="/update/{id}", 
-     *     name="marelloenterprise_inventory_warehousegroup_update", 
+     *     path="/update/{id}",
+     *     name="marelloenterprise_inventory_warehousegroup_update",
      *     requirements={"id"="\d+"}
      * )
      * @Template("MarelloEnterpriseInventoryBundle:WarehouseGroup:update.html.twig")

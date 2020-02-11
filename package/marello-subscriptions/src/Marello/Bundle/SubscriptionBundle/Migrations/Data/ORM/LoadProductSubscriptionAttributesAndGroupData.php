@@ -88,7 +88,8 @@ class LoadProductSubscriptionAttributesAndGroupData extends AbstractFixture impl
      * @param array $attributes
      * @return AttributeGroup
      */
-    private function createGroup($family, $code, $label, $attributes) {
+    private function createGroup($family, $code, $label, $attributes)
+    {
         $attributeGroup = new AttributeGroup();
         $attributeGroup->setAttributeFamily($family);
         $attributeGroup->setDefaultLabel($label);

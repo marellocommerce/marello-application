@@ -13,7 +13,7 @@ class ReplenishmentOrderConfigController extends AbstractController
 {
     /**
      * @Route(
-     *     path="/create", 
+     *     path="/create",
      *     methods={"GET", "POST"},
      *     name="marello_replenishment_order_config_create"
      * )

@@ -19,7 +19,9 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
  *         @ORM\Index(columns={"day_of_week"})
  *     },
  *     uniqueConstraints={
- *         @ORM\UniqueConstraint(columns={"servicepoint_facility_id", "day_of_week"})
+ *         @ORM\UniqueConstraint(
+ *              name="uniq_marello_spf_day_of_week",
+ *              columns={"servicepoint_facility_id", "day_of_week"})
  *     }
  * )
  * @Config(
@@ -77,7 +79,11 @@ class BusinessHours extends ExtendBusinessHours implements DatesAwareInterface
     /**
      * @var Collection|TimePeriod[]
      *
-     * @ORM\OneToMany(targetEntity="Marello\Bundle\ServicePointBundle\Entity\TimePeriod", mappedBy="businessHours", cascade={"ALL"})
+     * @ORM\OneToMany(
+     *     targetEntity="Marello\Bundle\ServicePointBundle\Entity\TimePeriod",
+     *     mappedBy="businessHours",
+     *     cascade={"ALL"}
+     * )
      * @ORM\OrderBy({"closeTime": "ASC"})
      * @ConfigField(defaultValues={
      *     "entity"={
@@ -93,7 +99,10 @@ class BusinessHours extends ExtendBusinessHours implements DatesAwareInterface
     /**
      * @var ServicePointFacility
      *
-     * @ORM\ManyToOne(targetEntity="Marello\Bundle\ServicePointBundle\Entity\ServicePointFacility", inversedBy="businessHours")
+     * @ORM\ManyToOne(
+     *     targetEntity="Marello\Bundle\ServicePointBundle\Entity\ServicePointFacility",
+     *     inversedBy="businessHours"
+     * )
      * @ORM\JoinColumn(name="servicepoint_facility_id", nullable=false, onDelete="CASCADE")
      * @ConfigField(defaultValues={
      *     "entity"={
