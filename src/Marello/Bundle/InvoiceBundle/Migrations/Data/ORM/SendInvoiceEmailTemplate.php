@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\PdfBundle\Migrations\Data\ORM;
+namespace Marello\Bundle\InvoiceBundle\Migrations\Data\ORM;
 
 use Oro\Bundle\EmailBundle\Migrations\Data\ORM\AbstractEmailFixture;
 
