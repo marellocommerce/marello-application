@@ -68,10 +68,10 @@ class OrderWarehousesProviderTest extends TestCase
             ->setSku('SKU-4')
             ->setPreferredSupplier($preferredSupplier);
 
-        $inventoryItem1 = new InventoryItem(null, $product1);
-        $inventoryItem2 = new InventoryItem(null, $product2);
-        $inventoryItem3 = new InventoryItem(null, $product3);
-        $inventoryItem4 = new InventoryItem(null, $product4);
+        $inventoryItem1 = new InventoryItem($product1);
+        $inventoryItem2 = new InventoryItem($product2);
+        $inventoryItem3 = new InventoryItem($product3);
+        $inventoryItem4 = new InventoryItem($product4);
 
         $externalWarehouseType = new WarehouseType(WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL);
         $globalWarehouseType = new WarehouseType(WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL);

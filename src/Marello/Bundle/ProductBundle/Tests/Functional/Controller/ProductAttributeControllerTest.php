@@ -4,12 +4,9 @@ namespace Marello\Bundle\ProductBundle\Tests\Functional\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 
-use Oro\Bundle\EntityConfigBundle\Tests\Functional\Controller\AttributeControllerTest;
+use Oro\Bundle\EntityExtendBundle\Tests\Functional\AbstractConfigControllerTest;
 
-/**
- * @outputBuffering enabled
- */
-class ProductAttributeControllerTest extends AttributeControllerTest
+class ProductAttributeControllerTest extends AbstractConfigControllerTest
 {
     const PRODUCT_ENTITY_ALIAS = 'marelloproduct';
 
@@ -29,27 +26,5 @@ class ProductAttributeControllerTest extends AttributeControllerTest
     protected function getTestEntityAlias()
     {
         return self::PRODUCT_ENTITY_ALIAS;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function testCreateImage()
-    {
-        // skip test during hardcoded entity classname in dependent functions
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function testCreateFile()
-    {
-        // skip test during hardcoded entity classname in dependent functions
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
     }
 }

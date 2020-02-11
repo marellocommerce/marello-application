@@ -40,7 +40,9 @@ class LoadPaymentTermIntegration extends AbstractFixture implements
         if (!$this->container) {
             return;
         }
+
         $channel = $this->loadIntegration($manager);
+
         $this->addMethodConfigToDefaultPaymentRule($manager, $channel);
     }
 

@@ -1,5 +1,7 @@
-{% for index, assembledChannelPriceList in record.getValue('channelPrices') %}
-    {% if assembledChannelPriceList.defaultPrice %}
-        {{ assembledChannelPriceList.channel.name }}: {{ assembledChannelPriceList.defaultPrice.value|oro_format_currency({'currency': assembledChannelPriceList.currency}) }}<br>
+{% set prices = record.getValue('defaultChannelPrices')|split(';') %}
+{% for index, valueSet in prices %}
+    {% set values = valueSet|split('|') %}
+    {% if values|length == 3 %}
+        {{ values[0] }}: {{ values[1]|oro_format_currency({'currency': values[2]}) }}<br>
     {% endif %}
 {% endfor %}
