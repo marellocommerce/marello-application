@@ -16,7 +16,7 @@ class SalesChannelGroupController extends AbstractController
 {
     /**
      * @Route(
-     *     path="/", 
+     *     path="/",
      *     name="marello_sales_saleschannelgroup_index"
      * )
      * @Template
@@ -33,7 +33,7 @@ class SalesChannelGroupController extends AbstractController
 
     /**
      * @Route(
-     *     path="/create", 
+     *     path="/create",
      *     name="marello_sales_saleschannelgroup_create"
      * )
      * @Template("MarelloSalesBundle:SalesChannelGroup:update.html.twig")
@@ -54,8 +54,8 @@ class SalesChannelGroupController extends AbstractController
 
     /**
      * @Route(
-     *     path="/view/{id}", 
-     *     name="marello_sales_saleschannelgroup_view", 
+     *     path="/view/{id}",
+     *     name="marello_sales_saleschannelgroup_view",
      *     requirements={"id"="\d+"}
      * )
      * @Template
@@ -79,8 +79,8 @@ class SalesChannelGroupController extends AbstractController
 
     /**
      * @Route(
-     *     path="/update/{id}", 
-     *     name="marello_sales_saleschannelgroup_update", 
+     *     path="/update/{id}",
+     *     name="marello_sales_saleschannelgroup_update",
      *     requirements={"id"="\d+"}
      * )
      * @Template

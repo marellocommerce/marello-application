@@ -83,4 +83,3 @@ abstract class AbstractInventoryLevelReader extends AbstractReader
         return $item;
     }
 }
-

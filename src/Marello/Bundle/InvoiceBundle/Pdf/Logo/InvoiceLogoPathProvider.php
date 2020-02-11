@@ -112,6 +112,6 @@ class InvoiceLogoPathProvider
      */
     protected function fetchImage(File $entity)
     {
-        $this->imageResizer->applyFilter($entity, self::IMAGE_FILTER);
+        $this->imageResizer->applyFilter($entity, self::IMAGE_FILTER, true);
     }
 }

@@ -19,7 +19,7 @@ class SupplierController extends AbstractController
 {
     /**
      * @Route(
-     *     path="/", 
+     *     path="/",
      *     name="marello_supplier_supplier_index"
      * )
      * @Template
@@ -32,8 +32,8 @@ class SupplierController extends AbstractController
 
     /**
      * @Route(
-     *     path="/view/{id}", 
-     *     requirements={"id"="\d+"}, 
+     *     path="/view/{id}",
+     *     requirements={"id"="\d+"},
      *     name="marello_supplier_supplier_view"
      * )
      * @Template
@@ -50,7 +50,7 @@ class SupplierController extends AbstractController
 
     /**
      * @Route(
-     *     path="/create", 
+     *     path="/create",
      *     methods={"GET", "POST"},
      *     name="marello_supplier_supplier_create"
      * )
@@ -66,9 +66,9 @@ class SupplierController extends AbstractController
 
     /**
      * @Route(
-     *     path="/update/{id}", 
+     *     path="/update/{id}",
      *     methods={"GET", "POST"},
-     *     requirements={"id"="\d+"}, 
+     *     requirements={"id"="\d+"},
      *     name="marello_supplier_supplier_update"
      * )
      * @Template
@@ -146,9 +146,9 @@ class SupplierController extends AbstractController
 
     /**
      * @Route(
-     *     path="/update/address/{id}", 
+     *     path="/update/address/{id}",
      *     methods={"GET", "POST"},
-     *     requirements={"id"="\d+"}, 
+     *     requirements={"id"="\d+"},
      *     name="marello_supplier_supplier_updateaddress"
      * )
      * @Template("MarelloSupplierBundle:Supplier:widget/updateAddress.html.twig")
