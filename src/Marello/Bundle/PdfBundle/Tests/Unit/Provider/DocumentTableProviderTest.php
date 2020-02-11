@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\PdfBundle\Tests\Unit\Provider;
 
-use Marello\Bundle\InvoiceBundle\Entity\Invoice;
 use Marello\Bundle\PdfBundle\Lib\View\Table;
 use Marello\Bundle\PdfBundle\Provider\DocumentTableProvider;
 use Marello\Bundle\PdfBundle\Provider\TableProviderInterface;
@@ -40,7 +39,7 @@ class DocumentTableProviderTest extends TestCase
         $this->provider->addProvider($notWorkingProvider);
         $this->provider->addProvider($workingProvider);
 
-        $tables = $this->provider->getTables(new Invoice());
+        $tables = $this->provider->getTables(new \stdClass());
 
         $this->assertNotEmpty($tables);
     }
@@ -56,7 +55,7 @@ class DocumentTableProviderTest extends TestCase
 
         $this->provider->addProvider($notWorkingProvider);
 
-        $tables = $this->provider->getTables(new Invoice());
+        $tables = $this->provider->getTables(new \stdClass());
 
         $this->assertEmpty($tables);
     }

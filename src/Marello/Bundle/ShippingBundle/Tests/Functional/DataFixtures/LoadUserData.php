@@ -2,6 +2,8 @@
 
 namespace Marello\Bundle\ShippingBundle\Tests\Functional\DataFixtures;
 
+use Marello\Bundle\ShippingBundle\Entity\ShippingMethodsConfigsRule;
+use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\TestFrameworkBundle\Migrations\Data\ORM\AbstractLoadMultipleUserData;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
@@ -21,7 +23,7 @@ class LoadUserData extends AbstractLoadMultipleUserData implements ContainerAwar
     protected $roles = [
         self::ROLE_VIEW => [
             [
-                'class' => 'marello_shipping.entity.shipping_methods_configs_rule.class',
+                'class' => ShippingMethodsConfigsRule::class,
                 'acls'  => [
                     [
                         AbstractLoadMultipleUserData::ACL_PERMISSION => 'VIEW',
@@ -30,7 +32,7 @@ class LoadUserData extends AbstractLoadMultipleUserData implements ContainerAwar
                 ],
             ],
             [
-                'class' => 'oro_integration.entity.class',
+                'class' => Channel::class,
                 'acls'  => [
                     [
                         AbstractLoadMultipleUserData::ACL_PERMISSION => 'VIEW',
@@ -41,7 +43,7 @@ class LoadUserData extends AbstractLoadMultipleUserData implements ContainerAwar
         ],
         self::ROLE_EDIT => [
             [
-                'class' => 'marello_shipping.entity.shipping_methods_configs_rule.class',
+                'class' => ShippingMethodsConfigsRule::class,
                 'acls'  => [
                     [
                         AbstractLoadMultipleUserData::ACL_PERMISSION => 'EDIT',
@@ -52,7 +54,7 @@ class LoadUserData extends AbstractLoadMultipleUserData implements ContainerAwar
         ],
         self::ROLE_CREATE => [
             [
-                'class' => 'marello_shipping.entity.shipping_methods_configs_rule.class',
+                'class' => ShippingMethodsConfigsRule::class,
                 'acls'  => [
                     [
                         AbstractLoadMultipleUserData::ACL_PERMISSION => 'CREATE',

@@ -6,6 +6,7 @@ system_configuration:
         document_configuration:
             title: marello.pdf.config.groups.document_configuration.label
             icon: fa-file-text-o
+            configurator: '@marello_pdf.configurator.document_configurator::buildForm'
 
         template:
             title: marello.pdf.config.groups.template.label
@@ -33,23 +34,17 @@ system_configuration:
                     - Choice:
                         choices: [a4, letter]
 
-        marello_pdf.language:
+        marello_pdf.localization:
             data_type: string
-            type: 'Symfony\Component\Form\Extension\Core\Type\LocaleType'
+            type: Oro\Bundle\LocaleBundle\Form\Type\LocalizationSelectionType
             options:
-                label: marello.pdf.config.fields.language.label
-                tooltip: marello.pdf.config.fields.language.tooltip
+                label: marello.pdf.config.fields.localization.label
+                tooltip: marello.pdf.config.fields.localization.tooltip
+                required: true
+                multiple: false
                 constraints:
-                    - Locale: ~
-
-        marello_pdf.locale:
-            data_type: string
-            type: 'Symfony\Component\Form\Extension\Core\Type\LocaleType'
-            options:
-                label: marello.pdf.config.fields.locale.label
-                tooltip: marello.pdf.config.fields.locale.tooltip
-                constraints:
-                    - Locale: ~
+                    - Oro\Bundle\LocaleBundle\Validator\Constraints\DefaultLocalization: ~
+                    - NotBlank: ~
 
         marello_pdf.logo:
             data_type: string
@@ -147,8 +142,7 @@ system_configuration:
                                             - marello_pdf.paper_size
                                     template:
                                         children:
-                                            - marello_pdf.language
-                                            - marello_pdf.locale
+                                            - marello_pdf.localization
                                             - marello_pdf.logo
                                             - marello_pdf.company_address
                                             - marello_pdf.company_email
@@ -174,8 +168,7 @@ system_configuration:
                                 children:
                                     template:
                                         children:
-                                            - marello_pdf.language
-                                            - marello_pdf.locale
+                                            - marello_pdf.localization
                                             - marello_pdf.logo
                                             - marello_pdf.company_address
                                             - marello_pdf.company_email
