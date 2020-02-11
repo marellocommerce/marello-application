@@ -40,13 +40,7 @@ class LoadPaymentTermIntegration extends AbstractFixture implements
         if (!$this->container) {
             return;
         }
-
-        if (!$this->container->hasParameter('oro_integration.entity.class')) {
-            return;
-        }
-
         $channel = $this->loadIntegration($manager);
-
         $this->addMethodConfigToDefaultPaymentRule($manager, $channel);
     }
 

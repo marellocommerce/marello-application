@@ -4,6 +4,7 @@ namespace Marello\Bundle\PdfBundle;
 
 use Marello\Bundle\PdfBundle\DependencyInjection\CompilerPass\DocumentTableProviderPass;
 use Marello\Bundle\PdfBundle\DependencyInjection\CompilerPass\RenderParameterProviderPass;
+use Marello\Bundle\PdfBundle\DependencyInjection\CompilerPass\RequestHandlersPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -15,5 +16,6 @@ class MarelloPdfBundle extends Bundle
 
         $container->addCompilerPass(new RenderParameterProviderPass());
         $container->addCompilerPass(new DocumentTableProviderPass());
+        $container->addCompilerPass(new RequestHandlersPass());
     }
 }

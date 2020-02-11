@@ -3,8 +3,10 @@
 namespace Marello\Bundle\PdfBundle\Twig\Extension;
 
 use Marello\Bundle\PdfBundle\Provider\DocumentTableProvider;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class DocumentTableExtension extends \Twig_Extension
+class DocumentTableExtension extends AbstractExtension
 {
     const NAME = 'marello_document_table';
 
@@ -18,7 +20,7 @@ class DocumentTableExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('get_document_tables', [$this->tableProvider, 'getTables']),
+            new TwigFunction('get_document_tables', [$this->tableProvider, 'getTables']),
         ];
     }
 
