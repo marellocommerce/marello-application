@@ -14,8 +14,8 @@ class InventoryLevelController extends AbstractController
 {
     /**
      * @Route(
-     *     path="/{id}", 
-     *     requirements={"id"="\d+"}, 
+     *     path="/{id}",
+     *     requirements={"id"="\d+"},
      *     name="marello_inventory_inventorylevel_index"
      * )
      * @Template("MarelloInventoryBundle:InventoryLevel:index.html.twig")
@@ -34,8 +34,8 @@ class InventoryLevelController extends AbstractController
 
     /**
      * @Route(
-     *     path="/chart/{id}", 
-     *     requirements={"id"="\d+"}, 
+     *     path="/chart/{id}",
+     *     requirements={"id"="\d+"},
      *     name="marello_inventory_inventorylevel_chart"
      * )
      * @Template("MarelloInventoryBundle:InventoryLevel:chart.html.twig")

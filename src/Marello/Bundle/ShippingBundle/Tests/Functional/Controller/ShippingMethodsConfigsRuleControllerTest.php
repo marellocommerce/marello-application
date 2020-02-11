@@ -67,6 +67,7 @@ class ShippingMethodsConfigsRuleControllerTest extends WebTestCase
         );
         $crawler = $this->client->request('GET', $this->getUrl('marello_shipping_methods_configs_rule_create'));
 
+        static::assertHtmlResponseStatusCodeEquals($this->client->getResponse(), 200);
         /** @var Form $form */
         $form = $crawler
             ->selectButton('Save and Close')

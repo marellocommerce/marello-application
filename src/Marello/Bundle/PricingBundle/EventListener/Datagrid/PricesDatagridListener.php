@@ -91,9 +91,33 @@ class PricesDatagridListener
     {
         $ormQuery = $config->getOrmQuery();
         $ormQuery
-            ->addSelect(sprintf('sum(%s.value) as defaultPricesSum', self::DEFAULT_JOIN_ALIAS))
-            ->addSelect(sprintf('sum(%s.value) as specialPricesSum', self::SPECIAL_JOIN_ALIAS))
-            ->addSelect(sprintf('sum(%s.value) as msrpPricesSum', self::MSRP_JOIN_ALIAS));
+            ->addSelect(
+                sprintf(
+                    'GROUP_CONCAT(
+                        DISTINCT CONCAT_WS(\'|\', %1$s.value, %1$s.currency) SEPARATOR \';\'
+                    ) as defaultPrices',
+                    self::DEFAULT_JOIN_ALIAS
+                )
+            )
+            ->addSelect(
+                sprintf(
+                    'GROUP_CONCAT(
+                        DISTINCT CONCAT_WS(\'|\', %1$s.value, %1$s.currency) SEPARATOR \';\'
+                    ) as specialPrices',
+                    self::SPECIAL_JOIN_ALIAS
+                )
+            )
+            ->addSelect(
+                sprintf(
+                    'GROUP_CONCAT(
+                        DISTINCT CONCAT_WS(\'|\', %1$s.value, %1$s.currency) SEPARATOR \';\'
+                    ) as msrpPrices',
+                    self::MSRP_JOIN_ALIAS
+                )
+            )
+            ->addSelect(sprintf('SUM(%s.value) as defaultPricesSum', self::DEFAULT_JOIN_ALIAS))
+            ->addSelect(sprintf('SUM(%s.value) as specialPricesSum', self::SPECIAL_JOIN_ALIAS))
+            ->addSelect(sprintf('SUM(%s.value) as msrpPricesSum', self::MSRP_JOIN_ALIAS));
     }
 
     /**

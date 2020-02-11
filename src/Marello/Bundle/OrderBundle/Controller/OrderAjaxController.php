@@ -16,9 +16,9 @@ class OrderAjaxController extends AbstractController
 {
     /**
      * @Route(
-     *     path="/form-changes/{id}", 
-     *     methods={"POST"}, 
-     *     name="marello_order_form_changes", 
+     *     path="/form-changes/{id}",
+     *     methods={"POST"},
+     *     name="marello_order_form_changes",
      *     defaults={"id" = 0}
      * )
      * @AclAncestor("marello_order_create")

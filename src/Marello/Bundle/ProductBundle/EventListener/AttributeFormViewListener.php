@@ -296,4 +296,3 @@ class AttributeFormViewListener
         return $this->fieldsRestrictedToMove;
     }
 }
-
