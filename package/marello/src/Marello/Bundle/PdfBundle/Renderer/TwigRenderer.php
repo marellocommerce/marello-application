@@ -2,13 +2,15 @@
 
 namespace Marello\Bundle\PdfBundle\Renderer;
 
+use Twig\Environment;
+
 class TwigRenderer
 {
     protected $renderer;
 
     protected $twig;
 
-    public function __construct(HtmlRenderer $renderer, \Twig_Environment $twig)
+    public function __construct(HtmlRenderer $renderer, Environment $twig)
     {
         $this->renderer = $renderer;
         $this->twig = $twig;

@@ -1,18 +1,17 @@
 <?php
 
-namespace Marello\Bundle\PdfBundle\Provider\Render;
+namespace Marello\Bundle\InvoiceBundle\Pdf\Logo;
 
 use Marello\Bundle\InvoiceBundle\Entity\AbstractInvoice;
 use Marello\Bundle\PdfBundle\Provider\RenderParameterProviderInterface;
-use Marello\Bundle\PdfBundle\Provider\LogoProvider as LogoPathProvider;
 
-class LogoProvider implements RenderParameterProviderInterface
+class InvoiceLogoRenderParameterProvider implements RenderParameterProviderInterface
 {
     const OPTION_KEY = 'sales_channel';
 
     protected $logoProvider;
 
-    public function __construct(LogoPathProvider $logoProvider)
+    public function __construct(InvoiceLogoPathProvider $logoProvider)
     {
         $this->logoProvider = $logoProvider;
     }
@@ -20,8 +19,7 @@ class LogoProvider implements RenderParameterProviderInterface
     public function supports($entity, array $options)
     {
         return $entity instanceof AbstractInvoice
-            || isset($options[self::OPTION_KEY])
-        ;
+            || isset($options[self::OPTION_KEY]);
     }
 
     public function getParams($entity, array $options)
