@@ -50,8 +50,8 @@ class CustomerController extends AbstractController
 
     /**
      * @Route(
-     *     path="/create", 
-     *     methods={"GET", "POST"}, 
+     *     path="/create",
+     *     methods={"GET", "POST"},
      *     name="marello_customer_create"
      * )
      * @Template("@MarelloCustomer/Customer/update.html.twig")
@@ -68,9 +68,9 @@ class CustomerController extends AbstractController
 
     /**
      * @Route(
-     *     path="/update/{id}", 
-     *     methods={"GET", "POST"}, 
-     *     requirements={"id"="\d+"}, 
+     *     path="/update/{id}",
+     *     methods={"GET", "POST"},
+     *     requirements={"id"="\d+"},
      *     name="marello_customer_update"
      * )
      * @Template
@@ -100,22 +100,22 @@ class CustomerController extends AbstractController
 
         return $this->get('oro_form.model.update_handler')
         ->handleUpdate(
-                $customer,
-                $this->get('marello_customer.form'),
-                function (Customer $entity) {
-                    return [
-                        'route' => 'marello_customer_update',
-                        'parameters' => ['id' => $entity->getId()]
-                    ];
-                },
-                function (Customer $entity) {
-                    return [
-                        'route' => 'marello_customer_view',
-                        'parameters' => ['id' => $entity->getId()]
-                    ];
-                },
-                $this->get('translator')->trans('marello.order.messages.success.customer.saved'),
-                $this->get('marello_customer.form.handler.customer')
-            );
+            $customer,
+            $this->get('marello_customer.form'),
+            function (Customer $entity) {
+                return [
+                    'route' => 'marello_customer_update',
+                    'parameters' => ['id' => $entity->getId()]
+                ];
+            },
+            function (Customer $entity) {
+                return [
+                    'route' => 'marello_customer_view',
+                    'parameters' => ['id' => $entity->getId()]
+                ];
+            },
+            $this->get('translator')->trans('marello.order.messages.success.customer.saved'),
+            $this->get('marello_customer.form.handler.customer')
+        );
     }
 }

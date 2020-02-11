@@ -69,9 +69,9 @@ class InvoiceTableProviderTest extends TestCase
         $firstItemHeight
     ) {
         $country = $this->getEntity(Country::class, [
-                'iso3Code' => 'NLD',
-                'name' => 'Netherlands',
-            ],
+            'iso3Code' => 'NLD',
+            'name' => 'Netherlands',
+        ],
             [
                 'NL'
             ]);
@@ -163,11 +163,11 @@ class InvoiceTableProviderTest extends TestCase
             ->with($salesChannel)
             ->willReturn($maxHeight)
         ;
-       /* $tableSizeProvider->expects($this->atLeastOnce())
-            ->method('getMaxTextWidth')
-            ->with($salesChannel)
-            ->willReturn($maxTextWidth)
-        ;*/
+        /* $tableSizeProvider->expects($this->atLeastOnce())
+             ->method('getMaxTextWidth')
+             ->with($salesChannel)
+             ->willReturn($maxTextWidth)
+         ;*/
         $tableSizeProvider->expects($this->atLeastOnce())
             ->method('getFirstPageInfoHeight')
             ->with($salesChannel)

@@ -48,7 +48,7 @@ datagrids:
                 salesChannel:
                     data_name: sc.name
                 warehouse:
-                    data_name: wh.name
+                    data_name: wh.label
                 billingAddress:
                     data_name: ps.billingAddress
                 shippingAddress:
@@ -72,7 +72,7 @@ datagrids:
                     data_name: sc.name
                 warehouse:
                     type: string
-                    data_name: wh.name
+                    data_name: wh.label
                 billingAddress:
                     type: string
                     data_name: ps.billingAddress

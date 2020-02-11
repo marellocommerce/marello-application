@@ -135,7 +135,7 @@ class InventoryItemType extends AbstractType
                     'label' => 'marello.inventory.inventoryitem.enable_batch_inventory.label'
                 ]
             )
-            ->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'preSetDataListener']);;
+            ->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'preSetDataListener']);
         if ($this->subscriber !== null) {
             $builder->addEventSubscriber($this->subscriber);
         }
@@ -152,7 +152,8 @@ class InventoryItemType extends AbstractType
 
         if ($inventoryItem->isEnableBatchInventory() === true) {
             $form->remove('enableBatchInventory');
-            $form->add('enableBatchInventory',
+            $form->add(
+                'enableBatchInventory',
                 CheckboxType::class,
                 [
                     'disabled' => true,

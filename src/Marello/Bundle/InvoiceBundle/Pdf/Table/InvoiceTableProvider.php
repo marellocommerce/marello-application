@@ -37,7 +37,7 @@ class InvoiceTableProvider implements TableProviderInterface
     {
         return $entity instanceof Invoice
             && $entity->getInvoiceType() === Invoice::INVOICE_TYPE
-        ;
+            ;
     }
 
     /**

@@ -16,7 +16,7 @@ class SalesChannelController extends AbstractController
 {
     /**
      * @Route(
-     *     path="/", 
+     *     path="/",
      *     methods={"GET"},
      *     name="marello_sales_saleschannel_index"
      * )
@@ -32,7 +32,7 @@ class SalesChannelController extends AbstractController
 
     /**
      * @Route(
-     *     path="/create", 
+     *     path="/create",
      *     methods={"GET", "POST"},
      *     name="marello_sales_saleschannel_create"
      * )
@@ -49,8 +49,8 @@ class SalesChannelController extends AbstractController
     
     /**
      * @Route(
-     *     path="/view/{id}", 
-     *     name="marello_sales_saleschannel_view", 
+     *     path="/view/{id}",
+     *     name="marello_sales_saleschannel_view",
      *     requirements={"id"="\d+"}
      * )
      * @Template
@@ -75,7 +75,7 @@ class SalesChannelController extends AbstractController
      * @Route(
      *     path="/update/{id}",
      *     methods={"GET", "POST"},
-     *     requirements={"id"="\d+"}, 
+     *     requirements={"id"="\d+"},
      *     name="marello_sales_saleschannel_update"
      * )
      * @Template

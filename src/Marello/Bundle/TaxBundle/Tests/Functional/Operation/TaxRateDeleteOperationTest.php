@@ -3,6 +3,8 @@
 namespace Marello\Bundle\TaxBundle\Tests\Functional\Operation;
 
 use Oro\Bundle\ActionBundle\Tests\Functional\ActionTestCase;
+
+use Marello\Bundle\TaxBundle\Entity\TaxRate;
 use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxRateData;
 
 class TaxRateDeleteOperationTest extends ActionTestCase
@@ -25,7 +27,7 @@ class TaxRateDeleteOperationTest extends ActionTestCase
 
         $this->assertDeleteOperation(
             $taxRate->getId(),
-            'marello_tax.taxrate.entity.class',
+            TaxRate::class,
             'marello_tax_taxrate_index'
         );
     }

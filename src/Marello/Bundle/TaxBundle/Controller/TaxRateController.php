@@ -17,7 +17,7 @@ class TaxRateController extends AbstractController
 {
     /**
      * @Route(
-     *     path="/", 
+     *     path="/",
      *     name="marello_tax_taxrate_index"
      * )
      * @Template
@@ -30,8 +30,8 @@ class TaxRateController extends AbstractController
 
     /**
      * @Route(
-     *     path="/view/{id}", 
-     *     requirements={"id"="\d+"}, 
+     *     path="/view/{id}",
+     *     requirements={"id"="\d+"},
      *     name="marello_tax_taxrate_view"
      * )
      * @Template
@@ -53,7 +53,7 @@ class TaxRateController extends AbstractController
 
     /**
      * @Route(
-     *     path="/create", 
+     *     path="/create",
      *     methods={"GET", "POST"},
      *     name="marello_tax_taxrate_create"
      * )
@@ -74,9 +74,9 @@ class TaxRateController extends AbstractController
 
     /**
      * @Route(
-     *     path="/update/{id}", 
+     *     path="/update/{id}",
      *     methods={"GET", "POST"},
-     *     requirements={"id"="\d+"}, 
+     *     requirements={"id"="\d+"},
      *     name="marello_tax_taxrate_update"
      * )
      * @Template

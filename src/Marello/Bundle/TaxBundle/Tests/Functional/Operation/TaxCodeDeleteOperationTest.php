@@ -3,6 +3,8 @@
 namespace Marello\Bundle\TaxBundle\Tests\Functional\Operation;
 
 use Oro\Bundle\ActionBundle\Tests\Functional\ActionTestCase;
+
+use Marello\Bundle\TaxBundle\Entity\TaxCode;
 use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxCodeData;
 
 class TaxCodeDeleteOperationTest extends ActionTestCase
@@ -25,7 +27,7 @@ class TaxCodeDeleteOperationTest extends ActionTestCase
 
         $this->assertDeleteOperation(
             $productTaxCode->getId(),
-            'marello_tax.taxcode.entity.class',
+            TaxCode::class,
             'marello_tax_taxcode_index'
         );
     }

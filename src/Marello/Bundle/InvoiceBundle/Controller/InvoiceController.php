@@ -12,7 +12,7 @@ class InvoiceController extends AbstractController
 {
     /**
      * @Route(
-     *     path="/", 
+     *     path="/",
      *     name="marello_invoice_invoice_index"
      * )
      * @Template
@@ -25,8 +25,8 @@ class InvoiceController extends AbstractController
 
     /**
      * @Route(
-     *     path="/view/{id}", 
-     *     requirements={"id"="\d+"}, 
+     *     path="/view/{id}",
+     *     requirements={"id"="\d+"},
      *     name="marello_invoice_invoice_view"
      * )
      * @Template
