@@ -30,8 +30,7 @@ class InvoiceLogoPathProvider
         AttachmentManager $attachmentManager,
         ImageResizeManagerInterface $imageResizer,
         $projectDir
-    )
-    {
+    ) {
         $this->configManager = $configManager;
         $this->doctrineHelper = $doctrineHelper;
         $this->attachmentManager = $attachmentManager;
