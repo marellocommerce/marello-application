@@ -17,7 +17,7 @@ use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 use Marello\Bundle\PricingBundle\Subtotal\Model\LineItemsAwareInterface;
 use Marello\Bundle\PricingBundle\Subtotal\Model\SubtotalAwareInterface;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Marello\Bundle\SalesBundle\Model\ChannelAwareInterface;
+use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
 use Marello\Bundle\ShippingBundle\Entity\HasShipmentTrait;
 use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
 use Marello\Bundle\TaxBundle\Model\TaxAwareInterface;
@@ -73,7 +73,7 @@ class Order extends ExtendOrder implements
     TaxAwareInterface,
     LineItemsAwareInterface,
     LocalizationAwareInterface,
-    ChannelAwareInterface,
+    SalesChannelAwareInterface,
     OrganizationAwareInterface
 {
     use HasShipmentTrait;

@@ -14,7 +14,7 @@ use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
 use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
 use Marello\Bundle\ProductBundle\Model\ExtendProduct;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
+use Marello\Bundle\SalesBundle\Model\SalesChannelsAwareInterface;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
 use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
@@ -66,7 +66,7 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
  */
 class Product extends ExtendProduct implements
     ProductInterface,
-    SalesChannelAwareInterface,
+    SalesChannelsAwareInterface,
     PricingAwareInterface,
     OrganizationAwareInterface,
     InventoryItemAwareInterface,

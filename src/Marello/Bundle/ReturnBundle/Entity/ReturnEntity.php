@@ -14,6 +14,7 @@ use Marello\Bundle\OrderBundle\Entity\OrderAwareInterface;
 use Marello\Bundle\ReturnBundle\Model\ExtendReturnEntity;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\ShippingBundle\Entity\HasShipmentTrait;
+use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
 use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
@@ -54,7 +55,8 @@ class ReturnEntity extends ExtendReturnEntity implements
     ShippingAwareInterface,
     LocalizationAwareInterface,
     OrganizationAwareInterface,
-    OrderAwareInterface
+    OrderAwareInterface,
+    SalesChannelAwareInterface
 {
     use HasShipmentTrait;
     use LocalizationTrait;
