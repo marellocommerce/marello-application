@@ -32,6 +32,8 @@ services:
             - 'marello_pdf.localization'
         tags:
             - { name: marello_pdf.render_parameter_provider }
+        calls:
+            - ['setChainLocalizationProvider', ['@marello_locale.entity_localization_provider.chain']]
 
     marello_pdf.param_provider.saleschannel_config_values:
         class: 'Marello\Bundle\PdfBundle\Provider\Render\ConfigValuesProvider'
