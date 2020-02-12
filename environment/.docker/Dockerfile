@@ -23,6 +23,8 @@ COPY conf/php/php.cli.ini   /etc/php/${PHP_VERSION}/cli/php.ini
 COPY conf/fpm/fpm.conf      /etc/php/${PHP_VERSION}/fpm/php-fpm.conf
 COPY conf/fpm/fpm.www.conf  /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf
 
+COPY ${HOME}/.composer/auth.json /opt/composer/www-data/auth.json
+
 VOLUME ["/var/www/var/cache",  "/var/www/var/attachment", "/var/www/var/sessions",  "/var/www/var/import_export", "/var/www/public/uploads", "/var/www/public/media"]
 EXPOSE 443 80 8080
 
