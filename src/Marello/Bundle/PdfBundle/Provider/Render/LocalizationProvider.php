@@ -49,7 +49,6 @@ class LocalizationProvider implements RenderParameterProviderInterface
             $params['localization'] = $localization;
             $params['language'] = $localization->getLanguageCode();
             $params['locale'] = $localization->getLanguageCode();
-
         }
 
         return $params;
