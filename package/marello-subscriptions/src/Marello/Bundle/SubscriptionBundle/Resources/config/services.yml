@@ -15,7 +15,7 @@ services:
         class: 'Marello\Bundle\SubscriptionBundle\Autocomplete\SalesChannelSubscriptionProductsHandler'
         parent: oro_form.autocomplete.search_handler
         arguments:
-            - '%marello_product.entity.class%'
+            - 'Marello\Bundle\ProductBundle\Entity\Product'
             - ["name", "sku"]
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: sales_channel_subscription_products, acl_resource: marello_product_view }
