@@ -44,7 +44,6 @@ class HtmlRendererTest extends TestCase
     public function testRender($input, $expected)
     {
         $generatedPdf = $this->renderer->render($input);
-        $this->assertEquals($expected, $generatedPdf);
         $expectedMagick = new \Imagick();
         $expectedMagick->readImageBlob($expected);
         $expectedMagick->resetIterator();
