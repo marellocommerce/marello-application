@@ -1,5 +1,3 @@
-parameters:
-    marello_catalog.category.entity.class: Marello\Bundle\CatalogBundle\Entity\Category
 services:
     marello_catalog.category.form.type:
         class: 'Marello\Bundle\CatalogBundle\Form\Type\CategoryType'
