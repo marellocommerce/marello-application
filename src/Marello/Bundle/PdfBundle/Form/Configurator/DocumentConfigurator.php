@@ -47,9 +47,7 @@ class DocumentConfigurator
                 $configManager = $this->configHandler->getConfigManager();
                 if ($data[PdfConfig::getFieldKeyByName(PdfConfig::CONFIG_KEY_LOCALIZATION)]['value'] === null) {
                     $data[PdfConfig::getFieldKeyByName(PdfConfig::CONFIG_KEY_LOCALIZATION)]['value'] =
-                        $configManager->get(
-                        LocaleConfig::getConfigKeyByName(LocaleConfig::DEFAULT_LOCALIZATION)
-                    );
+                        $configManager->get(LocaleConfig::getConfigKeyByName(LocaleConfig::DEFAULT_LOCALIZATION));
                     $event->setData($data);
                 }
 
