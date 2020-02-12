@@ -20,7 +20,7 @@ use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 use Marello\Bundle\PricingBundle\Subtotal\Model\LineItemsAwareInterface;
 use Marello\Bundle\PricingBundle\Subtotal\Model\SubtotalAwareInterface;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Marello\Bundle\SalesBundle\Model\ChannelAwareInterface;
+use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
 
 /**
  * @ORM\Entity
@@ -57,7 +57,7 @@ abstract class AbstractInvoice implements
     CurrencyAwareInterface,
     SubtotalAwareInterface,
     LineItemsAwareInterface,
-    ChannelAwareInterface,
+    SalesChannelAwareInterface,
     OrganizationAwareInterface
 {
     use EntityCreatedUpdatedAtTrait;
