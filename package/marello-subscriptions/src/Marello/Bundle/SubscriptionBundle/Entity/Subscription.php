@@ -9,7 +9,7 @@ use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Marello\Bundle\SalesBundle\Model\ChannelAwareInterface;
+use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
 use Marello\Bundle\SubscriptionBundle\Model\ExtendSubscription;
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
@@ -46,7 +46,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Subscription extends ExtendSubscription implements
     DerivedPropertyAwareInterface,
     CurrencyAwareInterface,
-    ChannelAwareInterface,
+    SalesChannelAwareInterface,
     OrganizationAwareInterface
 {
     use EntityCreatedUpdatedAtTrait;
