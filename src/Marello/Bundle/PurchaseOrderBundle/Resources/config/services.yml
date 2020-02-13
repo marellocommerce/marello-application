@@ -1,6 +1,3 @@
-parameters:
-    marello_purchaseorder.entity.purchaseorder.class: Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder
-
 services:
     marello_purchaseorder.processor.note_activity_processor:
         class: Marello\Bundle\PurchaseOrderBundle\Processor\NoteActivityProcessor
