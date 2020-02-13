@@ -13,8 +13,8 @@ services:
     marelloenterprise_inventory.form.autocomplete.search_handler.warehouses:
         parent: oro_form.autocomplete.search_handler
         arguments:
-            - '%marello_inventory.entity.warehouse.class%'
-            - ["label"]
+            - 'Marello\Bundle\InventoryBundle\Entity\Warehouse'
+            - ['label']
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: warehouses, acl_resource: marello_inventory_inventory_view }
 
@@ -22,16 +22,16 @@ services:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Autocomplete\SystemGroupGlobalWarehousesSearchHandler'
         parent: oro_form.autocomplete.search_handler
         arguments:
-            - '%marello_inventory.entity.warehouse.class%'
-            - ["label"]
+            - 'Marello\Bundle\InventoryBundle\Entity\Warehouse'
+            - ['label']
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: system_group_global_warehouses, acl_resource: marello_inventory_inventory_view }
 
     marelloenterprise_inventory.form.autocomplete.search_handler.warehousegroups:
         parent: oro_form.autocomplete.search_handler
         arguments:
-            - '%marello_inventory.entity.warehousegroup.class%'
-            - ["name"]
+            - 'Marello\Bundle\InventoryBundle\Entity\WarehouseGroup'
+            - ['name']
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: warehousegroups, acl_resource: marello_inventory_inventory_view }
 
@@ -39,8 +39,8 @@ services:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Autocomplete\NotLinkedWarehouseGroupsSearchHandler'
         parent: oro_form.autocomplete.search_handler
         arguments:
-            - '%marello_inventory.entity.warehousegroup.class%'
-            - ["name"]
+            - 'Marello\Bundle\InventoryBundle\Entity\WarehouseGroup'
+            - ['name']
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: not_linked_warehouse_groups, acl_resource: marello_inventory_inventory_view }
 
