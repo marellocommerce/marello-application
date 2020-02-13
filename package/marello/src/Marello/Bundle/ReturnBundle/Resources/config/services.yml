@@ -1,6 +1,3 @@
-parameters:
-    marello_return.entity.return.class: Marello\Bundle\ReturnBundle\Entity\ReturnEntity
-
 services:
     marello_return.util.return_helper:
         class: Marello\Bundle\ReturnBundle\Util\ReturnHelper

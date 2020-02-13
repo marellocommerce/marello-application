@@ -1,7 +1,3 @@
-parameters:
-    marello_subscription.entity.subscription.class: Marello\Bundle\SubscriptionBundle\Entity\Subscription
-    marello_subscription.entity.subscription_item.class: Marello\Bundle\SubscriptionBundle\Entity\SubscriptionItem
-
 services:
     marello_subscription.product_type.subscription:
         class: 'Marello\Bundle\ProductBundle\Model\ProductType'
@@ -16,7 +12,7 @@ services:
         parent: oro_form.autocomplete.search_handler
         arguments:
             - 'Marello\Bundle\ProductBundle\Entity\Product'
-            - ["name", "sku"]
+            - ['name', 'sku']
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: sales_channel_subscription_products, acl_resource: marello_product_view }
 
@@ -69,7 +65,7 @@ services:
             - '@form.factory'
             - 'billing'
         tags:
-            - { name: marello.form_changes_data_provider, class: '%marello_subscription.entity.subscription.class%', type: billingAddress, priority: 20 }
+            - { name: marello.form_changes_data_provider, class: 'Marello\Bundle\SubscriptionBundle\Entity\Subscription', type: billingAddress, priority: 20 }
 
     marello_subscription.provider.form_changes.shipping_address:
         class: 'Marello\Bundle\OrderBundle\Provider\OrderAddressFormChangesProvider'
@@ -78,7 +74,7 @@ services:
             - '@form.factory'
             - 'shipping'
         tags:
-            - { name: marello.form_changes_data_provider, class: '%marello_subscription.entity.subscription.class%', type: shippingAddress, priority: 30 }
+            - { name: marello.form_changes_data_provider, class: 'Marello\Bundle\SubscriptionBundle\Entity\Subscription', type: shippingAddress, priority: 30 }
 
     marello_subscription.provider.form_changes.possible_shipping_methods:
         class: 'Marello\Bundle\SubscriptionBundle\Provider\PossibleShippingMethodsProvider'
@@ -89,7 +85,7 @@ services:
             - '@marello_shipping.integration.shipping_service_registry'
             - '@marello_subscription.mapper.subscription_to_order'
         tags:
-            - { name: marello.form_changes_data_provider, class: '%marello_subscription.entity.subscription.class%', type: possible_shipping_methods, priority: 50 }
+            - { name: marello.form_changes_data_provider, class: 'Marello\Bundle\SubscriptionBundle\Entity\Subscription', type: possible_shipping_methods, priority: 50 }
 
     marello_subscription.mapper.order_to_subscriptions:
         class: 'Marello\Bundle\SubscriptionBundle\Mapper\OrderToSubscriptionsMapper'

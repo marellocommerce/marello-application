@@ -1,13 +1,6 @@
-parameters:
-    # subscriber
-    marelloenterprise_inventory.event_listener.default_warehouse_subscriber.class: MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\DefaultWarehouseSubscriber
-
-    #validator
-    marelloenterprise_inventory.validator.default_warehouse_exists.class: MarelloEnterprise\Bundle\InventoryBundle\Validator\DefaultWarehouseExistsValidator
-
 services:
     marelloenterprise_inventory.event_listener.default_warehouse_subscriber:
-        class: '%marelloenterprise_inventory.event_listener.default_warehouse_subscriber.class%'
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\DefaultWarehouseSubscriber'
         tags:
             - { name: doctrine.event_subscriber }
 
@@ -74,7 +67,7 @@ services:
             - '@marelloenterprise_inventory.checker.warehousegroup.is_fixed'
 
     marelloenterprise_inventory.validator.default_warehouse_exists:
-        class: '%marelloenterprise_inventory.validator.default_warehouse_exists.class%'
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Validator\DefaultWarehouseExistsValidator'
         arguments:
             - '@marelloenterprise_inventory.repository.warehouse'
         tags:
