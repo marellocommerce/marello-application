@@ -1,8 +1,3 @@
-parameters:
-    marello_sales.saleschannel.entity.class:                        Marello\Bundle\SalesBundle\Entity\SalesChannel
-    marello_sales.saleschannelgroup.entity.class:                   Marello\Bundle\SalesBundle\Entity\SalesChannelGroup
-    marello_sales.saleschannel.model.channel_aware_interface.class: Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface
-
 services:
     marello_sales.form.event_listener.default_sales_channel_subscriber:
         class: Marello\Bundle\SalesBundle\Form\EventListener\DefaultSalesChannelSubscriber
@@ -37,8 +32,8 @@ services:
     marello_sales.saleschannel.form.autocomplete.search_handler:
         parent: oro_form.autocomplete.search_handler
         arguments:
-            - "%marello_sales.saleschannel.entity.class%"
-            - ["name"]
+            - 'Marello\Bundle\SalesBundle\Entity\SalesChannel'
+            - ['name']
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: saleschannels, acl_resource: marello_product_view }
 
@@ -46,8 +41,8 @@ services:
         class: 'Marello\Bundle\SalesBundle\Autocomplete\ActiveSalesChannelHandler'
         parent: oro_form.autocomplete.search_handler
         arguments:
-            - "%marello_sales.saleschannel.entity.class%"
-            - ["name", "code", "channelType"]
+            - 'Marello\Bundle\SalesBundle\Entity\SalesChannel'
+            - ['name', 'code', 'channelType']
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: active_saleschannels, acl_resource: marello_product_view }
 
@@ -55,8 +50,8 @@ services:
         class: 'Marello\Bundle\SalesBundle\Autocomplete\SystemGroupSalesChannelHandler'
         parent: oro_form.autocomplete.search_handler
         arguments:
-            - "%marello_sales.saleschannel.entity.class%"
-            - ["name"]
+            - 'Marello\Bundle\SalesBundle\Entity\SalesChannel'
+            - ['name']
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: system_group_saleschannels, acl_resource: marello_product_view }
 
