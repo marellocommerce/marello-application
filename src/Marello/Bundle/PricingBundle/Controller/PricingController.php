@@ -12,7 +12,7 @@ class PricingController extends AbstractController
 {
     /**
      * @Route(
-     *     path="/get-currency-by-channel", 
+     *     path="/get-currency-by-channel",
      *     methods={"GET"},
      *     name="marello_pricing_currency_by_channel"
      * )

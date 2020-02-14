@@ -37,27 +37,6 @@ class InventoryUpdateContext
     }
 
     /**
-     * @deprecated
-     * @param $items
-     * @return $this
-     */
-    public function setItems($items)
-    {
-        $this->setValue('items', $items);
-
-        return $this;
-    }
-
-    /**
-     * @deprecated
-     * @return mixed|null
-     */
-    public function getItems()
-    {
-        return $this->getValue('items');
-    }
-
-    /**
      * {@inheritdoc}
      * @param $item
      * @return $this
@@ -184,16 +163,6 @@ class InventoryUpdateContext
     }
 
     /**
-     * @deprecated use setAllocatedInventoryQty instead
-     * @param $allocatedQty
-     * @return $this
-     */
-    public function setAllocatedStock($allocatedQty)
-    {
-        return $this->setAllocatedInventory($allocatedQty);
-    }
-
-    /**
      * @param $allocatedQty
      * @return $this
      */
@@ -205,36 +174,11 @@ class InventoryUpdateContext
     }
 
     /**
-     * @deprecated use getAllocatedInventory instead
      * @return mixed|null
      */
-    public function getAllocatedStock()
-    {
-        return $this->getAllocatedInventory();
-    }
-
     public function getAllocatedInventory()
     {
         return $this->getValue('allocated_inventory_qty');
-    }
-
-    /**
-     * @deprecated use setInventory($qty) instead
-     * @param $stock
-     * @return $this
-     */
-    public function setStock($stock)
-    {
-        return $this->setInventory($stock);
-    }
-
-    /**
-     * @deprecated use getInventory() instead
-     * @return mixed|null
-     */
-    public function getStock()
-    {
-        return $this->getInventory();
     }
 
     /**

@@ -1,9 +1,3 @@
-parameters:
-    marello_order.entity.order.class: Marello\Bundle\OrderBundle\Entity\Order
-    marello_order.entity.order_item.class: Marello\Bundle\OrderBundle\Entity\OrderItem
-    marello_order.provider.order_statistic_provider.class: Marello\Bundle\OrderBundle\Provider\OrderDashboardStatisticProvider
-    marello_order.provider.order_item_statistic_provider.class: Marello\Bundle\OrderBundle\Provider\OrderItem\OrderItemDashboardStatisticProvider
-
 services:
     marello_order.listener.datagrid.order_grid_address_filter_listener:
         class: Marello\Bundle\OrderBundle\EventListener\Datagrid\OrderGridAddressFilterListener
@@ -22,7 +16,7 @@ services:
             - '@marello_order.email_processor_link'
             - '@oro_config.manager'
         tags:
-            - { name: kernel.event_listener, event: "marello.core.derived_property_set", method: derivedPropertySet }
+            - { name: kernel.event_listener, event: 'marello.core.derived_property_set', method: derivedPropertySet }
 
     marello_order.listener.doctrine.order_number_generator_listener:
         class: Marello\Bundle\OrderBundle\EventListener\Doctrine\OrderOrganizationListener
@@ -66,7 +60,7 @@ services:
             - { name: kernel.event_listener, event: marello_order.order_items_for_notification, method: onSelectingOrderItemsForNotification }
 
     marello_order.provider.order_statistic_provider:
-        class: '%marello_order.provider.order_statistic_provider.class%'
+        class: 'Marello\Bundle\OrderBundle\Provider\OrderDashboardStatisticProvider'
         arguments:
             - '@marello_order.repository.order'
             - '@oro_dashboard.provider.big_number.date_helper'
@@ -87,7 +81,7 @@ services:
             - '@marello_order.provider.order_statistic_provider'
 
     marello_order.provider.order_item_statistic_provider:
-        class: '%marello_order.provider.order_item_statistic_provider.class%'
+        class: 'Marello\Bundle\OrderBundle\Provider\OrderItem\OrderItemDashboardStatisticProvider'
         public: true
         arguments:
             - '@marello_order.repository.order_item'
@@ -99,7 +93,7 @@ services:
         arguments:
             - '@translator'
         tags:
-            - { name: marello.form_changes_data_provider, class: '%marello_order.entity.order.class%', type: items, priority: 10 }
+            - { name: marello.form_changes_data_provider, class: 'Marello\Bundle\OrderBundle\Entity\Order', type: items, priority: 10 }
 
     marello_order.provider.shipping_order_items_for_notifications:
         class: Marello\Bundle\OrderBundle\Provider\OrderItem\ShippingPreparedOrderItemsForNotificationProvider
@@ -114,7 +108,7 @@ services:
             - '@form.factory'
             - 'billing'
         tags:
-            - { name: marello.form_changes_data_provider, class: '%marello_order.entity.order.class%', type: billingAddress, priority: 20 }
+            - { name: marello.form_changes_data_provider, class: 'Marello\Bundle\OrderBundle\Entity\Order', type: billingAddress, priority: 20 }
 
     marello_order.provider.form_changes.shipping_address:
         class: Marello\Bundle\OrderBundle\Provider\OrderAddressFormChangesProvider
@@ -123,14 +117,14 @@ services:
             - '@form.factory'
             - 'shipping'
         tags:
-            - { name: marello.form_changes_data_provider, class: '%marello_order.entity.order.class%', type: shippingAddress, priority: 30 }
+            - { name: marello.form_changes_data_provider, class: 'Marello\Bundle\OrderBundle\Entity\Order', type: shippingAddress, priority: 30 }
 
     marello_order.provider.form_changes.totals:
         class: Marello\Bundle\OrderBundle\Provider\OrderTotalsProvider
         arguments:
             - '@marello_productprice.pricing.subtotal_provider.composite'
         tags:
-            - { name: marello.form_changes_data_provider, class: '%marello_order.entity.order.class%', type: totals, priority: 40 }
+            - { name: marello.form_changes_data_provider, class: 'Marello\Bundle\OrderBundle\Entity\Order', type: totals, priority: 40 }
 
     marello_order.provider.form_changes.possible_payment_methods:
         class: Marello\Bundle\OrderBundle\Provider\PossiblePaymentMethodsProvider
@@ -138,7 +132,7 @@ services:
             - '@marello_order.factory.payment_context'
             - '@marello_payment.provider.payment_methods_views'
         tags:
-            - { name: marello.form_changes_data_provider, class: '%marello_order.entity.order.class%', type: possible_payment_methods, priority: 45 }
+            - { name: marello.form_changes_data_provider, class: 'Marello\Bundle\OrderBundle\Entity\Order', type: possible_payment_methods, priority: 45 }
 
     marello_order.provider.form_changes.possible_shipping_methods:
         class: Marello\Bundle\OrderBundle\Provider\PossibleShippingMethodsProvider
@@ -148,7 +142,7 @@ services:
             - '@marello_shipping.shipping_price.provider'
             - '@marello_shipping.integration.shipping_service_registry'
         tags:
-            - { name: marello.form_changes_data_provider, class: '%marello_order.entity.order.class%', type: possible_shipping_methods, priority: 50 }
+            - { name: marello.form_changes_data_provider, class: 'Marello\Bundle\OrderBundle\Entity\Order', type: possible_shipping_methods, priority: 50 }
 
     marello_order.factory.payment_context:
         class: 'Marello\Bundle\OrderBundle\Factory\OrderPaymentContextFactory'
@@ -217,8 +211,8 @@ services:
     marello_order.search_handler.customer:
         parent: oro_form.autocomplete.search_handler
         arguments:
-            - '%marello_customer_customer.class%'
-            - ["namePrefix", "firstName", "middleName", "lastName", "nameSuffix"]
+            - 'Marello\Bundle\CustomerBundle\Entity\Customer'
+            - ['namePrefix', 'firstName', 'middleName', 'lastName', 'nameSuffix']
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: marello_customers, acl_resource: marello_customer_view }
 
@@ -237,7 +231,7 @@ services:
             - { name: twig.extension }
 
     marello_order.listener.datagrid.workflow_grid_listener:
-        class: '%marello_datagrid.event_listener.datagrid.workflow_grid_listener.class%'
+        class: 'Marello\Bundle\DataGridBundle\EventListener\Datagrid\WorkflowGridListener'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.dashboard-order-revenue-saleschannels-grid, method: removeWorkflow }
 
@@ -270,8 +264,7 @@ services:
         arguments:
             - '@oro_entity.doctrine_helper'
             - '@marello_inventory.provider.available_inventory_provider'
-        calls:
-            - ['setEventDispatcher', ['@event_dispatcher']]
+            - '@event_dispatcher'
         tags:
             - { name: validator.constraint_validator, alias: marello_order.available_inventory_validator }
 

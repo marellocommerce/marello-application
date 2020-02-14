@@ -1,4 +1,3 @@
-
 services:
     marello_address.formatter.address:
         class: Marello\Bundle\AddressBundle\Formatter\AddressFormatter
@@ -14,3 +13,11 @@ services:
             - '@marello_address.formatter.address'
         tags:
             - { name: twig.extension }
+
+    marello_address.repository.marelloaddress:
+        class: 'Marello\Bundle\AddressBundle\Entity\Repository\MarelloAddressRepository'
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'Marello\Bundle\AddressBundle\Entity\MarelloAddress'
+        calls:
+            - [setAclHelper, ['@oro_security.acl_helper']]

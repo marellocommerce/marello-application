@@ -88,9 +88,6 @@ datagrids:
                     - scg
                 from:
                     - { table: MarelloSalesBundle:SalesChannelGroup, alias: scg }
-                join:
-                    left:
-                        - { join: scg.salesChannels, alias: sc }
                 where:
                     and:
                         - scg.system != true
@@ -110,13 +107,13 @@ datagrids:
             columns:
                 name:
                     type: string
-                    data_name: sc.name
+                    data_name: scg.name
         sorters:
             columns:
                 name:
                     data_name: scg.name
                 description:
-                    data_name: sc.description
+                    data_name: scg.description
         properties:
             id: ~
             view_link:

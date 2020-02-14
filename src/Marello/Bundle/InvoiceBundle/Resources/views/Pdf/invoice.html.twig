@@ -165,13 +165,16 @@
                 text-align: right;
                 font-size: 11px;
             }
+            @page :first {
+                header: html_default_header;
+                margin-top: 140px;
+                margin-header: 60px;
+            }
             @page {
                 sheet-size: {{ paper_size }};
-                header: html_default_header;
                 footer: html_default_footer;
-                margin-top: 140px;
+                margin-top: 60px;
                 margin-bottom: 60px;
-                margin-header: 60px;
                 margin-footer: 50px;
             }
         </style>
@@ -253,7 +256,7 @@
     {% set taxtotal = 0.0 %}
     {% set tables = get_document_tables(entity) %}
     {% for table in tables %}
-        {% set subtotal = 0.0 %}
+            {% set subtotal = 0.0 %}
             <table class="invoice-lines" autosize="0">
                 <thead>
                     <tr>
