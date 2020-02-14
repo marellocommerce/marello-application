@@ -1,6 +1,9 @@
 imports:
     - { resource: config.yml }
 
+parameters:
+    main_log_channels: []
+
 framework:
     router:   { resource: "%kernel.project_dir%/config/routing_dev.yml" }
     profiler: { only_exceptions: false }
@@ -14,16 +17,26 @@ web_profiler:
 monolog:
     handlers:
         main:
-            type:  stream
-            path:  "%kernel.logs_dir%/%kernel.environment%.log"
-            level: debug
+            type:      stream
+            path:      "%kernel.logs_dir%/%kernel.environment%.log"
+            level:     debug
+            channels:  '%main_log_channels%'
 
-twig:
-    base_template_class: Oro\Bundle\UIBundle\Twig\Template
+        # collect all log records to buffer on CLI command error
+        message_queue.consumer.console_error:
+            type:      service
+            id:        oro_message_queue.log.handler.console_error
+            handler:   main
+            level:     debug
 
 oro_message_queue:
     client:
         traceable_producer: true
 
 #swiftmailer:
-#    delivery_address: me@example.com
+#    delivery_addresses: ['me@example.com']
+
+oro_api:
+    settings:
+        web_api:
+            value: true

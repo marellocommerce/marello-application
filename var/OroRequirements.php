@@ -7,17 +7,17 @@ use Oro\Bundle\AssetBundle\NodeJsVersionChecker;
 use Oro\Bundle\AssetBundle\NodeJsExecutableFinder;
 
 use Symfony\Component\Intl\Intl;
-use Symfony\Component\Process\ProcessBuilder;
+use Symfony\Component\Process\Process;
 
 /**
  * This class specifies all requirements and optional recommendations that are necessary to run the Oro Application.
  */
 class OroRequirements extends SymfonyRequirements
 {
-    const REQUIRED_PHP_VERSION  = '7.1.26';
+    const REQUIRED_PHP_VERSION  = '7.3.13';
     const REQUIRED_GD_VERSION   = '2.0';
     const REQUIRED_CURL_VERSION = '7.0';
-    const REQUIRED_NODEJS_VERSION  = '>=6.6';
+    const REQUIRED_NODEJS_VERSION  = '>=12.0';
 
     const EXCLUDE_REQUIREMENTS_MASK = '/5\.[0-6]|7\.0/';
 
@@ -421,8 +421,7 @@ class OroRequirements extends SymfonyRequirements
      */
     protected function checkFileNameLength()
     {
-        $getConf = new ProcessBuilder(array('getconf', 'NAME_MAX', __DIR__));
-        $getConf = $getConf->getProcess();
+        $getConf = new Process(['getconf', 'NAME_MAX', __DIR__]);
 
         if (isset($_SERVER['PATH'])) {
             $getConf->setEnv(array('PATH' => $_SERVER['PATH']));
