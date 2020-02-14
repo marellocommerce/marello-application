@@ -331,7 +331,7 @@ services:
         public: false
         arguments:
             - 'create'
-            - '%marello_tax.entity.tax_code.class%'
+            - 'Marello\Bundle\TaxBundle\Entity\TaxCode'
         parent: oro_importexport.reader.entity
 
     marello_orocommerce.importexport.reader.export.tax_code.update:
@@ -339,7 +339,7 @@ services:
         public: false
         arguments:
             - 'update'
-            - '%marello_tax.entity.tax_code.class%'
+            - 'Marello\Bundle\TaxBundle\Entity\TaxCode'
         parent: oro_importexport.reader.entity
 
     marello_orocommerce.importexport.reader.export.tax_code.delete:
@@ -353,7 +353,7 @@ services:
         public: false
         arguments:
             - 'create'
-            - '%marello_tax.entity.tax_rate.class%'
+            - 'Marello\Bundle\TaxBundle\Entity\TaxRate'
         parent: oro_importexport.reader.entity
 
     marello_orocommerce.importexport.reader.export.tax_rate.update:
@@ -361,7 +361,7 @@ services:
         public: false
         arguments:
             - 'update'
-            - '%marello_tax.entity.tax_rate.class%'
+            - 'Marello\Bundle\TaxBundle\Entity\TaxRate'
         parent: oro_importexport.reader.entity
 
     marello_orocommerce.importexport.reader.export.tax_rate.delete:
@@ -375,7 +375,7 @@ services:
         public: false
         arguments:
             - 'create'
-            - '%marello_tax.entity.tax_jurisdiction.class%'
+            - 'Marello\Bundle\TaxBundle\Entity\TaxJurisdiction'
         parent: oro_importexport.reader.entity
 
     marello_orocommerce.importexport.reader.export.tax_jurisdiction.update:
@@ -383,7 +383,7 @@ services:
         public: false
         arguments:
             - 'update'
-            - '%marello_tax.entity.tax_jurisdiction.class%'
+            - 'Marello\Bundle\TaxBundle\Entity\TaxJurisdiction'
         parent: oro_importexport.reader.entity
 
     marello_orocommerce.importexport.reader.export.tax_jurisdiction.delete:
