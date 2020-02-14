@@ -54,8 +54,8 @@ class GeocodingApiRequestFactoryTest extends TestCase
     {
         $iso2Code = 'iso2Code';
         $regionCode = 'RegionCode';
-        $country = $this->getEntity(Country::class, ['iso2Code' => $iso2Code]);
-        $region = $this->getEntity(Region::class, ['code' => $regionCode]);
+        $country = $this->getEntity(Country::class, [], [$iso2Code]);
+        $region = $this->getEntity(Region::class, ['code' => $regionCode], ['combinedCode']);
         $postalCode = 12345;
         $city = 'Test City';
         $street = 'Test Street';

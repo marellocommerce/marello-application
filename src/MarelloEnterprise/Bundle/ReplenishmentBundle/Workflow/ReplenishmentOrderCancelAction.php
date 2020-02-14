@@ -20,7 +20,13 @@ class ReplenishmentOrderCancelAction extends ReplenishmentOrderTransitionAction
         $order = $context->getEntity();
 
         $order->getReplOrderItems()->map(function (ReplenishmentOrderItem $item) use ($order) {
-            $this->handleInventoryUpdate($item, null, -$item->getInventoryQty(), $order->getOrigin(), $order);
+            $this->handleInventoryUpdate(
+                $item,
+                null,
+                -$item->getInventoryQty(),
+                $order->getOrigin(),
+                $order
+            );
         });
     }
 

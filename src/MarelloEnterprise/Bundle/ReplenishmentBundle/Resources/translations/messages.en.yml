@@ -47,7 +47,7 @@ marelloenterprise:
             inventory_qty.label:       Qty
             total_inventory_qty.label: Total Inventory Qty Origin
             organization.label:        Organization
-
+            inventory_batches.label:   Inventory Batches
         form:
             replenishmentorderconfig:
                 percentage:

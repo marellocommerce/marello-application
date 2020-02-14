@@ -71,5 +71,8 @@ services:
 
     marelloenterprise_replenishment.command.allocate_delayed_replenishment_orders_inventory:
         class: 'MarelloEnterprise\Bundle\ReplenishmentBundle\Command\AllocateDelayedReplenishmentOrdersInventoryCommand'
+        arguments:
+            - '@marelloenterprise_replenishment.repository.replenishment_order'
+            - '@oro_message_queue.client.message_producer'
         tags:
             - { name: console.command }

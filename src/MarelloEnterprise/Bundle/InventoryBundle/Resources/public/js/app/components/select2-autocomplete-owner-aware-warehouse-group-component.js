@@ -1,8 +1,8 @@
 define(function (require) {
     'use strict';
-    var Select2AutocompleteOwnerAwareWarehouseGroupComponent,
+    const
         Select2AutocompleteComponent = require('oro/select2-autocomplete-component');
-    Select2AutocompleteOwnerAwareWarehouseGroupComponent = Select2AutocompleteComponent.extend({
+    const Select2AutocompleteOwnerAwareWarehouseGroupComponent = Select2AutocompleteComponent.extend({
 
         /**
          * @property {Object}

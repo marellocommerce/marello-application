@@ -4,7 +4,7 @@ namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Provider;
 
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Strategy\ReplenishmentStrategiesRegistry;
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Strategy\ReplenishmentStrategyInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ReplenishmentStrategyChoicesProvider
 {
