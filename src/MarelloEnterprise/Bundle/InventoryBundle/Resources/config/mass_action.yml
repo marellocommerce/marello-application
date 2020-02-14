@@ -5,6 +5,7 @@ services:
             - 'marelloenterprise.inventory.mass_action.status_handler'
             - 'marelloenterprise_inventory_wfa_rule_massaction'
             - true
+        public: true
         shared: false
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: wfaruleenable }
@@ -15,6 +16,7 @@ services:
             - 'marelloenterprise.inventory.mass_action.status_handler'
             - 'marelloenterprise_inventory_wfa_rule_massaction'
             - false
+        public: true
         shared: false
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: wfaruledisable }

@@ -1,13 +1,6 @@
-parameters:
-    # subscriber
-    marelloenterprise_inventory.event_listener.default_warehouse_subscriber.class: MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\DefaultWarehouseSubscriber
-
-    #validator
-    marelloenterprise_inventory.validator.default_warehouse_exists.class: MarelloEnterprise\Bundle\InventoryBundle\Validator\DefaultWarehouseExistsValidator
-
 services:
     marelloenterprise_inventory.event_listener.default_warehouse_subscriber:
-        class: '%marelloenterprise_inventory.event_listener.default_warehouse_subscriber.class%'
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\DefaultWarehouseSubscriber'
         tags:
             - { name: doctrine.event_subscriber }
 
@@ -64,15 +57,17 @@ services:
             - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.after.marelloenterprise-inventory-warehousechannelgrouplinks-grid, method: onResultAfter }
 
     marelloenterprise_inventory.datagrid.warehouse.action_permission_provider:
+        public: true
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Datagrid\WarehouseActionPermissionProvider'
 
     marelloenterprise_inventory.datagrid.warehousegroup.action_permission_provider:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Datagrid\WarehouseGroupActionPermissionProvider'
+        public: true
         arguments:
             - '@marelloenterprise_inventory.checker.warehousegroup.is_fixed'
 
     marelloenterprise_inventory.validator.default_warehouse_exists:
-        class: '%marelloenterprise_inventory.validator.default_warehouse_exists.class%'
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Validator\DefaultWarehouseExistsValidator'
         arguments:
             - '@marelloenterprise_inventory.repository.warehouse'
         tags:
@@ -123,6 +118,7 @@ services:
 
     marelloenterprise_inventory.repository.warehousechannelgrouplink:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository'
+        public: true
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@marelloenterprise_inventory.metadata.warehousechannelgrouplink'
@@ -130,6 +126,7 @@ services:
             - [setAclHelper, ['@oro_security.acl_helper']]
 
     marelloenterprise_inventory.datagrid.wfa_rule_actions_visibility_provider:
+        public: true
         parent: marello_rule.action.visibility_provider
 
     marelloenterprise_inventory.wfa_strategy.registry:
@@ -152,6 +149,7 @@ services:
 
     marelloenterprise_inventory.provider.wfa_strategy.choices:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Provider\WFAStrategyChoicesProvider'
+        public: true
         arguments:
         - '@marelloenterprise_inventory.wfa_strategy.registry'
         - '@translator'

@@ -16,26 +16,36 @@
             {{ form.inventoryQty.vars.value|default(0) }}
         </div>
     </td>
-    <td class="inventorylevel-adjustment {{ form.quantity.vars.errors|length ? 'has-errors' : '' }}">
+    <td class="inventorylevel-adjustment{{ form.quantity.vars.errors|length ? 'has-errors' : '' }}">
         <div class="fields-row">
-            <div class="marello-line-item-related-field">
-                {{ form_widget(form.adjustmentOperator) }}
-            </div>
-            <div class="marello-line-item-related-field">
-                {{ form_widget(form.quantity) }}
-            </div>
-            {{ form_errors(form.quantity) }}
+            {% if form.vars.manageBatches is same as(true) %}
+                <div class="marello-line-item-related-field">
+                    <a href="{{ path('marello_inventory_inventorylevel_manage_batches', {'id': form.vars.value.id}) }}">
+                        {{ 'marello.inventory.inventorylevel.form.manage_batches.label'|trans }}
+                    </a>
+                </div>
+            {% elseif form.vars.externalWarehouse is same as(false)  %}
+                <div class="marello-line-item-related-field">
+                    {{ form_widget(form.adjustmentOperator) }}
+                </div>
+                <div class="marello-line-item-related-field">
+                    {{ form_widget(form.quantity) }}
+                </div>
+                {{ form_errors(form.quantity) }}
+            {% endif %}
         </div>
     </td>
-    <td class="inventorylevel-managed-inventory {{ form.warehouse.vars.errors|length ? 'has-errors' : '' }}">
-        <div class="fields-row">
-            {{ form_widget(form.managedInventory) }}
-        </div>
-        {{ form_errors(form.managedInventory) }}
+    <td class="inventorylevel-managed-inventory{{ form.warehouse.vars.errors|length ? 'has-errors' : '' }}">
+        {% if ((form.vars.manageBatches is same as(false)) and (form.vars.externalWarehouse is same as(false))) %}
+            <div class="fields-row">
+                {{ form_widget(form.managedInventory) }}
+            </div>
+            {{ form_errors(form.managedInventory) }}
+        {% endif %}
     </td>
 {% endblock %}
 
-{% macro marello_inventory_inventorylevel_collection_item_prototype(widget) %}
+{% macro marello_inventory_inventorylevel_collection_item_prototype(widget, attributes) %}
     {% if 'collection' in widget.vars.block_prefixes %}
         {% set form = widget.vars.prototype %}
         {% set name = widget.vars.full_name ~ '[' ~ widget.vars.prototype.vars.name ~ ']' %}
@@ -53,7 +63,7 @@
     {% endif %}
     {% set page_component_options = { 'disabled': not allow_delete } %}
     {% if form.vars.display is not defined or form.vars.display != false %}
-        <tr data-content="{{ name }}" data-validation-optional-group {{ block('widget_container_attributes') }}
+        <tr data-content="{{ name }}"
             class="marello-line-item display-values"
             data-page-component-module="oroui/js/app/components/view-component"
             data-page-component-options="{{ {view: 'marelloenterpriseinventory/js/app/views/inventorylevel-item-view'}|json_encode }}"
@@ -69,9 +79,12 @@
 {% endmacro %}
 
 {% block marello_inventory_inventorylevel_collection_widget %}
+    {% import _self as fields %}
+
     {% spaceless %}
+        {% set widgetContainerAttributes = block('widget_container_attributes') %}
         {% if prototype is defined %}
-            {% set prototype_html = _self.marello_inventory_inventorylevel_collection_item_prototype(form) %}
+            {% set prototype_html = fields.marello_inventory_inventorylevel_collection_item_prototype(form, widgetContainerAttributes) %}
         {% endif %}
         {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'marello-item-collection grid-container' }) %}
         {% set id = id ~ '_collection' %}
@@ -94,7 +107,7 @@
                     <tbody data-last-index="{{ form.children|length}}" data-prototype-name="{{ prototype_name }}"{% if prototype_html is defined %} data-prototype="{{ prototype_html|escape }}"{% endif %}>
                     {% if form.children|length %}
                         {% for child in form.children %}
-                            {{ _self.marello_inventory_inventorylevel_collection_item_prototype(child) }}
+                            {{ fields.marello_inventory_inventorylevel_collection_item_prototype(child, widgetContainerAttributes) }}
                         {% endfor %}
                     {% elseif show_form_when_empty and prototype_html is defined %}
                         {{ prototype_html|replace({(prototype_name): '0'})|raw }}

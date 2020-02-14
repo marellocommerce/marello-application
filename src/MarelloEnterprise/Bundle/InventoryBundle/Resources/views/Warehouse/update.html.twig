@@ -1,4 +1,5 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
 {% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
 
 {% oro_title_set({params : {'%entityName%': 'marello.inventory.warehouse.entity_label'|trans} }) %}
@@ -15,13 +16,13 @@
 {% endif %}
 
 {% block navButtons %}
-    {% if entity.id and not entity.default and resource_granted('DELETE', entity) %}
+    {% if entity.id and not entity.default and is_granted('DELETE', entity) %}
         {{ parent() }}
     {% endif %}
     {{ UI.cancelButton(path('marelloenterprise_inventory_warehouse_index')) }}
-    {% if entity.id and resource_granted('marelloenterprise_inventory_warehouse_update') or resource_granted('marelloenterprise_inventory_warehouse_create') %}
+    {% if entity.id and is_granted('marelloenterprise_inventory_warehouse_update') or is_granted('marelloenterprise_inventory_warehouse_create') %}
         {% set html = '' %}
-        {% if resource_granted('marelloenterprise_inventory_warehouse_view') %}
+        {% if is_granted('marelloenterprise_inventory_warehouse_view') %}
             {% set html = UI.saveAndCloseButton({
             'route': 'marelloenterprise_inventory_warehouse_view',
             'params': {'id': '$id'}

@@ -36,13 +36,8 @@ class InventoryLevelLogGridListenerTest extends TestCase
         $queryBuilder
             ->expects(static::once())
             ->method('addSelect')
-            ->with('warehouse.label as warehouseLabel')
+            ->with('lr.warehouseName as warehouseLabel')
             ->willReturnSelf();
-
-        $queryBuilder
-            ->expects(static::once())
-            ->method('leftJoin')
-            ->with('il.warehouse', 'warehouse');
 
         /** @var OrmResultBeforeQuery|\PHPUnit_Framework_MockObject_MockObject $event **/
         $event = $this->getMockBuilder(OrmResultBeforeQuery::class)
