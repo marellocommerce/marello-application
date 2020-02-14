@@ -105,7 +105,6 @@ class MinimumQuantityWFAStrategyTest extends TestCase
                 'inventoryLevels' => [$inventoryLevel1, $inventoryLevel2]
             ],
             [
-                $warehouse1,
                 $product1
             ]
         );
@@ -115,7 +114,6 @@ class MinimumQuantityWFAStrategyTest extends TestCase
                 'inventoryLevels' => [$inventoryLevel2, $inventoryLevel3]
             ],
             [
-                $warehouse2,
                 $product2
             ]
         );
@@ -125,7 +123,6 @@ class MinimumQuantityWFAStrategyTest extends TestCase
                 'inventoryLevels' => [$inventoryLevel1, $inventoryLevel3]
             ],
             [
-                $warehouse3,
                 $product3
             ]
         );
