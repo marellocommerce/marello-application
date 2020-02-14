@@ -20,15 +20,14 @@ class AppKernel extends OroKernel
         if ('dev' === $this->getEnvironment()) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Symfony\Bundle\WebServerBundle\WebServerBundle();
-            $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
-            $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
-            $bundles[] = new Oro\TwigInspector\Bundle\OroTwigInspectorBundle();
-            if (class_exists('Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle')) {
-                $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
+            if (class_exists('Oro\TwigInspector\Bundle\OroTwigInspectorBundle')) {
+                $bundles[] = new Oro\TwigInspector\Bundle\OroTwigInspectorBundle();
             }
         }
 
         if ('test' === $this->getEnvironment()) {
+            $bundles[] = new Nelmio\Alice\Bridge\Symfony\NelmioAliceBundle();
+            $bundles[] = new Fidry\AliceDataFixtures\Bridge\Symfony\FidryAliceDataFixturesBundle();
             $bundles[] = new Oro\Bundle\TestFrameworkBundle\OroTestFrameworkBundle();
         }
 
@@ -40,7 +39,6 @@ class AppKernel extends OroKernel
         $loader->load(function (ContainerBuilder $container) {
             $container->setParameter('container.autowiring.strict_mode', true);
             $container->setParameter('container.dumper.inline_class_loader', true);
-
             $container->addObjectResource($this);
         });
 

@@ -4,7 +4,7 @@ UPGRADE NOTES
 This upgrade sequence has been derived from the Oro(CRM/Commerce). More information can be found at https://oroinc.com/orocrm/doc/current/install-upgrade/upgrade[1]
 for more details.
 
-### Recommended upgrade sequence to Marello 2.1
+### Recommended upgrade sequence to Marello 3.0
 To retrieve source code of a new version and upgrade your Marello instance, please execute the following steps:
 
   * Go to the Marello root folder and switch the application to the maintenance mode;
@@ -26,6 +26,11 @@ crontab -e -uwww-data
   * Stop all running consumers;
   * Create backups of your database and source code;
   * Pull changes from the repository;
+  
+####Update sequence to 3.0 additional step(s)
+If you are going to upgrade from a Marello version lower than 2.2.x, please update to the latest 2.2.x version first!
+This allows you to transition to 3.0 more easily and prevent issues during install. This step **is** necessary for a smooth transition during the changes made from the old Customer and new Customer
+
 ```bash
 git pull
 git checkout <VERSION TO UPGRADE>
