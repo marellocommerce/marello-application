@@ -1,26 +1,33 @@
 <?php
 
-namespace Marello\Bundle\PdfBundle\Tests\Unit\Provider\Render;
+namespace Marello\Bundle\InvoiceBundle\Tests\Unit\Pdf\Logo;
 
 use Marello\Bundle\InvoiceBundle\Entity\Invoice;
+use Marello\Bundle\InvoiceBundle\Pdf\Logo\InvoiceLogoPathProvider;
+use Marello\Bundle\InvoiceBundle\Pdf\Logo\InvoiceLogoRenderParameterProvider;
 use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\PdfBundle\Provider\LogoProvider;
-use Marello\Bundle\PdfBundle\Provider\Render\LogoProvider as LogoRenderProvider;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Component\Testing\Unit\EntityTrait;
 use PHPUnit\Framework\TestCase;
 
-class LogoProviderTest extends TestCase
+class InvoiceLogoRenderParameterProviderTest extends TestCase
 {
     use EntityTrait;
 
-    protected $provider;
+    /**
+     * @var InvoiceLogoRenderParameterProvider
+     */
+    private $provider;
+
+    /**
+     * @var InvoiceLogoPathProvider
+     */
+    private $logoPathProvider;
 
     public function setUp()
     {
-        /** @var LogoProvider|\PHPUnit_Framework_MockObject_MockObject $logoProvider */
-        $logoProvider = $this->createMock(LogoProvider::class);
-        $this->provider = new LogoRenderProvider($logoProvider);
+        $this->logoPathProvider = $this->createMock(InvoiceLogoPathProvider::class);
+        $this->provider = new InvoiceLogoRenderParameterProvider($this->logoPathProvider);
     }
 
     public function testSupportsInvoice()
@@ -33,7 +40,7 @@ class LogoProviderTest extends TestCase
     public function testSupportsOptions()
     {
         $entity = new Order();
-        $options = [LogoRenderProvider::OPTION_KEY => new SalesChannel()];
+        $options = [InvoiceLogoRenderParameterProvider::OPTION_KEY => new SalesChannel()];
 
         $this->assertTrue($this->provider->supports($entity, $options));
     }
@@ -56,17 +63,13 @@ class LogoProviderTest extends TestCase
      */
     public function testGetParams($entity, $options, $salesChannel, $logoPath)
     {
-        /** @var LogoProvider|\PHPUnit_Framework_MockObject_MockObject $logoProvider */
-        $logoProvider = $this->createMock(LogoProvider::class);
-        $logoProvider->expects($this->once())
+        $this->logoPathProvider->expects($this->once())
             ->method('getInvoiceLogo')
             ->with($salesChannel, true)
             ->willReturn($logoPath)
         ;
 
-        $provider = new LogoRenderProvider($logoProvider);
-
-        $this->assertEquals(['logo' => $logoPath], $provider->getParams($entity, $options));
+        $this->assertEquals(['logo' => $logoPath], $this->provider->getParams($entity, $options));
     }
 
     public function getParamsProvider()
@@ -96,7 +99,7 @@ class LogoProviderTest extends TestCase
             ],
             'from options' => [
                 'entity' => new Order(),
-                'options' => [LogoRenderProvider::OPTION_KEY => $salesChannel2],
+                'options' => [InvoiceLogoRenderParameterProvider::OPTION_KEY => $salesChannel2],
                 'salesChannel' => $salesChannel2,
                 'logoPath' => 'logo-from-options.jpg',
             ],

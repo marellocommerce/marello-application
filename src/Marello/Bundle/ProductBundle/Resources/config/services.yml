@@ -1,12 +1,9 @@
-parameters:
-    marello_product.entity.class: Marello\Bundle\ProductBundle\Entity\Product
-
 services:
     # Autocomplete search handler
     marello_product.form.autocomplete.product.search_handler:
         parent: oro_form.autocomplete.search_handler
         arguments:
-            - '%marello_product.entity.class%'
+            - 'Marello\Bundle\ProductBundle\Entity\Product'
             - ["denormalizedDefaultName", "sku"]
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: products, acl_resource: marello_product_view }
@@ -15,7 +12,7 @@ services:
         class: 'Marello\Bundle\ProductBundle\Autocomplete\SalesChannelProductHandler'
         parent: oro_form.autocomplete.search_handler
         arguments:
-            - '%marello_product.entity.class%'
+            - 'Marello\Bundle\ProductBundle\Entity\Product'
             - ["denormalizedDefaultName", "sku"]
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: sales_channel_products, acl_resource: marello_product_view }
@@ -122,7 +119,7 @@ services:
         public: false
         arguments:
             - "@oro_entity.doctrine_helper"
-            - '%marello_product.entity.class%'
+            - 'Marello\Bundle\ProductBundle\Entity\Product'
 
     marello_product.virtual_fields.decorator_factory:
         class: 'Marello\Bundle\ProductBundle\VirtualFields\VirtualFieldsProductDecoratorFactory'

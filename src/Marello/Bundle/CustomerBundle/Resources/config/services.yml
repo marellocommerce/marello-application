@@ -1,7 +1,3 @@
-parameters:
-    marello_customer.entity.company.class: 'Marello\Bundle\CustomerBundle\Entity\Company'
-    marello_customer_customer.class: Marello\Bundle\CustomerBundle\Entity\Customer
-
 services:
     marello_customer.repository.company:
         class: 'Marello\Bundle\CustomerBundle\Entity\Repository\CompanyRepository'
@@ -20,7 +16,7 @@ services:
         class: 'Marello\Bundle\CustomerBundle\JsTree\CompanyTreeHandler'
         public: true
         arguments:
-            - '%marello_customer.entity.company.class%'
+            - 'Marello\Bundle\CustomerBundle\Entity\Company'
             - "@doctrine"
 
     marello_customer.listener.datagrid.company_customers_column_listener:
@@ -41,8 +37,8 @@ services:
         public: false
         parent: oro_form.autocomplete.search_handler
         arguments:
-            - '%marello_customer.entity.company.class%'
-            - ["name"]
+            - 'Marello\Bundle\CustomerBundle\Entity\Company'
+            - ['name']
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: marello_customer_company, acl_resource: marello_customer_company_view }
 
@@ -50,7 +46,7 @@ services:
         class: 'Marello\Bundle\CustomerBundle\Autocomplete\CompanyCustomerHandler'
         parent: oro_form.autocomplete.search_handler
         arguments:
-            - '%marello_customer_customer.class%'
+            - 'Marello\Bundle\CustomerBundle\Entity\Customer'
             - ['namePrefix', 'firstName', 'middleName', 'lastName', 'nameSuffix']
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: marello_company_customers, acl_resource: marello_customer_view }
@@ -61,8 +57,8 @@ services:
         parent: oro_form.autocomplete.search_handler
         class: 'Marello\Bundle\CustomerBundle\Autocomplete\ParentCompanySearchHandler'
         arguments:
-            - '%marello_customer.entity.company.class%'
-            - ["name"]
+            - 'Marello\Bundle\CustomerBundle\Entity\Company'
+            - ['name']
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: marello_company_parent, acl_resource: marello_customer_company_view }
 

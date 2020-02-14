@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\PdfBundle\Tests\Unit\Provider;
 
-use Marello\Bundle\InvoiceBundle\Entity\Invoice;
 use Marello\Bundle\PdfBundle\Provider\RenderParameterProviderInterface;
 use Marello\Bundle\PdfBundle\Provider\RenderParametersProvider;
 use PHPUnit\Framework\TestCase;
@@ -48,7 +47,7 @@ class RenderParametersProviderTest extends TestCase
         $provider->addProvider($firstProvider);
         $provider->addProvider($secondProvider);
 
-        $entity = new Invoice();
+        $entity = new \stdClass();
         $this->assertEquals($result, $provider->getParams($entity, []));
     }
 

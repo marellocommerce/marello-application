@@ -3,7 +3,7 @@
 namespace Marello\Bundle\PdfBundle\Workflow\Action;
 
 use Doctrine\ORM\EntityNotFoundException;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Symfony\Component\Validator\Constraints\Email as EmailConstraints;

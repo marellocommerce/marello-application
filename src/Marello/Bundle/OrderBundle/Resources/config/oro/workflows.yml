@@ -28,7 +28,7 @@ workflows:
                     - hold_pending
                     - cancel
             cancelled:
-                allowed_transitions: []
+                is_final: true
             pending_on_hold:
                 allowed_transitions:
                     - un_hold_pending
@@ -46,7 +46,7 @@ workflows:
                 allowed_transitions:
                     - ship
             shipped:
-                allowed_transitions: []
+                is_final: true
 
         transitions:
             pending:

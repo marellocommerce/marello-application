@@ -1,6 +1,3 @@
-parameters:
-    marello_core.entity_serializer.class:             Marello\Bundle\CoreBundle\Serializer\EntitySerializer
-
 services:
     marello_core.workflow.action.workflow_transit_action:
         class: Marello\Bundle\CoreBundle\Workflow\Action\WorkflowTransitAction
@@ -59,7 +56,7 @@ services:
             - '@request_stack'
 
     marello_core.entity_serializer:
-        class: '%marello_core.entity_serializer.class%'
+        class: 'Marello\Bundle\CoreBundle\Serializer\EntitySerializer'
         arguments:
             - '@doctrine'
             - '@oro_entity_config.config_manager'

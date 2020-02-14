@@ -129,6 +129,8 @@ marello:
             user.label:                     User
             inventory_level_qty.label:      InventoryLevel Qty
             allocated_inventory_level_qty.label: Allocated InventoryLevel Qty
+            warehouse_name.label:           Warehouse
+
 
         balancedinventorylevel:
             id.label:                       Id
@@ -178,3 +180,5 @@ marello:
                 warehouse.not_found:    No warehouse found, cannot update a new level without existing warehouse
                 inventorylevel.duplicate_entry: Duplicate entry found for entity "%entity_sku%", please correct the import file before continuing.
                 inventorylevel.product_not_found: Product not found for sku "%entity_sku%", please correct the import file before continuing.
+            warning:
+                inventorybatches.not_enabled:    Inventory Batches are not enabled for Inventory Item

@@ -2,7 +2,9 @@
 
 namespace Marello\Bundle\PdfBundle\DependencyInjection;
 
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\ConfigBundle\DependencyInjection\SettingsBuilder;
+use Oro\Bundle\ConfigBundle\Utils\TreeUtils;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -16,8 +18,7 @@ class Configuration implements ConfigurationInterface
     const CONFIG_NAME = 'marello_pdf';
 
     const CONFIG_KEY_PAPER_SIZE = 'paper_size';
-    const CONFIG_KEY_LANGUAGE = 'language';
-    const CONFIG_KEY_LOCALE = 'locale';
+    const CONFIG_KEY_LOCALIZATION = 'localization';
     const CONFIG_KEY_COMPANY_ADDRESS = 'company_address';
     const CONFIG_KEY_COMPANY_EMAIL = 'company_email';
     const CONFIG_KEY_LOGO = 'logo';
@@ -42,8 +43,7 @@ class Configuration implements ConfigurationInterface
             $rootNode,
             [
                 self::CONFIG_KEY_PAPER_SIZE => ['value' => self::PAPER_SIZE_A4],
-                self::CONFIG_KEY_LANGUAGE => ['value' => 'en'],
-                self::CONFIG_KEY_LOCALE => ['value' => 'en'],
+                self::CONFIG_KEY_LOCALIZATION => ['value' => null],
                 self::CONFIG_KEY_COMPANY_ADDRESS => ['value' => null],
                 self::CONFIG_KEY_COMPANY_EMAIL => ['value' => null],
                 self::CONFIG_KEY_LOGO => ['value' => null],
@@ -58,5 +58,23 @@ class Configuration implements ConfigurationInterface
         );
 
         return $treeBuilder;
+    }
+
+    /**
+     * @param string $name
+     * @return string
+     */
+    public static function getConfigKeyByName(string $name): string
+    {
+        return TreeUtils::getConfigKey(self::CONFIG_NAME, $name, ConfigManager::SECTION_MODEL_SEPARATOR);
+    }
+
+    /**
+     * @param string $name
+     * @return string
+     */
+    public static function getFieldKeyByName(string $name): string
+    {
+        return TreeUtils::getConfigKey(self::CONFIG_NAME, $name, ConfigManager::SECTION_VIEW_SEPARATOR);
     }
 }

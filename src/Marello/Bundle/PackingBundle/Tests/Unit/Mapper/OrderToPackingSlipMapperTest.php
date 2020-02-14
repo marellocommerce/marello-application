@@ -99,7 +99,7 @@ class OrderToPackingSlipMapperTest extends TestCase
 
         $inventoryLevel1 = $this->getEntity(InventoryLevel::class, ['id' => 1, 'warehouse' => $warehouse]);
         $inventoryBatch1 = $this->getEntity(InventoryBatch::class, ['id' => 1, 'batchNumber' => '000001', 'quantity' => 5]);
-        $inventoryItem1 = new InventoryItem($warehouse, $product1);
+        $inventoryItem1 = new InventoryItem($product1);
         $inventoryLevel1->addInventoryBatch($inventoryBatch1);
         $inventoryItem1->addInventoryLevel($inventoryLevel1);
 
