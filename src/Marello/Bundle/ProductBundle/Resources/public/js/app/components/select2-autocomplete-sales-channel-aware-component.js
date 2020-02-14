@@ -1,9 +1,9 @@
 define(function (require) {
     'use strict';
-    var Select2AutocompleteChannelAwareComponent,
+    const
         mediator = require('oroui/js/mediator'),
         Select2AutocompleteComponent = require('oro/select2-autocomplete-component');
-    Select2AutocompleteChannelAwareComponent = Select2AutocompleteComponent.extend({
+    const Select2AutocompleteChannelAwareComponent = Select2AutocompleteComponent.extend({
         
         /**
          * @property {Object}

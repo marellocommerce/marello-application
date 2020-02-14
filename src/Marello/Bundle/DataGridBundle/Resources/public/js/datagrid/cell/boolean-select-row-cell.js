@@ -1,12 +1,11 @@
 define(function(require) {
     'use strict';
 
-    var SelectRowCell;
-    var $ = require('jquery');
-    var BaseView = require('oroui/js/app/views/base/view');
-    var Backgrid = require('backgrid');
-    var template = require('tpl!orodatagrid/templates/datagrid/select-row-cell.html');
-    var mediator = require('oroui/js/mediator');
+    const $ = require('jquery');
+    const BaseView = require('oroui/js/app/views/base/view');
+    const Backgrid = require('backgrid');
+    const template = require('tpl-loader!orodatagrid/templates/datagrid/select-row-cell.html');
+    const mediator = require('oroui/js/mediator');
 
     /**
      * Renders a checkbox for row selection.
@@ -15,7 +14,7 @@ define(function(require) {
      * @class   oro.datagrid.cell.SelectRowCell
      * @extends BaseView
      */
-    SelectRowCell = BaseView.extend({
+    const SelectRowCell = BaseView.extend({
         /** @property */
         className: 'select-row-cell renderable',
 

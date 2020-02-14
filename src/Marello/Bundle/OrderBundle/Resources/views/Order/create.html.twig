@@ -49,7 +49,7 @@
                 <div class="responsive-block">
                     <div class="box-type1">
                         {{ form_row(form.company) }}
-                        <div data-page-component-module="marelloorder/js/app/components/customer-selection-component">
+                        <div data-page-component-module="marellocustomer/js/app/components/customer-selection-component">
                             {{ form_row(form.customer) }}
                         </div>
                         {{ form_row(form.salesChannel) }}
@@ -143,6 +143,13 @@
             {{ form_errors(form.items) }}
         </div>
     {% endset %}
+    {% set paymentInformation %}
+        <div class="possible-payment-methods-info">
+            {{ UI.renderAttribute('marello.order.form.payment_options.label'|trans,
+            '<div class="possible_payment_methods_container">' ~ SM.renderPossiblePaymentMethods(form, entity) ~ '</div>'
+            ) }}
+        </div>
+    {% endset %}
     {% set shippingInformation %}
         <div class="possible-shipping-methods-info">
             {{ UI.renderAttribute('marello.order.form.shipping_options.label'|trans,
@@ -195,6 +202,15 @@
                 'title': '',
                 'data': [
                     shippingAddress
+                ]
+            }]
+        },
+        {
+            'title': 'marello.order.sections.payment_information'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'data': [
+                    paymentInformation
                 ]
             }]
         },

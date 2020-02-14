@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\ShippingBundle\Context\Builder\Basic;
 
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\ShippingBundle\Context\Builder\ShippingContextBuilderInterface;
 use Marello\Bundle\ShippingBundle\Context\LineItem\Collection\ShippingLineItemCollectionInterface;
 use Marello\Bundle\ShippingBundle\Context\ShippingContext;

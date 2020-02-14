@@ -13,6 +13,6 @@ class OrderBillingAddressType extends AbstractOrderAddressType
      */
     protected function getAddresses(Order $entity)
     {
-        return $this->orderCustomerAddressProvider->getCustomerBillingAddresses($entity->getCustomer());
+        return $this->customerAddressProvider->getCustomerBillingAddresses($entity->getCustomer());
     }
 }

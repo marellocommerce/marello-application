@@ -5,8 +5,10 @@ namespace Marello\Bundle\RefundBundle\Twig;
 use Marello\Bundle\RefundBundle\Calculator\RefundBalanceCalculator;
 use Marello\Bundle\RefundBundle\Entity\Refund;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class RefundExtension extends \Twig_Extension
+class RefundExtension extends AbstractExtension
 {
     const NAME = 'marello_refund';
 
@@ -21,11 +23,16 @@ class RefundExtension extends \Twig_Extension
     protected $refundBalanceCalculator;
 
     /**
+     * RefundExtension constructor.
      * @param WorkflowManager $workflowManager
+     * @param RefundBalanceCalculator $balanceCalculator
      */
-    public function __construct(WorkflowManager $workflowManager)
-    {
+    public function __construct(
+        WorkflowManager $workflowManager,
+        RefundBalanceCalculator $balanceCalculator
+    ) {
         $this->workflowManager = $workflowManager;
+        $this->refundBalanceCalculator = $balanceCalculator;
     }
 
     /**
@@ -46,11 +53,11 @@ class RefundExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_refund_is_pending',
                 [$this, 'isPending']
             ),
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_refund_get_balance',
                 [$this, 'getBalance']
             ),
@@ -80,19 +87,5 @@ class RefundExtension extends \Twig_Extension
     public function getBalance(Refund $refund)
     {
         return $this->refundBalanceCalculator->caclulateBalance($refund);
-    }
-
-    /**
-     * Add refund calculator via call method on service in order to keep BC
-     * should be removed for 3.0
-     * @deprecated remove in 3.0
-     * @param RefundBalanceCalculator $balanceCalculator
-     * @return $this
-     */
-    public function setRefundBalanceCalculator(RefundBalanceCalculator $balanceCalculator)
-    {
-        $this->refundBalanceCalculator = $balanceCalculator;
-
-        return $this;
     }
 }

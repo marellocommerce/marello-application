@@ -9,8 +9,6 @@ use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\SalesBundle\Model\ExtendSalesChannelGroup;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 /**
@@ -88,7 +86,7 @@ class SalesChannelGroup extends ExtendSalesChannelGroup
     /**
      * @var bool
      *
-     * @ORM\Column(name="system", type="boolean", nullable=false, options={"default"=false})
+     * @ORM\Column(name="is_system", type="boolean", nullable=false, options={"default"=false})
      * @ConfigField(
      *      defaultValues={
      *          "dataaudit"={

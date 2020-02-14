@@ -4,14 +4,18 @@ namespace Marello\Bundle\InvoiceBundle\Controller;
 
 use Marello\Bundle\InvoiceBundle\Entity\AbstractInvoice;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Annotation\Route;
 
-class InvoiceController extends Controller
+class InvoiceController extends AbstractController
 {
     /**
-     * @Config\Route("/", name="marello_invoice_invoice_index")
-     * @Config\Template
+     * @Route(
+     *     path="/",
+     *     name="marello_invoice_invoice_index"
+     * )
+     * @Template
      * @AclAncestor("marello_invoice_view")
      */
     public function indexAction()
@@ -20,8 +24,12 @@ class InvoiceController extends Controller
     }
 
     /**
-     * @Config\Route("/view/{id}", requirements={"id"="\d+"}, name="marello_invoice_invoice_view")
-     * @Config\Template
+     * @Route(
+     *     path="/view/{id}",
+     *     requirements={"id"="\d+"},
+     *     name="marello_invoice_invoice_view"
+     * )
+     * @Template
      * @AclAncestor("marello_invoice_view")
      *
      * @param AbstractInvoice $invoice

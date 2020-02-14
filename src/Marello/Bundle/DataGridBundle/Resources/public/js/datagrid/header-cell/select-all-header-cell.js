@@ -9,8 +9,6 @@ define([
 ], function(Backbone, $, _, mediator, Backgrid, SelectStateModel, BaseSelectAllHeaderCell) {
     'use strict';
 
-    var SelectAllHeaderCell;
-
     /**
      * Contains mass-selection logic
      *  - watches models selection, keeps reference to selected
@@ -23,7 +21,7 @@ define([
      * @class   marellodatagrid.datagrid.headerCell.SelectAllHeaderCell
      * @extends BaseSelectAllHeaderCell
      */
-    SelectAllHeaderCell = BaseSelectAllHeaderCell.extend({
+    const SelectAllHeaderCell = BaseSelectAllHeaderCell.extend({
 
         /** @property */
         selectAllStatus: null,

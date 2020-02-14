@@ -5,16 +5,6 @@ namespace Marello\Bundle\InventoryBundle\Model;
 class InventoryUpdateContextValidator
 {
     /**
-     * @deprecated use validateContext(InventoryUpdateContext $context) instead
-     * @param InventoryUpdateContext $context
-     * @return bool
-     */
-    public function validateItems(InventoryUpdateContext $context)
-    {
-        return $this->validateContext($context);
-    }
-
-    /**
      * Validate the data structure of the items to be updated
      * @param InventoryUpdateContext $context
      * @return bool

@@ -4,11 +4,9 @@ namespace Marello\Bundle\OrderBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
-use Symfony\Bridge\Doctrine\Tests\Fixtures\ContainerAwareFixture;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 
-use Marello\Bundle\OrderBundle\Entity\Customer;
-
-class UpdateCustomerWithShippingAddress extends ContainerAwareFixture
+class UpdateCustomerWithShippingAddress
 {
     /**
      * @var ObjectManager
@@ -30,7 +28,7 @@ class UpdateCustomerWithShippingAddress extends ContainerAwareFixture
     public function updateCustomerAddresses()
     {
         $customers = $this->manager
-            ->getRepository('MarelloOrderBundle:Customer')
+            ->getRepository(Customer::class)
             ->findBy(['shippingAddress' => null]);
 
 

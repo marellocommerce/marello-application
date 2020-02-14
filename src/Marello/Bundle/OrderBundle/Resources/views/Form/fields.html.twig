@@ -49,7 +49,7 @@
     </td>
 {% endblock %}
 
-{% macro marello_order_item_collection_item_prototype(widget) %}
+{% macro marello_order_item_collection_item_prototype(widget, attributes) %}
     {% if 'collection' in widget.vars.block_prefixes %}
         {% set form = widget.vars.prototype %}
         {% set name = widget.vars.full_name ~ '[' ~ widget.vars.prototype.vars.name ~ ']' %}
@@ -68,7 +68,7 @@
 
     {% set page_component_options = { 'disabled': not allow_delete } %}
 
-    <tr data-content="{{ name }}" data-validation-optional-group {{ block('widget_container_attributes') }}
+    <tr data-content="{{ name }}"
         class="marello-line-item display-values"
         data-page-component-module="oroui/js/app/components/view-component"
         data-page-component-options="{{ {view: 'marelloorder/js/app/views/order-item-view'}|json_encode }}"
@@ -91,9 +91,12 @@
 {% endmacro %}
 
 {% block marello_order_item_collection_widget %}
+    {% import _self as fields %}
+
     {% spaceless %}
+        {% set widgetContainerAttributes = block('widget_container_attributes') %}
         {% if prototype is defined %}
-            {% set prototype_html = _self.marello_order_item_collection_item_prototype(form) %}
+            {% set prototype_html = fields.marello_order_item_collection_item_prototype(form, widgetContainerAttributes) %}
         {% endif %}
         {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'marello-item-collection grid-container' }) %}
         {% set id = id ~ '_collection' %}
@@ -120,7 +123,7 @@
                     <tbody data-last-index="{{ form.children|length}}" data-prototype-name="{{ prototype_name }}"{% if prototype_html is defined %} data-prototype="{{ prototype_html|escape }}"{% endif %}>
                     {% if form.children|length %}
                         {% for child in form.children %}
-                            {{ _self.marello_order_item_collection_item_prototype(child) }}
+                            {{ fields.marello_order_item_collection_item_prototype(child, widgetContainerAttributes) }}
                         {% endfor %}
                     {% elseif show_form_when_empty and prototype_html is defined %}
                         {{ prototype_html|replace({(prototype_name): '0'})|raw }}
@@ -158,49 +161,4 @@
         {% endif %}
         {{ form_rest(form) }}
     {% endif %}
-{% endblock %}
-
-{% block oro_entity_create_or_select_inline_js_autocomplete_company_customer %}
-    {{ block('oro_entity_create_or_select_inline_js_company_customer') }}
-{% endblock %}
-
-{% block oro_entity_create_or_select_inline_js_grid_company_customer %}
-    {{ block('oro_entity_create_or_select_inline_js_company_customer') }}
-{% endblock %}
-
-{% block oro_entity_create_or_select_inline_js_company_customer %}
-    {% import 'OroUIBundle::macros.html.twig' as UI %}
-    {% if form.vars.configs.async_dialogs|default(false) is sameas(true) %}
-        {% set asyncNameSegment = 'async-' %}
-    {% endif %}
-    {% set urlParts = {
-    grid: {
-    route: 'oro_datagrid_widget',
-    parameters: {
-    gridName     : form.vars.grid_name,
-    params       : form.vars.grid_parameters,
-    renderParams : form.vars.grid_render_parameters
-    }
-    }
-    } %}
-
-    {% if form.vars.create_enabled|default(false) is sameas(true) %}
-        {% set urlParts = urlParts|merge({
-        create: {
-        route:      form.vars.create_form_route,
-        parameters: form.vars.create_form_route_parameters
-        }
-        }) %}
-    {% endif %}
-    <div {{ UI.renderPageComponentAttributes({
-        module: 'marelloorder/js/app/components/select-create-company-customer-inline-type-' ~ asyncNameSegment|default('') ~ 'component',
-        options: {
-            _sourceElement: '#'~id~'-el',
-            inputSelector: '#'~id,
-            entityLabel: label|trans,
-            urlParts: urlParts,
-            existingEntityGridId: form.vars.existing_entity_grid_id|default('id'),
-            createEnabled: form.vars.create_enabled|default(false),
-        }
-    }) }} style="display: none"></div>
 {% endblock %}

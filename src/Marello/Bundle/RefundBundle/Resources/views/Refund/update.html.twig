@@ -11,7 +11,7 @@
 {% block navButtons %}
     {{ UI.cancelButton(path('marello_refund_index')) }}
     {% set html = UI.saveAndCloseButton() %}
-    {% if resource_granted('marello_refund_update') %}
+    {% if is_granted('marello_refund_update') %}
         {% set html = html ~ UI.saveAndStayButton() %}
     {% endif %}
     {{ UI.dropdownSaveButton({ 'html': html }) }}

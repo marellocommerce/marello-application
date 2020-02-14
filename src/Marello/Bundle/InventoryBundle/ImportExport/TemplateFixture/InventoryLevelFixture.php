@@ -2,12 +2,14 @@
 
 namespace Marello\Bundle\InventoryBundle\ImportExport\TemplateFixture;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\ImportExportBundle\TemplateFixture\AbstractTemplateRepository;
 use Oro\Bundle\ImportExportBundle\TemplateFixture\TemplateFixtureInterface;
+use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 
 class InventoryLevelFixture extends AbstractTemplateRepository implements TemplateFixtureInterface
 {
@@ -37,12 +39,21 @@ class InventoryLevelFixture extends AbstractTemplateRepository implements Templa
 
         $product = $this->createProduct();
         $warehouse = $warehouseRepo->getEntity('default');
-        $inventoryItem = new InventoryItem($warehouse, $product);
+        $inventoryItem = new InventoryItem($product);
+        $inventoryItem->setEnableBatchInventory(true);
 
+        $inventoryBatch = new InventoryBatch();
+        $inventoryBatch
+            ->setBatchNumber('aaa-bbb-ccc-1')
+            ->setQuantity(5)
+            ->setPurchasePrice(10)
+            ->setExpirationDate(new \DateTime());
+        
         $inventoryLevel = new InventoryLevel();
         $inventoryLevel->setInventoryItem($inventoryItem);
         $inventoryLevel->setWarehouse($warehouse);
         $inventoryLevel->setInventoryQty(5);
+        $inventoryLevel->addInventoryBatch($inventoryBatch);
 
         return $inventoryLevel;
     }
@@ -68,8 +79,12 @@ class InventoryLevelFixture extends AbstractTemplateRepository implements Templa
      */
     public function createProduct()
     {
+        $name = new LocalizedFallbackValue();
+        $name->setString('SKU 1');
+        
         $entity = new Product();
-        $entity->setName('SKU 1');
+        $entity->setDefaultName('SKU 1');
+        $entity->addName($name);
         $entity->setSku('sku_001');
 
         return $entity;

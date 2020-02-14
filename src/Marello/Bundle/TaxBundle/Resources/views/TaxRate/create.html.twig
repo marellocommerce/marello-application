@@ -1,4 +1,5 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
 {% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
 {% if form.vars.value.id %}
     {% set formAction = path('marello_tax_taxrate_update', { 'id': form.vars.value.id }) %}
@@ -9,9 +10,9 @@
 
 {% block navButtons %}
     {{ UI.cancelButton(path('marello_tax_taxrate_index')) }}
-    {% if resource_granted('marello_tax_taxrate_create') %}
+    {% if is_granted('marello_tax_taxrate_create') %}
         {% set html = '' %}
-        {% if resource_granted('marello_tax_taxrate_view') %}
+        {% if is_granted('marello_tax_taxrate_view') %}
             {% set html = UI.saveAndCloseButton({
             'route': 'marello_tax_taxrate_view',
             'params': {'id': '$id'}

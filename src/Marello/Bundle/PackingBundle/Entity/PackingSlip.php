@@ -2,22 +2,26 @@
 
 namespace Marello\Bundle\PackingBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
-use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\OrderBundle\Entity\Customer;
-use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\PackingBundle\Model\ExtendPackingSlip;
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+
+use Symfony\Component\Validator\Constraints as Assert;
+
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
-use Symfony\Component\Validator\Constraints as Assert;
+
+use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use Marello\Bundle\PackingBundle\Model\ExtendPackingSlip;
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
+use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
+use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 
 /**
  * @ORM\Entity()
@@ -43,7 +47,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="marello_packing_packing_slip")
  * @ORM\HasLifecycleCallbacks()
  */
-class PackingSlip extends ExtendPackingSlip implements DerivedPropertyAwareInterface, OrganizationAwareInterface
+class PackingSlip extends ExtendPackingSlip implements
+    DerivedPropertyAwareInterface,
+    OrganizationAwareInterface,
+    SalesChannelAwareInterface
 {
     use EntityCreatedUpdatedAtTrait;
     use AuditableOrganizationAwareTrait;
@@ -118,7 +125,7 @@ class PackingSlip extends ExtendPackingSlip implements DerivedPropertyAwareInter
     protected $shippingAddress;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\Customer", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\CustomerBundle\Entity\Customer", cascade={"persist"})
      * @ORM\JoinColumn(name="customer_id", referencedColumnName="id", nullable=false)
      * @Oro\ConfigField(
      *      defaultValues={

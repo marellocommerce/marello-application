@@ -53,29 +53,31 @@ marello:
                 adjustment.label:       Adjustment
 
         inventoryitem:
-            entity_label:               Inventory Item
-            entity_plural_label:        Inventory Items
-            id.label:                   Id
-            product.label:              Product
-            replenishment.label:        Replenishment
-            desired_inventory.label:    Desired Inventory Level
-            purchase_inventory.label:   Purchase Inventory Level
-            inventory_levels.label:     Inventory Levels
-            organization.label:         Organization
-            warehouse.label:            Warehouse
-            backorder_allowed.label:    Backorder allowed
-            max_qty_to_backorder.label: Max qty to backorder
-            can_preorder.label:         Pre-order allowed
-            max_qty_to_preorder.label:  Max qty to pre-order
-            back_orders_datetime.label: Backorders Datetime
-            pre_orders_datetime.label:  Pre-orders Datetime
+            entity_label:                  Inventory Item
+            entity_plural_label:           Inventory Items
+            id.label:                      Id
+            product.label:                 Product
+            replenishment.label:           Replenishment
+            desired_inventory.label:       Desired Inventory Level
+            purchase_inventory.label:      Purchase Inventory Level
+            inventory_levels.label:        Inventory Levels
+            organization.label:            Organization
+            warehouse.label:               Warehouse
+            backorder_allowed.label:       Backorder allowed
+            max_qty_to_backorder.label:    Max qty to backorder
+            can_preorder.label:            Pre-order allowed
+            max_qty_to_preorder.label:     Max qty to pre-order
+            back_orders_datetime.label:    Backorders Datetime
+            pre_orders_datetime.label:     Pre-orders Datetime
             order_on_demand_allowed.label: Order on demand allowed
+            enable_batch_inventory.label:  Enable Batch Inventory
 
             section:
                 backorder_preorder.label:   Backorder/Pre-order
                 backorder.label:            Backorder
                 preorder.label:             Pre-order
                 orderondemand.label:        Order On Demand
+                inventorybatch.label:       Inventory Batch
 
         inventorylevel:
             entity_label:                   Inventory Level
@@ -96,6 +98,24 @@ marello:
             organization.label:             Organization
             managed_inventory.label:        Manage Inventory
             pick_location.label:            Pick Location
+            inventory_batches.label:        Inventory Batches
+
+            form:
+                manage_batches.label:       Manage Batches
+
+        inventorybatch:
+            entity_label:                   Inventory Batch
+            entity_plural_label:            Inventory Batches
+            id.label:                       Id
+            batch_number.label:             Batch Number
+            batch_reference.label:          Batch Reference
+            purchase_reference.label:       Purchase Reference
+            quantity.label:                 Quantity
+            delivery_date.label:            Delivery Date
+            expiration_date.label:          Expiration Date
+            purchase_price.label:           Purchase Price
+            total_price.label:              Total Price
+            organization.label:             Organization
 
         inventorylevellogrecord:
             id.label:                       Id
@@ -109,6 +129,8 @@ marello:
             user.label:                     User
             inventory_level_qty.label:      InventoryLevel Qty
             allocated_inventory_level_qty.label: Allocated InventoryLevel Qty
+            warehouse_name.label:           Warehouse
+
 
         balancedinventorylevel:
             id.label:                       Id
@@ -152,8 +174,11 @@ marello:
             success:
                 warehouse.saved:        Warehouse has been saved successfully
                 inventoryitem.saved:    Inventory Item has been saved successfully
+                inventorybatches.saved:    Inventory Batches have been saved successfully
                 inventory_rebalance.started: Rebalance started successfully. You will receive email notification upon completion.
             error:
                 warehouse.not_found:    No warehouse found, cannot update a new level without existing warehouse
                 inventorylevel.duplicate_entry: Duplicate entry found for entity "%entity_sku%", please correct the import file before continuing.
                 inventorylevel.product_not_found: Product not found for sku "%entity_sku%", please correct the import file before continuing.
+            warning:
+                inventorybatches.not_enabled:    Inventory Batches are not enabled for Inventory Item

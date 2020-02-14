@@ -3,19 +3,17 @@
 namespace Marello\Bundle\OrderBundle\Workflow;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-
+use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
-use Oro\Component\ConfigExpression\ContextAccessor;
-
+use Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProviderInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
-
-use Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProviderInterface;
+use Marello\Bundle\PackingBundle\Entity\PackingSlipItem;
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
+use Oro\Component\ConfigExpression\ContextAccessor;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class OrderShipAction extends OrderTransitionAction
 {
@@ -71,6 +69,7 @@ class OrderShipAction extends OrderTransitionAction
      * @param $inventoryUpdateQty
      * @param $allocatedInventoryQty
      * @param Order $entity
+     * @param Warehouse $warehouse
      */
     protected function handleInventoryUpdate($item, $inventoryUpdateQty, $allocatedInventoryQty, $entity, $warehouse)
     {
@@ -82,7 +81,33 @@ class OrderShipAction extends OrderTransitionAction
             'order_workflow.shipped',
             $entity
         );
-
+        $packingSlipItem = $this->doctrine
+            ->getManagerForClass(PackingSlipItem::class)
+            ->getRepository(PackingSlipItem::class)
+            ->findOneBy(['orderItem' => $item]);
+        if ($packingSlipItem) {
+            if (!empty($packingSlipItem->getInventoryBatches())) {
+                $contextBranches = [];
+                foreach ($packingSlipItem->getInventoryBatches() as $batchNumber => $qty) {
+                    /** @var InventoryBatch[] $inventoryBatches */
+                    $inventoryBatches = $this->doctrine
+                        ->getManagerForClass(InventoryBatch::class)
+                        ->getRepository(InventoryBatch::class)
+                        ->findBy(['batchNumber' => $batchNumber]);
+                    $inventoryBatch = null;
+                    foreach ($inventoryBatches as $batch) {
+                        $inventoryLevel = $batch->getInventoryLevel();
+                        if ($inventoryLevel && $inventoryLevel->getWarehouse() === $warehouse) {
+                            $inventoryBatch = $batch;
+                        }
+                    }
+                    if ($inventoryBatch) {
+                        $contextBranches[] = ['batch' => $inventoryBatch, 'qty' => -$qty];
+                    }
+                }
+                $context->setInventoryBatches($contextBranches);
+            }
+        }
         $context->setValue('warehouse', $warehouse);
 
         $this->eventDispatcher->dispatch(

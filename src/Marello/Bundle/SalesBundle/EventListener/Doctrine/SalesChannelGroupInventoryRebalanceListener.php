@@ -95,19 +95,6 @@ class SalesChannelGroupInventoryRebalanceListener
     }
 
     /**
-     * @deprecated since 2.1.1 will be removed in 3.0 use
-     * rebalanceForSalesChannelGroup(SalesChannelGroup $entity) instead
-     * @throws \Oro\Component\MessageQueue\Transport\Exception\Exception
-     */
-    protected function triggerRebalance()
-    {
-        $this->messageProducer->send(
-            Topics::RESOLVE_REBALANCE_ALL_INVENTORY,
-            Topics::ALL_INVENTORY
-        );
-    }
-
-    /**
      * {@inheritdoc}
      * @param SalesChannelGroup $entity
      * @throws \Oro\Component\MessageQueue\Transport\Exception\Exception

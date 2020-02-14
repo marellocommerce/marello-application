@@ -1,6 +1,3 @@
-parameters:
-    marello_return.entity.return.class: Marello\Bundle\ReturnBundle\Entity\ReturnEntity
-
 services:
     marello_return.util.return_helper:
         class: Marello\Bundle\ReturnBundle\Util\ReturnHelper
@@ -31,6 +28,7 @@ services:
             - '@service_container'
 
     marello_return.manager.businessrule_manager:
+        public: true
         class: Marello\Bundle\ReturnBundle\Manager\BusinessRuleManager
         arguments:
             - '@marello_return.manager.return_businessrule_registry'

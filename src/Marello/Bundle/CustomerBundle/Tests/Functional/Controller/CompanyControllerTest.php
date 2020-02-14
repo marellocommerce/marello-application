@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\AddressBundle\Tests\Functional\Api\DataFixtures\LoadAddressData;
 use Marello\Bundle\CustomerBundle\Tests\Functional\DataFixtures\LoadCompanyData;

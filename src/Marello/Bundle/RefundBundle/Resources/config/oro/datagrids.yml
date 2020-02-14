@@ -15,7 +15,7 @@ datagrids:
                 label: marello.refund.refund_number.label
                 frontend_type: string
             customer:
-                label: marello.order.customer.entity_label
+                label: marello.customer.entity_label
                 frontend_type: string
             orderNumber:
                 data_name: order.orderNumber
@@ -52,7 +52,7 @@ datagrids:
                 updatedAt:
                     data_name: r.updatedAt
             default:
-                refundNumber: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+                refundNumber: "DESC"
         filters:
             columns:
                 refundNumber:
@@ -155,7 +155,7 @@ datagrids:
                 updatedAt:
                     data_name: r.updatedAt
             default:
-                refundNumber: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+                refundNumber: "DESC"
         filters:
             columns:
                 refundNumber:

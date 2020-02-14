@@ -1,22 +1,21 @@
 define(function(require) {
     'use strict';
 
-    var OrderTotalsView;
-    var template =  require('tpl!marelloorder/templates/order/totals.html');
-    var $ = require('jquery');
-    var _ = require('underscore');
-    var mediator = require('oroui/js/mediator');
-    var LoadingMaskView = require('oroui/js/app/views/loading-mask-view');
-    var NumberFormatter = require('orolocale/js/formatter/number');
-    var localeSettings = require('orolocale/js/locale-settings');
-    var BaseView = require('oroui/js/app/views/base/view');
+    const template =  require('tpl-loader!marelloorder/templates/order/totals.html');
+    const $ = require('jquery');
+    const _ = require('underscore');
+    const mediator = require('oroui/js/mediator');
+    const LoadingMaskView = require('oroui/js/app/views/loading-mask-view');
+    const NumberFormatter = require('orolocale/js/formatter/number');
+    const localeSettings = require('orolocale/js/locale-settings');
+    const BaseView = require('oroui/js/app/views/base/view');
 
     /**
      * @export marelloorder/js/app/views/order-totals-view
      * @extends oroui.app.views.base.View
      * @class marelloorder.app.views.OrderTotalsView
      */
-    OrderTotalsView = BaseView.extend({
+    const OrderTotalsView = BaseView.extend({
         /**
          * @property {Object}
          */
