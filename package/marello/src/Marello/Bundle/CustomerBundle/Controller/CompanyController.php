@@ -5,15 +5,18 @@ namespace Marello\Bundle\CustomerBundle\Controller;
 use Marello\Bundle\CustomerBundle\Entity\Company;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class CompanyController extends Controller
+class CompanyController extends AbstractController
 {
     /**
-     * @Route("/", name="marello_customer_company_index")
+     * @Route(
+     *     path="/",
+     *     name="marello_customer_company_index"
+     * )
      * @Template
      * @AclAncestor("marello_customer_company_view")
      *
@@ -27,7 +30,11 @@ class CompanyController extends Controller
     }
 
     /**
-     * @Route("/view/{id}", name="marello_customer_company_view", requirements={"id"="\d+"})
+     * @Route(
+     *     path="/view/{id}",
+     *     name="marello_customer_company_view",
+     *     requirements={"id"="\d+"}
+     * )
      * @Template
      * @Acl(
      *      id="marello_customer_company_view",
@@ -48,7 +55,10 @@ class CompanyController extends Controller
     }
 
     /**
-     * @Route("/create", name="marello_customer_company_create")
+     * @Route(
+     *     path="/create",
+     *     name="marello_customer_company_create"
+     * )
      * @Template("MarelloCustomerBundle:Company:update.html.twig")
      * @Acl(
      *      id="marello_customer_company_create",
@@ -65,7 +75,11 @@ class CompanyController extends Controller
     }
 
     /**
-     * @Route("/update/{id}", name="marello_customer_company_update", requirements={"id"="\d+"})
+     * @Route(
+     *     path="/update/{id}",
+     *     name="marello_customer_company_update",
+     *     requirements={"id"="\d+"}
+     * )
      * @Template
      * @Acl(
      *      id="marello_customer_company_update",

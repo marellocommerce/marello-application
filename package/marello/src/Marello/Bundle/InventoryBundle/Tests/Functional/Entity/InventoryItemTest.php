@@ -2,17 +2,14 @@
 
 namespace Marello\Bundle\InventoryBundle\Tests\Functional\Entity;
 
-use Doctrine\Common\Persistence\ObjectManager;
-
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
-
-use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
-use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
 use Marello\Bundle\InventoryBundle\Manager\InventoryItemManager;
+use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 class InventoryItemTest extends WebTestCase
 {
@@ -100,6 +97,7 @@ class InventoryItemTest extends WebTestCase
         $context = InventoryUpdateContextFactory::createInventoryLevelUpdateContext(
             $inventoryLevel,
             $inventoryItem,
+            [],
             -5,
             -10,
             'manual'

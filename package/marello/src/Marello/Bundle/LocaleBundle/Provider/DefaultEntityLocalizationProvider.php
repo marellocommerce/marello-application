@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\LocaleBundle\Provider;
 
-use Marello\Bundle\LocaleBundle\Model\LocaleAwareInterface;
+use Marello\Bundle\LocaleBundle\Model\LocalizationAwareInterface;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\LocaleBundle\Entity\Localization;
@@ -32,7 +32,7 @@ class DefaultEntityLocalizationProvider implements EntityLocalizationProviderInt
     /**
      * @inheritDoc
      */
-    public function getLocalization(LocaleAwareInterface $entity)
+    public function getLocalization(LocalizationAwareInterface $entity)
     {
         $defaultId = $this->configManager->get('oro_locale.default_localization');
         if ($defaultId) {
@@ -48,7 +48,7 @@ class DefaultEntityLocalizationProvider implements EntityLocalizationProviderInt
     /**
      * @inheritDoc
      */
-    public function isApplicable(LocaleAwareInterface $entity)
+    public function isApplicable(LocalizationAwareInterface $entity)
     {
         return true;
     }

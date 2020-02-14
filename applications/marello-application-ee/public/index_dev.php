@@ -26,8 +26,6 @@ $loader = require __DIR__.'/../vendor/autoload.php';
 
 Debug::enable();
 
-require_once __DIR__.'/../src/AppKernel.php';
-
 $kernel = new AppKernel('dev', true);
 
 $request = Request::createFromGlobals();

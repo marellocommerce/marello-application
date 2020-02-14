@@ -39,7 +39,7 @@ datagrids:
                 currency:
                     data_name: s.currency
             default:
-                priority: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+                priority: "ASC"
         filters:
             columns:
                 name:
@@ -105,7 +105,7 @@ datagrids:
             query:
                 select:
                     - p.id
-                    - p.name
+                    - p.denormalizedDefaultName
                     - p.sku
                     - psr.quantityOfUnit
                     - psr.cost
@@ -126,8 +126,8 @@ datagrids:
                 label:            marello.product.sku.label
                 frontend_type:    string
             name:
-                data_name:        name
-                label:            marello.product.name.label
+                data_name:        denormalizedDefaultName
+                label:            marello.product.names.label
                 frontend_type:    string
             quantityOfUnit:
                 data_name:        quantityOfUnit
@@ -142,13 +142,13 @@ datagrids:
                 sku:
                     data_name:    p.sku
                 name:
-                    data_name:    p.name
+                    data_name:    p.denormalizedDefaultName
                 quantityOfUnit:
                     data_name:    psr.quantityOfUnit
                 cost:
                     data_name:    psr.cost
             default:
-                sku: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+                sku: "ASC"
         filters:
             columns:
                 sku:
@@ -156,7 +156,7 @@ datagrids:
                     data_name:  p.sku
                 name:
                     type:       string
-                    data_name:  p.name
+                    data_name:  p.denormalizedDefaultName
                 quantityOfUnit:
                     type:       string
                     data_name:  psr.quantityOfUnit

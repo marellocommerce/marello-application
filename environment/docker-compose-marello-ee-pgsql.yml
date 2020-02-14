@@ -13,8 +13,8 @@ services:
             - POSTGRES_PASSWORD=root
             - POSTGRES_USER=root
             - POSTGRES_DB=marellocommerce
-        volumes_from:
-            - data
+        volumes:
+            - dbdata:/var/lib/postgresql/data
     #todo:: install x-delayed messages plugin for supporting correct messages in Oro
 #    rabbitmq:
 #        image: rabbitmq:3-management-alpine
@@ -47,7 +47,7 @@ services:
             context: ./.docker
             args:
                 - SYMFONY_ENV=prod
-                - PHP_VERSION=7.2
+                - PHP_VERSION=7.3
         working_dir: /var/www/
         links:
             - "db"
@@ -60,8 +60,8 @@ services:
             - data
         volumes:
             - ../applications/marello-application-ee:/var/www:cached
-            - ../package/marello:/package/marello
-            - ../package/marello-enterprise:/package/marello-enterprise
+            - ../package/marello:/package/marello:delegated
+            - ../package/marello-enterprise:/package/marello-enterprise:delegated
         environment:
             - VIRTUAL_HOST=marello.docker
             - IS_LOCAL=true

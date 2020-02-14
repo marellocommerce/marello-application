@@ -1,6 +1,6 @@
 oro_entity:
     entity_aliases:
-        Marello\Bundle\OrderBundle\Entity\Customer:
+        Marello\Bundle\CustomerBundle\Entity\Customer:
             alias: marellocustomer
             plural_alias: marellocustomers
 

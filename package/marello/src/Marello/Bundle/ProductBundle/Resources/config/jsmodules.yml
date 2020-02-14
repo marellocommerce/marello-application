@@ -1,0 +1,11 @@
+aliases:
+    oro/select2-autocomplete-sales-channel-aware-component$: marelloproduct/js/app/components/select2-autocomplete-sales-channel-aware-component
+dynamic-imports:
+    marelloproduct:
+        - marelloproduct/js/app/components/select-create-inline-type-component
+        - marelloproduct/js/app/components/select-create-inline-type-async-component
+        - marelloproduct/js/app/components/select2-autocomplete-sales-channel-aware-component
+        - marelloproduct/js/app/views/product-channel-taxcode-view
+        - marelloproduct/js/app/views/product-channel-taxcodes-view
+    commons:
+        - oro/select2-autocomplete-sales-channel-aware-component

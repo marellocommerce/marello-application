@@ -14,8 +14,9 @@ services:
             - MYSQL_DATABASE=marellocommerce
             - MYSQL_USER=marellocommerce
             - MYSQL_PASSWORD=marellocommerce
-        volumes_from:
-            - data
+        volumes:
+            - dbdata:/var/lib/mysql
+
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
         container_name: orocommerce-phpmyadmin
@@ -37,10 +38,8 @@ services:
         build:
             context: ./.docker
             args:
-              - SYMFONY_ENV=prod
-              - COMPOSERFILE=dev.json
-              - TIMEOUT=3000
-              - APP_ROOT=/var/www
+                - SYMFONY_ENV=prod
+                - PHP_VERSION=7.3
         working_dir: /var/www/
         container_name: orocommerce-web
         links:
@@ -80,3 +79,6 @@ services:
             - APP_WEBSOCKET_HOST=
             - APP_WEBSOCKET_PORT=5081
             - APP_IS_INSTALLED=
+
+volumes:
+    dbdata:

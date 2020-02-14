@@ -4,7 +4,7 @@ namespace Marello\Bundle\InventoryBundle\Provider;
 
 use Marello\Bundle\InventoryBundle\Strategy\BalancerStrategiesRegistry;
 use Marello\Bundle\InventoryBundle\Strategy\BalancerStrategyInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class BalancingStrategyChoicesProvider
 {

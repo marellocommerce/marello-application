@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\SubscriptionBundle\Form\Type;
 
-use Marello\Bundle\OrderBundle\Form\Type\CustomerSelectType;
+use Marello\Bundle\CustomerBundle\Form\Type\CustomerSelectType;
 use Marello\Bundle\SalesBundle\Form\Type\SalesChannelSelectType;
 use Marello\Bundle\SubscriptionBundle\Entity\Subscription;
 use Marello\Bundle\SubscriptionBundle\Form\EventListener\SubscriptionItemSubscriber;
@@ -10,10 +10,9 @@ use Marello\Bundle\SubscriptionBundle\Migrations\Data\ORM\LoadPaymentTermData;
 use Marello\Bundle\SubscriptionBundle\Migrations\Data\ORM\LoadSubscriptionRenewalTypeData;
 use Marello\Bundle\SubscriptionBundle\Migrations\Data\ORM\LoadSubscriptionTerminationNoticePeriodData;
 use Oro\Bundle\EntityExtendBundle\Form\Type\EnumChoiceType;
-use Oro\Bundle\FormBundle\Form\Type\OroDateTimeType;
 use Oro\Bundle\FormBundle\Form\Type\OroChoiceType;
+use Oro\Bundle\FormBundle\Form\Type\OroDateTimeType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;

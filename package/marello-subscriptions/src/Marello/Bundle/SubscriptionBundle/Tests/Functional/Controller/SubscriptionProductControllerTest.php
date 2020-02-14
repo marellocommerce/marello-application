@@ -4,7 +4,9 @@ namespace Marello\Bundle\SubscriptionBundle\Tests\Functional\Controller;
 
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
+use Marello\Bundle\SubscriptionBundle\Migrations\Data\ORM\LoadSubscriptionAttributeFamilyData;
 use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxCodeData;
+use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,11 +46,16 @@ class SubscriptionProductControllerTest extends WebTestCase
             1,
             $crawler->filterXPath($xPath)->count()
         );
-
+        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
+        /** @var AttributeFamily $attributeFamily */
+        $attributeFamily = $em
+            ->getRepository(AttributeFamily::class)
+            ->findOneBy(['code' => LoadSubscriptionAttributeFamilyData::SUBSCRIPTION_FAMILY_CODE]);
         $formStepOne = $crawler->selectButton('Continue')->form();
         $formValues = $formStepOne->getPhpValues();
         $formValues['input_action'] = 'marello_product_create';
         $formValues['marello_product_step_one']['type'] = 'subscription';
+        $formValues['marello_product_step_one']['attributeFamily'] = $attributeFamily->getId();
 
         $this->client->followRedirects(true);
         $crawler = $this->client->request(
@@ -65,7 +72,7 @@ class SubscriptionProductControllerTest extends WebTestCase
         $sku     = 'SKU-1234';
         $form    = $crawler->selectButton('Save and Close')->form();
 
-        $form['marello_product_form[name]'] = $name;
+        $form['marello_product_form[names][values][default]'] = $name;
         $form['marello_product_form[sku]'] = $sku;
         $form['marello_product_form[status]'] = 'enabled';
         $form['marello_product_form[addSalesChannels]'] =
@@ -124,7 +131,7 @@ class SubscriptionProductControllerTest extends WebTestCase
         /** @var Form $form */
         $form                                              = $crawler->selectButton('Save and Close')->form();
         $name                                              = 'name' . $this->generateRandomString();
-        $form['marello_product_form[name]']                = $name;
+        $form['marello_product_form[names][values][default]'] = $name;
         $form['marello_product_form[removeSalesChannels]']
             = $this->getReference(LoadSalesData::CHANNEL_1_REF)->getId();
         $form['marello_product_form[addSalesChannels]']

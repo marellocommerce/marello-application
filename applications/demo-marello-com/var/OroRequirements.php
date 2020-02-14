@@ -6,13 +6,12 @@ if (is_file(__DIR__.'/../vendor/autoload.php')) {
 }
 require_once __DIR__ . '/../var/SymfonyRequirements.php';
 
-use Oro\Bundle\AssetBundle\NodeJsVersionChecker;
 use Oro\Bundle\AssetBundle\NodeJsExecutableFinder;
+use Oro\Bundle\AssetBundle\NodeJsVersionChecker;
 use Oro\Component\PhpUtils\ArrayUtil;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Intl\Intl;
-use Symfony\Component\Process\PhpExecutableFinder;
-use Symfony\Component\Process\ProcessBuilder;
+use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -23,7 +22,6 @@ class OroRequirements extends SymfonyRequirements
     const REQUIRED_PHP_VERSION  = '7.1.26';
     const REQUIRED_GD_VERSION   = '2.0';
     const REQUIRED_CURL_VERSION = '7.0';
-    const REQUIRED_ICU_VERSION  = '3.8';
     const REQUIRED_NODEJS_VERSION  = '>=6.6';
 
     const EXCLUDE_REQUIREMENTS_MASK = '/5\.[0-6]|7\.0/';
@@ -103,10 +101,31 @@ class OroRequirements extends SymfonyRequirements
             'Install and enable the <strong>intl</strong> extension.'
         );
 
-        $this->addOroRequirement(
-            null !== $icuVersion && version_compare($icuVersion, self::REQUIRED_ICU_VERSION, '>='),
-            'icu library must be at least ' . self::REQUIRED_ICU_VERSION,
-            'Install and enable the <strong>icu</strong> library at least ' . self::REQUIRED_ICU_VERSION . ' version'
+        $localeCurrencies = [
+            'de_DE' => 'EUR',
+            'en_CA' => 'CAD',
+            'en_GB' => 'GBP',
+            'en_US' => 'USD',
+            'fr_FR' => 'EUR',
+            'uk_UA' => 'UAH',
+        ];
+
+        foreach ($localeCurrencies as $locale => $currencyCode) {
+            $numberFormatter = new \NumberFormatter($locale, \NumberFormatter::CURRENCY);
+
+            if ($currencyCode === $numberFormatter->getTextAttribute(\NumberFormatter::CURRENCY_CODE)) {
+                unset($localeCurrencies[$locale]);
+            }
+        }
+
+        $this->addRecommendation(
+            empty($localeCurrencies),
+            sprintf('Current version %s of the ICU library should meet the requirements', $icuVersion),
+            sprintf(
+                'There may be a problem with currency formatting in <strong>ICU</strong> %s, ' .
+                'please upgrade your <strong>ICU</strong> library.',
+                $icuVersion
+            )
         );
 
         $this->addOroRequirement(
@@ -179,21 +198,6 @@ class OroRequirements extends SymfonyRequirements
             );
         }
 
-        // Web installer specific checks
-        if ('cli' !== PHP_SAPI) {
-            $output = $this->checkCliRequirements();
-
-            $requirement = new CliRequirement(
-                !$output,
-                'Requirements validation for PHP CLI',
-                'If you have multiple PHP versions installed, you need to configure ORO_PHP_PATH variable with PHP binary path used by web server'
-            );
-
-            $requirement->setOutput($output);
-
-            $this->add($requirement);
-        }
-
         $baseDir = realpath(__DIR__ . '/..');
         $mem     = $this->getBytes(ini_get('memory_limit'));
 
@@ -206,6 +210,7 @@ class OroRequirements extends SymfonyRequirements
             'memory_limit should be at least 512M',
             'Set the "<strong>memory_limit</strong>" setting in php.ini<a href="#phpini">*</a> to at least "512M".'
         );
+
         $nodeJsExecutableFinder = new NodeJsExecutableFinder();
         $nodeJsExecutable = $nodeJsExecutableFinder->findNodeJs();
         $nodeJsExists = null !== $nodeJsExecutable;
@@ -324,8 +329,7 @@ class OroRequirements extends SymfonyRequirements
             $this->getRequirements(),
             function ($requirement) {
                 return !($requirement instanceof PhpIniRequirement)
-                    && !($requirement instanceof OroRequirement)
-                    && !($requirement instanceof CliRequirement);
+                && !($requirement instanceof OroRequirement);
             }
         );
     }
@@ -356,19 +360,6 @@ class OroRequirements extends SymfonyRequirements
             $this->getRequirements(),
             function ($requirement) {
                 return $requirement instanceof OroRequirement;
-            }
-        );
-    }
-
-    /**
-     * @return array
-     */
-    public function getCliRequirements()
-    {
-        return array_filter(
-            $this->getRequirements(),
-            function ($requirement) {
-                return $requirement instanceof CliRequirement;
             }
         );
     }
@@ -448,8 +439,7 @@ class OroRequirements extends SymfonyRequirements
      */
     protected function checkFileNameLength()
     {
-        $getConf = new ProcessBuilder(array('getconf', 'NAME_MAX', __DIR__));
-        $getConf = $getConf->getProcess();
+        $getConf = new Process(['getconf', 'NAME_MAX', __DIR__]);
 
         if (isset($_SERVER['PATH'])) {
             $getConf->setEnv(array('PATH' => $_SERVER['PATH']));
@@ -464,21 +454,6 @@ class OroRequirements extends SymfonyRequirements
         $fileLength = trim($getConf->getOutput());
 
         return $fileLength >= 242;
-    }
-
-    /**
-     * @return null|string
-     */
-    protected function checkCliRequirements()
-    {
-        $finder  = new PhpExecutableFinder();
-        $command = sprintf(
-            '%s %soro-check.php',
-            $finder->find(),
-            __DIR__ . DIRECTORY_SEPARATOR
-        );
-
-        return shell_exec($command);
     }
 
     /**
@@ -554,30 +529,6 @@ class OroRequirements extends SymfonyRequirements
 
 class OroRequirement extends Requirement
 {
-}
-
-class CliRequirement extends Requirement
-{
-    /**
-     * @var string
-     */
-    protected $output;
-
-    /**
-     * @return string
-     */
-    public function getOutput()
-    {
-        return $this->output;
-    }
-
-    /**
-     * @param string $output
-     */
-    public function setOutput($output)
-    {
-        $this->output = $output;
-    }
 }
 
 class YamlFileLoader extends Symfony\Component\Config\Loader\FileLoader

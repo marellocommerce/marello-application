@@ -1,5 +1,0 @@
-{% for index, assembledPriceList in record.getValue('prices') %}
-    {% if assembledPriceList.defaultPrice %}
-        {{ assembledPriceList.defaultPrice.value|oro_format_currency({'currency': assembledPriceList.currency}) }}<br>
-    {% endif %}
-{% endfor %}

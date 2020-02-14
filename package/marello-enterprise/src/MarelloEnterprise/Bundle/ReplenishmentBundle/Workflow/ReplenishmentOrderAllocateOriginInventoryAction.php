@@ -69,7 +69,8 @@ class ReplenishmentOrderAllocateOriginInventoryAction extends ReplenishmentOrder
                         if ($orderItem->getProductSku() === $calcOrderItem->getProductSku()) {
                             $orderItem
                                 ->setInventoryQty($calcOrderItem->getInventoryQty())
-                                ->setTotalInventoryQty($calcOrderItem->getTotalInventoryQty());
+                                ->setTotalInventoryQty($calcOrderItem->getTotalInventoryQty())
+                                ->setInventoryBatches($calcOrderItem->getInventoryBatches());
                             $em = $this->registry->getManagerForClass(ReplenishmentOrderItem::class);
                             $em->persist($orderItem);
                             $em->flush($orderItem);

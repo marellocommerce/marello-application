@@ -1,0 +1,11 @@
+services:
+    marello_bank_transfer.payment_method_provider.bank_transfer:
+        class: 'Marello\Bundle\BankTransferBundle\Method\Provider\BankTransferMethodProvider'
+        public: false
+        arguments:
+            - '%marello_bank_transfer.integration.channel.type%'
+            - '@oro_entity.doctrine_helper'
+            - '@marello_bank_transfer.factory.method'
+        tags:
+            - { name: marello_payment.payment_method_provider }
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\IntegrationBundle\Entity\Channel', event: postLoad }

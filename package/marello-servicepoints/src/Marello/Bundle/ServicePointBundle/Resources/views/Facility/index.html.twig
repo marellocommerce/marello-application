@@ -1,0 +1,14 @@
+{% extends 'OroUIBundle:actions:index.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% set pageTitle = 'marello.servicepoint.facility.entity_plural_label'|trans %}
+{% set gridName  = 'marello-facility-grid' %}
+
+{% block navButtons %}
+    {% if is_granted('marello_servicepoint_facility_create') %}
+        {{ UI.addButton({
+            'path': path('marello_servicepoint_facility_create'),
+            'entity_label': 'marello.servicepoint.facility.entity_label'|trans
+        }) }}
+    {% endif %}
+{% endblock %}

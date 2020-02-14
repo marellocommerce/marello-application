@@ -14,8 +14,9 @@ use Oro\Bundle\DashboardBundle\Model\WidgetOptionBag;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use PHPUnit\Framework\TestCase;
 
-class OrderDashboardOrderItemsByStatusProviderTest extends \PHPUnit\Framework\TestCase
+class OrderDashboardOrderItemsByStatusProviderTest extends TestCase
 {
     /** @var RegistryInterface|\PHPUnit\Framework\MockObject\MockObject */
     protected $registry;

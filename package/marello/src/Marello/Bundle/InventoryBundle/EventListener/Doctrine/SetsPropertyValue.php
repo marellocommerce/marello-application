@@ -14,7 +14,7 @@ use Marello\Bundle\InventoryBundle\Entity\InventoryLevelLogRecord;
 trait SetsPropertyValue
 {
     /**
-     * Sets property value of InventoryLevel.
+     * Sets property value of InventoryLevelLogRecord.
      *
      * @param InventoryLevelLogRecord    $inventoryLevelLogRecord
      * @param string            $propertyName

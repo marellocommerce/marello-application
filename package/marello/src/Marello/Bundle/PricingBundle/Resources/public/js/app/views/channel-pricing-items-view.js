@@ -1,7 +1,7 @@
 define(function(require) {
     'use strict';
 
-    var PricingItemsView,
+    const
         $ = require('jquery'),
         __ = require('orotranslation/js/translator'),
         routing = require('routing'),
@@ -14,7 +14,7 @@ define(function(require) {
      * @extends marellolayout.app.views.AbstractItemsView
      * @class marellopricing.app.views.PricingItemsView
      */
-    PricingItemsView = AbstractItemsView.extend({
+    const PricingItemsView = AbstractItemsView.extend({
         /**
          * @property {Object}
          */

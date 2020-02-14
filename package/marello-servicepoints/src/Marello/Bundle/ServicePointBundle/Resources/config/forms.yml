@@ -1,0 +1,75 @@
+services:
+    marello_servicepoint.form_type.day_of_week:
+        class: 'Marello\Bundle\ServicePointBundle\Form\Type\DayOfWeekType'
+        arguments:
+            - '@marello_servicepoint.provider.day_of_week'
+        tags:
+            - { name: form.type }
+
+    marello_servicepoint.form_type.servicepoint_address:
+        class: 'Marello\Bundle\ServicePointBundle\Form\Type\ServicePointAddressType'
+        arguments:
+            - '@oro_address.form.listener.address'
+        tags:
+            - { name: form.type }
+
+    marello_servicepoint.form_type.facility_select:
+        class: 'Marello\Bundle\ServicePointBundle\Form\Type\FacilitySelectType'
+        arguments:
+            - '@oro_locale.helper.localization'
+        tags:
+            - { name: form.type }
+
+    marello_servicepoint.form_type.business_hours_collection:
+        class: 'Marello\Bundle\ServicePointBundle\Form\Type\BusinessHoursCollectionType'
+        arguments:
+            - '@marello_servicepoint.provider.day_of_week'
+        tags:
+            - { name: form.type }
+
+    marello_servicepoint.form_type.business_hours_override_collection:
+        class: 'Marello\Bundle\ServicePointBundle\Form\Type\BusinessHoursOverrideCollectionType'
+        tags:
+            - { name: form.type }
+
+    marello_servicepoint.form.facility:
+        class: 'Symfony\Component\Form\FormInterface'
+        factory: ['@form.factory', 'create']
+        arguments:
+            - 'Marello\Bundle\ServicePointBundle\Form\Type\FacilityType'
+
+    marello_servicepoint.form_handler.facility:
+        class: 'Marello\Bundle\ServicePointBundle\Form\Handler\FacilityFormHandler'
+        public: true
+        arguments:
+            - '@marello_servicepoint.form.facility'
+            - '@request_stack'
+            - '@doctrine.orm.entity_manager'
+
+    marello_servicepoint.form.servicepoint:
+        class: 'Symfony\Component\Form\FormInterface'
+        factory: ['@form.factory', 'create']
+        arguments:
+            - 'Marello\Bundle\ServicePointBundle\Form\Type\ServicePointType'
+
+    marello_servicepoint.form_handler.servicepoint:
+        class: 'Marello\Bundle\ServicePointBundle\Form\Handler\ServicePointFormHandler'
+        public: true
+        arguments:
+            - '@marello_servicepoint.form.servicepoint'
+            - '@request_stack'
+            - '@doctrine.orm.entity_manager'
+
+    marello_servicepoint.form.servicepoint_facility:
+        class: 'Symfony\Component\Form\FormInterface'
+        factory: ['@form.factory', 'create']
+        arguments:
+            - 'Marello\Bundle\ServicePointBundle\Form\Type\ServicePointFacilityType'
+
+    marello_servicepoint.form_handler.servicepoint_facility:
+        class: 'Marello\Bundle\ServicePointBundle\Form\Handler\ServicePointFacilityFormHandler'
+        public: true
+        arguments:
+            - '@marello_servicepoint.form.servicepoint_facility'
+            - '@request_stack'
+            - '@doctrine.orm.entity_manager'

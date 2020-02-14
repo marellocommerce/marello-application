@@ -1,0 +1,15 @@
+{% block header %}
+<div class="header">
+    <div class="company-logo">
+        {% if logo is not null %}
+            <img src="{{ logo }}">
+        {% endif %}
+    </div>
+</div>
+{% endblock header %}
+
+{% block footer %}
+<div class="footer clearfix">
+    <p class="page-number">{{ 'marello.pdf.page_number.label'|trans({'%pageNumber%': '{PAGENO}', '%totalPages%': '{nbpg}'}, 'pdf') }}</p>
+</div>
+{% endblock footer %}

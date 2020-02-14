@@ -2,9 +2,11 @@
 
 namespace Marello\Bundle\TaxBundle\Tests\Functional\Operation;
 
-use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxJurisdictionData;
-use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxRateData;
 use Oro\Bundle\ActionBundle\Tests\Functional\ActionTestCase;
+
+use Marello\Bundle\TaxBundle\Entity\TaxJurisdiction;
+use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxRateData;
+use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxJurisdictionData;
 
 class TaxJurisdictionDeleteOperationTest extends ActionTestCase
 {
@@ -28,7 +30,7 @@ class TaxJurisdictionDeleteOperationTest extends ActionTestCase
 
         $this->assertDeleteOperation(
             $taxJurisdiction->getId(),
-            'marello_tax.taxjurisdiction.entity.class',
+            TaxJurisdiction::class,
             'marello_tax_taxjurisdiction_index'
         );
     }

@@ -45,7 +45,7 @@ class MarelloSubscriptionBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_1';
+        return 'v1_2';
     }
 
     /**
@@ -268,7 +268,7 @@ class MarelloSubscriptionBundleInstaller implements
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
         $table->addForeignKeyConstraint(
-            $schema->getTable('marello_order_customer'),
+            $schema->getTable('marello_customer_customer'),
             ['customer_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]

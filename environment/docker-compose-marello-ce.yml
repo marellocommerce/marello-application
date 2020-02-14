@@ -14,8 +14,10 @@ services:
             - MYSQL_DATABASE=marellocommerce
             - MYSQL_USER=marellocommerce
             - MYSQL_PASSWORD=marellocommerce
-        volumes_from:
-            - data
+        volumes:
+            - dbdata:/var/lib/mysql
+#        volumes_from:
+#            - data
 
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
@@ -40,7 +42,7 @@ services:
             context: ./.docker
             args:
                 - SYMFONY_ENV=prod
-                - PHP_VERSION=7.1
+                - PHP_VERSION=7.3
         container_name: marelloce-web
         working_dir: /var/www/
         links:
@@ -52,8 +54,8 @@ services:
         volumes_from:
             - data
         volumes:
-            - ../applications/marello-application:/var/www
-            - ../package/marello:/package/marello
+            - ../applications/marello-application:/var/www:cached
+            - ../package/marello:/package/marello:delegated
         environment:
             - PHP_IDE_CONFIG=serverName=PHPSTORM
             - XDEBUG_CONFIG="remote_enable=1 remote_mode=req remote_port=9005 remote_host=192.168.99.1 remote_connect_back=0 idekey=PHPSTORM profiler_enable=1"
@@ -79,3 +81,6 @@ services:
             - APP_WEBSOCKET_HOST=
             - APP_WEBSOCKET_PORT=3081
             - APP_IS_INSTALLED=
+
+volumes:
+    dbdata:

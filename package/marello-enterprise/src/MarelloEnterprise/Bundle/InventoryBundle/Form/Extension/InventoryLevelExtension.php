@@ -13,9 +13,9 @@ class InventoryLevelExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function getExtendedType()
+    public static function getExtendedTypes()
     {
-        return InventoryLevelType::class;
+        return [InventoryLevelType::class];
     }
 
     /**

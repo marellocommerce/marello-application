@@ -1,0 +1,302 @@
+datagrids:
+    marello-facility-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - f.id
+                    - f.code
+                    - f
+                from:
+                    - { table: 'MarelloServicePointBundle:Facility', alias: f }
+        columns:
+            label:
+                label: marello.servicepoint.facility.labels.label
+                type: twig
+                frontend_type: html
+                template: 'MarelloServicePointBundle:Facility:Datagrid/label.html.twig'
+            code:
+                label: marello.servicepoint.facility.code.label
+                frontend_type: string
+        filters:
+            columns:
+                label:
+                    type: string
+                    data_name: label_localized
+                code:
+                    type: string
+                    data_name: code
+        sorters:
+            columns:
+                label:
+                    data_name: label_localized
+                code:
+                    data_name: code
+            default:
+                label: 'ASC'
+        properties:
+            id: ~
+            update_link:
+                type: url
+                route: marello_servicepoint_facility_update
+                params: [ id ]
+            label_localized:
+                type: localized_value
+                data_name: f.labels
+                allow_empty: true
+        actions:
+            update:
+                type: navigate
+                label: oro.grid.action.update
+                icon: edit
+                link: update_link
+                acl_resource: marello_servicepoint_facility_update
+        options:
+            entityHint: marello.servicepoint.facility.entity_plural_label
+            entity_pagination: true
+
+    marello-servicepoint-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - sp.id
+                    - sp
+                from:
+                    - { table: 'MarelloServicePointBundle:ServicePoint', alias: sp }
+        columns:
+            label:
+                label: marello.servicepoint.labels.label
+                type: twig
+                frontend_type: html
+                template: 'MarelloServicePointBundle:ServicePoint:Datagrid/label.html.twig'
+        filters:
+            columns:
+                label:
+                    type: string
+                    data_name: label_localized
+        sorters:
+            columns:
+                label:
+                    data_name: label_localized
+            default:
+                label: 'ASC'
+        properties:
+            id: ~
+            update_link:
+                type: url
+                route: marello_servicepoint_servicepoint_update
+                params: [ id ]
+            view_link:
+                type: url
+                route: marello_servicepoint_servicepoint_view
+                params: [ id ]
+            label_localized:
+                type: localized_value
+                data_name: sp.labels
+                allow_empty: true
+        actions:
+            view:
+                type: navigate
+                label: oro.grid.action.view
+                link: view_link
+                icon: eye
+                acl_recource: marello_servicepoint_servicepoint_view
+                rowAction: true
+            update:
+                type: navigate
+                label: oro.grid.action.update
+                icon: edit
+                link: update_link
+                acl_resource: marello_servicepoint_servicepoint_update
+        options:
+            entityHint: marello.servicepoint.entity_plural_label
+            entity_pagination: true
+
+    marello-servicepointfacility-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - spf.id
+                from:
+                    - { table: 'MarelloServicePointBundle:ServicePointFacility', alias: spf }
+                join:
+                    left:
+                        - { join: spf.facility, alias: f }
+                where:
+                    and:
+                        - spf.servicePoint = :servicePoint
+            bind_parameters:
+                - servicePoint
+        columns:
+            label:
+                label: marello.servicepoint.servicepoint_facility.facility.label
+                type: twig
+                frontend_type: html
+                template: 'MarelloServicePointBundle:ServicePointFacility:Datagrid/facility_label.html.twig'
+        filters:
+            columns:
+                label:
+                    type: string
+                    data_name: facility_label_localized
+        sorters:
+            columns:
+                label:
+                    data_name: facility_label_localized
+            default:
+                label: 'ASC'
+        properties:
+            id: ~
+            view_link:
+                type: url
+                route: marello_servicepoint_servicepointfacility_view
+                params: [ id ]
+            update_link:
+                type: url
+                route: marello_servicepoint_servicepointfacility_update
+                params: [ id ]
+            facility_label_localized:
+                type: localized_value
+                data_name: f.labels
+                allow_empty: true
+        actions:
+            view:
+                type: navigate
+                label: oro.grid.action.view
+                link: view_link
+                icon: eye
+                acl_recource: marello_servicepoint_servicepointfacility_view
+                rowAction: true
+            update:
+                type: navigate
+                label: oro.grid.action.update
+                icon: edit
+                link: update_link
+                acl_resource: marello_servicepoint_servicepointfacility_update
+        options:
+            entityHint: marello.servicepoint.servicepoint_facility.entity_plural_label
+            entity_pagination: true
+
+    marello-businesshours-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - bh.id
+                    - bh.dayOfWeek AS dayOfWeek
+                    - tp.openTime AS openTime
+                    - tp.closeTime AS closeTime
+                from:
+                    - { table: 'MarelloServicePointBundle:BusinessHours', alias: bh }
+                join:
+                    left:
+                        - { join: bh.timePeriods, alias: tp }
+                where:
+                    and:
+                        - bh.servicePointFacility = :servicePointFacility
+            bind_parameters:
+                - servicePointFacility
+        columns:
+            day_of_week:
+                label: marello.servicepoint.businesshours.day_of_week.label
+                type: twig
+                frontend_type: html
+                template: 'MarelloServicePointBundle:TimePeriod:Datagrid/dayOfWeek.html.twig'
+            open_time:
+                label: marello.servicepoint.timeperiod.open_time.label
+                type: twig
+                frontend_type: html
+                template: 'MarelloServicePointBundle:TimePeriod:Datagrid/openTime.html.twig'
+            close_time:
+                label: marello.servicepoint.timeperiod.close_time.label
+                type: twig
+                frontend_type: html
+                template: 'MarelloServicePointBundle:TimePeriod:Datagrid/closeTime.html.twig'
+
+        filters:
+            columns:
+                day_of_week:
+                    type: choice
+                    data_name: dayOfWeek
+                    options:
+                        field_options:
+                            choices: '@marello_servicepoint.provider.day_of_week->getDaysOfWeekChoices()'
+        sorters:
+            columns:
+                day_of_week:
+                    data_name: dayOfWeek
+            default:
+                day_of_week: 'ASC'
+
+        properties:
+            id: ~
+        options:
+            entityHint: marello.servicepoint.timeperiod.entity_plural_label
+            entity_pagination: true
+
+    marello-businesshours-overrides-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - bho.id
+                    - bho.date AS date
+                    - bho.openStatus AS openStatus
+                    - tp.openTime AS openTime
+                    - tp.closeTime AS closeTime
+                from:
+                    - { table: 'MarelloServicePointBundle:BusinessHoursOverride', alias: bho }
+                join:
+                    left:
+                        - { join: bho.timePeriods, alias: tp }
+                where:
+                    and:
+                        - bho.servicePointFacility = :servicePointFacility
+            bind_parameters:
+                - servicePointFacility
+        columns:
+            date:
+                label: marello.servicepoint.businesshours.date.label
+                type: twig
+                frontend_type: html
+                template: 'MarelloServicePointBundle:TimePeriod:Datagrid/date.html.twig'
+            open_status:
+                label: marello.servicepoint.businesshours.open_status.label
+                type: twig
+                frontend_type: html
+                template: 'MarelloServicePointBundle:TimePeriod:Datagrid/openStatus.html.twig'
+            open_time:
+                label: marello.servicepoint.timeperiod.open_time.label
+                type: twig
+                frontend_type: html
+                template: 'MarelloServicePointBundle:TimePeriod:Datagrid/openTime.html.twig'
+            close_time:
+                label: marello.servicepoint.timeperiod.close_time.label
+                type: twig
+                frontend_type: html
+                template: 'MarelloServicePointBundle:TimePeriod:Datagrid/closeTime.html.twig'
+
+        filters:
+            columns:
+                date:
+                    type: date
+                    data_name: date
+#                open_status:
+#                    type: choice
+#                    data_name: date
+
+        sorters:
+            columns:
+                date:
+                    data_name: date
+#                open_status:
+#                    data_name: open_status
+            default:
+                date: 'DESC'
+
+        properties:
+            id: ~
+        options:
+            entityHint: marello.servicepoint.timeperiod.entity_plural_label
+            entity_pagination: true

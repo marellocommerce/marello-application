@@ -1,0 +1,138 @@
+{% block _service_point_facility_businessHours_widget %}
+    {% spaceless %}
+        {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'marello-item-collection grid-container' }) %}
+        {% set id = id ~ '_collection' %}
+        <div class="row-oro">
+            <div {{ block('widget_container_attributes') }}>
+                <table class="grid table-hover table table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th class="businesshours-line-item-dayofweek"><span>{{ 'marello.servicepoint.businesshours.day_of_week.label'|trans }}</span></th>
+                            <th class="businesshours-line-item-timeperiods">
+                                <div class="businesshours-line-item-opentime"><span>{{ 'marello.servicepoint.timeperiod.open_time.label'|trans }}</span></div>
+                                <div class="businesshours-line-item-closetime"><span>{{ 'marello.servicepoint.timeperiod.close_time.label'|trans }}</span></div>
+                                {% if form.vars.allow_delete %}
+                                    <div class="businesshours-line-item-actions"><span>&nbsp;</span></div>
+                                {% endif %}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for child in form.children %}
+                            {{ form_row(child) }}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock %}
+
+{% block _service_point_facility_businessHours_entry_row %}
+<tr data-content="{{ name }}" data-validation-optional-group {{ block('widget_container_attributes') }}
+    class="marello-line-item"
+    data-layout="separate"
+>
+    {{ form_widget(form) }}
+</tr>
+{% endblock %}
+
+{% block _service_point_facility_businessHours_entry_dayOfWeek_row %}
+    {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'businesshours-line-item-dayofweek'}) %}
+<td {{ block('widget_attributes') }}>
+    {{ value|format_dow }}
+    {{ form_widget(form) }}
+    {{ form_errors(form) }}
+</td>
+{% endblock %}
+
+{% block _service_point_facility_businessHours_entry_timePeriods_row %}
+    {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'businesshours-line-item-timeperiods'}) %}
+<td {{ block('widget_attributes') }}>
+    {{ form_widget(form) }}
+    {{ form_errors(form) }}
+</td>
+{% endblock %}
+
+{% block _service_point_facility_businessHours_entry_timePeriods_widget %}
+    {% spaceless %}
+        {% from _self import marello_businesshours_timeperiod_item_prototype as oro_collection_item_prototype %}
+        {% if prototype is defined %}
+            {% set prototype_html = oro_collection_item_prototype(form) %}
+        {% endif %}
+        {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'oro-item-collection collection-fields-list' }) %}
+        {% set id = id ~ '_collection' %}
+        <div class="row-oro">
+            {% set prototype_name = form.vars.prototype_name %}
+            <div {{ block('widget_container_attributes') }} data-last-index="{{ form.children|length }}" data-row-count-add="{{ form.vars.row_count_add }}" data-prototype-name="{{ prototype_name }}"{% if prototype_html is defined %} data-prototype="{{ prototype_html|escape }}"{% endif %}>
+                <input type="hidden" name="validate_{{ full_name }}" data-collection-name="{{ full_name }}" data-name="collection-validation" disabled data-validate-element>
+                {% for child in form.children %}
+                    {{ oro_collection_item_prototype(child) }}
+                {% endfor %}
+            </div>
+        {% if allow_add %}
+            <a class="btn add-list-item" href="#"><i class="fa fa-plus"></i>{{ 'marello.servicepoint.ui.servicepoint_facility.business_hours.add.label'|trans }}</a>
+        {% endif %}
+        </div>
+    {% endspaceless %}
+{% endblock %}
+
+{% macro marello_businesshours_timeperiod_item_prototype(widget) %}
+    {% if 'collection' in widget.vars.block_prefixes %}
+        {% set form = widget.vars.prototype %}
+        {% set name = widget.vars.prototype.vars.name %}
+        {% set disabled = widget.vars.disabled %}
+        {% set allow_delete = widget.vars.allow_delete %}
+        {% set allow_add_after = widget.vars.allow_add_after %}
+    {% else %}
+        {% set form = widget %}
+        {% set name = widget.vars.full_name %}
+        {% set disabled = widget.parent.vars.disabled %}
+        {% set allow_delete = widget.parent.vars.allow_delete %}
+        {% set allow_add_after = widget.parent.vars.allow_add_after %}
+        {% if widget.vars.allow_delete is defined %}
+            {% set allow_delete = allow_delete and widget.vars.allow_delete %}
+        {% endif %}
+    {% endif %}
+    <div
+            data-content="{{ name }}"
+            {% if widget.parent.vars.skip_optional_validation_group is not defined %}
+                data-validation-optional-group
+                {% if form.vars.attr['data-validation-optional-group-handler'] is defined %}
+                    data-validation-optional-group-handler="{{ form.vars.attr['data-validation-optional-group-handler'] }}"
+                {% endif %}
+            {% endif %}
+    >
+        <div class="row-oro oro-multiselect-holder{% if not allow_delete %} not-removable{% endif %}">
+            {{ form_widget(form, {disabled: disabled}) }}
+        </div>
+    </div>
+{% endmacro %}
+
+{% block _service_point_facility_businessHours_entry_timePeriods_entry_widget %}
+    {%- spaceless -%}
+        {%- for child in form.children -%}
+            {{- form_widget(child) -}}
+            {{- form_errors(child) -}}
+        {%- endfor -%}
+        <div class="businesshours-line-item-actions marello-line-item-remove">
+            <button type="button" class="removeRow btn icons-holder"
+                    aria-label="{{ 'oro.form.collection.remove'|trans }}"
+                    data-related="{{ name }}">
+                <i class="fa-remove"></i>
+            </button>
+        </div>
+    {%- endspaceless -%}
+{% endblock %}
+
+{% block _service_point_facility_businessHours_entry_timePeriods_entry_openTime_widget %}
+    {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'businesshours-line-item-opentime'}) %}
+    {{ form_widget(form, {'attr': attr}) }}
+    {{ form_errors(form, {'attr': attr}) }}
+{% endblock %}
+
+{% block _service_point_facility_businessHours_entry_timePeriods_entry_closeTime_widget %}
+    {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'businesshours-line-item-closetime'}) %}
+    {{ form_widget(form, {'attr': attr}) }}
+    {{ form_errors(form, {'attr': attr}) }}
+{% endblock %}

@@ -4,7 +4,7 @@ namespace Marello\Bundle\PricingBundle\Formatter;
 
 use Marello\Bundle\PricingBundle\DependencyInjection\Configuration;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class LabelVATAwareFormatter
 {

@@ -5,17 +5,20 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Controller;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 use MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseChannelGroupLinkType;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class WarehouseChannelGroupLinkController extends Controller
+class WarehouseChannelGroupLinkController extends AbstractController
 {
     /**
-     * @Route("/", name="marelloenterprise_inventory_warehousechannelgrouplink_index")
-     * @Template
+     * @Route(
+     *     path="/",
+     *     name="marelloenterprise_inventory_warehousechannelgrouplink_index"
+     * )
+     * @Template("MarelloEnterpriseInventoryBundle:WarehouseChannelGroupLink:index.html.twig")
      * @Acl(
      *      id="marelloenterprise_inventory_warehousechannelgrouplink_view",
      *      type="entity",
@@ -33,7 +36,10 @@ class WarehouseChannelGroupLinkController extends Controller
     }
 
     /**
-     * @Route("/create", name="marelloenterprise_inventory_warehousechannelgrouplink_create")
+     * @Route(
+     *     path="/create",
+     *     name="marelloenterprise_inventory_warehousechannelgrouplink_create"
+     * )
      * @Template("MarelloEnterpriseInventoryBundle:WarehouseChannelGroupLink:update.html.twig")
      * @Acl(
      *     id="marelloenterprise_inventory_warehousechannelgrouplink_create",
@@ -51,9 +57,12 @@ class WarehouseChannelGroupLinkController extends Controller
     }
 
     /**
-     * @Route("/update/{id}", name="marelloenterprise_inventory_warehousechannelgrouplink_update",
-     *     requirements={"id"="\d+"})
-     * @Template
+     * @Route(
+     *     path="/update/{id}",
+     *     name="marelloenterprise_inventory_warehousechannelgrouplink_update",
+     *     requirements={"id"="\d+"}
+     * )
+     * @Template("MarelloEnterpriseInventoryBundle:WarehouseChannelGroupLink:update.html.twig")
      * @Acl(
      *     id="marelloenterprise_inventory_warehousechannelgrouplink_update",
      *     type="entity",

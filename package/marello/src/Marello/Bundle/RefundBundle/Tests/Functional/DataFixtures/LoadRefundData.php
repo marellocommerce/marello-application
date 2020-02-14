@@ -5,12 +5,10 @@ namespace Marello\Bundle\RefundBundle\Tests\Functional\DataFixtures;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-
-use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\RefundBundle\Entity\Refund;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use Marello\Bundle\RefundBundle\Entity\RefundItem;
 use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
+use Marello\Bundle\RefundBundle\Entity\Refund;
+use Marello\Bundle\RefundBundle\Entity\RefundItem;
 
 class LoadRefundData extends AbstractFixture implements DependentFixtureInterface
 {

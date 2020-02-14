@@ -3,16 +3,15 @@
 namespace Marello\Bundle\OrderBundle\Twig;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
-use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
-
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\OrderBundle\Migrations\Data\ORM\LoadOrderItemStatusData;
 use Marello\Bundle\OrderBundle\Provider\OrderItem\ShippingPreparedOrderItemsForNotificationProvider;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class OrderExtension extends \Twig_Extension
+class OrderExtension extends AbstractExtension
 {
     const NAME = 'marello_order';
 
@@ -21,19 +20,6 @@ class OrderExtension extends \Twig_Extension
 
     /** @var ShippingPreparedOrderItemsForNotificationProvider $orderItemsForNotificationProvider*/
     private $orderItemsForNotificationProvider;
-
-    /** @var WorkflowManager $workflowManager */
-    protected $workflowManager;
-
-    /**
-     * ProductExtension constructor.
-     *
-     * @param WorkflowManager $workflowManager
-     */
-    public function __construct(WorkflowManager $workflowManager)
-    {
-        $this->workflowManager = $workflowManager;
-    }
 
     /**
      * Returns the name of the extension.
@@ -53,19 +39,19 @@ class OrderExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_order_can_return',
                 [$this, 'canReturn']
             ),
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_order_item_shipped',
                 [$this, 'isShippedOrderItem']
             ),
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_get_order_item_status',
                 [$this, 'findStatusByName']
             ),
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_get_order_items_for_notification',
                 [$this->orderItemsForNotificationProvider, 'getItems']
             )
@@ -80,7 +66,7 @@ class OrderExtension extends \Twig_Extension
     public function canReturn(Order $order)
     {
         foreach ($order->getItems() as $orderItem) {
-            if (!in_array($orderItem->getStatus(), $this->getOrderItemStatuses())) {
+            if (!in_array($orderItem->getStatus()->getId(), $this->getOrderItemStatuses(), true)) {
                 return false;
             }
         }
@@ -94,7 +80,7 @@ class OrderExtension extends \Twig_Extension
      */
     public function isShippedOrderItem(OrderItem $orderItem)
     {
-        if (in_array($orderItem->getStatus(), $this->getOrderItemStatuses())) {
+        if (in_array($orderItem->getStatus()->getId(), $this->getOrderItemStatuses(), true)) {
             return true;
         }
 

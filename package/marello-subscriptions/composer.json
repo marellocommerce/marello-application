@@ -32,7 +32,7 @@
     },
     "require": {
         "php": ">=7.1.26",
-        "oro/platform-enterprise": "~3.1.1",
+        "oro/platform-enterprise": "4.1.*",
         "marellocommerce/marello-enterprise": "self.version"
     },
     "minimum-stability": "dev",

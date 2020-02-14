@@ -78,10 +78,11 @@ git subtree push  --prefix <package or application directory in mono-repo> <remo
 * Push new maintenance branch to remote of the mono repository
 
 **Pushing to individual downstream repo's master branches, make sure you've pulled from the downstream repo's first** 
+```
 git push marello $(git subtree split --prefix=package/marello --onto=marello/master):master
 git push marello-enterprise $(git subtree split --prefix=package/marello-enterprise --onto=marello-enterprise/master):master
 git push marello-subscriptions $(git subtree split --prefix=package/marello-subscriptions --onto=marello-subscriptions/master):master
-
+```
 
 
 ## Checking PR's

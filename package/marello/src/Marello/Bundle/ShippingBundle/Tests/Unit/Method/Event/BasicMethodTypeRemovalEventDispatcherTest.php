@@ -1,0 +1,38 @@
+<?php
+
+namespace Marello\Bundle\ShippingBundle\Tests\Unit\Method\Event;
+
+use Marello\Bundle\ShippingBundle\Method\Event\BasicMethodTypeRemovalEventDispatcher;
+use Marello\Bundle\ShippingBundle\Method\Event\MethodTypeRemovalEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
+class BasicMethodTypeRemovalEventDispatcherTest extends \PHPUnit\Framework\TestCase
+{
+    /**
+     * @var EventDispatcherInterface|\PHPUnit\Framework\MockObject\MockObject
+     */
+    private $eventDispatcher;
+
+    /**
+     * @var BasicMethodTypeRemovalEventDispatcher
+     */
+    private $dispatcher;
+
+    protected function setUp()
+    {
+        $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+
+        $this->dispatcher = new BasicMethodTypeRemovalEventDispatcher($this->eventDispatcher);
+    }
+
+    public function testDispatch()
+    {
+        $methodId = 'method';
+        $typeId = 'type';
+        $this->eventDispatcher->expects($this->once())
+            ->method('dispatch')
+            ->with(MethodTypeRemovalEvent::NAME, new MethodTypeRemovalEvent($methodId, $typeId));
+
+        $this->dispatcher->dispatch($methodId, $typeId);
+    }
+}

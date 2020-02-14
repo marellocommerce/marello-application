@@ -1,20 +1,19 @@
 define(function(require) {
     'use strict';
 
-    var PossibleShippingMethodsView;
-    var $ = require('jquery');
-    var _ = require('underscore');
-    var mediator = require('oroui/js/mediator');
-    var BaseView = require('oroui/js/app/views/base/view');
-    var ElementsHelper = require('marellocore/js/app/elements-helper');
-    var LoadingMaskView = require('oroui/js/app/views/loading-mask-view');
-    var StandardConfirmation = require('oroui/js/standart-confirmation');
-    var possibleShippingMethodsTemplate = require('tpl!./../templates/possible-shipping-methods-template.html');
-    var selectedShippingMethodTemplate = require('tpl!./../templates/selected-shipping-method-template.html');
-    var noShippingMethodsAvailableTemplate = require('tpl!./../templates/no-shipping-methods-available.html');
-    var NumberFormatter = require('orolocale/js/formatter/number');
+    const $ = require('jquery');
+    const _ = require('underscore');
+    const mediator = require('oroui/js/mediator');
+    const BaseView = require('oroui/js/app/views/base/view');
+    const ElementsHelper = require('marellocore/js/app/elements-helper');
+    const LoadingMaskView = require('oroui/js/app/views/loading-mask-view');
+    const StandardConfirmation = require('oroui/js/standart-confirmation');
+    const possibleShippingMethodsTemplate = require('tpl-loader!./../templates/possible-shipping-methods-template.html');
+    const selectedShippingMethodTemplate = require('tpl-loader!./../templates/selected-shipping-method-template.html');
+    const noShippingMethodsAvailableTemplate = require('tpl-loader!./../templates/no-shipping-methods-available.html');
+    const NumberFormatter = require('orolocale/js/formatter/number');
 
-    PossibleShippingMethodsView = BaseView.extend(_.extend({}, ElementsHelper, {
+    const PossibleShippingMethodsView = BaseView.extend(_.extend({}, ElementsHelper, {
         autoRender: true,
 
         options: {

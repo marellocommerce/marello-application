@@ -142,6 +142,20 @@ class ReplenishmentOrderItem implements ProductAwareInterface, OrganizationAware
     protected $totalInventoryQty;
 
     /**
+     * @ORM\Column(name="inventory_batches", type="json_array", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var array
+     */
+    protected $inventoryBatches = [];
+
+    /**
      * @return int
      */
     public function getId()
@@ -279,6 +293,25 @@ class ReplenishmentOrderItem implements ProductAwareInterface, OrganizationAware
     public function setTotalInventoryQty($totalInventoryQty)
     {
         $this->totalInventoryQty = $totalInventoryQty;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getInventoryBatches()
+    {
+        return $this->inventoryBatches ? : [];
+    }
+
+    /**
+     * @param array $batches
+     * @return $this
+     */
+    public function setInventoryBatches(array $batches)
+    {
+        $this->inventoryBatches = $batches;
 
         return $this;
     }

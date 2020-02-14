@@ -2,17 +2,20 @@
 
 namespace Marello\Bundle\PricingBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Symfony\Component\Routing\Annotation\Route;
 
-class PricingController extends Controller
+class PricingController extends AbstractController
 {
     /**
-     * @Config\Route("/get-currency-by-channel", name="marello_pricing_currency_by_channel")
-     * @Config\Method({"GET"})
+     * @Route(
+     *     path="/get-currency-by-channel",
+     *     methods={"GET"},
+     *     name="marello_pricing_currency_by_channel"
+     * )
      * @AclAncestor("marello_sales_saleschannel_view")
      *
      * {@inheritdoc}

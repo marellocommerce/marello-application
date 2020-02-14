@@ -1,6 +1,5 @@
 Marello
 ========================
-[![GitHub release](https://img.shields.io/github/release/marellocommerce/marello.svg)](https://github.com/marellocommerce/marello/releases)
 
 What is Marello?
 -----------
@@ -25,7 +24,7 @@ Use as dependency in composer
 Run unit tests
 --------------
 
-Please make sure you have at least phpunit 6.5 or above.
+Please make sure you have at least phpunit 7.5 or above.
 To run unit tests of any bundles:
 
 ```bash
