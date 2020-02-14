@@ -18,7 +18,7 @@ class WFARuleController extends AbstractController
 {
     /**
      * @Route(
-     *     path="/", 
+     *     path="/",
      *     name="marelloenterprise_inventory_wfa_rule_index"
      * )
      * @Template("MarelloEnterpriseInventoryBundle:WFARule:index.html.twig")
@@ -35,7 +35,7 @@ class WFARuleController extends AbstractController
 
     /**
      * @Route(
-     *     path="/create", 
+     *     path="/create",
      *     name="marelloenterprise_inventory_wfa_rule_create"
      * )
      * @Template("MarelloEnterpriseInventoryBundle:WFARule:update.html.twig")
@@ -56,8 +56,8 @@ class WFARuleController extends AbstractController
 
     /**
      * @Route(
-     *     path="/view/{id}", 
-     *     name="marelloenterprise_inventory_wfa_rule_view", 
+     *     path="/view/{id}",
+     *     name="marelloenterprise_inventory_wfa_rule_view",
      *     requirements={"id"="\d+"}
      * )
      * @Template("MarelloEnterpriseInventoryBundle:WFARule:view.html.twig")
@@ -81,8 +81,8 @@ class WFARuleController extends AbstractController
 
     /**
      * @Route(
-     *     path="/update/{id}", 
-     *     name="marelloenterprise_inventory_wfa_rule_update", 
+     *     path="/update/{id}",
+     *     name="marelloenterprise_inventory_wfa_rule_update",
      *     requirements={"id"="\d+"}
      * )
      * @Template("MarelloEnterpriseInventoryBundle:WFARule:update.html.twig")
@@ -128,7 +128,7 @@ class WFARuleController extends AbstractController
 
     /**
      * @Route(
-     *     path="/{gridName}/massAction/{actionName}", 
+     *     path="/{gridName}/massAction/{actionName}",
      *     name="marelloenterprise_inventory_wfa_rule_massaction"
      * )
      * @Acl(
