@@ -32,7 +32,6 @@
         }
     },
     "require": {
-        "php": ">=7.1",
         "oro/platform": "4.1.*",
         "oro/platform-serialised-fields": "4.1.*",
         "oro/calendar-bundle": "4.1.*",

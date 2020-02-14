@@ -60,8 +60,8 @@ services:
             - data
         volumes:
             - ../applications/marello-application-ee:/var/www:cached
-            - ../package/marello:/package/marello
-            - ../package/marello-enterprise:/package/marello-enterprise
+            - ../package/marello:/package/marello:delegated
+            - ../package/marello-enterprise:/package/marello-enterprise:delegated
         environment:
             - VIRTUAL_HOST=marello.docker
             - IS_LOCAL=true

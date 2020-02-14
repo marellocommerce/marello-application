@@ -33,11 +33,7 @@ class MigrateExtendedData implements
                 'UPDATE oro_attachment SET customer_d5a7d2a4_id = customer_63c5df30_id'
             )
         );
-        $queries->addPreQuery(
-            new ParametrizedSqlMigrationQuery(
-                'DELETE FROM marello_order_customer'
-            )
-        );
+
         $attachmentTable = $schema->getTable('oro_attachment');
         $attachmentTable->dropColumn('customer_63c5df30_id');
         $attachmentTable->removeForeignKey('FK_FA0FE081ADEA609C');
