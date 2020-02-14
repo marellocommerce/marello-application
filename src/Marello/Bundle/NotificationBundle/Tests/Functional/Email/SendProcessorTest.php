@@ -65,7 +65,7 @@ class SendProcessorTest extends WebTestCase
     }
 
     /**
-     * @throws MarelloNotificationException
+     * @throws NoResultException
      * @throws \Oro\Bundle\NotificationBundle\Exception\NotificationSendException
      * @throws \Twig_Error
      */
@@ -74,8 +74,7 @@ class SendProcessorTest extends WebTestCase
         /** @var Order $order */
         $order = $this->getReference('marello_order_0');
 
-        $this->expectException(MarelloNotificationException::class);
-
+        $this->expectException(NoResultException::class);
 
         $this->sendProcessor->sendNotification(
             'no_valid_template',

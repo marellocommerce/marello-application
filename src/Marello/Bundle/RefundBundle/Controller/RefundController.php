@@ -15,7 +15,7 @@ class RefundController extends AbstractController
 {
     /**
      * @Route(
-     *     path="/", 
+     *     path="/",
      *     name="marello_refund_index"
      * )
      * @Template
@@ -30,7 +30,7 @@ class RefundController extends AbstractController
 
     /**
      * @Route(
-     *     path="/view/{id}", 
+     *     path="/view/{id}",
      *     name="marello_refund_view"
      * )
      * @Template
@@ -47,7 +47,7 @@ class RefundController extends AbstractController
 
     /**
      * @Route(
-     *     path="/create/{id}", 
+     *     path="/create/{id}",
      *     name="marello_refund_create"
      * )
      * @Template("MarelloRefundBundle:Refund:update.html.twig")
@@ -68,8 +68,8 @@ class RefundController extends AbstractController
 
     /**
      * @Route(
-     *     path="/update/{id}", 
-     *     requirements={"id"="\d+"}, 
+     *     path="/update/{id}",
+     *     requirements={"id"="\d+"},
      *     name="marello_refund_update"
      * )
      * @Template

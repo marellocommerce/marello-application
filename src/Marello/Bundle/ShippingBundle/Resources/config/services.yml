@@ -1,5 +1,4 @@
 parameters:
-    marello_shipping.entity.shipping_methods_configs_rule.class:  Marello\Bundle\ShippingBundle\Entity\ShippingMethodsConfigsRule
     marello_shipping.rule_grid_route_name: 'marello_shipping_methods_configs_rule_index'
     marello_shipping.rule_grid_name: 'marello-shipping-methods-configs-rule-grid'
 services:

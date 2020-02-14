@@ -1,6 +1,3 @@
-parameters:
-    marello_rule.entity.rule.class: 'Marello\Bundle\RuleBundle\Entity\Rule'
-
 services:
     marello_rule.expression_language:
         class: 'Oro\Component\ExpressionLanguage\ExpressionLanguage'

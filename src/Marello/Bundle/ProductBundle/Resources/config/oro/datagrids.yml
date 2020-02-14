@@ -211,7 +211,7 @@ datagrids:
                     - s.label as status
                     - COALESCE(SUM(il.inventory), 0) AS inventoryQty
                 from:
-                    - { table: Marello\Bundle\ProductBundle\Entity\Product, alias: p }
+                    - { table: MarelloProductBundle:Product, alias: p }
                 join:
                     left:
                         - { join: p.status, alias: s }
@@ -508,7 +508,7 @@ datagrids:
 
     marello-product-categories-base-grid:
         acl_resource: marello_category_update
-        extended_entity_name: '%marello_catalog.category.entity.class%'
+        extended_entity_name: Marello\Bundle\CatalogBundle\Entity\Category
         source:
             type: orm
             query:
@@ -519,7 +519,7 @@ datagrids:
                     - category.createdAt
                     - category.updatedAt
                 from:
-                    - { table: '%marello_catalog.category.entity.class%', alias: category }
+                    - { table: MarelloCatalogBundle:Category, alias: category }
         columns:
             code:
                 label:         marello.catalog.category.code.label
@@ -594,7 +594,7 @@ datagrids:
                 join:
                     left:
                         -
-                            join: '%marello_product.entity.class%'
+                            join: Marello\Bundle\ProductBundle\Entity\Product
                             alias: categoryProduct
                             conditionType: WITH
                             condition: 'categoryProduct = :product_id'

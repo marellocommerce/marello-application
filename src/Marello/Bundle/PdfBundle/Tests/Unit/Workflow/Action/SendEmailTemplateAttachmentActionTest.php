@@ -3,11 +3,12 @@
 namespace Marello\Bundle\PdfBundle\Tests\Unit\Workflow\Action;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Marello\Bundle\InvoiceBundle\Entity\Invoice;
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\PdfBundle\Workflow\Action\SendEmailTemplateAttachmentAction;
 use Oro\Bundle\EmailBundle\Mailer\Processor;
 use Oro\Bundle\EmailBundle\Provider\EmailRenderer;
 use Oro\Bundle\EmailBundle\Tools\EmailAddressHelper;
+use Oro\Bundle\EmailBundle\Tools\EmailOriginHelper;
 use Oro\Bundle\EntityBundle\Provider\EntityNameResolver;
 use Oro\Component\Action\Exception\InvalidArgumentException;
 use Oro\Component\ConfigExpression\ContextAccessor;
@@ -26,19 +27,22 @@ class SendEmailTemplateAttachmentActionTest extends TestCase
         $entityNameResolver = $this->createMock(EntityNameResolver::class);
         /** @var EmailRenderer|\PHPUnit_Framework_MockObject_MockObject $renderer */
         $renderer = $this->createMock(EmailRenderer::class);
-        /** @var ObjectManager|\PHPUnit_Framework_MockObject_MockObject $objectManager */
-        $objectManager = $this->createMock(ObjectManager::class);
+        /** @var ManagerRegistry|\PHPUnit_Framework_MockObject_MockObject $managerRegistry */
+        $managerRegistry = $this->createMock(ManagerRegistry::class);
         /** @var ValidatorInterface|\PHPUnit_Framework_MockObject_MockObject $validator */
         $validator = $this->createMock(ValidatorInterface::class);
+        /** @var EmailOriginHelper|\PHPUnit_Framework_MockObject_MockObject $emailOriginHelper */
+        $emailOriginHelper = $this->getMockBuilder(EmailOriginHelper::class)->disableOriginalConstructor()->getMock();
 
         $this->action = new SendEmailTemplateAttachmentAction(
             new ContextAccessor(),
             $emailProcessor,
             new EmailAddressHelper(),
             $entityNameResolver,
+            $managerRegistry,
+            $validator,
+            $emailOriginHelper,
             $renderer,
-            $objectManager,
-            $validator
         );
     }
 
@@ -64,7 +68,7 @@ class SendEmailTemplateAttachmentActionTest extends TestCase
             'to' => 'test@example.com',
             'template' => 'template-name',
             'subject' => 'subject',
-            'entity' => new Invoice(),
+            'entity' => new \stdClass(),
         ];
 
         return [

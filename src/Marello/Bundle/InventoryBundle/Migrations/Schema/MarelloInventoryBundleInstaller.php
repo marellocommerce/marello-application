@@ -164,9 +164,8 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addColumn('updated_at', 'datetime');
         $table->addColumn('inventory_level_id', 'integer', ['notnull' => false]);
         $table->addColumn('inventory_item_id', 'integer', ['notnull' => true]);
-        $table->addColumn('warehouse_name', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('warehouse_name', 'string', ['notnull' => true, 'length' => 255]);
         $table->setPrimaryKey(['id']);
-        $table->addIndex(['inventory_level_id']);
         $table->addIndex(['inventory_item_id']);
         $table->addIndex(['user_id'], 'IDX_32D13BA4F675F31B', []);
     }

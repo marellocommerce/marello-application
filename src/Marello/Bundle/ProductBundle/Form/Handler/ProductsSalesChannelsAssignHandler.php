@@ -165,7 +165,6 @@ class ProductsSalesChannelsAssignHandler
                 'type' => 'info',
                 'message' => 'marello.product.messages.success.sales_channels.assignment_started'
             ];
-
         }
 
         return ['success' => false, 'message' => 'marello.product.messages.error.sales_channels.assignment'];
