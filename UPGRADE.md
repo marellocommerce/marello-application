@@ -4,7 +4,7 @@ UPGRADE NOTES
 This upgrade sequence has been derived from the Oro(CRM/Commerce). More information can be found at https://oroinc.com/orocrm/doc/current/install-upgrade/upgrade[1]
 for more details.
 
-### Recommended upgrade sequence to Marello 2.1
+### Recommended upgrade sequence to Marello 3.0
 To retrieve source code of a new version and upgrade your Marello instance, please execute the following steps:
 
   * Go to the Marello root folder and switch the application to the maintenance mode;
