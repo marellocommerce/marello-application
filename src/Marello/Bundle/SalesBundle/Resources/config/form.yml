@@ -1,49 +1,38 @@
-parameters:
-    #form types
-    marello_sales.form_type.saleschannel.class:                                Marello\Bundle\SalesBundle\Form\Type\SalesChannelType
-    marello_sales.form_type.saleschannel.select.class:                         Marello\Bundle\SalesBundle\Form\Type\SalesChannelSelectType
-    marello_sales.form_type.saleschannel.select.api.class:                     Marello\Bundle\SalesBundle\Form\Type\SalesChannelSelectApiType
-    marello_sales.form_type.saleschannel.multiselect.class:                    Marello\Bundle\SalesBundle\Form\Type\SalesChannelMultiSelectType
-    marello_sales.form_type.system_group_saleschannel.multiselect.class:       Marello\Bundle\SalesBundle\Form\Type\SystemGroupSalesChannelMultiselectType
-    marello_sales.form_type.saleschannelgroup.class:                           Marello\Bundle\SalesBundle\Form\Type\SalesChannelGroupType
-    #form handlers
-    marello_sales.form_handler.saleschannel.class:                             Marello\Bundle\SalesBundle\Form\Handler\SalesChannelHandler
-    marello_sales.form_handler.saleschannelgroup.class:                        Marello\Bundle\SalesBundle\Form\Handler\SalesChannelGroupHandler
 services:
     #form types
     marello_sales_form_type.saleschannel:
-        class: '%marello_sales.form_type.saleschannel.class%'
+        class: 'Marello\Bundle\SalesBundle\Form\Type\SalesChannelType'
         arguments:
             - '@marello_productprice.pricing.form.event_listener.currency_subscriber'
         tags:
             - { name: form.type }
 
     marello_sales_form_type.saleschannelgroup:
-        class: '%marello_sales.form_type.saleschannelgroup.class%'
+        class: 'Marello\Bundle\SalesBundle\Form\Type\SalesChannelGroupType'
         tags:
             - { name: form.type }
              
     marello_sales_form_type.saleschannel_multi_select:
-        class: '%marello_sales.form_type.saleschannel.multiselect.class%'
+        class: 'Marello\Bundle\SalesBundle\Form\Type\SalesChannelMultiSelectType'
         arguments:
             - '@marello_sales.form.data_transformer.sales_channel'
         tags:
             - { name: form.type }
 
     marello_sales_form_type.system_group_saleschannel_multi_select:
-        class: '%marello_sales.form_type.system_group_saleschannel.multiselect.class%'
+        class: 'Marello\Bundle\SalesBundle\Form\Type\SystemGroupSalesChannelMultiselectType'
         arguments:
             - '@marello_sales.form.data_transformer.sales_channel'
         tags:
             - { name: form.type }
 
     marello_sales_form_type.saleschannel_select:
-        class: '%marello_sales.form_type.saleschannel.select.class%'
+        class: 'Marello\Bundle\SalesBundle\Form\Type\SalesChannelSelectType'
         tags:
             - { name: form.type }
 
     marello_sales.form.type.sales_channel_select_api:
-        class: '%marello_sales.form_type.saleschannel.select.api.class%'
+        class: 'Marello\Bundle\SalesBundle\Form\Type\SalesChannelSelectApiType'
         arguments:
             - '@marello_sales.form.data_transformer.sales_channel_to_code'
         tags:
@@ -51,14 +40,14 @@ services:
 
     #form handlers
     marello_sales.saleschannel_form.handler:
-        class: '%marello_sales.form_handler.saleschannel.class%'
+        class: 'Marello\Bundle\SalesBundle\Form\Handler\SalesChannelHandler'
         arguments:
             - '@doctrine.orm.entity_manager'
         tags:
             - { name: oro_form.form.handler, alias: marello_sales.saleschannel_form.handler }
 
     marello_sales.saleschannelgroup_form.handler:
-        class: '%marello_sales.form_handler.saleschannelgroup.class%'
+        class: 'Marello\Bundle\SalesBundle\Form\Handler\SalesChannelGroupHandler'
         arguments:
             - '@doctrine.orm.entity_manager'
         tags:

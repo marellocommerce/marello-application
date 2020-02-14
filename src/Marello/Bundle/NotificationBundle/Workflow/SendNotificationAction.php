@@ -100,10 +100,14 @@ class SendNotificationAction extends AbstractAction
 
             foreach ($attachments as $key => $attachment) {
                 if (!isset($attachment['filename'])) {
-                    throw new InvalidParameterException(sprintf('Parameter "filename" for attachment "%s" is required.', $key));
+                    throw new InvalidParameterException(
+                        sprintf('Parameter "filename" for attachment "%s" is required.', $key)
+                    );
                 }
                 if (!isset($attachment['content'])) {
-                    throw new InvalidParameterException(sprintf('Parameter "content" for attachment "%s" is required.', $key));
+                    throw new InvalidParameterException(
+                        sprintf('Parameter "content" for attachment "%s" is required.', $key)
+                    );
                 }
             }
 

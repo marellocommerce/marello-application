@@ -13,24 +13,21 @@ marello:
                     label: "Paper size"
                     a4.label: "A4"
                     letter.label: "Letter"
-                language:
-                    label: "Language"
-                    tooltip: "Language applied to certain language-specific fields on invoice PDF."
-                locale:
+                localization:
                     label: "Localization"
-                    tooltip: "Localization applied number- and date-fields on invoice PDF."
+                    tooltip: "Localization applied number- and date-fields on PDF document."
                 logo:
                     label: "Company logo"
-                    tooltip: "Upload a logo that will be displayed on top of your invoices."
+                    tooltip: "Upload a logo that will be displayed on top of your PDF document(image/jpeg, image/png, image/gif)."
                 company_address:
                     label: "Company address"
                     tooltip: "Enter company address information here, including the company name and country."
                 company_email:
                     label: "Company e-mail address"
-                    tooltip: "Enter the company invoice-related e-mail address here."
+                    tooltip: "Enter the company PDF document related e-mail address here."
                 company_phone:
                     label: "Company phone number"
-                    tooltip: "Enter the company invoice-related phone number here."
+                    tooltip: "Enter the company PDF document related phone number here."
                 company_bank:
                     label: "Bank information"
                     tooltip: "Bank information such as bank name, IBAN or BIC."
@@ -38,18 +35,15 @@ marello:
                     label: "Chamber Of Commerce information"
                     tooltip: "Chamber Of Commerce-related information, such as Chamber Of Commerce number."
                 email_workflow_transition:
-                    label: "Send invoice in workflow transition"
-                    tooltip: "Select the workflow transition in which the invoice is e-mailed to the customer."
-                    placeholder: "Don't send invoice via e-mail"
+                    label: "Send PDF document in workflow transition"
+                    tooltip: "Select the workflow transition in which the PDF document is e-mailed to the customer."
+                    placeholder: "Don't send PDF document via e-mail"
                 email_sender_email:
                     label: "E-mail sender address"
-                    tooltip: "The e-mail address the invoice is sent from"
+                    tooltip: "The e-mail address the PDF document is sent from"
                 email_sender_name:
                     label: "E-mail sender name"
-                    tooltip: "The name displayed as sender of the invoice"
+                    tooltip: "The name displayed as sender of the PDF document"
                 email_bcc:
                     label: "BCC address"
-                    tooltip: "Receive a copy of the invoice e-mail at this address"
-
-        filename:
-            invoice: "Invoice_%entityNumber%"
+                    tooltip: "Receive a copy of the PDF document e-mail at this address"

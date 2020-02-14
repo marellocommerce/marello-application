@@ -16,8 +16,8 @@
 {% endblock pageHeader %}
 
 {% block navButtons %}
-    <a href="{{ path('marello_pdf_download_invoice', {'id': entity.id}) }}" target="_blank" class="btn operation-button action-button">
-        <i class="fa fa-download"></i> {{ 'marello.invoice.download_pdf.label'|trans }}
+    <a href="{{ path('marello_pdf_download', {'entity': 'invoice', 'id': entity.id}) }}" target="_blank" class="btn operation-button action-button">
+        <i class="fa fa-download"></i> {{ 'marello.invoice.pdf.download.label'|trans }}
     </a>
 {% endblock %}
 

@@ -20,7 +20,7 @@ class TaxJurisdictionController extends AbstractController
 {
     /**
      * @Route(
-     *     path="/", 
+     *     path="/",
      *     name="marello_tax_taxjurisdiction_index"
      * )
      * @Template
@@ -37,8 +37,8 @@ class TaxJurisdictionController extends AbstractController
 
     /**
      * @Route(
-     *     path="/view/{id}", 
-     *     name="marello_tax_taxjurisdiction_view", 
+     *     path="/view/{id}",
+     *     name="marello_tax_taxjurisdiction_view",
      *     requirements={"id"="\d+"}
      * )
      * @Template
@@ -61,7 +61,7 @@ class TaxJurisdictionController extends AbstractController
 
     /**
      * @Route(
-     *     path="/create", 
+     *     path="/create",
      *     name="marello_tax_taxjurisdiction_create"
      * )
      * @Template("MarelloTaxBundle:TaxJurisdiction:update.html.twig")
@@ -82,8 +82,8 @@ class TaxJurisdictionController extends AbstractController
 
     /**
      * @Route(
-     *     path="/update/{id}", 
-     *     name="marello_tax_taxjurisdiction_update", 
+     *     path="/update/{id}",
+     *     name="marello_tax_taxjurisdiction_update",
      *     requirements={"id"="\d+"}
      * )
      * @Template

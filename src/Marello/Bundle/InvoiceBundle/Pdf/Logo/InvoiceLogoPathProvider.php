@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\PdfBundle\Provider;
+namespace Marello\Bundle\InvoiceBundle\Pdf\Logo;
 
 use Marello\Bundle\PdfBundle\DependencyInjection\Configuration;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
@@ -10,7 +10,7 @@ use Oro\Bundle\AttachmentBundle\Manager\ImageResizeManagerInterface;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 
-class LogoProvider
+class InvoiceLogoPathProvider
 {
     const IMAGE_FILTER = 'invoice_logo';
 
@@ -77,8 +77,7 @@ class LogoProvider
     {
         return $this->doctrineHelper
             ->getEntityRepositoryForClass(File::class)
-            ->find($id)
-        ;
+            ->find($id);
     }
 
     /**
@@ -89,7 +88,12 @@ class LogoProvider
     protected function getInvoiceLogoAttachment(File $entity, $absolute)
     {
         $path = $this->attachmentManager->getFilteredImageUrl($entity, self::IMAGE_FILTER);
-        $absolutePath = $this->projectDir.'/public'.$path;
+        $phpFiles = ['index.php', 'index_dev.php'];
+        foreach ($phpFiles as $phpFile) {
+            $path = str_replace($phpFile, '', $path);
+        }
+        $path = str_replace('//', '/', $path);
+        $absolutePath = $this->projectDir . '/public' . $path;
 
         if (!file_exists($absolutePath)) {
             $this->fetchImage($entity);
@@ -107,6 +111,6 @@ class LogoProvider
      */
     protected function fetchImage(File $entity)
     {
-        $this->imageResizer->applyFilter($entity, self::IMAGE_FILTER);
+        $this->imageResizer->applyFilter($entity, self::IMAGE_FILTER, true);
     }
 }

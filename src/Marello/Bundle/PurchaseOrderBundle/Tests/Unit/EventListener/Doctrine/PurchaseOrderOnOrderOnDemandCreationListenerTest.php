@@ -173,7 +173,7 @@ class PurchaseOrderOnOrderOnDemandCreationListenerTest extends TestCase
         $inventoryItem = $this->getEntity(
             InventoryItem::class,
             ['id' => $id, 'orderOnDemandAllowed' => true],
-            [null, $product]
+            [$product]
         );
         $product->addInventoryItem($inventoryItem);
         /** @var ProductSupplierRelation $productSupplierRelation */

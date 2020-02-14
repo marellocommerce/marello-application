@@ -1,7 +1,7 @@
 datagrids:
     marello-payment-methods-configs-rule-grid:
         acl_resource: marello_payment_methods_configs_rule_view
-        extended_entity_name: '%marello_payment.entity.payment_methods_configs_rule.class%'
+        extended_entity_name: 'Marello\Bundle\PaymentBundle\Entity\PaymentMethodsConfigsRule'
         options:
             entityHint: marello.payment.paymentmethodsconfigsrule.entity_plural_label
             entity_pagination: true
@@ -16,7 +16,7 @@ datagrids:
                     - rule.sortOrder
                     - payment_methods_configs_rule.currency
                 from:
-                    - { table: '%marello_payment.entity.payment_methods_configs_rule.class%', alias: payment_methods_configs_rule }
+                    - { table: MarelloPaymentBundle:PaymentMethodsConfigsRule, alias: payment_methods_configs_rule }
                 join:
                     inner:
                         - { join: payment_methods_configs_rule.rule, alias: rule }
@@ -97,12 +97,12 @@ datagrids:
                 acl_resource: marello_payment_methods_configs_rule_update
                 label:        marello.payment.datagrid.action.enable
                 icon:         check
-                entity_name:  '%marello_payment.entity.payment_methods_configs_rule.class%'
+                entity_name:  'Marello\Bundle\PaymentBundle\Entity\PaymentMethodsConfigsRule'
                 data_identifier: payment_methods_configs_rule.id
             disable:
                 type:         paymentruledisable
                 acl_resource: marello_payment_methods_configs_rule_update
                 label:        marello.payment.datagrid.action.disable
                 icon:         close
-                entity_name:  '%marello_payment.entity.payment_methods_configs_rule.class%'
+                entity_name:  'Marello\Bundle\PaymentBundle\Entity\PaymentMethodsConfigsRule'
                 data_identifier: payment_methods_configs_rule.id

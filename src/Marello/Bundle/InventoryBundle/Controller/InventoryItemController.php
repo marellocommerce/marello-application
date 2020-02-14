@@ -16,7 +16,7 @@ class InventoryItemController extends AbstractController
 {
     /**
      * @Route(
-     *     path="/", 
+     *     path="/",
      *     name="marello_inventory_inventory_index"
      * )
      * @Template("MarelloInventoryBundle:Inventory:index.html.twig")
@@ -31,8 +31,8 @@ class InventoryItemController extends AbstractController
 
     /**
      * @Route(
-     *     path="/view/{id}", 
-     *     requirements={"id"="\d+"}, 
+     *     path="/view/{id}",
+     *     requirements={"id"="\d+"},
      *     name="marello_inventory_inventory_view"
      * )
      * @Template("MarelloInventoryBundle:Inventory:view.html.twig")
@@ -56,8 +56,8 @@ class InventoryItemController extends AbstractController
 
     /**
      * @Route(
-     *     path="/update/{id}", 
-     *     requirements={"id"="\d+"}, 
+     *     path="/update/{id}",
+     *     requirements={"id"="\d+"},
      *     name="marello_inventory_inventory_update"
      * )
      * @Template("MarelloInventoryBundle:Inventory:update.html.twig")
@@ -87,8 +87,8 @@ class InventoryItemController extends AbstractController
 
     /**
      * @Route(
-     *     path="/widget/info/{id}", 
-     *     name="marello_inventory_widget_info", 
+     *     path="/widget/info/{id}",
+     *     name="marello_inventory_widget_info",
      *     requirements={"id"="\d+"}
      * )
      * @Template("MarelloInventoryBundle:Inventory/widget:info.html.twig")
@@ -107,8 +107,8 @@ class InventoryItemController extends AbstractController
 
     /**
      * @Route(
-     *     path="/widget/datagrid/{id}", 
-     *     name="marello_inventory_widget_datagrid", 
+     *     path="/widget/datagrid/{id}",
+     *     name="marello_inventory_widget_datagrid",
      *     requirements={"id"="\d+"}
      * )
      * @Template("MarelloInventoryBundle:Inventory/widget:datagrid.html.twig")

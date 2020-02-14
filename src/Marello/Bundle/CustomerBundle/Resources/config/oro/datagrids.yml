@@ -111,14 +111,14 @@ datagrids:
         extends: marello-customer-select-grid
 
     marello-companies-select-grid:
-        extended_entity_name: '%marello_customer.entity.company.class%'
+        extended_entity_name: 'Marello\Bundle\CustomerBundle\Entity\Company'
         acl_resource: marello_customer_company_view
         options:
             entityHint: marello.customer.company.entity_plural_label
         inline_editing:
             enable: true
             behaviour: enable_selected
-            entity_name: '%marello_customer.entity.company.class%'
+            entity_name: 'Marello\Bundle\CustomerBundle\Entity\Company'
         source:
             type:         orm
             query:
@@ -127,7 +127,7 @@ datagrids:
                     - company.name
                     - parent.name as parent_name
                 from:
-                    - { table: '%marello_customer.entity.company.class%', alias: company }
+                    - { table: MarelloCustomerBundle:Company, alias: company }
                 join:
                     left:
                         - { join: company.parent, alias: parent }
@@ -242,7 +242,7 @@ datagrids:
                 join:
                     left:
                         -
-                            join: '%marello_customer.entity.company.class%'
+                            join: 'Marello\Bundle\CustomerBundle\Entity\Company'
                             alias: customerCompany
                             conditionType: WITH
                             condition: 'customerCompany = :company_id'

@@ -1,5 +1,4 @@
 parameters:
-    marello_payment.entity.payment_methods_configs_rule.class: 'Marello\Bundle\PaymentBundle\Entity\PaymentMethodsConfigsRule'
     marello_payment.rule_grid_route_name: 'marello_payment_methods_configs_rule_index'
     marello_payment.rule_grid_name: 'marello-payment-methods-configs-rule-grid'
 

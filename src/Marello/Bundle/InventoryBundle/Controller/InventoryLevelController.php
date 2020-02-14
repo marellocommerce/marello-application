@@ -14,8 +14,8 @@ class InventoryLevelController extends AbstractController
 {
     /**
      * @Route(
-     *     path="/{id}", 
-     *     requirements={"id"="\d+"}, 
+     *     path="/{id}",
+     *     requirements={"id"="\d+"},
      *     name="marello_inventory_inventorylevel_index"
      * )
      * @Template("MarelloInventoryBundle:InventoryLevel:index.html.twig")
@@ -34,8 +34,8 @@ class InventoryLevelController extends AbstractController
 
     /**
      * @Route(
-     *     path="/chart/{id}", 
-     *     requirements={"id"="\d+"}, 
+     *     path="/chart/{id}",
+     *     requirements={"id"="\d+"},
      *     name="marello_inventory_inventorylevel_chart"
      * )
      * @Template("MarelloInventoryBundle:InventoryLevel:chart.html.twig")
@@ -95,13 +95,24 @@ class InventoryLevelController extends AbstractController
      */
     public function manageBatchesAction(InventoryLevel $inventoryLevel, Request $request)
     {
-        $result = $this->get('oro_form.update_handler')->update(
+        $inventoryItem = $inventoryLevel->getInventoryItem();
+        if (!$inventoryItem->isEnableBatchInventory()) {
+            $this->addFlash(
+                'warning',
+                'marello.inventory.messages.warning.inventorybatches.not_enabled'
+            );
+
+            return $this->redirect($this->generateUrl(
+                'marello_inventory_inventory_update',
+                ['id' => $inventoryItem->getId()]
+            ));
+        }
+
+        return $this->get('oro_form.update_handler')->update(
             $inventoryLevel,
             $this->createForm(InventoryLevelManageBatchesType::class, $inventoryLevel),
             $this->get('translator')->trans('marello.inventory.messages.success.inventorybatches.saved'),
             $request
         );
-
-        return $result;
     }
 }

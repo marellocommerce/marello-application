@@ -10,7 +10,6 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 use Oro\Bundle\SecurityBundle\Tools\UUIDGenerator;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity()
@@ -199,6 +198,9 @@ class InventoryBatch extends ExtendInventoryBatch implements
     {
         if ($this->id) {
             $this->id = null;
+        }
+        if ($this->inventoryLevel) {
+            $this->inventoryLevel = null;
         }
     }
     

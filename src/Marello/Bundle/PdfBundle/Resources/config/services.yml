@@ -1,13 +1,3 @@
-parameters:
-    marello_pdf.document.invoice.total_rows:
-        a4: 36
-        letter: 33
-    marello_pdf.document.invoice.description_width:
-        a4: 20
-        letter: 20
-    marello_pdf.document.invoice.header_rows: 13
-    marello_pdf.document.invoice.footer_rows: 3
-
 services:
     marello_pdf.factory.pdf_writer:
         class: 'Marello\Bundle\PdfBundle\Factory\PdfWriterFactory'
@@ -25,15 +15,6 @@ services:
             - '@marello_pdf.renderer.html'
             - '@twig'
 
-    marello_pdf.provider.logo:
-        class: 'Marello\Bundle\PdfBundle\Provider\LogoProvider'
-        arguments:
-            - '@oro_config.manager'
-            - '@oro_entity.doctrine_helper'
-            - '@oro_attachment.manager'
-            - '@oro_attachment.manager.image_resize'
-            - '%kernel.project_dir%'
-
     marello_pdf.provider.render_parameters:
         public: true
         class: 'Marello\Bundle\PdfBundle\Provider\RenderParametersProvider'
@@ -43,20 +24,22 @@ services:
         tags:
             - { name: marello_pdf.render_parameter_provider }
 
-    marello_pdf.param_provider.logo:
-        class: 'Marello\Bundle\PdfBundle\Provider\Render\LogoProvider'
+    marello_pdf.param_provider.saleschannel_localization:
+        class: 'Marello\Bundle\PdfBundle\Provider\Render\LocalizationProvider'
         arguments:
-            - '@marello_pdf.provider.logo'
+            - '@oro_config.saleschannel'
+            - '@doctrine'
+            - 'marello_pdf.localization'
         tags:
             - { name: marello_pdf.render_parameter_provider }
+        calls:
+            - ['setChainLocalizationProvider', ['@marello_locale.entity_localization_provider.chain']]
 
     marello_pdf.param_provider.saleschannel_config_values:
         class: 'Marello\Bundle\PdfBundle\Provider\Render\ConfigValuesProvider'
         arguments:
             - '@oro_config.saleschannel'
             -
-                language: marello_pdf.language
-                locale: marello_pdf.locale
                 company_address: marello_pdf.company_address
                 company_email: marello_pdf.company_email
                 company_phone: marello_pdf.company_phone
@@ -65,6 +48,11 @@ services:
                 paper_size: marello_pdf.paper_size
         tags:
             - { name: marello_pdf.render_parameter_provider }
+
+    marello_pdf.provider.allowed_image_mime_types:
+        class: 'Marello\Bundle\PdfBundle\Provider\AllowedImagesMimeTypesStringProvider'
+        arguments:
+            - '%oro_attachment.upload_image_mime_types%'
 
     marello_pdf.provider.document_table:
         class: 'Marello\Bundle\PdfBundle\Provider\DocumentTableProvider'
@@ -75,22 +63,6 @@ services:
             - '@marello_pdf.provider.document_table'
         tags:
             - { name: twig.extension }
-
-    marello_pdf.table_provider.invoice:
-        class: 'Marello\Bundle\PdfBundle\Provider\Table\InvoiceTableProvider'
-        arguments:
-            - '@marello_pdf.provider.table_size'
-        tags:
-            - { name: marello_pdf.document_table_provider }
-
-    marello_pdf.provider.table_size:
-        class: 'Marello\Bundle\PdfBundle\Provider\TableSizeProvider'
-        arguments:
-            - '@oro_config.saleschannel'
-            - '%marello_pdf.document.invoice.total_rows%'
-            - '%marello_pdf.document.invoice.description_width%'
-            - '%marello_pdf.document.invoice.header_rows%'
-            - '%marello_pdf.document.invoice.footer_rows%'
 
     marello_pdf.workflow_action.send_email_template_attachment:
         class: 'Marello\Bundle\PdfBundle\Workflow\Action\SendEmailTemplateAttachmentAction'
@@ -121,3 +93,14 @@ services:
             - '@oro_config.manager'
         tags:
             - { name: oro_action.condition, alias: is_send_email_transition }
+
+    marello_pdf.request_handler.composite:
+        class: 'Marello\Bundle\PdfBundle\Request\CompositePdfRequestHandler'
+        public: true
+
+
+    marello_pdf.configurator.document_configurator:
+        class: 'Marello\Bundle\PdfBundle\Form\Configurator\DocumentConfigurator'
+        public: true
+        arguments:
+            - '@oro_config.form.handler.config'
