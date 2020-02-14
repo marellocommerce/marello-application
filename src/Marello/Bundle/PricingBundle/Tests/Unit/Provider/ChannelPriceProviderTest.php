@@ -4,26 +4,21 @@ namespace Marello\Bundle\PricingBundle\Tests\Unit\Provider;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityRepository;
-
-use PHPUnit\Framework\TestCase;
-
-use Symfony\Component\Form\FormInterface;
-
-use Oro\Component\Testing\Unit\EntityTrait;
-
-use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\LayoutBundle\Context\FormChangeContext;
+use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
+use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\OrderBundle\Provider\OrderItem\OrderItemFormChangesProvider;
+use Marello\Bundle\PricingBundle\Entity\AssembledChannelPriceList;
 use Marello\Bundle\PricingBundle\Entity\AssembledPriceList;
 use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
+use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\PricingBundle\Provider\ChannelPriceProvider;
-use Marello\Bundle\PricingBundle\Entity\AssembledChannelPriceList;
-use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
+use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
-use Marello\Bundle\OrderBundle\Provider\OrderItem\OrderItemFormChangesProvider;
-use Marello\Bundle\PricingBundle\Entity\Repository\ProductChannelPriceRepository;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Oro\Component\Testing\Unit\EntityTrait;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Form\FormInterface;
 
 class ChannelPriceProviderTest extends TestCase
 {

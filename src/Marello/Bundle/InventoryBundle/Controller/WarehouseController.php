@@ -4,17 +4,22 @@ namespace Marello\Bundle\InventoryBundle\Controller;
 
 use Marello\Bundle\InventoryBundle\Form\Type\WarehouseType;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
-class WarehouseController extends Controller
+class WarehouseController extends AbstractController
 {
     /**
-     * @Config\Route("/update-default", requirements={"id"="\d+"}, name="marello_inventory_warehouse_updatedefault")
-     * @Config\Method({"GET", "POST"})
-     * @Config\Template("MarelloInventoryBundle:Warehouse:updateDefault.html.twig")
+     * @Route(
+     *     path="/update-default",
+     *     methods={"GET", "POST"},
+     *     requirements={"id"="\d+"},
+     *     name="marello_inventory_warehouse_updatedefault"
+     * )
+     * @Template("MarelloInventoryBundle:Warehouse:updateDefault.html.twig")
      * @AclAncestor("marello_inventory_warehouse_update")
      *
      * @param Request $request

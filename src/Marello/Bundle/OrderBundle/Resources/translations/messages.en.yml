@@ -15,7 +15,6 @@ marello:
         sales_channel.label:        Sales Channel
         sales_channel_name.label:   Sales Channel
         order_reference.label:      Order Reference
-        locale.label:               Order Locale
         localization.label:         Localization
         workflow_item.label:        Workflow Item
         workflow_step.label:        Workflow Step
@@ -27,6 +26,7 @@ marello:
         invoiced_at.label:          Invoiced At
         invoice_reference.label:    Invoice Reference
         payment_method.label:       Payment Method
+        payment_method_options.label: Payment Method Options
         payment_details.label:      Payment Details
         payment_reference.label:    Payment Reference
         shipping_method.label:      Shipping Method
@@ -94,7 +94,7 @@ marello:
             messages:
                 product_not_salable:    Product cannot be sold in the chosen Sales Channel
 
-        # Customer Entity
+        # Customer Entity - deprecated
         customer:
             entity_label:                     Customer
             entity_plural_label:              Customers
@@ -113,9 +113,6 @@ marello:
             name_suffix.label:                Name Suffix
             company.label:                    Company
             phone.label:                      Phone
-            label:                            Customer
-            form:
-                choose:             Choose customer
 
         messages:
             success:
@@ -123,9 +120,6 @@ marello:
                     saved:          Order saved
                 customer:
                     saved:          Customer saved
-
-        navigation:
-            customers.label: Customers
 
         menu:
             shortcut_new_order.label: Create new order
@@ -169,6 +163,7 @@ marello:
 
         sections:
             general: General
+            payment_information: Payment Information
             shipping_information: Shipping Information
             subtotals: Order Totals
             additional: Additional
@@ -178,6 +173,7 @@ marello:
                 choose: Select an address
                 choose_or_create: Select an existing address or enter a new address below
                 manual: Enter address manually
+            payment_options.label: Payment Options
             shipping_options.label: Shipping Options
             override_shipping_cost.label: Override Shipping Cost
 
@@ -188,6 +184,7 @@ marello:
 
         btn:
             calculate_shipping: Calculate Shipping
+            calculate_payment: Calculate Payment
 
         system_configuration:
             fields:

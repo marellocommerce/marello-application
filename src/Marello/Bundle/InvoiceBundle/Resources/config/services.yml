@@ -1,3 +1,13 @@
+parameters:
+    marello_invoice.pdf.document.total_rows:
+        a4: 36
+        letter: 33
+    marello_invoice.pdf.document.description_width:
+        a4: 20
+        letter: 20
+    marello_invoice.pdf.document.header_rows: 13
+    marello_invoice.pdf.document.footer_rows: 3
+
 services:
     marello_invoice.mapper.abstract:
         class: 'Marello\Bundle\InvoiceBundle\Mapper\AbstractInvoiceMapper'
@@ -52,3 +62,46 @@ services:
 
     marello_invoice.provider.invoice_type_choices:
         class: 'Marello\Bundle\InvoiceBundle\Provider\InvoiceTypeChoicesProvider'
+        public: true
+
+    marello_invoice.pdf.table_provider:
+        class: 'Marello\Bundle\InvoiceBundle\Pdf\Table\InvoiceTableProvider'
+        arguments:
+            - '@marello_invoice.pdf.provider.table_size'
+        tags:
+            - { name: marello_pdf.document_table_provider }
+
+    marello_invoice.pdf.provider.table_size:
+        class: 'Marello\Bundle\PdfBundle\Provider\TableSizeProvider'
+        arguments:
+            - '@oro_config.saleschannel'
+            - '%marello_invoice.pdf.document.total_rows%'
+            - '%marello_invoice.pdf.document.description_width%'
+            - '%marello_invoice.pdf.document.header_rows%'
+            - '%marello_invoice.pdf.document.footer_rows%'
+
+    marello_invoice.pdf.provider.logo_path:
+        class: 'Marello\Bundle\InvoiceBundle\Pdf\Logo\InvoiceLogoPathProvider'
+        arguments:
+            - '@oro_config.manager'
+            - '@oro_entity.doctrine_helper'
+            - '@oro_attachment.manager'
+            - '@oro_attachment.manager.image_resize'
+            - '%kernel.project_dir%'
+
+    marello_invoice.pdf.provider.logo_render_parameter:
+        class: 'Marello\Bundle\InvoiceBundle\Pdf\Logo\InvoiceLogoRenderParameterProvider'
+        arguments:
+            - '@marello_invoice.pdf.provider.logo_path'
+        tags:
+            - { name: marello_pdf.render_parameter_provider }
+
+    marello_invoice.pdf.request_handler:
+        class: 'Marello\Bundle\InvoiceBundle\Pdf\Request\InvoicePdfRequestHandler'
+        arguments:
+            - '@doctrine'
+            - '@translator'
+            - '@marello_pdf.provider.render_parameters'
+            - '@marello_pdf.renderer.twig'
+        tags:
+            - { name: marello_pdf.request_handler }

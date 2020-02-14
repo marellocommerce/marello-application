@@ -5,17 +5,9 @@ namespace Marello\Bundle\CatalogBundle\Tests\Functional\DataFixtures;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-
 use Marello\Bundle\CatalogBundle\Entity\Category;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
-
-use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
-use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
-use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
-use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
 
 class LoadCategoryData extends AbstractFixture implements DependentFixtureInterface
 {

@@ -4,6 +4,9 @@ namespace Marello\Bundle\PackingBundle\Tests\Unit\Mapper;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 use PHPUnit\Framework\TestCase;
@@ -13,7 +16,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\EntityBundle\Provider\EntityFieldProvider;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
@@ -89,10 +92,16 @@ class OrderToPackingSlipMapperTest extends TestCase
         $salesChannel = new SalesChannel();
         $customer = new Customer();
         $organization = new Organization();
-
+        
         $product1 = $this->getEntity(Product::class, ['id' => 1, 'weight' => 2]);
         $product2 = $this->getEntity(Product::class, ['id' => 2, 'weight' => 3]);
         $product3 = $this->getEntity(Product::class, ['id' => 3, 'weight' => 5]);
+
+        $inventoryLevel1 = $this->getEntity(InventoryLevel::class, ['id' => 1, 'warehouse' => $warehouse]);
+        $inventoryBatch1 = $this->getEntity(InventoryBatch::class, ['id' => 1, 'batchNumber' => '000001', 'quantity' => 5]);
+        $inventoryItem1 = new InventoryItem($product1);
+        $inventoryLevel1->addInventoryBatch($inventoryBatch1);
+        $inventoryItem1->addInventoryLevel($inventoryLevel1);
 
         $orderItem1 = $this->getEntity(OrderItem::class, ['id' => 1, 'product' => $product1, 'quantity' => 5]);
         $orderItem2 = $this->getEntity(OrderItem::class, ['id' => 2, 'product' => $product2, 'quantity' => 3]);
@@ -111,6 +120,7 @@ class OrderToPackingSlipMapperTest extends TestCase
             $this->getEntity(PackingSlipItem::class, [
                 'orderItem' => $orderItem1,
                 'product' => $product1,
+                'inventoryBatches' => ['000001' => 5],
                 'quantity' => $orderItem1->getQuantity(),
                 'weight' => $product1->getWeight()
             ]),

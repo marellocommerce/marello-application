@@ -3,15 +3,22 @@
 namespace Marello\Bundle\InventoryBundle\Controller;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
+use Marello\Bundle\InventoryBundle\Form\Type\InventoryLevelManageBatchesType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
-class InventoryLevelController extends Controller
+class InventoryLevelController extends AbstractController
 {
     /**
-     * @Config\Route("/{id}", requirements={"id"="\d+"}, name="marello_inventory_inventorylevel_index")
-     * @Config\Template
+     * @Route(
+     *     path="/{id}",
+     *     requirements={"id"="\d+"},
+     *     name="marello_inventory_inventorylevel_index"
+     * )
+     * @Template("MarelloInventoryBundle:InventoryLevel:index.html.twig")
      *
      * @param InventoryItem $inventoryItem
      *
@@ -26,8 +33,12 @@ class InventoryLevelController extends Controller
     }
 
     /**
-     * @Config\Route("/chart/{id}", requirements={"id"="\d+"}, name="marello_inventory_inventorylevel_chart")
-     * @Config\Template
+     * @Route(
+     *     path="/chart/{id}",
+     *     requirements={"id"="\d+"},
+     *     name="marello_inventory_inventorylevel_chart"
+     * )
+     * @Template("MarelloInventoryBundle:InventoryLevel:chart.html.twig")
      *
      * @param InventoryItem $inventoryItem
      * @param Request $request
@@ -66,5 +77,42 @@ class InventoryLevelController extends Controller
             ->getView();
 
         return compact('chartView', 'inventoryItem');
+    }
+
+
+    /**
+     * @Route(
+     *     path="/manage-batches/{id}",
+     *     requirements={"id"="\d+"},
+     *     name="marello_inventory_inventorylevel_manage_batches"
+     * )
+     * @Template
+     *
+     * @param InventoryLevel $inventoryLevel
+     * @param Request $request
+     *
+     * @return array
+     */
+    public function manageBatchesAction(InventoryLevel $inventoryLevel, Request $request)
+    {
+        $inventoryItem = $inventoryLevel->getInventoryItem();
+        if (!$inventoryItem->isEnableBatchInventory()) {
+            $this->addFlash(
+                'warning',
+                'marello.inventory.messages.warning.inventorybatches.not_enabled'
+            );
+
+            return $this->redirect($this->generateUrl(
+                'marello_inventory_inventory_update',
+                ['id' => $inventoryItem->getId()]
+            ));
+        }
+
+        return $this->get('oro_form.update_handler')->update(
+            $inventoryLevel,
+            $this->createForm(InventoryLevelManageBatchesType::class, $inventoryLevel),
+            $this->get('translator')->trans('marello.inventory.messages.success.inventorybatches.saved'),
+            $request
+        );
     }
 }

@@ -43,7 +43,6 @@ class LoadSalesChannelData extends AbstractFixture
             $channel->setCurrency($values['currency']);
             $channel->setOwner($organization);
             $channel->setLocalization($localization);
-            $channel->setLocale('nl_NL');
 
             $this->manager->persist($channel);
             $i++;

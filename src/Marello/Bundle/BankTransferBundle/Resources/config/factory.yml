@@ -1,0 +1,8 @@
+services:
+    marello_bank_transfer.factory.method:
+        class: 'Marello\Bundle\BankTransferBundle\Method\Factory\BankTransferMethodFromChannelFactory'
+        public: false
+        arguments:
+            - '@marello_bank_transfer.method.identifier_generator.method'
+            - '@oro_locale.helper.localization'
+            - '@oro_integration.provider.integration_icon'

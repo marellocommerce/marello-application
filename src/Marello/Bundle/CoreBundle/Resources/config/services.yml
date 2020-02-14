@@ -1,6 +1,3 @@
-parameters:
-    marello_core.entity_serializer.class:             Marello\Bundle\CoreBundle\Serializer\EntitySerializer
-
 services:
     marello_core.workflow.action.workflow_transit_action:
         class: Marello\Bundle\CoreBundle\Workflow\Action\WorkflowTransitAction
@@ -52,13 +49,14 @@ services:
 
     marello_core.form.url_generator:
         class: Marello\Bundle\CoreBundle\Form\UrlGenerator
+        public: true
         arguments:
             - '@oro_platform.provider.package'
             - '@oro_platform.url.cache'
             - '@request_stack'
 
     marello_core.entity_serializer:
-        class: '%marello_core.entity_serializer.class%'
+        class: 'Marello\Bundle\CoreBundle\Serializer\EntitySerializer'
         arguments:
             - '@doctrine'
             - '@oro_entity_config.config_manager'
@@ -67,7 +65,7 @@ services:
             - '@oro_soap.entity_serializer.query_factory'
             - '@oro_workflow.manager'
         calls:
-            - ["setFieldsFilter", ['@oro_security.serializer.filter_chain']]
+            - ["setFieldFilter", ['@oro_security.entity_serializer.field_filter']]
 
     marello_core.provider.additional_placeholder_provider:
         class: 'Marello\Bundle\CoreBundle\Provider\AdditionalPlaceholderProvider'

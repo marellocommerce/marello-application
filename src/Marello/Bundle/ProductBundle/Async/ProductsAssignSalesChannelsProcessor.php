@@ -3,20 +3,24 @@
 namespace Marello\Bundle\ProductBundle\Async;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Oro\Bundle\DataGridBundle\Datagrid\Manager;
-use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
-use Oro\Bundle\EmailBundle\Form\Model\Factory;
-use Oro\Bundle\EmailBundle\Mailer\Processor;
+
+use Psr\Log\LoggerInterface;
+
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+
 use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Component\MessageQueue\Client\TopicSubscriberInterface;
-use Oro\Component\MessageQueue\Consumption\MessageProcessorInterface;
+use Oro\Component\MessageQueue\Util\JSON;
+use Oro\Bundle\EmailBundle\Mailer\Processor;
+use Oro\Bundle\EmailBundle\Form\Model\Factory;
+use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
 use Oro\Component\MessageQueue\Transport\SessionInterface;
-use Oro\Component\MessageQueue\Util\JSON;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Oro\Component\MessageQueue\Client\TopicSubscriberInterface;
+use Oro\Component\MessageQueue\Consumption\MessageProcessorInterface;
+
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 
 class ProductsAssignSalesChannelsProcessor implements MessageProcessorInterface, TopicSubscriberInterface
 {
@@ -81,53 +85,33 @@ class ProductsAssignSalesChannelsProcessor implements MessageProcessorInterface,
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedTopics()
+    public static function getSubscribedTopics(): array
     {
         return [self::TOPIC];
     }
 
     /**
-     * {@inheritdoc}
+     * @param MessageInterface $message
+     * @param SessionInterface $session
+     * @return string
      */
-    public function process(MessageInterface $message, SessionInterface $session)
+    public function process(MessageInterface $message, SessionInterface $session): string
     {
         $data = JSON::decode($message->getBody());
 
-        $inset = $data['inset'];
         $products = $data['products'];
-        $filters = $data['filters'];
         $salesChannels = $data['salesChannels'];
+        $salesChannels = $this->entityManager->getRepository(SalesChannel::class)->findBy(['id' => $salesChannels]);
 
-        $isAllSelected = $inset === '0';
-        $salesChannels = $this->entityManager->getRepository(SalesChannel::class)->findBy(['code' => $salesChannels]);
-
-        if (!empty($products) || $isAllSelected) {
-            $grid = $this->datagridManager->getDatagridByRequestParams(
-                'marello-products-grid',
-                ['_filter' => $filters]
-            );
-            /** @var OrmDatasource $dataSource */
-            $dataSource = $grid->getAcceptedDatasource();
-            $queryBuilder = $dataSource->getQueryBuilder();
-
-            if (!$isAllSelected) {
-                $queryBuilder->andWhere($queryBuilder->expr()->in('p.id', $products));
-            } elseif ($products) {
-                $queryBuilder->andWhere($queryBuilder->expr()->notIn('p.id', $products));
-            }
-
-            $result = $queryBuilder
-                ->getQuery()
-                ->setFirstResult(0)
-                ->setMaxResults(null)
-                ->getResult();
-
+        if (!empty($products) && !empty($salesChannels)) {
+            /** @var ProductRepository $productRepo */
+            $productRepo = $this->entityManager->getRepository(Product::class);
+            $products = $productRepo->findBy(['id' => $products]);
             try {
                 $iteration = 1;
                 $modifiedProducts = [];
-                foreach ($result as $entity) {
-                    /** @var Product $entity */
-                    $entity = $entity[0];
+                /** @var Product $entity */
+                foreach ($products as $entity) {
                     $addedChannels = 0;
                     foreach ($salesChannels as $salesChannel) {
                         if (!$entity->hasChannel($salesChannel)) {
@@ -142,9 +126,6 @@ class ProductsAssignSalesChannelsProcessor implements MessageProcessorInterface,
 
                     if (($iteration % self::FLUSH_BATCH_SIZE) === 0) {
                         $this->entityManager->flush();
-                    }
-                    if ($addedChannels > 0) {
-                        $iteration++;
                     }
                 }
                 $this->entityManager->flush();
@@ -165,10 +146,11 @@ class ProductsAssignSalesChannelsProcessor implements MessageProcessorInterface,
     }
 
     /**
-     * @param SalesChannel[] $assignedSalesChannels
-     * @param Product[] $modifiedProducts
+     * @param array $assignedSalesChannels
+     * @param array $modifiedProducts
+     * @throws \Swift_SwiftException
      */
-    private function sendMail(array $assignedSalesChannels, array $modifiedProducts)
+    private function sendMail(array $assignedSalesChannels, array $modifiedProducts): void
     {
         /** @var User $currentUser */
         $currentUser = $this->tokenStorage->getToken()->getUser();

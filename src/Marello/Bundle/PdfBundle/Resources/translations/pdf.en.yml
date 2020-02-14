@@ -1,0 +1,3 @@
+marello:
+    pdf:
+        page_number.label: "Page %pageNumber% of %totalPages%"

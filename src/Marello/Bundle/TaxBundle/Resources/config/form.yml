@@ -1,10 +1,3 @@
-parameters:
-    marello_tax.taxcode.entity.class:  Marello\Bundle\TaxBundle\Entity\TaxCode
-    marello_tax.taxrate.entity.class:  Marello\Bundle\TaxBundle\Entity\TaxRate
-    marello_tax.taxrule.entity.class:  Marello\Bundle\TaxBundle\Entity\TaxRule
-    marello_tax.taxjurisdiction.entity.class:  Marello\Bundle\TaxBundle\Entity\TaxJurisdiction
-    marello_tax.zipcode.entity.class:  Marello\Bundle\TaxBundle\Entity\ZipCode
-
 services:
     ## forms
     marello_tax.form.type.tax_code:
@@ -58,7 +51,7 @@ services:
     marello_tax.taxcode.form.autocomplete.search_handler:
         parent: oro_form.autocomplete.search_handler
         arguments:
-            - '%marello_tax.taxcode.entity.class%'
+            - 'Marello\Bundle\TaxBundle\Entity\TaxCode'
             - ["code"]
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: taxcodes, acl_resource: marello_tax_taxcode_view }
@@ -66,7 +59,7 @@ services:
     marello_tax.taxrate.form.autocomplete.search_handler:
         parent: oro_form.autocomplete.search_handler
         arguments:
-            - '%marello_tax.taxrate.entity.class%'
+            - 'Marello\Bundle\TaxBundle\Entity\TaxRate'
             - ['code']
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: taxrates, acl_resource: marello_tax_taxrate_view }
@@ -74,7 +67,7 @@ services:
     marello_tax.taxjurisdiction.form.autocomplete.search_handler:
         parent: oro_form.autocomplete.search_handler
         arguments:
-            - '%marello_tax.taxjurisdiction.entity.class%'
+            - 'Marello\Bundle\TaxBundle\Entity\TaxJurisdiction'
             - ['code']
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: taxjurisdictions, acl_resource: marello_tax_taxjurisdiction_view }
@@ -101,7 +94,7 @@ services:
     ## handlers
     marello_tax.form.handler.taxcode:
         class: Marello\Bundle\TaxBundle\Form\Handler\TaxCodeHandler
-        scope: request
+        public: true
         arguments:
             - '@marello_tax.taxcode.form'
             - '@request_stack'
@@ -109,7 +102,7 @@ services:
 
     marello_tax.form.handler.taxrate:
         class: Marello\Bundle\TaxBundle\Form\Handler\TaxRateHandler
-        scope: request
+        public: true
         arguments:
             - '@marello_tax.taxrate.form'
             - '@request_stack'
@@ -117,7 +110,7 @@ services:
 
     marello_tax.form.handler.taxrule:
         class: Marello\Bundle\TaxBundle\Form\Handler\TaxRuleHandler
-        scope: request
+        public: true
         arguments:
             - '@marello_tax.taxrule.form'
             - '@request_stack'

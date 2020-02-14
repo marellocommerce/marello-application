@@ -15,7 +15,11 @@
     {{ parent() }}
 {% endblock pageHeader %}
 
-{% block navButtons %}{% endblock navButtons %}
+{% block navButtons %}
+    <a href="{{ path('marello_pdf_download', {'entity': 'invoice', 'id': entity.id}) }}" target="_blank" class="btn operation-button action-button">
+        <i class="fa fa-download"></i> {{ 'marello.invoice.pdf.download.label'|trans }}
+    </a>
+{% endblock %}
 
 {% block content_data %}
     {% set id = 'marello-invoice-view' %}
@@ -66,10 +70,10 @@
                             <span class="widget-title">{{ 'marello.invoice.datablock.customer_information'|trans }}</span>
                         </div>
                         {{ UI.renderHtmlProperty(
-                            'marello.order.customer.entity_label'|trans,
-                            UI.entityViewLink(entity.customer, entity.customer|oro_format_name, 'marello_order_customer_view')
+                            'marello.customer.entity_label'|trans,
+                            UI.entityViewLink(entity.customer, entity.customer|oro_format_name, 'marello_customer_view')
                         )}}
-                        {{ UI.renderProperty('marello.order.customer.email.label'|trans, entity.customer.email) }}
+                        {{ UI.renderProperty('marello.customer.email.label'|trans, entity.customer.email) }}
                     </div>
                 </div>
             </div>

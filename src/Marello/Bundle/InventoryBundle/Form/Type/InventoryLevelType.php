@@ -2,11 +2,11 @@
 
 namespace Marello\Bundle\InventoryBundle\Form\Type;
 
-use Doctrine\ORM\EntityRepository;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Event\InventoryLevelFinishFormViewEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryLevelCalculator;
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -37,11 +37,16 @@ class InventoryLevelType extends AbstractType
     protected $eventDispatcher;
 
     /**
+     * InventoryLevelType constructor.
      * @param EventSubscriberInterface $subscriber
+     * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(EventSubscriberInterface $subscriber)
-    {
+    public function __construct(
+        EventSubscriberInterface $subscriber,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->subscriber = $subscriber;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -125,19 +130,27 @@ class InventoryLevelType extends AbstractType
             InventoryLevelFinishFormViewEvent::NAME,
             new InventoryLevelFinishFormViewEvent($view)
         );
-    }
-
-    /**
-     * Added to keep BC
-     * @deprecated will be removed in 3.0
-     * @param EventDispatcherInterface $eventDispatcher
-     * @return $this
-     */
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
-    {
-        $this->eventDispatcher = $eventDispatcher;
-
-        return $this;
+        $vars = $view->vars;
+        $value = $vars['value'];
+        if ($value instanceof InventoryLevel) {
+            $warehouseType = $value->getWarehouse()->getWarehouseType()->getName();
+            if ($warehouseType === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
+                $vars['externalWarehouse'] = true;
+            } else {
+                $vars['externalWarehouse'] = false;
+            }
+            $isInventoryBatchEnabled = $value->getInventoryItem()->isEnableBatchInventory();
+            if ($isInventoryBatchEnabled &&
+                $warehouseType !== WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
+                $vars['manageBatches'] = true;
+            } else {
+                $vars['manageBatches'] = false;
+            }
+        } else {
+            $vars['externalWarehouse'] = false;
+            $vars['manageBatches'] = false;
+        }
+        $view->vars = $vars;
     }
 
     /**

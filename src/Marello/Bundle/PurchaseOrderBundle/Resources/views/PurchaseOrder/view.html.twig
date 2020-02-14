@@ -6,7 +6,7 @@
 {% block navButtons %}
     {% if marello_purchaseorder_can_edit(entity)  %}
 
-        {% if resource_granted('EDIT', entity) %}
+        {% if is_granted('EDIT', entity) %}
             {{ UI.editButton({
                 'path': path('marello_purchaseorder_purchaseorder_update', {'id': entity.id}),
                 'entity_label': 'marello.purchaseorder.entity_label'|trans

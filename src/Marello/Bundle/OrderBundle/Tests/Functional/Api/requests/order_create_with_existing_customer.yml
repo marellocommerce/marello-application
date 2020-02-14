@@ -7,7 +7,7 @@ data:
           totalTax: 0
           grandTotal: 101
           currency: 'USD'
-          paymentMethod: null
+          paymentMethod: 'payment_term_1'
           paymentReference: null
           paymentDetails: null
           shippingAmountInclTax: null
@@ -103,7 +103,6 @@ included:
         attributes:
             quantity: 10
             productName: '<toString(@product1->name)>'
-            quantity: 0
             price: 0
             originalPriceInclTax: 0
             originalPriceExclTax: 0
@@ -127,7 +126,6 @@ included:
         attributes:
             quantity: 10
             productName: '<toString(@product2->name)>'
-            quantity: 0
             price: 0
             originalPriceInclTax: 0
             originalPriceExclTax: 0

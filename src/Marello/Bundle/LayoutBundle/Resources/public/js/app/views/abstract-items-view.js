@@ -1,8 +1,8 @@
 define(function(require) {
     'use strict';
 
-    var AbstractItemsView,
-        $ = require('jquery'),
+    const $ = require('jquery'),
+        _ = require('underscore'),
         LoadingMaskView = require('oroui/js/app/views/loading-mask-view'),
         BaseView = require('oroui/js/app/views/base/view');
 
@@ -11,7 +11,7 @@ define(function(require) {
      * @extends oroui.app.views.base.View
      * @class marellolayout.app.views.AbstractItemsView
      */
-    AbstractItemsView = BaseView.extend({
+    const AbstractItemsView = BaseView.extend({
         /**
          * @property {Object}
          */

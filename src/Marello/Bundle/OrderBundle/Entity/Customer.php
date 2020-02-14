@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 use Marello\Bundle\CustomerBundle\Entity\Company;
+use Marello\Bundle\CustomerBundle\Entity\HasEmailAddressTrait;
+use Marello\Bundle\CustomerBundle\Entity\HasFullNameTrait;
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
 use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
@@ -20,6 +22,8 @@ use Marello\Bundle\OrderBundle\Model\ExtendCustomer;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 
 /**
+ * @deprecated, use "Marello\Bundle\CustomerBundle\Entity\Customer" instead
+ *
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(name="marello_order_customer")

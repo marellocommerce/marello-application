@@ -1,17 +1,16 @@
 define(function(require) {
     'use strict';
 
-    var ShippingCostView;
-    var $ = require('jquery');
-    var _ = require('underscore');
-    var BaseView = require('oroui/js/app/views/base/view');
+    const $ = require('jquery');
+    const _ = require('underscore');
+    const BaseView = require('oroui/js/app/views/base/view');
 
     /**
      * @export marelloorder/js/app/views/shipping-cost-view
      * @extends oroui.app.views.base.View
      * @class marelloorder.app.views.ShippingCostView
      */
-    ShippingCostView = BaseView.extend({
+    const ShippingCostView = BaseView.extend({
         /**
          * @property {Object}
          */

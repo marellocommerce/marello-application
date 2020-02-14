@@ -29,32 +29,11 @@ class InventoryUpdateContext
      * @param $name
      * @return mixed|null
      */
-    public function getValue($name)
+    public function getValue($name, $default = null)
     {
         return isset($this->values[$name])
             ? $this->values[$name]
-            : null;
-    }
-
-    /**
-     * @deprecated
-     * @param $items
-     * @return $this
-     */
-    public function setItems($items)
-    {
-        $this->setValue('items', $items);
-
-        return $this;
-    }
-
-    /**
-     * @deprecated
-     * @return mixed|null
-     */
-    public function getItems()
-    {
-        return $this->getValue('items');
+            : $default;
     }
 
     /**
@@ -99,6 +78,27 @@ class InventoryUpdateContext
         return $this->getValue('inventory_level');
     }
 
+    /**
+     * {@inheritdoc}
+     * @param array $batches
+     * @return $this
+     */
+    public function setInventoryBatches(array $batches)
+    {
+        $this->setValue('inventory_batches', $batches);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return array
+     */
+    public function getInventoryBatches()
+    {
+        return $this->getValue('inventory_batches', []);
+    }
+    
     /**
      * {@inheritdoc}
      * @param $entity
@@ -163,16 +163,6 @@ class InventoryUpdateContext
     }
 
     /**
-     * @deprecated use setAllocatedInventoryQty instead
-     * @param $allocatedQty
-     * @return $this
-     */
-    public function setAllocatedStock($allocatedQty)
-    {
-        return $this->setAllocatedInventory($allocatedQty);
-    }
-
-    /**
      * @param $allocatedQty
      * @return $this
      */
@@ -184,36 +174,11 @@ class InventoryUpdateContext
     }
 
     /**
-     * @deprecated use getAllocatedInventory instead
      * @return mixed|null
      */
-    public function getAllocatedStock()
-    {
-        return $this->getAllocatedInventory();
-    }
-
     public function getAllocatedInventory()
     {
         return $this->getValue('allocated_inventory_qty');
-    }
-
-    /**
-     * @deprecated use setInventory($qty) instead
-     * @param $stock
-     * @return $this
-     */
-    public function setStock($stock)
-    {
-        return $this->setInventory($stock);
-    }
-
-    /**
-     * @deprecated use getInventory() instead
-     * @return mixed|null
-     */
-    public function getStock()
-    {
-        return $this->getInventory();
     }
 
     /**

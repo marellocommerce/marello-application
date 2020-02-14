@@ -1,0 +1,11 @@
+marello:
+    bank_transfer:
+        method:
+            instructions.label: 'Bank Instructions'
+        settings:
+            label: 'Bank Transfer Settings'
+            labels.label: 'Label'
+        channel_type:
+            label: 'Bank Transfer'
+        menu:
+            bank_transfer.label: 'Bank Transfer'

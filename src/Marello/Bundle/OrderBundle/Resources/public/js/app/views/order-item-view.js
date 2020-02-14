@@ -1,18 +1,17 @@
 define(function(require) {
     'use strict';
 
-    var OrderItemView,
-        $ = require('jquery'),
-        _ = require('underscore'),
-        mediator = require('oroui/js/mediator'),
-        AbstractItemView = require('marellolayout/js/app/views/abstract-item-view');
+    const $ = require('jquery');
+    const _ = require('underscore');
+    const mediator = require('oroui/js/mediator');
+    const AbstractItemView = require('marellolayout/js/app/views/abstract-item-view');
 
     /**
      * @export marelloorder/js/app/views/order-item-view
      * @extends marellolayout.app.views.AbstractItemView
      * @class marelloorder.app.views.OrderItemView
      */
-    OrderItemView = AbstractItemView.extend({
+    const OrderItemView = AbstractItemView.extend({
         options: {
             ftid: '',
             salable: null
@@ -57,7 +56,7 @@ define(function(require) {
             if (productId.length === 0) {
                 this.setOrderItemData({});
             } else {
-                mediator.trigger('order:form-changes:trigger', {updateFields: ['items', 'totals', 'inventory', 'possible_shipping_methods']});
+                mediator.trigger('order:form-changes:trigger', {updateFields: ['items', 'totals', 'inventory', 'possible_shipping_methods', 'possible_payment_methods']});
             }
         },
 
@@ -177,7 +176,7 @@ define(function(require) {
          */
         removeRow: function() {
             OrderItemView.__super__.removeRow.call(this);
-            mediator.trigger('order:form-changes:trigger', {updateFields: ['totals', 'possible_shipping_methods']});
+            mediator.trigger('order:form-changes:trigger', {updateFields: ['totals', 'possible_shipping_methods', 'possible_payment_methods']});
         },
 
         /**

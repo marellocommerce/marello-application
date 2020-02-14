@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\OrderBundle\Form\Type;
 
+use Marello\Bundle\CustomerBundle\Form\Type\CompanyAwareCustomerSelectType;
 use Marello\Bundle\CustomerBundle\Form\Type\CompanySelectType;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Form\EventListener\CurrencySubscriber;
@@ -17,6 +18,8 @@ use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Valid;
 
@@ -96,12 +99,21 @@ class OrderType extends AbstractType
                 ]
             )
             ->add('items', OrderItemCollectionType::class);
+        $this->addPaymentFields($builder);
         $this->addShippingFields($builder, $options['data']);
         $this->addBillingAddress($builder, $options);
         $this->addShippingAddress($builder, $options);
 
         $builder->addEventSubscriber(new OrderTotalsSubscriber());
         $builder->addEventSubscriber(new CurrencySubscriber());
+        $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
+            $data = $event->getData();
+            $form = $event->getForm();
+            $event->setData($data);
+            parse_str($form->get('paymentMethodOptions')->getData(), $paymentMethodOptions);
+            $data->setPaymentMethodOptions($paymentMethodOptions);
+            $event->setData($data);
+        });
     }
 
     /**
@@ -142,6 +154,19 @@ class OrderType extends AbstractType
                     'isEditEnabled' => true
                 ]
             );
+    }
+
+    /**
+     * @param FormBuilderInterface $builder
+     * @return $this
+     */
+    protected function addPaymentFields(FormBuilderInterface $builder)
+    {
+        $builder
+            ->add('paymentMethod', HiddenType::class)
+            ->add('paymentMethodOptions', HiddenType::class, ['mapped' => false,]);
+
+        return $this;
     }
 
     /**

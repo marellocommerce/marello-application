@@ -19,7 +19,7 @@ services:
     ## handlers
     marello_supplier.form.handler.supplier:
         class: Marello\Bundle\SupplierBundle\Form\Handler\SupplierHandler
-        scope: request
+        public: true
         arguments:
             - '@marello_supplier.supplier.form'
             - '@request_stack'

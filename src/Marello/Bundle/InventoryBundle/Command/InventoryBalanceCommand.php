@@ -2,20 +2,54 @@
 
 namespace Marello\Bundle\InventoryBundle\Command;
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
+use Marello\Bundle\InventoryBundle\Async\Topics;
+use Marello\Bundle\InventoryBundle\Model\InventoryBalancer\InventoryBalancer;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
+use Oro\Component\MessageQueue\Client\MessageProducerInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
-use Marello\Bundle\InventoryBundle\Async\Topics;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
-
-class InventoryBalanceCommand extends ContainerAwareCommand
+class InventoryBalanceCommand extends Command
 {
     const NAME = 'marello:inventory:rebalance';
     const ALL = 'all';
     const PRODUCT = 'product';
+    const EXECUTION_TYPE = 'execution-type';
+    const BACKGROUND = 'background';
+    const IMMEDIATELY = 'immediately';
+
+    /**
+     * @var Registry
+     */
+    private $registry;
+
+    /**
+     * @var InventoryBalancer
+     */
+    private $inventoryBalancer;
+
+    /**
+     * @var MessageProducerInterface
+     */
+    private $messageProducer;
+    
+    private $executionType;
+    
+    public function __construct(
+        Registry $registry,
+        InventoryBalancer $inventoryBalancer,
+        MessageProducerInterface $messageProducer
+    ) {
+        parent::__construct();
+        
+        $this->registry = $registry;
+        $this->inventoryBalancer = $inventoryBalancer;
+        $this->messageProducer = $messageProducer;
+    }
 
     /**
      * {@inheritdoc}
@@ -24,11 +58,27 @@ class InventoryBalanceCommand extends ContainerAwareCommand
     {
         $this
             ->setName(self::NAME)
-            ->addOption(self::ALL)
+            ->addOption(
+                self::EXECUTION_TYPE,
+                null,
+                InputOption::VALUE_REQUIRED,
+                sprintf(
+                    'for selecting execution type (possible values: %s, %s)',
+                    self::BACKGROUND,
+                    self::IMMEDIATELY
+                ),
+                self::BACKGROUND
+            )
+            ->addOption(
+                self::ALL,
+                null,
+                null,
+                'for all products inventory rebalancing'
+            )
             ->addOption(
                 self::PRODUCT,
                 null,
-                InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
+                InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
                 'product ids for rebalancing inventory',
                 []
             )
@@ -40,7 +90,9 @@ class InventoryBalanceCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->executionType = $input->getOption(self::EXECUTION_TYPE);
         $optionAll = (bool)$input->getOption(self::ALL);
+        
         if ($optionAll) {
             $this->processAllProducts($output);
         } elseif ($input->getOption(self::PRODUCT)) {
@@ -61,9 +113,8 @@ class InventoryBalanceCommand extends ContainerAwareCommand
     {
         $output->writeln('<info>Start processing of all Products for rebalancing</info>');
 
-        $registry = $this->getContainer()->get('doctrine');
         /** @var Product[] $products */
-        $products = $registry
+        $products = $this->registry
             ->getManagerForClass(Product::class)
             ->getRepository(Product::class)
             ->findAll();
@@ -98,9 +149,8 @@ class InventoryBalanceCommand extends ContainerAwareCommand
     protected function getProducts(InputInterface $input)
     {
         $productIds = $input->getOption(self::PRODUCT);
-        $registry = $this->getContainer()->get('doctrine');
         /** @var ProductRepository $productRepository */
-        $productRepository = $registry
+        $productRepository = $this->registry
             ->getManagerForClass(Product::class)
             ->getRepository(Product::class);
 
@@ -120,16 +170,30 @@ class InventoryBalanceCommand extends ContainerAwareCommand
      */
     protected function triggerInventoryBalancer($products, OutputInterface $output)
     {
-        $inventoryBalancer = $this->getContainer()->get('marello_inventory.model.balancer.inventory_balancer');
-
         /** @var Product $product */
         foreach ($products as $product) {
-            $output->writeln(sprintf('<info>processing product sku %s</info>', $product->getSku()));
-            // balance 'Global' && 'Virtual' Warehouses
-            $inventoryBalancer->balanceInventory($product, false, true);
+            if ($this->executionType === self::IMMEDIATELY) {
+                $output->writeln(sprintf('<info>processing product with sku %s</info>', $product->getSku()));
+                // balance 'Global' && 'Virtual' Warehouses
+                $this->inventoryBalancer->balanceInventory($product, false, true);
 
-            // balance 'Fixed' warehouses
-            $inventoryBalancer->balanceInventory($product, true, true);
+                // balance 'Fixed' warehouses
+                $this->inventoryBalancer->balanceInventory($product, true, true);
+            } else {
+                $id = $product->getId();
+                $jobId = md5($id);
+                $this->messageProducer->send(
+                    Topics::RESOLVE_REBALANCE_INVENTORY,
+                    ['product_id' => $id, 'jobId' => $jobId]
+                );
+                $output->writeln(
+                    sprintf(
+                        '<info>job #%s was created for processing product with sku %s</info>',
+                        $jobId,
+                        $product->getSku()
+                    )
+                );
+            }
         }
     }
 }

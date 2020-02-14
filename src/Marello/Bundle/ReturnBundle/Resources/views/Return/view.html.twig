@@ -16,7 +16,7 @@
 {% endblock pageHeader %}
 
 {% block navButtons %}
-    {% if resource_granted('EDIT', entity) and marello_return_is_on_hold(entity) %}
+    {% if is_granted('EDIT', entity) and marello_return_is_on_hold(entity) %}
         {{ UI.buttonSeparator() }}
         {{ UI.editButton({
             'path': path('marello_return_return_update', {'id': entity.id}),

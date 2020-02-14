@@ -1,18 +1,17 @@
 define(function(require) {
     'use strict';
 
-    var OrderDiscountView;
-    var $ = require('jquery');
-    var _ = require('underscore');
-    var mediator = require('oroui/js/mediator');
-    var BaseView = require('oroui/js/app/views/base/view');
+    const $ = require('jquery');
+    const _ = require('underscore');
+    const mediator = require('oroui/js/mediator');
+    const BaseView = require('oroui/js/app/views/base/view');
 
     /**
      * @export marelloorder/js/app/views/order-discount-view
      * @extends oroui.app.views.base.View
      * @class marelloorder.app.views.OrderDiscountView
      */
-    OrderDiscountView = BaseView.extend({
+    const OrderDiscountView = BaseView.extend({
         /**
          * @property {Object}
          */

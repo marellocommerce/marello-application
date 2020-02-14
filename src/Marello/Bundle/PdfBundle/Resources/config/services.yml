@@ -1,0 +1,106 @@
+services:
+    marello_pdf.factory.pdf_writer:
+        class: 'Marello\Bundle\PdfBundle\Factory\PdfWriterFactory'
+        arguments: []
+
+    marello_pdf.renderer.html:
+        class: 'Marello\Bundle\PdfBundle\Renderer\HtmlRenderer'
+        arguments:
+            - '@marello_pdf.factory.pdf_writer'
+
+    marello_pdf.renderer.twig:
+        public: true
+        class: 'Marello\Bundle\PdfBundle\Renderer\TwigRenderer'
+        arguments:
+            - '@marello_pdf.renderer.html'
+            - '@twig'
+
+    marello_pdf.provider.render_parameters:
+        public: true
+        class: 'Marello\Bundle\PdfBundle\Provider\RenderParametersProvider'
+
+    marello_pdf.param_provider.entity:
+        class: 'Marello\Bundle\PdfBundle\Provider\Render\EntityProvider'
+        tags:
+            - { name: marello_pdf.render_parameter_provider }
+
+    marello_pdf.param_provider.saleschannel_localization:
+        class: 'Marello\Bundle\PdfBundle\Provider\Render\LocalizationProvider'
+        arguments:
+            - '@oro_config.saleschannel'
+            - '@doctrine'
+            - 'marello_pdf.localization'
+        tags:
+            - { name: marello_pdf.render_parameter_provider }
+        calls:
+            - ['setChainLocalizationProvider', ['@marello_locale.entity_localization_provider.chain']]
+
+    marello_pdf.param_provider.saleschannel_config_values:
+        class: 'Marello\Bundle\PdfBundle\Provider\Render\ConfigValuesProvider'
+        arguments:
+            - '@oro_config.saleschannel'
+            -
+                company_address: marello_pdf.company_address
+                company_email: marello_pdf.company_email
+                company_phone: marello_pdf.company_phone
+                company_bank: marello_pdf.company_bank
+                company_coc: marello_pdf.company_coc
+                paper_size: marello_pdf.paper_size
+        tags:
+            - { name: marello_pdf.render_parameter_provider }
+
+    marello_pdf.provider.allowed_image_mime_types:
+        class: 'Marello\Bundle\PdfBundle\Provider\AllowedImagesMimeTypesStringProvider'
+        arguments:
+            - '%oro_attachment.upload_image_mime_types%'
+
+    marello_pdf.provider.document_table:
+        class: 'Marello\Bundle\PdfBundle\Provider\DocumentTableProvider'
+
+    marello_pdf.twig_extension.document_table:
+        class: 'Marello\Bundle\PdfBundle\Twig\Extension\DocumentTableExtension'
+        arguments:
+            - '@marello_pdf.provider.document_table'
+        tags:
+            - { name: twig.extension }
+
+    marello_pdf.workflow_action.send_email_template_attachment:
+        class: 'Marello\Bundle\PdfBundle\Workflow\Action\SendEmailTemplateAttachmentAction'
+        arguments:
+            - '@oro_action.expression.context_accessor'
+            - '@oro_email.mailer.processor'
+            - '@oro_email.email.address.helper'
+            - '@oro_entity.entity_name_resolver'
+            - '@doctrine'
+            - '@validator'
+            - '@oro_email.tools.email_origin_helper'
+            - '@oro_email.email_renderer'
+        calls:
+            - [setLogger, ['@logger']]
+        tags:
+            - { name: oro_action.action, alias: send_email_template_attachment }
+
+    marello_pdf.form_type.workflow_transition_select:
+        class: 'Marello\Bundle\PdfBundle\Form\Type\WorkflowTransitionSelectType'
+        arguments:
+            - '@oro_workflow.manager'
+        tags:
+            - { name: form.type }
+
+    marello_pdf.condition.is_send_email_transition:
+        class: 'Marello\Bundle\PdfBundle\Workflow\Condition\IsSendEmailTransition'
+        arguments:
+            - '@oro_config.manager'
+        tags:
+            - { name: oro_action.condition, alias: is_send_email_transition }
+
+    marello_pdf.request_handler.composite:
+        class: 'Marello\Bundle\PdfBundle\Request\CompositePdfRequestHandler'
+        public: true
+
+
+    marello_pdf.configurator.document_configurator:
+        class: 'Marello\Bundle\PdfBundle\Form\Configurator\DocumentConfigurator'
+        public: true
+        arguments:
+            - '@oro_config.form.handler.config'

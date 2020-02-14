@@ -3,8 +3,10 @@
 namespace Marello\Bundle\CoreBundle\Twig;
 
 use Marello\Bundle\CoreBundle\Provider\AdditionalPlaceholderProvider;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class CoreExtension extends \Twig_Extension
+class CoreExtension extends AbstractExtension
 {
     const NAME = 'marello_core';
 
@@ -17,7 +19,7 @@ class CoreExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_get_additional_placeholder_data',
                 array($this, 'getAdditionalPlaceHolderData')
             ),

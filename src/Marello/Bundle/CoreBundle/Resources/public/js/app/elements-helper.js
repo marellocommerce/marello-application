@@ -4,8 +4,8 @@ define(function(require) {
     /**
      * This helper use in the context of component View
      */
-    var $ = require('jquery');
-    var _ = require('underscore');
+    const $ = require('jquery');
+    const _ = require('underscore');
     require('jquery.validate');
 
     return {

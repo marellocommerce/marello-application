@@ -7,18 +7,26 @@ define(['backbone'],
          * @class   oroform.MultipleEntity.Model
          * @extends Backbone.Model
          */
-        return Backbone.Model.extend({
+        const EntityModel = Backbone.Model.extend({
             defaults: {
                 id: null,
-                link: null,
                 label: null,
                 isDefault: false,
                 sku: null,
-                name: null,
+                productName: null,
                 value: null,
                 orderAmount: null,
                 purchasePrice: null,
                 currency: null
+            },
+
+            /**
+             * @inheritDoc
+             */
+            constructor: function EntityModel(attrs, options) {
+                EntityModel.__super__.constructor.call(this, attrs, options);
             }
+
         });
-    });
+    return EntityModel;
+});

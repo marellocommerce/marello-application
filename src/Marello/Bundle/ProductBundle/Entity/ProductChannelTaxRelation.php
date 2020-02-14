@@ -3,9 +3,12 @@
 namespace Marello\Bundle\ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Marello\Bundle\TaxBundle\Entity\TaxCode;
+
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+
+use Marello\Bundle\TaxBundle\Entity\TaxCode;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
 
 /**
  * TaxCode
@@ -22,7 +25,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  * )
  * @Oro\Config()
  */
-class ProductChannelTaxRelation
+class ProductChannelTaxRelation implements SalesChannelAwareInterface
 {
     /**
      * @var integer

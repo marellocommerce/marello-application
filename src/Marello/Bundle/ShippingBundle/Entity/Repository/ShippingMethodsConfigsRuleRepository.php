@@ -116,7 +116,7 @@ class ShippingMethodsConfigsRuleRepository extends EntityRepository
         if (0 < count($rules)) {
             $enabledRulesIds = array_column($rules, 'id');
             $qb = $this->createQueryBuilder('methodsConfigsRule');
-            $qb->update('OroRuleBundle:Rule', 'rule')
+            $qb->update('MarelloRuleBundle:Rule', 'rule')
                 ->set('rule.enabled', ':newValue')
                 ->setParameter('newValue', false)
                 ->where($qb->expr()->in('rule.id', ':rules'))

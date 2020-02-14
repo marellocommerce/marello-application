@@ -1,7 +1,7 @@
 define(function(require) {
     'use strict';
 
-    var ProductSupplierView,
+    const
         $ = require('jquery'),
         _ = require('underscore'),
         mediator = require('oroui/js/mediator'),
@@ -12,7 +12,7 @@ define(function(require) {
      * @extends marellolayout.app.views.AbstractItemView
      * @class marellosupplier.app.views.ProductSupplierView
      */
-    ProductSupplierView = AbstractItemView.extend({
+    const ProductSupplierView = AbstractItemView.extend({
         options: {
             priority: 0,
             canDropship: false
@@ -78,11 +78,21 @@ define(function(require) {
                 this.options.canDropship = data.canDropship;
             }
 
+            if (data.currency.length !== 0) {
+                this.options.currency = ' ' + data.currency;
+            }
+
             this.fieldsByName.priority
                 .val(this.options.priority);
 
             this.fieldsByName.canDropship
                 .prop('checked', this.options.canDropship);
+
+            var parent = $(this.fieldsByName.cost).parent();
+            parent.contents().filter(function(){
+                return (this.nodeType == 3);
+            }).remove();
+            parent.append(this.options.currency);
         },
 
         /**

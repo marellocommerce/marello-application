@@ -35,7 +35,7 @@ datagrids:
                 createdAt:      { data_name: c.createdAt }
                 updatedAt:      { data_name: c.updatedAt }
             default:
-                name: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+                name: 'ASC'
         properties:
             id: ~
             view_link:
@@ -56,7 +56,7 @@ datagrids:
 
     marello-category-products-base-grid:
         acl_resource: marello_product_update
-        extended_entity_name: '%marello_product.entity.class%'
+        extended_entity_name: Marello\Bundle\ProductBundle\Entity\Product
         source:
             type:         orm
             query:
@@ -67,7 +67,7 @@ datagrids:
                     - product.createdAt
                     - product.updatedAt
                 from:
-                    - { table: '%marello_product.entity.class%', alias: product }
+                    - { table: MarelloProductBundle:Product, alias: product }
         columns:
             sku:
                 label:         marello.product.sku.label
@@ -119,7 +119,7 @@ datagrids:
                 - products
         sorters:
             default:
-                sku: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+                sku: 'DESC'
 
     marello-category-products-extend-grid:
         extends: marello-category-products-base-grid
@@ -141,7 +141,7 @@ datagrids:
                 join:
                     left:
                         -
-                            join: '%marello_catalog.category.entity.class%'
+                            join: Marello\Bundle\CatalogBundle\Entity\Category
                             alias: productCategory
                             conditionType: WITH
                             condition: 'productCategory = :category_id'
@@ -163,7 +163,7 @@ datagrids:
                 inCategory:
                     data_name: inCategory
             default:
-                inCategory: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+                inCategory: 'DESC'
         filters:
             columns:
                 inCategory:
