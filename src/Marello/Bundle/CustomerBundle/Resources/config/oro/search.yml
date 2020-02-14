@@ -1,4 +1,35 @@
 search:
+    Marello\Bundle\CustomerBundle\Entity\Customer:
+        alias:                  marello_customer
+        label:                  marello.customer.entity_plural_label
+        title_fields:           [namePrefix, firstName, middleName, lastName, nameSuffix]
+        route:
+            name:               marello_customer_view
+            parameters:
+                id:             id
+        search_template:        MarelloCustomerBundle:Customer:searchResult.html.twig
+        fields:
+            -
+                name: namePrefix
+                target_type: text
+                target_fields: [namePrefix]
+            -
+                name: firstName
+                target_type: text
+                target_fields: [firstName]
+            -
+                name: middleName
+                target_type: text
+                target_fields: [middleName]
+            -
+                name: lastName
+                target_type: text
+                target_fields: [lastName]
+            -
+                name: nameSuffix
+                target_type: text
+                target_fields: [nameSuffix]
+
     Marello\Bundle\CustomerBundle\Entity\Company:
         alias:                          marello_company
         label:                          marello.customer.company.entity_plural_label

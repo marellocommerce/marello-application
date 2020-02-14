@@ -23,7 +23,7 @@ class ProductChannelTaxRelationCollectionType extends AbstractType
             'constraints'          => [new Valid()],
             'prototype_name'       => '__nameproductchanneltaxrelation__',
             'prototype'            => true,
-            'handle_primary'       => false,
+            'handle_primary'       => true,
         ]);
     }
 

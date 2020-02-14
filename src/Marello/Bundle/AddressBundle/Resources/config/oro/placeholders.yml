@@ -1,0 +1,10 @@
+placeholders:
+    placeholders:
+        marello_address_map:
+            items:
+                marello_address_item_map:
+                    order: 100
+
+    items:
+        marello_address_item_map:
+            template: MarelloAddressBundle:Address:addressMap.html.twig

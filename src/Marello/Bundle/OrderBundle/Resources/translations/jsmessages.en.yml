@@ -6,6 +6,10 @@ marello:
         possible_shipping_methods.no_method: No shipping methods are available
         possible_shipping_methods.confirmation.title: Review Shipping Cost
         possible_shipping_methods.confirmation.content: As order content has been modified, order totals and shipping costs may have changed. Please, review the shipping method selection before saving the order to make sure that the shipping cost is acceptable.
-
+        payment_method.label: Payment Method
+        previous_payment_method.label: Previously selected Payment Method
+        possible_payment_methods.no_method: No payment methods are available
+        possible_payment_methods.confirmation.title: Review Payment Methods
+        possible_payment_methods.confirmation.content: As order content has been modified, payment methods may have changed. Please, review the payment method selection before saving the order to make sure that the payment method is acceptable.
 
         continue_editing: Continue Editing

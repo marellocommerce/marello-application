@@ -3,6 +3,8 @@
 namespace Marello\Bundle\NotificationBundle\Workflow;
 
 use Marello\Bundle\NotificationBundle\Email\SendProcessor;
+use Marello\Bundle\NotificationBundle\Model\StringAttachment;
+use Marello\Bundle\NotificationBundle\Provider\NotificationAttachmentProvider;
 use Oro\Component\Action\Exception\InvalidParameterException;
 use Oro\Component\Action\Action\AbstractAction;
 use Oro\Component\Action\Action\ActionInterface;
@@ -19,7 +21,10 @@ class SendNotificationAction extends AbstractAction
 
     /** @var PropertyPathInterface|string */
     protected $recipients;
-    
+
+    /** @var PropertyPathInterface|string */
+    protected $attachments;
+
     /** @var SendProcessor */
     protected $sendProcessor;
 
@@ -44,12 +49,13 @@ class SendNotificationAction extends AbstractAction
         $entity     = $this->contextAccessor->getValue($context, $this->entity);
         $template   = $this->contextAccessor->getValue($context, $this->template);
         $recipients = $this->contextAccessor->getValue($context, $this->recipients);
+        $data       = $this->getData($context);
 
         if (!is_array($recipients)) {
             $recipients = [$recipients];
         }
 
-        $this->sendProcessor->sendNotification($template, $recipients, $entity);
+        $this->sendProcessor->sendNotification($template, $recipients, $entity, $data);
     }
 
     /**
@@ -84,5 +90,50 @@ class SendNotificationAction extends AbstractAction
                 ? $this->getOption($options, 'recipients')
                 : $this->getOption($options, 'recipient');
         }
+
+        if (array_key_exists('attachments', $options)) {
+            $attachments = $this->getOption($options, 'attachments');
+
+            if (!is_array($attachments)) {
+                throw new InvalidParameterException('Parameter "attachment" should be array');
+            }
+
+            foreach ($attachments as $key => $attachment) {
+                if (!isset($attachment['filename'])) {
+                    throw new InvalidParameterException(
+                        sprintf('Parameter "filename" for attachment "%s" is required.', $key)
+                    );
+                }
+                if (!isset($attachment['content'])) {
+                    throw new InvalidParameterException(
+                        sprintf('Parameter "content" for attachment "%s" is required.', $key)
+                    );
+                }
+            }
+
+            $this->attachments = $attachments;
+        }
+    }
+
+    /**
+     * @param $context
+     * @return array
+     */
+    protected function getData($context)
+    {
+        $data = [];
+        if ($this->attachments !== null) {
+            $attachments = [];
+            foreach ($this->attachments as $attachment) {
+                $attachments = new StringAttachment(
+                    $this->contextAccessor->getValue($context, 'filename'),
+                    $this->contextAccessor->getValue($context, 'content')
+                );
+            }
+
+            $data[NotificationAttachmentProvider::KEY_ATTACHMENTS] = $attachments;
+        }
+
+        return $data;
     }
 }

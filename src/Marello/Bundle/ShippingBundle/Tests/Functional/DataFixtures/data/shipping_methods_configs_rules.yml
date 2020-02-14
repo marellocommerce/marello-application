@@ -1,0 +1,27 @@
+shipping_rule.1:
+    rule:
+        enabled: true
+        sortOrder: 0
+        expression: 'true'
+    currency: 'EUR'
+
+shipping_rule.2:
+    rule:
+        enabled: true
+        sortOrder: 1
+        expression: 'true'
+    currency: 'EUR'
+
+shipping_rule.3:
+    rule:
+        enabled: false
+        sortOrder: 2
+        expression: 'true'
+    currency: 'EUR'
+
+shipping_rule.4:
+    rule:
+        enabled: true
+        sortOrder: 3
+        expression: 'true'
+    currency: 'EUR'

@@ -10,22 +10,26 @@ use Oro\Bundle\ActionBundle\Model\ActionData;
 use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
 use Oro\Bundle\SecurityBundle\Annotation as Security;
 use Oro\Bundle\UIBundle\Route\Router;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
-class ProductController extends Controller
+class ProductController extends AbstractController
 {
     const ACTION_SAVE_AND_DUPLICATE = 'save_and_duplicate';
 
     /**
-     * @Config\Route("/", name="marello_product_index")
+     * @Route(
+     *     path="/",
+     *     name="marello_product_index"
+     * )
      * @AclAncestor("marello_product_view")
-     * @Config\Template
+     * @Template
      */
     public function indexAction()
     {
@@ -33,9 +37,12 @@ class ProductController extends Controller
     }
 
     /**
-     * @Config\Route("/create", name="marello_product_create")
+     * @Route(
+     *     path="/create",
+     *     name="marello_product_create"
+     * )
      * @AclAncestor("marello_product_create")
-     * @Config\Template("MarelloProductBundle:Product:createStepOne.html.twig")
+     * @Template("MarelloProductBundle:Product:createStepOne.html.twig")
      *
      * @param Request $request
      *
@@ -55,11 +62,15 @@ class ProductController extends Controller
         $form = $this->createForm(ProductStepOneType::class);
         $handler = new ProductCreateStepOneHandler($form, $request);
         $productTypesProvider = $this->get('marello_product.provider.product_types');
-
+        $em = $this->get('doctrine.orm.entity_manager');
+        /** @var AttributeFamily $attributeFamily */
+        $attributeFamilies = $em
+            ->getRepository(AttributeFamily::class)
+            ->findBy(['entityClass' => Product::class]);
         if ($handler->process()) {
             return $this->forward('MarelloProductBundle:Product:createStepTwo');
         }
-        if (count($productTypesProvider->getProductTypes()) === 1) {
+        if (count($productTypesProvider->getProductTypes()) <= 1 && count($attributeFamilies) <= 1) {
             $request->setMethod('POST');
             $request->request->set('input_action', 'marello_product_create');
             $request->request->set('single_product_type', true);
@@ -73,9 +84,12 @@ class ProductController extends Controller
     }
 
     /**
-     * @Config\Route("/create/step-two", name="marello_product_create_step_two")
+     * @Route(
+     *     path="/create/step-two",
+     *     name="marello_product_create_step_two"
+     * )
      *
-     * @Config\Template("MarelloProductBundle:Product:createStepTwo.html.twig")
+     * @Template("MarelloProductBundle:Product:createStepTwo.html.twig")
      *
      * @AclAncestor("marello_product_create")
      *
@@ -96,43 +110,40 @@ class ProductController extends Controller
     {
         if ($request->get('input_action') === 'marello_product_create') {
             $formStepOne = $this->createForm(ProductStepOneType::class, $product);
+            $em = $this->get('doctrine.orm.entity_manager');
             if ($request->get('single_product_type')) {
                 $type = Product::DEFAULT_PRODUCT_TYPE;
+                $attributeFamily = $em
+                    ->getRepository(AttributeFamily::class)
+                    ->findOneBy(['entityClass' => Product::class]);
             } else {
                 $formStepOne->handleRequest($request);
                 $type = $formStepOne->get('type')->getData();
+                $attributeFamily = $formStepOne->get('attributeFamily')->getData();
             }
             $product->setType($type);
-            $productTypesProvider = $this->get('marello_product.provider.product_types');
-            $em = $this->get('doctrine.orm.entity_manager');
-            $productType = $productTypesProvider->getProductType($type);
-            if ($productType) {
-                /** @var AttributeFamily $attributeFamily */
-                $attributeFamily = $em
-                    ->getRepository(AttributeFamily::class)
-                    ->findOneBy(['code' => $productType->getAttributeFamilyCode()]);
-                $product->setAttributeFamily($attributeFamily);
+            $product->setAttributeFamily($attributeFamily);
 
-                $form = $this->createForm(ProductType::class, $product);
-                $form->get('type')->setData($type);
-                $form->get('attributeFamily')->setData($attributeFamily->getId());
-            }
+            $form = $this->createForm(ProductType::class, $product);
+
             return [
                 'form' => $form->createView(),
                 'entity' => $product,
                 'isWidgetContext' => (bool)$request->get('_wid', false)
             ];
         }
-        //$form = $this->createForm(ProductStepOneType::class, $product, ['validation_groups'=> false]);
-        //$form->submit($request->request->get(ProductType::BLOCK_PREFIX));
 
         return $this->update($product, $request);
     }
 
     /**
-     * @Config\Route("/update/{id}", requirements={"id"="\d+"}, name="marello_product_update")
+     * @Route(
+     *     path="/update/{id}",
+     *     requirements={"id"="\d+"},
+     *     name="marello_product_update"
+     * )
      * @AclAncestor("marello_product_update")
-     * @Config\Template
+     * @Template
      *
      * @param Product $product
      * @param Request $request
@@ -200,9 +211,13 @@ class ProductController extends Controller
     }
 
     /**
-     * @Config\Route("/view/{id}", requirements={"id"="\d+"}, name="marello_product_view")
+     * @Route(
+     *     path="/view/{id}",
+     *     requirements={"id"="\d+"},
+     *     name="marello_product_view"
+     * )
      * @AclAncestor("marello_product_view")
-     * @Config\Template("MarelloProductBundle:Product:view.html.twig")
+     * @Template("MarelloProductBundle:Product:view.html.twig")
      *
      * @param Product $product
      *
@@ -216,9 +231,13 @@ class ProductController extends Controller
     }
 
     /**
-     * @Config\Route("/widget/info/{id}", name="marello_product_widget_info", requirements={"id"="\d+"})
+     * @Route(
+     *     path="/widget/info/{id}",
+     *     name="marello_product_widget_info",
+     *     requirements={"id"="\d+"}
+     * )
      * @AclAncestor("marello_product_view")
-     * @Config\Template
+     * @Template("MarelloProductBundle:Product/widget:info.html.twig")
      *
      * @param Product $product
      *
@@ -232,9 +251,13 @@ class ProductController extends Controller
     }
 
     /**
-     * @Config\Route("/widget/price/{id}", name="marello_product_widget_price", requirements={"id"="\d+"})
+     * @Route(
+     *     path="/widget/price/{id}",
+     *     name="marello_product_widget_price",
+     *     requirements={"id"="\d+"}
+     * )
      * @AclAncestor("marello_product_view")
-     * @Config\Template
+     * @Template("MarelloProductBundle:Product/widget:price.html.twig")
      *
      * @param Product $product
      *
@@ -248,9 +271,12 @@ class ProductController extends Controller
     }
 
     /**
-     * @Config\Route("/assign-sales-channels", name="marello_product_assign_sales_channels")
+     * @Route(
+     *     path="/assign-sales-channels",
+     *     name="marello_product_assign_sales_channels"
+     * )
      * @AclAncestor("marello_product_update")
-     * @Config\Template
+     * @Template
      *
      * @return array
      */

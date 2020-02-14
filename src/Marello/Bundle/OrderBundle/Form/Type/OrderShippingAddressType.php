@@ -13,6 +13,6 @@ class OrderShippingAddressType extends AbstractOrderAddressType
      */
     protected function getAddresses(Order $entity)
     {
-        return $this->orderCustomerAddressProvider->getCustomerShippingAddresses($entity->getCustomer());
+        return $this->customerAddressProvider->getCustomerShippingAddresses($entity->getCustomer());
     }
 }

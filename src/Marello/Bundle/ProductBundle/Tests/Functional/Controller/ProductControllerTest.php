@@ -3,12 +3,13 @@
 namespace Marello\Bundle\ProductBundle\Tests\Functional\Controller;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\ProductBundle\Model\ProductType;
+use Marello\Bundle\ProductBundle\Migrations\Data\ORM\LoadDefaultAttributeFamilyData;
 use Marello\Bundle\ProductBundle\Provider\ProductTypesProvider;
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
 use Marello\Bundle\SupplierBundle\Tests\Functional\DataFixtures\LoadSupplierData;
 use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxCodeData;
+use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,10 +53,16 @@ class ProductControllerTest extends WebTestCase
         $productTypesProvider = $this->getContainer()->get('marello_product.provider.product_types');
         if (count($productTypesProvider->getProductTypes()) > 1) {
             $defaultProductType = $productTypesProvider->getProductType('simple')->getName();
+            $em = $this->getContainer()->get('doctrine.orm.entity_manager');
+            /** @var AttributeFamily $attributeFamily */
+            $attributeFamily = $em
+                ->getRepository(AttributeFamily::class)
+                ->findOneBy(['code' => LoadDefaultAttributeFamilyData::DEFAULT_FAMILY_CODE]);
             $form    = $crawler->selectButton('Continue')->form();
             $formValues = $form->getPhpValues();
             $formValues['input_action'] = 'marello_product_create';
             $formValues['marello_product_step_one']['type'] = $defaultProductType;
+            $formValues['marello_product_step_one']['attributeFamily'] = $attributeFamily->getId();
             $this->client->followRedirects(true);
             $crawler = $this->client->request(
                 'POST',
@@ -69,7 +76,7 @@ class ProductControllerTest extends WebTestCase
 
         $form    = $crawler->selectButton('Save and Close')->form();
         $formValues = $form->getPhpValues();
-        $formValues['marello_product_form']['name'] = $name;
+        $formValues['marello_product_form']['names']['values']['default'] = $name;
         $formValues['marello_product_form']['sku'] = $sku;
         $formValues['marello_product_form']['status'] = 'enabled';
         $formValues['marello_product_form']['addSalesChannels']
@@ -137,7 +144,7 @@ class ProductControllerTest extends WebTestCase
             'input_action' => 'save_and_stay',
             'marello_product_form' => [
                 '_token' => $form['marello_product_form[_token]']->getValue(),
-                'name' => $form['marello_product_form[name]']->getValue(),
+                'names' => ['values' => ['default' => $form['marello_product_form[names][values][default]']->getValue()]],
                 'sku' => $form['marello_product_form[sku]']->getValue(),
                 'status' => $form['marello_product_form[status]']->getValue(),
                 'suppliers' => $productSuppliers
@@ -185,7 +192,7 @@ class ProductControllerTest extends WebTestCase
             'input_action' => 'save_and_stay',
             'marello_product_form' => [
                 '_token' => $form['marello_product_form[_token]']->getValue(),
-                'name' => $form['marello_product_form[name]']->getValue(),
+                'names' => ['values' => ['default' => $form['marello_product_form[names][values][default]']->getValue()]],
                 'sku' => $form['marello_product_form[sku]']->getValue(),
                 'status' => $form['marello_product_form[status]']->getValue(),
                 'taxCode' => $taxCode,
@@ -230,7 +237,7 @@ class ProductControllerTest extends WebTestCase
         /** @var Form $form */
         $form                                              = $crawler->selectButton('Save and Close')->form();
         $name                                              = 'name' . self::generateRandomString();
-        $form['marello_product_form[name]']                = $name;
+        $form['marello_product_form[names][values][default]']                = $name;
         $form['marello_product_form[removeSalesChannels]']
             = $this->getReference(LoadSalesData::CHANNEL_1_REF)->getId();
         $form['marello_product_form[addSalesChannels]']

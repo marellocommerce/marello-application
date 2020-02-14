@@ -3,10 +3,8 @@
 namespace Marello\Bundle\PurchaseOrderBundle\Migrations\Schema\v1_2_3;
 
 use Doctrine\DBAL\Schema\Schema;
-use Oro\Bundle\MigrationBundle\Migration\QueryBag;
-use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
-use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
 use Oro\Bundle\MigrationBundle\Migration\Migration;
+use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
@@ -19,7 +17,7 @@ class MarelloPurchaseOrderBundle implements Migration
      */
     public function up(Schema $schema, QueryBag $queries)
     {
-        $this->updatePurchaseOrderTable($schema, $queries);
+        $this->updatePurchaseOrderTable($schema);
     }
 
     /**
@@ -27,7 +25,7 @@ class MarelloPurchaseOrderBundle implements Migration
      *
      * @param Schema $schema
      */
-    protected function updatePurchaseOrderTable(Schema $schema, QueryBag $queries)
+    protected function updatePurchaseOrderTable(Schema $schema)
     {
         $table = $schema->getTable('marello_purchase_order');
 

@@ -69,7 +69,7 @@ datagrids:
                 updatedAt:
                     data_name: i.updatedAt
             default:
-                invoiceNumber: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+                invoiceNumber: 'DESC'
         filters:
             columns:
                 invoiceNumber:
@@ -135,6 +135,8 @@ datagrids:
                 select:
                     - i
                     - inv.currency as currency
+                    - product.sku as productSku
+                    - product.denormalizedDefaultName as productName
                 from:
                     - { table: MarelloInvoiceBundle:InvoiceItem, alias: i}
                 join:
@@ -192,6 +194,8 @@ datagrids:
                 select:
                     - i
                     - inv.currency as currency
+                    - product.sku as productSku
+                    - product.denormalizedDefaultName as productName
                 from:
                     - { table: MarelloInvoiceBundle:CreditmemoItem, alias: i}
                 join:

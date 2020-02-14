@@ -5,6 +5,7 @@ namespace Marello\Bundle\SalesBundle\Tests\Unit\Form\Handler;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -122,10 +123,10 @@ class SalesChannelGroupHandlerTest extends TestCase
     }
 
     /**
-     * @param \PHPUnit_Framework_MockObject_MockObject $group
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @param MockObject $group
+     * @return MockObject
      */
-    private function mockSalesChannel(\PHPUnit_Framework_MockObject_MockObject $group)
+    private function mockSalesChannel(MockObject $group)
     {
         $salesChannel = $this->createMock(SalesChannel::class);
         $salesChannel

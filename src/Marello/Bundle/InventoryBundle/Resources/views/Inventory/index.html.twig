@@ -6,7 +6,9 @@
 {% block navButtons %}
     {% include 'OroImportExportBundle:ImportExport:buttons.html.twig' with {
     entity_class: 'Marello\\Bundle\\InventoryBundle\\Entity\\InventoryLevel',
+    exportJob: 'marello_inventory_level_export_to_csv',
     exportProcessor: 'marello_inventorlevel_export',
+    exportTemplateJob: 'marello_inventory_level_export_template_to_csv',
     exportTemplateProcessor: 'marello_inventorlevel_export',
     importProcessor: 'marello_inventory.add_or_replace',
     importTitle: 'Import Inventory',

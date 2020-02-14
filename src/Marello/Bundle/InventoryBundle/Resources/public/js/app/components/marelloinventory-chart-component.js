@@ -1,19 +1,18 @@
 define(function(require) {
     'use strict';
 
-    var MarelloInventoryChartComponent;
-    var _ = require('underscore');
-    var $ = require('jquery');
-    var Flotr = require('flotr2');
-    var dataFormatter = require('orochart/js/data_formatter');
-    var BaseChartComponent = require('orochart/js/app/components/base-chart-component');
+    const _ = require('underscore');
+    const $ = require('jquery');
+    const Flotr = require('flotr2');
+    const dataFormatter = require('orochart/js/data_formatter');
+    const BaseChartComponent = require('orochart/js/app/components/base-chart-component');
 
     /**
      * @class marelloinventory.app.components.MarelloInventoryChartComponent
      * @extends marelloinventory.app.components.BaseChartComponent
      * @exports marelloinventory/app/components/marello-inventory-chart-component
      */
-    MarelloInventoryChartComponent = BaseChartComponent.extend({
+    const MarelloInventoryChartComponent = BaseChartComponent.extend({
 
         narrowScreen: false,
 

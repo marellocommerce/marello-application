@@ -13,7 +13,7 @@ use Marello\Bundle\OrderBundle\Model\QuantityAwareInterface;
 use Oro\Bundle\CurrencyBundle\Entity\PriceAwareInterface;
 use Oro\Bundle\CurrencyBundle\Provider\DefaultCurrencyProviderInterface;
 use Oro\Bundle\CurrencyBundle\Rounding\RoundingServiceInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class OrderItemsSubtotalProvider extends AbstractSubtotalProvider
 {

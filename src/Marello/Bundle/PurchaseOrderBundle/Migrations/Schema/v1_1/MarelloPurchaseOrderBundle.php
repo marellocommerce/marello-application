@@ -3,10 +3,8 @@
 namespace Marello\Bundle\PurchaseOrderBundle\Migrations\Schema\v1_1;
 
 use Doctrine\DBAL\Schema\Schema;
-use Oro\Bundle\MigrationBundle\Migration\QueryBag;
-use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
-use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
 use Oro\Bundle\MigrationBundle\Migration\Migration;
+use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)

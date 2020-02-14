@@ -1,0 +1,5 @@
+dynamic-imports:
+    marellolayout:
+        - marellolayout/js/app/views/abstract-items-view
+        - marellolayout/js/app/views/abstract-item-view
+        - marellolayout/js/app/components/form-changes-component

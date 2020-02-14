@@ -9,9 +9,7 @@ use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\InventoryBundle\Model\ExtendWarehouseChannelGroupLink;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
-use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 /**
@@ -52,7 +50,7 @@ class WarehouseChannelGroupLink extends ExtendWarehouseChannelGroupLink implemen
     /**
      * @var bool
      *
-     * @ORM\Column(name="system", type="boolean", nullable=false, options={"default"=false})
+     * @ORM\Column(name="is_system", type="boolean", nullable=false, options={"default"=false})
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={

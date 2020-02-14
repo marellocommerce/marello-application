@@ -27,7 +27,7 @@
                         </div>
                         {{ UI.renderProperty('marello.tax.taxrate.code.label'|trans, entity.code) }}
                         {{ UI.renderProperty('marello.tax.taxrate.rate.label'|trans, entity.rate|oro_format_percent) }}
-                        {% set taxRateViewGranted = resource_granted('marello_tax_taxrate_update') %}
+                        {% set taxRateViewGranted = is_granted('marello_tax_taxrate_update') %}
                         {%- if taxRateViewGranted -%}
                             {%- set taxRateData -%}
                                 <a href="{{ path('marello_tax_taxrate_update', {'id': entity.id}) }}">

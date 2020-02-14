@@ -82,7 +82,10 @@ class ProductJsonApiTest extends RestJsonApiTestCase
         /** @var Product $product */
         $productRepo = $this->getEntityManager()->getRepository(Product::class);
         $product = $productRepo->findOneBySku($responseContent->data->id);
-        $this->assertEquals($product->getName(), $responseContent->data->attributes->name);
+        $this->assertEquals(
+            $product->getDenormalizedDefaultName(),
+            $responseContent->data->attributes->denormalizedDefaultName
+        );
     }
 
     /**
@@ -106,6 +109,10 @@ class ProductJsonApiTest extends RestJsonApiTestCase
         /** @var Product $product */
         $productRepo = $this->getEntityManager()->getRepository(Product::class);
         $product = $productRepo->findOneBySku($responseContent->data->id);
-        $this->assertEquals($product->getName(), $responseContent->data->attributes->name);
+        $this->assertEquals($product->getManufacturingCode(), $responseContent->data->attributes->manufacturingCode);
+        $this->assertEquals(
+            $product->getDenormalizedDefaultName(),
+            $responseContent->data->attributes->denormalizedDefaultName
+        );
     }
 }

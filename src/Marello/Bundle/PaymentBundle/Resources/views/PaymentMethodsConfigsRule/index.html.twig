@@ -1,0 +1,17 @@
+{% extends 'OroUIBundle:actions:index.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% set gridName = 'marello-payment-methods-configs-rule-grid' %}
+{% set pageTitle = 'marello.payment.paymentmethodsconfigsrule.entity_short_plural_label'|trans %}
+
+{% block navButtons %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
+    {% if is_granted('marello_payment_methods_configs_rule_create') %}
+        <div class="btn-group pull-right">
+            {{ UI.addButton({
+                'path': path('marello_payment_methods_configs_rule_create'),
+                'entity_label': 'marello.payment.paymentmethodsconfigsrule.entity_short_label'|trans
+            }) }}
+        </div>
+    {% endif %}
+{% endblock %}

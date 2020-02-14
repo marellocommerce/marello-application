@@ -8,9 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\InventoryBundle\Model\ExtendWarehouseGroup;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
-use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 /**
@@ -86,7 +84,7 @@ class WarehouseGroup extends ExtendWarehouseGroup implements OrganizationAwareIn
     /**
      * @var bool
      *
-     * @ORM\Column(name="system", type="boolean", nullable=false, options={"default"=false})
+     * @ORM\Column(name="is_system", type="boolean", nullable=false, options={"default"=false})
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={

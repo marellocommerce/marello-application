@@ -4,8 +4,10 @@ namespace Marello\Bundle\SupplierBundle\Twig;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SupplierBundle\Provider\SupplierProvider;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class SupplierExtension extends \Twig_Extension
+class SupplierExtension extends AbstractExtension
 {
     const NAME = 'marello_supplier';
 
@@ -40,7 +42,7 @@ class SupplierExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_supplier_get_supplier_ids',
                 [$this, 'getSuppliersIds']
             ),

@@ -3,7 +3,7 @@
 namespace Marello\Bundle\ShippingBundle\Translator;
 
 use Marello\Bundle\ShippingBundle\Formatter\ShippingMethodLabelFormatter;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ShippingMethodLabelTranslator
 {

@@ -4,8 +4,10 @@ namespace Marello\Bundle\PricingBundle\Twig;
 
 use Marello\Bundle\PricingBundle\Formatter\LabelVATAwareFormatter;
 use Marello\Bundle\PricingBundle\Provider\CurrencyProvider;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class PricingExtension extends \Twig_Extension
+class PricingExtension extends AbstractExtension
 {
     const NAME = 'marello_pricing';
 
@@ -47,11 +49,11 @@ class PricingExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_pricing_get_currency_data',
                 [$this, 'getCurrencyData']
             ),
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_pricing_vat_aware_label',
                 [$this->vatLabelFormatter, 'getFormattedLabel']
             ),

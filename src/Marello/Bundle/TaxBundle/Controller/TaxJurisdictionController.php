@@ -6,20 +6,24 @@ use Marello\Bundle\TaxBundle\Entity\TaxJurisdiction;
 use Marello\Bundle\TaxBundle\Form\Type\TaxJurisdictionType;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class TaxJurisdictionController
  * @package Marello\Bundle\TaxBundle\Controller
   */
-class TaxJurisdictionController extends Controller
+class TaxJurisdictionController extends AbstractController
 {
     /**
-     * @Config\Route("/", name="marello_tax_taxjurisdiction_index")
-     * @Config\Template
+     * @Route(
+     *     path="/",
+     *     name="marello_tax_taxjurisdiction_index"
+     * )
+     * @Template
      * @AclAncestor("marello_tax_taxjurisdiction_view")
      *
      * @return array
@@ -32,8 +36,12 @@ class TaxJurisdictionController extends Controller
     }
 
     /**
-     * @Config\Route("/view/{id}", name="marello_tax_taxjurisdiction_view", requirements={"id"="\d+"})
-     * @Config\Template
+     * @Route(
+     *     path="/view/{id}",
+     *     name="marello_tax_taxjurisdiction_view",
+     *     requirements={"id"="\d+"}
+     * )
+     * @Template
      * @Acl(
      *      id="marello_tax_taxjurisdiction_view",
      *      type="entity",
@@ -52,8 +60,11 @@ class TaxJurisdictionController extends Controller
     }
 
     /**
-     * @Config\Route("/create", name="marello_tax_taxjurisdiction_create")
-     * @Config\Template("MarelloTaxBundle:TaxJurisdiction:update.html.twig")
+     * @Route(
+     *     path="/create",
+     *     name="marello_tax_taxjurisdiction_create"
+     * )
+     * @Template("MarelloTaxBundle:TaxJurisdiction:update.html.twig")
      * @Acl(
      *      id="marello_tax_taxjurisdiction_create",
      *      type="entity",
@@ -70,8 +81,12 @@ class TaxJurisdictionController extends Controller
     }
 
     /**
-     * @Config\Route("/update/{id}", name="marello_tax_taxjurisdiction_update", requirements={"id"="\d+"})
-     * @Config\Template
+     * @Route(
+     *     path="/update/{id}",
+     *     name="marello_tax_taxjurisdiction_update",
+     *     requirements={"id"="\d+"}
+     * )
+     * @Template
      * @Acl(
      *      id="marello_tax_taxjurisdiction_update",
      *      type="entity",

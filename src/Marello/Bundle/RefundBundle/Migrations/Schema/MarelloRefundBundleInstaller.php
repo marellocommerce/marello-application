@@ -32,7 +32,7 @@ class MarelloRefundBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_2';
+        return 'v1_3';
     }
 
     /**
@@ -70,7 +70,6 @@ class MarelloRefundBundleInstaller implements
         $table->addColumn('created_at', 'datetime', []);
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->addColumn('localization_id', 'integer', ['notnull' => false]);
-        $table->addColumn('locale', 'string', ['notnull' => false, 'length' => 5]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['refund_number'], 'UNIQ_973FA8836E8C706D');
         $table->addIndex(['customer_id'], 'IDX_973FA8839395C3F3', []);
@@ -117,7 +116,7 @@ class MarelloRefundBundleInstaller implements
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
         $table->addForeignKeyConstraint(
-            $schema->getTable('marello_order_customer'),
+            $schema->getTable('marello_customer_customer'),
             ['customer_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
