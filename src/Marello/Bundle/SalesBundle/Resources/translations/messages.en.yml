@@ -2,6 +2,9 @@ marello:
     sales:
         navigation:
             sales.label:                        Sales
+        config:
+            saleschannel.label:                 Sales Channel Configuration
+            use_default.label:                  Use system
         saleschannel:
             header.label:                       Manage Sales Channels
             entity_label:                       Sales Channel
@@ -14,13 +17,11 @@ marello:
             code.label:                         Code
             channel_type.label:                 Type
             owner.label:                        Owner
-            locale.label:                       Locale
             localization.label:                 Localization
             controller.message.saved:           Sales Channel saved
             form.select_saleschannels:          Select Sales Channels
             form.select_saleschannel:           Select Sales Channel
             selected_channels.label:            Selected Sales Channels
-            localization.label:                 Localization
             group.label:                        Group
             create_own_group.label:             Create Sales Channel Group
             integration_channel.label:          Integration Channel
@@ -33,6 +34,9 @@ marello:
                 shortcut_new_saleschannel.description: Create new sales channel instance
                 shortcut_list_saleschannel.label: Show sales channel list
                 shortcut_list_saleschannel.description: Show list of sales channels
+            grid:
+                action:
+                    config.label: Sales Channel Configuration
 
             datablock:
                 general: General

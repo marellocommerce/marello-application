@@ -44,6 +44,7 @@ class ModifyReplenishmentData extends AbstractFixture implements DependentFixtur
             $oldId = strtolower(str_replace(' ', '_', $enumData['oldName']));
 
             $enumValue = $enumRepo->findOneBy(['name' => $enumData['oldName']]);
+            $newEnumValue = null;
             if ($enumValue) {
                 $newEnumValue = $enumRepo->createEnumValue(
                     $enumData['newName'],
@@ -54,7 +55,7 @@ class ModifyReplenishmentData extends AbstractFixture implements DependentFixtur
                 $manager->remove($enumValue);
             }
             $invItems = $invItemRepo->findBy(['replenishment' => $oldId]);
-            if (!empty($invItems)) {
+            if (!empty($invItems) && $newEnumValue) {
                 foreach ($invItems as $invItem) {
                     $invItem->setReplenishment($newEnumValue);
                     $manager->persist($invItem);

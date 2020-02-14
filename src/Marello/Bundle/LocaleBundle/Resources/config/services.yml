@@ -1,17 +1,8 @@
-parameters:
-    marello_locale.repository.email_template_translatable.class: Marello\Bundle\LocaleBundle\Repository\EmailTemplateTranslatableRepository
-    marello_locale.manager.email_template.class: Marello\Bundle\LocaleBundle\Manager\EmailTemplateManager
-
 services:
-    marello_locale.repository.email_template_translatable_repository:
-        class: '%marello_locale.repository.email_template_translatable.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-
     marello_locale.manager.email_template:
-        class: '%marello_locale.manager.email_template.class%'
+        class: 'Marello\Bundle\LocaleBundle\Manager\EmailTemplateManager'
         arguments:
-            - '@marello_locale.repository.email_template_translatable_repository'
+            - '@oro_entity.doctrine_helper'
             - '@oro_config.user'
         calls:
             - ['setEntityLocalizationProvider', ['@marello_locale.entity_localization_provider.chain']]

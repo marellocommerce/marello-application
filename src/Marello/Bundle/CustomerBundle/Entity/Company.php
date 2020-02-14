@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\CustomerBundle\Model\ExtendCompany;
-use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\PaymentTermBundle\Entity\PaymentTerm;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
@@ -162,7 +161,7 @@ class Company extends ExtendCompany implements OrganizationAwareInterface
      * @var Collection|Customer[]
      *
      * @ORM\OneToMany(
-     *      targetEntity="Marello\Bundle\OrderBundle\Entity\Customer",
+     *      targetEntity="Marello\Bundle\CustomerBundle\Entity\Customer",
      *      mappedBy="company",
      *      cascade={"persist"}
      * )

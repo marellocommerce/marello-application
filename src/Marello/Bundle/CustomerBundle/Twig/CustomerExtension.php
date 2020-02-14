@@ -3,8 +3,10 @@
 namespace Marello\Bundle\CustomerBundle\Twig;
 
 use Marello\Bundle\CustomerBundle\Entity\Repository\CompanyRepository;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class CustomerExtension extends \Twig_Extension
+class CustomerExtension extends AbstractExtension
 {
     const NAME = 'marello_customer';
     
@@ -39,7 +41,7 @@ class CustomerExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_get_company_children_ids',
                 [$this, 'getCompanyChildrenIds']
             )

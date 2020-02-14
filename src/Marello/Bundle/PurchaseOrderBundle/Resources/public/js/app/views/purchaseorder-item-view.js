@@ -1,7 +1,7 @@
 define(function(require) {
     'use strict';
 
-    var PurchaseOrderItemView,
+    const
         $ = require('jquery'),
         _ = require('underscore'),
         routing = require('routing'),
@@ -13,7 +13,7 @@ define(function(require) {
      * @extends marellolayout.app.views.AbstractItemView
      * @class marellopurchaseorder.app.views.PurchaseOrderItemView
      */
-    PurchaseOrderItemView = AbstractItemView.extend({
+    const PurchaseOrderItemView = AbstractItemView.extend({
         /**
          * @property {Object}
          */

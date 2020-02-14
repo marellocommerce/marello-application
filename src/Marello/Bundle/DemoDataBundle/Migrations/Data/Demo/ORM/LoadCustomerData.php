@@ -3,20 +3,12 @@
 namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Oro\Bundle\AddressBundle\Entity\Country;
 use Oro\Bundle\AddressBundle\Entity\Region;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
-
-use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\OrderBundle\Entity\Customer;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 
 class LoadCustomerData extends AbstractFixture
 {
@@ -61,6 +53,7 @@ class LoadCustomerData extends AbstractFixture
 
     /**
      * Close all open files.
+     * @param resource $handle
      */
     protected function closeFiles($handle)
     {

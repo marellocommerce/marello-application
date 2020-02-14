@@ -17,7 +17,7 @@ class MarelloInvoiceBundleInstaller implements Installation
      */
     public function getMigrationVersion()
     {
-        return 'v1_1';
+        return 'v1_2';
     }
 
     /**
@@ -83,12 +83,12 @@ class MarelloInvoiceBundleInstaller implements Installation
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
 
         $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['invoice_number'], 'UNIQ_45AB65072DA68207');
-        $table->addIndex(['order_id'], 'IDX_A619DD647BE036FC1');
-        $table->addIndex(['customer_id'], 'IDX_A619DD649395C3F31', []);
-        $table->addIndex(['billing_address_id'], 'IDX_A619DD6443656FE61', []);
-        $table->addIndex(['shipping_address_id'], 'IDX_A619DD64B1835C8F1', []);
-        $table->addIndex(['salesChannel_id'], 'IDX_A619DD644C7A5B2E1', []);
+        $table->addUniqueIndex(['invoice_number'], null);
+        $table->addIndex(['order_id'], null);
+        $table->addIndex(['customer_id'], null, []);
+        $table->addIndex(['billing_address_id'], null, []);
+        $table->addIndex(['shipping_address_id'], null, []);
+        $table->addIndex(['salesChannel_id'], null, []);
         $table->addIndex(['organization_id']);
     }
 
@@ -179,7 +179,7 @@ class MarelloInvoiceBundleInstaller implements Installation
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
         $table->addForeignKeyConstraint(
-            $schema->getTable('marello_order_customer'),
+            $schema->getTable('marello_customer_customer'),
             ['customer_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]

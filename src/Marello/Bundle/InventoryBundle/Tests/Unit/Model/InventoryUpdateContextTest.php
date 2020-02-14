@@ -9,6 +9,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 
 class InventoryUpdateContextTest extends TestCase
@@ -95,8 +96,8 @@ class InventoryUpdateContextTest extends TestCase
     public function getSetDataProvider()
     {
         $product = $this->createMock(Product::class);
-        $stock         = 10;
-        $allocatedStock          = 5;
+        $inventoryQty = 10;
+        $allocatedInventoryQty = 5;
         $changeTrigger = 'manual';
         $user   = $this->createMock(User::class);
         $relatedEntity = $this
@@ -108,15 +109,20 @@ class InventoryUpdateContextTest extends TestCase
             ->getMockBuilder(InventoryItem::class)
             ->disableOriginalConstructor()
             ->getMock();
-        
+
+        $inventoryLevel = $this->createMock(InventoryLevel::class);
+
         return [
             'product'           => ['product', $product, $product],
-            'stock'             => ['stock', $stock, $stock],
-            'allocated_stock'   => ['allocatedStock', $allocatedStock, $allocatedStock],
+            'quantity'          => ['inventory', $inventoryQty, $inventoryQty],
+            'allocated_inventory_qty' => ['allocatedInventory', $allocatedInventoryQty, $allocatedInventoryQty],
             'change_trigger'    => ['changeTrigger', $changeTrigger, $changeTrigger],
             'user'              => ['user', $user, $user],
             'related_entity'    => ['relatedEntity', $relatedEntity, $relatedEntity],
-            'items'             => ['items', [$inventoryItem], [$inventoryItem]]
+            'inventory_item'    => ['inventoryItem', $inventoryItem, $inventoryItem],
+            'inventory_level'   => ['inventoryLevel', $inventoryLevel, $inventoryLevel],
+            'inventory_batches' => ['inventoryBatches', [], []],
+            'is_virtual' => ['isVirtual', 0, 0],
         ];
     }
 }

@@ -31,6 +31,7 @@ class MarelloPurchaseOrderBundle implements
      * Creates supplier column and sets the value of the current purchase orders
      *
      * @param Schema $schema
+     * @param QueryBag $queries
      */
     protected function updatePurchaseOrderTable(Schema $schema, QueryBag $queries)
     {

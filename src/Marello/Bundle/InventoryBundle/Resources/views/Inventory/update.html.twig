@@ -1,13 +1,14 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
 {% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
 
 {% set formAction = path('marello_inventory_inventory_update', { 'id': entity.id }) %}
 
 {% block navButtons %}
     {{ UI.cancelButton(path('marello_inventory_inventory_index')) }}
-    {% if entity.id and resource_granted('marello_inventory_inventory_update') %}
+    {% if entity.id and is_granted('marello_inventory_inventory_update') %}
         {% set html = '' %}
-        {% if resource_granted('marello_inventory_inventory_view') %}
+        {% if is_granted('marello_inventory_inventory_view') %}
             {% set html = UI.saveAndCloseButton({
             'route': 'marello_inventory_inventory_view',
             'params': {'id': '$id'}
@@ -35,7 +36,7 @@
 {% block content_data %}
     {% set id = 'marello-inventory-update' %}
     {% set generalSubblocks = [] %}
-    {% set inventoryInformationWidget %}
+    {% set productInformationWidget %}
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
@@ -50,16 +51,28 @@
             </div>
         </div>
     {% endset %}
-    {% set generalSubblocks = generalSubblocks|merge([{'data' : [inventoryInformationWidget] }]) %}
+    {% set generalSubblocks = generalSubblocks|merge([{'data' : [productInformationWidget] }]) %}
 
-    {% set totalsWidget %}
+    {% set inventoryItemLevelCombinedWidget %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    <div class="box-type1">
+                        <div class="title">
+                            <span class="widget-title">{{ 'marello.inventory.inventoryitem.section.inventorybatch.label'|trans }}</span>
+                        </div>
+                        {{ UI.renderProperty('marello.inventory.inventoryitem.enable_batch_inventory.label'|trans, entity.enableBatchInventory ? 'marello.core.yes.label'|trans : 'marello.core.no.label'|trans) }}
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="responsive-block">
             <div class="box-type1">
                 {% placeholder marello_inventory_levels_totals with {'entity' : entity} %}
             </div>
         </div>
     {% endset %}
-    {% set generalSubblocks = generalSubblocks|merge([{'data' : [totalsWidget] }]) %}
+    {% set generalSubblocks = generalSubblocks|merge([{'data' : [inventoryItemLevelCombinedWidget] }]) %}
 
     {% set inventoryQuantityWidget %}
         <div class="responsive-block">

@@ -20,7 +20,7 @@ class InventoryLevelTest extends TestCase
         $warehouse = new Warehouse();
         $this->assertPropertyAccessors(new InventoryLevel(), [
             ['id', 42],
-            ['inventoryItem', new InventoryItem($warehouse, new Product())],
+            ['inventoryItem', new InventoryItem(new Product())],
             ['warehouse', $warehouse],
             ['pickLocation', '12-4-16', false],
             ['createdAt', new \DateTime()],

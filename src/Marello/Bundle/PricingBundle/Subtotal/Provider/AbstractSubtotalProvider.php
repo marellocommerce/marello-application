@@ -6,7 +6,7 @@ use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 use Marello\Bundle\PricingBundle\Subtotal\Model\Subtotal;
 use Oro\Bundle\CurrencyBundle\Provider\DefaultCurrencyProviderInterface;
 use Oro\Bundle\CurrencyBundle\Rounding\RoundingServiceInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class AbstractSubtotalProvider implements SubtotalProviderInterface
 {

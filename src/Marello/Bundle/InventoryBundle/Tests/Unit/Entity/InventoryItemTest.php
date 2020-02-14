@@ -17,14 +17,14 @@ class InventoryItemTest extends TestCase
 
     public function testAccessors()
     {
-        $this->assertPropertyAccessors(new InventoryItem(new Warehouse(), new Product()), [
+        $this->assertPropertyAccessors(new InventoryItem(new Product()), [
             ['id', 42],
             ['desiredInventory', 42],
             ['purchaseInventory', 42],
             ['replenishment', 'some string']
         ]);
 
-        $this->assertPropertyCollections(new InventoryItem(new Warehouse(), new Product()), [
+        $this->assertPropertyCollections(new InventoryItem(new Product()), [
             ['inventoryLevels', new InventoryLevel()],
         ]);
     }

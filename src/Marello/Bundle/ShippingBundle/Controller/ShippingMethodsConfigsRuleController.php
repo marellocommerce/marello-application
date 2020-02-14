@@ -8,16 +8,19 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Marello\Bundle\ShippingBundle\Entity\ShippingMethodsConfigsRule;
 use Marello\Bundle\ShippingBundle\Form\Handler\ShippingMethodsConfigsRuleHandler;
 use Marello\Bundle\ShippingBundle\Form\Type\ShippingMethodsConfigsRuleType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class ShippingMethodsConfigsRuleController extends Controller
+class ShippingMethodsConfigsRuleController extends AbstractController
 {
     /**
-     * @Route("/", name="marello_shipping_methods_configs_rule_index")
+     * @Route(
+     *     path="/",
+     *     name="marello_shipping_methods_configs_rule_index"
+     * )
      * @Template
      * @AclAncestor("marello_shipping_methods_configs_rule_view")
      *
@@ -31,7 +34,10 @@ class ShippingMethodsConfigsRuleController extends Controller
     }
 
     /**
-     * @Route("/create", name="marello_shipping_methods_configs_rule_create")
+     * @Route(
+     *     path="/create",
+     *     name="marello_shipping_methods_configs_rule_create"
+     * )
      * @Template("MarelloShippingBundle:ShippingMethodsConfigsRule:update.html.twig")
      * @Acl(
      *     id="marello_shipping_methods_configs_rule_create",
@@ -49,7 +55,11 @@ class ShippingMethodsConfigsRuleController extends Controller
     }
 
     /**
-     * @Route("/view/{id}", name="marello_shipping_methods_configs_rule_view", requirements={"id"="\d+"})
+     * @Route(
+     *     path="/view/{id}",
+     *     name="marello_shipping_methods_configs_rule_view",
+     *     requirements={"id"="\d+"}
+     * )
      * @Template
      * @Acl(
      *      id="marello_shipping_methods_configs_rule_view",
@@ -70,7 +80,11 @@ class ShippingMethodsConfigsRuleController extends Controller
     }
 
     /**
-     * @Route("/update/{id}", name="marello_shipping_methods_configs_rule_update", requirements={"id"="\d+"})
+     * @Route(
+     *     path="/update/{id}",
+     *     name="marello_shipping_methods_configs_rule_update",
+     *     requirements={"id"="\d+"}
+     * )
      * @Template
      * @Acl(
      *     id="marello_shipping_methods_configs_rule_update",
@@ -118,7 +132,10 @@ class ShippingMethodsConfigsRuleController extends Controller
     }
 
     /**
-     * @Route("/{gridName}/massAction/{actionName}", name="marello_status_shipping_rule_massaction")
+     * @Route(
+     *     path="/{gridName}/massAction/{actionName}",
+     *     name="marello_status_shipping_rule_massaction"
+     * )
      * @Acl(
      *     id="marello_shipping_methods_configs_rule_update",
      *     type="entity",

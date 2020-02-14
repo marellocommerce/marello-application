@@ -264,47 +264,36 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
      * @var boolean
      */
     protected $orderOnDemandAllowed;
-    
+
     /**
-     * @var Warehouse
+     * @ORM\Column(name="enable_batch_inventory", type="boolean", nullable=true, options={"default"=false})
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "header"="Enable Batch Inventory"
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var boolean
      */
-    protected $warehouse;
+    protected $enableBatchInventory;
 
     /**
      * InventoryItem constructor.
      *
-     * @param Warehouse $warehouse
      * @param ProductInterface|Product $product
      */
-    public function __construct(Warehouse $warehouse = null, ProductInterface $product)
+    public function __construct(ProductInterface $product)
     {
         parent::__construct();
         
         $this->product = $product;
         $product->addInventoryItem($this);
-        $this->warehouse = $warehouse;
         $this->inventoryLevels = new ArrayCollection();
-    }
-
-    /**
-     * @deprecated
-     * @return Warehouse
-     */
-    public function getWarehouse()
-    {
-        return $this->warehouse;
-    }
-
-    /**
-     * @deprecated
-     * @param Warehouse $warehouse
-     * @return $this
-     */
-    public function setWarehouse(Warehouse $warehouse)
-    {
-        $this->warehouse = $warehouse;
-
-        return $this;
     }
 
     /**
@@ -584,6 +573,25 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
     {
         $this->orderOnDemandAllowed = $orderOnDemandAllowed;
 
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEnableBatchInventory()
+    {
+        return $this->enableBatchInventory;
+    }
+
+    /**
+     * @param mixed $enableBatchInventory
+     * @return InventoryItem
+     */
+    public function setEnableBatchInventory($enableBatchInventory)
+    {
+        $this->enableBatchInventory = $enableBatchInventory;
+        
         return $this;
     }
 }

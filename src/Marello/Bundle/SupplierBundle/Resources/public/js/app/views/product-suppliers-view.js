@@ -1,7 +1,7 @@
 define(function(require) {
     'use strict';
 
-    var ProductSuppliersView,
+    const
         $ = require('jquery'),
         _ = require('underscore'),
         routing = require('routing'),
@@ -13,13 +13,13 @@ define(function(require) {
      * @extends marellolayout.app.views.AbstractItemsView
      * @class marellosupplier.app.views.ProductSuppliersView
      */
-    ProductSuppliersView = AbstractItemsView.extend({
+    const ProductSuppliersView = AbstractItemsView.extend({
         /**
          * @property {Object}
          */
         options: {
             suppliers: {},
-            supplierDataRoute: 'marello_supplier_supplier_get_default_data',
+            supplierDataRoute: 'marello_supplier_supplier_get_default_data'
         },
 
         /**

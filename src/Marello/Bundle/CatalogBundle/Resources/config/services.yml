@@ -1,5 +1,3 @@
-parameters:
-    marello_catalog.category.entity.class: Marello\Bundle\CatalogBundle\Entity\Category
 services:
     marello_catalog.category.form.type:
         class: 'Marello\Bundle\CatalogBundle\Form\Type\CategoryType'
@@ -16,11 +14,19 @@ services:
 
     marello_catalog.category.form.handler:
         class: 'Marello\Bundle\CatalogBundle\Form\Handler\CategoryHandler'
-        scope: request
+        public: true
         arguments:
             - '@marello_catalog.category.form'
             - '@request_stack'
             - '@doctrine.orm.entity_manager'
+
+    marello_catalog.event_listener.datagrid.products_grid:
+        class: 'Marello\Bundle\CatalogBundle\EventListener\Datagrid\CategoriesDatagridListener'
+        arguments:
+            - 'Marello\Bundle\ProductBundle\Entity\Product'
+            - '@marello_catalog.provider.categories_choices'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-products-grid, method: onBuildBefore }
 
     marello_catalog.listener.datagrid.category_products_column_listener:
         class: 'Marello\Bundle\CatalogBundle\EventListener\Datagrid\CategoryProductsColumnListener'
@@ -34,6 +40,7 @@ services:
 
     marello_catalog.provider.categories_choices:
         class: 'Marello\Bundle\CatalogBundle\Provider\CategoriesChoicesProvider'
+        public: true
         arguments:
             - '@oro_entity.doctrine_helper'
 

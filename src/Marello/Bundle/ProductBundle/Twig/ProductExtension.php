@@ -2,28 +2,31 @@
 
 namespace Marello\Bundle\ProductBundle\Twig;
 
-use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
-
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\SalesBundle\Provider\ChannelProvider;
 use Marello\Bundle\CatalogBundle\Provider\CategoriesIdsProvider;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
+use Marello\Bundle\SalesBundle\Provider\ChannelProvider;
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class ProductExtension extends \Twig_Extension
+class ProductExtension extends AbstractExtension
 {
     const NAME = 'marello_product';
     
     /**
-     * @var ChannelProvider $channelProvider
+     * @var ChannelProvider
      */
     protected $channelProvider;
 
     /**
-     * @var CategoriesIdsProvider $categoriesIdsProvider
+     * @var CategoriesIdsProvider
      */
     protected $categoriesIdsProvider;
 
-    /** @var DoctrineHelper $doctrineHelper */
+    /**
+     * @var DoctrineHelper
+     */
     private $doctrineHelper;
 
     /**
@@ -54,15 +57,15 @@ class ProductExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_sales_get_saleschannel_ids',
                 [$this, 'getSalesChannelsIds']
             ),
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_product_get_categories_ids',
                 [$this, 'getCategoriesIds']
             ),
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_get_product_by_sku',
                 [$this, 'getProductBySku']
             )

@@ -5,7 +5,7 @@
 {% set gridName  = 'marello-categories-grid' %}
 
 {% block navButtons %}
-    {% if resource_granted('marello_category_create') %}
+    {% if is_granted('marello_category_create') %}
         {{ UI.addButton({
             'path': path('marello_category_create'),
             'entity_label': 'marello.catalog.category.entity_label'|trans

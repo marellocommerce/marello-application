@@ -3,15 +3,12 @@
 namespace Marello\Bundle\InventoryBundle\Model\BalancedInventory;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-
-use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
-use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
-
-use Marello\Bundle\ProductBundle\Entity\ProductInterface;
-use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\Repository\BalancedInventoryRepository;
-use Marello\Bundle\InventoryBundle\Model\BalancedInventory\BalancedInventoryFactory;
+use Marello\Bundle\ProductBundle\Entity\ProductInterface;
+use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 
 class BalancedInventoryHandler
 {

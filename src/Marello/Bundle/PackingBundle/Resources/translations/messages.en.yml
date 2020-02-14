@@ -37,6 +37,7 @@ marello:
             comment.label:          Comment
             status.label:           Status
             organization.label:     Organization
+            inventory_batches.label: Inventory Batches
 
         datagrid:
             columns:

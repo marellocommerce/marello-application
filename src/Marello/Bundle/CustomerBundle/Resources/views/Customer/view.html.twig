@@ -1,0 +1,153 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'MarelloAddressBundle::macros.html.twig' as Address %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% import 'OroEntityConfigBundle::macros.html.twig' as entityConfig %}
+
+{% oro_title_set({params : {"%name%": entity.fullName }}) %}
+
+{% block navButtons %}
+    {% if is_granted('EDIT', entity) %}
+        {{ UI.editButton({
+            'path' : path('marello_customer_update', { id: entity.id }),
+            'entity_label': 'marello.customer.entity_label'|trans
+        }) }}
+    {% endif %}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity':      entity,
+        'indexPath':   path('marello_customer_index'),
+        'indexLabel': 'marello.customer.entity_plural_label'|trans,
+        'entityTitle': entity.fullName
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set id = 'marello-customer-view' %}
+    {% set general %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {% if entity.company %}
+                        {{ UI.renderHtmlProperty(
+                        'marello.customer.company.label'|trans,
+                        UI.entityViewLink(entity.company, entity.company.name, 'marello_customer_company_view')
+                        ) }}
+                    {% endif %}
+                    {{ UI.renderProperty('marello.customer.name_prefix.label'|trans, entity.namePrefix) }}
+                    {{ UI.renderProperty('marello.customer.first_name.label'|trans, entity.firstName) }}
+                    {{ UI.renderProperty('marello.customer.middle_name.label'|trans, entity.middleName) }}
+                    {{ UI.renderProperty('marello.customer.last_name.label'|trans, entity.lastName) }}
+                    {{ UI.renderProperty('marello.customer.name_suffix.label'|trans, entity.nameSuffix) }}
+                    {{ UI.renderProperty('marello.customer.email.label'|trans, entity.email) }}
+                    {{ UI.renderProperty('marello.customer.phone.label'|trans, entity.primaryAddress.phone) }}
+                    {{ UI.renderProperty('marello.customer.company.label'|trans, entity.primaryAddress.company) }}
+                    {{ UI.renderProperty('oro.ui.created_at'|trans, entity.createdAt|date) }}
+                    {{ UI.renderProperty('oro.ui.updated_at'|trans, entity.updatedAt|date|default('N/A'|trans)) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
+    {% set addressBlock %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    <div class="attribute-item">
+                        <div class="attribute-item__description">
+                            <b>{{ 'marello.customer.primary_address.label' | trans }}</b>
+                            <br/>
+                            {{ Address.renderAddress(entity.primaryAddress) }}
+                        </div>
+                    </div>
+                    <br/>
+                    {% if entity.shippingAddress %}
+                    <div class="attribute-item">
+                        <div class="attribute-item__description">
+                            <b>{{ 'marello.customer.shipping_address.label' | trans }}</b>
+                            <br/>
+                            {{ Address.renderAddress(entity.shippingAddress) }}
+                        </div>
+                    </div>
+                    {% endif %}
+                    <div class="attribute-item">
+                        {% placeholder marello_address_map with {'address' : entity.primaryAddress} %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
+    {% set order %}
+        {{ dataGrid.renderGrid('marello-order-customer', {'customerId': entity.id}) }}
+    {% endset %}
+
+    {% set return %}
+        {{ dataGrid.renderGrid('marello-return-customer', {'customerId': entity.id}) }}
+    {% endset %}
+
+    {% set refund %}
+        {{ dataGrid.renderGrid('marello-refund-customer', {'customerId': entity.id}) }}
+    {% endset %}
+
+    {% set additionalData %}
+        {{ entityConfig.renderDynamicFields(entity) }}
+    {% endset %}
+
+    {% set dataBlocks = [
+        {
+            'title': 'General'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data' : [general, additionalData] },
+                { 'data' : [addressBlock] }
+            ]
+        },
+        {
+            'title': 'marello.order.entity_plural_label'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data': [order] }
+            ]
+        },
+        {
+            'title': 'marello.return.returnentity.entity_plural_label'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data': [return] }
+            ]
+        },
+        {
+            'title': 'marello.refund.entity_plural_label'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data': [refund] }
+            ]
+        }
+    ] %}
+
+    {%- set additionalInfoPlaceholders = marello_get_additional_placeholder_data('customer') -%}
+    {% for additionalInfo in additionalInfoPlaceholders %}
+        {% set customerAdditionalInfoSection %}
+            {% set placeholderName = additionalInfo.placeholder %}
+            {% placeholder placeholderName with {'customer': entity} %}
+        {% endset %}
+        {% if customerAdditionalInfoSection|trim is not empty %}
+            {% set dataBlocks = dataBlocks|merge([
+                {
+                    'title': additionalInfo.label|trans,
+                    'class': 'active',
+                    'subblocks': [
+                        { 'data': [customerAdditionalInfoSection] }
+                    ]
+                }
+            ]) %}
+        {% endif %}
+    {% endfor %}
+
+    {% set data = { 'dataBlocks': dataBlocks } %}
+    {{ parent() }}
+{% endblock content_data %}

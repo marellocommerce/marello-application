@@ -1,6 +1,3 @@
-parameters:
-    marello_rule.entity.rule.class: 'Marello\Bundle\RuleBundle\Entity\Rule'
-
 services:
     marello_rule.expression_language:
         class: 'Oro\Component\ExpressionLanguage\ExpressionLanguage'
@@ -41,3 +38,15 @@ services:
 
     marello_rule.action.visibility_provider:
         class: 'Marello\Bundle\RuleBundle\Datagrid\RuleActionsVisibilityProvider'
+
+    marello_rule.basic_expression_language_validator:
+        class: 'Oro\Component\ExpressionLanguage\BasicExpressionLanguageValidator'
+        arguments:
+            - '@marello_rule.expression_language'
+
+    marello_rule.validator_constraints.expression_language_syntax_validator:
+        class: 'Marello\Bundle\RuleBundle\Validator\Constraints\ExpressionLanguageSyntaxValidator'
+        arguments:
+            - '@marello_rule.basic_expression_language_validator'
+        tags:
+            - { name: validator.constraint_validator, alias: oro_rule.validator_constraints.expression_language_syntax_validator }

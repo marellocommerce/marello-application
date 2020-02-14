@@ -5,6 +5,7 @@ namespace Marello\Bundle\SalesBundle\Tests\Unit\EventListener\Doctrine;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
@@ -29,9 +30,9 @@ class SalesChannelListenerTest extends TestCase
 
     /**
      * @dataProvider prePersistDataProvider
-     * @param \PHPUnit_Framework_MockObject_MockObject|null $salesChannelGroup
+     * @param MockObject|null $salesChannelGroup
      */
-    public function testPrePersist(\PHPUnit_Framework_MockObject_MockObject $salesChannelGroup = null)
+    public function testPrePersist(MockObject $salesChannelGroup = null)
     {
         $salesChannel = new SalesChannel();
 
@@ -48,7 +49,7 @@ class SalesChannelListenerTest extends TestCase
             ->with(SalesChannelGroup::class)
             ->willReturn($repository);
 
-        /** @var LifecycleEventArgs|\PHPUnit_Framework_MockObject_MockObject $args **/
+        /** @var LifecycleEventArgs|MockObject $args **/
         $args = $this
             ->getMockBuilder(LifecycleEventArgs::class)
             ->disableOriginalConstructor()
