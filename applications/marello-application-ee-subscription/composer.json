@@ -1,11 +1,11 @@
 {
-    "name": "marellocommerce/marello-application-ee",
-    "description": "Marello Unified Commerce Management Enterprise",
-    "homepage": "https://github.com/marellocommerce/marello-application-ee.git",
+    "name": "marellocommerce/marello-application-ee-subscription",
+    "description": "Marello Unified Commerce Management Enterprise with subscription extension",
+    "homepage": "https://github.com/marellocommerce/marello-application-ee-subscription.git",
     "license": "Commercial",
     "authors": [
         {
-            "name": "Madia B.V.",
+            "name": "Marello B.V.",
             "homepage": "https://www.marello.com"
         }
     ],
@@ -52,7 +52,7 @@
         "oro/health-check-bundle": "~3.1.1",
         "marellocommerce/marello": "~2.1.0",
         "marellocommerce/marello-enterprise": "~2.1.0",
-        "marellocommerce/marello-subscriptions": "~2.1.0"
+        "marellocommerce/marello-subscriptions": "~3.0.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "3.1.*",
@@ -118,6 +118,9 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "extra": {
+        "symfony": {
+            "require": "4.4.*"
+        },
         "symfony-web-dir": "public",
         "symfony-var-dir": "var",
         "symfony-bin-dir": "bin",

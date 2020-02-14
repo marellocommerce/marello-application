@@ -1,10 +1,3 @@
-parameters:
-    marello_tax.taxcode.entity.class:  Marello\Bundle\TaxBundle\Entity\TaxCode
-    marello_tax.taxrate.entity.class:  Marello\Bundle\TaxBundle\Entity\TaxRate
-    marello_tax.taxrule.entity.class:  Marello\Bundle\TaxBundle\Entity\TaxRule
-    marello_tax.taxjurisdiction.entity.class:  Marello\Bundle\TaxBundle\Entity\TaxJurisdiction
-    marello_tax.zipcode.entity.class:  Marello\Bundle\TaxBundle\Entity\ZipCode
-
 services:
     ## forms
     marello_tax.form.type.tax_code:
@@ -58,7 +51,7 @@ services:
     marello_tax.taxcode.form.autocomplete.search_handler:
         parent: oro_form.autocomplete.search_handler
         arguments:
-            - '%marello_tax.taxcode.entity.class%'
+            - 'Marello\Bundle\TaxBundle\Entity\TaxCode'
             - ["code"]
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: taxcodes, acl_resource: marello_tax_taxcode_view }
@@ -66,7 +59,7 @@ services:
     marello_tax.taxrate.form.autocomplete.search_handler:
         parent: oro_form.autocomplete.search_handler
         arguments:
-            - '%marello_tax.taxrate.entity.class%'
+            - 'Marello\Bundle\TaxBundle\Entity\TaxRate'
             - ['code']
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: taxrates, acl_resource: marello_tax_taxrate_view }
@@ -74,7 +67,7 @@ services:
     marello_tax.taxjurisdiction.form.autocomplete.search_handler:
         parent: oro_form.autocomplete.search_handler
         arguments:
-            - '%marello_tax.taxjurisdiction.entity.class%'
+            - 'Marello\Bundle\TaxBundle\Entity\TaxJurisdiction'
             - ['code']
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: taxjurisdictions, acl_resource: marello_tax_taxjurisdiction_view }

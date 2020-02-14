@@ -11,7 +11,9 @@
                             <th class="businesshours-line-item-timeperiods">
                                 <div class="businesshours-line-item-opentime"><span>{{ 'marello.servicepoint.timeperiod.open_time.label'|trans }}</span></div>
                                 <div class="businesshours-line-item-closetime"><span>{{ 'marello.servicepoint.timeperiod.close_time.label'|trans }}</span></div>
-                                <div class="businesshours-line-item-actions"><span>&nbsp;</span></div>
+                                {% if form.vars.allow_delete %}
+                                    <div class="businesshours-line-item-actions"><span>&nbsp;</span></div>
+                                {% endif %}
                             </th>
                         </tr>
                     </thead>
@@ -69,7 +71,7 @@
                 {% endfor %}
             </div>
         {% if allow_add %}
-            <a class="btn add-list-item" href="#"><i class="fa fa-plus"></i> {{ 'marello.servicepoint.ui.servicepoint_facility.business_hours.add.label'|trans }}</a>
+            <a class="btn add-list-item" href="#"><i class="fa fa-plus"></i>{{ 'marello.servicepoint.ui.servicepoint_facility.business_hours.add.label'|trans }}</a>
         {% endif %}
         </div>
     {% endspaceless %}
@@ -113,14 +115,13 @@
             {{- form_widget(child) -}}
             {{- form_errors(child) -}}
         {%- endfor -%}
-<div class="businesshours-line-item-actions">
-    <button class="removeRow btn btn-sm btn-icon"
-            aria-label="{{ 'oro.form.collection.remove'|trans }}"
-            type="button"
-            data-related="{{ name }}">
-        <span class="fa fa-remove" aria-hidden="true"></span>
-    </button>
-</div>
+        <div class="businesshours-line-item-actions marello-line-item-remove">
+            <button type="button" class="removeRow btn icons-holder"
+                    aria-label="{{ 'oro.form.collection.remove'|trans }}"
+                    data-related="{{ name }}">
+                <i class="fa-remove"></i>
+            </button>
+        </div>
     {%- endspaceless -%}
 {% endblock %}
 

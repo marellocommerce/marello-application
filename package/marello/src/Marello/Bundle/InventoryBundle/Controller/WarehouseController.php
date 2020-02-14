@@ -14,9 +14,9 @@ class WarehouseController extends AbstractController
 {
     /**
      * @Route(
-     *     path="/update-default", 
-     *     methods={"GET", "POST"}, 
-     *     requirements={"id"="\d+"}, 
+     *     path="/update-default",
+     *     methods={"GET", "POST"},
+     *     requirements={"id"="\d+"},
      *     name="marello_inventory_warehouse_updatedefault"
      * )
      * @Template("MarelloInventoryBundle:Warehouse:updateDefault.html.twig")

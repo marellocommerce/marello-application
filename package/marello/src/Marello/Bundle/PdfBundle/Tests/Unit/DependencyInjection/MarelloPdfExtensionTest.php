@@ -30,15 +30,11 @@ class MarelloPdfExtensionTest extends ExtensionTestCase
             'marello_pdf.factory.pdf_writer',
             'marello_pdf.renderer.html',
             'marello_pdf.renderer.twig',
-            'marello_pdf.provider.logo',
             'marello_pdf.provider.render_parameters',
             'marello_pdf.param_provider.entity',
-            'marello_pdf.param_provider.logo',
             'marello_pdf.param_provider.saleschannel_config_values',
             'marello_pdf.provider.document_table',
             'marello_pdf.twig_extension.document_table',
-            'marello_pdf.table_provider.invoice',
-            'marello_pdf.provider.table_size',
         ]);
     }
 }

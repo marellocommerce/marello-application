@@ -14,8 +14,9 @@ services:
             - MYSQL_DATABASE=marellocommerce
             - MYSQL_USER=marellocommerce
             - MYSQL_PASSWORD=marellocommerce
-        volumes_from:
-            - data
+        volumes:
+            - dbdata:/var/lib/mysql
+
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
         container_name: subscription-phpmyadmin
@@ -51,9 +52,9 @@ services:
             - data
         volumes:
             - ../applications/marello-application-ee-subscription:/var/www:cached
-            - ../package/marello:/package/marello
-            - ../package/marello-enterprise:/package/marello-enterprise
-            - ../package/marello-subscriptions:/package/marello-subscriptions
+            - ../package/marello:/package/marello:delegated
+            - ../package/marello-enterprise:/package/marello-enterprise:delegated
+            - ../package/marello-subscriptions:/package/marello-subscriptions:delegated
         environment:
             - VIRTUAL_HOST=marello-ee.docker
             - IS_LOCAL=true
@@ -77,3 +78,6 @@ services:
             - APP_WEBSOCKET_HOST=
             - APP_WEBSOCKET_PORT=5081
             - APP_IS_INSTALLED=
+
+volumes:
+    dbdata:

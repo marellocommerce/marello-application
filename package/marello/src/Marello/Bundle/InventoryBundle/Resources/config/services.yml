@@ -1,8 +1,3 @@
-parameters:
-    marello_inventory.entity.warehouse.class: Marello\Bundle\InventoryBundle\Entity\Warehouse
-    marello_inventory.entity.warehousegroup.class: Marello\Bundle\InventoryBundle\Entity\WarehouseGroup
-    marello_inventory.entity.warehousechannelgrouplink.class: Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink
-
 services:
     marello_product.widget_provider.actions.variant_mass_inventory:
         parent: oro_ui.widget_provider.action_button.abstract

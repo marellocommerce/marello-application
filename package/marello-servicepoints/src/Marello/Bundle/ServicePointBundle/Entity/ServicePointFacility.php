@@ -105,7 +105,11 @@ class ServicePointFacility extends ExtendServicePointFacility implements DatesAw
     /**
      * @var Collection|BusinessHours[]
      *
-     * @ORM\OneToMany(targetEntity="Marello\Bundle\ServicePointBundle\Entity\BusinessHours", mappedBy="servicePointFacility", cascade={"ALL"})
+     * @ORM\OneToMany(
+     *     targetEntity="Marello\Bundle\ServicePointBundle\Entity\BusinessHours",
+     *     mappedBy="servicePointFacility",
+     *     cascade={"ALL"}
+     * )
      * @ConfigField(defaultValues={
      *     "entity"={
      *         "label" = "marello.servicepoint.servicepoint_facility.business_hours.label"
@@ -117,7 +121,11 @@ class ServicePointFacility extends ExtendServicePointFacility implements DatesAw
     /**
      * @var Collection|BusinessHoursOverride[]
      *
-     * @ORM\OneToMany(targetEntity="Marello\Bundle\ServicePointBundle\Entity\BusinessHoursOverride", mappedBy="servicePointFacility", cascade={"ALL"})
+     * @ORM\OneToMany(
+     *     targetEntity="Marello\Bundle\ServicePointBundle\Entity\BusinessHoursOverride",
+     *     mappedBy="servicePointFacility",
+     *     cascade={"ALL"}
+     * )
      * @ConfigField(defaultValues={
      *     "entity"={
      *         "label" = "marello.servicepoint.servicepoint_facility.business_hours_overrides.label"

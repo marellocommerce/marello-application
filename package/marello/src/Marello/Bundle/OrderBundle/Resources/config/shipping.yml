@@ -5,4 +5,4 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
         tags:
-            - { name: marello.shipping.data_provider,  class: '%marello_order.entity.order.class%' }
+            - { name: marello.shipping.data_provider,  class: 'Marello\Bundle\OrderBundle\Entity\Order' }

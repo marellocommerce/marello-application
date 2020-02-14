@@ -1,21 +1,20 @@
 <?php
 
-namespace Marello\Bundle\PdfBundle\Tests\Unit\Provider;
+namespace Marello\Bundle\InvoiceBundle\Tests\Unit\Pdf\Logo;
 
 use Doctrine\ORM\EntityRepository;
 use Liip\ImagineBundle\Binary\BinaryInterface;
-use Marello\Bundle\PdfBundle\Provider\LogoProvider;
+use Marello\Bundle\InvoiceBundle\Pdf\Logo\InvoiceLogoPathProvider;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\AttachmentBundle\Entity\File;
 use Oro\Bundle\AttachmentBundle\Manager\AttachmentManager;
-use Oro\Bundle\AttachmentBundle\Manager\MediaCacheManager;
-use Oro\Bundle\AttachmentBundle\Resizer\ImageResizer;
+use Oro\Bundle\AttachmentBundle\Manager\ImageResizeManagerInterface;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Component\Testing\Unit\EntityTrait;
 use PHPUnit\Framework\TestCase;
 
-class LogoProviderTest extends TestCase
+class InvoiceLogoPathProviderTest extends TestCase
 {
     use EntityTrait;
 
@@ -65,46 +64,31 @@ class LogoProviderTest extends TestCase
 
         /** @var AttachmentManager|\PHPUnit_Framework_MockObject_MockObject $attachmentManager */
         $attachmentManager = $this->createMock(AttachmentManager::class);
-        /** @var ImageResizer|\PHPUnit_Framework_MockObject_MockObject $imageResizer */
-        $imageResizer = $this->createMock(ImageResizer::class);
-        /** @var MediaCacheManager|\PHPUnit_Framework_MockObject_MockObject $mediaCacheManager */
-        $mediaCacheManager = $this->createMock(MediaCacheManager::class);
+        /** @var ImageResizeManagerInterface|\PHPUnit_Framework_MockObject_MockObject $imageResizer */
+        $imageResizer = $this->createMock(ImageResizeManagerInterface::class);
         if ($logoEntity !== null) {
             $attachmentManager->expects($this->once())
                 ->method('getFilteredImageUrl')
-                ->with($logoEntity, LogoProvider::IMAGE_FILTER)
+                ->with($logoEntity, InvoiceLogoPathProvider::IMAGE_FILTER)
                 ->willReturn($resizedPath)
             ;
 
             if (!file_exists(__DIR__.'/data/public'.$resizedPath)) {
                 /** @var BinaryInterface|\PHPUnit_Framework_MockObject_MockObject $resizedImage */
                 $resizedImage = $this->createMock(BinaryInterface::class);
-                $resizedImage->expects($this->once())
-                    ->method('getContent')
-                    ->willReturn(file_get_contents(__DIR__.'/data/public/resized_image/logoprovider_resized.txt'))
-                ;
 
                 $imageResizer->expects($this->once())
-                    ->method('resizeImage')
-                    ->with($logoEntity, LogoProvider::IMAGE_FILTER)
+                    ->method('applyFilter')
+                    ->with($logoEntity, InvoiceLogoPathProvider::IMAGE_FILTER)
                     ->willReturn($resizedImage)
-                ;
-
-                $mediaCacheManager->expects($this->once())
-                    ->method('store')
-                    ->with(
-                        file_get_contents(__DIR__.'/data/public/resized_image/logoprovider_resized.txt'),
-                        $resizedPath
-                    )
                 ;
             }
         }
 
-        $provider = new LogoProvider(
+        $provider = new InvoiceLogoPathProvider(
             $configManager,
             $doctrineHelper,
             $attachmentManager,
-            $mediaCacheManager,
             $imageResizer,
             __DIR__.'/data'
         );

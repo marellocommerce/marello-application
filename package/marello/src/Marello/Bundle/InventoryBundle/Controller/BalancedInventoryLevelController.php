@@ -14,7 +14,7 @@ class BalancedInventoryLevelController extends AbstractController
 {
     /**
      * @Route(
-     *     path="/", 
+     *     path="/",
      *     name="marello_inventory_balancedinventorylevel_index"
      * )
      * @AclAncestor("marello_inventory_inventory_view")
@@ -31,7 +31,7 @@ class BalancedInventoryLevelController extends AbstractController
 
     /**
      * @Route(
-     *     path="/recalculate", 
+     *     path="/recalculate",
      *     name="marello_inventory_balancedinventorylevel_recalculate"
      * )
      * @Acl(

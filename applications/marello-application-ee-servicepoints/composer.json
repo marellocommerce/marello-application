@@ -1,11 +1,11 @@
 {
-    "name": "marellocommerce/marello-application-ee",
-    "description": "Marello Unified Commerce Management Enterprise",
-    "homepage": "https://github.com/marellocommerce/marello-application-ee.git",
+    "name": "marellocommerce/marello-application-ee-servicepoints",
+    "description": "Marello Unified Commerce Management Enterprise with subscriptions and servicepoint extensions",
+    "homepage": "https://github.com/marellocommerce/marello-application-ee-servicepoints.git",
     "license": "Commercial",
     "authors": [
         {
-            "name": "Madia B.V.",
+            "name": "Marello B.V.",
             "homepage": "https://www.marello.com"
         }
     ],
@@ -45,12 +45,11 @@
         }
     },
     "require": {
-        "php": ">=7.1",
         "oro/platform-enterprise": "~3.1.1",
         "oro/platform-serialised-fields": "~3.1.1",
         "oro/calendar-bundle": "~3.1.1",
         "oro/health-check-bundle": "~3.1.1",
-        "marellocommerce/marello-enterprise": "~2.1.0"
+        "marellocommerce/marello-enterprise": "~3.0.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "3.1.*",
@@ -117,7 +116,7 @@
     "prefer-stable": true,
     "extra": {
         "symfony": {
-            "require": "3.4.*"
+            "require": "4.4.*"
         },
         "symfony-web-dir": "public",
         "symfony-var-dir": "var",

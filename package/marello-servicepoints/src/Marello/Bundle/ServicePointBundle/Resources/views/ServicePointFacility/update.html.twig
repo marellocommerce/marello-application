@@ -16,7 +16,7 @@
     {{ parent() }}
 
     {{ UI.cancelButton(path('marello_servicepoint_servicepoint_view', {'id': entity.servicePoint.id})) }}
-    {% if is_granted('marello_servicepiont_servicepointfacility_update') %}
+    {% if is_granted('marello_servicepoint_servicepointfacility_update') %}
         {% set html = '' %}
         {% if is_granted('marello_servicepoint_servicepoint_view') %}
             {% set html = UI.saveAndCloseButton({
@@ -25,7 +25,7 @@
             }) %}
         {% endif %}
         {% set html = html ~ UI.saveAndStayButton({
-            'route': 'marello_servicepoint_facility_update',
+            'route': 'marello_servicepoint_servicepointfacility_update',
             'params': {'id': '$id'}
         }) %}
 

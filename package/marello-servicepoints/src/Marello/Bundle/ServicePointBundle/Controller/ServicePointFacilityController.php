@@ -15,8 +15,16 @@ use Symfony\Component\HttpFoundation\Request;
 class ServicePointFacilityController extends Controller
 {
     /**
-     * @Route("/create/{servicepoint_id}", requirements={"servicepoint_id"="\d+"}, name="marello_servicepoint_servicepointfacility_create")
-     * @ParamConverter("servicePoint", class="Marello\Bundle\ServicePointBundle\Entity\ServicePoint", options={"id" = "servicepoint_id"})
+     * @Route(
+     *     "/create/{servicepoint_id}",
+     *     requirements={"servicepoint_id"="\d+"},
+     *     name="marello_servicepoint_servicepointfacility_create"
+     * )
+     * @ParamConverter(
+     *     "servicePoint",
+     *     class="Marello\Bundle\ServicePointBundle\Entity\ServicePoint",
+     *     options={"id" = "servicepoint_id"}
+     * )
      * @Template("MarelloServicePointBundle:ServicePointFacility:update.html.twig")
      * @Acl(
      *      id="marello_servicepoint_servicepointfacility_create",
@@ -64,7 +72,11 @@ class ServicePointFacilityController extends Controller
     }
 
     /**
-     * @Route("/businesshours/{id}", requirements={"id" = "\d+"}, name="marello_servicepoint_servicepointfacility_businesshours")
+     * @Route(
+     *     "/businesshours/{id}",
+     *     requirements={"id" = "\d+"},
+     *     name="marello_servicepoint_servicepointfacility_businesshours"
+     * )
      * @Template("MarelloServicePointBundle:ServicePointFacility:widget/businessHours.html.twig")
      * @AclAncestor("marello_servicepoint_servicepointfacility_view")
      */
@@ -74,7 +86,11 @@ class ServicePointFacilityController extends Controller
     }
 
     /**
-     * @Route("/businesshoursoverrides/{id}", requirements={"id" = "\d+"}, name="marello_servicepoint_servicepointfacility_businesshoursoverrides")
+     * @Route(
+     *     "/businesshoursoverrides/{id}",
+     *     requirements={"id" = "\d+"},
+     *     name="marello_servicepoint_servicepointfacility_businesshoursoverrides"
+     * )
      * @Template("MarelloServicePointBundle:ServicePointFacility:widget/businessHoursOverrides.html.twig")
      * @AclAncestor("marello_servicepoint_servicepointfacility_view")
      */

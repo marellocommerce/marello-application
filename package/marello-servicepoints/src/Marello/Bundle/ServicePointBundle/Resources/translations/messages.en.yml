@@ -1,75 +1,81 @@
 marello:
     servicepoint:
-        entity_label: "Service Point"
-        entity_plural_label: "Service Points"
+        entity_label: Service Point
+        entity_plural_label: Service Points
 
-        id.label: "Id"
-        labels.label: "Name"
-        descriptions.label: "Description"
-        image.label: "Image"
-        service_point_facilities.label: "Facilities"
-        address.label: "Address"
-        latitude.label: "Latitude"
-        longitude.label: "Longitude"
+        id.label: Id
+        labels.label: Name
+        descriptions.label: Description
+        image.label: Image
+        service_point_facilities.label: Facilities
+        address.label: Address
+        latitude.label: Latitude
+        longitude.label: Longitude
 
         facility:
-            entity_label: "Facility"
-            entity_plural_label: "Facilities"
+            entity_label: Facility
+            entity_plural_label: Facilities
 
-            id.label: "Id"
-            code.label: "Code"
-            labels.label: "Name"
+            id.label: Id
+            code.label: Code
+            labels.label: Name
 
         businesshours:
-            id.label: "ID"
-            day_of_week.label: "Day"
-            date.label: "Date"
-            time_periods.label: "Time Periods"
-            servicepoint_facility.label: "Service Point Facility"
+            id.label: ID
+            entity_label: Business Hour
+            entity_plural_label: Business Hours
+            day_of_week.label: Day
+            date.label: Date
+            time_periods.label: Time Periods
+            servicepoint_facility.label: Service Point Facility
             open_status:
-                label: "Open Status"
-                open.label: "Open"
-                closed.label: "Closed"
+                label: Open Status
+                open.label: Open
+                closed.label: Closed
+
+        businesshoursoverride:
+            entity_label: Business Hour Override
+            entity_plural_label: Business Hours Override
 
         timeperiod:
-            entity_label: "Time Period"
-            entity_plural_label: "Time Periods"
+            entity_label: Time Period
+            entity_plural_label: Time Periods
 
-            id.label: "Id"
-            open_time.label: "Opening Time"
-            close_time.label: "Closing Time"
-            business_hours.label: "Business Hours"
+            id.label: Id
+            open_time.label: Opening Time
+            close_time.label: Closing Time
+            business_hours.label: Business Hours
 
         servicepoint_address:
-            entity_label: "Service Point Address"
-            entity_plural_label: "Service Point Addresses"
+            entity_label: Service Point Address
+            entity_plural_label: Service Point Addresses
 
         servicepoint_facility:
-            entity_label: "Service Point Facility"
-            entity_plural_label: "Service Point Facilities"
+            entity_label: Service Point Facility
+            entity_plural_label: Service Point Facilities
 
-            id.label: "Id"
-            service_point.label: "Service Point"
-            facility.label: "Facility"
-            business_hours.label: "Business Hours"
-            business_hours_overrides.label: "Business Hours Overrides"
-            phone.label: "Phone Number"
-            email.label: "E-mail address"
+            id.label: Id
+            service_point.label: Service Point
+            facility.label: Facility
+            business_hours.label: Business Hours
+            business_hours_overrides.label: Business Hours Overrides
+            phone.label: Phone
+            email.label: Email
 
         ui:
             facility:
-                saved.message: "The Facility was saved."
+                saved.message: The Facility was saved.
                 sections:
-                    additional: "Additional Fields"
+                    additional: Additional Fields
             servicepoint:
-                saved.message: "The Service Point was saved."
+                saved.message: The Service Point was saved.
                 sections:
-                    additional: "Additional Fields"
-                    image: "Image"
-                    map: "Map"
+                    additional: Additional Fields
+                    image: Image
+                    map: Map
             servicepoint_facility:
-                saved.message: "The Service Point Facility was saved."
+                saved.message: The Service Point Facility was saved.
                 sections:
-                    additional: "Additional Fields"
-                business_hours.add.label: "Add Business Hours"
-                business_hours_override.add.label: "Add Business Hours Override"
+                    additional: Additional Fields
+                business_hours.add.label: Add Business Hours
+                business_hours_override.add.label: Add Business Hours Override

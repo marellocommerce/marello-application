@@ -80,7 +80,7 @@ class OrderExtension extends AbstractExtension
      */
     public function isShippedOrderItem(OrderItem $orderItem)
     {
-        if (in_array($orderItem->getStatus()->getId(), $this->getOrderItemStatuses(),true)) {
+        if (in_array($orderItem->getStatus()->getId(), $this->getOrderItemStatuses(), true)) {
             return true;
         }
 

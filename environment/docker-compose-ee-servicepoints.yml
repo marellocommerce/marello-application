@@ -12,10 +12,11 @@ services:
         environment:
             - MYSQL_ROOT_PASSWORD=root
             - MYSQL_DATABASE=marellocommerce
-            - MYSQL_USER=marellocommerce
-            - MYSQL_PASSWORD=marellocommerce
-        volumes_from:
-            - data
+            - MYSQL_USER=root
+            - MYSQL_PASSWORD=root
+        volumes:
+            - dbdata:/var/lib/mysql
+
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
         container_name: enterprise-phpmyadmin
@@ -35,8 +36,8 @@ services:
             - POSTGRES_PASSWORD=root
             - POSTGRES_USER=root
             - POSTGRES_DB=marellocommerce
-        volumes_from:
-            - data
+        volumes:
+            - dbdata:/var/lib/postgresql/data
 
     adminer:
         image: adminer
@@ -44,7 +45,7 @@ services:
         ports:
             - "5084:8080"
         links:
-            - db
+            - db_postgres
 
     mailhog:
         image: mailhog/mailhog
@@ -63,6 +64,7 @@ services:
         working_dir: /var/www/
         links:
             - "db"
+            - "db_postgres"
             - "mailhog"
         ports:
             - "5080:80"
@@ -71,24 +73,24 @@ services:
             - data
         volumes:
             - ../applications/marello-application-ee-servicepoints:/var/www:cached
-            - ../package/marello:/package/marello
-            - ../package/marello-servicepoints:/package/marello-servicepoints
-            - ../package/marello-subscriptions:/package/marello-subscriptions
-            - ../package/marello-enterprise:/package/marello-enterprise
+            - ../package/marello:/package/marello:delegated
+            - ../package/marello-servicepoints:/package/marello-servicepoints:delegated
+            - ../package/marello-subscriptions:/package/marello-subscriptions:delegated
+            - ../package/marello-enterprise:/package/marello-enterprise:delegated
         environment:
             - VIRTUAL_HOST=marello-ee.docker
             - IS_LOCAL=true
             - CMD_INIT_BEFORE=
-            - CMD_INIT_CLEAN=runuser -s /bin/sh -c '/usr/bin/php /var/www/bin/console oro:install --timeout 3600 --sample-data=y --drop-database --env=prod --user-name=admin --user-firstname=John --user-lastname=Doe --user-password="marello123" --user-email="johndoe@example.com" --organization-name="Marello"' www-data
+            - CMD_INIT_CLEAN=
             - CMD_INIT_INSTALLED=
             - CMD_INIT_AFTER=
             - APP_DB_DRIVER=pdo_mysql
             - APP_DB_HOST=db
             - APP_DB_PORT=3306
-            - APP_DB_USER=marellocommerce
-            - APP_DB_PASSWORD=marellocommerce
+            - APP_DB_USER=root
+            - APP_DB_PASSWORD=root
             - APP_DB_NAME=marellocommerce
-            - APP_HOSTNAME=localhost
+            - APP_HOSTNAME=http://localhost:5080
             - APP_MAILER_TRANSPORT=smtp
             - APP_MAILER_HOST=mailhog
             - APP_MAILER_PORT=1025
@@ -98,3 +100,5 @@ services:
             - APP_WEBSOCKET_HOST=
             - APP_WEBSOCKET_PORT=5081
             - APP_IS_INSTALLED=
+volumes:
+    dbdata:

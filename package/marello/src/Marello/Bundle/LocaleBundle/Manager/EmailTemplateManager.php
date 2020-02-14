@@ -54,7 +54,7 @@ class EmailTemplateManager
         /*
          * If translation not found or not supported, try to get default template.
          */
-        if ($template == null) {
+        if ($template === null) {
             $template = $this->findDefaultTemplate($templateName, $entity);
         }
         

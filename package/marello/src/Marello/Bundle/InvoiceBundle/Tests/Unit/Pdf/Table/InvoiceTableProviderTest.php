@@ -1,14 +1,14 @@
 <?php
 
-namespace Marello\Bundle\PdfBundle\Tests\Unit\Provider\Table;
+namespace Marello\Bundle\InvoiceBundle\Tests\Unit\Pdf\Table;
 
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\InvoiceBundle\Entity\Invoice;
 use Marello\Bundle\InvoiceBundle\Entity\InvoiceItem;
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\PdfBundle\Lib\View\Table;
-use Marello\Bundle\PdfBundle\Provider\Table\InvoiceTableProvider;
+use Marello\Bundle\InvoiceBundle\Pdf\Table\InvoiceTableProvider;
 use Marello\Bundle\PdfBundle\Provider\TableSizeProvider;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\AddressBundle\Entity\Country;
@@ -69,10 +69,12 @@ class InvoiceTableProviderTest extends TestCase
         $firstItemHeight
     ) {
         $country = $this->getEntity(Country::class, [
-            'iso2Code' => 'NL',
             'iso3Code' => 'NLD',
             'name' => 'Netherlands',
-        ]);
+        ],
+            [
+                'NL'
+            ]);
 
         $billingAddress = $this->getEntity(MarelloAddress::class, [
             'street' => 'Billing street 1',
@@ -161,11 +163,11 @@ class InvoiceTableProviderTest extends TestCase
             ->with($salesChannel)
             ->willReturn($maxHeight)
         ;
-        $tableSizeProvider->expects($this->atLeastOnce())
-            ->method('getMaxTextWidth')
-            ->with($salesChannel)
-            ->willReturn($maxTextWidth)
-        ;
+        /* $tableSizeProvider->expects($this->atLeastOnce())
+             ->method('getMaxTextWidth')
+             ->with($salesChannel)
+             ->willReturn($maxTextWidth)
+         ;*/
         $tableSizeProvider->expects($this->atLeastOnce())
             ->method('getFirstPageInfoHeight')
             ->with($salesChannel)
@@ -234,7 +236,7 @@ class InvoiceTableProviderTest extends TestCase
                 'firstPageInfoHeight' => 13,
                 'lastPageInfoHeight' => 3,
                 'tableCount' => 1,
-                'firstItemHeight' => 3,
+                'firstItemHeight' => 1,
             ],
         ];
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\PdfBundle\Tests\Functional\Controller;
+namespace Marello\Bundle\InvoiceBundle\Tests\Functional\Controller;
 
 use Marello\Bundle\InvoiceBundle\Tests\Functional\DataFixtures\LoadInvoiceData;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 /**
  * @outputBuffering enabled
  */
-class PdfControllerTest extends WebTestCase
+class InvoiceDownloadPdfControllerTest extends WebTestCase
 {
     public function setUp()
     {
@@ -33,9 +33,9 @@ class PdfControllerTest extends WebTestCase
     {
         $invoice = $this->getReference('marello_invoice_0');
 
-        $urlParams = array_merge($urlParams, ['id' => $invoice->getId()]);
+        $urlParams = array_merge($urlParams, ['entity' => 'invoice', 'id' => $invoice->getId()]);
 
-        $this->client->request('GET', $this->getUrl('marello_pdf_download_invoice', $urlParams));
+        $this->client->request('GET', $this->getUrl('marello_pdf_download', $urlParams));
         $response = $this->client->getResponse();
 
         $contentDisposition = $response->headers->get('Content-Disposition');

@@ -18,14 +18,16 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
  *         @ORM\Index(columns={"date"})
  *     },
  *     uniqueConstraints={
- *         @ORM\UniqueConstraint(columns={"servicepoint_facility_id", "date"})
+ *         @ORM\UniqueConstraint(
+ *              name="uniq_marello_spf_date",
+ *              columns={"servicepoint_facility_id", "date"})
  *     }
  * )
  * @Config(
  *     defaultValues={
  *         "entity"={
- *             "label"="marello.servicepoint.businesshours.entity_label",
- *             "plural_label"="marello.servicepoint.businesshours.entity_plural_label"
+ *             "label"="marello.servicepoint.businesshoursoverride.entity_label",
+ *             "plural_label"="marello.servicepoint.businesshoursoverride.entity_plural_label"
  *         },
  *         "dataaudit"={
  *             "auditable"=true
@@ -91,7 +93,11 @@ class BusinessHoursOverride extends ExtendBusinessHoursOverride implements Dates
     /**
      * @var ArrayCollection|TimePeriodOverride[]
      *
-     * @ORM\OneToMany(targetEntity="Marello\Bundle\ServicePointBundle\Entity\TimePeriodOverride", mappedBy="businessHours", cascade={"ALL"})
+     * @ORM\OneToMany(
+     *     targetEntity="Marello\Bundle\ServicePointBundle\Entity\TimePeriodOverride",
+     *     mappedBy="businessHours",
+     *     cascade={"ALL"}
+     * )
      * @ConfigField(defaultValues={
      *     "entity"={
      *         "label" = "marello.servicepoint.businesshours.time_periods.label"

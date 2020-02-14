@@ -33,12 +33,9 @@ table {
     }
   }
 
-  .businesshours-line-item-timeperiods,
-  .businesshoursoverrides-line-item-timeperiods {
+  .businesshours-line-item-timeperiods {
     .businesshours-line-item-opentime,
-    .businesshours-line-item-closetime,
-    .businesshoursoverrides-line-item-opentime,
-    .businesshoursoverrides-line-item-closetime {
+    .businesshours-line-item-closetime {
       display: inline-block;
       width: 45%;
 
@@ -47,8 +44,7 @@ table {
       }
     }
 
-    .businesshours-line-item-actions,
-    .businesshoursoverrides-line-item-actions {
+    .businesshours-line-item-actions {
       display: inline-block;
       width: 10%;
       text-align: right;
@@ -65,7 +61,13 @@ table {
     vertical-align: bottom;
   }
 
-  td:first-child {
-    height: 48px;
+  .businesshoursoverrides-line-item-opentime,
+  .businesshoursoverrides-line-item-closetime {
+      .selector {
+        width: 80px;
+      }
+  }
+  .businesshoursoverrides-add-line-item {
+      margin: 10px 0;
   }
 }

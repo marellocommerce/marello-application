@@ -14,7 +14,7 @@ class BusinessHoursOverrideCollectionType extends AbstractType
     {
         $resolver->setDefaults([
             'entry_type'           => BusinessHoursOverrideType::class,
-            'show_form_when_empty' => true,
+            'show_form_when_empty' => false,
             'allow_add'            => true,
             'prototype_name'       => '__namebusinessoverridecollection__',
             'prototype'            => true,
