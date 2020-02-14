@@ -3,9 +3,11 @@
 namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Twig;
 
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Strategy\ReplenishmentStrategiesRegistry;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class ReplenishmentExtension extends \Twig_Extension
+class ReplenishmentExtension extends AbstractExtension
 {
     const NAME = 'marello_replenishment';
     
@@ -49,7 +51,7 @@ class ReplenishmentExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_replenishment_get_strategy_label',
                 [$this, 'getStrategyLabel']
             )

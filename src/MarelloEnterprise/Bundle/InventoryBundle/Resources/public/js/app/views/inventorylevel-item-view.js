@@ -1,7 +1,7 @@
 define(function(require) {
     'use strict';
 
-    var InventoryLevelItemView,
+    const
         _ = require('underscore'),
         __ = require('orotranslation/js/translator'),
         $ = require('jquery'),
@@ -13,7 +13,7 @@ define(function(require) {
      * @extends marellolayout.app.views.AbstractItemView
      * @class marelloenterpriseinventory.app.views.InventoryLevelItemView
      */
-    InventoryLevelItemView = AbstractItemView.extend({
+    const InventoryLevelItemView = AbstractItemView.extend({
         /**
          * @property {Object}
          */
@@ -23,7 +23,8 @@ define(function(require) {
             deleteForbiddenMessage: 'marelloenterprise.inventory.inventoryitem.inventory_levels.delete.forbidden',
             managedInventorySelector: 'input[name*=managedInventory]',
             quantitySelector: 'input[name*=quantity]',
-            adjustmentOperatorSelector: 'select[name*=adjustmentOperator]'
+            adjustmentOperatorSelector: 'select[name*=adjustmentOperator]',
+            enableBatchInventorySelector: 'input[name*=enableBatchInventory]'
         },
 
         /**
@@ -31,11 +32,19 @@ define(function(require) {
          */
         initialize: function(options) {
             this.options = $.extend(true, {}, this.options, options || {});
+            this.options.enableBatchInventory = $(document).find(this.options.enableBatchInventorySelector).is(':checked');
             InventoryLevelItemView.__super__.initialize.apply(this, arguments);
-            var managedInventoryEl = $(this.$el).find(this.options.managedInventorySelector);
-            $(managedInventoryEl).on('change', _.bind(this.onManagedInventoryChange, this));
-            if (!$(managedInventoryEl).is(':disabled')) {
-                $(managedInventoryEl).trigger('change');
+            if (this.options.enableBatchInventory === true) {
+                $(this.$el).find('.inventorylevel-managed-inventory').find('.fields-row').remove();
+                if ($(this.$el).find(this.options.adjustmentOperatorSelector).length > 0) {
+                    $(this.$el).find('.inventorylevel-adjustment').find('.fields-row').remove();
+                }
+            } else {
+                var managedInventoryEl = $(this.$el).find(this.options.managedInventorySelector);
+                $(managedInventoryEl).on('change', _.bind(this.onManagedInventoryChange, this));
+                if (!$(managedInventoryEl).is(':disabled')) {
+                    $(managedInventoryEl).trigger('change');
+                }
             }
         },
         
