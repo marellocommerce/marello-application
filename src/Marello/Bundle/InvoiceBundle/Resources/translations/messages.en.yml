@@ -83,6 +83,7 @@ marello:
             customer_information:   Customer Information
             invoice_totals:         Invoice Totals
             creditmemo_totals:      Credit Memo Totals
+            payments:               Payments
 
         invoiceitem:
             id.label:                 Id

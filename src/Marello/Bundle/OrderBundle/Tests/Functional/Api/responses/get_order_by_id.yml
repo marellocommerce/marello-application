@@ -10,8 +10,6 @@ data:
         grandTotal: '1511.0000'
         currency: GBP
         paymentMethod: Paypal
-        paymentReference: null
-        paymentDetails: null
         shippingAmountInclTax: '10.0000'
         shippingAmountExclTax: '10.0000'
         shippingMethod: null

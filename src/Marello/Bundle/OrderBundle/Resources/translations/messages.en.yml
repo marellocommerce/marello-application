@@ -59,6 +59,7 @@ marello:
             order_totals:           Order Totals
             packing_slips:          Packing Slips
             invoices:               Invoices
+            payments:               Payments
         # OrderItem entity
         orderitem:
             entity_label:           Ordered Item

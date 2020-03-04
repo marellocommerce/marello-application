@@ -60,6 +60,10 @@ services:
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-invoices-base-grid, method: onBuildBefore }
 
+    marello_invoice.provider.invoice_paid_amount:
+        class: 'Marello\Bundle\InvoiceBundle\Provider\InvoicePaidAmountProvider'
+        public: true
+
     marello_invoice.provider.invoice_type_choices:
         class: 'Marello\Bundle\InvoiceBundle\Provider\InvoiceTypeChoicesProvider'
         public: true
@@ -105,3 +109,8 @@ services:
             - '@marello_pdf.renderer.twig'
         tags:
             - { name: marello_pdf.request_handler }
+
+    marello_invoice.form_type.invoice_select:
+        class: 'Marello\Bundle\InvoiceBundle\Form\Type\InvoiceSelectType'
+        tags:
+            - { name: form.type }
