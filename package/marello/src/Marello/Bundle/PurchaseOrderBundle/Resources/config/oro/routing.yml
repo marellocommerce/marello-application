@@ -1,4 +1,0 @@
-marello_purchase_order_purchaseorder:
-    resource: "@MarelloPurchaseOrderBundle/Controller/PurchaseOrderController.php"
-    type:     annotation
-    prefix:   /marello/po
