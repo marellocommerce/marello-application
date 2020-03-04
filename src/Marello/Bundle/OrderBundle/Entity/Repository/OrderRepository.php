@@ -23,22 +23,33 @@ class OrderRepository extends EntityRepository
     }
     
     /**
-     * @param \DateTime $start
-     * @param \DateTime $end
+     * @param \DateTime|null $start
+     * @param \DateTime|null $end
      * @param SalesChannel|null $salesChannel
      *
      * @return int
      */
-    public function getTotalRevenueValue(\DateTime $start, \DateTime $end, SalesChannel $salesChannel = null)
+    public function getTotalRevenueValue(\DateTime $start = null, \DateTime $end = null, SalesChannel $salesChannel = null)
     {
         $select = 'SUM(
              CASE WHEN orders.grandTotal IS NOT NULL THEN orders.grandTotal ELSE 0 END
              ) as val';
         $qb     = $this->createQueryBuilder('orders');
-        $qb->select($select)
-            ->andWhere($qb->expr()->between('orders.createdAt', ':dateStart', ':dateEnd'))
-            ->setParameter('dateStart', $start)
-            ->setParameter('dateEnd', $end);
+        $qb->select($select);
+        if ($start && $end) {
+            $qb
+                ->andWhere($qb->expr()->between('orders.createdAt', ':dateStart', ':dateEnd'))
+                ->setParameter('dateStart', $start)
+                ->setParameter('dateEnd', $end);
+        } elseif ($start) {
+            $qb
+                ->andWhere($qb->expr()->gt('orders.createdAt', ':dateStart'))
+                ->setParameter('dateStart', $start);
+        } elseif ($end) {
+            $qb
+                ->andWhere($qb->expr()->lt('orders.createdAt', ':dateEnd'))
+                ->setParameter('dateEnd', $end);
+        }
         if ($salesChannel) {
             $qb
                 ->andWhere('orders.salesChannelName = :salesChannelName')
@@ -50,19 +61,32 @@ class OrderRepository extends EntityRepository
     }
 
     /**
-     * @param \DateTime $start
-     * @param \DateTime $end
+     * @param \DateTime|null $start
+     * @param \DateTime|null $end
      * @param SalesChannel|null $salesChannel
      *
      * @return int
      */
-    public function getTotalOrdersNumberValue(\DateTime $start, \DateTime $end, SalesChannel $salesChannel = null)
-    {
+    public function getTotalOrdersNumberValue(
+        \DateTime $start = null,
+        \DateTime $end = null,
+        SalesChannel $salesChannel = null
+    ) {
         $qb = $this->createQueryBuilder('o');
-        $qb->select('count(o.id) as val')
-            ->andWhere($qb->expr()->between('o.createdAt', ':dateStart', ':dateEnd'))
-            ->setParameter('dateStart', $start)
-            ->setParameter('dateEnd', $end);
+        $qb->select('count(o.id) as val');
+        if ($start && $end) {
+            $qb->andWhere($qb->expr()->between('o.createdAt', ':dateStart', ':dateEnd'))
+                ->setParameter('dateStart', $start)
+                ->setParameter('dateEnd', $end);
+        } elseif ($start) {
+            $qb
+                ->andWhere($qb->expr()->gt('o.createdAt', ':dateStart'))
+                ->setParameter('dateStart', $start);
+        } elseif ($end) {
+            $qb
+                ->andWhere($qb->expr()->lt('o.createdAt', ':dateEnd'))
+                ->setParameter('dateEnd', $end);
+        }
         if ($salesChannel) {
             $qb
                 ->andWhere('o.salesChannelName = :salesChannelName')
@@ -76,23 +100,34 @@ class OrderRepository extends EntityRepository
     /**
      * get Average Order Amount by given period
      *
-     * @param \DateTime $start
-     * @param \DateTime $end
+     * @param \DateTime|null $start
+     * @param \DateTime|null $end
      * @param SalesChannel|null $salesChannel
      *
      * @return int
      */
-    public function getAverageOrderValue(\DateTime $start, \DateTime $end, SalesChannel $salesChannel = null)
+    public function getAverageOrderValue(\DateTime $start = null, \DateTime $end = null, SalesChannel $salesChannel = null)
     {
         $select = 'SUM(
              CASE WHEN o.grandTotal IS NOT NULL THEN o.grandTotal ELSE 0 END
              ) as revenue,
              count(o.id) as ordersCount';
         $qb     = $this->createQueryBuilder('o');
-        $qb->select($select)
-            ->andWhere($qb->expr()->between('o.createdAt', ':dateStart', ':dateEnd'))
-            ->setParameter('dateStart', $start)
-            ->setParameter('dateEnd', $end);
+        $qb->select($select);
+        if ($start && $end) {
+            $qb
+                ->andWhere($qb->expr()->between('o.createdAt', ':dateStart', ':dateEnd'))
+                ->setParameter('dateStart', $start)
+                ->setParameter('dateEnd', $end);
+        } elseif ($start) {
+            $qb
+                ->andWhere($qb->expr()->gt('o.createdAt', ':dateStart'))
+                ->setParameter('dateStart', $start);
+        } elseif ($end) {
+            $qb
+                ->andWhere($qb->expr()->lt('o.createdAt', ':dateEnd'))
+                ->setParameter('dateEnd', $end);
+        }
         if ($salesChannel) {
             $qb
                 ->andWhere('o.salesChannelName = :salesChannelName')
