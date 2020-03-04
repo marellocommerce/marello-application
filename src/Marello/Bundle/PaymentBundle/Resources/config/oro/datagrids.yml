@@ -1,0 +1,277 @@
+datagrids:
+    marello-payment-methods-configs-rule-grid:
+        acl_resource: marello_payment_methods_configs_rule_view
+        extended_entity_name: 'Marello\Bundle\PaymentBundle\Entity\PaymentMethodsConfigsRule'
+        options:
+            entityHint: marello.payment.paymentmethodsconfigsrule.entity_plural_label
+            entity_pagination: true
+        source:
+            type:         orm
+            query:
+                select:
+                    - payment_methods_configs_rule
+                    - payment_methods_configs_rule.id
+                    - rule.name
+                    - rule.enabled
+                    - rule.sortOrder
+                    - payment_methods_configs_rule.currency
+                from:
+                    - { table: MarelloPaymentBundle:PaymentMethodsConfigsRule, alias: payment_methods_configs_rule }
+                join:
+                    inner:
+                        - { join: payment_methods_configs_rule.rule, alias: rule }
+        columns:
+            id:
+                label:         marello.payment.paymentmethodsconfigsrule.id.label
+            name:
+                label:         marello.rule.name.label
+            enabled:
+                label:         marello.rule.enabled.label
+                frontend_type: boolean
+            sortOrder:
+                label:         marello.rule.sort_order.label
+            currency:
+                label:         marello.payment.paymentmethodsconfigsrule.currency.label
+            methodConfigs:
+                label:         marello.payment.paymentmethodsconfigsrule.method_configs.label
+                type:          twig
+                frontend_type: html
+                template:      MarelloPaymentBundle:PaymentMethodsConfigsRule:Datagrid/configurations.html.twig
+            destinations:
+                label:         marello.payment.paymentmethodsconfigsrule.destinations.label
+                type:          twig
+                frontend_type: html
+                template:      MarelloPaymentBundle:PaymentMethodsConfigsRule:Datagrid/destinations.html.twig
+        properties:
+            id: ~
+            view_link:
+                type:    url
+                route:   marello_payment_methods_configs_rule_view
+                params:  [ id ]
+            update_link:
+                type:    url
+                route:   marello_payment_methods_configs_rule_update
+                params:  [ id ]
+        sorters:
+            columns:
+                id:
+                    data_name: payment_methods_configs_rule.id
+                name:
+                    data_name: rule.nam
+                enabled:
+                   data_name: rule.enabled
+                sortOrder:
+                    data_name: rule.sortOrder
+                currency:
+                    data_name: payment_methods_configs_rule.currency
+            disable_default_sorting: true
+        filters:
+            columns:
+                id:
+                    type:      number
+                    data_name: payment_methods_configs_rule.id
+                name:
+                    type:      string
+                    data_name: rule.name
+                enabled:
+                    type:      boolean
+                    data_name: rule.enabled
+                sortOrder:
+                    type:      number
+                    data_name: rule.sortOrder
+                currency:
+                    type:      string
+                    data_name: payment_methods_configs_rule.currency
+        actions:
+            view:
+                type:          navigate
+                link:          view_link
+                acl_resource:  marello_payment_methods_configs_rule_view
+                icon:          eye
+                label:         oro.grid.action.view
+                rowAction:     true
+        action_configuration: ['@marello_payment.datagrid.payment_rule_actions_visibility_provider', getActionsVisibility]
+        mass_actions:
+            enable:
+                type:         paymentruleenable
+                acl_resource: marello_payment_methods_configs_rule_update
+                label:        marello.payment.datagrid.action.enable
+                icon:         check
+                entity_name:  'Marello\Bundle\PaymentBundle\Entity\PaymentMethodsConfigsRule'
+                data_identifier: payment_methods_configs_rule.id
+            disable:
+                type:         paymentruledisable
+                acl_resource: marello_payment_methods_configs_rule_update
+                label:        marello.payment.datagrid.action.disable
+                icon:         close
+                entity_name:  'Marello\Bundle\PaymentBundle\Entity\PaymentMethodsConfigsRule'
+                data_identifier: payment_methods_configs_rule.id
+
+    marello-payments-base-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - p.id
+                    - p.paymentMethod
+                    - p.paymentMethodOptions
+                    - p.paymentReference
+                    - p.paymentDetails
+                    - p.paymentDate
+                    - p.totalPaid
+                    - p.createdAt
+                    - p.updatedAt
+                    - p.currency
+                    - s.name AS status
+        columns:
+            status:
+                label:            marello.payment.status.label
+                frontend_type:    string
+                data_name:        status
+            paymentMethod:
+                label:            marello.payment.payment_method.label
+                type:             twig
+                frontend_type:    html
+                template:         MarelloPaymentBundle:Payment/Datagrid:paymentMethodWithOptions.html.twig
+            paymentReference:
+                label:            marello.payment.payment_reference.label
+                frontend_type:    string
+            paymentDetails:
+                label:            marello.payment.payment_details.label
+                frontend_type:    string
+            paymentDate:
+                frontend_type:    datetime
+                label:            marello.payment.payment_date.label
+            createdAt:
+                label:            oro.ui.created_at
+                frontend_type:    datetime
+            updatedAt:
+                label:            oro.ui.updated_at
+                frontend_type:    datetime
+            totalPaid:
+                label:            marello.payment.total_paid.label
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
+                align:            right
+        sorters:
+            columns:
+                status:
+                    data_name: s.name
+                paymentMethod:
+                    data_name: p.paymentMethod
+                paymentReference:
+                    data_name: p.paymentReference
+                paymentDetails:
+                    data_name: p.paymentDetails
+                totalPaid:
+                    data_name: p.totalPaid
+                paymentDate:
+                    data_name: p.paymentDate
+                createdAt:
+                    data_name: p.createdAt
+                updatedAt:
+                    data_name: p.updatedAt
+        filters:
+            columns:
+                status:
+                    type:             string
+                    data_name:        s.name
+                paymentMethod:
+                    type:             string
+                    data_name:        p.paymentMethod
+                paymentReference:
+                    type:             string
+                    data_name:        p.paymentReference
+                paymentDetails:
+                    type:             string
+                    data_name:        p.paymentDetails
+                totalPaid:
+                    type:             number
+                    data_name:        p.totalPaid
+        properties:
+            id: ~
+            view_link:
+                type:       url
+                route:      marello_payment_view
+                params:     [ id ]
+            update_link:
+                type:       url
+                route:      marello_payment_update
+                params:     [ id ]
+        actions:
+            view:
+                type:           navigate
+                label:          oro.grid.action.view
+                link:           view_link
+                icon:           eye
+                acl_recource:   marello_payment_view
+                rowAction:      true
+            update:
+                type:           navigate
+                label:          oro.grid.action.update
+                icon:           edit
+                link:           update_link
+                acl_resource:   marello_payment_update
+
+    marello-payments-grid:
+        extends: marello-payments-base-grid
+        source:
+            type: orm
+            query:
+                from:
+                    - { table: MarelloPaymentBundle:Payment, alias: p }
+                join:
+                    inner:
+                        - { join: p.status, alias: s }
+
+    marello-order-payments-grid:
+        extends: marello-payments-base-grid
+        source:
+            type: orm
+            query:
+                from:
+                    - { table: MarelloInvoiceBundle:AbstractInvoice, alias: i }
+                join:
+                    inner:
+                        - { join: i.payments, alias: p }
+                        - { join: p.status, alias: s }
+                        - { join: i.order, alias: o }
+                where:
+                    and:
+                        - o.id = :orderId
+            bind_parameters:
+                - orderId
+        totals:
+            grand_total:
+                columns:
+                    status:
+                        label: marello.invoice.grand_total.label
+                    totalPaid:
+                        expr: MAX(p.currency) as currency, SUM(p.totalPaid)
+                        formatter: currency
+
+    marello-invoice-payments-grid:
+        extends: marello-payments-base-grid
+        source:
+            type: orm
+            query:
+                from:
+                    - { table: MarelloInvoiceBundle:AbstractInvoice, alias: i }
+                join:
+                    inner:
+                        - { join: i.payments, alias: p }
+                        - { join: p.status, alias: s }
+                where:
+                    and:
+                        - i.id = :invoiceId
+            bind_parameters:
+                - invoiceId
+        totals:
+            grand_total:
+                columns:
+                    status:
+                        label: marello.invoice.grand_total.label
+                    totalPaid:
+                        expr: MAX(p.currency) as currency, SUM(p.totalPaid)
+                        formatter: currency

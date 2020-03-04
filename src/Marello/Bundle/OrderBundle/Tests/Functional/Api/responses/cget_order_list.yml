@@ -1,0 +1,633 @@
+data:
+    -
+        type: marelloorders
+        id: '<toString(@marello_order_0->id)>'
+        attributes:
+            orderNumber: '000000001'
+            orderReference: null
+            invoiceReference: null
+            subtotal: '280.0000'
+            totalTax: '48.5950'
+            grandTotal: '280.0000'
+            currency: USD
+            paymentMethod: 'Credit Card'
+            shippingAmountInclTax: '0.0000'
+            shippingAmountExclTax: '0.0000'
+            shippingMethod: null
+            shippingMethodType: null
+            estimatedShippingCostAmount: null
+            overriddenShippingCostAmount: null
+            discountAmount: null
+            discountPercent: null
+            couponCode: null
+            invoicedAt: null
+            salesChannelName: channel2
+            purchaseDate: '@marello_order_0->purchaseDate->format("Y-m-d\TH:i:s\Z")'
+            data: null
+            workflowItem:
+                currentStep:
+                    name: pending
+                    label: 'Pending Order'
+        relationships:
+            items:
+                data:
+                    -
+                        type: marelloorderitems
+                        id: '<toString(@marello_order_0->items->get(0)->id)>'
+            customer:
+                data:
+                    type: marellocustomers
+                    id: '<toString(@customer0->id)>'
+            billingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '<toString(@marello_order_0->billingAddress->id)>'
+            shippingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '<toString(@marello_order_0->shippingAddress->id)>'
+            salesChannel:
+                data:
+                    type: marellosaleschannels
+                    id: chan_usd
+            shipment:
+                data: null
+            localization:
+                data: null
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+    -
+        type: marelloorders
+        id: '<toString(@marello_order_1->id)>'
+        attributes:
+            orderNumber: '000000002'
+            orderReference: '300000896'
+            invoiceReference: null
+            subtotal: '1501.0000'
+            totalTax: '260.5040'
+            grandTotal: '1511.0000'
+            currency: GBP
+            paymentMethod: Paypal
+            shippingAmountInclTax: '10.0000'
+            shippingAmountExclTax: '10.0000'
+            shippingMethod: null
+            shippingMethodType: null
+            estimatedShippingCostAmount: null
+            overriddenShippingCostAmount: null
+            discountAmount: null
+            discountPercent: null
+            couponCode: null
+            invoicedAt: null
+            salesChannelName: channel3
+            purchaseDate: '@marello_order_1->purchaseDate->format("Y-m-d\TH:i:s\Z")'
+            data: null
+            workflowItem:
+                currentStep:
+                    name: pending
+                    label: 'Pending Order'
+        relationships:
+            items:
+                data:
+                    -
+                        type: marelloorderitems
+                        id: '<toString(@marello_order_1->items->get(0)->id)>'
+                    -
+                        type: marelloorderitems
+                        id: '<toString(@marello_order_1->items->get(1)->id)>'
+                    -
+                        type: marelloorderitems
+                        id: '<toString(@marello_order_1->items->get(2)->id)>'
+                    -
+                        type: marelloorderitems
+                        id: '<toString(@marello_order_1->items->get(3)->id)>'
+            customer:
+                data:
+                    type: marellocustomers
+                    id: '<toString(@customer1->id)>'
+            billingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '<toString(@marello_order_1->billingAddress->id)>'
+            shippingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '<toString(@marello_order_1->shippingAddress->id)>'
+            salesChannel:
+                data:
+                    type: marellosaleschannels
+                    id: chan_gbp
+            shipment:
+                data: null
+            localization:
+                data: null
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+    -
+        type: marelloorders
+        id: '<toString(@marello_order_2->id)>'
+        attributes:
+            orderNumber: '000000003'
+            orderReference: '200000072'
+            invoiceReference: null
+            subtotal: '1110.0000'
+            totalTax: '192.6447'
+            grandTotal: '1110.0000'
+            currency: USD
+            paymentMethod: 'Credit Card'
+            shippingAmountInclTax: '0.0000'
+            shippingAmountExclTax: '0.0000'
+            shippingMethod: null
+            shippingMethodType: null
+            estimatedShippingCostAmount: null
+            overriddenShippingCostAmount: null
+            discountAmount: null
+            discountPercent: null
+            couponCode: null
+            invoicedAt: null
+            salesChannelName: channel2
+            purchaseDate: '@marello_order_2->purchaseDate->format("Y-m-d\TH:i:s\Z")'
+            data: null
+            workflowItem:
+                currentStep:
+                    name: pending
+                    label: 'Pending Order'
+        relationships:
+            items:
+                data:
+                    -
+                        type: marelloorderitems
+                        id: '<toString(@marello_order_2->items->get(0)->id)>'
+                    -
+                        type: marelloorderitems
+                        id: '<toString(@marello_order_2->items->get(1)->id)>'
+                    -
+                        type: marelloorderitems
+                        id: '<toString(@marello_order_2->items->get(2)->id)>'
+            customer:
+                data:
+                    type: marellocustomers
+                    id: '<toString(@customer2->id)>'
+            billingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '<toString(@marello_order_2->billingAddress->id)>'
+            shippingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '<toString(@marello_order_2->shippingAddress->id)>'
+            salesChannel:
+                data:
+                    type: marellosaleschannels
+                    id: chan_usd
+            shipment:
+                data: null
+            localization:
+                data: null
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+    -
+        type: marelloorders
+        id: '<toString(@marello_order_3->id)>'
+        attributes:
+            orderNumber: '000000004'
+            orderReference: null
+            invoiceReference: null
+            subtotal: '2030.0000'
+            totalTax: '352.3141'
+            grandTotal: '2030.0000'
+            currency: GBP
+            paymentMethod: Paypal
+            shippingAmountInclTax: '0.0000'
+            shippingAmountExclTax: '0.0000'
+            shippingMethod: null
+            shippingMethodType: null
+            estimatedShippingCostAmount: null
+            overriddenShippingCostAmount: null
+            discountAmount: null
+            discountPercent: null
+            couponCode: null
+            invoicedAt: null
+            salesChannelName: channel3
+            purchaseDate: '@marello_order_3->purchaseDate->format("Y-m-d\TH:i:s\Z")'
+            data: null
+            workflowItem:
+                currentStep:
+                    name: pending
+                    label: 'Pending Order'
+        relationships:
+            items:
+                data:
+                    -
+                        type: marelloorderitems
+                        id: '<toString(@marello_order_3->items->get(0)->id)>'
+                    -
+                        type: marelloorderitems
+                        id: '<toString(@marello_order_3->items->get(1)->id)>'
+                    -
+                        type: marelloorderitems
+                        id: '<toString(@marello_order_3->items->get(2)->id)>'
+                    -
+                        type: marelloorderitems
+                        id: '<toString(@marello_order_3->items->get(3)->id)>'
+            customer:
+                data:
+                    type: marellocustomers
+                    id: '<toString(@customer3->id)>'
+            billingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '<toString(@marello_order_3->billingAddress->id)>'
+            shippingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '<toString(@marello_order_3->shippingAddress->id)>'
+            salesChannel:
+                data:
+                    type: marellosaleschannels
+                    id: chan_gbp
+            shipment:
+                data: null
+            localization:
+                data: null
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+    -
+        type: marelloorders
+        id: '<toString(@marello_order_4->id)>'
+        attributes:
+            orderNumber: '000000005'
+            orderReference: '400000004'
+            invoiceReference: null
+            subtotal: '450.0000'
+            totalTax: '78.0992'
+            grandTotal: '455.0000'
+            currency: GBP
+            paymentMethod: 'Credit Card'
+            shippingAmountInclTax: '5.0000'
+            shippingAmountExclTax: '5.0000'
+            shippingMethod: null
+            shippingMethodType: null
+            estimatedShippingCostAmount: null
+            overriddenShippingCostAmount: null
+            discountAmount: null
+            discountPercent: null
+            couponCode: null
+            invoicedAt: null
+            salesChannelName: channel3
+            purchaseDate: '@marello_order_4->purchaseDate->format("Y-m-d\TH:i:s\Z")'
+            data: null
+            workflowItem:
+                currentStep:
+                    name: pending
+                    label: 'Pending Order'
+        relationships:
+            items:
+                data:
+                    -
+                        type: marelloorderitems
+                        id: '<toString(@marello_order_4->items->get(0)->id)>'
+            customer:
+                data:
+                    type: marellocustomers
+                    id: '<toString(@customer4->id)>'
+            billingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '<toString(@marello_order_4->billingAddress->id)>'
+            shippingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '<toString(@marello_order_4->shippingAddress->id)>'
+            salesChannel:
+                data:
+                    type: marellosaleschannels
+                    id: chan_gbp
+            shipment:
+                data: null
+            localization:
+                data: null
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+    -
+        type: marelloorders
+        id: '<toString(@marello_order_5->id)>'
+        attributes:
+            orderNumber: '000000006'
+            orderReference: '300000288'
+            invoiceReference: null
+            subtotal: '920.2500'
+            totalTax: '159.7128'
+            grandTotal: '920.2500'
+            currency: GBP
+            paymentMethod: Paypal
+            shippingAmountInclTax: '0.0000'
+            shippingAmountExclTax: '0.0000'
+            shippingMethod: null
+            shippingMethodType: null
+            estimatedShippingCostAmount: null
+            overriddenShippingCostAmount: null
+            discountAmount: null
+            discountPercent: null
+            couponCode: null
+            invoicedAt: null
+            salesChannelName: channel3
+            purchaseDate: '@marello_order_5->purchaseDate->format("Y-m-d\TH:i:s\Z")'
+            data: null
+            workflowItem:
+                currentStep:
+                    name: pending
+                    label: 'Pending Order'
+        relationships:
+            items:
+                data:
+                    -
+                        type: marelloorderitems
+                        id: '<toString(@marello_order_5->items->get(0)->id)>'
+                    -
+                        type: marelloorderitems
+                        id: '<toString(@marello_order_5->items->get(1)->id)>'
+            customer:
+                data:
+                    type: marellocustomers
+                    id: '<toString(@customer5->id)>'
+            billingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '<toString(@marello_order_5->billingAddress->id)>'
+            shippingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '<toString(@marello_order_5->shippingAddress->id)>'
+            salesChannel:
+                data:
+                    type: marellosaleschannels
+                    id: chan_gbp
+            shipment:
+                data: null
+            localization:
+                data: null
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+    -
+        type: marelloorders
+        id: '<toString(@marello_order_6->id)>'
+        attributes:
+            orderNumber: '000000007'
+            orderReference: null
+            invoiceReference: null
+            subtotal: '1590.0000'
+            totalTax: '275.9504'
+            grandTotal: '1595.0000'
+            currency: GBP
+            paymentMethod: Paypal
+            shippingAmountInclTax: '5.0000'
+            shippingAmountExclTax: '5.0000'
+            shippingMethod: null
+            shippingMethodType: null
+            estimatedShippingCostAmount: null
+            overriddenShippingCostAmount: null
+            discountAmount: null
+            discountPercent: null
+            couponCode: null
+            invoicedAt: null
+            salesChannelName: channel3
+            purchaseDate: '@marello_order_6->purchaseDate->format("Y-m-d\TH:i:s\Z")'
+            data: null
+            workflowItem:
+                currentStep:
+                    name: pending
+                    label: 'Pending Order'
+        relationships:
+            items:
+                data:
+                    -
+                        type: marelloorderitems
+                        id: '<toString(@marello_order_6->items->get(0)->id)>'
+                    -
+                        type: marelloorderitems
+                        id: '<toString(@marello_order_6->items->get(1)->id)>'
+                    -
+                        type: marelloorderitems
+                        id: '<toString(@marello_order_6->items->get(2)->id)>'
+                    -
+                        type: marelloorderitems
+                        id: '<toString(@marello_order_6->items->get(3)->id)>'
+            customer:
+                data:
+                    type: marellocustomers
+                    id: '<toString(@customer6->id)>'
+            billingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '<toString(@marello_order_6->billingAddress->id)>'
+            shippingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '<toString(@marello_order_6->shippingAddress->id)>'
+            salesChannel:
+                data:
+                    type: marellosaleschannels
+                    id: chan_gbp
+            shipment:
+                data: null
+            localization:
+                data: null
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+    -
+        type: marelloorders
+        id: '<toString(@marello_order_7->id)>'
+        attributes:
+            orderNumber: '000000008'
+            orderReference: null
+            invoiceReference: null
+            subtotal: '630.0000'
+            totalTax: '109.3388'
+            grandTotal: '635.0000'
+            currency: USD
+            paymentMethod: 'Credit Card'
+            shippingAmountInclTax: '5.0000'
+            shippingAmountExclTax: '5.0000'
+            shippingMethod: null
+            shippingMethodType: null
+            estimatedShippingCostAmount: null
+            overriddenShippingCostAmount: null
+            discountAmount: null
+            discountPercent: null
+            couponCode: null
+            invoicedAt: null
+            salesChannelName: channel2
+            purchaseDate: '@marello_order_7->purchaseDate->format("Y-m-d\TH:i:s\Z")'
+            data: null
+            workflowItem:
+                currentStep:
+                    name: pending
+                    label: 'Pending Order'
+        relationships:
+            items:
+                data:
+                    -
+                        type: marelloorderitems
+                        id: '<toString(@marello_order_7->items->get(0)->id)>'
+            customer:
+                data:
+                    type: marellocustomers
+                    id: '<toString(@customer7->id)>'
+            billingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '<toString(@marello_order_7->billingAddress->id)>'
+            shippingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '<toString(@marello_order_7->shippingAddress->id)>'
+            salesChannel:
+                data:
+                    type: marellosaleschannels
+                    id: chan_usd
+            shipment:
+                data: null
+            localization:
+                data: null
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+    -
+        type: marelloorders
+        id: '<toString(@marello_order_8->id)>'
+        attributes:
+            orderNumber: '000000009'
+            orderReference: '200000095'
+            invoiceReference: null
+            subtotal: '425.0000'
+            totalTax: '73.7603'
+            grandTotal: '430.0000'
+            currency: USD
+            paymentMethod: 'Credit Card'
+            shippingAmountInclTax: '5.0000'
+            shippingAmountExclTax: '5.0000'
+            shippingMethod: null
+            shippingMethodType: null
+            estimatedShippingCostAmount: null
+            overriddenShippingCostAmount: null
+            discountAmount: null
+            discountPercent: null
+            couponCode: null
+            invoicedAt: null
+            salesChannelName: channel2
+            purchaseDate: '@marello_order_8->purchaseDate->format("Y-m-d\TH:i:s\Z")'
+            data: null
+            workflowItem:
+                currentStep:
+                    name: pending
+                    label: 'Pending Order'
+        relationships:
+            items:
+                data:
+                    -
+                        type: marelloorderitems
+                        id: '<toString(@marello_order_8->items->get(0)->id)>'
+                    -
+                        type: marelloorderitems
+                        id: '<toString(@marello_order_8->items->get(1)->id)>'
+            customer:
+                data:
+                    type: marellocustomers
+                    id: '<toString(@customer8->id)>'
+            billingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '<toString(@marello_order_8->billingAddress->id)>'
+            shippingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '<toString(@marello_order_8->shippingAddress->id)>'
+            salesChannel:
+                data:
+                    type: marellosaleschannels
+                    id: chan_usd
+            shipment:
+                data: null
+            localization:
+                data: null
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+    -
+        type: marelloorders
+        id: '<toString(@marello_order_9->id)>'
+        attributes:
+            orderNumber: '000000010'
+            orderReference: '100000334'
+            invoiceReference: null
+            subtotal: '0.0000'
+            totalTax: '0.0000'
+            grandTotal: '0.0000'
+            currency: EUR
+            paymentMethod: 'Credit Card'
+            shippingAmountInclTax: '10.0000'
+            shippingAmountExclTax: '10.0000'
+            shippingMethod: null
+            shippingMethodType: null
+            estimatedShippingCostAmount: null
+            overriddenShippingCostAmount: null
+            discountAmount: null
+            discountPercent: null
+            couponCode: null
+            invoicedAt: null
+            salesChannelName: channel1
+            purchaseDate: '@marello_order_9->purchaseDate->format("Y-m-d\TH:i:s\Z")'
+            data: null
+            workflowItem:
+                currentStep:
+                    name: pending
+                    label: 'Pending Order'
+        relationships:
+            items:
+                data:
+                    -
+                        type: marelloorderitems
+                        id: '<toString(@marello_order_9->items->get(0)->id)>'
+                    -
+                        type: marelloorderitems
+                        id: '<toString(@marello_order_9->items->get(1)->id)>'
+            customer:
+                data:
+                    type: marellocustomers
+                    id: '<toString(@customer9->id)>'
+            billingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '<toString(@marello_order_9->billingAddress->id)>'
+            shippingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '<toString(@marello_order_9->shippingAddress->id)>'
+            salesChannel:
+                data:
+                    type: marellosaleschannels
+                    id: chan_eur
+            shipment:
+                data: null
+            localization:
+                data: null
+            organization:
+                data:
+                    type: organizations
+                    id: '1'

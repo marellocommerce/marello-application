@@ -1,0 +1,54 @@
+data:
+    -
+        type: marelloinvoices
+        id: '<toString(@marello_invoice_2->id)>'
+        attributes:
+            invoiceNumber: '<toString(@marello_invoice_2->invoiceNumber)>'
+            invoicedAt: '@marello_invoice_2->invoicedAt->format("Y-m-d\TH:i:s\Z")'
+            invoiceDueDate: null
+            paymentMethod: 'Credit Card'
+            shippingMethod: null
+            shippingMethodType: null
+            currency: USD
+            status: null
+            subtotal: '1110.0000'
+            totalTax: '192.6447'
+            grandTotal: '1110.0000'
+            shippingAmountInclTax: '0.0000'
+            shippingAmountExclTax: '0.0000'
+        relationships:
+            billingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '<toString(@marello_invoice_2->billingAddress->id)>'
+            shippingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '<toString(@marello_invoice_2->shippingAddress->id)>'
+            order:
+                data:
+                    type: marelloorders
+                    id: '<toString(@marello_order_2->id)>'
+            customer:
+                data:
+                    type: marellocustomers
+                    id: '<toString(@customer2->id)>'
+            salesChannel:
+                data:
+                    type: marellosaleschannels
+                    id: chan_usd
+            items:
+                data:
+                    -
+                        type: marelloinvoiceitems
+                        id: '<toString(@marello_invoice_2->items->get(0)->id)>'
+                    -
+                        type: marelloinvoiceitems
+                        id: '<toString(@marello_invoice_2->items->get(1)->id)>'
+                    -
+                        type: marelloinvoiceitems
+                        id: '<toString(@marello_invoice_2->items->get(2)->id)>'
+            organization:
+                data:
+                    type: organizations
+                    id: '1'

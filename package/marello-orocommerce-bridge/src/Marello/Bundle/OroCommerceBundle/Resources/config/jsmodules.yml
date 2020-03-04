@@ -1,4 +1,0 @@
-dynamic-imports:
-    marelloorocommerce:
-        - marelloorocommerce/js/app/components/orocommerce-connection-validator-component
-        - marelloorocommerce/js/app/components/orocommerce-settings-component

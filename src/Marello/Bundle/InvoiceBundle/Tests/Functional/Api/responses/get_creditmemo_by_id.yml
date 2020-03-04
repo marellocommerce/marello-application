@@ -1,0 +1,47 @@
+data:
+    type: marellocreditmemos
+    id: '<toString(@marello_creditmemo_0->id)>'
+    attributes:
+        invoiceNumber: '<toString(@marello_creditmemo_0->invoiceNumber)>'
+        invoicedAt: '@marello_creditmemo_0->invoicedAt->format("Y-m-d\TH:i:s\Z")'
+        invoiceDueDate: null
+        paymentMethod: 'Credit Card'
+        shippingMethod: null
+        shippingMethodType: null
+        currency: USD
+        status: null
+        subtotal: '280.0000'
+        totalTax: '48.5950'
+        grandTotal: '328.5950'
+        shippingAmountInclTax: '0.0000'
+        shippingAmountExclTax: '0.0000'
+    relationships:
+        billingAddress:
+            data:
+                type: marelloaddresses
+                id: '<toString(@marello_creditmemo_0->billingAddress->id)>'
+        shippingAddress:
+            data:
+                type: marelloaddresses
+                id: '<toString(@marello_creditmemo_0->shippingAddress->id)>'
+        order:
+            data:
+                type: marelloorders
+                id: '<toString(@marello_order_0->id)>'
+        customer:
+            data:
+                type: marellocustomers
+                id: '<toString(@customer0->id)>'
+        salesChannel:
+            data:
+                type: marellosaleschannels
+                id: chan_usd
+        items:
+            data:
+                -
+                    type: marellocreditmemoitems
+                    id: '<toString(@marello_creditmemo_0->items->get(0)->id)>'
+        organization:
+            data:
+                type: organizations
+                id: '1'
