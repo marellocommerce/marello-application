@@ -1,6 +1,13 @@
 navigation:
     menu_config:
         items:
+            marello_payments:
+                label:           'marello.payment.entity_plural_label'
+                route:           'marello_payment_index'
+                extras:
+                    routes:      ['marello_payment_*']
+                    position:    45
+
             marello_payment_rules:
                 label:           'marello.payment.menu.paymentmethodsconfigsrule.label'
                 route:           'marello_payment_methods_configs_rule_index'
@@ -18,6 +25,9 @@ navigation:
         tree:
             application_menu:
                 children:
+                    sales_tab:
+                        children:
+                            marello_payments: ~
                     system_tab:
                         children:
                             marello_payment_rules: ~
@@ -26,6 +36,7 @@ navigation:
                     shortcut_marello_payment_rules: ~
 
     titles:
+        marello_payment_index: 'marello.payment.entity_plural_label'
         marello_payment_methods_configs_rule_index: ~
         marello_payment_methods_configs_rule_view:  '%label%'
         marello_payment_methods_configs_rule_update: 'Payment Rule %id% - Edit'

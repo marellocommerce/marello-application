@@ -2,18 +2,18 @@
 
 namespace Marello\Bundle\PaymentBundle\Controller;
 
-use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Marello\Bundle\PaymentBundle\Entity\PaymentMethodsConfigsRule;
 use Marello\Bundle\PaymentBundle\Form\Handler\PaymentMethodsConfigsRuleHandler;
 use Marello\Bundle\PaymentBundle\Form\Type\PaymentMethodsConfigsRuleType;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\Annotation\CsrfProtection;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Payment Methods Configs Rule Controller
@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 class PaymentMethodsConfigsRuleController extends AbstractController
 {
     /**
-     * @Route("/", name="marello_payment_methods_configs_rule_index")
+     * @Route(path="/", name="marello_payment_methods_configs_rule_index")
      * @Template("MarelloPaymentBundle:PaymentMethodsConfigsRule:index.html.twig")
      * @AclAncestor("marello_payment_methods_configs_rule_view")
      *
@@ -35,7 +35,7 @@ class PaymentMethodsConfigsRuleController extends AbstractController
     }
 
     /**
-     * @Route("/create", name="marello_payment_methods_configs_rule_create")
+     * @Route(path="/create", name="marello_payment_methods_configs_rule_create")
      * @Template("MarelloPaymentBundle:PaymentMethodsConfigsRule:update.html.twig")
      * @Acl(
      *     id="marello_payment_methods_configs_rule_create",
@@ -53,7 +53,7 @@ class PaymentMethodsConfigsRuleController extends AbstractController
     }
 
     /**
-     * @Route("/view/{id}", name="marello_payment_methods_configs_rule_view", requirements={"id"="\d+"})
+     * @Route(path="/view/{id}", name="marello_payment_methods_configs_rule_view", requirements={"id"="\d+"})
      * @Template("MarelloPaymentBundle:PaymentMethodsConfigsRule:view.html.twig")
      * @Acl(
      *      id="marello_payment_methods_configs_rule_view",
@@ -74,7 +74,7 @@ class PaymentMethodsConfigsRuleController extends AbstractController
     }
 
     /**
-     * @Route("/update/{id}", name="marello_payment_methods_configs_rule_update", requirements={"id"="\d+"})
+     * @Route(path="/update/{id}", name="marello_payment_methods_configs_rule_update", requirements={"id"="\d+"})
      * @Template("MarelloPaymentBundle:PaymentMethodsConfigsRule:update.html.twig")
      * @Acl(
      *     id="marello_payment_methods_configs_rule_update",
@@ -122,7 +122,7 @@ class PaymentMethodsConfigsRuleController extends AbstractController
     }
 
     /**
-     * @Route("/{gridName}/massAction/{actionName}", name="marello_payment_methods_configs_massaction")
+     * @Route(path="/{gridName}/massAction/{actionName}", name="marello_payment_methods_configs_massaction")
      * @Acl(
      *     id="marello_payment_methods_configs_update",
      *     type="entity",
