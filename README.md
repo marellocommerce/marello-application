@@ -6,9 +6,9 @@ This document contains information on how to download, install, and start using 
 
 ## Requirements
 
-Marello Enterprise is a Symfony 3.4 based application with the following requirements:
+Marello Enterprise is a Symfony 4.4 based application with the following requirements:
 
-* PHP 7.1.26 or above with command line interface
+* PHP 7.3.13 or above with command line interface
 * PHP Extensions
     * Ctype
     * Fileinfo
@@ -16,7 +16,6 @@ Marello Enterprise is a Symfony 3.4 based application with the following require
     * Intl (ICU library 4.4 and above)
     * JSON
     * Mbstring
-    * Mcrypt
     * Mysql
     * PCRE 8.0 and above
     * SimpleXML
@@ -43,7 +42,7 @@ where x.y.z is the latest [release tag](https://github.com/marellocommerce/marel
 
 - Install [Composer][1] globally following the official Composer installation documentation
 
-- Make sure that you have [NodeJS][3] installed
+- Make sure that you have [NodeJS][3] >=12.0 installed
 
 - Install Marello dependencies with composer. If installation process seems too slow you can use `--prefer-dist` option. Go to marello-application folder and run composer installation:
 
