@@ -22,7 +22,7 @@ marello:
         currency.label:             Currency
         status.label:               Status
         customer.label:             Customer
-        sales_channel.label:        Salse Channel
+        sales_channel.label:        Sales Channel
         items.label:                Items
         subtotal.label:             Subtotal
         total_tax.label:            Tax Total
@@ -59,7 +59,7 @@ marello:
             currency.label:             Currency
             status.label:               Status
             customer.label:             Customer
-            sales_channel.label:        Salse Channel
+            sales_channel.label:        Sales Channel
             items.label:                Items
             subtotal.label:             Subtotal
             total_tax.label:            Tax Total
@@ -139,7 +139,7 @@ marello:
             currency.label:             Currency
             status.label:               Status
             customer.label:             Customer
-            sales_channel.label:        Salse Channel
+            sales_channel.label:        Sales Channel
             items.label:                Items
             subtotal.label:             Subtotal
             total_tax.label:            Tax Total
