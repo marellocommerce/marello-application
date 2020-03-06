@@ -73,13 +73,6 @@ class ReplenishmentOrderItem implements ProductAwareInterface, OrganizationAware
 
     /**
      * @ORM\Column(name="product_name", type="string")
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "dataaudit"={
-     *              "auditable"=true
-     *          }
-     *      }
-     * )
      *
      * @var string
      */
