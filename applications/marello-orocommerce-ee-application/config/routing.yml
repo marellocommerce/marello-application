@@ -2,13 +2,13 @@
 # 3rd party routes
 #
 _liip_imagine:
-    resource: "@LiipImagineBundle/Resources/config/routing.xml"
+    resource: "@LiipImagineBundle/Resources/config/routing.yaml"
 
 #
 # ORO routes
 #
 oro_default:
-    path:  %web_backend_prefix%/
+    path:  '%web_backend_prefix%/'
     defaults:
         _controller: OroDashboardBundle:Dashboard:view
 

@@ -39,7 +39,7 @@ services:
             context: ./.docker
             args:
                 - SYMFONY_ENV=prod
-                - PHP_VERSION=7.3
+                - PHP_VERSION=7.1
         working_dir: /var/www/
         container_name: orocommerce-web
         links:

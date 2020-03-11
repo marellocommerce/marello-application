@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\PaymenttermBundle\Tests\Functional\Controller;
+namespace Marello\Bundle\PaymentTermBundle\Tests\Functional\Controller;
 
 use Marello\Bundle\PaymentTermBundle\Tests\Functional\DataFixtures\LoadPaymentTermsData;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
