@@ -12,7 +12,6 @@ use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractExportWriter;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractProductExportWriter;
 use Marello\Bundle\OroCommerceBundle\Integration\Connector\OroCommerceProductConnector;
 use Marello\Bundle\OroCommerceBundle\Integration\OroCommerceChannelType;
-use Marello\Bundle\OroCommerceBundle\Integration\Transport\Rest\OroCommerceRestTransport;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;

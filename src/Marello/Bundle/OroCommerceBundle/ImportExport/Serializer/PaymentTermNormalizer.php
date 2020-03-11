@@ -2,14 +2,10 @@
 
 namespace Marello\Bundle\OroCommerceBundle\ImportExport\Serializer;
 
-use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use Marello\Bundle\CustomerBundle\Entity\Company;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractExportWriter;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\OrderExportWriter;
 use Marello\Bundle\PaymentTermBundle\Entity\PaymentTerm;
-use Oro\Bundle\AddressBundle\Entity\Country;
-use Oro\Bundle\AddressBundle\Entity\Region;
 use Oro\Bundle\ImportExportBundle\Serializer\Normalizer\DenormalizerInterface;
 use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 
