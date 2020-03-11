@@ -5,7 +5,7 @@ namespace Marello\Bundle\OroCommerceBundle\ImportExport\Strategy;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityRepository;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
