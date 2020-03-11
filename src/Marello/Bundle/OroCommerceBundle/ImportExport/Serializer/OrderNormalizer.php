@@ -3,7 +3,7 @@
 namespace Marello\Bundle\OroCommerceBundle\ImportExport\Serializer;
 
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractExportWriter;
