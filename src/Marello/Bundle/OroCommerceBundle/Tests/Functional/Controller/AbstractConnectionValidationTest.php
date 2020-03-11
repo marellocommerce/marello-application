@@ -4,7 +4,7 @@ namespace MarelloOroCommerce\src\Marello\Bundle\OroCommerceBundle\Tests\Function
 
 use Marello\Bundle\OroCommerceBundle\Client\Factory\OroCommerceRestClientFactory;
 use Marello\Bundle\OroCommerceBundle\Client\OroCommerceRestClient;
-use Marello\Bundle\OroCommerceBundle\Integration\Transport\Rest\OroCommerceRestTransport;
+use Marello\Bundle\OroCommerceBundle\Controller\AjaxOroCommerceController;
 use Marello\Bundle\OroCommerceBundle\Tests\Functional\DataFixtures\LoadChannelData;
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Exception\RestException;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
@@ -72,10 +72,15 @@ abstract class AbstractConnectionValidationTest extends WebTestCase
             ->expects(static::any())
             ->method('createRestClient')
             ->willReturn($mockRestClient);
-        
-        /** @var OroCommerceRestTransport $transport */
-        $transport = $this->getContainer()->get('marello_orocommerce.integration.transport');
+        $container = $this->getContainer();
+        $cache = $container->get('marello_orocommerce.cache');
+        $cacheKeyGenerator = $container->get('marello_orocommerce.cache_key_generator');
+        $transport = $container->get('marello_orocommerce.integration.transport');
         $transport->setRestClientFactory($mockRestClientFactory);
+        $translator = $container->get('translator.default');
+        $ajaxOroCommerceController = new AjaxOroCommerceController($cache, $cacheKeyGenerator, $transport, $translator);
+        $ajaxOroCommerceController->setContainer($container);
+        
 
         $this->client->request(
             'POST',
@@ -85,7 +90,10 @@ abstract class AbstractConnectionValidationTest extends WebTestCase
             ),
             $request
         );
-        $response = $this->client->getResponse();
+        $response = $ajaxOroCommerceController->validateConnectionAction(
+            $this->client->getRequest(),
+            $this->getReference('orocommerce_channel:first_test_channel')
+        );
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $response);
 
         $result = $this->getJsonResponseContent($response, 200);
