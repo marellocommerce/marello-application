@@ -100,15 +100,23 @@ class OrderImportStrategy extends AbstractImportStrategy
             /** @var Customer $customer */
             $customer = $this->getEntityByCriteria($criteria, Customer::class);
             $existingPrimaryAddress = null;
+            $existingCompany = null;
             if ($customer) {
                 $existingPrimaryAddress = $customer->getPrimaryAddress();
+                $existingCompany = $customer->getCompany();
                 $this->strategyHelper->importEntity(
                     $customer,
                     $entity,
-                    ['id', 'createdAt', 'primaryAddress', 'organization']
+                    ['id', 'createdAt', 'primaryAddress', 'organization', 'company']
                 );
             } else {
                 $customer = $entity;
+            }
+            $company = $entity->getCompany();
+            if ($company && $existingCompany && $company->getName() === $existingCompany->getName()) {
+                $customer->setCompany($existingCompany);
+            } else if ($company) {
+                $customer->setCompany($company);
             }
             if (!$customer->getOrganization() && $order->getOrganization()) {
                 $customer->setOrganization($order->getOrganization());
