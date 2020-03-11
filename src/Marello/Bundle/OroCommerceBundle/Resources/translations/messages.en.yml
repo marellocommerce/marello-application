@@ -22,7 +22,10 @@ marello:
         channel_type:
             label: 'OroCommerce'
         connector:
+            customer.label: 'Customer Connector'
+            customer_user.label: 'CustomerUser Connector'
             order.label: 'Order Connector'
+            payment_term.label: 'PaymentTerm Connector'
             product.label: 'Product Connector'
             product_price.label: 'Product Price Connector'
             product_image.label: 'Product Image Connector'
