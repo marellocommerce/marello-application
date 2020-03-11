@@ -10,9 +10,9 @@ use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
- * @ORM\Entity(repositoryClass="Marello\Bundle\PaymentTermBundle\Entity\Repository\PaymentTermSettingsRepository")
+ * @ORM\Entity(repositoryClass="Marello\Bundle\PaymentTermBundle\Entity\Repository\MarelloPaymentTermSettingsRepository")
  */
-class PaymentTermSettings extends Transport
+class MarelloPaymentTermSettings extends Transport
 {
     const SETTINGS_FIELD_LABELS = 'labels';
 
@@ -57,7 +57,7 @@ class PaymentTermSettings extends Transport
     /**
      * @param LocalizedFallbackValue $label
      *
-     * @return PaymentTermSettings
+     * @return MarelloPaymentTermSettings
      */
     public function addLabel(LocalizedFallbackValue $label)
     {
@@ -71,7 +71,7 @@ class PaymentTermSettings extends Transport
     /**
      * @param LocalizedFallbackValue $label
      *
-     * @return PaymentTermSettings
+     * @return MarelloPaymentTermSettings
      */
     public function removeLabel(LocalizedFallbackValue $label)
     {

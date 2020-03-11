@@ -8,7 +8,7 @@ services:
         shared: false
         public: true
         tags:
-            - { name: oro_datagrid.extension.mass_action.type, type: paymentruleenable }
+            - { name: oro_datagrid.extension.mass_action.type, type: marellopaymentruleenable }
 
     marello_payment.mass_action.status.disable:
         class: 'Marello\Bundle\RuleBundle\Datagrid\Extension\MassAction\Actions\StatusEnableMassAction'
@@ -19,7 +19,7 @@ services:
         shared: false
         public: true
         tags:
-            - { name: oro_datagrid.extension.mass_action.type, type: paymentruledisable }
+            - { name: oro_datagrid.extension.mass_action.type, type: marellopaymentruledisable }
 
     marello_payment.mass_action.status_handler:
         class: 'Marello\Bundle\RuleBundle\Datagrid\Extension\MassAction\StatusMassActionHandler'
