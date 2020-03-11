@@ -16,14 +16,14 @@
         }
     ],
     "require": {
-        "php": ">=7.1",
-        "oro/commerce": "3.1.*"
+        "php": ">=7.3",
+        "oro/commerce": "4.0.*"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-master": "2.1-dev"
+            "dev-master": "3.0-dev"
         }
     },
     "autoload": {
