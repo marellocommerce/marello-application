@@ -24,6 +24,11 @@ services:
         tags:
             - { name: form.type }
 
+    marello_purchase_order.form.type.purchase_order_advised_item_collection:
+        class: Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderAdvisedItemCollectionType
+        tags:
+            - { name: form.type }
+
     marello_purchase_order.form.type.purchase_order_item_collection:
         class: Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderItemCollectionType
         tags:
