@@ -19,7 +19,7 @@ class OroCommercePaymentTermConnector extends AbstractOroCommerceConnector imple
      */
     protected function getConnectorSource()
     {
-        return $this->transport->getPaymentTerms($this->getLastSyncDate());
+        return $this->transport->getPaymentTerms();
     }
     
     /**

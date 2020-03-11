@@ -180,6 +180,7 @@ services:
             - { name: doctrine.event_listener, event: preRemove }
 
     marello_orocommerce.rest.client_factory:
+        public: true
         class: 'Marello\Bundle\OroCommerceBundle\Client\Factory\OroCommerceRestClientFactory'
 
     marello_orocommerce.integration.channel:
