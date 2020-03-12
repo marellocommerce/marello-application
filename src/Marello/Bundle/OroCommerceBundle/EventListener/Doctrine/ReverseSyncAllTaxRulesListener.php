@@ -10,13 +10,9 @@ use Marello\Bundle\OroCommerceBundle\ImportExport\Reader\TaxRuleExportReader;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractExportWriter;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\TaxRuleExportBulkDeleteWriter;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\TaxRuleExportCreateWriter;
-use Marello\Bundle\OroCommerceBundle\Integration\Connector\OroCommerceTaxCodeConnector;
-use Marello\Bundle\OroCommerceBundle\Integration\Connector\OroCommerceTaxJurisdictionConnector;
-use Marello\Bundle\OroCommerceBundle\Integration\Connector\OroCommerceTaxRateConnector;
 use Marello\Bundle\OroCommerceBundle\Integration\Connector\OroCommerceTaxRuleConnector;
 use Marello\Bundle\OroCommerceBundle\Integration\OroCommerceChannelType;
 use Marello\Bundle\TaxBundle\Entity\TaxRule;
-use Oro\Bundle\EntityBundle\Event\OroEventManager;
 use Oro\Bundle\ImportExportBundle\Context\Context;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Component\DependencyInjection\ServiceLink;
@@ -156,27 +152,5 @@ class ReverseSyncAllTaxRulesListener
         return $this->entityManager
             ->getRepository(TaxRule::class)
             ->findByDataKey(TaxRuleExportCreateWriter::TAX_RULE_ID);
-    }
-
-    /**
-     * @param Channel $channel
-     * @param array $data
-     * @param string $connectorType
-     * @return array
-     */
-    private function synchronizeNotSynchronizedData(Channel $channel, array $data, $connectorType)
-    {
-        if (isset($data[$connectorType])) {
-            foreach ($data[$connectorType] as $key => $connector_params) {
-                $this->syncScheduler->getService()->schedule(
-                    $channel->getId(),
-                    $connectorType,
-                    $connector_params
-                );
-                unset($data[$connectorType][$key]);
-            }
-        }
-
-        return $data;
     }
 }
