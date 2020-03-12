@@ -3,9 +3,12 @@
 namespace Marello\Bundle\OroCommerceBundle\Integration\Connector;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
+use Oro\Bundle\IntegrationBundle\Provider\OrderedConnectorInterface;
 use Oro\Bundle\IntegrationBundle\Provider\TwoWaySyncConnectorInterface;
 
-class OroCommerceOrderConnector extends AbstractOroCommerceConnector implements TwoWaySyncConnectorInterface
+class OroCommerceOrderConnector extends AbstractOroCommerceConnector implements
+    TwoWaySyncConnectorInterface,
+    OrderedConnectorInterface
 {
     const TYPE = 'order';
     const IMPORT_JOB = 'orocommerce_order_import';
@@ -57,5 +60,13 @@ class OroCommerceOrderConnector extends AbstractOroCommerceConnector implements 
     public function getType()
     {
         return self::TYPE;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOrder()
+    {
+        return 20;
     }
 }

@@ -39,7 +39,7 @@ services:
             context: ./.docker
             args:
                 - SYMFONY_ENV=prod
-                - PHP_VERSION=7.3
+                - PHP_VERSION=7.1
         working_dir: /var/www/
         container_name: orocommerce-web
         links:
@@ -51,11 +51,11 @@ services:
         volumes_from:
             - data
         volumes:
-            - ../applications/marello-orocommerce-ee-application:/var/www
-            - ../package/marello:/package/marello
-            - ../package/marello-enterprise:/package/marello-enterprise
-            - ../package/marello-orocommerce-api-bridge:/package/marello-orocommerce-api-bridge
-            - ../package/marello-orocommerce-bridge:/package/marello-orocommerce-bridge
+            - ../applications/marello-orocommerce-ee-application:/var/www:cached
+            - ../package/marello:/package/marello:delegated
+            - ../package/marello-enterprise:/package/marello-enterprise:delegated
+            - ../package/marello-orocommerce-api-bridge:/package/marello-orocommerce-api-bridge:delegated
+            - ../package/marello-orocommerce-bridge:/package/marello-orocommerce-bridge:delegated
         environment:
             - VIRTUAL_HOST=marello-ee.docker
             - IS_LOCAL=true

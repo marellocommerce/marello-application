@@ -18,7 +18,10 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class OroCommerceRestTransport implements TransportInterface, PingableInterface
 {
+    const CUSTOMERS_ALIAS = 'customers';
+    const CUSTOMERUSERS_ALIAS = 'customerusers';
     const ORDERS_ALIAS = 'orders';
+    const PAYMENTTERMS_ALIAS = 'paymentterms';
     const PRODUCTS_ALIAS = 'products';
     const PRODUCTIMAGES_ALIAS = 'productimages';
     const PRODUCTPRICES_ALIAS = 'productprices';
@@ -97,6 +100,103 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
      * @param \DateTime|null $lastSyncDate
      * @return \ArrayIterator
      */
+    public function getCustomers(\DateTime $lastSyncDate = null)
+    {
+        if (!$lastSyncDate) {
+            $lastSyncDate = \DateTime::createFromFormat('j-M-Y', '15-Feb-2017');
+        }
+        $lastSyncStr = $lastSyncDate->format('Y-m-d H:i:s');
+        $lastSyncArr = explode(' ', $lastSyncStr);
+        $lastSyncStr = sprintf('%sT%s', $lastSyncArr[0], $lastSyncArr[1]);
+        $customersRequest = OroCommerceRequestFactory::createRequest(
+            OroCommerceRequestFactory::METHOD_GET,
+            $this->settings,
+            self::CUSTOMERS_ALIAS,
+            [
+                new FilterValue(
+                    'updatedAt',
+                    $lastSyncStr,
+                    OroCommerceRequestFactory::GT
+                )
+            ],
+            ['addresses', 'parent', 'paymentTerm']
+        );
+
+        $customersResponse = $this->client->getJSON(
+            $customersRequest->getPath(),
+            $customersRequest->getPayload(),
+            $customersRequest->getHeaders()
+        );
+        $customersData = $customersResponse['data'];
+        usort($customersData, function($a, $b) {
+            if ($a['relationships']['parent']['data'] === null) {
+                return -1;
+            } else if ($b['relationships']['parent']['data'] === null) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+
+        $customers = [];
+        foreach ($customersData as $customer) {
+            if (isset($customer['relationships'])) {
+                foreach ($customer['relationships'] as &$relationship) {
+                    foreach ($customersResponse['included'] as $included) {
+                        if (!isset($relationship['data']['type'])) {
+                            if (is_array($relationship['data'])) {
+                                foreach ($relationship['data'] as $key => $data) {
+                                    if ($data['type'] === $included['type'] && $data['id'] === $included['id']) {
+                                        $relationship['data'][$key] = $included;
+                                        break;
+                                    }
+                                }
+                            }
+                        } elseif ($relationship['data']['type'] === $included['type'] &&
+                            $relationship['data']['id'] === $included['id']
+                        ) {
+                            $relationship['data'] = $included;
+                            break;
+                        }
+                    }
+                    unset($relationship);
+                }
+            }
+
+            $customers[] = $customer;
+        }
+        $obj = new \ArrayObject($customers);
+
+        return $obj->getIterator();
+    }
+    
+    /**
+     * @return \ArrayIterator
+     */
+    public function getPaymentTerms()
+    {
+        $paymentTermsRequest = OroCommerceRequestFactory::createRequest(
+            OroCommerceRequestFactory::METHOD_GET,
+            $this->settings,
+            self::PAYMENTTERMS_ALIAS,
+            [],
+            []
+        );
+
+        $paymentTermsResponse = $this->client->getJSON(
+            $paymentTermsRequest->getPath(),
+            $paymentTermsRequest->getPayload(),
+            $paymentTermsRequest->getHeaders()
+        );
+        $obj = new \ArrayObject($paymentTermsResponse['data']);
+
+        return $obj->getIterator();
+    }
+    
+    /**
+     * @param \DateTime|null $lastSyncDate
+     * @return \ArrayIterator
+     */
     public function getOrders(\DateTime $lastSyncDate = null)
     {
         if (!$lastSyncDate) {
@@ -114,14 +214,9 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                     'currency',
                     $this->settings->get(OroCommerceSettings::CURRENCY_FIELD),
                     OroCommerceRequestFactory::EQ
-                ),
-                new FilterValue(
-                    'updatedAt',
-                    $lastSyncStr,
-                    OroCommerceRequestFactory::GT
                 )
             ],
-            ['customerUser', 'lineItems', 'shippingAddress', 'billingAddress']
+            ['customer', 'customerUser', 'lineItems', 'shippingAddress', 'billingAddress']
         );
 
         $ordersResponse = $this->client->getJSON(

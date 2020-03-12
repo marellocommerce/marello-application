@@ -3,7 +3,6 @@
 namespace Marello\Bundle\OroCommerceBundle\ImportExport\Writer;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\TaxBundle\Entity\TaxCode;
 
 class ProductExportBulkDeleteWriter extends AbstractBulkExportWriter
 {
