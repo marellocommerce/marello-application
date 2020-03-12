@@ -14,14 +14,13 @@ class MarelloOroCommerceBundle implements Migration
      */
     public function up(Schema $schema, QueryBag $queries)
     {
-        $this->updateOroIntegrationTransportTable($schema, $queries);
+        $this->updateOroIntegrationTransportTable($schema);
     }
 
     /**
      * @param Schema $schema
-     * @param QueryBag $queries
      */
-    public function updateOroIntegrationTransportTable(Schema $schema, QueryBag $queries)
+    public function updateOroIntegrationTransportTable(Schema $schema)
     {
         $table = $schema->getTable('oro_integration_transport');
 

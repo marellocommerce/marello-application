@@ -72,26 +72,24 @@ define(function(require) {
             this.productFamilyLoadingMaskView = new LoadingMaskView({container: this.$elem.find(this.options.productFamilySelector).closest('.controls')});
             this.warehouseLoadingMaskView = new LoadingMaskView({container: this.$elem.find(this.options.warehouseSelector).closest('.controls')});
             this.$elem.find(this.options.urlSelector)
-                .on('change', _.bind(this.makeChanges, this))
-                .trigger('change');
+                .on('change', _.bind(this.makeChanges, this));
             this.$elem.find(this.options.usernameSelector)
-                .on('change', _.bind(this.makeChanges, this))
-                .trigger('change');
+                .on('change', _.bind(this.makeChanges, this));
             this.$elem.find(this.options.keySelector)
-                .on('change', _.bind(this.makeChanges, this))
-                .trigger('change');
+                .on('change', _.bind(this.makeChanges, this));
             this.$elem.find(this.options.currencySelector)
-                .on('change', _.bind(this.updatePriceLists, this))
-                .trigger('change');
+                .on('change', _.bind(this.updatePriceLists, this));
             this.$elem.find(this.options.enterpriseSelector)
-                .on('change', _.bind(this.toggleWarehousesVisibility, this))
-                .trigger('change');
+                .on('change', _.bind(this.toggleWarehousesVisibility, this));
             
             mediator.on('marello_orocommerce:update:productunits', this.updateProductUnits, this);
             mediator.on('marello_orocommerce:update:customertaxcodes', this.updateCustomerTaxCodes, this);
             mediator.on('marello_orocommerce:update:pricelists', this.updatePriceLists, this);
             mediator.on('marello_orocommerce:update:productfamilies', this.updateProductFamilies, this);
             mediator.on('marello_orocommerce:update:warehouses', this.updateWarehouses, this);
+
+            // start 1 trigger
+            this.makeChanges();
         },
 
         makeChanges: function() {

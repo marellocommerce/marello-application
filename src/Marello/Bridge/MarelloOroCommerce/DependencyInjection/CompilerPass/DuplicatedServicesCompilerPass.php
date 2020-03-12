@@ -7,17 +7,21 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class DuplicatedServicesCompilerPass implements CompilerPassInterface
 {
-    const CHANNEL_SERVICE = 'marello_ups.provider.channel';
-    const TRANSPORT_SERVICE = 'marello_ups.provider.transport';
+    const DUPLICATED_SERVICES = [
+        'marello_ups.provider.channel',
+        'marello_ups.provider.transport',
+        'marello_payment_term.integration.channel',
+        'marello_payment_term.integration.transport'
+    ];
 
     /**
      * {@inheritDoc}
      */
     public function process(ContainerBuilder $container)
     {
-        $channelDefinition = $container->getDefinition(self::CHANNEL_SERVICE);
-        $channelDefinition->setTags([]);
-        $transportDefinition = $container->getDefinition(self::TRANSPORT_SERVICE);
-        $transportDefinition->setTags([]);
+        foreach (self::DUPLICATED_SERVICES as $service) {
+            $definition = $container->getDefinition($service);
+            $definition->setTags([]);
+        }
     }
 }

@@ -18,14 +18,6 @@ class UpsShippingMethodTypesCreateBeforeEventListener
     /**
      * @param MethodTypesBeforeCreateEvent $event
      */
-    private function convertChannel(MethodTypesBeforeCreateEvent $event)
-    {
-        $transport = $event->getChannel()->getTransport();
-    }
-
-    /**
-     * @param MethodTypesBeforeCreateEvent $event
-     */
     private function convertShippingServices(MethodTypesBeforeCreateEvent $event)
     {
         $validShippingServices = [];
@@ -38,7 +30,7 @@ class UpsShippingMethodTypesCreateBeforeEventListener
                     ->setCountry($shippingService->getCountry());
                 $validShippingServices[] = $validShippingService;
             } else {
-                $validShippingServices = $shippingService;
+                $validShippingServices[] = $shippingService;
             }
         }
 
