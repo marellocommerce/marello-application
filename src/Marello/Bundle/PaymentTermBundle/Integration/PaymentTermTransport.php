@@ -4,7 +4,7 @@ namespace Marello\Bundle\PaymentTermBundle\Integration;
 
 use Oro\Bundle\IntegrationBundle\Entity\Transport;
 use Oro\Bundle\IntegrationBundle\Provider\TransportInterface;
-use Marello\Bundle\PaymentTermBundle\Entity\PaymentTermSettings;
+use Marello\Bundle\PaymentTermBundle\Entity\MarelloPaymentTermSettings;
 use Marello\Bundle\PaymentTermBundle\Form\Type\PaymentTermSettingsType;
 
 class PaymentTermTransport implements TransportInterface
@@ -29,7 +29,7 @@ class PaymentTermTransport implements TransportInterface
      */
     public function getSettingsEntityFQCN()
     {
-        return PaymentTermSettings::class;
+        return MarelloPaymentTermSettings::class;
     }
 
     /**
