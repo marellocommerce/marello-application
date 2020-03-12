@@ -20,22 +20,6 @@ services:
         arguments:
             - '@marelloenterprise_replenishment.replenishment_strategy.registry'
 
-    marelloenterprise_replenishment.repository.replenishment_order_config:
-        class: 'MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\Repository\ReplenishmentOrderConfigRepository'
-        parent: oro_entity.abstract_repository
-        arguments:
-            - 'MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderConfig'
-        calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
-
-    marelloenterprise_replenishment.repository.replenishment_order:
-        class: 'MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\Repository\ReplenishmentOrderRepository'
-        parent: oro_entity.abstract_repository
-        arguments:
-            - 'MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrder'
-        calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
-
     marelloenterprise_replenishment.twig.replenishment_extension:
         class: 'MarelloEnterprise\Bundle\ReplenishmentBundle\Twig\ReplenishmentExtension'
         arguments:
@@ -72,7 +56,7 @@ services:
     marelloenterprise_replenishment.command.allocate_delayed_replenishment_orders_inventory:
         class: 'MarelloEnterprise\Bundle\ReplenishmentBundle\Command\AllocateDelayedReplenishmentOrdersInventoryCommand'
         arguments:
-            - '@marelloenterprise_replenishment.repository.replenishment_order'
+            - '@doctrine'
             - '@oro_message_queue.client.message_producer'
         tags:
             - { name: console.command }
