@@ -1,0 +1,17 @@
+oro_entity:
+    entity_aliases:
+        Marello\Bundle\PaymentBundle\Entity\PaymentMethodConfig:
+            alias: marellopaymentmethodconfig
+            plural_alias: marellopaymentmethodconfigs
+
+        Marello\Bundle\PaymentBundle\Entity\PaymentMethodsConfigsRule:
+            alias: marellopaymentmethodsconfigsrule
+            plural_alias: marellopaymentmethodsconfigsrules
+
+        Marello\Bundle\PaymentBundle\Entity\PaymentMethodsConfigsRuleDestination:
+            alias: marellopaymentmethodsconfigsruledestination
+            plural_alias: marellopaymentmethodsconfigsruledestinations
+
+        Marello\Bundle\PaymentBundle\Entity\PaymentMethodsConfigsRuleDestinationPostalCode:
+            alias: marellopaymentmethodsconfigsruledestinationpostalcode
+            plural_alias: marellopaymentmethodsconfigsruledestinationpostalcodes

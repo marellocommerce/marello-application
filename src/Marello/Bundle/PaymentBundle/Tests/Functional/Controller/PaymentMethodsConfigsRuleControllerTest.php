@@ -318,7 +318,7 @@ class PaymentMethodsConfigsRuleControllerTest extends WebTestCase
                 )
             ]
         );
-        $this->ajaxRequest('GET', $url);
+        $this->ajaxRequest('POST', $url);
         $result = $this->client->getResponse();
         $data = json_decode($result->getContent(), true);
         $this->assertTrue($data['successful']);
@@ -360,7 +360,7 @@ class PaymentMethodsConfigsRuleControllerTest extends WebTestCase
                 )
             ]
         );
-        $this->ajaxRequest('GET', $url);
+        $this->ajaxRequest('POST', $url);
         $result = $this->client->getResponse();
         $data = json_decode($result->getContent(), true);
         $this->assertTrue($data['successful']);
