@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\PaymenttermBundle\Tests\Functional\Controller;
+namespace Marello\Bundle\PaymentTermBundle\Tests\Functional\Controller;
 
 use Marello\Bundle\PaymentTermBundle\Entity\PaymentTerm;
 use Marello\Bundle\PaymentTermBundle\Form\Type\PaymentTermType;

@@ -3,7 +3,7 @@
 namespace Marello\Bundle\PaymentTermBundle\Form\Type;
 
 use Oro\Bundle\LocaleBundle\Form\Type\LocalizedFallbackValueCollectionType;
-use Marello\Bundle\PaymentTermBundle\Entity\PaymentTermSettings;
+use Marello\Bundle\PaymentTermBundle\Entity\MarelloPaymentTermSettings;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Exception\AccessException;
@@ -47,7 +47,7 @@ class PaymentTermSettingsType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => PaymentTermSettings::class,
+            'data_class' => MarelloPaymentTermSettings::class,
         ]);
     }
 
