@@ -53,4 +53,27 @@ abstract class AbstractNormalizer implements NormalizerInterface
             ->getRepository(SalesChannel::class)
             ->findOneBy(['integrationChannel' => $channel]);
     }
+    
+    /**
+     * @param mixed $data
+     * @param $property
+     * @return mixed|null
+     */
+    protected function getProperty($data, $property)
+    {
+        if (!is_array($data)) {
+            return null;
+        }
+        if (isset($data[$property])) {
+            return $data[$property];
+        }
+        if (isset($data['attributes'][$property])) {
+            return $data['attributes'][$property];
+        }
+        if (isset($data['relationships'][$property])) {
+            return $data['relationships'][$property]['data'];
+        }
+
+        return null;
+    }
 }

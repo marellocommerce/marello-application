@@ -180,6 +180,7 @@ services:
             - { name: doctrine.event_listener, event: preRemove }
 
     marello_orocommerce.rest.client_factory:
+        public: true
         class: 'Marello\Bundle\OroCommerceBundle\Client\Factory\OroCommerceRestClientFactory'
 
     marello_orocommerce.integration.channel:
@@ -204,6 +205,20 @@ services:
           - '@oro_importexport.context_registry'
           - '@oro_integration.logger.strategy'
           - '@oro_integration.provider.connector_context_mediator'
+
+    marello_orocommerce.integration.connector.customer:
+        class: 'Marello\Bundle\OroCommerceBundle\Integration\Connector\OroCommerceCustomerConnector'
+        public: false
+        parent: marello_orocommerce.integration.connector.abstract
+        tags:
+            - { name: oro_integration.connector, type: customer, channel_type: orocommerce }
+
+    marello_orocommerce.integration.connector.paymentterm:
+        class: 'Marello\Bundle\OroCommerceBundle\Integration\Connector\OroCommercePaymentTermConnector'
+        public: false
+        parent: marello_orocommerce.integration.connector.abstract
+        tags:
+            - { name: oro_integration.connector, type: payment_term, channel_type: orocommerce }
 
     marello_orocommerce.integration.connector.product:
         class: 'Marello\Bundle\OroCommerceBundle\Integration\Connector\OroCommerceProductConnector'
@@ -413,6 +428,24 @@ services:
             - '@oro_importexport.context_registry'
 
     # Processors
+    marello_orocommerce.importexport.processor.import.customer:
+        public: false
+        parent: oro_importexport.processor.import_abstract
+        calls:
+            - [setStrategy, ['@marello_orocommerce.import.strategy.customer.add_or_update']]
+        tags:
+            - { name: oro_importexport.processor, type: import, entity: 'Marello\Bundle\CustomerBundle\Entity\Company', alias:  marello_orocommerce_customer.add_or_replace }
+            - { name: oro_importexport.processor, type: import_validation, entity: 'Marello\Bundle\CustomerBundle\Entity\Company', alias:  marello_orocommerce_customer.add_or_replace }
+
+    marello_orocommerce.importexport.processor.import.paymentterm:
+        public: false
+        parent: oro_importexport.processor.import_abstract
+        calls:
+            - [setStrategy, ['@marello_orocommerce.import.strategy.paymentterm.add_or_update']]
+        tags:
+            - { name: oro_importexport.processor, type: import, entity: 'Marello\Bundle\PaymentTermBundle\Entity\PaymentTerm', alias:  marello_orocommerce_paymentterm.add_or_replace }
+            - { name: oro_importexport.processor, type: import_validation, entity: 'Marello\Bundle\PaymentTermBundle\Entity\PaymentTerm', alias:  marello_orocommerce_paymentterm.add_or_replace }
+
     marello_orocommerce.importexport.processor.import.order:
         public: false
         parent: oro_importexport.processor.import_abstract
@@ -557,6 +590,20 @@ services:
         public: false
 
     # Normalizers / Denormalizers
+    marello_orocommerce.importexport.normalizer.customer:
+        class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Serializer\CustomerNormalizer'
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: oro_importexport.normalizer }
+
+    marello_orocommerce.importexport.normalizer.paymentterm:
+        class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Serializer\PaymentTermNormalizer'
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: oro_importexport.normalizer }
+
     marello_orocommerce.importexport.normalizer.order:
         class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Serializer\OrderNormalizer'
         arguments:
@@ -624,6 +671,30 @@ services:
             - { name: oro_importexport.normalizer }
 
     # Strategy
+    marello_orocommerce.import.strategy.customer.add_or_update:
+        class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Strategy\CustomerImportStrategy'
+        arguments:
+            - '@event_dispatcher'
+            - '@oro_importexport.strategy.import.helper'
+            - '@oro_entity.helper.field_helper'
+            - '@oro_importexport.field.database_helper'
+            - '@oro_entity.entity_class_name_provider'
+            - '@translator'
+            - '@oro_importexport.strategy.new_entities_helper'
+            - '@oro_entity.doctrine_helper'
+
+    marello_orocommerce.import.strategy.paymentterm.add_or_update:
+        class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Strategy\PaymentTermImportStrategy'
+        arguments:
+            - '@event_dispatcher'
+            - '@oro_importexport.strategy.import.helper'
+            - '@oro_entity.helper.field_helper'
+            - '@oro_importexport.field.database_helper'
+            - '@oro_entity.entity_class_name_provider'
+            - '@translator'
+            - '@oro_importexport.strategy.new_entities_helper'
+            - '@oro_entity.doctrine_helper'
+
     marello_orocommerce.import.strategy.order.add_or_update:
         class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Strategy\OrderImportStrategy'
         arguments:
@@ -637,6 +708,12 @@ services:
             - '@oro_entity.doctrine_helper'
 
     # Writers
+    marello_orocommerce.importexport.writer.import.customer:
+        class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\CustomerImportWriter'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@oro_importexport.context_registry'
+
     marello_orocommerce.importexport.writer.export.abstract:
         class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractExportWriter'
         abstract: true

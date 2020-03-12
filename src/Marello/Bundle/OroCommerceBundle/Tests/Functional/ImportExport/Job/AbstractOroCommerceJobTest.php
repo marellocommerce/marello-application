@@ -59,7 +59,6 @@ abstract class AbstractOroCommerceJobTest extends WebTestCase
     /** {@inheritdoc} */
     public function tearDown()
     {
-        $this->getContainer()->set('marello_orocommerce.rest.client_factory', $this->realRestClientFactory);
         unset(
             $this->managerRegistry,
             $this->restClient,
@@ -130,9 +129,6 @@ abstract class AbstractOroCommerceJobTest extends WebTestCase
             ->expects(static::any())
             ->method('createRestClient')
             ->willReturn($this->restClient);
-
-        $this->realRestClientFactory = $this->getContainer()->get('marello_orocommerce.rest.client_factory');
-        $this->client->getContainer()->set('marello_orocommerce.rest.client_factory', $this->restClientFactory);
         /** @var OroCommerceRestTransport $transport */
         $transport = $this->getContainer()->get('marello_orocommerce.integration.transport');
         $transport->setRestClientFactory($this->restClientFactory);
