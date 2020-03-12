@@ -17,6 +17,7 @@
         "currency": "USD",
         "subtotalValue": "1839.5900",
         "totalValue": "2014.3500",
+        "paymentMethod": "payment_method_1",
         "shippingMethod": null,
         "shippingMethodType": null,
         "estimatedShippingCostAmount": null,
