@@ -8,8 +8,11 @@ use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\PricingBundle\Form\Type\ProductPriceType;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Form\Type\ProductSupplierSelectType;
+use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
+use Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderAdvisedItemCollectionType;
 use Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderCreateStepTwoType;
 use Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderItemCollectionType;
+use Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderItemReceiveCollectionType;
 use Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderItemType;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Marello\Bundle\SupplierBundle\Form\Type\SupplierSelectType;
@@ -42,15 +45,14 @@ class PurchaseOrderCreateStepTwoTypeTest extends FormIntegrationTestCase
     /**
      * @param array $submittedData
      * @param mixed $expectedData
-     * @param mixed $defaultData
      *
      * @dataProvider submitProvider
      */
-    public function testSubmit($submittedData, $expectedData, $defaultData = null)
+    public function testSubmit($submittedData, $expectedData)
     {
         $form = $this->factory->create(
             PurchaseOrderCreateStepTwoType::class,
-            $defaultData
+            new PurchaseOrder()
         );
         $form->submit($submittedData);
         $this->assertEquals($expectedData['isValid'], $form->isValid());
@@ -243,6 +245,7 @@ class PurchaseOrderCreateStepTwoTypeTest extends FormIntegrationTestCase
                     SupplierSelectType::class => new SupplierSelectType(),
                     OroDateType::class => new OroDateType(),
                     MultipleEntityType::class => new MultipleEntityType($doctrineHelper, $authorizationChecker),
+                    PurchaseOrderAdvisedItemCollectionType::class => new PurchaseOrderAdvisedItemCollectionType(),
                     EntityIdentifierType::class => new EntityIdentifierStubType([]),
                     PurchaseOrderItemCollectionType::class => new PurchaseOrderItemCollectionType(),
                     CollectionType::class => new CollectionType(),
