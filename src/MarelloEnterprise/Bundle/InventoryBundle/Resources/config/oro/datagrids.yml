@@ -248,7 +248,7 @@ datagrids:
             rowSelection:
                 dataField: id
                 columnName: hasLink
-                selectAll: true
+                selectAll: false
                 selectors:
                     included: '#addSalesChannelGroups'
                     excluded: '#removeSalesChannelGroups'
