@@ -19,7 +19,9 @@
         'route': 'marello_sales_saleschannelgroup_update',
         'params': {'id': '$id'}
         }) %}
-
+        {% set html = html ~ UI.saveAndNewButton({
+        'route': 'marello_sales_saleschannelgroup_create'
+        }) %}
         {{ UI.dropdownSaveButton({'html': html}) }}
     {% endif %}
 {% endblock %}
