@@ -32,6 +32,9 @@
         'route': 'marelloenterprise_inventory_warehouse_update',
         'params': {'id': '$id'}
         }) %}
+        {% set html = html ~ UI.saveAndNewButton({
+        'route': 'marelloenterprise_inventory_warehouse_create'
+        }) %}
 
         {{ UI.dropdownSaveButton({'html': html}) }}
     {% endif %}
