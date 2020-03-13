@@ -22,6 +22,9 @@
         'route': 'marello_tax_taxcode_update',
         'params': {'id': '$id'}
         }) %}
+        {% set html = html ~ UI.saveAndNewButton({
+            'route': 'marello_tax_taxcode_create'
+        }) %}
 
         {{ UI.dropdownSaveButton({'html': html}) }}
     {% endif %}
