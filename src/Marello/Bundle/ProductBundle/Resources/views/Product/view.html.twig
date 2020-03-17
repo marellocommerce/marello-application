@@ -204,13 +204,7 @@
     {% endif %}
 
     {% set additionalData %}
-        <div class="widget-content">
-            <div class="row-fluid form-horizontal">
-                <div class="responsive-block">
-                    {{ entityConfig.renderDynamicFields(entity) }}
-                </div>
-            </div>
-        </div>
+        {{ entityConfig.renderDynamicFields(entity) }}
     {% endset %}
 
     {% set dataBlocks = dataBlocks|merge([{
