@@ -37,30 +37,26 @@ class ProductGridListener
                     'type' => 'twig',
                     'frontend_type' => 'html',
                     'template' => 'MarelloProductBundle:Product/Datagrid/Property:image.html.twig',
+                    'inline_editing' => ['enable' => false]
                 ],
                 'status' => [
                     'label' => 'marello.product.status.label',
                     'frontend_type' => 'string',
+                    'inline_editing' => ['enable' => false]
                 ]
             ],
             $columns
         );
         $config->offsetSetByPath('[columns]', $columns);
-        $config
-            ->offsetSetByPath(
-                '[sorters][columns][status]',
-                ['data_name' => 's.label']
-            )
-            ->offsetSetByPath(
-                '[filters][columns][image]',
-                [
+
+        $filters = $config->offsetGetByPath('[filters][columns]');
+        $filters = array_merge(
+            [
+                'image' => [
                     'type' => 'boolean',
                     'data_name' => 'hasImage',
-                ]
-            )
-            ->offsetSetByPath(
-                '[filters][columns][status]',
-                [
+                ],
+                'status' => [
                     'type' => 'entity',
                     'data_name' => 's',
                     'options' => [
@@ -70,6 +66,14 @@ class ProductGridListener
                         ]
                     ]
                 ]
+            ],
+            $filters
+        );
+        $config->offsetSetByPath('[filters][columns]', $filters);
+        $config
+            ->offsetSetByPath(
+                '[sorters][columns][status]',
+                ['data_name' => 's.label']
             );
     }
 
