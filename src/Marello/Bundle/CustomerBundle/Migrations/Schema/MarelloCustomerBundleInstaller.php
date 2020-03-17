@@ -34,7 +34,7 @@ class MarelloCustomerBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_2';
+        return 'v1_3';
     }
 
     /**
@@ -110,6 +110,7 @@ class MarelloCustomerBundleInstaller implements
 
         $this->attachmentExtension->addAttachmentAssociation($schema, $table->getName());
         $this->activityExtension->addActivityAssociation($schema, 'oro_note', $table->getName());
+        $this->activityExtension->addActivityAssociation($schema, 'oro_email', $table->getName());
     }
 
     /**
