@@ -38,7 +38,7 @@ class CreateAndUpdateInventoryLevelLog implements Migration, OrderedMigrationInt
     protected function updateInventoryLogLevelTable(Schema $schema, $queries)
     {
         $table = $schema->getTable(self::INVENTORY_LEVEL_LOG_TABLE_NAME);
-        $table->addColumn('inventory_item_id', 'integer', ['notnull' => true]);
+        $table->addColumn('inventory_item_id', 'integer', ['notnull' => false]);
         $table->addColumn('warehouse_name', 'string', ['notnull' => false, 'length' => 255]);
         $table->addIndex(['inventory_item_id']);
 
