@@ -64,6 +64,25 @@ trait MakeProductAttributesTrait
     }
 
     /**
+     * @param array $fields
+     */
+    private function updateProductAttributeDataGridOptions(array $fields)
+    {
+        $configManager = $this->getConfigManager();
+        $configHelper = $this->container->get('oro_entity_config.config.config_helper');
+        $entityManager = $configManager->getEntityManager();
+
+        foreach ($fields as $field => $attributeOptions) {
+            $fieldConfigModel = $configManager->getConfigFieldModel(Product::class, $field);
+
+            $configHelper->updateFieldConfigs($fieldConfigModel, ['datagrid' => $attributeOptions]);
+            $entityManager->persist($fieldConfigModel);
+        }
+
+        $entityManager->flush();
+    }
+
+    /**
      * @return ConfigManager
      */
     private function getConfigManager()
