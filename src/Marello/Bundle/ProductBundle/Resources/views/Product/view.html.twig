@@ -39,25 +39,16 @@
     {% endset %}
     {% set generalSubblocks = generalSubblocks|merge([{'data' : [productInformationWidget]}]) %}
 
-    {% if marello_entity_has_attribute(entity, 'image') %}
-        {% set productImage = 'bundles/marelloproduct/img/no_image_available.jpg' | imagine_filter('product_view') %}
-        {% if entity.image is not null %}
-            {% set productImage = filtered_image_url(entity.image, 'product_view') %}
-        {% endif %}
-
-        {% set productImageWidget %}
-            <div class="widget-content">
-                <div class="row-fluid form-horizontal">
-                    <div class="responsive-block">
-                        <div class="visual marello-product-image">
-                            <img src="{{ productImage }}" alt="{{ entity.name }}" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {% endset %}
-        {% set generalSubblocks = generalSubblocks|merge([{'data' : [productImageWidget]}]) %}
-    {% endif %}
+    {% set productImageWidget %}
+        <div class="productImage-widget-wrapper">
+            {{ oro_widget_render({
+                'widgetType': 'block',
+                'url': path('marello_product_widget_image', {id: entity.id}),
+                'title': ''
+            }) }}
+        </div>
+    {% endset %}
+    {% set generalSubblocks = generalSubblocks|merge([{'data' : [productImageWidget]}]) %}
 
     {% set dataBlocks = [{
         'title': 'General'|trans,
