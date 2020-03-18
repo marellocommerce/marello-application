@@ -5,12 +5,13 @@ namespace Marello\Bundle\ProductBundle\EventListener\Datagrid;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\GroupBy;
 
-use Marello\Bundle\ProductBundle\Entity\ProductStatus;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Event\OrmResultBefore;
 
+use Marello\Bundle\ProductBundle\Entity\ProductStatus;
 use Marello\Bundle\ProductBundle\Datagrid\ORM\Query\ProductsGridSqlWalker;
 
 class ProductGridListener
@@ -105,5 +106,38 @@ class ProductGridListener
         }
         $dataSource->getQueryBuilder()->resetDQLPart('groupBy');
         $dataSource->getQueryBuilder()->add('groupBy', $newGroupByParts);
+
+        $config = $grid->getConfig();
+        $columnsConfig = $this->switchColumns($config, 'createdAt', 'tags');
+        $config->offsetSetByPath('[columns]', $columnsConfig);
+    }
+
+    /**
+     * @param DatagridConfiguration $datagridConfig
+     * @param $firstColumnName
+     * @param $secondColumnName
+     * @return array
+     */
+    private function switchColumns(DatagridConfiguration $datagridConfig, $firstColumnName, $secondColumnName)
+    {
+        $columns = $datagridConfig->offsetGetByPath('[columns]');
+        if (array_key_exists($firstColumnName, $columns)) {
+            $firstColumnConfig = $columns[$firstColumnName];
+            if (array_key_exists($secondColumnName, $columns)) {
+                $secondColumnConfig = $columns[$secondColumnName];
+                unset($columns[$firstColumnName]);
+                unset($columns[$secondColumnName]);
+                $columns = array_merge(
+                    $columns,
+                    [
+                        $secondColumnName => $secondColumnConfig,
+                        $firstColumnName => $firstColumnConfig
+                    ]
+                );
+
+                return $columns;
+            }
+        }
+        return $columns;
     }
 }
