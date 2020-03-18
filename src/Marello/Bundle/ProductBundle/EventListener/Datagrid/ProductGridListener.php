@@ -25,10 +25,8 @@ class ProductGridListener
         $ormQuery
             ->addSelect('i.id as image')
             ->addSelect('(CASE WHEN p.image IS NOT NULL THEN true ELSE false END) as hasImage')
-            ->addSelect('s.label as status')
-            ->addLeftJoin('p.image', 'i')
-            ->addLeftJoin('p.status', 's')
-            ->addGroupBy('s.label');
+            ->addSelect('IDENTITY(p.status) as status')
+            ->addLeftJoin('p.image', 'i');
         $columns = $config->offsetGetByPath('[columns]');
         $columns = array_merge(
             [
@@ -41,8 +39,7 @@ class ProductGridListener
                 ],
                 'status' => [
                     'label' => 'marello.product.status.label',
-                    'frontend_type' => 'string',
-                    'inline_editing' => ['enable' => false]
+                    'frontend_type' => 'select'
                 ]
             ],
             $columns
@@ -58,7 +55,7 @@ class ProductGridListener
                 ],
                 'status' => [
                     'type' => 'entity',
-                    'data_name' => 's',
+                    'data_name' => 'status',
                     'options' => [
                         'field_options' => [
                             'multiple' => true,
@@ -73,7 +70,7 @@ class ProductGridListener
         $config
             ->offsetSetByPath(
                 '[sorters][columns][status]',
-                ['data_name' => 's.label']
+                ['data_name' => 'status']
             );
     }
 
