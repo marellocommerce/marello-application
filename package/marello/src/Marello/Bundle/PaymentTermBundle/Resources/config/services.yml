@@ -60,14 +60,6 @@ services:
             - { name: marello_payment.payment_method_provider }
             - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\IntegrationBundle\Entity\Channel', event: postLoad }
 
-    marello_payment_term.repository.payment_term_settings:
-        class: 'Marello\Bundle\PaymentTermBundle\Entity\Repository\MarelloPaymentTermSettingsRepository'
-        parent: oro_entity.abstract_repository
-        arguments:
-            - 'Marello\Bundle\PaymentTermBundle\Entity\MarelloPaymentTermSettings'
-        calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
-
     marello_payment_term.event_listener.payment_term_method_view:
         class: 'Marello\Bundle\PaymentTermBundle\EventListener\PaymentTermMethodViewListener'
         arguments:
