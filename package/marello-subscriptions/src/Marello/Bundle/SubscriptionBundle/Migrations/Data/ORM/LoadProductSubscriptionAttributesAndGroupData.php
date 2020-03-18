@@ -28,15 +28,19 @@ class LoadProductSubscriptionAttributesAndGroupData extends AbstractFixture impl
     /** @var array */
     const ATTRIBUTES = [
         'subscriptionDuration' => [
+            'is_attribute' => true,
             'visible' => true
         ],
         'number_of_deliveries' => [
+            'is_attribute' => true,
             'visible' => true
         ],
         'paymentTerm' => [
+            'is_attribute' => true,
             'visible' => true
         ],
         'specialPriceDuration' => [
+            'is_attribute' => true,
             'visible' => true
         ],
     ];
