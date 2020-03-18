@@ -10,7 +10,9 @@ use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
- * @ORM\Entity(repositoryClass="Marello\Bundle\PaymentTermBundle\Entity\Repository\MarelloPaymentTermSettingsRepository")
+ * @ORM\Entity(
+ *     repositoryClass="Marello\Bundle\PaymentTermBundle\Entity\Repository\MarelloPaymentTermSettingsRepository"
+ * )
  */
 class MarelloPaymentTermSettings extends Transport
 {
