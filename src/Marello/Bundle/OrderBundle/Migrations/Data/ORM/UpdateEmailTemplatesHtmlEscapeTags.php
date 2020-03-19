@@ -43,6 +43,6 @@ class UpdateEmailTemplatesHtmlEscapeTags extends AbstractEmailFixture implements
      */
     public function getVersion()
     {
-        return '1.2';
+        return '1.3';
     }
 }

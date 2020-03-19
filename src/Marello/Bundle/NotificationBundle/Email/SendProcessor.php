@@ -105,7 +105,6 @@ class SendProcessor
         }
 
         $template = $this->emailTemplateManager->findTemplate($templateName, $entity);
-
         /*
          * If template is not found, throw an exception.
          */
@@ -118,11 +117,17 @@ class SendProcessor
                 )
             );
         }
+        $emailModel = $this->emailTemplateManager->getLocalizedModel($template, $entity);
+        if (null === $emailModel) {
+            $emailModel = $this->createEmailModel($template);
+        }
 
         list($subjectRendered, $templateRendered) = $this->renderer->compileMessage(
-            $template,
+            $emailModel,
             compact('entity')
         );
+
+        $emailModel = $this->updateEmailModel($emailModel, $subjectRendered, $templateRendered);
 
         /*
          * Create new notification and process it using email notification processor.
@@ -135,7 +140,7 @@ class SendProcessor
             // send compiled notification
             $this->emailNotificationSender->send(
                 $this->getNotification($templateName, $recipients, $entity),
-                $this->createEmailModel($template, $templateRendered, $subjectRendered)
+                $emailModel
             );
         } catch (\Exception $e) {
             $this->emailNotificationManager->processSingle(
@@ -188,29 +193,41 @@ class SendProcessor
     }
 
     /**
+     * @param $emailTemplateModel
+     * @param $renderedContent
+     * @param $renderedSubject
+     * @return EmailTemplateModel
+     */
+    private function updateEmailModel(EmailTemplateModel $emailTemplateModel, $renderedSubject, $renderedContent)
+    {
+        $emailTemplateModel
+            ->setSubject($renderedSubject)
+            ->setContent($renderedContent);
+
+        return $emailTemplateModel;
+    }
+
+    /**
+     * @param EmailTemplate $template
+     * @return EmailTemplateModel
+     */
+    private function createEmailModel(EmailTemplate $template)
+    {
+        $emailModel = new EmailTemplateModel();
+        $emailModel->setSubject($template->getSubject());
+        $emailModel->setContent($template->getContent());
+        $emailModel->setType($this->getTemplateContentType($template));
+
+        return $emailModel;
+    }
+
+    /**
      * @param object $entity
      * @return string
      */
     protected function getRealClassName($entity)
     {
         return $this->manager->getClassMetadata(get_class($entity))->getName();
-    }
-
-    /**
-     * @param $template
-     * @param $renderedContent
-     * @param $renderedSubject
-     * @return EmailTemplateModel
-     */
-    private function createEmailModel($template, $renderedContent, $renderedSubject)
-    {
-        $emailTemplateModel = new EmailTemplateModel();
-        $emailTemplateModel
-            ->setSubject($renderedSubject)
-            ->setContent($renderedContent)
-            ->setType($this->getTemplateContentType($template));
-
-        return $emailTemplateModel;
     }
 
     /**
