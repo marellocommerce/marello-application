@@ -5,7 +5,7 @@
     "license": "Commercial",
     "authors": [
         {
-            "name": "Madia B.V.",
+            "name": "Marello B.V.",
             "homepage": "https://www.marello.com"
         }
     ],
@@ -33,13 +33,13 @@
     "require": {
         "php": ">=7.1.26",
         "oro/platform-enterprise": "4.1.*",
-        "marellocommerce/marello-enterprise": "self.version"
+        "marellocommerce/marello-enterprise": "~3.0.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0-dev"
+            "dev-master": "3.0-dev"
         }
     }
 }
