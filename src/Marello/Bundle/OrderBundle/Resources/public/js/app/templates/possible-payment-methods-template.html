@@ -1,0 +1,36 @@
+<table class="table table-hover table-bordered grid">
+    <thead>
+    <tr>
+        <th>&nbsp;</th>
+        <th><span><%= _.__('marello.shipping.methods_table.method.label') %></span></th>
+        <th><span><%= _.__('marello.shipping.methods_table.option.label') %></span></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% _.each(methods, function(method) {
+    var checked = areMethodsEqual(createMethodObject(method.identifier), selectedMethod);
+    %>
+    <tr>
+        <td>
+            <input type="radio" <%= checked ? 'checked="checked"' : '' %>
+            id="<%= 'possible_shipping_method_' + method.identifier %>"
+            name="possiblePaymentMethod"
+            value="<%= method.identifier %>"
+            data-payment-method="<%= method.identifier %>"
+            data-payment-method-options="<%= $.param(method.options) %>"
+            data-choice="<%= method.identifier %>"
+            />
+        </td>
+        <td>
+            <label for="<%= 'possible_payment_method_' + method.identifier %>"><%- _.__(method.label) %></label>
+        </td>
+        <td>
+            <% _.each(method.options, function(value, name) { %>
+            <%= name + ': ' + value  %>
+            <br>
+            <% }) %>
+        </td>
+    </tr>
+    <% }) %>
+    </tbody>
+</table>

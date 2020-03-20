@@ -1,8 +1,3 @@
-parameters:
-    marello_inventory.entity.warehouse.class: Marello\Bundle\InventoryBundle\Entity\Warehouse
-    marello_inventory.entity.warehousegroup.class: Marello\Bundle\InventoryBundle\Entity\WarehouseGroup
-    marello_inventory.entity.warehousechannelgrouplink.class: Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink
-
 services:
     marello_product.widget_provider.actions.variant_mass_inventory:
         parent: oro_ui.widget_provider.action_button.abstract
@@ -14,6 +9,7 @@ services:
 
     marello_inventory.logging.chart_builder:
         class: Marello\Bundle\InventoryBundle\Logging\ChartBuilder
+        public: true
         arguments:
             - '@marello_inventory.repository.inventorylevellogrecord'
             - '@marello_inventory.model.inventory_level_totals_calculator'
@@ -22,6 +18,7 @@ services:
 
     marello_inventory.manager.inventory_manager:
         class: 'Marello\Bundle\InventoryBundle\Manager\InventoryManager'
+        public: true
         calls:
             - [setContextValidator, ['@marello_inventory.validator.inventory_update_context']]
             - [setDoctrineHelper, ['@oro_entity.doctrine_helper']]
@@ -33,6 +30,7 @@ services:
 
     marello_inventory.manager.inventory_item_manager:
         class: 'Marello\Bundle\InventoryBundle\Manager\InventoryItemManager'
+        public: true
         arguments:
             - '@oro_entity.doctrine_helper'
         lazy: true
@@ -42,6 +40,7 @@ services:
 
     marello_inventory.model.inventory_level_totals_calculator:
         class: 'Marello\Bundle\InventoryBundle\Model\InventoryTotalCalculator'
+        public: true
 
     marello_inventory.twig.inventory_total_extension:
         class: 'Marello\Bundle\InventoryBundle\Twig\InventoryTotalExtension'
@@ -59,9 +58,6 @@ services:
 
     marello_inventory.provider.order_warehouse:
         class: 'Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProvider'
-        # keep argument for BC, will be removed in 3.0
-        arguments:
-            - '@oro_entity.doctrine_helper'
 
     marello_inventory.repository.warehouse:
         class: 'Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository'
@@ -197,3 +193,12 @@ services:
         class: 'Marello\Bundle\InventoryBundle\Validator\InventoryOrderOnDemandValidator'
         tags:
             - { name: validator.constraint_validator, alias: marello_inventory.order_on_demand_validator }
+
+    marello_inventory.command.inventory_rebalance:
+        class: 'Marello\Bundle\InventoryBundle\Command\InventoryBalanceCommand'
+        arguments:
+            - '@doctrine'
+            - '@marello_inventory.model.balancer.inventory_balancer'
+            - '@oro_message_queue.client.message_producer'
+        tags:
+            - { name: console.command }

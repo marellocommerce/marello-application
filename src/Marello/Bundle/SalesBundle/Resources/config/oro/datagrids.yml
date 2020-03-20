@@ -61,7 +61,7 @@ datagrids:
                 default:
                     data_name: sc.default
             default:
-                name: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+                name: "ASC"
         properties:
             id: ~
             view_link:
@@ -88,9 +88,6 @@ datagrids:
                     - scg
                 from:
                     - { table: MarelloSalesBundle:SalesChannelGroup, alias: scg }
-                join:
-                    left:
-                        - { join: scg.salesChannels, alias: sc }
                 where:
                     and:
                         - scg.system != true
@@ -110,13 +107,13 @@ datagrids:
             columns:
                 name:
                     type: string
-                    data_name: sc.name
+                    data_name: scg.name
         sorters:
             columns:
                 name:
                     data_name: scg.name
                 description:
-                    data_name: sc.description
+                    data_name: scg.description
         properties:
             id: ~
             view_link:
@@ -166,7 +163,13 @@ datagrids:
             type: orm
             query:
                 select:
-                    - sc
+                    - sc.id
+                    - sc.name
+                    - sc.code
+                    - sc.channelType
+                    - sc.currency
+                    - sc.active
+                    - sc.default
                     - (CASE WHEN (sc.id IN (:data_in)) AND sc.id NOT IN (:data_not_in) THEN true ELSE false END) as hasChannel
                 from:
                     - { table: MarelloSalesBundle:SalesChannel, alias: sc }
@@ -229,7 +232,7 @@ datagrids:
                 default:
                     data_name: sc.default
             default:
-                name: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+                name: "ASC"
         properties:
             id: ~
         actions: ~

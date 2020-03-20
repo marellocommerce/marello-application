@@ -3,7 +3,7 @@
 namespace Marello\Bundle\SalesBundle\Form\EventListener;
 
 use Doctrine\ORM\EntityManager;
-use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
+use Marello\Bundle\SalesBundle\Model\SalesChannelsAwareInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -40,7 +40,7 @@ class DefaultSalesChannelSubscriber implements EventSubscriberInterface
     {
         $entity = $event->getData();
         if (!$entity || null === $entity->getId()) {
-            if ($entity instanceof SalesChannelAwareInterface) {
+            if ($entity instanceof SalesChannelsAwareInterface) {
                 $channels = $this->getDefaultChannels();
                 if (!is_null($channels) && count($channels) !== 0) {
                     foreach ($channels as $channel) {

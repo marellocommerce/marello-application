@@ -2,9 +2,9 @@ placeholders:
     items:
         marello_add_variant_link:
             template:   MarelloProductBundle:Variant:addVariantLink.html.twig
-            applicable: '@oro_ui.placeholder.filter->isInstanceOf($entity$, %marello_product.entity.class%)'
+            applicable: '@oro_ui.placeholder.filter->isInstanceOf($entity$, Marello\Bundle\ProductBundle\Entity\Product)'
             acl:        marello_product_create_variant
         marello_add_variant_button:
             template:   MarelloProductBundle:Variant:addVariantButton.html.twig
-            applicable: '@oro_ui.placeholder.filter->isInstanceOf($entity$, %marello_product.entity.class%)'
+            applicable: '@oro_ui.placeholder.filter->isInstanceOf($entity$, Marello\Bundle\ProductBundle\Entity\Product)'
             acl:        marello_product_create_variant

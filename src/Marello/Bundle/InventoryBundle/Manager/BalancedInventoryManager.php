@@ -6,7 +6,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
-use Marello\Bundle\SalesBundle\Model\ChannelAwareInterface;
+use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
 use Marello\Bundle\InventoryBundle\Event\BalancedInventoryUpdateEvent;
@@ -40,7 +40,7 @@ class BalancedInventoryManager implements InventoryManagerInterface
             throw new \Exception('InventoryUpdateContext structure not valid.');
         }
 
-        if (!$context->getRelatedEntity() instanceof ChannelAwareInterface) {
+        if (!$context->getRelatedEntity() instanceof SalesChannelAwareInterface) {
             throw new \Exception('Cannot determine origin when the entity is not aware of SalesChannel(s)');
         }
 
@@ -71,7 +71,7 @@ class BalancedInventoryManager implements InventoryManagerInterface
     }
 
     /**
-     * @param ChannelAwareInterface $entity
+     * @param SalesChannelAwareInterface $entity
      * @return SalesChannelGroup
      */
     private function getSalesChannelGroupFromEntity($entity)

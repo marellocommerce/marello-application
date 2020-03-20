@@ -9,7 +9,6 @@ use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 
 class LoadPurchaseOrderData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -46,6 +45,7 @@ class LoadPurchaseOrderData extends AbstractFixture implements DependentFixtureI
             $orders  = [];
             $orderNo = 1;
             $order   = null;
+            $product = null;
 
             while (($data = fgetcsv($handle, 1000, ",")) !== false) {
                 $data = array_combine($headers, array_values($data));

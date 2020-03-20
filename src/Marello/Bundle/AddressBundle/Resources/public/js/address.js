@@ -1,32 +1,28 @@
 define([
     'underscore',
-    'backbone',
+    'oroui/js/app/views/base/view',
     'orotranslation/js/translator',
     'oroui/js/mediator',
     'oroui/js/messenger',
-    'oro/dialog-widget',
-    'oroaddress/js/address/view'
+    'oro/dialog-widget'
 ], function(
     _,
-    Backbone,
+    BaseView,
     __,
     mediator,
     messenger,
-    DialogWidget,
-    AddressView
+    DialogWidget
 ) {
     'use strict';
-
-    var $ = Backbone.$;
 
     /**
      * @export  marelloaddress/js/address
      * @class   marelloaddress.Address
      * @extends Backbone.View
      */
-    return Backbone.View.extend({
+    const AddressView =  BaseView.extend({
         options: {
-            'addressUpdateUrl': null,
+            'addressUpdateUrl': null
         },
 
         initialize: function(options) {
@@ -77,6 +73,7 @@ define([
                         }
                     }, this)
                 );
+
                 this.addressEditDialog.on('formSave', _.bind(function() {
                     this.addressEditDialog.remove();
                     messenger.notificationFlashMessage('success', __('Address saved'));
@@ -87,6 +84,8 @@ define([
 
         reloadAddress: function() {
             this.getAddressWidget().render();
-        },
+        }
     });
+
+    return AddressView;
 });

@@ -48,7 +48,7 @@ datagrids:
                 salesChannel:
                     data_name: sc.name
                 warehouse:
-                    data_name: wh.name
+                    data_name: wh.label
                 billingAddress:
                     data_name: ps.billingAddress
                 shippingAddress:
@@ -58,7 +58,7 @@ datagrids:
                 updatedAt:
                     data_name: ps.updatedAt
             default:
-                packingSlipNumber: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+                packingSlipNumber: "DESC"
         filters:
             columns:
                 packingSlipNumber:
@@ -72,7 +72,7 @@ datagrids:
                     data_name: sc.name
                 warehouse:
                     type: string
-                    data_name: wh.name
+                    data_name: wh.label
                 billingAddress:
                     type: string
                     data_name: ps.billingAddress
@@ -140,6 +140,11 @@ datagrids:
                 label:            marello.order.orderitem.status.label
                 frontend_type:    string
                 data_name:        status
+            inventoryBatches:
+                label:            marello.packing.packingslipitem.inventory_batches.label
+                type:             twig
+                frontend_type:    html
+                template:         MarelloPackingBundle:PackingSlip/Datagrid:inventoryBatches.html.twig
             createdAt:
                 label:            oro.ui.created_at
                 frontend_type:    datetime
@@ -163,7 +168,7 @@ datagrids:
                 updatedAt:
                     data_name: ps.updatedAt
             default:
-                productSku: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+                productSku: "ASC"
         totals:
             grand_total:
                 columns:

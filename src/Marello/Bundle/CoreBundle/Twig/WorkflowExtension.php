@@ -3,8 +3,10 @@
 namespace Marello\Bundle\CoreBundle\Twig;
 
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class WorkflowExtension extends \Twig_Extension
+class WorkflowExtension extends AbstractExtension
 {
     const NAME = 'marello_workflow';
     
@@ -39,7 +41,7 @@ class WorkflowExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_core_get_current_workflow_steps',
                 [$this, 'getCurrentWorkflowSteps']
             )

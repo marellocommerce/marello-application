@@ -2,6 +2,8 @@
 
 namespace Marello\Bundle\NotificationBundle\Tests\Functional\Email;
 
+use Doctrine\ORM\NoResultException;
+
 use Oro\Bundle\NotificationBundle\Async\Topics;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Bundle\MessageQueueBundle\Test\Functional\MessageQueueExtension;
@@ -63,20 +65,16 @@ class SendProcessorTest extends WebTestCase
     }
 
     /**
-     * @throws MarelloNotificationException
+     * @throws NoResultException
      * @throws \Oro\Bundle\NotificationBundle\Exception\NotificationSendException
      * @throws \Twig_Error
      */
-    public function testExceptionisThrownWhenTemplateIsNotFoundForEntity()
+    public function testExceptionIsThrownWhenTemplateIsNotFoundForEntity()
     {
         /** @var Order $order */
         $order = $this->getReference('marello_order_0');
 
-        $this->expectExceptionMessageRegExp(
-            '/Email template with name .* for entity .* was not found. Check if such template exists./'
-        );
-        $this->expectException(MarelloNotificationException::class);
-
+        $this->expectException(NoResultException::class);
 
         $this->sendProcessor->sendNotification(
             'no_valid_template',

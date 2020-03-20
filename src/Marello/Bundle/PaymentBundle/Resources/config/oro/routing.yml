@@ -1,0 +1,4 @@
+marello_payment_methods_configs_rule:
+    resource:     "@MarelloPaymentBundle/Controller/PaymentMethodsConfigsRuleController.php"
+    type:         annotation
+    prefix:       /marello/paymentrule

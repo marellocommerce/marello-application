@@ -6,7 +6,14 @@ use Marello\Bundle\ShippingBundle\Entity\Shipment;
 
 interface ShippingAwareInterface
 {
+    /**
+     * @return Shipment|null
+     */
     public function getShipment();
 
-    public function setShipment(?Shipment $shipment);
+    /**
+     * @param Shipment|null $shipment
+     * @return $this
+     */
+    public function setShipment(Shipment $shipment = null);
 }

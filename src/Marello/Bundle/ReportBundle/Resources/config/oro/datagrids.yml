@@ -36,7 +36,7 @@ datagrids:
                 totalOrders:            { data_name: totalOrders }
                 totalRevenue:           { data_name: totalRevenue }
             default:
-                totalRevenue: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+                totalRevenue: 'DESC'
         options:
             entityHint: report data
             export: false
@@ -49,7 +49,7 @@ datagrids:
             query:
                 select:
                     - i.id
-                    - p.name as productName
+                    - p.denormalizedDefaultName as productName
                     - p.sku as productSku
                     - s.label as status
                     - COALESCE(SUM(il.inventory), 0) AS inventoryQty
@@ -66,7 +66,7 @@ datagrids:
                 label:              marello.product.sku.label
                 frontend_type:      string
             productName:
-                label:              marello.product.name.label
+                label:              marello.product.names.label
                 frontend_type:      string
             inventoryQty:
                 label:              marello.inventory.inventorylevel.inventory.label
@@ -78,11 +78,11 @@ datagrids:
         sorters:
             columns:
                 productSku:     { data_name: p.sku }
-                productName:    { data_name: p.name }
+                productName:    { data_name: p.denormalizedDefaultName }
                 inventoryQty:   { data_name: inventoryQty }
                 status:         { data_name: s.label }
             default:
-                inventoryQty:  %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+                inventoryQty:  'ASC'
         options:
             entityHint: report data
             export: false
@@ -125,7 +125,7 @@ datagrids:
                     createdAt:             { data_name: createdAt }
                     quantitySold:          { data_name: quantitySold }
                 default:
-                    quantitySold:  %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                    quantitySold:  'DESC'
             options:
                 entityHint: report data
                 export: false
@@ -173,7 +173,7 @@ datagrids:
                     createdAt:             { data_name: createdAt }
                     quantitySold:          { data_name: quantitySold }
                 default:
-                    quantitySold: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+                    quantitySold: 'ASC'
             options:
                 entityHint: report data
                 export: false
@@ -222,7 +222,7 @@ datagrids:
                     returnReason:           { data_name: returnReason }
                     percentageReturned:     { data_name: percentageReturned }
                 default:
-                    productSku: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+                    productSku: 'ASC'
             filters:
                 columns:
                     productSku:
@@ -286,7 +286,7 @@ datagrids:
                     quantityOrdered:        { data_name: quantityOrdered }
                     percentageReturned:     { data_name: percentageReturned }
                 default:
-                    productSku: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+                    productSku: 'ASC'
             filters:
                 columns:
                     productSku:

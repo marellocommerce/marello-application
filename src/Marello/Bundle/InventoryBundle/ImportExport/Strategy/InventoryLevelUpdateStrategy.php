@@ -4,6 +4,8 @@ namespace Marello\Bundle\InventoryBundle\ImportExport\Strategy;
 
 use Doctrine\Common\Util\ClassUtils;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 use Oro\Bundle\ImportExportBundle\Strategy\Import\ConfigurableAddOrReplaceStrategy;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
@@ -18,11 +20,6 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
 {
     const IMPORT_TRIGGER = 'import';
     const ALLOCATED_QTY = 0;
-
-    /**
-     * @var InventoryLevelCalculator
-     */
-    protected $levelCalculator;
 
     /**
      * @param object|InventoryLevel $entity
@@ -42,18 +39,51 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
         array $searchContext = [],
         $entityIsRelation = false
     ) {
+        $inventoryUpdateQty = $entity->getInventoryQty();
         // find existing or new entity
         $existingEntity = $this->findInventoryLevel($entity);
         if ($existingEntity) {
             $this->checkEntityAcl($entity, $existingEntity, $itemData);
-            $inventoryUpdateQty = $entity->getInventoryQty();
-            $context = InventoryUpdateContextFactory::createInventoryLevelUpdateContext(
-                $existingEntity,
-                $existingEntity->getInventoryItem(),
-                $inventoryUpdateQty,
-                self::ALLOCATED_QTY,
-                self::IMPORT_TRIGGER
-            );
+            $batchInventory = $existingEntity->getInventoryItem()->isEnableBatchInventory();
+            $inventoryBatches = $entity->getInventoryBatches();
+            if (!$batchInventory || $inventoryBatches->count() === 0) {
+                $context = InventoryUpdateContextFactory::createInventoryLevelUpdateContext(
+                    $existingEntity,
+                    $existingEntity->getInventoryItem(),
+                    [],
+                    $inventoryUpdateQty,
+                    self::ALLOCATED_QTY,
+                    self::IMPORT_TRIGGER
+                );
+            } else {
+                foreach ($inventoryBatches as $inventoryBatch) {
+                    $inventoryBatch->setInventoryLevel($existingEntity);
+                    $existingInventoryBatch = $this->findInventoryBatch($inventoryBatch);
+                    if ($existingInventoryBatch) {
+                        if ($inventoryBatch->getPurchasePrice() != null) {
+                            $existingInventoryBatch->setPurchasePrice($inventoryBatch->getPurchasePrice());
+                        }
+                        if ($inventoryBatch->getExpirationDate() != null) {
+                            $existingInventoryBatch->setExpirationDate($inventoryBatch->getExpirationDate());
+                        }
+                        $inventoryBatch = $existingInventoryBatch;
+                    }
+                    $batches = [
+                        [
+                            'batch' => $inventoryBatch,
+                            'qty' => $inventoryUpdateQty,
+                        ]
+                    ];
+                    $context = InventoryUpdateContextFactory::createInventoryLevelUpdateContext(
+                        $existingEntity,
+                        $existingEntity->getInventoryItem(),
+                        $batches,
+                        $inventoryUpdateQty,
+                        self::ALLOCATED_QTY,
+                        self::IMPORT_TRIGGER
+                    );
+                }
+            }
         } else {
             $context = $this->createNewEntityContext($entity, $itemData);
         }
@@ -78,7 +108,7 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
     /**
      * @param object|InventoryLevel $entity
      * @param $itemData
-     * @return \Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext|null
+     * @return InventoryUpdateContext|null
      */
     protected function createNewEntityContext($entity, $itemData)
     {
@@ -129,37 +159,6 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
     {
         $entityClass = ClassUtils::getClass($entity);
         return sprintf('%s:%s', $entityClass, serialize([$inventoryItemId, $warerhouseCode]));
-    }
-
-    /**
-     * Get adjustment operator
-     * @param $inventoryQty
-     * @return string
-     * @deprecated since version 1.2.3, will be removed in 1.3
-     */
-    protected function getAdjustmentOperator($inventoryQty)
-    {
-        if ($inventoryQty < 0) {
-            return InventoryLevelCalculator::OPERATOR_DECREASE;
-        }
-
-        return InventoryLevelCalculator::OPERATOR_INCREASE;
-    }
-
-    /**
-     * @param $entityClass
-     * @return null
-     * @deprecated since version 1.2.3, will be removed in 1.3
-     */
-    protected function addAccessDeniedError($entityClass)
-    {
-        $error = $this->translator->trans(
-            'oro.importexport.import.errors.access_denied_entity',
-            ['%entity_name%' => $entityClass]
-        );
-        $this->context->addError($error);
-
-        return null;
     }
 
     /**
@@ -227,6 +226,27 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
     }
 
     /**
+     * @param InventoryBatch $entity
+     *
+     * @return null|object|InventoryBatch
+     */
+    protected function findInventoryBatch(InventoryBatch $entity)
+    {
+        if (!$entity->getBatchNumber()) {
+            return null;
+        }
+        $invLevel = $entity->getInventoryLevel();
+        if (!$invLevel->getId()) {
+            return null;
+        }
+
+        return $this->databaseHelper->findOneBy(InventoryBatch::class, [
+            'inventoryLevel' => $invLevel->getId(),
+            'batchNumber'    => $entity->getBatchNumber()
+        ]);
+    }
+
+    /**
      * @param InventoryLevel $entity
      * @return null|object|Product
      */
@@ -267,15 +287,5 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
         } else {
             $this->context->incrementAddCount();
         }
-    }
-
-    /**
-     * Set inventoryLevel calculator
-     * @param InventoryLevelCalculator $levelCalculator
-     * @deprecated since version 1.2.3, will be removed in 1.3
-     */
-    public function setLevelCalculator(InventoryLevelCalculator $levelCalculator)
-    {
-        $this->levelCalculator = $levelCalculator;
     }
 }

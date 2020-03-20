@@ -24,3 +24,9 @@ marello:
         term.label: "Term"
         id.label: "ID"
         labels.label: "Label"
+
+        settings:
+            label: 'Payment Term Settings'
+            labels.label: 'Label'
+        channel_type:
+            label: 'Payment Term'

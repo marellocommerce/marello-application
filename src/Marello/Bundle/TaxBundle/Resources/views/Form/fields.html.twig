@@ -1,7 +1,10 @@
 {% block marello_tax_zip_code_collection_type_widget %}
+    {% import _self as fields %}
+
     {% spaceless %}
+        {% set widgetContainerAttributes = block('widget_container_attributes') %}
         {% if prototype is defined %}
-            {% set prototype_html = _self.marello_tax_zip_code_collection_prototype(form) %}
+            {% set prototype_html = fields.marello_tax_zip_code_collection_prototype(form, widgetContainerAttributes) %}
         {% endif %}
         {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'oro-item-collection collection-fields-list' }) %}
         {% set id = id ~ '_collection' %}
@@ -20,7 +23,7 @@
                     <tbody class="tax-zip-code-list-items" data-last-index="{{ form.children|length}}" data-prototype-name="{{ prototype_name }}"{% if prototype_html is defined %} data-prototype="{{ prototype_html|escape }}"{% endif %} data-content>
                     {% if form.children|length %}
                         {% for child in form.children %}
-                            {{ _self.marello_tax_zip_code_collection_prototype(child) }}
+                            {{ fields.marello_tax_zip_code_collection_prototype(child, widgetContainerAttributes) }}
                         {% endfor %}
                     {% elseif show_form_when_empty and prototype_html is defined %}
                         {% for i in 0..(form.vars.row_count_initial - 1) %}
@@ -37,7 +40,7 @@
     {% endspaceless %}
 {% endblock %}
 
-{% macro marello_tax_zip_code_collection_prototype(widget) %}
+{% macro marello_tax_zip_code_collection_prototype(widget, attributes) %}
     {% if 'collection' in widget.vars.block_prefixes %}
         {% set form = widget.vars.prototype %}
         {% set name = widget.vars.full_name ~ '[' ~ widget.vars.prototype.vars.name ~ ']' %}
@@ -45,7 +48,7 @@
         {% set form = widget %}
         {% set name = widget.vars.full_name %}
     {% endif %}
-    <tr data-content="{{ name }}" data-validation-optional-group {{ block('widget_container_attributes') }}
+    <tr data-content="{{ name }}"
         class="tax-zip-code-list tax-zip-code-list-item">
         {{ form_widget(form) }}
         <td class="tax-zip-code-list-item-remove marello-line-item-remove">

@@ -8,7 +8,7 @@ use Marello\Bundle\TaxBundle\Event\TaxEventDispatcher;
 use Marello\Bundle\TaxBundle\Factory\TaxFactory;
 use Marello\Bundle\TaxBundle\Model\Result;
 use Marello\Bundle\TaxBundle\Model\Taxable;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TaxSubtotalProvider implements SubtotalProviderInterface
 {

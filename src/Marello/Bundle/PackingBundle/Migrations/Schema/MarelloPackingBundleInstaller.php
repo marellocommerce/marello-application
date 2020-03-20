@@ -38,7 +38,7 @@ class MarelloPackingBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_2';
+        return 'v1_3';
     }
 
     /**
@@ -96,6 +96,7 @@ class MarelloPackingBundleInstaller implements
         $table->addColumn('order_item_id', 'integer', []);
         $table->addColumn('weight', 'float', ['notnull' => true]);
         $table->addColumn('quantity', 'float', ['notnull' => true]);
+        $table->addColumn('inventory_batches', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
         $table->addColumn('comment', 'text', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
@@ -129,7 +130,7 @@ class MarelloPackingBundleInstaller implements
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
         $table->addForeignKeyConstraint(
-            $schema->getTable('marello_order_customer'),
+            $schema->getTable('marello_customer_customer'),
             ['customer_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]

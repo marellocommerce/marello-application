@@ -4,11 +4,13 @@ namespace Marello\Bundle\AddressBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\AddressBundle\Model\ExtendMarelloAddress;
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(
+ *     repositoryClass="Marello\Bundle\AddressBundle\Entity\Repository\MarelloAddressRepository"
+ * )
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(name="marello_address")
  * @ORM\AssociationOverrides({
@@ -62,7 +64,7 @@ class MarelloAddress extends ExtendMarelloAddress
     protected $company;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\Customer", inversedBy="addresses",
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\CustomerBundle\Entity\Customer", inversedBy="addresses",
      *     cascade={"persist"})
      * @ORM\JoinColumn(onDelete="SET NULL", nullable=true)
      *

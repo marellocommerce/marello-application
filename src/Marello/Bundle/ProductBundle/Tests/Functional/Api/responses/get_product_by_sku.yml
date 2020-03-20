@@ -4,14 +4,18 @@ data:
         id: p1
         attributes:
             productId: '@product1->id'
-            name: product1
+            denormalizedDefaultName: product1
             manufacturingCode: null
             productType: null
-            cost: null
             weight: 1
             warranty: null
             data: null
         relationships:
+            names:
+                data:
+                    -
+                        type: localizedfallbackvalues
+                        id: '<toString(@product1.names.default->id)>'
             productstatus:
                 data:
                     type: marelloproductstatuses

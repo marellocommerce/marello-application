@@ -1,8 +1,3 @@
-parameters:
-    marello_sales.saleschannel.entity.class:                        Marello\Bundle\SalesBundle\Entity\SalesChannel
-    marello_sales.saleschannelgroup.entity.class:                   Marello\Bundle\SalesBundle\Entity\SalesChannelGroup
-    marello_sales.saleschannel.model.channel_aware_interface.class: Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface
-
 services:
     marello_sales.form.event_listener.default_sales_channel_subscriber:
         class: Marello\Bundle\SalesBundle\Form\EventListener\DefaultSalesChannelSubscriber
@@ -21,6 +16,7 @@ services:
 
     marello_sales.provider.basic_sales_channels_choices:
         class: Marello\Bundle\SalesBundle\Provider\BasicSalesChannelsChoicesProvider
+        public: true
         arguments:
             - '@oro_entity.doctrine_helper'
 
@@ -36,8 +32,8 @@ services:
     marello_sales.saleschannel.form.autocomplete.search_handler:
         parent: oro_form.autocomplete.search_handler
         arguments:
-            - "%marello_sales.saleschannel.entity.class%"
-            - ["name"]
+            - 'Marello\Bundle\SalesBundle\Entity\SalesChannel'
+            - ['name']
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: saleschannels, acl_resource: marello_product_view }
 
@@ -45,8 +41,8 @@ services:
         class: 'Marello\Bundle\SalesBundle\Autocomplete\ActiveSalesChannelHandler'
         parent: oro_form.autocomplete.search_handler
         arguments:
-            - "%marello_sales.saleschannel.entity.class%"
-            - ["name", "code", "channelType"]
+            - 'Marello\Bundle\SalesBundle\Entity\SalesChannel'
+            - ['name', 'code', 'channelType']
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: active_saleschannels, acl_resource: marello_product_view }
 
@@ -54,8 +50,8 @@ services:
         class: 'Marello\Bundle\SalesBundle\Autocomplete\SystemGroupSalesChannelHandler'
         parent: oro_form.autocomplete.search_handler
         arguments:
-            - "%marello_sales.saleschannel.entity.class%"
-            - ["name"]
+            - 'Marello\Bundle\SalesBundle\Entity\SalesChannel'
+            - ['name']
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: system_group_saleschannels, acl_resource: marello_product_view }
 
@@ -111,8 +107,17 @@ services:
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.after.marello-sales-channel-groups, method: onResultAfter }
 
+    marello_sales.event_listener.datagrid.products_grid:
+        class: 'Marello\Bundle\SalesBundle\EventListener\Datagrid\SalesChannelsDatagridListener'
+        arguments:
+            - 'Marello\Bundle\ProductBundle\Entity\Product'
+            - '@marello_sales.provider.basic_sales_channels_choices'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-products-grid, method: onBuildBefore }
+
     marello_sales.datagrid.saleschannelgroup.action_permission_provider:
         class: 'Marello\Bundle\SalesBundle\Datagrid\SalesChannelGroupActionPermissionProvider'
+        public: true
 
     marello_sales.condition.sales_channel_has_valid_integration:
         class: 'Marello\Bundle\SalesBundle\Condition\HasValidIntegration'
@@ -126,3 +131,24 @@ services:
         class: 'Marello\Bundle\SalesBundle\Provider\SalesChannelLocalizationProvider'
         tags:
             - {name: marello_entity_localization_provider, priority: 10}
+
+    marello_sales.scope.saleschannel:
+        class: 'Marello\Bundle\SalesBundle\Config\SalesChannelScopeManager'
+        parent: oro_config.scope_manager.abstract
+        tags:
+            - { name: oro_config.scope, scope: saleschannel, priority: 60 }
+
+    marello_sales.config_form_provider.saleschannel:
+        public: true
+        class: 'Marello\Bundle\SalesBundle\Provider\SalesChannelConfigurationFormProvider'
+        parent: 'oro_config.provider.abstract_provider'
+        lazy: true
+
+    marello_sales.event_listener.saleschannel_grid_listener:
+        class: 'Marello\Bundle\SalesBundle\EventListener\Datagrid\SalesChannelGridListener'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-sales-channel, method: onBuildBefore }
+
+    marello_sales.placeholder.filter:
+        public: true
+        class: 'Marello\Bundle\SalesBundle\Placeholder\PlaceholderFilter'

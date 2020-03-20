@@ -4,4 +4,4 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
         tags:
-            - { name: marello.shipping.data_provider,  class: '%marello_return.entity.return.class%' }
+            - { name: marello.shipping.data_provider,  class: 'Marello\Bundle\ReturnBundle\Entity\ReturnEntity' }

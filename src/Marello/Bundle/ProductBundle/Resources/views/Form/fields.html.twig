@@ -13,7 +13,7 @@
     </td>
 {% endblock %}
 
-{% macro marello_product_channel_tax_relation_collection_form_item_prototype(widget) %}
+{% macro marello_product_channel_tax_relation_collection_form_item_prototype(widget, attributes) %}
     {% if 'collection' in widget.vars.block_prefixes %}
         {% set form = widget.vars.prototype %}
         {% set name = widget.vars.full_name ~ '[' ~ widget.vars.prototype.vars.name ~ ']' %}
@@ -32,7 +32,7 @@
 
     {% set page_component_options = { 'disabled': not allow_delete } %}
 
-    <tr data-content="{{ name }}" data-validation-optional-group {{ block('widget_container_attributes') }}
+    <tr data-content="{{ name }}"
         class="marello-line-item"
         data-page-component-module="oroui/js/app/components/view-component"
         data-page-component-options="{{ {view: 'marelloproduct/js/app/views/product-channel-taxcode-view'}|json_encode }}"
@@ -49,9 +49,12 @@
 {% endmacro %}
 
 {% block marello_product_channel_tax_relation_collection_form_widget %}
+    {% import _self as fields %}
+
     {% spaceless %}
+        {% set widgetContainerAttributes = block('widget_container_attributes') %}
         {% if prototype is defined %}
-            {% set prototype_html = _self.marello_product_channel_tax_relation_collection_form_item_prototype(form) %}
+            {% set prototype_html = fields.marello_product_channel_tax_relation_collection_form_item_prototype(form, widgetContainerAttributes) %}
         {% endif %}
         {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'marello-item-collection grid-container' }) %}
         {% set id = id ~ '_collection' %}
@@ -71,7 +74,7 @@
                     <tbody data-last-index="{{ form.children|length}}" data-prototype-name="{{ prototype_name }}"{% if prototype_html is defined %} data-prototype="{{ prototype_html|escape }}"{% endif %}>
                     {% if form.children|length %}
                         {% for child in form.children %}
-                            {{ _self.marello_product_channel_tax_relation_collection_form_item_prototype(child) }}
+                            {{ fields.marello_product_channel_tax_relation_collection_form_item_prototype(child, widgetContainerAttributes) }}
                         {% endfor %}
                     {% elseif show_form_when_empty and prototype_html is defined %}
                         {{ prototype_html|replace({(prototype_name): '0'})|raw }}
@@ -97,7 +100,7 @@
 
 {% block oro_entity_create_or_select_inline_js_sales_channel_aware %}
     {% import 'OroUIBundle::macros.html.twig' as UI %}
-    {% if form.vars.configs.async_dialogs|default(false) is sameas(true) %}
+    {% if form.vars.configs.async_dialogs|default(false) is same as(true) %}
         {% set asyncNameSegment = 'async-' %}
     {% endif %}
     {% set urlParts = {
@@ -111,7 +114,7 @@
     }
     } %}
 
-    {% if form.vars.create_enabled|default(false) is sameas(true) %}
+    {% if form.vars.create_enabled|default(false) is same as(true) %}
         {% set urlParts = urlParts|merge({
         create: {
         route:      form.vars.create_form_route,
@@ -147,7 +150,7 @@
     </td>
     <td class="supplier-line-item-cost">
         <div class="fields-row">
-            {{ form_widget(form.cost) }}
+            {{ form_widget(form.cost) }}{{ form.vars.currency }}
         </div>
         {{ form_errors(form.cost) }}
     </td>
@@ -165,7 +168,7 @@
     </td>
 {% endblock %}
 
-{% macro marello_product_supplier_relation_collection_form_item_prototype(widget) %}
+{% macro marello_product_supplier_relation_collection_form_item_prototype(widget, attributes) %}
     {% if 'collection' in widget.vars.block_prefixes %}
         {% set form = widget.vars.prototype %}
         {% set name = widget.vars.full_name ~ '[' ~ widget.vars.prototype.vars.name ~ ']' %}
@@ -184,7 +187,7 @@
 
     {% set page_component_options = { 'disabled': not allow_delete } %}
 
-    <tr data-content="{{ name }}" data-validation-optional-group {{ block('widget_container_attributes') }}
+    <tr data-content="{{ name }}"
         class="marello-line-item"
         data-page-component-module="oroui/js/app/components/view-component"
         data-page-component-options="{{ {view: 'marellosupplier/js/app/views/product-supplier-view'}|json_encode }}"
@@ -201,9 +204,12 @@
 {% endmacro %}
 
 {% block marello_product_supplier_relation_collection_form_widget %}
+    {% import _self as fields %}
+
     {% spaceless %}
+        {% set widgetContainerAttributes = block('widget_container_attributes') %}
         {% if prototype is defined %}
-            {% set prototype_html = _self.marello_product_supplier_relation_collection_form_item_prototype(form) %}
+            {% set prototype_html = fields.marello_product_supplier_relation_collection_form_item_prototype(form, widgetContainerAttributes) %}
         {% endif %}
         {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'marello-item-collection grid-container' }) %}
         {% set id = id ~ '_collection' %}
@@ -226,7 +232,7 @@
                     <tbody data-last-index="{{ form.children|length}}" data-prototype-name="{{ prototype_name }}"{% if prototype_html is defined %} data-prototype="{{ prototype_html|escape }}"{% endif %}>
                     {% if form.children|length %}
                         {% for child in form.children %}
-                            {{ _self.marello_product_supplier_relation_collection_form_item_prototype(child) }}
+                            {{ fields.marello_product_supplier_relation_collection_form_item_prototype(child, widgetContainerAttributes) }}
                         {% endfor %}
                     {% elseif show_form_when_empty and prototype_html is defined %}
                         {{ prototype_html|replace({(prototype_name): '0'})|raw }}
@@ -284,9 +290,12 @@
 {% endmacro %}
 
 {% block marello_product_select_collection_form_widget %}
+    {% import _self as fields %}
+
     {% spaceless %}
+        {% set widgetContainerAttributes = block('widget_container_attributes') %}
         {% if prototype is defined %}
-            {% set prototype_html = _self.marello_product_select_collection_form_item_prototype(form) %}
+            {% set prototype_html = fields.marello_product_select_collection_form_item_prototype(form) %}
         {% endif %}
         {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'marello-item-collection grid-container' }) %}
         {% set id = id ~ '_collection' %}
@@ -305,7 +314,7 @@
                     <tbody data-last-index="{{ form.children|length}}" data-prototype-name="{{ prototype_name }}"{% if prototype_html is defined %} data-prototype="{{ prototype_html|escape }}"{% endif %}>
                     {% if form.children|length %}
                         {% for child in form.children %}
-                            {{ _self.marello_product_select_collection_form_item_prototype(child) }}
+                            {{ fields.marello_product_select_collection_form_item_prototype(child) }}
                         {% endfor %}
                     {% elseif show_form_when_empty and prototype_html is defined %}
                         {{ prototype_html|replace({(prototype_name): '0'})|raw }}

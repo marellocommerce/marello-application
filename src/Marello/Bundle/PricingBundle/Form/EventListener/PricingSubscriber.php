@@ -11,7 +11,7 @@ use Oro\Bundle\EntityBundle\ORM\Registry;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\PricingBundle\Provider\CurrencyProvider;
 use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
-use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
+use Marello\Bundle\SalesBundle\Model\SalesChannelsAwareInterface;
 use Marello\Bundle\PricingBundle\Entity\AssembledPriceList;
 use Marello\Bundle\PricingBundle\Entity\PriceType;
 use Marello\Bundle\PricingBundle\Form\Type\AssembledPriceListCollectionType;
@@ -67,7 +67,7 @@ class PricingSubscriber implements EventSubscriberInterface
         $entity = $event->getData();
         $form   = $event->getForm();
 
-        if ($entity instanceof PricingAwareInterface && $entity instanceof SalesChannelAwareInterface) {
+        if ($entity instanceof PricingAwareInterface && $entity instanceof SalesChannelsAwareInterface) {
             $currencies = $this->provider->getCurrencies($entity->getChannels());
             if ($entity->hasPrices()) {
                 $existingCurrencies = [];

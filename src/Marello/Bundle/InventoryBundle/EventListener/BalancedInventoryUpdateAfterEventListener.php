@@ -2,17 +2,15 @@
 
 namespace Marello\Bundle\InventoryBundle\EventListener;
 
-use Oro\Component\MessageQueue\Client\MessageProducerInterface;
-
 use Marello\Bundle\InventoryBundle\Async\Topics;
-use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
-use Marello\Bundle\ProductBundle\Entity\ProductInterface;
-use Marello\Bundle\InventoryBundle\Event\BalancedInventoryUpdateEvent;
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
-use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
-use Marello\Bundle\InventoryBundle\Model\BalancedInventoryLevelInterface;
 use Marello\Bundle\InventoryBundle\Entity\Repository\BalancedInventoryRepository;
+use Marello\Bundle\InventoryBundle\Event\BalancedInventoryUpdateEvent;
+use Marello\Bundle\InventoryBundle\Model\BalancedInventoryLevelInterface;
 use Marello\Bundle\InventoryBundle\Model\InventoryBalancer\InventoryBalancerTriggerCalculator;
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
+use Marello\Bundle\ProductBundle\Entity\ProductInterface;
+use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
+use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 
 class BalancedInventoryUpdateAfterEventListener
 {

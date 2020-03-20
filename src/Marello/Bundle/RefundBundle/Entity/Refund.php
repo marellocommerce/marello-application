@@ -7,9 +7,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
-use Marello\Bundle\LocaleBundle\Model\LocaleAwareInterface;
+use Marello\Bundle\LocaleBundle\Model\LocalizationAwareInterface;
 use Marello\Bundle\LocaleBundle\Model\LocalizationTrait;
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderAwareInterface;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
@@ -54,7 +54,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
 class Refund extends ExtendRefund implements
     DerivedPropertyAwareInterface,
     CurrencyAwareInterface,
-    LocaleAwareInterface,
+    LocalizationAwareInterface,
     OrderAwareInterface
 {
     use EntityCreatedUpdatedAtTrait;
@@ -99,7 +99,7 @@ class Refund extends ExtendRefund implements
     protected $refundAmount;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\Customer")
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\CustomerBundle\Entity\Customer")
      * @ORM\JoinColumn(nullable=false)
      * @Oro\ConfigField(
      *      defaultValues={
@@ -169,7 +169,6 @@ class Refund extends ExtendRefund implements
             ->setCustomer($order->getCustomer())
             ->setOrganization($order->getOrganization())
             ->setCurrency($order->getCurrency())
-            ->setLocale($order->getLocale())
             ->setLocalization($order->getLocalization())
         ;
 
@@ -196,7 +195,6 @@ class Refund extends ExtendRefund implements
             ->setCustomer($return->getOrder()->getCustomer())
             ->setOrganization($return->getOrganization())
             ->setCurrency($return->getOrder()->getCurrency())
-            ->setLocale($return->getOrder()->getLocale())
             ->setLocalization($return->getOrder()->getLocalization())
         ;
 

@@ -1,4 +1,5 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
 {% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
 
 {% set formAction = path('marello_refund_create') %}
@@ -6,7 +7,7 @@
 {% block navButtons %}
     {{ UI.cancelButton(path('marello_refund_index')) }}
     {% set html = UI.saveAndCloseButton() %}
-    {% if resource_granted('inventory.vehicle_update') %}
+    {% if is_granted('inventory.vehicle_update') %}
         {% set html = html ~ UI.saveAndStayButton() %}
     {% endif %}
     {{ UI.dropdownSaveButton({ 'html': html }) }}

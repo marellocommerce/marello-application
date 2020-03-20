@@ -1,11 +1,11 @@
 define(function(require) {
     'use strict';
 
-    var selectCreateComponentMixin,
+    const
         $ = require('jquery'),
         mediator = require('oroui/js/mediator');
 
-    selectCreateComponentMixin = {
+    const selectCreateComponentMixin = {
 
         options: {
             salesChannelDataContainer: '.marello-sales-channel-select-container',
@@ -21,6 +21,8 @@ define(function(require) {
             var channelData = $(this.options.salesChannelDataContainer).data(this.options.attribute);
             if (channelData !== undefined) {
                 this.saveData(channelData.id);
+            } else {
+                this.saveData(0);
             }
             mediator.on('marello_sales:channel:changed', this.onSalesChannelChange, this);
         },

@@ -1,9 +1,10 @@
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
 <div class="widget-content grid-widget-content">
-    {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
     {% set gridName = 'marello-purchase-order-item-candidates' %}
 
     {% set params = {} %}
-
     {% set params = {
         'supplierId':       supplierId,
         '_parameters': {
@@ -25,58 +26,17 @@
         <input type="hidden" name="removeProducts" id="removeProducts" value="{{ app.request.get('removed') }}" />
     {% endblock %}
 
-    <script type="text/javascript">
-        {% set wid = app.request.get('_wid') %}
-        require(['jquery', 'routing', 'orodatagrid/js/datagrid/listener/callback-listener', 'oroui/js/widget-manager',
-            'oroform/js/multiple-entity/model', 'orolocale/js/formatter/name'],
-        function($, routing, CallbackListener, WidgetManager, MultipleEntityModel, nameFormatter) {
-            var addedModels = {};
-            WidgetManager.getWidgetInstance({{ wid|json_encode|raw }}, function(widget) {
-                widget.getAction('select', 'adopted', function(selectBtn) {
-                    selectBtn.click(function() {
-                        var addedVal = $('#appendProducts').val();
-                        var removedVal = $('#removeProducts').val();
-                        var appendedIds = addedVal.length ? addedVal.split(',') : [];
-                        var removedIds = removedVal.length ? removedVal.split(',') : [];
-                        widget.trigger('completeSelection', appendedIds, addedModels, removedIds);
-                    });
-                });
-            });
-
-            var gridName = {{ gridName|json_encode|raw }};
-
-            $(function () {
-                /** @type {orodatagrid.datagrid.listener.CallbackListener} */
-                new CallbackListener({
-                    $gridContainer: $('[data-wid="{{ wid }}"]'),
-                    gridName: gridName,
-                    dataField: 'id',
-                    columnName: 'hasProduct',
-                    processCallback: function (value, model, listener) {
-                        var isActive = model.get(listener.columnName);
-                        var id = model.get('id');
-                        if (isActive) {
-                            addedModels[id] = new MultipleEntityModel({
-                                'id': model.get('id'),
-                                'link': routing.generate('marello_product_view', {id: model.get('id')}),
-                                'isDefault': false,
-                                'label': 'product',
-                                'value': model.get('sku') + ' - ' + model.get('name'),
-                                'name': model.get('name'),
-                                'sku': model.get('sku'),
-                                'orderAmount': model.get('orderAmount'),
-                                'purchasePrice': model.get('purchasePrice'),
-                                'currency': '{{ currency }}'
-                            });
-                        } else if (addedModels.hasOwnProperty(id)) {
-                            delete addedModels[id];
-                        }
-                    }
-                });
-
-            });
-        });
-    </script>
+    <div {{ UI.renderPageComponentAttributes({
+            module: 'marellopurchaseorder/js/app/components/purchaseorder-product-component',
+            options: {
+                wid: app.request.get('_wid'),
+                gridName: gridName,
+                addedVal: '#appendProducts',
+                removedVal: '#removeProducts',
+                columnName: 'hasProduct',
+                currency: currency
+            }
+        }) }}></div>
 
     <div class="widget-actions">
         <button type="reset" class="btn">{{ 'Cancel'|trans }}</button>

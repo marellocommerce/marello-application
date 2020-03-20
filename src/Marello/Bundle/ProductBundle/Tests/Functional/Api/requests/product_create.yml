@@ -2,12 +2,18 @@ data:
       type: marelloproducts
       id: 'my-sku'
       attributes:
-          cost: 10
           manufacturingCode: '1234567890987654321'
-          name: 'My name'
           warranty: 10
           weight: 10.000
       relationships:
+          names:
+              data:
+                  -
+                      type: localizedfallbackvalues
+                      id: 'names-1'
+                  -
+                      type: localizedfallbackvalues
+                      id: 'names-2'
           saleschannels:
               data:
                   -
@@ -27,3 +33,26 @@ data:
               data:
                   type: marellotaxcodes
                   id: '<toString(@product1->taxCode->code)>'
+included:
+    -
+        type: localizedfallbackvalues
+        id: 'names-1'
+        attributes:
+            fallback: null
+            string: 'Test product'
+            text: null
+        relationships:
+            localization:
+                data: null
+    -
+        type: localizedfallbackvalues
+        id: 'names-2'
+        attributes:
+            fallback: null
+            string: 'Product in spanish'
+            text: null
+        relationships:
+            localization:
+                data:
+                    type: localizations
+                    id: '<toString(@es->getId())>'

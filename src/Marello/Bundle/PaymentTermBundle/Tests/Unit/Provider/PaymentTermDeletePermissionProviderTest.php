@@ -38,6 +38,8 @@ class PaymentTermDeletePermissionProviderTest extends TestCase
     }
 
     /**
+     * @param PaymentTerm $paymentTerm
+     * @param bool $expectedValue
      * @dataProvider isDeleteAllowedDataProvider
      */
     public function testIsDeleteAllowed(PaymentTerm $paymentTerm, bool $expectedValue)

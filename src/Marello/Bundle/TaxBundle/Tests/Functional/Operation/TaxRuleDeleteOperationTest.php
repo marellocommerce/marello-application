@@ -2,8 +2,10 @@
 
 namespace Marello\Bundle\TaxBundle\Tests\Functional\Operation;
 
-use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxRuleData;
 use Oro\Bundle\ActionBundle\Tests\Functional\ActionTestCase;
+
+use Marello\Bundle\TaxBundle\Entity\TaxRule;
+use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxRuleData;
 
 class TaxRuleDeleteOperationTest extends ActionTestCase
 {
@@ -27,7 +29,7 @@ class TaxRuleDeleteOperationTest extends ActionTestCase
 
         $this->assertDeleteOperation(
             $taxRule->getId(),
-            'marello_tax.taxrule.entity.class',
+            TaxRule::class,
             'marello_tax_taxrule_index'
         );
     }

@@ -6,8 +6,6 @@ define([
 ], function($, _, mediator, BaseColumnFormListener) {
     'use strict';
 
-    var ColumnFormListener;
-
     /**
      * Listener for entity edit form and datagrid
      *
@@ -15,7 +13,7 @@ define([
      * @class   marellodatagrid.datagrid.listener.ColumnFormListener
      * @extends orodatagrid.datagrid.listener.ColumnFormListener
      */
-    ColumnFormListener = BaseColumnFormListener.extend({
+    const ColumnFormListener = BaseColumnFormListener.extend({
         /** @param {Object} */
         selectors: {
             included: null,

@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\OrderBundle\Tests\Unit\Provider;
 
-use Marello\Bundle\LocaleBundle\Model\LocaleAwareInterface;
+use Marello\Bundle\LocaleBundle\Model\LocalizationAwareInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderAwareInterface;
 use Marello\Bundle\OrderBundle\Provider\OrderLocalizationProvider;
@@ -39,7 +39,7 @@ class OrderLocalizationProviderTest extends TestCase
         $order
             ->expects(static::once())
             ->method('getLocalization');
-        $entity = $this->createMock([OrderAwareInterface::class, LocaleAwareInterface::class]);
+        $entity = $this->createMock([OrderAwareInterface::class, LocalizationAwareInterface::class]);
         $entity
             ->expects(static::once())
             ->method('getOrder')

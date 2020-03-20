@@ -1,16 +1,15 @@
 define(function(require) {
     'use strict';
 
-    var SelectFilter;
-    var template = require('tpl!orofilter/templates/filter/select-filter.html');
-    var $ = require('jquery');
-    var _ = require('underscore');
-    var AbstractFilter = require('oro/filter/abstract-filter');
-    var MultiselectDecorator = require('orofilter/js/multiselect-decorator');
-    var LoadingMaskView = require('oroui/js/app/views/loading-mask-view');
-    var module = require('module');
+    const template = require('tpl-loader!orofilter/templates/filter/select-filter.html');
+    const $ = require('jquery');
+    const _ = require('underscore');
+    const AbstractFilter = require('oro/filter/abstract-filter');
+    const MultiselectDecorator = require('orofilter/js/multiselect-decorator');
+    const LoadingMaskView = require('oroui/js/app/views/loading-mask-view');
+    const module = require('module');
 
-    var config = _.extend({
+    const config = _.extend({
         populateDefault: true
     }, module.config());
 
@@ -21,7 +20,7 @@ define(function(require) {
      * @class   oro.filter.SelectFilter
      * @extends oro.filter.AbstractFilter
      */
-    SelectFilter = AbstractFilter.extend({
+    const SelectFilter = AbstractFilter.extend({
         /**
          * @property
          */

@@ -4,12 +4,10 @@ namespace Marello\Bundle\InvoiceBundle\Mapper;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
-use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use Marello\Bundle\RefundBundle\Entity\Refund;
-use Marello\Bundle\RefundBundle\Entity\RefundItem;
 use Marello\Bundle\InvoiceBundle\Entity\Creditmemo;
 use Marello\Bundle\InvoiceBundle\Entity\CreditmemoItem;
+use Marello\Bundle\RefundBundle\Entity\Refund;
+use Marello\Bundle\RefundBundle\Entity\RefundItem;
 
 class RefundToCreditmemoMapper extends AbstractInvoiceMapper
 {
