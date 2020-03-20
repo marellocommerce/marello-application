@@ -1,5 +1,6 @@
 <?php
 
+use Symfony\Component\ClassLoader\ApcClassLoader;
 use Symfony\Component\HttpFoundation\Request;
 
 /** @var \Composer\Autoload\ClassLoader $loader */
@@ -12,7 +13,6 @@ $loader = new ApcClassLoader('sf2', $loader);
 $loader->register(true);
 */
 
-require_once __DIR__.'/../src/AppKernel.php';
 //require_once __DIR__.'/../src/AppCache.php';
 
 $kernel = new AppKernel('prod', false);
