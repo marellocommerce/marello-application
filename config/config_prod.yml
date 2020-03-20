@@ -1,6 +1,9 @@
 imports:
     - { resource: config.yml }
 
+parameters:
+    main_log_channels: []
+
 #doctrine:
 #    orm:
 #        metadata_cache_driver: apc
@@ -17,10 +20,12 @@ monolog:
             type:           service
             id:             oro_logger.monolog.detailed_logs.handler
             handler:        nested
+            channels:       '%main_log_channels%'
         nested:
             type:           stream
             path:           "%kernel.logs_dir%/%kernel.environment%.log"
             level:          debug
+            channels:       '%main_log_channels%'
 
         fingers_crossed:
             type:           fingers_crossed
@@ -40,5 +45,9 @@ monolog:
             level:          debug
             formatter:      monolog.formatter.html
 
-oro_require_js:
-    build_logger: false
+        # collect all log records to buffer on CLI command error
+        message_queue.consumer.console_error:
+            type:           service
+            id:             oro_message_queue.log.handler.console_error
+            handler:        nested
+            level:          debug
