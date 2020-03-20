@@ -17,7 +17,7 @@
     ],
     "require": {
         "php": "~7.3.13",
-        "marellocommerce/marello": "self.version"
+        "marellocommerce/marello": "~3.0.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
