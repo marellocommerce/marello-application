@@ -6,17 +6,20 @@ use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseGroupType;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class WarehouseGroupController extends Controller
+class WarehouseGroupController extends AbstractController
 {
     /**
-     * @Route("/", name="marelloenterprise_inventory_warehousegroup_index")
-     * @Template
+     * @Route(
+     *     path="/",
+     *     name="marelloenterprise_inventory_warehousegroup_index"
+     * )
+     * @Template("MarelloEnterpriseInventoryBundle:WarehouseGroup:index.html.twig")
      * @AclAncestor("marelloenterprise_inventory_warehousegroup_view")
      *
      * @return array
@@ -29,7 +32,10 @@ class WarehouseGroupController extends Controller
     }
 
     /**
-     * @Route("/create", name="marelloenterprise_inventory_warehousegroup_create")
+     * @Route(
+     *     path="/create",
+     *     name="marelloenterprise_inventory_warehousegroup_create"
+     * )
      * @Template("MarelloEnterpriseInventoryBundle:WarehouseGroup:update.html.twig")
      * @Acl(
      *     id="marelloenterprise_inventory_warehousegroup_create",
@@ -47,8 +53,12 @@ class WarehouseGroupController extends Controller
     }
 
     /**
-     * @Route("/view/{id}", name="marelloenterprise_inventory_warehousegroup_view", requirements={"id"="\d+"})
-     * @Template
+     * @Route(
+     *     path="/view/{id}",
+     *     name="marelloenterprise_inventory_warehousegroup_view",
+     *     requirements={"id"="\d+"}
+     * )
+     * @Template("MarelloEnterpriseInventoryBundle:WarehouseGroup:view.html.twig")
      * @Acl(
      *      id="marelloenterprise_inventory_warehousegroup_view",
      *      type="entity",
@@ -68,8 +78,12 @@ class WarehouseGroupController extends Controller
     }
 
     /**
-     * @Route("/update/{id}", name="marelloenterprise_inventory_warehousegroup_update", requirements={"id"="\d+"})
-     * @Template
+     * @Route(
+     *     path="/update/{id}",
+     *     name="marelloenterprise_inventory_warehousegroup_update",
+     *     requirements={"id"="\d+"}
+     * )
+     * @Template("MarelloEnterpriseInventoryBundle:WarehouseGroup:update.html.twig")
      * @Acl(
      *     id="marelloenterprise_inventory_warehousegroup_update",
      *     type="entity",

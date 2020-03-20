@@ -5,20 +5,16 @@ namespace MarelloEnterprise\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
-
+use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductData;
+use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductInventoryData as BaseProductInventoryData;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
-use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductData;
-use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductInventoryData as BaseProductInventoryData;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class LoadProductInventoryData extends AbstractFixture implements DependentFixtureInterface, ContainerAwareInterface
 {
@@ -121,6 +117,7 @@ class LoadProductInventoryData extends AbstractFixture implements DependentFixtu
      * @param $inventoryUpdateQty
      * @param $allocatedInventoryQty
      * @param $entity
+     * @param $data
      */
     protected function handleInventoryUpdate(
         $product,

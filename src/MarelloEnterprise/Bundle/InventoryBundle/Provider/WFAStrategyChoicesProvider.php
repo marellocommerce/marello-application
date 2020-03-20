@@ -4,7 +4,7 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Provider;
 
 use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategiesRegistry;
 use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategyInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class WFAStrategyChoicesProvider
 {

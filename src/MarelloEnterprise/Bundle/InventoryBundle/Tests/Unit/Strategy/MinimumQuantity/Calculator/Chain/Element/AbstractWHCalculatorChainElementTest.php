@@ -52,11 +52,13 @@ abstract class AbstractWHCalculatorChainElementTest extends TestCase
         if (empty($this->warehouses)) {
             $globalWarehouseType = $this->getEntity(
                 WarehouseType::class,
-                ['name' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL]
+                [],
+                [WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL]
             );
             $externalWarehouseType = $this->getEntity(
                 WarehouseType::class,
-                ['name' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL]
+                [],
+                [WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL]
             );
 
             $this->warehouses[1] = $this->getEntity(
@@ -131,7 +133,7 @@ abstract class AbstractWHCalculatorChainElementTest extends TestCase
         /** @var Product $product */
         $product = $this->getEntity(Product::class, ['sku' => sprintf('TPD000%s', $id)]);
         /** @var InventoryItem $inventoryItem */
-        $inventoryItem = $this->getEntity(InventoryItem::class, ['id' => $id], [null, $product]);
+        $inventoryItem = $this->getEntity(InventoryItem::class, ['id' => $id], [$product]);
         foreach ($quantities as $k => $quantity) {
             /** @var InventoryLevel $inventoryLevel */
             $inventoryLevel = $this->getEntity(

@@ -5,14 +5,11 @@ namespace MarelloEnterprise\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
-
-use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadSalesChannelGroupData;
-use MarelloEnterprise\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadWarehouseData;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
+use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class LoadWarehouseChannelGroupLinkData extends AbstractFixture implements DependentFixtureInterface
 {
