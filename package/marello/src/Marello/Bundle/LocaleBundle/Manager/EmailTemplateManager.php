@@ -10,6 +10,8 @@ use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\EmailBundle\Model\EmailTemplateCriteria;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+use Oro\Bundle\EmailBundle\Provider\EmailTemplateContentProvider;
+use Oro\Bundle\EmailBundle\Model\EmailTemplate as EmailTemplateModel;
 
 class EmailTemplateManager
 {
@@ -21,6 +23,9 @@ class EmailTemplateManager
 
     /** @var  EntityLocalizationProviderInterface */
     protected $entityLocalizationProvider;
+
+    /** @var EmailTemplateContentProvider $emailTemplateContentProvider */
+    protected $emailTemplateContentProvider;
 
     /**
      * @param DoctrineHelper $doctrineHelper
@@ -43,9 +48,17 @@ class EmailTemplateManager
     }
 
     /**
+     * @param EmailTemplateContentProvider $emailTemplateContentProvider
+     */
+    public function setEmailTemplateContentProvider(EmailTemplateContentProvider $emailTemplateContentProvider)
+    {
+        $this->emailTemplateContentProvider = $emailTemplateContentProvider;
+    }
+
+    /**
      * @param $templateName
      * @param $entity
-     * @return null|\Oro\Bundle\EmailBundle\Entity\EmailTemplate
+     * @return \Extend\Entity\EX_OroEmailBundle_EmailTemplate|null|EmailTemplate
      */
     public function findTemplate($templateName, $entity)
     {
@@ -64,18 +77,18 @@ class EmailTemplateManager
     /**
      * @param $templateName
      * @param $entity
-     * @return null|\Oro\Bundle\EmailBundle\Entity\EmailTemplate
+     * @return null|object|EmailTemplate
      */
     public function findEntityLocalizationTemplate($templateName, $entity)
     {
         if ($entity instanceof LocalizationAwareInterface) {
-            $localization = $this->entityLocalizationProvider->getLocalization($entity);
             $entityName = ClassUtils::getRealClass(get_class($entity));
             $criteria = new EmailTemplateCriteria($templateName, $entityName);
-
-            return $this
+            $emailTemplate = $this
                 ->getEmailTemplateRepository()
-                ->findWithLocalizations($criteria, $localization->getLanguageCode());
+                ->findWithLocalizations($criteria);
+
+            return $emailTemplate;
         }
 
         return null;
@@ -84,7 +97,7 @@ class EmailTemplateManager
     /**
      * @param $templateName
      * @param $entity
-     * @return null|\Oro\Bundle\EmailBundle\Entity\EmailTemplate
+     * @return null|object|EmailTemplate
      */
     protected function findDefaultTemplate($templateName, $entity)
     {
@@ -103,5 +116,20 @@ class EmailTemplateManager
     {
         return $this->doctrineHelper
             ->getEntityRepository(EmailTemplate::class);
+    }
+
+    /**
+     * @param EmailTemplate $template
+     * @param $entity
+     * @return null|EmailTemplateModel
+     */
+    public function getLocalizedModel(EmailTemplate $template, $entity)
+    {
+        if ($entity instanceof LocalizationAwareInterface) {
+            $localization = $this->entityLocalizationProvider->getLocalization($entity);
+            return $this->emailTemplateContentProvider->getLocalizedModel($template, $localization);
+        }
+
+        return null;
     }
 }

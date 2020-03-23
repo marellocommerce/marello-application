@@ -8,13 +8,13 @@ services:
         expose:
           - "5432"
         image: postgres:9.6.9
-        container_name: marello-ee-pgsql-db
+        container_name: marello-pgsql-db
         environment:
             - POSTGRES_PASSWORD=root
             - POSTGRES_USER=root
             - POSTGRES_DB=marellocommerce
         volumes:
-            - dbdata:/var/lib/postgresql/data
+            - dbpostgresdata:/var/lib/postgresql/data
     #todo:: install x-delayed messages plugin for supporting correct messages in Oro
 #    rabbitmq:
 #        image: rabbitmq:3-management-alpine
@@ -85,3 +85,6 @@ services:
             - APP_WEBSOCKET_HOST=
             - APP_WEBSOCKET_PORT=5081
             - APP_IS_INSTALLED=
+
+volumes:
+    dbpostgresdata:

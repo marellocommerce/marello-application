@@ -93,14 +93,14 @@ datagrids:
         action_configuration: ['@marello_payment.datagrid.payment_rule_actions_visibility_provider', getActionsVisibility]
         mass_actions:
             enable:
-                type:         paymentruleenable
+                type:         marellopaymentruleenable
                 acl_resource: marello_payment_methods_configs_rule_update
                 label:        marello.payment.datagrid.action.enable
                 icon:         check
                 entity_name:  'Marello\Bundle\PaymentBundle\Entity\PaymentMethodsConfigsRule'
                 data_identifier: payment_methods_configs_rule.id
             disable:
-                type:         paymentruledisable
+                type:         marellopaymentruledisable
                 acl_resource: marello_payment_methods_configs_rule_update
                 label:        marello.payment.datagrid.action.disable
                 icon:         close

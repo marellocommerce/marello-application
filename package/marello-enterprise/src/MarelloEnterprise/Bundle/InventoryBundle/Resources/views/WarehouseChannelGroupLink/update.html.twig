@@ -23,6 +23,9 @@
             'route': 'marelloenterprise_inventory_warehousechannelgrouplink_update',
             'params': {'id': '$id'}
         }) %}
+        {% set html = html ~ UI.saveAndNewButton({
+        'route': 'marelloenterprise_inventory_warehousechannelgrouplink_create'
+        }) %}
 
         {{ UI.dropdownSaveButton({'html': html}) }}
     {% endif %}

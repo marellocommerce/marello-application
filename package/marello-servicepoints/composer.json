@@ -20,7 +20,7 @@
         }
     },
     "require": {
-        "php": ">=7.1.26",
+        "php": "~7.3.13",
         "oro/platform": "4.1.*",
         "oro/platform-serialised-fields": "4.1.*",
         "oro/calendar-bundle": "4.1.*"
@@ -29,7 +29,7 @@
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-master": "2.2-dev"
+            "dev-master": "3.0-dev"
         }
     },
     "autoload": {

@@ -4,6 +4,8 @@ namespace MarelloOroCommerce\src\Marello\Bundle\OroCommerceBundle\Tests\Function
 
 use Marello\Bundle\OroCommerceBundle\Client\Factory\OroCommerceRestClientFactory;
 use Marello\Bundle\OroCommerceBundle\Client\OroCommerceRestClient;
+use Marello\Bundle\OroCommerceBundle\Controller\AjaxOroCommerceController;
+use Marello\Bundle\OroCommerceBundle\Tests\Functional\DataFixtures\LoadChannelData;
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Exception\RestException;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
@@ -18,13 +20,9 @@ abstract class AbstractConnectionValidationTest extends WebTestCase
     {
         $this->initClient([], $this->generateBasicAuthHeader());
         $this->client->useHashNavigation(true);
-    }
-
-    /** {@inheritdoc} */
-    public function tearDown()
-    {
-        $this->getContainer()->set('marello_orocommerce.rest.client_factory', $this->realRestClientFactory);
-        parent::tearDown();
+        $this->loadFixtures([
+            LoadChannelData::class
+        ]);
     }
 
     /**
@@ -58,15 +56,15 @@ abstract class AbstractConnectionValidationTest extends WebTestCase
             ]
         ];
         $mockRestClient = $this->createMock(OroCommerceRestClient::class);
-        if ($expectedResult) {
+        if ($expectedResult === true) {
             $mockRestClient
-                ->expects(static::once())
-                ->method('get')
+                ->expects(static::any())
+                ->method('getJson')
                 ->willReturn([]);
         } else {
             $mockRestClient
-                ->expects(static::once())
-                ->method('get')
+                ->expects(static::any())
+                ->method('getJson')
                 ->willThrowException(new RestException('Authorization Failed'));
         }
         $mockRestClientFactory = $this->createMock(OroCommerceRestClientFactory::class);
@@ -74,16 +72,28 @@ abstract class AbstractConnectionValidationTest extends WebTestCase
             ->expects(static::any())
             ->method('createRestClient')
             ->willReturn($mockRestClient);
+        $container = $this->getContainer();
+        $cache = $container->get('marello_orocommerce.cache');
+        $cacheKeyGenerator = $container->get('marello_orocommerce.cache_key_generator');
+        $transport = $container->get('marello_orocommerce.integration.transport');
+        $transport->setRestClientFactory($mockRestClientFactory);
+        $translator = $container->get('translator.default');
+        $ajaxOroCommerceController = new AjaxOroCommerceController($cache, $cacheKeyGenerator, $transport, $translator);
+        $ajaxOroCommerceController->setContainer($container);
         
-        $this->realRestClientFactory = $this->getContainer()->get('marello_orocommerce.rest.client_factory');
-        $this->client->getContainer()->set('marello_orocommerce.rest.client_factory', $mockRestClientFactory);
 
         $this->client->request(
             'POST',
-            $this->getUrl('marello_orocommerce_validate_connection', ['channelId' => 0]),
+            $this->getUrl(
+                'marello_orocommerce_validate_connection',
+                ['channelId' => $this->getReference('orocommerce_channel:first_test_channel')]
+            ),
             $request
         );
-        $response = $this->client->getResponse();
+        $response = $ajaxOroCommerceController->validateConnectionAction(
+            $this->client->getRequest(),
+            $this->getReference('orocommerce_channel:first_test_channel')
+        );
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $response);
 
         $result = $this->getJsonResponseContent($response, 200);

@@ -4,7 +4,7 @@ namespace Marello\Bundle\PaymentTermBundle\Tests\Functional\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use Marello\Bundle\PaymentTermBundle\Entity\PaymentTermSettings;
+use Marello\Bundle\PaymentTermBundle\Entity\MarelloPaymentTermSettings;
 use Marello\Bundle\PaymentTermBundle\Integration\PaymentTermChannelType;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
@@ -25,7 +25,7 @@ class LoadPaymentTermIntegration extends AbstractFixture implements ContainerAwa
     {
         $label = (new LocalizedFallbackValue())->setString('Payment Term');
 
-        $transport = new PaymentTermSettings();
+        $transport = new MarelloPaymentTermSettings();
         $transport->addLabel($label);
 
         $channel = new Channel();

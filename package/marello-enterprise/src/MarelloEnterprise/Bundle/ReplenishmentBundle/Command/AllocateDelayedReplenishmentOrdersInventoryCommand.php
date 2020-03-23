@@ -2,8 +2,9 @@
 
 namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Command;
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Async\AllocateReplenishmentOrdersInventoryProcessor;
-use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\Repository\ReplenishmentOrderRepository;
+use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrder;
 use Oro\Bundle\CronBundle\Command\CronCommandInterface;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -15,9 +16,9 @@ class AllocateDelayedReplenishmentOrdersInventoryCommand extends Command impleme
     const NAME = 'oro:cron:marello:replenishment:allocate-delayed-orders-inventory';
 
     /**
-     * @var ReplenishmentOrderRepository
+     * @var Registry
      */
-    private $replenishmentOrdersRepository;
+    private $doctrine;
 
     /**
      * @var MessageProducerInterface
@@ -25,14 +26,14 @@ class AllocateDelayedReplenishmentOrdersInventoryCommand extends Command impleme
     private $messageProducer;
 
     /**
-     * @param ReplenishmentOrderRepository $replenishmentOrderRepository
+     * @param Registry $doctrine
      * @param MessageProducerInterface $messageProducer
      */
     public function __construct(
-        ReplenishmentOrderRepository $replenishmentOrderRepository,
+        Registry $doctrine,
         MessageProducerInterface $messageProducer
     ) {
-        $this->replenishmentOrdersRepository = $replenishmentOrderRepository;
+        $this->doctrine = $doctrine;
         $this->messageProducer = $messageProducer;
         
         parent::__construct();
@@ -53,7 +54,10 @@ class AllocateDelayedReplenishmentOrdersInventoryCommand extends Command impleme
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $notAllocatedOrders = $this->replenishmentOrdersRepository->findNotAllocated();
+        $notAllocatedOrders = $this->doctrine
+            ->getManagerForClass(ReplenishmentOrder::class)
+            ->getRepository(ReplenishmentOrder::class)
+            ->findNotAllocated();
         
         if (empty($notAllocatedOrders)) {
             $output->writeln('<info>There are no Replenishment Orders to process</info>');
