@@ -46,7 +46,7 @@ class OrderRepository extends EntityRepository
                 ->setParameter('dateEnd', $end);
         } elseif ($start) {
             $qb
-                ->andWhere($qb->expr()->gt('orders.createdAt', ':dateStart'))
+                ->andWhere($qb->expr()->gte('orders.createdAt', ':dateStart'))
                 ->setParameter('dateStart', $start);
         } elseif ($end) {
             $qb
@@ -83,7 +83,7 @@ class OrderRepository extends EntityRepository
                 ->setParameter('dateEnd', $end);
         } elseif ($start) {
             $qb
-                ->andWhere($qb->expr()->gt('o.createdAt', ':dateStart'))
+                ->andWhere($qb->expr()->gte('o.createdAt', ':dateStart'))
                 ->setParameter('dateStart', $start);
         } elseif ($end) {
             $qb
@@ -127,7 +127,7 @@ class OrderRepository extends EntityRepository
                 ->setParameter('dateEnd', $end);
         } elseif ($start) {
             $qb
-                ->andWhere($qb->expr()->gt('o.createdAt', ':dateStart'))
+                ->andWhere($qb->expr()->gte('o.createdAt', ':dateStart'))
                 ->setParameter('dateStart', $start);
         } elseif ($end) {
             $qb
