@@ -6,6 +6,7 @@ services:
             - '@oro_config.user'
         calls:
             - ['setEntityLocalizationProvider', ['@marello_locale.entity_localization_provider.chain']]
+            - ['setEmailTemplateContentProvider', ['@oro_email.provider.email_template_content_provider']]
 
     marello_locale.entity_localization_provider.chain:
         class: 'Marello\Bundle\LocaleBundle\Provider\ChainEntityLocalizationProvider'

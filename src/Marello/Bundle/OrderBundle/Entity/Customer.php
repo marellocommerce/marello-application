@@ -27,36 +27,14 @@ use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(name="marello_order_customer")
- * @Oro\Config(
- *      routeView="marello_order_customer_view",
- *      defaultValues={
- *          "security"={
- *              "type"="ACL",
- *              "group_name"=""
- *          },
- *          "ownership"={
- *              "owner_type"="ORGANIZATION",
- *              "owner_field_name"="organization",
- *              "owner_column_name"="organization_id"
- *          },
- *          "grid"={
- *              "default"="marello-customer-select-grid"
- *          },
- *          "dataaudit"={
- *              "auditable"=true
- *          }
- *      }
- * )
  */
 class Customer extends ExtendCustomer implements
     FullNameInterface,
     EmailHolderInterface,
-    EmailOwnerInterface,
-    OrganizationAwareInterface
+    EmailOwnerInterface
 {
     use HasFullNameTrait, HasEmailAddressTrait;
     use EntityCreatedUpdatedAtTrait;
-    use AuditableOrganizationAwareTrait;
 
     /**
      * @ORM\Id
@@ -68,84 +46,25 @@ class Customer extends ExtendCustomer implements
     protected $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\MarelloAddress", cascade={"persist"})
-     * @ORM\JoinColumn(name="primary_address_id", nullable=true)
-     *
-     * @var MarelloAddress
-     *
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "dataaudit"={
-     *              "auditable"=true
-     *          }
-     *      }
-     * )
      */
     protected $primaryAddress;
 
     /**
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\MarelloAddress", cascade={"persist"})
-     * @ORM\JoinColumn(name="shipping_address_id", nullable=true)
-     *
-     * @var MarelloAddress
-     *
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "dataaudit"={
-     *              "auditable"=true
-     *          }
-     *      }
-     * )
      */
     protected $shippingAddress;
 
     /**
-     * @ORM\Column(name="tax_identification_number", type="string", nullable=true)
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "dataaudit"={
-     *              "auditable"=true
-     *          }
-     *      }
-     * )
-     *
+      *
      * @var string
      */
     protected $taxIdentificationNumber;
 
     /**
-     * @ORM\OneToMany(
-     *     targetEntity="Marello\Bundle\AddressBundle\Entity\MarelloAddress",
-     *     mappedBy="customer",
-     *     cascade={"persist"}
-     * )
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "dataaudit"={
-     *              "auditable"=true
-     *          }
-     *      }
-     * )
-     *
      * @var Collection|AbstractAddress[]
      */
     protected $addresses;
 
     /**
-     * @var Company
-     *
-     * @ORM\ManyToOne(targetEntity="Marello\Bundle\CustomerBundle\Entity\Company", inversedBy="customers")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "full"=true
-     *          },
-     *          "dataaudit"={
-     *              "auditable"=true
-     *          }
-     *      }
-     * )
      */
     protected $company;
 

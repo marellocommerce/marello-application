@@ -1,7 +1,7 @@
 navigation:
     menu_config:
         items:
-            payment_terms:
+            marello_payment_terms:
                 label: 'marello.paymentterm.entity_plural_label'
                 route: 'marello_paymentterm_paymentterm_index'
 
@@ -10,7 +10,7 @@ navigation:
                 children:
                     customers_tab:
                         children:
-                            payment_terms: ~
+                            marello_payment_terms: ~
 
     titles:
         marello_paymentterm_paymentterm_index: 'marello.paymentterm.entity_plural_label'
