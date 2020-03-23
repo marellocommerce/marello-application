@@ -35,7 +35,7 @@ class AllocateDelayedReplenishmentOrdersInventoryCommand extends Command impleme
     ) {
         $this->doctrine = $doctrine;
         $this->messageProducer = $messageProducer;
-        
+
         parent::__construct();
     }
 
