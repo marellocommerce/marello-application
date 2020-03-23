@@ -8,7 +8,7 @@ services:
         public: true
         shared: false
         tags:
-            - { name: oro_datagrid.extension.mass_action.type, type: shippingruleenable }
+            - { name: oro_datagrid.extension.mass_action.type, type: marelloshippingruleenable }
 
     marello_shipping.mass_action.status.disable:
         class: 'Marello\Bundle\RuleBundle\Datagrid\Extension\MassAction\Actions\StatusEnableMassAction'
@@ -19,7 +19,7 @@ services:
         public: true
         shared: false
         tags:
-            - { name: oro_datagrid.extension.mass_action.type, type: shippingruledisable }
+            - { name: oro_datagrid.extension.mass_action.type, type: marelloshippingruledisable }
 
     marello_shipping.mass_action.status_handler:
         class: 'Marello\Bundle\RuleBundle\Datagrid\Extension\MassAction\StatusMassActionHandler'

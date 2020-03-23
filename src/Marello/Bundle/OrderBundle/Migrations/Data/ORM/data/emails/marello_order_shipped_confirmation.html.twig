@@ -516,7 +516,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            {% for item in marello_get_order_items_for_notification(entity, 'marello_order_shipped_confirmation') %}-->
+                                            <!--{% for item in marello_get_order_items_for_notification(entity, 'marello_order_shipped_confirmation') %}-->
                                                 <tr>
                                                     <td class="item-info" style="border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px;">
                                                         {{ item.productName }}
@@ -537,7 +537,7 @@
                                                         {{ item.rowTotalInclTax|oro_format_currency({'currency': entity.currency}) }}
                                                     </td>
                                                 </tr>
-                                            {% endfor %}
+                                            <!--{% endfor %}-->
                                             </tbody>
                                         </table>
                                     </td>
