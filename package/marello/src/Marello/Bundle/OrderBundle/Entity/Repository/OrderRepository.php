@@ -29,8 +29,11 @@ class OrderRepository extends EntityRepository
      *
      * @return int
      */
-    public function getTotalRevenueValue(\DateTime $start = null, \DateTime $end = null, SalesChannel $salesChannel = null)
-    {
+    public function getTotalRevenueValue(
+        \DateTime $start = null,
+        \DateTime $end = null,
+        SalesChannel $salesChannel = null
+    ) {
         $select = 'SUM(
              CASE WHEN orders.grandTotal IS NOT NULL THEN orders.grandTotal ELSE 0 END
              ) as val';
@@ -106,8 +109,11 @@ class OrderRepository extends EntityRepository
      *
      * @return int
      */
-    public function getAverageOrderValue(\DateTime $start = null, \DateTime $end = null, SalesChannel $salesChannel = null)
-    {
+    public function getAverageOrderValue(
+        \DateTime $start = null,
+        \DateTime $end = null,
+        SalesChannel $salesChannel = null
+    ) {
         $select = 'SUM(
              CASE WHEN o.grandTotal IS NOT NULL THEN o.grandTotal ELSE 0 END
              ) as revenue,
