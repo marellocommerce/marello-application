@@ -41,6 +41,10 @@ build/
 bin/*
 !bin/console
 !bin/dist
+!bin/consumer.sh
+!bin/cron.sh
+!bin/websocket.sh
+!bin/listener.php
 phpunit.xml
 /public/uploads/behat
 /.web-server-pid
