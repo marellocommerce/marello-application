@@ -64,6 +64,8 @@ class SyncState
                     ['exception' => $e]
                 );
             }
+        } else {
+            $date = $status->getDate();
         }
 
         return $date;
