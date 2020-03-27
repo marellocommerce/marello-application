@@ -26,8 +26,12 @@ class PaymentMethodLabelFormatter
      */
     public function formatPaymentMethodLabel($paymentMethodName)
     {
-        $paymentMethod = $this->paymentMethodProvider->getPaymentMethod($paymentMethodName);
+        try {
+            $paymentMethod = $this->paymentMethodProvider->getPaymentMethod($paymentMethodName);
 
-        return $paymentMethod->getLabel();
+            return $paymentMethod->getLabel();
+        } catch(\Exception $e) {
+            return $paymentMethodName;
+        }
     }
 }
