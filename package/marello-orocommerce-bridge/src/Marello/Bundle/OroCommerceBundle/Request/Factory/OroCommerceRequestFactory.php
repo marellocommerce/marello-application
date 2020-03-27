@@ -60,6 +60,13 @@ class OroCommerceRequestFactory implements OroCommerceRequestFactoryInterface
                 }
             }
         }
+        if (in_array($method, [self::METHOD_GET]) && !isset($data['data']['id'])) {
+            if (count($filters) > 0 || count($include) > 0) {
+                $path .= '&page[size]=-1';
+            } else {
+                $path .= '?page[size]=-1';
+            }
+        }
         $payload = [];
         if (in_array($method, [self::METHOD_POST, self::METHOD_PATCH])) {
             $payload = json_encode($data);

@@ -214,6 +214,11 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                     'currency',
                     $this->settings->get(OroCommerceSettings::CURRENCY_FIELD),
                     OroCommerceRequestFactory::EQ
+                ),
+                new FilterValue(
+                    'updatedAt',
+                    $lastSyncStr,
+                    OroCommerceRequestFactory::GT
                 )
             ],
             ['customer', 'customerUser', 'lineItems', 'shippingAddress', 'billingAddress']
@@ -1716,6 +1721,45 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                                             $relationship['data']['type'] === $type
                                         ) {
                                             $data['data']['relationships'][$k]['data']['id'] = $errorSourceId;
+                                            if (isset($data['included'][$pointersArray[1]]['relationships'])) {
+                                                foreach ($data['included'][$pointersArray[1]]['relationships'] as $inclRelationship) {
+                                                    if (isset($inclRelationship['data']['id'])) {
+                                                        $relId = $inclRelationship['data']['id'];
+                                                        $relType = $inclRelationship['data']['type'];
+                                                        foreach ($data['included'] as $k => $included) {
+                                                            if (
+                                                                $included['type'] === $relType &&
+                                                                $included['id'] === $relId &&
+                                                                count($included['relationships']) === 0
+                                                            ) {
+                                                                $parentRel = reset($included['relationships']);
+                                                                if ($parentRel['data']['type'] === $type) {
+                                                                    unset ($data['included'][$k]);
+                                                                }
+                                                            }
+                                                        }
+                                                    } else {
+                                                        foreach ($inclRelationship['data'] as $relItem) {
+                                                            if (isset($relItem['id'])) {
+                                                                $relId = $relItem['id'];
+                                                                $relType = $relItem['type'];
+                                                                foreach ($data['included'] as $k => $included) {
+                                                                    if (
+                                                                        $included['type'] === $relType &&
+                                                                        $included['id'] === $relId &&
+                                                                        count($included['relationships']) === 1
+                                                                    ) {
+                                                                        $parentRel = reset($included['relationships']);
+                                                                        if ($parentRel['data']['type'] === $type) {
+                                                                            unset ($data['included'][$k]);
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
                                             unset($data['included'][$pointersArray[1]]);
                                         }
                                     }
@@ -1730,11 +1774,15 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
             }
             $filters = [];
             foreach ($data['data']['relationships'] as $k => $relationship) {
-                $filters[] = new FilterValue(
-                    $k,
-                    $relationship['data']['id'],
-                    OroCommerceRequestFactory::EQ
-                );
+                if ($relationship['data']['id'] === (string)(int)$relationship['data']['id']) {
+                    $filters[] = new FilterValue(
+                        $k,
+                        $relationship['data']['id'],
+                        OroCommerceRequestFactory::EQ
+                    );
+                } else {
+                    return $this->$createMethod($data);
+                }
             }
             $request = OroCommerceRequestFactory::createRequest(
                 OroCommerceRequestFactory::METHOD_GET,
