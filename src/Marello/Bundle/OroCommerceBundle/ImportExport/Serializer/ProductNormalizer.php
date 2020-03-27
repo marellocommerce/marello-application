@@ -174,7 +174,7 @@ class ProductNormalizer extends AbstractNormalizer
                         'id' => '6abcd',
                         'attributes' => [
                             'fallback' => null,
-                            'scalarValue' => $transport->isBackOrder(),
+                            'scalarValue' => $transport->isBackOrder() ? '1' : '0',
                             'arrayValue' => null
                         ]
                     ],
@@ -183,7 +183,7 @@ class ProductNormalizer extends AbstractNormalizer
                         'id' => 'names-1',
                         'attributes' => [
                             'fallback' => null,
-                            'string' => $object->getName(),
+                            'string' => $object->getName()->getString(),
                             'text' => null
                         ],
                         'relationships' => [

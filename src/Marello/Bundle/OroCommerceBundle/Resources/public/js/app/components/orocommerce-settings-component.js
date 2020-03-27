@@ -71,6 +71,7 @@ define(function(require) {
             this.priceListLoadingMaskView = new LoadingMaskView({container: this.$elem.find(this.options.priceListSelector).closest('.controls')});
             this.productFamilyLoadingMaskView = new LoadingMaskView({container: this.$elem.find(this.options.productFamilySelector).closest('.controls')});
             this.warehouseLoadingMaskView = new LoadingMaskView({container: this.$elem.find(this.options.warehouseSelector).closest('.controls')});
+            this.toggleWarehousesVisibility();
             this.$elem.find(this.options.urlSelector)
                 .on('change', _.bind(this.makeChanges, this));
             this.$elem.find(this.options.usernameSelector)

@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\OroCommerceBundle\EventListener\Doctrine;
 
+use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Marello\Bundle\OroCommerceBundle\Entity\OroCommerceSettings;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Reader\ProductExportCreateReader;
@@ -111,6 +112,10 @@ class ReverseSyncProductPriceListener extends AbstractReverseSyncListener
         $changeSet = $this->unitOfWork->getEntityChangeSet($entity);
 
         if (count($changeSet) === 0) {
+            if (in_array($entity, $this->unitOfWork->getScheduledEntityDeletions())) {
+                return true;
+            }
+
             return false;
         }
 
@@ -144,12 +149,9 @@ class ReverseSyncProductPriceListener extends AbstractReverseSyncListener
                 $salesChannel = $this->getSalesChannel($product, $integrationChannel);
                 if ($salesChannel !== null) {
                     $finalPrice = $this->getFinalPrice($product, $salesChannel);
-                    if ($entity->getValue() === null || $entity === $finalPrice) {
-                        if ($entity instanceof ProductChannelPrice) {
-                            $entityName = ProductChannelPrice::class;
-                        } else {
-                            $entityName = ProductPrice::class;
-                        }
+                    if ($entity->getValue() === null || $entity === $finalPrice ||
+                        in_array($entity, $this->unitOfWork->getScheduledEntityDeletions())) {
+                        $entityName = ClassUtils::getClass($finalPrice);
                         $channelId = $integrationChannel->getId();
                         if (isset($data[AbstractProductExportWriter::PRICE_ID_FIELD]) &&
                             isset($data[AbstractProductExportWriter::PRICE_ID_FIELD][$channelId]) &&
