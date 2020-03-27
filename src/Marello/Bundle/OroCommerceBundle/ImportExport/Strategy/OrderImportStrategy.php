@@ -81,6 +81,12 @@ class OrderImportStrategy extends AbstractImportStrategy
             if (!$item->getOrder()) {
                 $item->setOrder($entityToUpdate);
             }
+            $product = $item->getProduct();
+            $order = $item->getOrder();
+            $taxCode = $product->getSalesChannelTaxCode($order->getSalesChannel()) ? : $product->getTaxCode();
+            $item
+                ->setTaxCode($taxCode)
+                ->setOrganization($order->getOrganization());
         }
     }
 
