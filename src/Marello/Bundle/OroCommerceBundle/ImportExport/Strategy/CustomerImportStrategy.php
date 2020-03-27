@@ -6,6 +6,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityRepository;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\CustomerBundle\Entity\Company;
+use Marello\Bundle\PaymentTermBundle\Entity\PaymentTerm;
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\ImportExportBundle\Strategy\Import\AbstractImportStrategy;
 
@@ -71,11 +72,13 @@ class CustomerImportStrategy extends AbstractImportStrategy
             $criteria = [
                 'name' => $parent->getName()
             ];
+            /** @var Company $existingParent */
             $existingParent = $this->getEntityByCriteria($criteria, $parent);
             if ($existingParent) {
                 $company->setParent($existingParent);
             } else {
                 $parent->setOrganization($organization);
+                $company->setParent($parent);
             }
         }
         $paymentTerm = $entity->getPaymentTerm();
@@ -83,6 +86,7 @@ class CustomerImportStrategy extends AbstractImportStrategy
             $criteria = [
                 'code' => $paymentTerm->getCode()
             ];
+            /** @var PaymentTerm $existingPaymentTerm */
             $existingPaymentTerm = $this->getEntityByCriteria($criteria, $paymentTerm);
             if ($existingPaymentTerm) {
                 $company->setPaymentTerm($existingPaymentTerm);
