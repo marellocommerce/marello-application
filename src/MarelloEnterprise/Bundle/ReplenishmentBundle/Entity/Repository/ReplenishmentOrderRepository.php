@@ -6,23 +6,9 @@ use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrder;
-use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class ReplenishmentOrderRepository extends EntityRepository
 {
-    /**
-     * @var AclHelper
-     */
-    private $aclHelper;
-
-    /**
-     * @param AclHelper $aclHelper
-     */
-    public function setAclHelper(AclHelper $aclHelper)
-    {
-        $this->aclHelper = $aclHelper;
-    }
-    
     /**
      * @param int $replOrderConfig
      *
@@ -37,7 +23,7 @@ class ReplenishmentOrderRepository extends EntityRepository
             )
             ->setParameter('replOrderConfig', $replOrderConfig);
 
-        return $this->aclHelper->apply($qb->getQuery())->getResult();
+        return $qb->getQuery()->getResult();
     }
 
     /**
@@ -52,7 +38,7 @@ class ReplenishmentOrderRepository extends EntityRepository
             ->innerJoin('ro.replOrderItems', 'roi', Join::WITH, 'roi.productSku = :sku')
             ->setParameter('sku', $productSku);
 
-        return $this->aclHelper->apply($qb->getQuery())->getResult();
+        return $qb->getQuery()->getResult();
     }
     
     /**
@@ -72,6 +58,6 @@ class ReplenishmentOrderRepository extends EntityRepository
             ->andWhere($qb->expr()->gte(':dt', 'ro.executionDateTime'))
             ->setParameter('dt', $datetime, Type::DATETIME);
 
-        return $this->aclHelper->apply($qb->getQuery())->getResult();
+        return $qb->getQuery()->getResult();
     }
 }
