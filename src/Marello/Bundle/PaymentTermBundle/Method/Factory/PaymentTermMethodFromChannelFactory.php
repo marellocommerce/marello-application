@@ -2,8 +2,6 @@
 
 namespace Marello\Bundle\PaymentTermBundle\Method\Factory;
 
-use Marello\Bundle\ManualShippingBundle\Entity\ManualShippingSettings;
-use Marello\Bundle\ManualShippingBundle\Method\ManualShippingMethod;
 use Marello\Bundle\PaymentBundle\Method\Factory\IntegrationPaymentMethodFactoryInterface;
 use Marello\Bundle\PaymentTermBundle\Method\PaymentTermMethod;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
@@ -46,7 +44,7 @@ class PaymentTermMethodFromChannelFactory implements IntegrationPaymentMethodFac
     /**
      * @param Channel $channel
      *
-     * @return ManualShippingMethod
+     * @return PaymentTermMethod
      */
     public function create(Channel $channel)
     {
@@ -64,10 +62,10 @@ class PaymentTermMethodFromChannelFactory implements IntegrationPaymentMethodFac
      */
     private function getChannelLabel(Channel $channel)
     {
-        /** @var ManualShippingSettings $transport */
         $transport = $channel->getTransport();
 
-        return (string) $this->localizationHelper->getLocalizedValue($transport->getLabels());
+        return $transport->getLabels() ?
+            (string) $this->localizationHelper->getLocalizedValue($transport->getLabels()) : null;
     }
 
     /**

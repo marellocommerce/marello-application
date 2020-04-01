@@ -5,12 +5,13 @@ namespace Marello\Bundle\ProductBundle\EventListener\Datagrid;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\GroupBy;
 
-use Marello\Bundle\ProductBundle\Entity\ProductStatus;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Event\OrmResultBefore;
 
+use Marello\Bundle\ProductBundle\Entity\ProductStatus;
 use Marello\Bundle\ProductBundle\Datagrid\ORM\Query\ProductsGridSqlWalker;
 
 class ProductGridListener
@@ -25,10 +26,8 @@ class ProductGridListener
         $ormQuery
             ->addSelect('i.id as image')
             ->addSelect('(CASE WHEN p.image IS NOT NULL THEN true ELSE false END) as hasImage')
-            ->addSelect('s.label as status')
-            ->addLeftJoin('p.image', 'i')
-            ->addLeftJoin('p.status', 's')
-            ->addGroupBy('s.label');
+            ->addSelect('IDENTITY(p.status) as status')
+            ->addLeftJoin('p.image', 'i');
         $columns = $config->offsetGetByPath('[columns]');
         $columns = array_merge(
             [
@@ -37,32 +36,27 @@ class ProductGridListener
                     'type' => 'twig',
                     'frontend_type' => 'html',
                     'template' => 'MarelloProductBundle:Product/Datagrid/Property:image.html.twig',
+                    'inline_editing' => ['enable' => false]
                 ],
                 'status' => [
                     'label' => 'marello.product.status.label',
-                    'frontend_type' => 'string',
+                    'frontend_type' => 'select'
                 ]
             ],
             $columns
         );
         $config->offsetSetByPath('[columns]', $columns);
-        $config
-            ->offsetSetByPath(
-                '[sorters][columns][status]',
-                ['data_name' => 's.label']
-            )
-            ->offsetSetByPath(
-                '[filters][columns][image]',
-                [
+
+        $filters = $config->offsetGetByPath('[filters][columns]');
+        $filters = array_merge(
+            [
+                'image' => [
                     'type' => 'boolean',
                     'data_name' => 'hasImage',
-                ]
-            )
-            ->offsetSetByPath(
-                '[filters][columns][status]',
-                [
+                ],
+                'status' => [
                     'type' => 'entity',
-                    'data_name' => 's',
+                    'data_name' => 'status',
                     'options' => [
                         'field_options' => [
                             'multiple' => true,
@@ -70,6 +64,14 @@ class ProductGridListener
                         ]
                     ]
                 ]
+            ],
+            $filters
+        );
+        $config->offsetSetByPath('[filters][columns]', $filters);
+        $config
+            ->offsetSetByPath(
+                '[sorters][columns][status]',
+                ['data_name' => 'status']
             );
     }
 
@@ -104,5 +106,38 @@ class ProductGridListener
         }
         $dataSource->getQueryBuilder()->resetDQLPart('groupBy');
         $dataSource->getQueryBuilder()->add('groupBy', $newGroupByParts);
+
+        $config = $grid->getConfig();
+        $columnsConfig = $this->switchColumns($config, 'createdAt', 'tags');
+        $config->offsetSetByPath('[columns]', $columnsConfig);
+    }
+
+    /**
+     * @param DatagridConfiguration $datagridConfig
+     * @param $firstColumnName
+     * @param $secondColumnName
+     * @return array
+     */
+    private function switchColumns(DatagridConfiguration $datagridConfig, $firstColumnName, $secondColumnName)
+    {
+        $columns = $datagridConfig->offsetGetByPath('[columns]');
+        if (array_key_exists($firstColumnName, $columns)) {
+            $firstColumnConfig = $columns[$firstColumnName];
+            if (array_key_exists($secondColumnName, $columns)) {
+                $secondColumnConfig = $columns[$secondColumnName];
+                unset($columns[$firstColumnName]);
+                unset($columns[$secondColumnName]);
+                $columns = array_merge(
+                    $columns,
+                    [
+                        $secondColumnName => $secondColumnConfig,
+                        $firstColumnName => $firstColumnConfig
+                    ]
+                );
+
+                return $columns;
+            }
+        }
+        return $columns;
     }
 }

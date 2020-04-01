@@ -24,6 +24,9 @@
         'route': 'marello_tax_taxrate_update',
         'params': {'id': '$id'}
         }) %}
+        {% set html = html ~ UI.saveAndNewButton({
+        'route': 'marello_tax_taxrate_create'
+        }) %}
 
         {{ UI.dropdownSaveButton({'html': html}) }}
     {% endif %}

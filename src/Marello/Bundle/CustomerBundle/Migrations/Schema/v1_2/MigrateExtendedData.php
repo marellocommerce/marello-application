@@ -18,6 +18,16 @@ class MigrateExtendedData implements
      */
     public function up(Schema $schema, QueryBag $queries)
     {
+        $oroRelationTable6f = $schema->getTable('oro_rel_6f8f552a784fec5f5daa7e');
+        if (!$oroRelationTable6f) {
+            $schema->createTable('oro_rel_6f8f552a784fec5f5daa7e');
+        }
+
+        $oroRelationTablec3 = $schema->getTable('oro_rel_c3990ba6784fec5f7f9667');
+        if (!$oroRelationTablec3) {
+            $schema->createTable('oro_rel_c3990ba6784fec5f7f9667');
+        }
+
         $queries->addPreQuery(
             new ParametrizedSqlMigrationQuery(
                 'INSERT INTO oro_rel_6f8f552a784fec5f5daa7e SELECT * FROM oro_rel_6f8f552a784fec5f18d607'

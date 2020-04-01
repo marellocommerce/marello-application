@@ -80,13 +80,6 @@ class OrderItem extends ExtendOrderItem implements
      * @var string
      *
      * @ORM\Column(name="product_name",type="string", nullable=false)
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "dataaudit"={
-     *              "auditable"=true
-     *          }
-     *      }
-     * )
      */
     protected $productName;
 
@@ -361,7 +354,7 @@ class OrderItem extends ExtendOrderItem implements
     {
         // prevent overriding product name if already being set
         if (is_null($this->productName)) {
-            $this->setProductName($this->product->getName());
+            $this->setProductName((string)$this->product->getName());
         }
         $this->setProductSku($this->product->getSku());
     }

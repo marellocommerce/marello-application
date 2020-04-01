@@ -66,14 +66,9 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
             )
             ->add(
                 'itemsAdvice',
-                MultipleEntityType::class,
+                PurchaseOrderAdvisedItemCollectionType::class,
                 [
-                    'mapped'                => false,
-                    'add_acl_resource'      => 'marello_purchase_order_view',
-                    'class'                 => 'MarelloPurchaseOrderBundle:PurchaseOrderItem',
-                    'default_element'       => 'default_purchase_order_item',
-                    'required'              => false,
-                    'selector_window_title' => 'marello.product.entity_label',
+                    'mapped' => false
                 ]
             )
             ->add(

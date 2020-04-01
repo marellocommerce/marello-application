@@ -236,7 +236,6 @@ datagrids:
                 label:              oro.ui.updated_at
                 frontend_type:      datetime
 
-
     marello-balanced-inventory-levels-grid:
         source:
             type: orm
