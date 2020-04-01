@@ -20,6 +20,9 @@
         'route': 'marello_tax_taxjurisdiction_update',
         'params': {'id': '$id'}
         }) %}
+        {% set html = html ~ UI.saveAndNewButton({
+        'route': 'marello_tax_taxjurisdiction_create'
+        }) %}
 
         {{ UI.dropdownSaveButton({'html': html}) }}
     {% endif %}

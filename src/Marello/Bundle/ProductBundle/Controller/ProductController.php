@@ -252,6 +252,26 @@ class ProductController extends AbstractController
 
     /**
      * @Route(
+     *     path="/widget/image/{id}",
+     *     name="marello_product_widget_image",
+     *     requirements={"id"="\d+"}
+     * )
+     * @AclAncestor("marello_product_view")
+     * @Template("MarelloProductBundle:Product/widget:image.html.twig")
+     *
+     * @param Product $product
+     *
+     * @return array
+     */
+    public function imageAction(Product $product)
+    {
+        return [
+            'entity' => $product
+        ];
+    }
+
+    /**
+     * @Route(
      *     path="/widget/price/{id}",
      *     name="marello_product_widget_price",
      *     requirements={"id"="\d+"}

@@ -59,7 +59,10 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
  *          "group_name"=""
  *      },
  *     "attribute"={
-            "has_attributes"=true
+ *          "has_attributes"=true
+ *     },
+ *     "tag"={
+ *          "enabled"=true
  *     }
  *  }
  * )

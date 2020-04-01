@@ -9,14 +9,6 @@ services:
         arguments:
             - '%marello_bank_transfer.method.identifier_prefix.bank_transfer%'
 
-    marello_bank_transfer.repository.bank_transfer_settings:
-        class: 'Marello\Bundle\BankTransferBundle\Entity\Repository\BankTransferSettingsRepository'
-        parent: oro_entity.abstract_repository
-        arguments:
-            - 'Marello\Bundle\BankTransferBundle\Entity\BankTransferSettings'
-        calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
-
     marello_bank_transfer.form.type.bank_transfer_options:
         class: 'Marello\Bundle\BankTransferBundle\Form\Type\BankTransferOptionsType'
         tags:

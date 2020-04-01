@@ -115,7 +115,13 @@ class TaxCodeDatagridListener
      */
     protected function addColumn(DatagridConfiguration $config)
     {
-        $config->offsetSetByPath(sprintf('[columns][%s]', $this->getDataName()), ['label' => $this->getColumnLabel()]);
+        $config->offsetSetByPath(
+            sprintf('[columns][%s]', $this->getDataName()),
+            [
+                'label' => $this->getColumnLabel(),
+                'renderable' => false
+            ]
+        );
     }
 
     /**
@@ -145,7 +151,8 @@ class TaxCodeDatagridListener
                         'class' => $this->taxCodeClass,
                         'choice_label' => 'code'
                     ]
-                ]
+                ],
+                'enabled' => false
             ]
         );
     }
