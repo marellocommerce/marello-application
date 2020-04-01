@@ -3,10 +3,10 @@
 namespace Marello\Bundle\PaymentTermBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Marello\Bundle\PaymentTermBundle\Entity\PaymentTermSettings;
+use Marello\Bundle\PaymentTermBundle\Entity\MarelloPaymentTermSettings;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
-class PaymentTermSettingsRepository extends EntityRepository
+class MarelloPaymentTermSettingsRepository extends EntityRepository
 {
     /**
      * @var AclHelper
@@ -22,7 +22,7 @@ class PaymentTermSettingsRepository extends EntityRepository
     }
 
     /**
-     * @return PaymentTermSettings[]
+     * @return MarelloPaymentTermSettings[]
      */
     public function findWithEnabledChannel()
     {

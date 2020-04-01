@@ -75,8 +75,8 @@ class MigrateTable implements
         $table->addColumn('company_id', 'integer', ['notnull' => false]);
         $table->addColumn('serialized_data', 'text', []);
         $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['primary_address_id'], 'UNIQ_75C456C9F5B7AF75');
-        $table->addUniqueIndex(['shipping_address_id'], 'UNIQ_75C456C94D4CFF2B');
+        $table->addUniqueIndex(['primary_address_id']);
+        $table->addUniqueIndex(['shipping_address_id']);
         $table->addIndex(['organization_id']);
 
         $this->attachmentExtension->addAttachmentAssociation($schema, $table->getName());

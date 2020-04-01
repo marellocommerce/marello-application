@@ -81,12 +81,13 @@ class SendProcessorTest extends WebTestCase
             [$order->getCustomer()],
             $order
         );
+
+        self::assertMessagesEmpty(Topics::SEND_NOTIFICATION_EMAIL);
     }
 
     /**
-     * @throws MarelloNotificationException
-     * @throws \Oro\Bundle\NotificationBundle\Exception\NotificationSendException
-     * @throws \Twig_Error
+     * test if the message is sent to the consumer with the subject and content rendered instead of plain text
+     * without the dynamic attributes like `entity.orderNumber`
      */
     public function testMessageSendIsRenderedTemplateAndSubject()
     {
@@ -100,7 +101,7 @@ class SendProcessorTest extends WebTestCase
 
         self::assertMessageSent(Topics::SEND_NOTIFICATION_EMAIL);
         $message = self::getSentMessage(Topics::SEND_NOTIFICATION_EMAIL);
-
+        // check that the subject and body have been rendered
         self::assertNotContains('{{ entity', $message['subject']);
         self::assertNotContains('{{ entity', $message['body']);
         self::assertEquals('text/html', $message['contentType']);
@@ -142,6 +143,7 @@ class SendProcessorTest extends WebTestCase
         static::assertEquals($notificationsBefore, $notificationsAfter);
         self::assertMessageSent(Topics::SEND_NOTIFICATION_EMAIL);
         $message = self::getSentMessage(Topics::SEND_NOTIFICATION_EMAIL);
+        // check that the subject and body have been rendered
         self::assertNotContains('{{ entity', $message['subject']);
         self::assertNotContains('{{ entity', $message['body']);
         self::assertEquals('text/html', $message['contentType']);
