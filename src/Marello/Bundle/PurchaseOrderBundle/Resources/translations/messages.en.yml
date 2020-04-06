@@ -3,6 +3,7 @@ marello:
         id.label:                                       Id
         entity_label:                                   Purchase Order
         entity_plural_label:                            Purchase Orders
+        entity_grid_all_view_label:                     All %entity_plural_label%
         organization.label:                             Organization
         supplier.label:                                 Supplier
         purchase_order_number.label:                    PO Number
@@ -35,6 +36,7 @@ marello:
         purchaseorderitem:
             entity_label:                               Purchase Order Item
             entity_plural_label:                        Purchase Order Items
+            entity_grid_all_view_label:                 All %entity_plural_label%
             id.label:                                   Id
             data.label:                                 Data
             order_amount.label:                         Order Amount

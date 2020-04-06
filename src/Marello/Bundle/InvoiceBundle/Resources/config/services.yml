@@ -114,3 +114,10 @@ services:
         class: 'Marello\Bundle\InvoiceBundle\Form\Type\InvoiceSelectType'
         tags:
             - { name: form.type }
+
+    marello_invoice.twig.invoice_extension:
+        class: 'Marello\Bundle\InvoiceBundle\Twig\InvoiceExtension'
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: twig.extension }

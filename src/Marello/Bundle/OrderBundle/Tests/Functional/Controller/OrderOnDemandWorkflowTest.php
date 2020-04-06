@@ -24,6 +24,9 @@ use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @dbIsolationPerTest
+ */
 class OrderOnDemandWorkflowTest extends WebTestCase
 {
     public function setUp()
@@ -142,9 +145,19 @@ class OrderOnDemandWorkflowTest extends WebTestCase
         $this->assertEmpty($beforePackingSlips);
 
         $workflowManager = $this->getContainer()->get('oro_workflow.manager');
-        $orderWorkflowItem = $workflowManager->getWorkflowItem($order, 'marello_order_b2c_workflow_1');
-        $workflowManager->transit($orderWorkflowItem, 'payment_received');
+        $orderWorkflowItem = $workflowManager->getWorkflowItem($order, 'marello_order_b2c_new_workflow_1');
+        if (!$orderWorkflowItem) {
+            $orderWorkflowItem = $workflowManager
+                ->startWorkflow('marello_order_b2c_new_workflow_1', $order, 'pending');
+        }
         $workflowManager->transit($orderWorkflowItem, 'invoice');
+        $data = $orderWorkflowItem->getData();
+        $data
+            ->set('payment_reference', 'payment_reference')
+            ->set('payment_details', 'payment_details')
+            ->set('total_paid', 100);
+        $orderWorkflowItem->setData($data);
+        $workflowManager->transit($orderWorkflowItem, 'payment_received');
         $workflowManager->transit($orderWorkflowItem, 'prepare_shipping');
         $workflowManager->transit($orderWorkflowItem, 'ship');
 

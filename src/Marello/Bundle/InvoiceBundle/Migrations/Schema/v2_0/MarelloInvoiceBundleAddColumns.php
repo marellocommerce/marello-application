@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\InvoiceBundle\Migrations\Schema\v3_1;
+namespace Marello\Bundle\InvoiceBundle\Migrations\Schema\v2_0;
 
 use Doctrine\DBAL\Schema\Schema;
 use Oro\Bundle\MigrationBundle\Migration\Migration;
