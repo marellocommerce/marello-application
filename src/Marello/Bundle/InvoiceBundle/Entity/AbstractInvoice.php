@@ -282,8 +282,8 @@ abstract class AbstractInvoice implements
      *
      * @ORM\ManyToMany(targetEntity="Marello\Bundle\PaymentBundle\Entity\Payment", cascade={"persist"})
      * @ORM\JoinTable(name="marello_invoice_payments",
-     *      joinColumns={@ORM\JoinColumn(name="invoice_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="payment_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="invoice_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="payment_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      * )
      * @ORM\OrderBy({"id" = "ASC"})
      * @Oro\ConfigField(
@@ -372,7 +372,7 @@ abstract class AbstractInvoice implements
     /**
      * @var int
      *
-     * @ORM\Column(name="total_due", type="money")
+     * @ORM\Column(name="total_due", type="money", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -386,7 +386,7 @@ abstract class AbstractInvoice implements
     /**
      * @var int
      *
-     * @ORM\Column(name="total_paid", type="money")
+     * @ORM\Column(name="total_paid", type="money", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -739,6 +739,11 @@ abstract class AbstractInvoice implements
     {
         if (!$this->payments->contains($payment)) {
             $this->payments->add($payment);
+            $totalPaid = $this->getTotalPaid() ? : 0;
+            $grandTotal = $this->getGrandTotal() ? : 0;
+
+            $this->setTotalPaid($payment->getTotalPaid() + $totalPaid);
+            $this->setTotalDue($grandTotal - $this->getTotalPaid());
         }
 
         return $this;
@@ -753,6 +758,11 @@ abstract class AbstractInvoice implements
     {
         if ($this->payments->contains($payment)) {
             $this->payments->removeElement($payment);
+            $totalPaid = $this->getTotalPaid() ? : 0;
+            $grandTotal = $this->getGrandTotal() ? : 0;
+
+            $this->setTotalPaid($totalPaid - $payment->getTotalPaid());
+            $this->setTotalDue($grandTotal - $this->getTotalPaid());
         }
 
         return $this;
@@ -861,6 +871,44 @@ abstract class AbstractInvoice implements
         if (!$this->invoiceNumber) {
             $this->setInvoiceNumber(sprintf('%09d', $id));
         }
+    }
+
+    /**
+     * @return float
+     */
+    public function getTotalDue()
+    {
+        return $this->totalDue;
+    }
+
+    /**
+     * @param float $totalDue
+     * @return $this
+     */
+    public function setTotalDue($totalDue)
+    {
+        $this->totalDue = $totalDue;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getTotalPaid()
+    {
+        return $this->totalPaid;
+    }
+
+    /**
+     * @param float $totalPaid
+     * @return $this
+     */
+    public function setTotalPaid($totalPaid)
+    {
+        $this->totalPaid = $totalPaid;
+
+        return $this;
     }
 
     /**

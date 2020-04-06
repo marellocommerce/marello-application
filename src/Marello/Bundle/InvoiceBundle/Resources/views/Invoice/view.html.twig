@@ -96,6 +96,8 @@
                 <div class="responsive-block">
                     {{ UI.renderProperty('marello.invoice.payment_method.label'|trans, marello_get_payment_method_label(entity.paymentMethod)|trans) }}
                     {{ UI.renderProperty('marello.invoice.payment_term.label'|trans, (entity.paymentTerm is not empty ? entity.paymentTerm.labels|localized_value : 'N/A')|trans) }}
+                    {{ UI.renderProperty('marello.invoice.total_paid.label'|trans, entity.totalPaid|oro_format_currency({'currency':entity.currency})) }}
+                    {{ UI.renderProperty('marello.invoice.total_due.label'|trans, entity.totalDue|oro_format_currency({'currency':entity.currency})) }}
                 </div>
             </div>
         </div>

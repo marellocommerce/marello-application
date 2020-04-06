@@ -34,7 +34,7 @@ class MarelloPaymentBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v3_1';
+        return 'v2_0';
     }
 
     /**
@@ -77,7 +77,7 @@ class MarelloPaymentBundleInstaller implements
         $table->addColumn('payment_reference', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('payment_details', 'text', ['notnull' => false]);
         $table->addColumn('total_paid', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
-        $table->addColumn('payment_date', 'datetime');
+        $table->addColumn('payment_date', 'datetime', ['notnull' => false, 'comment' => '(DC2Type:datetime)']);
         $table->addColumn('currency', 'string', ['notnull' => false, 'length' => 10]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);

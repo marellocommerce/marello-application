@@ -3,6 +3,7 @@ marello:
         # Order entity
         entity_plural_label:        Orders
         entity_label:               Order
+        entity_grid_all_view_label: All %entity_plural_label%
         id.label:                   Id
         customer.label:             Customer
         items.label:                Items
@@ -64,6 +65,7 @@ marello:
         orderitem:
             entity_label:           Ordered Item
             entity_plural_label:    Ordered Items
+            entity_grid_all_view_label: All %entity_plural_label%
             id.label:               Id
             sku.label:              SKU
             tax.label:              Tax
@@ -99,6 +101,7 @@ marello:
         customer:
             entity_label:                     Customer
             entity_plural_label:              Customers
+            entity_grid_all_view_label:       All %entity_plural_label%
             id.label:                         Id
             organization.label:               Organization
             primary_address.label:            Primary Address

@@ -23,10 +23,10 @@ data:
         salesChannelName: channel3
         purchaseDate: '@marello_order_1->purchaseDate->format("Y-m-d\TH:i:s\Z")'
         data: null
-        workflowItem:
-            currentStep:
-                name: pending
-                label: 'Pending Order'
+        #workflowItem:
+        #    currentStep:
+        #        name: pending
+        #        label: 'Pending Order'
     relationships:
         items:
             data:

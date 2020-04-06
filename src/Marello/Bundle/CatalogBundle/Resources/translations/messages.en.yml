@@ -4,6 +4,7 @@ marello:
             id.label:               Id
             entity_plural_label:    Categories
             entity_label:           Category
+            entity_grid_all_view_label: All %entity_plural_label%
             name.label:             Name
             code.label:             Code
             description.label:      Description

@@ -26,11 +26,16 @@
     {% for name, value in entity.paymentMethodOptions %}
         {% set paymentMethod = paymentMethod ~ ' <br>' ~ name ~ ': ' ~ value %}
     {% endfor %}
+    {% set paymentSource = marello_get_payment_source(entity) %}
     {% set data %}
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
                     {{ UI.renderProperty('marello.payment.status.label'|trans, entity.status) }}
+                    {{ UI.renderHtmlProperty(
+                        'marello.payment.payment_source.label'|trans,
+                        UI.entityViewLink(paymentSource, paymentSource.invoiceType ~ ': ' ~ paymentSource.invoiceNumber, 'marello_invoice_invoice_view')
+                    )}}
                     {{ UI.renderHtmlProperty('marello.payment.payment_method.label'|trans, paymentMethod) }}
                     {{ UI.renderProperty('marello.payment.payment_reference.label'|trans, entity.paymentReference) }}
                     {{ UI.renderProperty('marello.payment.payment_details.label'|trans, entity.paymentDetails) }}

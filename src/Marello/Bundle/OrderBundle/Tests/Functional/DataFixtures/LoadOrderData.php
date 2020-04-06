@@ -232,9 +232,6 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         }
 
         $orderEntity->setPaymentMethod($row['payment_method']);
-        if ($row['payment_details'] !== 'NULL') {
-            $orderEntity->setPaymentDetails($row['payment_details']);
-        }
 
         $orderEntity->setShippingAmountExclTax($row['shipping_amount']);
         $orderEntity->setShippingAmountInclTax($row['shipping_amount']);
