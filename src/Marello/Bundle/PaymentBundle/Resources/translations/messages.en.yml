@@ -2,7 +2,9 @@ marello:
     payment:
         entity_label: Payment
         entity_plural_label: Payments
+        entity_grid_all_view_label: All %entity_plural_label%
         id.label: Id
+        organization.label: Organization
         payment_method.label: Payment Method
         payment_method_options.label: Payment Method Options
         payment_reference.label: Payment Reference
@@ -94,6 +96,7 @@ marello:
         paymentmethodconfig:
             entity_label: Payment Method Config
             entity_plural_label: Payment Method Configs
+            entity_grid_all_view_label: All %entity_plural_label%
             id.label: Id
             methods_configs_rule.label: Payment Methods Configs Rule
             method.label: Method
@@ -102,6 +105,7 @@ marello:
         paymentmethodsconfigsrule:
             entity_short_label: Payment Rule
             entity_short_plural_label: Payment Rules
+            entity_grid_all_view_label: All %entity_plural_label%
             entity_label: Payment Rule
             entity_plural_label: Payment Rules
             id.label: Id
@@ -119,6 +123,7 @@ marello:
         paymentmethodsconfigsruledestination:
             entity_label: Payment Methods Configs Rule Destination
             entity_plural_label: Payment Methods Configs Rule Destinations
+            entity_grid_all_view_label: All %entity_plural_label%
             id.label: Id
             methods_configs_rule.label: Payment Methods Configs Rule
             postal_codes.label: Postal Codes
@@ -129,6 +134,7 @@ marello:
         paymentmethodsconfigsruledestinationpostalcode:
             entity_label: Payment Methods Configs Rule Destination Postal Code
             entity_plural_label: Payment Methods Configs Rule Destination Postal Codes
+            entity_grid_all_view_label: All %entity_plural_label%
             id.label: Id
             name.label: Name
             destination.label: Destination
@@ -136,6 +142,7 @@ marello:
         paymenttransaction:
             entity_plural_label: Payment Transactions
             entity_label: Payment Transaction
+            entity_grid_all_view_label: All %entity_plural_label%
             id.label: Id
             paymentMethod.label: Payment Method
             action.label: Type

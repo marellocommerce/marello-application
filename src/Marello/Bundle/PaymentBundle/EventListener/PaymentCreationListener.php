@@ -55,6 +55,7 @@ class PaymentCreationListener
                 ->setPaymentDate(new \DateTime('now', new \DateTimeZone('UTC')))
                 ->setOrganization($entity->getOrganization())
                 ->setStatus($this->findStatusByName(LoadPaymentStatusData::ASSIGNED));
+
             $invoice->addPayment($payment);
             $entityManager->persist($invoice);
             $entityManager->flush();

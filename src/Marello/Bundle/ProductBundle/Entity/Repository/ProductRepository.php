@@ -150,8 +150,8 @@ class ProductRepository extends EntityRepository
             ->select(
                 'sup.name AS supplier,
                 p.sku,
-                (i.desiredInventory - COALESCE(SUM(l.inventory - l.allocatedInventory), 0)) AS orderAmount,
-                i.purchaseInventory'
+                SUM(i.desiredInventory - COALESCE((l.inventory - l.allocatedInventory), 0)) AS orderAmount,
+                SUM(i.purchaseInventory) AS purchaseInventory'
             )
             ->innerJoin('p.preferredSupplier', 'sup')
             ->innerJoin('p.status', 's')
@@ -160,8 +160,8 @@ class ProductRepository extends EntityRepository
             ->where("sup.name <> ''")
             ->andWhere("s.name = 'enabled'")
             ->andWhere("i.replenishment = 'never_out_of_stock'")
-            ->groupBy('p.sku')
-            ->having('SUM(l.inventory - l.allocatedInventory) < i.purchaseInventory');
+            ->groupBy('sup.name, p.sku')
+            ->having('SUM(l.inventory - l.allocatedInventory) < SUM(i.purchaseInventory)');
 
         return $this->aclHelper->apply($qb->getQuery())->getResult();
     }

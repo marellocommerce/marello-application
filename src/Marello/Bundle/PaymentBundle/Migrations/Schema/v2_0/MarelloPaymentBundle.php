@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\PaymentBundle\Migrations\Schema\v3_1;
+namespace Marello\Bundle\PaymentBundle\Migrations\Schema\v2_0;
 
 use Doctrine\DBAL\Schema\Schema;
 use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
@@ -39,7 +39,6 @@ class MarelloPaymentBundle implements Migration, ExtendExtensionAwareInterface
         $table = $schema->createTable('marello_payment_payment');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);
-        $table->addColumn('invoice_id', 'integer', ['notnull' => false]);
         $table->addColumn('payment_method', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn(
             'payment_method_options',
@@ -51,7 +50,7 @@ class MarelloPaymentBundle implements Migration, ExtendExtensionAwareInterface
         $table->addColumn('payment_reference', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('payment_details', 'text', ['notnull' => false]);
         $table->addColumn('total_paid', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
-        $table->addColumn('payment_date', 'datetime');
+        $table->addColumn('payment_date', 'datetime', ['notnull' => false, 'comment' => '(DC2Type:datetime)']);
         $table->addColumn('currency', 'string', ['notnull' => false, 'length' => 10]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
