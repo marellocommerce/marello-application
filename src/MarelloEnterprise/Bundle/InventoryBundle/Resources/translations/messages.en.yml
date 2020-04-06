@@ -6,6 +6,7 @@ marelloenterprise:
         wfarule:
             entity_label:               Warehouse Fulfillment Allocation Rule
             entity_plural_label:        Warehouse Fulfillment Allocation Rules
+            entity_grid_all_view_label: All %entity_plural_label%
             entity_short_label:         WFA Rule
             entity_short_plural_label:  WFA Rules
             id.label:                   Id
