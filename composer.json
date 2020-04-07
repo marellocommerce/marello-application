@@ -1,11 +1,11 @@
 {
     "name": "marellocommerce/marello-orocommerce-api-bridge",
     "description": "Api Bridge for exposing additional resources from OroCommerce to integrate with Marello",
-        "homepage": "https://github.com/marellocommerce/marello-orocommerce-api-bridge.git",
+    "homepage": "https://github.com/marellocommerce/marello-orocommerce-api-bridge.git",
     "license": "OSL-3.0",
     "authors": [
         {
-            "name": "Madia B.V.",
+            "name": "Marello B.V.",
             "homepage": "https://www.marello.com"
         }
     ],
