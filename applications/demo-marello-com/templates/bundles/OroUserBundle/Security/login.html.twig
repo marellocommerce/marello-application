@@ -1,7 +1,6 @@
 {% extends 'OroUserBundle::layout.html.twig' %}
 {% block head %}
     {{ parent() }}
-    {% include 'MarelloDemoBundle:Analytics:analytics-async-js.html.twig' %}
 {% endblock %}
 {% block bodyClass %}login-page{% endblock %}
 {% block messages %}
@@ -47,14 +46,13 @@
                         </div>
                         <div class="form-signin__footer form-signin__footer--login">
                             <button type="submit" class="btn extra-submit btn-uppercase btn-primary" id="_submit" name="_submit">{{ 'Log in'|trans }}</button>
-                            <a href="{{ path('oro_user_reset_request') }}">{{ 'Forgot your password?'|trans }}</a>
                         </div>
                     </fieldset>
                     <input type="hidden" name="_target_path" value="">
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
                 </form>
             </div>
-            <div class="login-copyright">{{ 'oro.auth.copy'|trans }}</div>
+            <div class="login-copyright">{{ 'marello.core.copyright.message'|trans({'%copyright_date%': 'now'|date('Y')}) }}</div>
         </div>
         <script type="text/javascript">
             var loginForm = document.getElementById('login-form');

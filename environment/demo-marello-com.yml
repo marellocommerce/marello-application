@@ -51,6 +51,9 @@ services:
             - data
         volumes:
             - ../applications/demo-marello-com:/var/www:cached
+            - ../package/marello:/package/marello:delegated
+            - ../package/marello-enterprise:/package/marello-enterprise:delegated
+            - ../package/marello-subscriptions:/package/marello-subscriptions:delegated
         environment:
             - VIRTUAL_HOST=demo.marello.docker
             - IS_LOCAL=true
