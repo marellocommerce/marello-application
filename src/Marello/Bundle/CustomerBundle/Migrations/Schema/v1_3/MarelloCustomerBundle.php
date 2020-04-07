@@ -24,7 +24,9 @@ class MarelloCustomerBundle implements Migration, ActivityExtensionAwareInterfac
     public function up(Schema $schema, QueryBag $queries)
     {
         $table = $schema->getTable(MarelloCustomerBundleInstaller::MARELLO_CUSTOMER_TABLE);
-        $this->activityExtension->addActivityAssociation($schema, 'oro_email', $table->getName());
+        if (!$this->activityExtension->getAssociationTableName('oro_email', $table->getName())) {
+            $this->activityExtension->addActivityAssociation($schema, 'oro_email', $table->getName());
+        }
     }
 
     /**
