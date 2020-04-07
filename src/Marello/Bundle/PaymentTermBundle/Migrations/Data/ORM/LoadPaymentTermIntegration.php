@@ -8,6 +8,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\PaymentBundle\Entity\PaymentMethodConfig;
 use Marello\Bundle\PaymentBundle\Migrations\Data\ORM\CreateDefaultPaymentRule;
 use Marello\Bundle\PaymentTermBundle\Entity\MarelloPaymentTermSettings;
+use Marello\Bundle\PaymentTermBundle\Entity\PaymentTermSettings;
 use Marello\Bundle\PaymentTermBundle\Integration\PaymentTermChannelType;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
