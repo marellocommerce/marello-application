@@ -175,7 +175,7 @@ datagrids:
             rowSelection:
                 dataField: id
                 columnName: inCategory
-                selectAll: true
+#                selectAll: true
                 selectors:
                     included: '#appendProducts'
                     excluded: '#removeProducts'
