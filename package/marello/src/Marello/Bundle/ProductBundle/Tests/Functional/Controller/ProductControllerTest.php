@@ -235,14 +235,15 @@ class ProductControllerTest extends WebTestCase
 
         $taxCode = $this->getReference(LoadTaxCodeData::TAXCODE_3_REF)->getId();
         /** @var Form $form */
-        $form                                              = $crawler->selectButton('Save and Close')->form();
-        $name                                              = 'name' . self::generateRandomString();
-        $form['marello_product_form[names][values][default]']                = $name;
+        $form = $crawler->selectButton('Save and Close')->form();
+        $name = 'name' . self::generateRandomString();
+
+        $form['marello_product_form[names][values][default]'] = $name;
         $form['marello_product_form[removeSalesChannels]']
             = $this->getReference(LoadSalesData::CHANNEL_1_REF)->getId();
         $form['marello_product_form[addSalesChannels]']
             = $this->getReference(LoadSalesData::CHANNEL_2_REF)->getId();
-        $form['marello_product_form[taxCode]']             = $taxCode;
+        $form['marello_product_form[taxCode]'] = $taxCode;
 
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);
