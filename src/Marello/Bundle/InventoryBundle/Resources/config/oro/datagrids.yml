@@ -193,8 +193,11 @@ datagrids:
             type: orm
             query:
                 select:
-                    - il
+                    - il.id
+                    - il.pickLocation
+                    - il.updatedAt
                     - wht.label as warehouseTypeLabel
+                    - wh.label as warehouse
                     - COALESCE(il.inventory, 0) AS inventoryQty
                     - COALESCE(il.allocatedInventory, 0) AS allocatedInventoryQty
                     - COALESCE(il.inventory - il.allocatedInventory, 0) AS virtualInventoryQty
@@ -207,7 +210,7 @@ datagrids:
                 where:
                     and:
                         - IDENTITY(il.inventoryItem) = :inventoryItemId
-                groupBy: il.id
+                groupBy: il.id, wh.label, wht.label
             bind_parameters:
                 inventoryItemId: inventoryItemId
         columns:
