@@ -157,6 +157,15 @@ services:
         tags:
             - { name: 'oro_message_queue.client.message_processor' }
 
+    marello_inventory.async.balanced_inventory_reset_processor:
+        class: 'Marello\Bundle\InventoryBundle\Async\BalancedInventoryResetProcessor'
+        arguments:
+            - '@logger'
+            - '@oro_entity.doctrine_helper'
+            - '@marello_inventory.model.balancedinventory.balanced_inventory_handler'
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }
+
     marello_inventory.repository.balancedinventory:
         class: 'Marello\Bundle\InventoryBundle\Entity\Repository\BalancedInventoryRepository'
         parent: oro_entity.abstract_repository
