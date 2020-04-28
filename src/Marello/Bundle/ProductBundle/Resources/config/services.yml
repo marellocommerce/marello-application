@@ -193,3 +193,12 @@ services:
             - '@doctrine'
         tags:
             - { name: validator.constraint_validator, alias: marello_product.product_supplier_relations_dropship_validator }
+
+    marello_product.event_listener.product_update_inventory_rebalance_listener:
+        class: 'Marello\Bundle\ProductBundle\EventListener\Doctrine\ProductUpdateInventoryRebalanceListener'
+        arguments:
+            - '@oro_message_queue.client.message_producer'
+            - '@oro_entity.doctrine_helper'
+        lazy:  true
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
