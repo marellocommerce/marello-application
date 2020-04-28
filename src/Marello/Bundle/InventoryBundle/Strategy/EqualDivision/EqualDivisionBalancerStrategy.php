@@ -95,7 +95,11 @@ class EqualDivisionBalancerStrategy extends AbstractBalancerStrategy
      */
     private function calculateTotalPerChannelGroup($totalChannelGroups, $inventoryTotal)
     {
-        $totalPerChannelRaw = ($inventoryTotal / $totalChannelGroups);
+        $totalPerChannelRaw = 0;
+        if (0 !== $totalChannelGroups) {
+            $totalPerChannelRaw = ($inventoryTotal / $totalChannelGroups);
+        }
+
         return floor($totalPerChannelRaw);
     }
 }
