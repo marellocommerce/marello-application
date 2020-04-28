@@ -3,6 +3,9 @@
 namespace Marello\Bundle\InventoryBundle\Model\InventoryBalancer;
 
 use Doctrine\Common\Collections\ArrayCollection;
+
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+
 use Marello\Bundle\InventoryBundle\DependencyInjection\Configuration;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
@@ -16,8 +19,9 @@ use Marello\Bundle\InventoryBundle\Strategy\BalancerStrategiesRegistry;
 use Marello\Bundle\InventoryBundle\Strategy\BalancerStrategyInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
-use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+use Marello\Bundle\ProductBundle\Entity\ProductStatus;
 
 class InventoryBalancer
 {
@@ -63,6 +67,10 @@ class InventoryBalancer
      */
     public function balanceInventory(Product $product, $isFixed = false, $flushManager = false)
     {
+        // check if product is enabled, if not do not (re)balance
+        if (ProductStatus::DISABLED === $product->getStatus()->getName()) {
+            return;
+        }
         /** @var InventoryItem $inventoryItem */
         $inventoryItem = $this->getInventoryItemFromProduct($product);
 
@@ -75,7 +83,7 @@ class InventoryBalancer
         $filteredInventoryLevels = $this->filterInventoryLevels($inventoryLevels, $isFixed);
 
         $sortedWhgLevels = $this->sortInventoryLevels($filteredInventoryLevels, $isFixed);
-        $linkedWhgToScgs = $this->getLinkedWarehouseGroupsToSalesChannelGroups($filteredInventoryLevels);
+        $linkedWhgToScgs = $this->getLinkedWarehouseGroupsToSalesChannelGroups($filteredInventoryLevels, $product);
 
         $this->generateResult($linkedWhgToScgs, $sortedWhgLevels, $product, $flushManager);
     }
@@ -139,12 +147,13 @@ class InventoryBalancer
     /**
      * Get linked saleschannel groups by warehouse
      * @param ArrayCollection $inventoryLevels
+     * @param Product $product
      * @return array
      */
-    protected function getLinkedWarehouseGroupsToSalesChannelGroups($inventoryLevels)
+    protected function getLinkedWarehouseGroupsToSalesChannelGroups($inventoryLevels, $product = null)
     {
         $linkedWhgToScgs = [];
-        $inventoryLevels->map(function ($level) use (&$linkedWhgToScgs) {
+        $inventoryLevels->map(function ($level) use (&$linkedWhgToScgs, $product) {
             /** @var InventoryLevel $level */
             /** @var Warehouse $warehouse */
             $warehouse = $level->getWarehouse();
@@ -152,11 +161,36 @@ class InventoryBalancer
             $warehouseGroup = $this->getGroup($warehouse);
             if ($warehouseGroup) {
                 $channelLink = $this->getWarehouseChannelGroupLink($warehouse);
-                $linkedWhgToScgs[$warehouseGroup->getId()] = $channelLink->getSalesChannelGroups();
+                // trying to maintain BC
+                $filteredProduct = ($product) ? $product : $level->getInventoryItem()->getProduct();
+                $salesChannelGroups = $this->getApplicableSalesChannelGroups($filteredProduct, $channelLink);
+                $linkedWhgToScgs[$warehouseGroup->getId()] = $salesChannelGroups;
             }
         });
 
         return $linkedWhgToScgs;
+    }
+
+    /**
+     * Get all the SalesChannelGroups from the product where the product is being sold
+     * Filtering the SCG's based on assigned SalesChannels in the product
+     * @param Product $product
+     * @param WarehouseChannelGroupLink $channelLink
+     * @return ArrayCollection
+     */
+    private function getApplicableSalesChannelGroups(Product $product, WarehouseChannelGroupLink $channelLink)
+    {
+        $applicableGroups = new ArrayCollection();
+        $channelLinkGroups = $channelLink->getSalesChannelGroups();
+        $product->getChannels()->map(function ($channel) use (&$applicableGroups, $channelLinkGroups) {
+            /** @var SalesChannel $channel */
+            if ($channelLinkGroups->contains($channel->getGroup())) {
+                if (!$applicableGroups->contains($channel->getGroup())) {
+                    $applicableGroups->add($channel->getGroup());
+                }
+            }
+        });
+        return $applicableGroups;
     }
 
     /**

@@ -10,4 +10,5 @@ final class Topics
     const RESOLVE_REBALANCE_ALL_INVENTORY = 'marello_inventory.inventory_rebalance_all';
 
     const INVENTORY_LOG_RECORD_CREATE = 'marello_inventory.inventorylevellogrecord.create';
+    const BALANCED_INVENTORY_RESET = 'marello_inventory.balancedinventory.reset';
 }
