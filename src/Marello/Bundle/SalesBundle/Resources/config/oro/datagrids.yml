@@ -242,7 +242,6 @@ datagrids:
             rowSelection:
                 dataField: id
                 columnName: hasChannel
-                selectAll: true
                 selectors:
                     included: '#addSalesChannels'
                     excluded: '#removeSalesChannels'

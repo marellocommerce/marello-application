@@ -63,7 +63,6 @@ class ProductUpdateInventoryRebalanceListener
             $records = $this->filterRecords($this->unitOfWork->getScheduledEntityDeletions());
             $this->applyCallBackForChangeSet('rebalanceAfterProductStatusChanged', $records);
         }
-
     }
 
     /**
