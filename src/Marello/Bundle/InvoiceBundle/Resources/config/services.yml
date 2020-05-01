@@ -64,7 +64,7 @@ services:
         class: 'Marello\Bundle\InvoiceBundle\Provider\InvoiceTypeChoicesProvider'
         public: true
 
-    marello_invoice.pdf.table_provider:
+    marello_invoice.pdf.invoice.table_provider:
         class: 'Marello\Bundle\InvoiceBundle\Pdf\Table\InvoiceTableProvider'
         arguments:
             - '@marello_invoice.pdf.provider.table_size'
@@ -96,7 +96,7 @@ services:
         tags:
             - { name: marello_pdf.render_parameter_provider }
 
-    marello_invoice.pdf.request_handler:
+    marello_invoice.pdf.invoice.request_handler:
         class: 'Marello\Bundle\InvoiceBundle\Pdf\Request\InvoicePdfRequestHandler'
         arguments:
             - '@doctrine'
@@ -105,3 +105,21 @@ services:
             - '@marello_pdf.renderer.twig'
         tags:
             - { name: marello_pdf.request_handler }
+
+    marello_invoice.pdf.creditmemo.request_handler:
+        class: 'Marello\Bundle\InvoiceBundle\Pdf\Request\CreditmemoPdfRequestHandler'
+        arguments:
+            - '@doctrine'
+            - '@translator'
+            - '@marello_pdf.provider.render_parameters'
+            - '@marello_pdf.renderer.twig'
+        tags:
+            - { name: marello_pdf.request_handler }
+
+
+    marello_invoice.pdf.creditmemo.table_provider:
+        class: 'Marello\Bundle\InvoiceBundle\Pdf\Table\CreditmemoTableProvider'
+        arguments:
+            - '@marello_invoice.pdf.provider.table_size'
+        tags:
+            - { name: marello_pdf.document_table_provider }
