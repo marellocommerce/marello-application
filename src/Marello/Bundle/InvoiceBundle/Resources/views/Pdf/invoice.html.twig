@@ -225,6 +225,9 @@
                     {% else %}
                         &nbsp;<br>
                     {% endif %}
+                    {% if entity.customer.company is not empty %}
+                        {{ entity.customer.company.name }}<br>
+                    {% endif %}
                     {% if name is not empty %}
                         {{ name }}<br>
                     {% endif %}
