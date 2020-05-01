@@ -1,0 +1,346 @@
+{% use 'MarelloPdfBundle:Download:util.html.twig' %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ 'marello.pdf.creditmemo.entity.label'|trans({}, 'pdf', language) }} {{ entity }}</title>
+        <style type="text/css">
+            .clearfix:after {
+                content: "";
+                display: table;
+                clear: both;
+            }
+            body {
+                font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+                font-weight: 300;
+                font-size: 11px;
+                line-height: 1.5em;
+                background-color: #fff;
+            }
+            .company-logo {
+                text-align: right;
+                margin-bottom: 60px;
+            }
+            .info {
+                padding-top: 5px;
+            }
+            .company-info {
+                width: 40%;
+                text-align: right;
+                float: right;
+                margin-top: 25px;
+            }
+            .company-info a {
+                text-decoration: none;
+                color: #000;
+            }
+            .customer-info {
+                width: 60%;
+                float: left;
+                text-align: left;
+                margin-top: 0px;
+            }
+            .invoice-dl .dt,
+            .customer-vat-dl .dt {
+                width: 40%;
+                margin: 0;
+                float: left;
+            }
+            .invoice-dl .dd,
+            .customer-vat-dl .dd {
+                width: 60%;
+                margin: 0;
+                float: left;
+            }
+            .invoice-dl {
+                margin-top: 30px;
+                margin-bottom: 25px;
+            }
+            .customer-vat-dl {
+                margin-bottom: 20px;
+                margin-top: 15px;
+            }
+            table.invoice-lines {
+                min-height: 600px;
+            }
+            table.invoice-lines thead,
+            table.invoice-lines thead th {
+                background-color: #000;
+                color: #fff;
+                text-align: left;
+                font-weight: 400;
+            }
+            table.invoice-lines td {
+                padding-top: 3px;
+                padding-bottom: 3px;
+            }
+            table.invoice-subtotal td.empty {
+                width: 60px;
+            }
+            table.invoice-lines td.times {
+                width: 20px;
+                padding-left: 0;
+                padding-right: 0;
+                margin-left: 0;
+                margin-right: 0;
+            }
+            table.invoice-lines td.quantity {
+                width: 30px;
+                padding-right: 0;
+                margin-right: 0;
+            }
+            table.invoice-lines td.price {
+                width: 80px;
+                padding-left: 0;
+                margin-left: 0;
+            }
+            table.invoice-lines th.amount,
+            table.invoice-subtotal td.subtotal,
+            table.invoice-totals td {
+                width: 90px;
+            }
+            table.invoice-lines tbody,
+            table.invoice-lines tbody td {
+                background-color: #f4f4f4;
+            }
+            table.invoice-lines .description {
+                font-style: italic;
+            }
+            table.invoice-lines tr.line-bottom,
+            table.invoice-lines tr.line-bottom td {
+                border-bottom: 1px solid #fff;
+            }
+            table.invoice-totals th {
+                text-align: right;
+                font-weight: normal;
+            }
+            table.invoice-lines td.total,
+            table.invoice-totals .invoice-total,
+            table.invoice-totals .invoice-total th,
+            table.invoice-totals .invoice-total td {
+                font-weight: bold;
+            }
+            .r {
+                text-align: right;
+            }
+            .c {
+                text-align: center;
+            }
+            table {
+                width: 100%;
+                border-spacing: 0;
+                border-collapse: collapse;
+            }
+            table th, table td {
+                vertical-align : top;
+                padding: 6px 12px;
+            }
+            p.company-phone, p.company-email {
+                margin-top: 0;
+            }
+            p.company-phone, p.company-address {
+                margin-bottom: 0;
+            }
+            .customer-address {
+                margin-top: 40px;
+                font-size: 13px;
+            }
+            table.invoice-totals {
+                border-right: 2px solid #f4f4f4;
+            }
+            table.invoice-totals th,
+            table.invoice-totals td {
+                padding-top: 3px;
+                padding-bottom: 3px;
+            }
+            table.invoice-totals th:first-child {
+                margin-top: 5px;
+            }
+            table.invoice-subtotal {
+                background-color: #f4f4f4;
+                font-style: italic;
+                padding: 0;
+                margin: 0;
+            }
+            .page-number {
+                text-align: right;
+                font-size: 11px;
+            }
+            @page :first {
+                header: html_default_header;
+                margin-top: 140px;
+                margin-header: 60px;
+            }
+            @page {
+                sheet-size: {{ paper_size }};
+                footer: html_default_footer;
+                margin-top: 60px;
+                margin-bottom: 60px;
+                margin-footer: 50px;
+            }
+        </style>
+    </head>
+    <body>
+        <htmlpageheader name="default_header">
+            {{ block('header') }}
+        </htmlpageheader>
+        <htmlpagefooter name="default_footer">
+            {{ block('footer') }}
+        </htmlpagefooter>
+        <div class="info clearfix">
+            <div class="company-info">
+
+                {# Company details #}
+                <div class="company-details">
+                    <p class="company-address">
+                        {{ company_address|nl2br }}
+                    </p>
+                    <p class="company-phone">
+                        <a href="tel:{{ company_phone }}">{{ company_phone }}</a>
+                    </p>
+                    <p class="company-email">
+                        <a href="mailto:{{ company_email }}">{{ company_email }}</a>
+                    </p>
+                    <p class="company-bank">
+                        {{ company_bank|nl2br }}
+                    </p>
+                    <p class="company-business">
+                        {{ company_coc|nl2br }}
+                    </p>
+                </div>
+            </div>
+
+            <div class="customer-info">
+                {# Customer details #}
+                <p class="customer-address">
+                    {% set address = entity.billingAddress %}
+                    {% set name = address|oro_format_name(locale) %}
+                    {% if name is empty %}
+                        &nbsp;<br>
+                    {% endif %}
+                    {% if address.street2 is empty %}
+                        &nbsp;<br>
+                    {% endif %}
+                    {% if address.organization is not empty %}
+                        {{ address.organization }}<br>
+                    {% else %}
+                        &nbsp;<br>
+                    {% endif %}
+                    {% if entity.customer.company is not empty %}
+                        {{ entity.customer.company.name }}<br>
+                    {% endif %}
+                    {% if name is not empty %}
+                        {{ name }}<br>
+                    {% endif %}
+                    {{ address.street }}<br>
+                    {% if address.street2 is not empty %}
+                        {{ address.street2 }}<br>
+                    {% endif %}
+                    {{ address.postalCode }} {{ address.city }}<br>
+                    {{ ('country.' ~ address.country.iso2code)|trans({}, 'entities', language) }}
+                </p>
+
+                {# Invoice details #}
+                <div class="invoice-details">
+                    <div class="invoice-dl clearfix">
+                        <div class="dt">{{ 'marello.pdf.creditmemo.creditmemo_date.label'|trans({}, 'pdf', language) }}:</div>
+                        <div class="dd">{{ entity.invoicedAt|date('d-m-Y') }}</div>
+                        <div class="dt">{{ 'marello.pdf.creditmemo.creditmemo_number.label'|trans({}, 'pdf', language) }}:</div>
+                        <div class="dd">{% if entity.invoiceNumber is not empty %}{{ entity.invoiceNumber }}{% else %}&nbsp;{% endif %}</div>
+                        <div class="dt">{{ 'marello.pdf.creditmemo.debtor_number.label'|trans({}, 'pdf', language) }}:</div>
+                        <div class="dd">{{ entity.customer.id }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="contents clearfix">
+            {# Invoice lines table #}
+    {% set total = 0.0 %}
+    {% set taxtotal = 0.0 %}
+    {% set tables = get_document_tables(entity) %}
+    {% for table in tables %}
+            {% set subtotal = 0.0 %}
+            <table class="invoice-lines" autosize="0">
+                <thead>
+                    <tr>
+                        <th>{{ 'marello.pdf.creditmemo_line.productSku.label'|trans({}, 'pdf', language) }}</th>
+                        <th>{{ 'marello.pdf.creditmemo_line.productName.label'|trans({}, 'pdf', language) }}</th>
+                        <th class="quantity c">{{ 'marello.pdf.creditmemo_line.quantity.label'|trans({}, 'pdf', language) }}</th>
+                        <th class="price c">{{ 'marello.pdf.creditmemo_line.price.label'|trans({}, 'pdf', language) }}</th>
+                        <th class="amount c">{{ 'marello.pdf.creditmemo_line.vat.label'|trans({}, 'pdf', language) }}</th>
+                        <th class="amount r">{{ 'marello.pdf.creditmemo_line.total_inc_tax.label'|trans({}, 'pdf', language) }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {%- for invoiceLine in table.lines %}
+                    {% set total = total + invoiceLine['total_ex_tax'][0] %}
+                    {% set subtotal = subtotal + invoiceLine['total_ex_tax'][0] %}
+                    {% set taxtotal = taxtotal + invoiceLine['vat'][0] %}
+
+                    {% for line in invoiceLine.getDisplayLines() %}
+                    <tr{% if loop.last and not invoiceLine.isEmpty() %} class="line-bottom"{% endif %}>
+                        <td class="productSku">
+                            {{- line['productSku'] -}}
+                        </td>
+                        <td class="productName">
+                            {{- line['productName'] -}}
+                        </td>
+                        <td class="quantity c">
+                            {%- if line['quantity'] is not empty -%}
+                                {{- line['quantity'] -}}
+                            {%- else -%}
+                                &nbsp;
+                            {%- endif -%}
+                        </td>
+                        <td class="price c">
+                            {%- if line['price'] is not empty -%}
+                                {{ line['price']|oro_format_currency({'locale': locale, 'currency':entity.currency}) -}}
+                            {%- else -%}
+                                &nbsp;
+                            {%- endif -%}
+                        </td>
+                        <td class="c">
+                            {%- if line['vat'] is not empty %}{{ line['vat']|oro_format_currency({'locale': locale, 'currency':entity.currency}) }}{% else %}&nbsp;{% endif -%}
+                        </td>
+                        <td class="r total">
+                            {%- if line['total_inc_tax'] is not empty %}{{ line['total_inc_tax']|oro_format_currency({'locale': locale, 'currency':entity.currency}) }}{% else %}&nbsp;{% endif -%}
+                        </td>
+                    </tr>
+                    {% endfor -%}
+                {% endfor -%}
+                </tbody>
+            </table>
+
+            <table class="invoice-subtotal">
+                <tr>
+                    <td class="empty">&nbsp;</td>
+                    <td>{% if entity.invoiceNumber is not empty %}{{ 'marello.pdf.creditmemo.entity.label'|trans({}, 'pdf', language) }} {{ entity.invoiceNumber }}{% else %}&nbsp;{% endif %}</td>
+                    <td class="subtotal r">{{ subtotal|oro_format_currency({'locale': locale, 'currency':entity.currency}) }}</td>
+                </tr>
+            </table>
+
+            {% if not loop.last %}
+            <pagebreak>
+            {% endif %}
+        {% endfor %}
+
+            {# Invoice totals #}
+            <table class="invoice-totals">
+                <tbody>
+                <tr>
+                    <th>{{ 'marello.pdf.creditmemo.subtotal.label'|trans({}, 'pdf', language) }}</th>
+                    <td class="r">{{ total|oro_format_currency({'locale': locale, 'currency':entity.currency}) }}</td>
+                </tr>
+                <tr>
+                    <th>{{ 'marello.pdf.creditmemo.tax.label'|trans({}, 'pdf', language) }}</th>
+                    <td class="r">{{ taxtotal|oro_format_currency({'locale': locale, 'currency':entity.currency}) }}</td>
+                </tr>
+                <tr class="invoice-total">
+                    <th>{{ 'marello.pdf.creditmemo.total.label'|trans({}, 'pdf', language) }}</th>
+                    <td class="r">{{ (total + taxtotal)|oro_format_currency({'locale': locale, 'currency':entity.currency}) }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
