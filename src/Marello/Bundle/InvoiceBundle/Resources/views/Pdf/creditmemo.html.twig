@@ -225,8 +225,8 @@
                     {% else %}
                         &nbsp;<br>
                     {% endif %}
-                    {% if entity.customer.company is not empty %}
-                        {{ entity.customer.company.name }}<br>
+                    {% if address.company is not empty %}
+                        {{ address.company }}<br>
                     {% endif %}
                     {% if name is not empty %}
                         {{ name }}<br>
@@ -255,10 +255,10 @@
 
         <div class="contents clearfix">
             {# Invoice lines table #}
-    {% set total = 0.0 %}
-    {% set taxtotal = 0.0 %}
-    {% set tables = get_document_tables(entity) %}
-    {% for table in tables %}
+            {% set total = 0.0 %}
+            {% set taxtotal = 0.0 %}
+            {% set tables = get_document_tables(entity) %}
+            {% for table in tables %}
             {% set subtotal = 0.0 %}
             <table class="invoice-lines" autosize="0">
                 <thead>
