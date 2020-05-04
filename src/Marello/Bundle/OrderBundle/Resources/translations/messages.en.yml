@@ -47,6 +47,7 @@ marello:
         address:
             email.label:            E-Mail
             phone.label:            Phone
+            company.label:          Company
             edit_action:            Edit Address
         datablock:
             general:                General
