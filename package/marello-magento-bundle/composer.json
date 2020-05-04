@@ -1,0 +1,37 @@
+{
+    "name": "marellocommerce/marello-magento-bundle",
+    "description": "Marello package, integrates Products, Inventory and Orders with Magento",
+    "keywords": ["Marello", "Magento", "Product", "Integration"],
+    "homepage": "https://github.com/marellocommerce/marello-magento-bundle.git",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Madia B.V.",
+            "homepage": "https://www.marello.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {"": "src/"},
+        "exclude-from-classmap": ["/Tests/"]
+    },
+    "require": {
+        "marellocommerce/marello": "self.version"
+    },
+    "repositories": {
+        "oro": {
+            "type": "composer",
+            "url": "https://packagist.orocrm.com"
+        },
+        "asset-packagist": {
+            "type": "composer",
+            "url": "https://asset-packagist.orocrm.com"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        }
+    }
+}

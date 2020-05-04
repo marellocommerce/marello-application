@@ -1,0 +1,4 @@
+marello_magento_bundle:
+    resource:     "@MarelloMagentoBundle/Controller"
+    type:         annotation
+    prefix:       /magento
