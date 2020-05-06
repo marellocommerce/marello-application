@@ -174,13 +174,6 @@ datagrids:
                 manufacturingCode:
                     data_name:          p.manufacturingCode
                     type:               string
-#                categories:
-#                    type:               choice
-#                    data_name:          cat.code
-#                    options:
-#                        field_options:
-#                            multiple:   true
-#                            choices:    '@marello_catalog.provider.categories_choices->getCategories()'
         properties:
             id: ~
             view_link:
@@ -193,7 +186,6 @@ datagrids:
             rowSelection:
                 dataField: id
                 columnName: hasProduct
-                selectAll: true
                 selectors:
                     included: '#appendProducts'
                     excluded: '#removeProducts'

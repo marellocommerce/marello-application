@@ -5,6 +5,11 @@ namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\Repository;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
+/**
+ * @deprecated
+ * Class ReplenishmentOrderConfigRepository
+ * @package MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\Repository
+ */
 class ReplenishmentOrderConfigRepository extends EntityRepository
 {
     /**
