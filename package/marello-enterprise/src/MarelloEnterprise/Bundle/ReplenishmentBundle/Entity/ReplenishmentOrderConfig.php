@@ -9,9 +9,7 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 /**
- * @ORM\Entity(
- *     repositoryClass="MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\Repository\ReplenishmentOrderConfigRepository"
- * )
+ * @ORM\Entity()
  * @ORM\Table(name="marello_repl_order_config")
  * @ORM\HasLifecycleCallbacks
  * @Oro\Config(

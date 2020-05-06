@@ -203,12 +203,14 @@ services:
 
     marelloenterprise_inventory.action.handler.wfa_rule.enable_status:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Action\Handler\WfaRuleToggleStatusActionHandler'
+        public: true
         arguments:
             - '@doctrine.orm.entity_manager'
             - true
 
     marelloenterprise_inventory.action.handler.wfa_rule.disable_status:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Action\Handler\WfaRuleToggleStatusActionHandler'
+        public: true
         arguments:
             - '@doctrine.orm.entity_manager'
             - false
