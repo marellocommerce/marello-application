@@ -16,8 +16,11 @@ use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\EntityBundle\Event\OroEventManager;
+use Oro\Bundle\IntegrationBundle\Async\Topics;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Reader\EntityReaderById;
+use Oro\Component\MessageQueue\Client\Message;
+use Oro\Component\MessageQueue\Client\MessagePriority;
 
 class ReverseSyncProductListener extends AbstractReverseSyncListener
 {
@@ -303,10 +306,17 @@ class ReverseSyncProductListener extends AbstractReverseSyncListener
             $transport = $integrationChannel->getTransport();
             $settingsBag = $transport->getSettingsBag();
             if ($integrationChannel->isEnabled()) {
-                $this->syncScheduler->getService()->schedule(
-                    $integrationChannel->getId(),
-                    OroCommerceProductConnector::TYPE,
-                    $connector_params
+                $this->producer->send(
+                    sprintf('%s.orocommerce', Topics::REVERS_SYNC_INTEGRATION),
+                    new Message(
+                        [
+                            'integration_id'       => $integrationChannel->getId(),
+                            'connector_parameters' => $connector_params,
+                            'connector'            => OroCommerceProductConnector::TYPE,
+                            'transport_batch_size' => 100,
+                        ],
+                        MessagePriority::NORMAL
+                    )
                 );
             }  elseif($settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION) === false) {
                 $transportData = $transport->getData();

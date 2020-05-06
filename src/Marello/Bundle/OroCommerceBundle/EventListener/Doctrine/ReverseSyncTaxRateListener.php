@@ -12,7 +12,10 @@ use Marello\Bundle\OroCommerceBundle\Integration\Connector\OroCommerceTaxRateCon
 use Marello\Bundle\OroCommerceBundle\Integration\OroCommerceChannelType;
 use Marello\Bundle\TaxBundle\Entity\TaxRate;
 use Oro\Bundle\EntityBundle\Event\OroEventManager;
+use Oro\Bundle\IntegrationBundle\Async\Topics;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
+use Oro\Component\MessageQueue\Client\Message;
+use Oro\Component\MessageQueue\Client\MessagePriority;
 
 class ReverseSyncTaxRateListener extends AbstractReverseSyncListener
 {
@@ -142,10 +145,17 @@ class ReverseSyncTaxRateListener extends AbstractReverseSyncListener
                     $transport = $integrationChannel->getTransport();
                     $settingsBag = $transport->getSettingsBag();
                     if ($integrationChannel->isEnabled()) {
-                        $this->syncScheduler->getService()->schedule(
-                            $integrationChannel->getId(),
-                            OroCommerceTaxRateConnector::TYPE,
-                            $connector_params
+                        $this->producer->send(
+                            sprintf('%s.orocommerce', Topics::REVERS_SYNC_INTEGRATION),
+                            new Message(
+                                [
+                                    'integration_id'       => $integrationChannel->getId(),
+                                    'connector_parameters' => $connector_params,
+                                    'connector'            => OroCommerceTaxRateConnector::TYPE,
+                                    'transport_batch_size' => 100,
+                                ],
+                                MessagePriority::NORMAL
+                            )
                         );
                     } elseif($settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION) === false) {
                         $transportData = $transport->getData();
