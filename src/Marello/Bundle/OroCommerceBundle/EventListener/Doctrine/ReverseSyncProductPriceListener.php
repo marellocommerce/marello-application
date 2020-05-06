@@ -5,6 +5,7 @@ namespace Marello\Bundle\OroCommerceBundle\EventListener\Doctrine;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Marello\Bundle\OroCommerceBundle\Entity\OroCommerceSettings;
+use Marello\Bundle\OroCommerceBundle\Event\RemoteProductCreatedEvent;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Reader\ProductExportCreateReader;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractExportWriter;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractProductExportWriter;
@@ -16,7 +17,10 @@ use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\EntityBundle\Event\OroEventManager;
+use Oro\Bundle\IntegrationBundle\Async\Topics;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
+use Oro\Component\MessageQueue\Client\Message;
+use Oro\Component\MessageQueue\Client\MessagePriority;
 
 class ReverseSyncProductPriceListener extends AbstractReverseSyncListener
 {
@@ -34,6 +38,19 @@ class ReverseSyncProductPriceListener extends AbstractReverseSyncListener
 
         foreach ($this->getEntitiesToSync() as $entity) {
             $this->scheduleSync($entity);
+        }
+    }
+
+    /**
+     * @param RemoteProductCreatedEvent $event
+     */
+    public function onRemoteProductCreated(RemoteProductCreatedEvent $event)
+    {
+        $product = $event->getProduct();
+        $salesChannel = $event->getSalesChannel();
+        $finalPrice = $this->getFinalPrice($product, $salesChannel);
+        if ($finalPrice) {
+            $this->scheduleSync($finalPrice);
         }
     }
 
@@ -58,8 +75,16 @@ class ReverseSyncProductPriceListener extends AbstractReverseSyncListener
 
         foreach ($entities as $entity) {
             if ($entity instanceof Product) {
+                $productPriceChanged = false;
+                $changeSet = $this->unitOfWork->getEntityChangeSet($entity);
+                foreach (array_keys($changeSet) as $fieldName) {
+                    if (in_array($fieldName, ['prices', 'channelPrices'])) {
+                        $productPriceChanged = true;
+                        break;
+                    }
+                }
                 $data = $entity->getData();
-                if (ReverseSyncProductListener::isSyncRequired($entity, $this->unitOfWork)) {
+                if ($productPriceChanged === true) {
                     foreach ($entity->getChannels() as $salesChannel) {
                         if ($salesChannel->getIntegrationChannel()) {
                             $finalPrice = $this->getFinalPrice($entity, $salesChannel);
@@ -180,10 +205,17 @@ class ReverseSyncProductPriceListener extends AbstractReverseSyncListener
                             $transport = $integrationChannel->getTransport();
                             $settingsBag = $transport->getSettingsBag();
                             if ($integrationChannel->isEnabled()) {
-                                $this->syncScheduler->getService()->schedule(
-                                    $integrationChannel->getId(),
-                                    OroCommerceProductPriceConnector::TYPE,
-                                    $connector_params
+                                $this->producer->send(
+                                    sprintf('%s.orocommerce', Topics::REVERS_SYNC_INTEGRATION),
+                                    new Message(
+                                        [
+                                            'integration_id'       => $integrationChannel->getId(),
+                                            'connector_parameters' => $connector_params,
+                                            'connector'            => OroCommerceProductPriceConnector::TYPE,
+                                            'transport_batch_size' => 100,
+                                        ],
+                                        MessagePriority::HIGH
+                                    )
                                 );
                             } elseif ($settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION) === false) {
                                 $transportData = $transport->getData();

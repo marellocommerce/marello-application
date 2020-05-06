@@ -23,16 +23,20 @@ use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\EntityBundle\Event\OroEventManager;
 use Oro\Bundle\ImportExportBundle\Context\Context;
+use Oro\Bundle\IntegrationBundle\Async\Topics;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Reader\EntityReaderById;
 use Oro\Component\DependencyInjection\ServiceLink;
+use Oro\Component\MessageQueue\Client\Message;
+use Oro\Component\MessageQueue\Client\MessagePriority;
+use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 
 class ReverseSyncAllProductsListener
 {
     /**
-     * @var ServiceLink
+     * @var MessageProducerInterface
      */
-    protected $syncScheduler;
+    protected $producer;
 
     /**
      * @var ProductExportBulkDeleteWriter
@@ -45,12 +49,14 @@ class ReverseSyncAllProductsListener
     protected $entityManager;
 
     /**
-     * @param ServiceLink $syncScheduler
+     * @param MessageProducerInterface $producer
      * @param ProductExportBulkDeleteWriter $productsBulkDeleteWriter
      */
-    public function __construct(ServiceLink $syncScheduler, ProductExportBulkDeleteWriter $productsBulkDeleteWriter)
-    {
-        $this->syncScheduler = $syncScheduler;
+    public function __construct(
+        MessageProducerInterface $producer,
+        ProductExportBulkDeleteWriter $productsBulkDeleteWriter
+    ) {
+        $this->producer = $producer;
         $this->productsBulkDeleteWriter = $productsBulkDeleteWriter;
     }
 
@@ -78,15 +84,22 @@ class ReverseSyncAllProductsListener
                         foreach ($products as $product) {
                             $salesChannel = $this->getSalesChannelFromIntegrationChannel($product, $channel);
                             if ($salesChannel !== null) {
-                                $this->syncScheduler->getService()->schedule(
-                                    $channel->getId(),
-                                    OroCommerceProductConnector::TYPE,
-                                    [
-                                        AbstractExportWriter::ACTION_FIELD => AbstractExportWriter::CREATE_ACTION,
-                                        ProductExportCreateReader::SKU_FILTER => $product->getSku(),
-                                    ]
+                                $this->producer->send(
+                                    sprintf('%s.orocommerce', Topics::REVERS_SYNC_INTEGRATION),
+                                    new Message(
+                                        [
+                                            'integration_id'       => $channel->getId(),
+                                            'connector_parameters' => [
+                                                AbstractExportWriter::ACTION_FIELD => AbstractExportWriter::CREATE_ACTION,
+                                                ProductExportCreateReader::SKU_FILTER => $product->getSku(),
+                                            ],
+                                            'connector'            => OroCommerceProductConnector::TYPE,
+                                            'transport_batch_size' => 100,
+                                        ],
+                                        MessagePriority::NORMAL
+                                    )
                                 );
-                                $finalPrice = ReverseSyncProductPriceListener::getFinalPrice($product, $salesChannel);
+                                /*$finalPrice = ReverseSyncProductPriceListener::getFinalPrice($product, $salesChannel);
                                 $this->syncScheduler->getService()->schedule(
                                     $channel->getId(),
                                     OroCommerceProductPriceConnector::TYPE,
@@ -116,7 +129,7 @@ class ReverseSyncAllProductsListener
                                             EntityReaderById::ID_FILTER => $image->getId(),
                                         ]
                                     );
-                                }
+                                }*/
                             }
                         }
                     } elseif ($settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION) === false) {
@@ -254,10 +267,17 @@ class ReverseSyncAllProductsListener
     {
         if (isset($data[$connectorType])) {
             foreach ($data[$connectorType] as $key => $connector_params) {
-                $this->syncScheduler->getService()->schedule(
-                    $channel->getId(),
-                    $connectorType,
-                    $connector_params
+                $this->producer->send(
+                    sprintf('%s.orocommerce', Topics::REVERS_SYNC_INTEGRATION),
+                    new Message(
+                        [
+                            'integration_id'       => $channel->getId(),
+                            'connector_parameters' => $connector_params,
+                            'connector'            => $connectorType,
+                            'transport_batch_size' => 100,
+                        ],
+                        MessagePriority::NORMAL
+                    )
                 );
                 unset($data[$connectorType][$key]);
             }

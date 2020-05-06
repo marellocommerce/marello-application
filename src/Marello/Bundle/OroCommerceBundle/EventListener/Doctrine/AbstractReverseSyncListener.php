@@ -5,7 +5,7 @@ namespace Marello\Bundle\OroCommerceBundle\EventListener\Doctrine;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\UnitOfWork;
 use Oro\Bundle\SecurityBundle\Encoder\SymmetricCrypterInterface;
-use Oro\Component\DependencyInjection\ServiceLink;
+use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 abstract class AbstractReverseSyncListener
@@ -16,9 +16,9 @@ abstract class AbstractReverseSyncListener
     protected $tokenStorage;
 
     /**
-     * @var ServiceLink
+     * @var MessageProducerInterface
      */
-    protected $syncScheduler;
+    protected $producer;
     
     /**
      * @var SymmetricCrypterInterface
@@ -43,16 +43,16 @@ abstract class AbstractReverseSyncListener
 
     /**
      * @param TokenStorageInterface $tokenStorage
-     * @param ServiceLink $schedulerServiceLink
+     * @param MessageProducerInterface $producer
      * @param SymmetricCrypterInterface $crypter
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
-        ServiceLink $schedulerServiceLink,
+        MessageProducerInterface $producer,
         SymmetricCrypterInterface $crypter
     ) {
         $this->tokenStorage = $tokenStorage;
-        $this->syncScheduler = $schedulerServiceLink;
+        $this->producer = $producer;
         $this->crypter = $crypter;
     }
 
