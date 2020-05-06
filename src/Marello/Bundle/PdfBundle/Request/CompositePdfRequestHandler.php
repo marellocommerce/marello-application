@@ -3,6 +3,7 @@
 namespace Marello\Bundle\PdfBundle\Request;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class CompositePdfRequestHandler implements PdfRequestHandlerInterface
 {
@@ -38,6 +39,6 @@ class CompositePdfRequestHandler implements PdfRequestHandlerInterface
             }
         }
 
-        return null;
+        return new Response();
     }
 }

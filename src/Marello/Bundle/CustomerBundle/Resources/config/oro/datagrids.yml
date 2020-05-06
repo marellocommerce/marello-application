@@ -277,7 +277,6 @@ datagrids:
             rowSelection:
                 dataField: id
                 columnName: belongsToCompany
-                selectAll: true
                 selectors:
                     included: '#appendCustomers'
                     excluded: '#removeCustomers'
