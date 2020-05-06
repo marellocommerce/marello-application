@@ -3,10 +3,11 @@
 namespace Marello\Bundle\OroCommerceBundle\EventListener\Doctrine;
 
 use Doctrine\ORM\Event\OnFlushEventArgs;
-use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
-use Marello\Bundle\OroCommerceBundle\Entity\OroCommerceSettings;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Model\InventoryQtyAwareInterface;
+use Marello\Bundle\OroCommerceBundle\Entity\OroCommerceSettings;
+use Marello\Bundle\OroCommerceBundle\Event\RemoteProductCreatedEvent;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractExportWriter;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractProductExportWriter;
 use Marello\Bundle\OroCommerceBundle\Integration\Connector\OroCommerceInventoryLevelConnector;
@@ -14,7 +15,10 @@ use Marello\Bundle\OroCommerceBundle\Integration\OroCommerceChannelType;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\EntityBundle\Event\OroEventManager;
+use Oro\Bundle\IntegrationBundle\Async\Topics;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
+use Oro\Component\MessageQueue\Client\Message;
+use Oro\Component\MessageQueue\Client\MessagePriority;
 
 class ReverseSyncInventoryLevelListener extends AbstractReverseSyncListener
 {
@@ -32,6 +36,47 @@ class ReverseSyncInventoryLevelListener extends AbstractReverseSyncListener
 
         foreach ($this->getEntitiesToSync() as $entity) {
             $this->scheduleSync($entity);
+        }
+    }
+
+    /**
+     * @param RemoteProductCreatedEvent $event
+     */
+    public function onRemoteProductCreated(RemoteProductCreatedEvent $event)
+    {
+        $product = $event->getProduct();
+        $data = $product->getData();
+        $salesChannel = $event->getSalesChannel();
+        $balancedInventory = $this->entityManager
+            ->getRepository(BalancedInventoryLevel::class)
+            ->findExistingBalancedInventory($product, $salesChannel->getGroup());
+        if ($balancedInventory) {
+            $integrationChannel = $salesChannel->getIntegrationChannel();
+            $channelId = $integrationChannel->getId();
+            if (isset($data[AbstractProductExportWriter::INVENTORY_LEVEL_ID_FIELD]) &&
+                isset($data[AbstractProductExportWriter::INVENTORY_LEVEL_ID_FIELD][$channelId]) &&
+                $data[AbstractProductExportWriter::INVENTORY_LEVEL_ID_FIELD][$channelId] !== null
+            ) {
+                if ($integrationChannel->isEnabled()) {
+                    $connector_params = [
+                        AbstractExportWriter::ACTION_FIELD => AbstractExportWriter::UPDATE_ACTION,
+                        'product' => $product->getId(),
+                        'group' => $salesChannel->getGroup()->getId(),
+                    ];
+                    $this->producer->send(
+                        sprintf('%s.orocommerce', Topics::REVERS_SYNC_INTEGRATION),
+                        new Message(
+                            [
+                                'integration_id'       => $integrationChannel->getId(),
+                                'connector_parameters' => $connector_params,
+                                'connector'            => OroCommerceInventoryLevelConnector::TYPE,
+                                'transport_batch_size' => 100,
+                            ],
+                            MessagePriority::VERY_HIGH
+                        )
+                    );
+                }
+            }
         }
     }
 
@@ -55,37 +100,32 @@ class ReverseSyncInventoryLevelListener extends AbstractReverseSyncListener
         $result = [];
 
         foreach ($entities as $entity) {
-            if ($entity instanceof Product && $entity->getId() !== null) {
-                $data = $entity->getData();
-                if (ReverseSyncProductListener::isSyncRequired($entity, $this->unitOfWork)) {
-                    $salesChannelsGroups = [];
-                    foreach ($entity->getChannels() as $channel) {
-                        if ($channel->getIntegrationChannel()) {
-                            $group = $channel->getGroup();
-                            $salesChannelsGroups[$group->getName()] = $group;
-                        }
-                    }
-                    $repo = $this->entityManager->getRepository(BalancedInventoryLevel::class);
-                    foreach ($salesChannelsGroups as $group) {
-                        $balancedInventory = $repo->findExistingBalancedInventory($entity, $group);
-                        if ($balancedInventory &&
-                            (!isset($data[AbstractProductExportWriter::INVENTORY_LEVEL_ID_FIELD]) ||
-                                count($data[AbstractProductExportWriter::INVENTORY_LEVEL_ID_FIELD]) <
-                                count($this->getIntegrationChannels($balancedInventory))
-                            )
-                        ) {
-                            $result[
-                            sprintf(
-                                '%s_%s',
-                                $entity->getSku(),
-                                $group->getId()
-                            )
-                            ] = $balancedInventory;
+            if ($entity instanceof SalesChannel) {
+                $integrationChannel = $entity->getIntegrationChannel();
+                if ($integrationChannel && $integrationChannel->getType() === OroCommerceChannelType::TYPE) {
+                    $changeSet = $this->unitOfWork->getEntityChangeSet($entity);
+                    if (in_array('group', array_keys($changeSet))) {
+                        $group = $changeSet['group'][1];
+                        $products = $this->entityManager
+                            ->getRepository(Product::class)
+                            ->findByChannel($entity);
+                        foreach ($products as $product) {
+                            $balancedInventory = $this->entityManager
+                                ->getRepository(BalancedInventoryLevel::class)
+                                ->findExistingBalancedInventory($product, $group);
+                            if ($balancedInventory) {
+                                $result[
+                                sprintf(
+                                    '%s_%s',
+                                    $product->getSku(),
+                                    $group->getId()
+                                )
+                                ] = $balancedInventory;
+                            }
                         }
                     }
                 }
-            }
-            if ($entity instanceof InventoryLevel) {
+            }else if ($entity instanceof InventoryLevel) {
                 $warehouseGroup = $entity->getWarehouse()->getGroup();
                 if ($warehouseGroup && !$warehouseGroup->getWarehouseChannelGroupLink()) {
                     if ($this->isSyncRequired($entity)) {
@@ -102,8 +142,7 @@ class ReverseSyncInventoryLevelListener extends AbstractReverseSyncListener
                         }
                     }
                 }
-            }
-            if ($entity instanceof BalancedInventoryLevel) {
+            } else if ($entity instanceof BalancedInventoryLevel) {
                 if ($this->isSyncRequired($entity)) {
                     $result[
                         sprintf(
@@ -178,10 +217,17 @@ class ReverseSyncInventoryLevelListener extends AbstractReverseSyncListener
                             $transport = $integrationChannel->getTransport();
                             $settingsBag = $transport->getSettingsBag();
                             if ($integrationChannel->isEnabled()) {
-                                $this->syncScheduler->getService()->schedule(
-                                    $integrationChannel->getId(),
-                                    OroCommerceInventoryLevelConnector::TYPE,
-                                    $connector_params
+                                $this->producer->send(
+                                    sprintf('%s.orocommerce', Topics::REVERS_SYNC_INTEGRATION),
+                                    new Message(
+                                        [
+                                            'integration_id'       => $integrationChannel->getId(),
+                                            'connector_parameters' => $connector_params,
+                                            'connector'            => OroCommerceInventoryLevelConnector::TYPE,
+                                            'transport_batch_size' => 100,
+                                        ],
+                                        MessagePriority::HIGH
+                                    )
                                 );
                             } elseif ($settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION) === false) {
                                 $transportData = $transport->getData();
