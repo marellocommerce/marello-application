@@ -14,15 +14,18 @@ use Marello\Bundle\OroCommerceBundle\Integration\Connector\OroCommerceTaxRuleCon
 use Marello\Bundle\OroCommerceBundle\Integration\OroCommerceChannelType;
 use Marello\Bundle\TaxBundle\Entity\TaxRule;
 use Oro\Bundle\ImportExportBundle\Context\Context;
+use Oro\Bundle\IntegrationBundle\Async\Topics;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
-use Oro\Component\DependencyInjection\ServiceLink;
+use Oro\Component\MessageQueue\Client\Message;
+use Oro\Component\MessageQueue\Client\MessagePriority;
+use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 
 class ReverseSyncAllTaxRulesListener
 {
     /**
-     * @var ServiceLink
+     * @var MessageProducerInterface
      */
-    protected $syncScheduler;
+    protected $producer;
 
     /**
      * @var TaxRuleExportBulkDeleteWriter
@@ -35,12 +38,12 @@ class ReverseSyncAllTaxRulesListener
     protected $entityManager;
 
     /**
-     * @param ServiceLink $syncScheduler
+     * @param MessageProducerInterface $producer
      * @param TaxRuleExportBulkDeleteWriter $taxRulesBulkDeleteWriter
      */
-    public function __construct(ServiceLink $syncScheduler, TaxRuleExportBulkDeleteWriter $taxRulesBulkDeleteWriter)
+    public function __construct(MessageProducerInterface $producer, TaxRuleExportBulkDeleteWriter $taxRulesBulkDeleteWriter)
     {
-        $this->syncScheduler = $syncScheduler;
+        $this->producer = $producer;
         $this->taxRulesBulkDeleteWriter = $taxRulesBulkDeleteWriter;
     }
 
@@ -53,18 +56,22 @@ class ReverseSyncAllTaxRulesListener
         if ($channel instanceof Channel && $channel->getType() === OroCommerceChannelType::TYPE && $channel->isEnabled()) {
             $this->entityManager = $args->getEntityManager();
             $taxRules = $this->getAllTaxRules();
-            foreach ($taxRules as $taxRule) {
-                $this->syncScheduler->getService()->schedule(
-                    $channel->getId(),
-                    OroCommerceTaxRuleConnector::TYPE,
+            $ids = array_map(function(TaxRule $taxRule) {return $taxRule->getId();}, $taxRules);
+            $this->producer->send(
+                sprintf('%s.orocommerce', Topics::REVERS_SYNC_INTEGRATION),
+                new Message(
                     [
-                        AbstractExportWriter::ACTION_FIELD => AbstractExportWriter::CREATE_ACTION,
-                        TaxRuleExportReader::TAXCODE_FILTER => $taxRule->getTaxCode()->getCode(),
-                        TaxRuleExportReader::TAXRATE_FILTER => $taxRule->getTaxRate()->getCode(),
-                        TaxRuleExportReader::TAXJURISDICTION_FILTER => $taxRule->getTaxJurisdiction()->getCode(),
-                    ]
-                );
-            }
+                        'integration_id'       => $channel->getId(),
+                        'connector_parameters' => [
+                            AbstractExportWriter::ACTION_FIELD => AbstractExportWriter::CREATE_ACTION,
+                            TaxRuleExportReader::ID_FILTER => $ids,
+                        ],
+                        'connector'            => OroCommerceTaxRuleConnector::TYPE,
+                        'transport_batch_size' => 100,
+                    ],
+                    MessagePriority::NORMAL
+                )
+            );
         }
     }
 
@@ -93,15 +100,22 @@ class ReverseSyncAllTaxRulesListener
                                 !isset($data[TaxRuleExportCreateWriter::TAX_RULE_ID][$channelId]) ||
                                 $data[TaxRuleExportCreateWriter::TAX_RULE_ID][$channelId] === null
                             ) {
-                                $this->syncScheduler->getService()->schedule(
-                                    $channel->getId(),
-                                    OroCommerceTaxRuleConnector::TYPE,
-                                    [
-                                        AbstractExportWriter::ACTION_FIELD => AbstractExportWriter::CREATE_ACTION,
-                                        TaxRuleExportReader::TAXCODE_FILTER => $taxRule->getTaxCode()->getCode(),
-                                        TaxRuleExportReader::TAXRATE_FILTER => $taxRule->getTaxRate()->getCode(),
-                                        TaxRuleExportReader::TAXJURISDICTION_FILTER => $taxRule->getTaxJurisdiction()->getCode(),
-                                    ]
+                                $this->producer->send(
+                                    sprintf('%s.orocommerce', Topics::REVERS_SYNC_INTEGRATION),
+                                    new Message(
+                                        [
+                                            'integration_id'       => $channel->getId(),
+                                            'connector_parameters' => [
+                                                AbstractExportWriter::ACTION_FIELD => AbstractExportWriter::CREATE_ACTION,
+                                                TaxRuleExportReader::TAXCODE_FILTER => $taxRule->getTaxCode()->getCode(),
+                                                TaxRuleExportReader::TAXRATE_FILTER => $taxRule->getTaxRate()->getCode(),
+                                                TaxRuleExportReader::TAXJURISDICTION_FILTER => $taxRule->getTaxJurisdiction()->getCode(),
+                                            ],
+                                            'connector'            => OroCommerceTaxRuleConnector::TYPE,
+                                            'transport_batch_size' => 100,
+                                        ],
+                                        MessagePriority::NORMAL
+                                    )
                                 );
                             }
                         }

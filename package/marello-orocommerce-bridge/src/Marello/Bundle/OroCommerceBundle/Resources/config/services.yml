@@ -48,7 +48,7 @@ services:
         class: 'Marello\Bundle\OroCommerceBundle\EventListener\Doctrine\ReverseSyncOrderListener'
         arguments:
             - '@doctrine'
-            - '@oro_integration.sync_scheduler.link'
+            - '@oro_message_queue.message_producer'
         tags:
             - { name: kernel.event_listener, event: extendable_action.order_cancel, method: onOrderCancel }
             - { name: kernel.event_listener, event: extendable_action.order_paid, method: onOrderPaid }
@@ -58,7 +58,7 @@ services:
         class: 'Marello\Bundle\OroCommerceBundle\EventListener\Doctrine\ReverseSyncProductListener'
         arguments:
             - '@security.token_storage'
-            - '@oro_integration.sync_scheduler.link'
+            - '@oro_message_queue.message_producer'
             - '@oro_security.encoder.default'
         tags:
             - { name: doctrine.event_listener, event: onFlush, priority: 100 }
@@ -66,7 +66,7 @@ services:
     marello_orocommerce.event_listener.doctrine.reverse_sync_product.all:
         class: 'Marello\Bundle\OroCommerceBundle\EventListener\Doctrine\ReverseSyncAllProductsListener'
         arguments:
-            - '@oro_integration.sync_scheduler.link'
+            - '@oro_message_queue.message_producer'
             - '@marello_orocommerce.importexport.writer.export.product.delete.bulk'
         tags:
             - { name: doctrine.event_listener, event: preUpdate }
@@ -76,44 +76,38 @@ services:
         class: 'Marello\Bundle\OroCommerceBundle\EventListener\Doctrine\ReverseSyncProductPriceListener'
         arguments:
             - '@security.token_storage'
-            - '@oro_integration.sync_scheduler.link'
+            - '@oro_message_queue.message_producer'
             - '@oro_security.encoder.default'
         tags:
             - { name: doctrine.event_listener, event: onFlush, priority: 10 }
+            - { name: kernel.event_listener, event: marello_orocommerce.remote_product_created, method: onRemoteProductCreated }
 
     marello_orocommerce.event_listener.doctrine.reverse_sync_inventory_level:
         class: 'Marello\Bundle\OroCommerceBundle\EventListener\Doctrine\ReverseSyncInventoryLevelListener'
         arguments:
             - '@security.token_storage'
-            - '@oro_integration.sync_scheduler.link'
+            - '@oro_message_queue.message_producer'
             - '@oro_security.encoder.default'
         tags:
             - { name: doctrine.event_listener, event: onFlush, priority: 20 }
-
-
-    marello_orocommerce.event_listener.reverse_sync_inventory_level.on_remote_product_creation:
-        class: 'Marello\Bundle\OroCommerceBundle\EventListener\ReverseSyncInventoryLevelOnRemoteProductCreationListener'
-        arguments:
-            - '@oro_integration.sync_scheduler.link'
-            - '@doctrine'
-        tags:
             - { name: kernel.event_listener, event: marello_orocommerce.remote_product_created, method: onRemoteProductCreated }
 
     marello_orocommerce.event_listener.doctrine.reverse_sync_product_image:
         class: 'Marello\Bundle\OroCommerceBundle\EventListener\Doctrine\ReverseSyncProductImageListener'
         arguments:
             - '@security.token_storage'
-            - '@oro_integration.sync_scheduler.link'
+            - '@oro_message_queue.message_producer'
             - '@oro_security.encoder.default'
         tags:
             - { name: doctrine.event_listener, event: postPersist }
             - { name: doctrine.event_listener, event: postUpdate }
+            - { name: kernel.event_listener, event: marello_orocommerce.remote_product_created, method: onRemoteProductCreated }
 
     marello_orocommerce.event_listener.doctrine.reverse_sync_tax_code:
         class: 'Marello\Bundle\OroCommerceBundle\EventListener\Doctrine\ReverseSyncTaxCodeListener'
         arguments:
             - '@security.token_storage'
-            - '@oro_integration.sync_scheduler.link'
+            - '@oro_message_queue.message_producer'
             - '@oro_security.encoder.default'
         tags:
             - { name: doctrine.event_listener, event: onFlush }
@@ -130,7 +124,7 @@ services:
         class: 'Marello\Bundle\OroCommerceBundle\EventListener\Doctrine\ReverseSyncTaxRateListener'
         arguments:
             - '@security.token_storage'
-            - '@oro_integration.sync_scheduler.link'
+            - '@oro_message_queue.message_producer'
             - '@oro_security.encoder.default'
         tags:
             - { name: doctrine.event_listener, event: onFlush }
@@ -147,7 +141,7 @@ services:
         class: 'Marello\Bundle\OroCommerceBundle\EventListener\Doctrine\ReverseSyncTaxJurisdictionListener'
         arguments:
             - '@security.token_storage'
-            - '@oro_integration.sync_scheduler.link'
+            - '@oro_message_queue.message_producer'
             - '@oro_security.encoder.default'
         tags:
             - { name: doctrine.event_listener, event: onFlush }
@@ -164,7 +158,7 @@ services:
         class: 'Marello\Bundle\OroCommerceBundle\EventListener\Doctrine\ReverseSyncTaxRuleListener'
         arguments:
             - '@security.token_storage'
-            - '@oro_integration.sync_scheduler.link'
+            - '@oro_message_queue.message_producer'
             - '@oro_security.encoder.default'
         tags:
             - { name: doctrine.event_listener, event: onFlush }
@@ -172,7 +166,7 @@ services:
     marello_orocommerce.event_listener.doctrine.reverse_sync_tax_rule.all:
         class: 'Marello\Bundle\OroCommerceBundle\EventListener\Doctrine\ReverseSyncAllTaxRulesListener'
         arguments:
-            - '@oro_integration.sync_scheduler.link'
+            - '@oro_message_queue.message_producer'
             - '@marello_orocommerce.importexport.writer.export.tax_rule.delete.bulk'
         tags:
             - { name: doctrine.event_listener, event: postPersist }
@@ -182,6 +176,19 @@ services:
     marello_orocommerce.rest.client_factory:
         public: true
         class: 'Marello\Bundle\OroCommerceBundle\Client\Factory\OroCommerceRestClientFactory'
+
+
+    marello_orocommerce.revers_sync_integration_processor:
+        class: 'Marello\Bundle\OroCommerceBundle\Integration\Processor\OroCommerceReversSyncIntegrationProcessor'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@oro_integration.reverse_sync.processor'
+            - '@oro_integration.manager.types_registry'
+            - '@oro_message_queue.job.runner'
+            - '@security.token_storage'
+            - '@logger'
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }
 
     marello_orocommerce.integration.channel:
         class: 'Marello\Bundle\OroCommerceBundle\Integration\OroCommerceChannelType'
@@ -616,6 +623,9 @@ services:
         class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Serializer\ProductNormalizer'
         arguments:
             - '@doctrine'
+            - '@marello_orocommerce.importexport.normalizer.product_price'
+            - '@marello_orocommerce.importexport.normalizer.product_image'
+            - '@marello_orocommerce.importexport.normalizer.inventory_level'
         tags:
             - { name: oro_importexport.normalizer }
 
