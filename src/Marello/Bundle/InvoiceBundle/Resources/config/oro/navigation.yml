@@ -17,4 +17,4 @@ navigation:
 
     titles:
         marello_invoice_invoice_index: marello.invoice.entity_plural_label
-        marello_invoice_invoice_view: 'Invoice #%id%'
+        marello_invoice_invoice_view: '%invoiceType% #%id%'

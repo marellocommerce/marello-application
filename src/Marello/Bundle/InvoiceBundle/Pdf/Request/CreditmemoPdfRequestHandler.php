@@ -3,19 +3,21 @@
 namespace Marello\Bundle\InvoiceBundle\Pdf\Request;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Marello\Bundle\InvoiceBundle\Entity\Invoice;
-use Marello\Bundle\PdfBundle\Provider\Render\ConfigValuesProvider;
-use Marello\Bundle\PdfBundle\Provider\RenderParametersProvider;
-use Marello\Bundle\PdfBundle\Renderer\TwigRenderer;
-use Marello\Bundle\PdfBundle\Request\PdfRequestHandlerInterface;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class InvoicePdfRequestHandler implements PdfRequestHandlerInterface
+use Marello\Bundle\InvoiceBundle\Entity\Creditmemo;
+use Marello\Bundle\PdfBundle\Provider\Render\ConfigValuesProvider;
+use Marello\Bundle\PdfBundle\Provider\RenderParametersProvider;
+use Marello\Bundle\PdfBundle\Renderer\TwigRenderer;
+use Marello\Bundle\PdfBundle\Request\PdfRequestHandlerInterface;
+
+class CreditmemoPdfRequestHandler implements PdfRequestHandlerInterface
 {
-    const ENTITY_ALIAS = 'invoice';
+    const ENTITY_ALIAS = 'creditmemo';
 
     /**
      * @var Registry
@@ -81,10 +83,9 @@ class InvoicePdfRequestHandler implements PdfRequestHandlerInterface
     public function handle(Request $request)
     {
         $response = new Response();
-
         $entity = $this->doctrine
-            ->getManagerForClass(Invoice::class)
-            ->getRepository(Invoice::class)
+            ->getManagerForClass(Creditmemo::class)
+            ->getRepository(Creditmemo::class)
             ->find($request->attributes->get('id'));
         if (!$entity) {
             // either throw an error that the entity cannot be found or
@@ -109,9 +110,10 @@ class InvoicePdfRequestHandler implements PdfRequestHandlerInterface
             ->getParams($entity, [ConfigValuesProvider::SCOPE_IDENTIFIER_KEY => $entity->getSalesChannel()])
         ;
         $pdf = $this->renderer
-            ->render('MarelloInvoiceBundle:Pdf:invoice.html.twig', $params)
+            ->render('MarelloInvoiceBundle:Pdf:creditmemo.html.twig', $params)
         ;
 
+        $response = new Response();
         $response->setContent($pdf);
         $response->headers->set('Content-Type', 'application/pdf');
 
