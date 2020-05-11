@@ -125,7 +125,7 @@ class ReverseSyncInventoryLevelListener extends AbstractReverseSyncListener
                         }
                     }
                 }
-            }else if ($entity instanceof InventoryLevel) {
+            } elseif ($entity instanceof InventoryLevel) {
                 $warehouseGroup = $entity->getWarehouse()->getGroup();
                 if ($warehouseGroup && !$warehouseGroup->getWarehouseChannelGroupLink()) {
                     if ($this->isSyncRequired($entity)) {
@@ -142,7 +142,7 @@ class ReverseSyncInventoryLevelListener extends AbstractReverseSyncListener
                         }
                     }
                 }
-            } else if ($entity instanceof BalancedInventoryLevel) {
+            } elseif ($entity instanceof BalancedInventoryLevel) {
                 if ($this->isSyncRequired($entity)) {
                     $result[
                         sprintf(
@@ -215,7 +215,6 @@ class ReverseSyncInventoryLevelListener extends AbstractReverseSyncListener
                         if (!empty($connector_params)) {
                             /** @var OroCommerceSettings $transport */
                             $transport = $integrationChannel->getTransport();
-                            $settingsBag = $transport->getSettingsBag();
                             if ($integrationChannel->isEnabled()) {
                                 $this->producer->send(
                                     sprintf('%s.orocommerce', Topics::REVERS_SYNC_INTEGRATION),
@@ -229,7 +228,7 @@ class ReverseSyncInventoryLevelListener extends AbstractReverseSyncListener
                                         MessagePriority::HIGH
                                     )
                                 );
-                            } elseif ($settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION) === false) {
+                            } elseif (false === $transport->isDeleteRemoteDataOnDeactivation()) {
                                 $transportData = $transport->getData();
                                 $transportData[AbstractExportWriter::NOT_SYNCHRONIZED]
                                 [OroCommerceInventoryLevelConnector::TYPE]
