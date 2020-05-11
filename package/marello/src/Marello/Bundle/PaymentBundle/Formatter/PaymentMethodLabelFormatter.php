@@ -30,7 +30,7 @@ class PaymentMethodLabelFormatter
             $paymentMethod = $this->paymentMethodProvider->getPaymentMethod($paymentMethodName);
 
             return $paymentMethod->getLabel();
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return $paymentMethodName;
         }
     }

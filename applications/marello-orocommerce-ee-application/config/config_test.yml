@@ -68,3 +68,7 @@ oro_health_check:
     maintenance_driver:
         options:
             ttl: 3
+oro_api:
+    settings:
+        web_api:
+            value: true
