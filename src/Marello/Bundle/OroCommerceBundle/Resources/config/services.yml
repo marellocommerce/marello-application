@@ -179,7 +179,7 @@ services:
 
 
     marello_orocommerce.revers_sync_integration_processor:
-        class: 'Marello\Bundle\OroCommerceBundle\Integration\Processor\OroCommerceReversSyncIntegrationProcessor'
+        class: 'Marello\Bundle\OroCommerceBundle\Async\OroCommerceReversSyncIntegrationProcessor'
         arguments:
             - '@oro_entity.doctrine_helper'
             - '@oro_integration.reverse_sync.processor'
