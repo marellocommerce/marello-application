@@ -159,7 +159,10 @@ class ReverseSyncProductImageListener extends AbstractReverseSyncListener
             $channel = $salesChannel->getIntegrationChannel();
             if ($channel && $channel->getType() === OroCommerceChannelType::TYPE &&
                 $channel->getSynchronizationSettings()->offsetGetOr('isTwoWaySyncEnabled', false)) {
-                $integrationChannels[] = $channel;
+                $connectors = $channel->getConnectors();
+                if (in_array(OroCommerceProductImageConnector::TYPE, $connectors)) {
+                    $integrationChannels[] = $channel;
+                }
             }
         }
 
