@@ -157,7 +157,7 @@ class ReverseSyncTaxRateListener extends AbstractReverseSyncListener
                                 MessagePriority::NORMAL
                             )
                         );
-                    } elseif($settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION) === false) {
+                    } elseif ($settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION) === false) {
                         $transportData = $transport->getData();
                         $transportData[AbstractExportWriter::NOT_SYNCHRONIZED]
                         [OroCommerceTaxRateConnector::TYPE]

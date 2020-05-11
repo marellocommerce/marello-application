@@ -79,7 +79,7 @@ class ReverseSyncAllProductsListener
             $channelId = $channel->getId();
             if (count($changeSet) > 0 && isset($changeSet['enabled'])) {
                 if ($changeSet['enabled'][1] === true) {
-                    if ($settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION) === true) {
+                    if (true === $transport->isDeleteRemoteDataOnDeactivation()) {
                         $products = $this->getAllProducts();
                         foreach ($products as $product) {
                             $salesChannel = $this->getSalesChannelFromIntegrationChannel($product, $channel);
@@ -90,8 +90,10 @@ class ReverseSyncAllProductsListener
                                         [
                                             'integration_id'       => $channel->getId(),
                                             'connector_parameters' => [
-                                                AbstractExportWriter::ACTION_FIELD => AbstractExportWriter::CREATE_ACTION,
-                                                ProductExportCreateReader::SKU_FILTER => $product->getSku(),
+                                                AbstractExportWriter::ACTION_FIELD
+                                                    => AbstractExportWriter::CREATE_ACTION,
+                                                ProductExportCreateReader::SKU_FILTER
+                                                    => $product->getSku()
                                             ],
                                             'connector'            => OroCommerceProductConnector::TYPE,
                                             'transport_batch_size' => 100,
@@ -132,7 +134,7 @@ class ReverseSyncAllProductsListener
                                 }*/
                             }
                         }
-                    } elseif ($settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION) === false) {
+                    } elseif (false === $transport->isDeleteRemoteDataOnDeactivation()) {
                         $data = $settingsBag->get(OroCommerceSettings::DATA);
                         if (isset($data[AbstractExportWriter::NOT_SYNCHRONIZED])) {
                             $notSynchronizedData = $data[AbstractExportWriter::NOT_SYNCHRONIZED];
@@ -194,8 +196,8 @@ class ReverseSyncAllProductsListener
                         }
                     }
                 } elseif ($changeSet['enabled'][1] === false &&
-                    $settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION) === true)
-                {
+                    true === $transport->isDeleteRemoteDataOnDeactivation()
+                ) {
                     $products = $this->getSynchronizedProducts();
                     $context = new Context(['channel' => $channelId]);
                     $this->productsBulkDeleteWriter->setImportExportContext($context);
@@ -212,8 +214,9 @@ class ReverseSyncAllProductsListener
     {
         $channel = $args->getEntity();
         if ($channel instanceof Channel && $channel->getType() === OroCommerceChannelType::TYPE) {
-            $settingsBag = $channel->getTransport()->getSettingsBag();
-            if ($settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DELETION) === true) {
+            /** @var OroCommerceSettings $transport */
+            $transport = $channel->getTransport();
+            if (true === $transport->isDeleteRemoteDataOnDeactivation()) {
                 $this->entityManager = $args->getEntityManager();
                 $products = $this->getSynchronizedProducts();
                 $context = new Context(['channel' => $channel->getId()]);

@@ -116,7 +116,9 @@ class ReverseSyncProductListener extends AbstractReverseSyncListener
         $results = [];
 
         $deletedByRemovingFromSalesChannel = $this->getProductDataRemovedFromIntegrationSalesChannels();
-        if (!empty($deletedByRemovingFromSalesChannel) && isset($deletedByRemovingFromSalesChannel[self::ENTITIES_KEY])) {
+        if (!empty($deletedByRemovingFromSalesChannel) &&
+            isset($deletedByRemovingFromSalesChannel[self::ENTITIES_KEY])
+        ) {
             foreach ($deletedByRemovingFromSalesChannel[self::ENTITIES_KEY] as $sku => $entity) {
                 unset($updated[$sku]);
             }
@@ -318,7 +320,7 @@ class ReverseSyncProductListener extends AbstractReverseSyncListener
                         MessagePriority::NORMAL
                     )
                 );
-            }  elseif($settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION) === false) {
+            } elseif ($settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION) === false) {
                 $transportData = $transport->getData();
                 $transportData[AbstractExportWriter::NOT_SYNCHRONIZED]
                 [OroCommerceProductConnector::TYPE]
