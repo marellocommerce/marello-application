@@ -238,7 +238,10 @@ class ReverseSyncTaxJurisdictionListener extends AbstractReverseSyncListener
         foreach ($channels as $channel) {
             if ($channel->getSynchronizationSettings()->offsetGetOr('isTwoWaySyncEnabled', false) &&
                 in_array(OroCommerceTaxJurisdictionConnector::TYPE, $channel->getConnectors())) {
-                $integrationChannels[] = $channel;
+                $connectors = $channel->getConnectors();
+                if (in_array(OroCommerceTaxJurisdictionConnector::TYPE, $connectors)) {
+                    $integrationChannels[] = $channel;
+                }
             }
         }
 

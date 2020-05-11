@@ -141,7 +141,10 @@ class ReverseSyncOrderListener
         $salesChannel = $entity->getSalesChannel();
         $channel = $salesChannel->getIntegrationChannel();
         if ($channel && $channel->getType() === OroCommerceChannelType::TYPE && $channel->isEnabled()) {
-            return $channel;
+            $connectors = $channel->getConnectors();
+            if (in_array(OroCommerceOrderConnector::TYPE, $connectors)) {
+                return $channel;
+            }
         }
 
         return null;
