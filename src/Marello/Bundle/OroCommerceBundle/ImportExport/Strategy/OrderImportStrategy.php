@@ -121,7 +121,7 @@ class OrderImportStrategy extends AbstractImportStrategy
             $company = $entity->getCompany();
             if ($company && $existingCompany && $company->getName() === $existingCompany->getName()) {
                 $customer->setCompany($existingCompany);
-            } else if ($company) {
+            } elseif ($company) {
                 $customer->setCompany($company);
             }
             if (!$customer->getOrganization() && $order->getOrganization()) {
