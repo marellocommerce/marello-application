@@ -90,8 +90,7 @@ class ReverseSyncProductPriceListener extends AbstractReverseSyncListener
                             $finalPrice = $this->getFinalPrice($entity, $salesChannel);
                             if (!isset($data[AbstractProductExportWriter::PRICE_ID_FIELD]) ||
                                 count($data[AbstractProductExportWriter::PRICE_ID_FIELD]) <
-                                count($this->getIntegrationChannels($finalPrice)
-                                )
+                                count($this->getIntegrationChannels($finalPrice))
                             ) {
                                 $key = sprintf(
                                     '%s_%s',
@@ -203,7 +202,6 @@ class ReverseSyncProductPriceListener extends AbstractReverseSyncListener
                             $connector_params['entityName'] = $entityName;
                             /** @var OroCommerceSettings $transport */
                             $transport = $integrationChannel->getTransport();
-                            $settingsBag = $transport->getSettingsBag();
                             if ($integrationChannel->isEnabled()) {
                                 $this->producer->send(
                                     sprintf('%s.orocommerce', Topics::REVERS_SYNC_INTEGRATION),
@@ -217,11 +215,12 @@ class ReverseSyncProductPriceListener extends AbstractReverseSyncListener
                                         MessagePriority::HIGH
                                     )
                                 );
-                            } elseif ($settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION) === false) {
+                            } elseif (false === $transport->isDeleteRemoteDataOnDeactivation()) {
                                 $transportData = $transport->getData();
                                 $transportData[AbstractExportWriter::NOT_SYNCHRONIZED]
-                                [OroCommerceProductPriceConnector::TYPE]
-                                [$this->generateConnectionParametersKey($connector_params, ['value'])] = $connector_params;
+                                    [OroCommerceProductPriceConnector::TYPE]
+                                    [$this->generateConnectionParametersKey($connector_params, ['value'])]
+                                    = $connector_params;
                                 $transport->setData($transportData);
                                 $this->entityManager->persist($transport);
                                 /** @var OroEventManager $eventManager */

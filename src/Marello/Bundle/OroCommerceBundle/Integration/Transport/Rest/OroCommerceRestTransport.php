@@ -130,10 +130,10 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
             $customersRequest->getHeaders()
         );
         $customersData = $customersResponse['data'];
-        usort($customersData, function($a, $b) {
+        usort($customersData, function ($a, $b) {
             if ($a['relationships']['parent']['data'] === null) {
                 return -1;
-            } else if ($b['relationships']['parent']['data'] === null) {
+            } elseif ($b['relationships']['parent']['data'] === null) {
                 return 1;
             } else {
                 return 0;
@@ -1362,7 +1362,12 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
 
             return $response->json();
         } catch (RestException $e) {
-            return $this->processEntityDuplicationException($e, $data, 'createTaxJurisdiction', 'updateTaxJurisdiction');
+            return $this->processEntityDuplicationException(
+                $e,
+                $data,
+                'createTaxJurisdiction',
+                'updateTaxJurisdiction'
+            );
         }
     }
 
@@ -1549,7 +1554,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                 $finalData = [];
                 if (!empty($syncEntities)) {
                     $ids = array_map(
-                        function ($itemData){
+                        function ($itemData) {
                             return $itemData['data']['id'];
                         },
                         $syncEntities
@@ -1662,7 +1667,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         if ($response->getStatusCode() === 200) {
             $json = $response->json();
             $ids = array_map(
-                function ($itemData){
+                function ($itemData) {
                     return $itemData['data']['id'];
                 },
                 $json
@@ -1872,14 +1877,13 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                                                         $relId = $inclRelationship['data']['id'];
                                                         $relType = $inclRelationship['data']['type'];
                                                         foreach ($data['included'] as $k => $included) {
-                                                            if (
-                                                                $included['type'] === $relType &&
+                                                            if ($included['type'] === $relType &&
                                                                 $included['id'] === $relId &&
                                                                 count($included['relationships']) === 0
                                                             ) {
                                                                 $parentRel = reset($included['relationships']);
                                                                 if ($parentRel['data']['type'] === $type) {
-                                                                    unset ($data['included'][$k]);
+                                                                    unset($data['included'][$k]);
                                                                 }
                                                             }
                                                         }
@@ -1889,14 +1893,13 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                                                                 $relId = $relItem['id'];
                                                                 $relType = $relItem['type'];
                                                                 foreach ($data['included'] as $k => $included) {
-                                                                    if (
-                                                                        $included['type'] === $relType &&
+                                                                    if ($included['type'] === $relType &&
                                                                         $included['id'] === $relId &&
                                                                         count($included['relationships']) === 1
                                                                     ) {
                                                                         $parentRel = reset($included['relationships']);
                                                                         if ($parentRel['data']['type'] === $type) {
-                                                                            unset ($data['included'][$k]);
+                                                                            unset($data['included'][$k]);
                                                                         }
                                                                     }
                                                                 }

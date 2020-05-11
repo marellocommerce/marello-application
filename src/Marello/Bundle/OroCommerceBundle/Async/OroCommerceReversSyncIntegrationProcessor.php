@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\OroCommerceBundle\Integration\Processor;
+namespace Marello\Bundle\OroCommerceBundle\Async;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
@@ -109,7 +109,11 @@ class OroCommerceReversSyncIntegrationProcessor implements
             return self::REJECT;
         }
 
-        $jobName = 'oro_integration:revers_sync_integration:'.$body['integration_id'].'|'.md5(serialize($body['connector_parameters']));
+        $jobName = sprintf(
+            'oro_integration:revers_sync_integration:%s|%s',
+            $body['integration_id'],
+            md5(serialize($body['connector_parameters']))
+        );
         $ownerId = $message->getMessageId();
 
         /** @var EntityManagerInterface $em */

@@ -82,7 +82,7 @@ class OroCommerceIntegrationEventListener
                 $em->getUnitOfWork()->scheduleForDelete($salesChannel);
             }
             $section = AbstractProductExportWriter::SECTION_FIELD;
-            if($this->databaseDriver === self::PGSQL_DRIVER) {
+            if ($this->databaseDriver === self::PGSQL_DRIVER) {
                 $formattedDataField = 'CAST(p.data as TEXT)';
             } else {
                 $formattedDataField = 'p.data';
