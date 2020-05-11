@@ -43,7 +43,7 @@ class InvoiceDownloadPdfControllerTest extends WebTestCase
         $filePart = trim($filePart);
 
         $filenameRegexp = '/^filename=(["\']?.+["\']?)$/';
-        $expectedFilename = sprintf('Invoice_%s.pdf', $invoice->getInvoiceNumber());
+        $expectedFilename = sprintf('invoice_%s.pdf', $invoice->getInvoiceNumber());
 
         $matches = [];
         preg_match($filenameRegexp, $filePart, $matches);
