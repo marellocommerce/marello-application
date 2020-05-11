@@ -270,7 +270,10 @@ class ReverseSyncInventoryLevelListener extends AbstractReverseSyncListener
             if ($channel && $channel->getType() === OroCommerceChannelType::TYPE &&
                 $channel->getSynchronizationSettings()->offsetGetOr('isTwoWaySyncEnabled', false)
             ) {
-                $integrationChannels[] = $channel;
+                $connectors = $channel->getConnectors();
+                if (in_array(OroCommerceInventoryLevelConnector::TYPE, $connectors)) {
+                    $integrationChannels[] = $channel;
+                }
             }
         }
 

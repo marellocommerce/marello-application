@@ -11,6 +11,7 @@ use Marello\Bundle\OroCommerceBundle\ImportExport\Reader\ProductExportUpdateRead
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractExportWriter;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractProductExportWriter;
 use Marello\Bundle\OroCommerceBundle\Integration\Connector\OroCommerceProductConnector;
+use Marello\Bundle\OroCommerceBundle\Integration\Connector\OroCommerceProductImageConnector;
 use Marello\Bundle\OroCommerceBundle\Integration\OroCommerceChannelType;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation;
@@ -351,7 +352,10 @@ class ReverseSyncProductListener extends AbstractReverseSyncListener
             $channel = $salesChannel->getIntegrationChannel();
             if ($channel && $channel->getType() === OroCommerceChannelType::TYPE &&
                 $channel->getSynchronizationSettings()->offsetGetOr('isTwoWaySyncEnabled', false)) {
-                $integrationChannels[$channel->getId()] = $channel;
+                $connectors = $channel->getConnectors();
+                if (in_array(OroCommerceProductConnector::TYPE, $connectors)) {
+                    $integrationChannels[$channel->getId()] = $channel;
+                }
             }
         }
         if (empty($integrationChannels)) {

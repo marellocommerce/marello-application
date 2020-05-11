@@ -99,37 +99,6 @@ class ReverseSyncAllProductsListener
                                         MessagePriority::NORMAL
                                     )
                                 );
-                                /*$finalPrice = ReverseSyncProductPriceListener::getFinalPrice($product, $salesChannel);
-                                $this->syncScheduler->getService()->schedule(
-                                    $channel->getId(),
-                                    OroCommerceProductPriceConnector::TYPE,
-                                    [
-                                        'processorAlias' => 'marello_orocommerce_product_price.export',
-                                        AbstractExportWriter::ACTION_FIELD => AbstractExportWriter::CREATE_ACTION,
-                                        ProductExportCreateReader::SKU_FILTER => $product->getSku(),
-                                        'value' => $finalPrice->getValue(),
-                                        'currency' => $finalPrice->getCurrency(),
-                                    ]
-                                );
-                                $this->syncScheduler->getService()->schedule(
-                                    $channel->getId(),
-                                    OroCommerceInventoryLevelConnector::TYPE,
-                                    [
-                                        AbstractExportWriter::ACTION_FIELD => AbstractExportWriter::UPDATE_ACTION,
-                                        'product' => $product->getId(),
-                                        'group' => $salesChannel->getGroup()->getId(),
-                                    ]
-                                );
-                                if ($image = $product->getImage()) {
-                                    $this->syncScheduler->getService()->schedule(
-                                        $channel->getId(),
-                                        OroCommerceProductImageConnector::TYPE,
-                                        [
-                                            AbstractExportWriter::ACTION_FIELD => AbstractExportWriter::CREATE_ACTION,
-                                            EntityReaderById::ID_FILTER => $image->getId(),
-                                        ]
-                                    );
-                                }*/
                             }
                         }
                     } elseif ($settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION) === false) {
