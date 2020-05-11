@@ -194,7 +194,10 @@ class ReverseSyncTaxCodeListener extends AbstractReverseSyncListener
         foreach ($channels as $channel) {
             if ($channel->getSynchronizationSettings()->offsetGetOr('isTwoWaySyncEnabled', false) &&
                 in_array(OroCommerceTaxCodeConnector::TYPE, $channel->getConnectors())) {
-                $integrationChannels[] = $channel;
+                $connectors = $channel->getConnectors();
+                if (in_array(OroCommerceTaxCodeConnector::TYPE, $connectors)) {
+                    $integrationChannels[] = $channel;
+                }
             }
         }
 

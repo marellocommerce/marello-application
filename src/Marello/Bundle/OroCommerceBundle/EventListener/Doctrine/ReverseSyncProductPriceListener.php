@@ -253,7 +253,10 @@ class ReverseSyncProductPriceListener extends AbstractReverseSyncListener
             $channel = $salesChannel->getIntegrationChannel();
             if ($channel && $channel->getType() === OroCommerceChannelType::TYPE &&
                 $channel->getSynchronizationSettings()->offsetGetOr('isTwoWaySyncEnabled', false)) {
-                $integrationChannels[] = $channel;
+                $connectors = $channel->getConnectors();
+                if (in_array(OroCommerceProductPriceConnector::TYPE, $connectors)) {
+                    $integrationChannels[] = $channel;
+                }
             }
         } elseif ($entity instanceof ProductPrice) {
             /** @var SalesChannel[] $salesChannels */
