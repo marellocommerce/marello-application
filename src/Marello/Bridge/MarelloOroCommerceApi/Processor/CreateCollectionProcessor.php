@@ -2,15 +2,13 @@
 
 namespace Marello\Bridge\MarelloOroCommerceApi\Processor;
 
-use Marello\Bridge\MarelloOroCommerceApi\Processor\CreateCollection\CreateCollectionContext;
 use Oro\Bundle\ApiBundle\Processor\Create\CreateContext;
-use Oro\Bundle\ApiBundle\Processor\NormalizeResultContext;
 use Oro\Bundle\ApiBundle\Processor\RequestActionProcessor;
-use Oro\Bundle\ApiBundle\Provider\ConfigProvider;
-use Oro\Bundle\ApiBundle\Provider\MetadataProvider;
 use Oro\Bundle\ApiBundle\Request\ApiActionGroup;
 use Oro\Component\ChainProcessor\ContextInterface as ComponentContextInterface;
 use Oro\Component\ChainProcessor\ProcessorInterface;
+
+use Marello\Bridge\MarelloOroCommerceApi\Processor\CreateCollection\CreateCollectionContext;
 
 /**
  * The main processor for "create_collection" action.
@@ -41,7 +39,7 @@ class CreateCollectionProcessor extends RequestActionProcessor
                 /** @var ProcessorInterface $processor */
                 foreach ($processors as $processor) {
                     if ($collectionItemContext->hasErrors()) {
-                        foreach($collectionItemContext->getErrors() as $error) {
+                        foreach ($collectionItemContext->getErrors() as $error) {
                             $context->addError($error);
                         }
                         $errorsHandled = true;
