@@ -51,7 +51,7 @@ class TaxRuleExportReader extends EntityReader
             $qb
                 ->andWhere('o.id IN (:ids)')
                 ->setParameter('ids', $this->getParametersFromContext(self::ID_FILTER));
-        } else if ($this->getParametersFromContext(self::TAXCODE_FILTER) &&
+        } elseif ($this->getParametersFromContext(self::TAXCODE_FILTER) &&
             $this->getParametersFromContext(self::TAXRATE_FILTER) &&
             $this->getParametersFromContext(self::TAXJURISDICTION_FILTER)) {
             $qb

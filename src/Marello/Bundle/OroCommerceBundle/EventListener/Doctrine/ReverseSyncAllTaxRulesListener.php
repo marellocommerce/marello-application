@@ -41,8 +41,10 @@ class ReverseSyncAllTaxRulesListener
      * @param MessageProducerInterface $producer
      * @param TaxRuleExportBulkDeleteWriter $taxRulesBulkDeleteWriter
      */
-    public function __construct(MessageProducerInterface $producer, TaxRuleExportBulkDeleteWriter $taxRulesBulkDeleteWriter)
-    {
+    public function __construct(
+        MessageProducerInterface $producer,
+        TaxRuleExportBulkDeleteWriter $taxRulesBulkDeleteWriter
+    ) {
         $this->producer = $producer;
         $this->taxRulesBulkDeleteWriter = $taxRulesBulkDeleteWriter;
     }
@@ -53,10 +55,18 @@ class ReverseSyncAllTaxRulesListener
     public function postPersist(LifecycleEventArgs $args)
     {
         $channel = $args->getEntity();
-        if ($channel instanceof Channel && $channel->getType() === OroCommerceChannelType::TYPE && $channel->isEnabled()) {
+        if ($channel instanceof Channel &&
+            $channel->getType() === OroCommerceChannelType::TYPE &&
+            $channel->isEnabled()
+        ) {
             $this->entityManager = $args->getEntityManager();
             $taxRules = $this->getAllTaxRules();
-            $ids = array_map(function(TaxRule $taxRule) {return $taxRule->getId();}, $taxRules);
+            $ids = array_map(
+                function (TaxRule $taxRule) {
+                    return $taxRule->getId();
+                },
+                $taxRules
+            );
             $this->producer->send(
                 sprintf('%s.orocommerce', Topics::REVERS_SYNC_INTEGRATION),
                 new Message(
@@ -64,10 +74,10 @@ class ReverseSyncAllTaxRulesListener
                         'integration_id'       => $channel->getId(),
                         'connector_parameters' => [
                             AbstractExportWriter::ACTION_FIELD => AbstractExportWriter::CREATE_ACTION,
-                            TaxRuleExportReader::ID_FILTER => $ids,
+                            TaxRuleExportReader::ID_FILTER => $ids
                         ],
                         'connector'            => OroCommerceTaxRuleConnector::TYPE,
-                        'transport_batch_size' => 100,
+                        'transport_batch_size' => 100
                     ],
                     MessagePriority::NORMAL
                 )
@@ -105,12 +115,7 @@ class ReverseSyncAllTaxRulesListener
                                     new Message(
                                         [
                                             'integration_id'       => $channel->getId(),
-                                            'connector_parameters' => [
-                                                AbstractExportWriter::ACTION_FIELD => AbstractExportWriter::CREATE_ACTION,
-                                                TaxRuleExportReader::TAXCODE_FILTER => $taxRule->getTaxCode()->getCode(),
-                                                TaxRuleExportReader::TAXRATE_FILTER => $taxRule->getTaxRate()->getCode(),
-                                                TaxRuleExportReader::TAXJURISDICTION_FILTER => $taxRule->getTaxJurisdiction()->getCode(),
-                                            ],
+                                            'connector_parameters' => $this->getConnectorParams($taxRule),
                                             'connector'            => OroCommerceTaxRuleConnector::TYPE,
                                             'transport_batch_size' => 100,
                                         ],
@@ -121,8 +126,8 @@ class ReverseSyncAllTaxRulesListener
                         }
                     }
                 } elseif ($changeSet['enabled'][1] === false &&
-                    $settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION) === true)
-                {
+                    $settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION) === true
+                ) {
                     $taxRules = $this->getSynchronizedTaxRules();
                     $context = new Context(['channel' => $channelId]);
                     $this->taxRulesBulkDeleteWriter->setImportExportContext($context);
@@ -166,5 +171,19 @@ class ReverseSyncAllTaxRulesListener
         return $this->entityManager
             ->getRepository(TaxRule::class)
             ->findByDataKey(TaxRuleExportCreateWriter::TAX_RULE_ID);
+    }
+
+    /**
+     * @param TaxRule $taxRule
+     * @return array
+     */
+    private function getConnectorParams(TaxRule $taxRule)
+    {
+        return [
+            AbstractExportWriter::ACTION_FIELD => AbstractExportWriter::CREATE_ACTION,
+            TaxRuleExportReader::TAXCODE_FILTER => $taxRule->getTaxCode()->getCode(),
+            TaxRuleExportReader::TAXRATE_FILTER => $taxRule->getTaxRate()->getCode(),
+            TaxRuleExportReader::TAXJURISDICTION_FILTER => $taxRule->getTaxJurisdiction()->getCode(),
+        ];
     }
 }
