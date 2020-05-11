@@ -49,8 +49,8 @@ class ReverseSyncAllTaxRatesListener
             if (count($changeSet) > 0 &&
                 isset($changeSet['enabled']) &&
                 $changeSet['enabled'][1] === false &&
-                $settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION) === true)
-            {
+                $settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION) === true
+            ) {
                 $taxRates = $this->getSynchronizedTaxRates();
                 $context = new Context(['channel' => $channelId]);
                 $this->taxRatesBulkDeleteWriter->setImportExportContext($context);
