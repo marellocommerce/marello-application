@@ -1,0 +1,23 @@
+{
+    "name": "marellocommerce/marello-magento2-bundle",
+    "description": "Marello package",
+    "keywords": ["Marello", "Magento2", "Product", "Integration"],
+    "license": "MIT",
+    "authors": [
+        {
+          "name": "Madia B.V.",
+          "homepage": "https://www.marello.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+          "dev-master": "3.0-dev"
+        }
+    },
+    "autoload": {
+        "psr-4": {"": "src/"},
+        "exclude-from-classmap": ["/Tests/"]
+    }
+}
