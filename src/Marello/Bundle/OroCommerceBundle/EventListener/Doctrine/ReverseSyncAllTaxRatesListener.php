@@ -42,14 +42,15 @@ class ReverseSyncAllTaxRatesListener
     {
 
         if ($channel->getType() === OroCommerceChannelType::TYPE) {
-            $settingsBag = $channel->getTransport()->getSettingsBag();
+            /** @var OroCommerceSettings $transport */
+            $transport = $channel->getTransport();
             $this->entityManager = $args->getEntityManager();
             $changeSet = $args->getEntityChangeSet();
             $channelId = $channel->getId();
             if (count($changeSet) > 0 &&
                 isset($changeSet['enabled']) &&
                 $changeSet['enabled'][1] === false &&
-                $settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION) === true
+                true === $transport->isDeleteRemoteDataOnDeactivation()
             ) {
                 $taxRates = $this->getSynchronizedTaxRates();
                 $context = new Context(['channel' => $channelId]);
@@ -66,8 +67,9 @@ class ReverseSyncAllTaxRatesListener
     public function preRemove(Channel $channel, LifecycleEventArgs $args)
     {
         if ($channel->getType() === OroCommerceChannelType::TYPE) {
-            $settingsBag = $channel->getTransport()->getSettingsBag();
-            if ($settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DELETION) === true) {
+            /** @var OroCommerceSettings $transport */
+            $transport = $channel->getTransport();
+            if (true === $transport->isDeleteRemoteDataOnDeletion()) {
                 $this->entityManager = $args->getEntityManager();
                 $taxRates = $this->getSynchronizedTaxRates();
                 $context = new Context(['channel' => $channel->getId()]);

@@ -114,7 +114,6 @@ class ReverseSyncProductImageListener extends AbstractReverseSyncListener
             if (!empty($connector_params)) {
                 /** @var OroCommerceSettings $transport */
                 $transport = $integrationChannel->getTransport();
-                $settingsBag = $transport->getSettingsBag();
                 if ($integrationChannel->isEnabled()) {
                     $this->producer->send(
                         sprintf('%s.orocommerce', Topics::REVERS_SYNC_INTEGRATION),
@@ -128,7 +127,7 @@ class ReverseSyncProductImageListener extends AbstractReverseSyncListener
                             MessagePriority::HIGH
                         )
                     );
-                } elseif ($settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION) === false) {
+                } elseif (false === $transport->isDeleteRemoteDataOnDeactivation()) {
                     $transportData = $transport->getData();
                     $transportData[AbstractExportWriter::NOT_SYNCHRONIZED]
                     [OroCommerceProductImageConnector::TYPE]
