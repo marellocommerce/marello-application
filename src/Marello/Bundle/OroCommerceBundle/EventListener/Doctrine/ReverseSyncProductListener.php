@@ -11,7 +11,6 @@ use Marello\Bundle\OroCommerceBundle\ImportExport\Reader\ProductExportUpdateRead
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractExportWriter;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractProductExportWriter;
 use Marello\Bundle\OroCommerceBundle\Integration\Connector\OroCommerceProductConnector;
-use Marello\Bundle\OroCommerceBundle\Integration\Connector\OroCommerceProductImageConnector;
 use Marello\Bundle\OroCommerceBundle\Integration\OroCommerceChannelType;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation;
@@ -307,7 +306,6 @@ class ReverseSyncProductListener extends AbstractReverseSyncListener
         if (!empty($connector_params)) {
             /** @var OroCommerceSettings $transport */
             $transport = $integrationChannel->getTransport();
-            $settingsBag = $transport->getSettingsBag();
             if ($integrationChannel->isEnabled()) {
                 $this->producer->send(
                     sprintf('%s.orocommerce', Topics::REVERS_SYNC_INTEGRATION),
@@ -321,7 +319,7 @@ class ReverseSyncProductListener extends AbstractReverseSyncListener
                         MessagePriority::NORMAL
                     )
                 );
-            } elseif ($settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION) === false) {
+            } elseif (false === $transport->isDeleteRemoteDataOnDeactivation()) {
                 $transportData = $transport->getData();
                 $transportData[AbstractExportWriter::NOT_SYNCHRONIZED]
                 [OroCommerceProductConnector::TYPE]

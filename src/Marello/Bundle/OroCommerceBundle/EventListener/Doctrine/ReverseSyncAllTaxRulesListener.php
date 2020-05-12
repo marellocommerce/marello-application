@@ -97,12 +97,12 @@ class ReverseSyncAllTaxRulesListener
             $transport = $this->entityManager
                 ->getRepository(OroCommerceSettings::class)
                 ->find($channel->getTransport()->getId());
-            $settingsBag = $transport->getSettingsBag();
+            $isDeleteRemoteDataOnDeactivation = $transport->isDeleteRemoteDataOnDeactivation();
             $changeSet = $args->getEntityChangeSet();
             $channelId = $channel->getId();
             if (count($changeSet) > 0 && isset($changeSet['enabled'])) {
                 if ($changeSet['enabled'][1] === true) {
-                    if ($settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION) === true) {
+                    if (true === $isDeleteRemoteDataOnDeactivation) {
                         $taxRules = $this->getAllTaxRules();
                         foreach ($taxRules as $taxRule) {
                             $data = $taxRule->getData();
@@ -125,9 +125,7 @@ class ReverseSyncAllTaxRulesListener
                             }
                         }
                     }
-                } elseif ($changeSet['enabled'][1] === false &&
-                    $settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION) === true
-                ) {
+                } elseif (false === $changeSet['enabled'][1] && true === $isDeleteRemoteDataOnDeactivation) {
                     $taxRules = $this->getSynchronizedTaxRules();
                     $context = new Context(['channel' => $channelId]);
                     $this->taxRulesBulkDeleteWriter->setImportExportContext($context);
@@ -144,8 +142,9 @@ class ReverseSyncAllTaxRulesListener
     {
         $channel = $args->getEntity();
         if ($channel instanceof Channel && $channel->getType() === OroCommerceChannelType::TYPE) {
-            $settingsBag = $channel->getTransport()->getSettingsBag();
-            if ($settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DELETION) === true) {
+            /** @var OroCommerceSettings $transport */
+            $transport = $channel->getTransport();
+            if (true === $transport->isDeleteRemoteDataOnDeletion()) {
                 $this->entityManager = $args->getEntityManager();
                 $taxRules = $this->getSynchronizedTaxRules();
                 $context = new Context(['channel' => $channel->getId()]);

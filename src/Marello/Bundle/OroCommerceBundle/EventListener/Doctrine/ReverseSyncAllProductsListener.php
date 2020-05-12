@@ -73,7 +73,6 @@ class ReverseSyncAllProductsListener
             $transport = $this->entityManager
                 ->getRepository(OroCommerceSettings::class)
                 ->find($channel->getTransport()->getId());
-            $settingsBag = $transport->getSettingsBag();
             $this->entityManager = $args->getEntityManager();
             $changeSet = $args->getEntityChangeSet();
             $channelId = $channel->getId();
@@ -104,7 +103,7 @@ class ReverseSyncAllProductsListener
                             }
                         }
                     } elseif (false === $transport->isDeleteRemoteDataOnDeactivation()) {
-                        $data = $settingsBag->get(OroCommerceSettings::DATA);
+                        $data = $transport->getData();
                         if (isset($data[AbstractExportWriter::NOT_SYNCHRONIZED])) {
                             $notSynchronizedData = $data[AbstractExportWriter::NOT_SYNCHRONIZED];
                             $notSynchronizedData = $this->synchronizeNotSynchronizedData(
