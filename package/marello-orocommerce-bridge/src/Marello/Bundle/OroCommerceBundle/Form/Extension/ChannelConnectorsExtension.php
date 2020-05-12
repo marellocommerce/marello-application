@@ -97,5 +97,4 @@ class ChannelConnectorsExtension extends AbstractTypeExtension
     {
         return [ChannelType::class];
     }
-
 }
