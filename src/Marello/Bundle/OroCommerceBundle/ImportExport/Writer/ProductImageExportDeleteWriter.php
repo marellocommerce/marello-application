@@ -19,7 +19,10 @@ class ProductImageExportDeleteWriter extends AbstractItemExportWriter
             /** @var Product $processedProduct */
             $processedProduct = $em
                 ->getRepository(Product::class)
-                ->findOneBy(['sku' => $data[ProductExportCreateReader::SKU_FILTER]]);
+                ->findOneBy([
+                    'sku' => $data[ProductExportCreateReader::SKU_FILTER],
+                    'organization' => $this->channel->getOrganization()
+                ]);
 
             if ($processedProduct) {
                 $productData = $processedProduct->getData();
