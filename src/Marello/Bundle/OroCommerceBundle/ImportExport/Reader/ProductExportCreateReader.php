@@ -6,6 +6,7 @@ use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractExportWriter;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\ImportExportBundle\Reader\EntityReader;
+use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class ProductExportCreateReader extends EntityReader
@@ -55,15 +56,23 @@ class ProductExportCreateReader extends EntityReader
     protected function initializeFromContext(ContextInterface $context)
     {
         if ($context->getOption(AbstractExportWriter::ACTION_FIELD) === AbstractExportWriter::CREATE_ACTION) {
-            $this->sku = $context->getOption(self::SKU_FILTER);
-            for ($i = 0; $i < 5; $i++) {
-                $existing = $this->registry->getManagerForClass(Product::class)
-                    ->getRepository(Product::class)
-                    ->findOneBy(['sku' => $this->sku]);
-                if ($existing) {
-                    break;
+            /** @var Channel $channel */
+            $channel = $this->registry->getManagerForClass(Channel::class)
+                ->getRepository(Channel::class)
+                ->find($this->getParametersFromContext('channel'));
+            if ($channel) {
+                for ($i = 0; $i < 5; $i++) {
+                    $existing = $this->registry->getManagerForClass(Product::class)
+                        ->getRepository(Product::class)
+                        ->findOneBy([
+                            'sku' => $this->getParametersFromContext(self::SKU_FILTER),
+                            'organization' => $channel->getOrganization()
+                        ]);
+                    if ($existing) {
+                        break;
+                    }
+                    sleep(5);
                 }
-                sleep(5);
             }
         }
 

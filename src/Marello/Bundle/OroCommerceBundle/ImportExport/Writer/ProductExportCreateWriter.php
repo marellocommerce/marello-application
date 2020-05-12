@@ -36,7 +36,10 @@ class ProductExportCreateWriter extends AbstractProductExportWriter
             /** @var Product $processedProduct */
             $processedProduct = $em
                 ->getRepository(Product::class)
-                ->findOneBy(['sku' => $sku]);
+                ->findOneBy([
+                    'sku' => $sku,
+                    'organization' => $this->channel->getOrganization()
+                ]);
 
             $this->processTaxCode($response);
 
