@@ -214,7 +214,10 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
             $product = $this->registry
                 ->getManagerForClass(Product::class)
                 ->getRepository(Product::class)
-                ->findOneBy(['sku' => $this->getProperty($lineItem, 'productSku')]);
+                ->findOneBy([
+                    'sku' => $this->getProperty($lineItem, 'productSku'),
+                    'organization' => $order->getOrganization()
+                ]);
 
             if ($product) {
                 $this->prepareOrderItem($lineItem, $product, $order);
