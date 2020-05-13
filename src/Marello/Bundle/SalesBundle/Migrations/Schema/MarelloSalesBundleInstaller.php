@@ -91,6 +91,13 @@ class MarelloSalesBundleInstaller implements Installation
             ['id'],
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
+
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_integration_channel'),
+            ['integration_channel_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
     }
 
     /**
