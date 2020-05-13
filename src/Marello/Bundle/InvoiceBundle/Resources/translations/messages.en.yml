@@ -39,9 +39,9 @@ marello:
 
         creditmemo:
             id.label:                   Id
-            entity_label:               Invoice
-            entity_plural_label:        Invoices
-            invoice_number.label:       Invoice Number
+            entity_label:               Creditmemo
+            entity_plural_label:        Creditmemos
+            invoice_number.label:       Creditmemo Number
             billing_address:
                 label:                  Billing Address
                 name.label:             Bill to Name
@@ -102,9 +102,9 @@ marello:
 
         creditmemoitem:
             id.label:                 Id
-            entity_label:             Invoice Item
-            entity_plural_label:      Invoice Items
-            invoice.label:            Invoice
+            entity_label:             Creditmemo Item
+            entity_plural_label:      Creditmemo Items
+            invoice.label:            Creditmemo
             quantity.label:           Quantity
             price.label:              Price
             product.label:            Product
@@ -118,8 +118,8 @@ marello:
 
         abstractinvoice:
             id.label:                   Id
-            entity_label:               Invoice
-            entity_plural_label:        Invoices
+            entity_label:               Abstract Invoice
+            entity_plural_label:        Abstract Invoices
             invoice_number.label:       Invoice Number
             billing_address:
                 label:                  Billing Address
@@ -151,9 +151,9 @@ marello:
 
         abstractinvoiceitem:
             id.label:                 Id
-            entity_label:             Invoice Item
-            entity_plural_label:      Invoice Items
-            invoice.label:            Invoice
+            entity_label:             Abstract Invoice Item
+            entity_plural_label:      Abstract Invoice Items
+            invoice.label:            Abstract Invoice
             quantity.label:           Quantity
             price.label:              Price
             product.label:            Product
