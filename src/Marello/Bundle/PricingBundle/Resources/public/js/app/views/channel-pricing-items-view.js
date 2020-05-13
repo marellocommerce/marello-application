@@ -3,6 +3,7 @@ define(function(require) {
 
     const
         $ = require('jquery'),
+        _ = require('underscore'),
         __ = require('orotranslation/js/translator'),
         routing = require('routing'),
         mediator = require('oroui/js/mediator'),
