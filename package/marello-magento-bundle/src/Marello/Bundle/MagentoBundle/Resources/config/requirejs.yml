@@ -1,3 +1,0 @@
-config:
-    paths:
-        'marello/magento/checker': 'bundles/marellomagento/js/checker.js'

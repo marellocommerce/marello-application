@@ -1,4 +1,0 @@
-dynamic-imports:
-    marellopricing:
-        - marellopricing/js/app/views/channel-pricing-item-view
-        - marellopricing/js/app/views/channel-pricing-items-view
