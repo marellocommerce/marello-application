@@ -160,7 +160,7 @@ class ProductRepository extends EntityRepository
             ->where("sup.name <> ''")
             ->andWhere("s.name = 'enabled'")
             ->andWhere("i.replenishment = 'never_out_of_stock'")
-            ->groupBy('p.sku')
+            ->groupBy('p.sku, sup.name')
             ->having('SUM(l.inventory - l.allocatedInventory) < i.purchaseInventory');
 
         return $this->aclHelper->apply($qb->getQuery())->getResult();
