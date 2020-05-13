@@ -1,5 +1,0 @@
-marello:
-    inventory:
-        operations:
-            enable_inventory_batch_confirm: Attention! Enabling InventoryBatches is an irreversable operation! After the InventoryBatches have been enabled for the InventoryItem, you are not able to go back! Are you sure you want to continue?
-            enable_inventory_batch_title: Enable InventoryBatches
