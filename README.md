@@ -118,7 +118,7 @@ This package will provide you with the code in order to create the integration, 
 
 #### MarelloOroCommerce Api Bridge
 
-This Bridge will provide you with the necessary code and configuration to extend the current OroCommerce (1.5.x)  API endpoints in order to facilitate Tax related entity creation, updating the Order and Payment status of entities in OroCommerce. Another feature this api bridge will provide is the disabling of the Order notification emails being send through OroCommerce since this responsibility will be handled by Marello. Without this component the Integration will not work properly and will leave you in disappointment.
+This Bridge will provide you with the necessary code and configuration to extend the current OroCommerce (4.1.x)  API endpoints in order to facilitate Tax related entity creation, updating the Order and Payment status of entities in OroCommerce. Another feature this api bridge will provide is the disabling of the Order notification emails being send through OroCommerce since this responsibility will be handled by Marello. Without this component the Integration will not work properly and will leave you in disappointment.
 
 ##### Single Instance Setup
 
@@ -126,7 +126,8 @@ A single instance setup would be a setup where all the required components and a
 
 ![Marello-OroCommerce Single Instance overview](src/Marello/Bundle/OroCommerceBundle/Resources/doc/images/Marello-OroCommerce-Single-Instance-overview.png "Marello-OroCommerce Single Instance overview")
 
-The single instance setup will share a repository and we've configured a repository to do exact that. The public repository will only feature the Community Editions of Marello and OroCommerce without the CRM. However it is possible to install OroCRM Community edition with the setup, but does require additional dependencies. The repository can be found at https://github.com/marellocommerce/marello-orocommerce.
+The single instance setup will share a repository which will need to be configured with all the dependencies in order to work properly. The minimum and additional dependencies can be installed through composer.
+
 
 ##### Multiple Instance Setup
 
