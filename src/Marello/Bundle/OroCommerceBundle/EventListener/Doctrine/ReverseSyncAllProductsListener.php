@@ -26,6 +26,7 @@ use Oro\Bundle\ImportExportBundle\Context\Context;
 use Oro\Bundle\IntegrationBundle\Async\Topics;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Reader\EntityReaderById;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Component\DependencyInjection\ServiceLink;
 use Oro\Component\MessageQueue\Client\Message;
 use Oro\Component\MessageQueue\Client\MessagePriority;
@@ -79,7 +80,7 @@ class ReverseSyncAllProductsListener
             if (count($changeSet) > 0 && isset($changeSet['enabled'])) {
                 if ($changeSet['enabled'][1] === true) {
                     if (true === $transport->isDeleteRemoteDataOnDeactivation()) {
-                        $products = $this->getAllProducts();
+                        $products = $this->getAllProducts($channel->getOrganization());
                         foreach ($products as $product) {
                             $salesChannel = $this->getSalesChannelFromIntegrationChannel($product, $channel);
                             if ($salesChannel !== null) {
@@ -195,11 +196,12 @@ class ReverseSyncAllProductsListener
     }
     
     /**
+     * @param Organization $organization
      * @return Product[]
      */
-    private function getAllProducts()
+    private function getAllProducts(Organization $organization)
     {
-        return $this->entityManager->getRepository(Product::class)->findAll();
+        return $this->entityManager->getRepository(Product::class)->findBy(['organization' => $organization]);
     }
 
     /**
