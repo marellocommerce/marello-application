@@ -15,7 +15,15 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelGroupRepository")
  * @ORM\HasLifecycleCallbacks()
- * @ORM\Table(name="marello_sales_channel_group")
+ * @ORM\Table(
+ *     name="marello_sales_channel_group",
+ *     uniqueConstraints={
+ *          @ORM\UniqueConstraint(
+ *              name="UNIQ_759DCFAB3D6A9E29",
+ *              columns={"integration_channel_id"}
+ *          )
+ *      }
+ * )
  * @Config(
  *  routeName="marello_sales_saleschannelgroup_index",
  *  routeView="marello_sales_saleschannelgroup_view",
@@ -117,7 +125,7 @@ class SalesChannelGroup extends ExtendSalesChannelGroup
 
     /**
      * @ORM\OneToOne(targetEntity="Oro\Bundle\IntegrationBundle\Entity\Channel")
-     * @ORM\JoinColumn(name="integration_channel_id", nullable=true)
+     * @ORM\JoinColumn(name="integration_channel_id", nullable=true, onDelete="SET NULL", unique=true)
      * @ConfigField(
      *      defaultValues={
      *          "dataaudit"={
