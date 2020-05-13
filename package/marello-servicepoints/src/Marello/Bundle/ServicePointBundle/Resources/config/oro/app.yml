@@ -1,7 +1,0 @@
-liip_imagine:
-    filter_sets:
-        servicepoint_view:
-            quality:          95
-            filters:
-                thumbnail:    { size: [400, 250], mode: inset }
-                strip:        ~

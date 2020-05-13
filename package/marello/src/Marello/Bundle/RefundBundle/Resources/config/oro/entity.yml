@@ -1,9 +1,0 @@
-oro_entity:
-    entity_aliases:
-        Marello\Bundle\RefundBundle\Entity\Refund:
-            alias: marellorefund
-            plural_alias: marellorefunds
-
-        Marello\Bundle\RefundBundle\Entity\RefundItem:
-            alias: marellorefunditem
-            plural_alias: marellorefunditems

@@ -1,9 +1,0 @@
-marello_product_product:
-    resource: "@MarelloProductBundle/Controller/ProductController.php"
-    type:     annotation
-    prefix:   /marello/product
-
-marello_product_variant:
-    resource: "@MarelloProductBundle/Controller/VariantController.php"
-    type:     annotation
-    prefix:   /marello/product/variant
