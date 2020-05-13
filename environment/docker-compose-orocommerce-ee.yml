@@ -27,6 +27,26 @@ services:
         environment:
             - PMA_HOST=db
 
+    db_postgres:
+        expose:
+            - "5432"
+        image: postgres:9.6.9
+        container_name: orocommerce-ee-pgsql-db
+        environment:
+            - POSTGRES_PASSWORD=root
+            - POSTGRES_USER=root
+            - POSTGRES_DB=marellocommerce
+        volumes:
+            - dbpostgresdata:/var/lib/postgresql/data
+
+    adminer:
+        image: adminer
+        container_name: orocommerce-ee-pgsql-adminer
+        ports:
+            - "5084:8080"
+        links:
+            - db_postgres
+
     mailhog:
         image: mailhog/mailhog
         container_name: orocommerce-mailhog
@@ -82,3 +102,4 @@ services:
 
 volumes:
     dbdata:
+    dbpostgresdata:

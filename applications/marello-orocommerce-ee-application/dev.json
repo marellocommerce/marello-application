@@ -104,8 +104,9 @@
     "marello-reset": [
       "rm -rf var/cache/*",
       "rm -rf var/logs/*",
+      "rm -rf var/attachment/*",
       "sed -i -e 's/installed:.*/installed: ~/g' config/parameters.yml",
-      "bin/console oro:install --timeout 3600 --sample-data=y --drop-database --env=prod --user-name=admin --user-firstname=John --user-lastname=Doe --user-password=marello123 --user-email=johndoe@example.com  --organization-name=Marello --formatting-code=en --language=en"
+      "bin/console oro:install --timeout 3600 --sample-data=y --drop-database --env=prod --user-name=admin --user-firstname=John --user-lastname=Doe --user-password=marello123 --user-email=johndoe@example.com  --organization-name=Marello --formatting-code=en_US --language=en"
     ],
     "test": [
       "rm -rf var/cache/*",
@@ -121,14 +122,15 @@
     "test-extended": [
       "rm -rf var/cache/*",
       "rm -rf var/logs/*",
+      "rm -rf var/attachment/*",
       "sed -i -e 's/installed:.*/installed: ~/g' config/parameters_test.yml",
-      "bin/console oro:install --env test --organization-name Oro --user-name admin --user-email admin@example.com --user-firstname John --user-lastname Doe --user-password admin --sample-data n --application-url http://localhost --drop-database --timeout 3600 --skip-translations --skip-assets",
       "php ./bin/phpunit --color --testsuite=\"unit\"",
+      "bin/console oro:install --env test --organization-name Oro --user-name admin --user-email admin@example.com --user-firstname John --user-lastname Doe --user-password admin --sample-data n --application-url http://localhost --drop-database --timeout 3600 --skip-translations --skip-assets --formatting-code=en_US --language=en",
       "php ./bin/phpunit --color --testsuite=\"functional\"",
-      "php ./bin/phpcs vendor/marellocommerce/ -p --encoding=utf-8 --extensions=php --standard=psr2 --report=checkstyle --report-file=var/logs/phpcs.xml"
+      "php ./bin/phpcs --standard=vendor/marellocommerce/marello/phpcs.xml -p vendor/marellocommerce/ --report-file=var/logs/phpcs.xml"
     ],
     "test-psr": [
-      "php ./bin/phpcs vendor/marellocommerce/ -p --encoding=utf-8 --extensions=php --standard=psr2 --report=checkstyle --report-file=var/logs/phpcs.xml"
+      "php ./bin/phpcs --standard=vendor/marellocommerce/marello/phpcs.xml -p vendor/marellocommerce/ --report-file=var/logs/phpcs.xml"
     ],
     "post-install-cmd": [
       "@build-parameters",

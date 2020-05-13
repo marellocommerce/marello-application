@@ -27,8 +27,11 @@ abstract class AbstractExportWriter implements
     const DELETE_ACTION = 'delete';
     
     const NOT_SYNCHRONIZED = 'orocommerce_not_synchronized';
-    
-    /**
+    const SYNC_TYPE = 'orocommerce_sync_type';
+    const SINGLE_SYNC_TYPE = 'single';
+    const COLLECTION_SYNC_TYPE = 'collection';
+
+        /**
      * @var Registry
      */
     protected $registry;

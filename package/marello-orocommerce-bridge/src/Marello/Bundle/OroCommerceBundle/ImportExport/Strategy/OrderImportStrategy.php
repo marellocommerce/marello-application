@@ -81,6 +81,12 @@ class OrderImportStrategy extends AbstractImportStrategy
             if (!$item->getOrder()) {
                 $item->setOrder($entityToUpdate);
             }
+            $product = $item->getProduct();
+            $order = $item->getOrder();
+            $taxCode = $product->getSalesChannelTaxCode($order->getSalesChannel()) ? : $product->getTaxCode();
+            $item
+                ->setTaxCode($taxCode)
+                ->setOrganization($order->getOrganization());
         }
     }
 
@@ -115,7 +121,7 @@ class OrderImportStrategy extends AbstractImportStrategy
             $company = $entity->getCompany();
             if ($company && $existingCompany && $company->getName() === $existingCompany->getName()) {
                 $customer->setCompany($existingCompany);
-            } else if ($company) {
+            } elseif ($company) {
                 $customer->setCompany($company);
             }
             if (!$customer->getOrganization() && $order->getOrganization()) {

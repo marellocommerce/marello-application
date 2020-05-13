@@ -92,7 +92,7 @@ class MarelloShippingBundleInstaller implements Installation, AttachmentExtensio
         $table->addColumn('method', 'string', ['length' => 255]);
         $table->addColumn('options', 'array', ['comment' => '(DC2Type:array)']);
         $table->setPrimaryKey(['id']);
-        $table->addIndex(['rule_id'], 'IDX_838CE690744E0351', []);
+        $table->addIndex(['rule_id'], 'idx_ba673c00744e0351');
     }
 
     /**
@@ -109,7 +109,7 @@ class MarelloShippingBundleInstaller implements Installation, AttachmentExtensio
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);
 
         $table->setPrimaryKey(['id']);
-        $table->addIndex(['rule_id'], 'IDX_1FA57D60744E0351', []);
+        $table->addIndex(['rule_id'], 'idx_b068a5e0744e0351');
     }
 
     /**
@@ -124,7 +124,7 @@ class MarelloShippingBundleInstaller implements Installation, AttachmentExtensio
         $table->addColumn('destination_id', 'integer', []);
         $table->addColumn('name', 'string', ['length' => 255]);
         $table->setPrimaryKey(['id']);
-        $table->addIndex(['destination_id'], 'IDX_FD8EDF05816C6140', []);
+        $table->addIndex(['destination_id'], 'idx_5cff199e816c6140');
     }
 
     /**
@@ -141,7 +141,7 @@ class MarelloShippingBundleInstaller implements Installation, AttachmentExtensio
         $table->addColumn('options', 'array', ['comment' => '(DC2Type:array)']);
         $table->addColumn('enabled', 'boolean', ['default' => '0']);
         $table->setPrimaryKey(['id']);
-        $table->addIndex(['method_config_id'], 'IDX_E04B78373A3C93A5', []);
+        $table->addIndex(['method_config_id'], 'idx_214302ad3a3c93a5');
     }
 
     /**
@@ -158,9 +158,9 @@ class MarelloShippingBundleInstaller implements Installation, AttachmentExtensio
         $table->addColumn('country_code', 'string', ['length' => 2]);
         $table->addColumn('region_text', 'string', ['notnull' => false, 'length' => 255]);
         $table->setPrimaryKey(['id']);
-        $table->addIndex(['region_code'], 'IDX_BBAF16AAEB327AF', []);
-        $table->addIndex(['country_code'], 'IDX_BBAF16AF026BB7C', []);
-        $table->addIndex(['rule_id'], 'IDX_BBAF16A744E0351', []);
+        $table->addIndex(['region_code'], 'idx_778290c2aeb327af');
+        $table->addIndex(['country_code'], 'idx_778290c2f026bb7c');
+        $table->addIndex(['rule_id'], 'idx_778290c2744e0351');
     }
 
     /**

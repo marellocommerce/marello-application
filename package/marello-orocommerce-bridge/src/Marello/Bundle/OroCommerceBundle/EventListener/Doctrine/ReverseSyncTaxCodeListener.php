@@ -12,7 +12,10 @@ use Marello\Bundle\OroCommerceBundle\Integration\Connector\OroCommerceTaxCodeCon
 use Marello\Bundle\OroCommerceBundle\Integration\OroCommerceChannelType;
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
 use Oro\Bundle\EntityBundle\Event\OroEventManager;
+use Oro\Bundle\IntegrationBundle\Async\Topics;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
+use Oro\Component\MessageQueue\Client\Message;
+use Oro\Component\MessageQueue\Client\MessagePriority;
 
 class ReverseSyncTaxCodeListener extends AbstractReverseSyncListener
 {
@@ -139,14 +142,20 @@ class ReverseSyncTaxCodeListener extends AbstractReverseSyncListener
                 if (!empty($connector_params)) {
                     /** @var OroCommerceSettings $transport */
                     $transport = $integrationChannel->getTransport();
-                    $settingsBag = $transport->getSettingsBag();
                     if ($integrationChannel->isEnabled()) {
-                        $this->syncScheduler->getService()->schedule(
-                            $integrationChannel->getId(),
-                            OroCommerceTaxCodeConnector::TYPE,
-                            $connector_params
+                        $this->producer->send(
+                            sprintf('%s.orocommerce', Topics::REVERS_SYNC_INTEGRATION),
+                            new Message(
+                                [
+                                    'integration_id'       => $integrationChannel->getId(),
+                                    'connector_parameters' => $connector_params,
+                                    'connector'            => OroCommerceTaxCodeConnector::TYPE,
+                                    'transport_batch_size' => 100,
+                                ],
+                                MessagePriority::NORMAL
+                            )
                         );
-                    } elseif($settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION) === false) {
+                    } elseif (false === $transport->isDeleteRemoteDataOnDeactivation()) {
                         $transportData = $transport->getData();
                         $transportData[AbstractExportWriter::NOT_SYNCHRONIZED]
                         [OroCommerceTaxCodeConnector::TYPE]
@@ -184,7 +193,10 @@ class ReverseSyncTaxCodeListener extends AbstractReverseSyncListener
         foreach ($channels as $channel) {
             if ($channel->getSynchronizationSettings()->offsetGetOr('isTwoWaySyncEnabled', false) &&
                 in_array(OroCommerceTaxCodeConnector::TYPE, $channel->getConnectors())) {
-                $integrationChannels[] = $channel;
+                $connectors = $channel->getConnectors();
+                if (in_array(OroCommerceTaxCodeConnector::TYPE, $connectors)) {
+                    $integrationChannels[] = $channel;
+                }
             }
         }
 

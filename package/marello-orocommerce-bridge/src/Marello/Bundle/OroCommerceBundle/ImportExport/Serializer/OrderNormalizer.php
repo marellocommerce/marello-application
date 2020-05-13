@@ -131,7 +131,7 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
         }
         $order
             ->setOrderReference($this->getProperty($data, 'id'))
-            ->setPaymentMethod($this->getProperty($data, 'paymentMethod'))
+            ->setPaymentMethod($this->getProperty($data, 'paymentMethod') ? : 'no payment method')
             ->setShippingMethod(
                 sprintf(
                     '%s, %s',
@@ -169,6 +169,7 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
         $companyData = $this->getProperty($data, 'customer');
         if ($companyData) {
             $companyName = $this->getProperty($companyData, 'name');
+            /** @var Company $company */
             $company = $this->registry
                 ->getManagerForClass(Company::class)
                 ->getRepository(Company::class)
@@ -209,6 +210,7 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
     private function prepareOrderItems(array $lineItems, Order $order)
     {
         foreach ($lineItems as $lineItem) {
+            /** @var Product $product */
             $product = $this->registry
                 ->getManagerForClass(Product::class)
                 ->getRepository(Product::class)

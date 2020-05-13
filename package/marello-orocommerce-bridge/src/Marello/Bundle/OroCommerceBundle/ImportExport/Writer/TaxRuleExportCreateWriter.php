@@ -4,9 +4,43 @@ namespace Marello\Bundle\OroCommerceBundle\ImportExport\Writer;
 
 use Marello\Bundle\TaxBundle\Entity\TaxRule;
 
-class TaxRuleExportCreateWriter extends AbstractItemExportWriter
+class TaxRuleExportCreateWriter extends AbstractExportWriter
 {
     const TAX_RULE_ID = 'orocommerce_tax_rule_id';
+
+    /**
+     * @param array $entities
+     * @throws \Exception
+     */
+    public function write(array $entities)
+    {
+        $this->transport->init($this->getChannel()->getTransport());
+
+        if (count($entities) > 1) {
+            $this->writeCollection($entities);
+        } else {
+            $this->writeItem(reset($entities));
+        }
+    }
+
+    /**
+     * @param array $data
+     */
+    protected function writeCollection(array $data)
+    {
+        $action = $this->context->getOption(AbstractExportWriter::ACTION_FIELD);
+        if ($action === AbstractExportWriter::CREATE_ACTION) {
+            $response = $this->transport->createTaxRulesCollection($data);
+        } elseif ($action === AbstractExportWriter::UPDATE_ACTION) {
+            $response = $this->transport->updateTaxRulesCollection($data);
+        } else {
+            return;
+        }
+        foreach ($response as $itemData) {
+            $this->processItemData($itemData);
+        }
+    }
+
     /**
      * @param array $data
      */
@@ -20,7 +54,11 @@ class TaxRuleExportCreateWriter extends AbstractItemExportWriter
         } else {
             return;
         }
+        $this->processItemData($response);
+    }
 
+    private function processItemData(array $response)
+    {
         if (isset($response['data'])&& isset($response['included']) && isset($response['data']['type']) &&
             isset($response['data']['id']) && $response['data']['type'] === 'taxrules') {
             $em = $this->registry->getManagerForClass(TaxRule::class);
@@ -74,6 +112,7 @@ class TaxRuleExportCreateWriter extends AbstractItemExportWriter
                 $em->persist($processedTaxJurisdiction);
                 $em->flush();
             }
+            $action = $this->context->getOption(AbstractExportWriter::ACTION_FIELD);
             if ($action === AbstractExportWriter::CREATE_ACTION) {
                 $this->context->incrementAddCount();
             } elseif ($action === AbstractExportWriter::UPDATE_ACTION) {
