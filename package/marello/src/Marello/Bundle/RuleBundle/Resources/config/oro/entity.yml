@@ -1,5 +1,0 @@
-oro_entity:
-    entity_aliases:
-        Marello\Bundle\RuleBundle\Entity\Rule:
-            alias:        marellorule
-            plural_alias: marellorules

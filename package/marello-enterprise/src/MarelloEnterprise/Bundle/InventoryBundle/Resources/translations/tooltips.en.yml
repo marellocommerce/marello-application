@@ -1,6 +1,0 @@
-marelloenterprise:
-    inventory:
-        warehouse:
-            delete:                 You have to select a different default warehouse before deleting.
-        warehousechannelgrouplink:
-            select_warehousegroup:  Warehouse (Group) of WarehouseType 'Fixed' can only be linked to a single SalesChannel (Group).
