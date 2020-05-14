@@ -6,6 +6,7 @@ marello:
             id.label:                           Id
             entity_label:                       Tax Code
             entity_plural_label:                Tax Codes
+            entity_grid_all_view_label:         All %entity_plural_label%
             widget_title:                       Default Tax Code
             code.label:                         Code
             description.label:                  Description
@@ -17,6 +18,7 @@ marello:
             id.label:                           Id
             entity_label:                       Tax Rate
             entity_plural_label:                Tax Rates
+            entity_grid_all_view_label:         All %entity_plural_label%
             code.label:                         Code
             rate.label:                         Rate
             datablock.general:                  General
@@ -26,6 +28,7 @@ marello:
             id.label:                           Id
             entity_label:                       Tax Rule
             entity_plural_label:                Tax Rules
+            entity_grid_all_view_label:         All %entity_plural_label%
             tax_code.label:                     Tax Code
             tax_rate.label:                     Tax Rate
             tax_jurisdiction.label:             Tax Jurisdiction
@@ -35,6 +38,7 @@ marello:
         taxjurisdiction:
             entity_label:                       Tax Jurisdiction
             entity_plural_label:                Tax Jurisdictions
+            entity_grid_all_view_label:         All %entity_plural_label%
             description:                        List of Tax Jurisdictions
             id.label:                           ID
             code.label:                         Code
@@ -47,6 +51,7 @@ marello:
         zipcode:
             entity_label:                       Zip Code
             entity_plural_label:                Zip Codes
+            entity_grid_all_view_label:         All %entity_plural_label%
             id.label:                           ID
             zip_code.label:                     Zip Code
             zip_range_start.label:              Range start

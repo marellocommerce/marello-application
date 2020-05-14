@@ -2,6 +2,7 @@ marello:
     customer:
         entity_label:                     'Customer'
         entity_plural_label:              'Customers'
+        entity_grid_all_view_label:       All %entity_plural_label%
         id.label:                         'Id'
         organization.label:               'Organization'
         primary_address.label:            'Primary Address'
@@ -24,6 +25,7 @@ marello:
         company:
             entity_label:           'Company'
             entity_plural_label:    'Companies'
+            entity_grid_all_view_label: All %entity_plural_label%
             id.label:               'Id'
             name.label:             'Name'
             parent.label:           'Parent'
