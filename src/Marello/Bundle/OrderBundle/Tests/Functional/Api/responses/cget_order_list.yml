@@ -11,8 +11,6 @@ data:
             grandTotal: '280.0000'
             currency: USD
             paymentMethod: 'Credit Card'
-            paymentReference: null
-            paymentDetails: 'American Express refnr. 371449635398431'
             shippingAmountInclTax: '0.0000'
             shippingAmountExclTax: '0.0000'
             shippingMethod: null
@@ -26,10 +24,10 @@ data:
             salesChannelName: channel2
             purchaseDate: '@marello_order_0->purchaseDate->format("Y-m-d\TH:i:s\Z")'
             data: null
-            workflowItem:
-                currentStep:
-                    name: pending
-                    label: 'Pending Order'
+            #workflowItem:
+            #    currentStep:
+            #        name: pending
+            #        label: 'Pending Order'
         relationships:
             items:
                 data:
@@ -72,8 +70,6 @@ data:
             grandTotal: '1511.0000'
             currency: GBP
             paymentMethod: Paypal
-            paymentReference: null
-            paymentDetails: null
             shippingAmountInclTax: '10.0000'
             shippingAmountExclTax: '10.0000'
             shippingMethod: null
@@ -87,10 +83,10 @@ data:
             salesChannelName: channel3
             purchaseDate: '@marello_order_1->purchaseDate->format("Y-m-d\TH:i:s\Z")'
             data: null
-            workflowItem:
-                currentStep:
-                    name: pending
-                    label: 'Pending Order'
+            #workflowItem:
+            #    currentStep:
+            #        name: pending
+            #        label: 'Pending Order'
         relationships:
             items:
                 data:
@@ -142,8 +138,6 @@ data:
             grandTotal: '1110.0000'
             currency: USD
             paymentMethod: 'Credit Card'
-            paymentReference: null
-            paymentDetails: 'American Express refnr. 371449635398431'
             shippingAmountInclTax: '0.0000'
             shippingAmountExclTax: '0.0000'
             shippingMethod: null
@@ -157,10 +151,10 @@ data:
             salesChannelName: channel2
             purchaseDate: '@marello_order_2->purchaseDate->format("Y-m-d\TH:i:s\Z")'
             data: null
-            workflowItem:
-                currentStep:
-                    name: pending
-                    label: 'Pending Order'
+            #workflowItem:
+            #    currentStep:
+            #        name: pending
+            #        label: 'Pending Order'
         relationships:
             items:
                 data:
@@ -209,8 +203,6 @@ data:
             grandTotal: '2030.0000'
             currency: GBP
             paymentMethod: Paypal
-            paymentReference: null
-            paymentDetails: null
             shippingAmountInclTax: '0.0000'
             shippingAmountExclTax: '0.0000'
             shippingMethod: null
@@ -224,10 +216,10 @@ data:
             salesChannelName: channel3
             purchaseDate: '@marello_order_3->purchaseDate->format("Y-m-d\TH:i:s\Z")'
             data: null
-            workflowItem:
-                currentStep:
-                    name: pending
-                    label: 'Pending Order'
+            #workflowItem:
+            #    currentStep:
+            #        name: pending
+            #        label: 'Pending Order'
         relationships:
             items:
                 data:
@@ -279,8 +271,6 @@ data:
             grandTotal: '455.0000'
             currency: GBP
             paymentMethod: 'Credit Card'
-            paymentReference: null
-            paymentDetails: 'Visa refnr. 4012888888881881'
             shippingAmountInclTax: '5.0000'
             shippingAmountExclTax: '5.0000'
             shippingMethod: null
@@ -294,10 +284,10 @@ data:
             salesChannelName: channel3
             purchaseDate: '@marello_order_4->purchaseDate->format("Y-m-d\TH:i:s\Z")'
             data: null
-            workflowItem:
-                currentStep:
-                    name: pending
-                    label: 'Pending Order'
+            #workflowItem:
+            #    currentStep:
+            #        name: pending
+            #        label: 'Pending Order'
         relationships:
             items:
                 data:
@@ -340,8 +330,6 @@ data:
             grandTotal: '920.2500'
             currency: GBP
             paymentMethod: Paypal
-            paymentReference: null
-            paymentDetails: null
             shippingAmountInclTax: '0.0000'
             shippingAmountExclTax: '0.0000'
             shippingMethod: null
@@ -355,10 +343,10 @@ data:
             salesChannelName: channel3
             purchaseDate: '@marello_order_5->purchaseDate->format("Y-m-d\TH:i:s\Z")'
             data: null
-            workflowItem:
-                currentStep:
-                    name: pending
-                    label: 'Pending Order'
+            #workflowItem:
+            #    currentStep:
+            #        name: pending
+            #        label: 'Pending Order'
         relationships:
             items:
                 data:
@@ -404,8 +392,6 @@ data:
             grandTotal: '1595.0000'
             currency: GBP
             paymentMethod: Paypal
-            paymentReference: null
-            paymentDetails: null
             shippingAmountInclTax: '5.0000'
             shippingAmountExclTax: '5.0000'
             shippingMethod: null
@@ -419,10 +405,10 @@ data:
             salesChannelName: channel3
             purchaseDate: '@marello_order_6->purchaseDate->format("Y-m-d\TH:i:s\Z")'
             data: null
-            workflowItem:
-                currentStep:
-                    name: pending
-                    label: 'Pending Order'
+            #workflowItem:
+            #    currentStep:
+            #        name: pending
+            #        label: 'Pending Order'
         relationships:
             items:
                 data:
@@ -474,8 +460,6 @@ data:
             grandTotal: '635.0000'
             currency: USD
             paymentMethod: 'Credit Card'
-            paymentReference: null
-            paymentDetails: 'Visa refnr. 4012888888881881'
             shippingAmountInclTax: '5.0000'
             shippingAmountExclTax: '5.0000'
             shippingMethod: null
@@ -489,10 +473,10 @@ data:
             salesChannelName: channel2
             purchaseDate: '@marello_order_7->purchaseDate->format("Y-m-d\TH:i:s\Z")'
             data: null
-            workflowItem:
-                currentStep:
-                    name: pending
-                    label: 'Pending Order'
+            #workflowItem:
+            #    currentStep:
+            #        name: pending
+            #        label: 'Pending Order'
         relationships:
             items:
                 data:
@@ -535,8 +519,6 @@ data:
             grandTotal: '430.0000'
             currency: USD
             paymentMethod: 'Credit Card'
-            paymentReference: null
-            paymentDetails: 'Visa refnr. 4012888888881881'
             shippingAmountInclTax: '5.0000'
             shippingAmountExclTax: '5.0000'
             shippingMethod: null
@@ -550,10 +532,10 @@ data:
             salesChannelName: channel2
             purchaseDate: '@marello_order_8->purchaseDate->format("Y-m-d\TH:i:s\Z")'
             data: null
-            workflowItem:
-                currentStep:
-                    name: pending
-                    label: 'Pending Order'
+            #workflowItem:
+            #    currentStep:
+            #        name: pending
+            #        label: 'Pending Order'
         relationships:
             items:
                 data:
@@ -599,8 +581,6 @@ data:
             grandTotal: '0.0000'
             currency: EUR
             paymentMethod: 'Credit Card'
-            paymentReference: null
-            paymentDetails: 'Master Card refnr. 5105105105105100'
             shippingAmountInclTax: '10.0000'
             shippingAmountExclTax: '10.0000'
             shippingMethod: null
@@ -614,10 +594,10 @@ data:
             salesChannelName: channel1
             purchaseDate: '@marello_order_9->purchaseDate->format("Y-m-d\TH:i:s\Z")'
             data: null
-            workflowItem:
-                currentStep:
-                    name: pending
-                    label: 'Pending Order'
+            #workflowItem:
+            #    currentStep:
+            #        name: pending
+            #        label: 'Pending Order'
         relationships:
             items:
                 data:

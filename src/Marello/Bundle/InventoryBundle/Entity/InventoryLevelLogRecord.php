@@ -38,7 +38,7 @@ class InventoryLevelLogRecord
 
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryLevel")
-     * @ORM\JoinColumn(name="inventory_level_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="inventory_level_id", referencedColumnName="id", onDelete="SET NULL")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={
@@ -57,7 +57,7 @@ class InventoryLevelLogRecord
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryItem",
      *     cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="inventory_item_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="inventory_item_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={
