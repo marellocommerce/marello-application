@@ -105,7 +105,6 @@ marello:
         paymentmethodsconfigsrule:
             entity_short_label: Payment Rule
             entity_short_plural_label: Payment Rules
-            entity_grid_all_view_label: All %entity_plural_label%
             entity_label: Payment Rule
             entity_plural_label: Payment Rules
             entity_grid_all_view_label: All %entity_plural_label%
