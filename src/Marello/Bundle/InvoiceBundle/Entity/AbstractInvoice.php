@@ -282,7 +282,9 @@ abstract class AbstractInvoice implements
      * @ORM\ManyToMany(targetEntity="Marello\Bundle\PaymentBundle\Entity\Payment", cascade={"persist"})
      * @ORM\JoinTable(name="marello_invoice_payments",
      *      joinColumns={@ORM\JoinColumn(name="invoice_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="payment_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
+     *      inverseJoinColumns={
+     *          @ORM\JoinColumn(name="payment_id", referencedColumnName="id", unique=true, onDelete="CASCADE")
+     *      }
      * )
      * @ORM\OrderBy({"id" = "ASC"})
      * @Oro\ConfigField(
