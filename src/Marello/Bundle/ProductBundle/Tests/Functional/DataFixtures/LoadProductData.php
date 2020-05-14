@@ -9,8 +9,8 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Marello\Bundle\PricingBundle\Entity\AssembledPriceList;
 use Marello\Bundle\PricingBundle\Entity\PriceType;
 use Marello\Bundle\PricingBundle\Model\PriceTypeInterface;
+use Marello\Bundle\ProductBundle\Entity\Builder\ProductFamilyBuilder;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\ProductBundle\Migrations\Data\ORM\LoadDefaultAttributeFamilyData;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
@@ -243,7 +243,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
 
         $defaultAttributeFamily = $this->manager
             ->getRepository(AttributeFamily::class)
-            ->findOneBy(['code' => LoadDefaultAttributeFamilyData::DEFAULT_FAMILY_CODE]);
+            ->findOneBy(['code' => ProductFamilyBuilder::DEFAULT_FAMILY_CODE]);
         $product->setAttributeFamily($defaultAttributeFamily);
 
         $currencies = $this->addSalesChannels($product, $data);

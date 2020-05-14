@@ -76,7 +76,7 @@ class UpdateExistingAttributesConfig extends AbstractFixture implements
     public function getDependencies()
     {
         return [
-            LoadDefaultAttributeFamilyData::class
+            LoadDefaultProductFamilyData::class
         ];
     }
 }
