@@ -3,8 +3,9 @@ marello:
         header.label:                   Prices
 
         assembledpricelist:
-            entity_plural_label:        Assembled Price Lists
             entity_label:               Assembled Price List
+            entity_plural_label:        Assembled Price Lists
+            entity_grid_all_view_label: All %entity_plural_label%
             currency.label:             Currency
             id.label:                   Id
             default_price:
@@ -19,8 +20,9 @@ marello:
             product.label:              Product
 
         assembledchannelpricelist:
-            entity_plural_label:        Assembled Channel Price Lists
             entity_label:               Assembled Channel Price List
+            entity_plural_label:        Assembled Channel Price Lists
+            entity_grid_all_view_label: All %entity_plural_label%
             currency.label:             Currency
             id.label:                   Id
             default_price:
@@ -33,8 +35,9 @@ marello:
             channel.label:              Channel
 
         productprice:
-            entity_plural_label:        Default Prices
             entity_label:               Default Price
+            entity_plural_label:        Default Prices
+            entity_grid_all_view_label: All %entity_plural_label%
             currency.label:             Currency
             id.label:                   Id
             created_at.label:           Created At
@@ -49,12 +52,14 @@ marello:
         pricetype:
             entity_label:               Price Type
             entity_plural_label:        Price Types
+            entity_grid_all_view_label: All %entity_plural_label%
             name.label:                 Name
             label.label:                Label
 
         productchannelprice:
-            entity_plural_label:        Product Channel Prices
             entity_label:               Product Channel Price
+            entity_plural_label:        Product Channel Prices
+            entity_grid_all_view_label: All %entity_plural_label%
             currency.label:             Currency
             id.label:                   Id
             created_at.label:           Created At

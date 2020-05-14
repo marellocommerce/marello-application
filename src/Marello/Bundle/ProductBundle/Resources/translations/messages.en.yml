@@ -1,8 +1,9 @@
 marello:
     product:
         id.label:                   Id
-        entity_plural_label:        Products
         entity_label:               Product
+        entity_plural_label:        Products
+        entity_grid_all_view_label: All %entity_plural_label%
         name.label:                 Name
         names.label:                Names
         sku.label:                  SKU
@@ -29,8 +30,9 @@ marello:
         attribute_family.label:     Attribute Family
         variant:
             label:                    Variant
-            entity_plural_label:      Variants
             entity_label:             Variant
+            entity_plural_label:      Variants
+            entity_grid_all_view_label: All %entity_plural_label%
             id.label:                 Id
             variant_code.label:       Variant code
             products.label:           Products
@@ -39,6 +41,7 @@ marello:
         productstatus:
             entity_label:           Product Status
             entity_plural_label:    Product Statuses
+            entity_grid_all_view_label: All %entity_plural_label%
             label.label:            Label
             name.label:             Name
 
@@ -46,6 +49,7 @@ marello:
             id.label:                           Id
             entity_label:                       Product Channel Tax Code Relation
             entity_plural_label:                Product Channel Tax Code Relations
+            entity_grid_all_view_label:         All %entity_plural_label%
             widget_title:                       Sales Channel Tax Codes
             product.label:                      Product
             sales_channel.label:                Sales Channel
@@ -55,6 +59,7 @@ marello:
         productsupplierrelation:
             entity_label:        Product Supplier Relation
             entity_plural_label: Product Supplier Relations
+            entity_grid_all_view_label: All %entity_plural_label%
 
         messages:
             success:
