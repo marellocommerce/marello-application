@@ -1,7 +1,7 @@
 Marello\Bundle\CatalogBundle\Entity\Category:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
-            fields: code
+            fields: [code, organization]
             message: 'marello.catalog.category.messages.error.code'
     properties:
         name:
