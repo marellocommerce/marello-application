@@ -133,8 +133,6 @@
                             </div>
                         </div>
                     </div>
-                    {{ UI.renderProperty('marello.order.payment_reference.label'|trans, entity.paymentReference) }}
-                    {{ UI.renderHtmlProperty('marello.order.payment_details.label'|trans, entity.paymentDetails|nl2br) }}
                 </div>
             </div>
         </div>
@@ -174,6 +172,10 @@
         {{ dataGrid.renderGrid('marello-order-invoices-grid', {'orderId': entity.id}) }}
     {% endset %}
 
+    {% set payments %}
+        {{ dataGrid.renderGrid('marello-order-payments-grid', {'orderId': entity.id}) }}
+    {% endset %}
+
     {% set dataBlocks = [
         {
             'title': 'marello.order.datablock.general'|trans,
@@ -201,8 +203,15 @@
             'title': 'marello.order.datablock.invoices'|trans,
             'class': 'active',
             'subblocks': [
-            { 'data' : [invoices] }
-        ]
+                { 'data' : [invoices] }
+            ]
+        },
+        {
+            'title': 'marello.order.datablock.payments'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data' : [payments] }
+            ]
         },
         {
             'title': 'marello.order.datablock.packing_slips'|trans,
