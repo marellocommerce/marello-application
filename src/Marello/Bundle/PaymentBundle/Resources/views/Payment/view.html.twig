@@ -1,0 +1,62 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% block navButtons %}
+    {% if is_granted('marello_payment_update') %}
+        {{ UI.editButton({
+            'path' : path('marello_payment_update', { id: entity.id }),
+            'entity_label': 'marello.payment.entity_label'|trans
+        }) }}
+    {% endif %}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity':      entity,
+        'indexPath':   path('marello_payment_index'),
+        'indexLabel': 'marello.payment.entity_plural_label'|trans,
+        'entityTitle': entity.id
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set id = 'marello-payment-view' %}
+    {% set paymentMethod = marello_get_payment_method_label(entity.paymentMethod)|trans %}
+    {% for name, value in entity.paymentMethodOptions %}
+        {% set paymentMethod = paymentMethod ~ ' <br>' ~ name ~ ': ' ~ value %}
+    {% endfor %}
+    {% set paymentSource = marello_get_payment_source(entity) %}
+    {% set data %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ UI.renderProperty('marello.payment.status.label'|trans, entity.status) }}
+                    {{ UI.renderHtmlProperty(
+                        'marello.payment.payment_source.label'|trans,
+                        UI.entityViewLink(paymentSource, paymentSource.invoiceType ~ ': ' ~ paymentSource.invoiceNumber, 'marello_invoice_invoice_view')
+                    )}}
+                    {{ UI.renderHtmlProperty('marello.payment.payment_method.label'|trans, paymentMethod) }}
+                    {{ UI.renderProperty('marello.payment.payment_reference.label'|trans, entity.paymentReference) }}
+                    {{ UI.renderProperty('marello.payment.payment_details.label'|trans, entity.paymentDetails) }}
+                    {{ UI.renderProperty('marello.payment.total_paid.label'|trans, entity.totalPaid|oro_format_currency({'currency':entity.currency})) }}
+                    {{ UI.renderProperty('marello.payment.payment_date.label'|trans, entity.paymentDate|date) }}
+                    {{ UI.renderProperty('oro.ui.created_at'|trans, entity.createdAt|date) }}
+                    {{ UI.renderProperty('oro.ui.updated_at'|trans, entity.updatedAt|date) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+    {% set dataBlocks = [
+        {
+            'title': 'General'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data' : [data] }
+            ]
+        }
+    ] %}
+
+    {% set data = { 'dataBlocks': dataBlocks } %}
+    {{ parent() }}
+{% endblock content_data %}

@@ -14,6 +14,10 @@ use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 use Marello\Bundle\InventoryBundle\Tests\Functional\DataFixtures\LoadInventoryData;
 use Marello\Bundle\PricingBundle\Tests\Functional\DataFixtures\LoadProductChannelPricingData;
 
+/**
+ * @dbIsolationPerTest
+ * @nestTransactionsWithSavepoints
+ */
 class InventoryControllerTest extends WebTestCase
 {
     /**

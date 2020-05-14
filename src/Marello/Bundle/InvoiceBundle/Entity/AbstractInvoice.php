@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+use Marello\Bundle\PaymentBundle\Entity\Payment;
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
@@ -23,7 +24,7 @@ use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Marello\Bundle\InvoiceBundle\Entity\Repository\AbstractInvoiceRepository")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({"invoice" = "Invoice", "creditmemo" = "Creditmemo"})
@@ -174,33 +175,6 @@ abstract class AbstractInvoice implements
 
     /**
      * @var string
-     * @ORM\Column(name="payment_reference", type="string", length=255, nullable=true)
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "dataaudit"={
-     *              "auditable"=true
-     *          }
-     *      }
-     * )
-     */
-    protected $paymentReference;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="payment_details", type="text", nullable=true)
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "dataaudit"={
-     *              "auditable"=true
-     *          }
-     *      }
-     * )
-     */
-    protected $paymentDetails;
-
-    /**
-     * @var string
      *
      * @ORM\Column(name="shipping_method", type="string", nullable=true)
      * @Oro\ConfigField(
@@ -303,6 +277,28 @@ abstract class AbstractInvoice implements
     protected $items;
 
     /**
+     * @var Collection|Payment[]
+     *
+     * @ORM\ManyToMany(targetEntity="Marello\Bundle\PaymentBundle\Entity\Payment", cascade={"persist"})
+     * @ORM\JoinTable(name="marello_invoice_payments",
+     *      joinColumns={@ORM\JoinColumn(name="invoice_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="payment_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
+     * )
+     * @ORM\OrderBy({"id" = "ASC"})
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "email"={
+     *              "available_in_template"=true
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $payments;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="subtotal", type="money")
@@ -373,6 +369,34 @@ abstract class AbstractInvoice implements
     protected $shippingAmountExclTax;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="total_due", type="money", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $totalDue = 0;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="total_paid", type="money", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $totalPaid = 0;
+
+    /**
      * @param AbstractAddress|null $billingAddress
      * @param AbstractAddress|null $shippingAddress
      */
@@ -381,6 +405,7 @@ abstract class AbstractInvoice implements
         AbstractAddress $shippingAddress = null
     ) {
         $this->items = new ArrayCollection();
+        $this->payments = new ArrayCollection();
         $this->billingAddress = $billingAddress;
         $this->shippingAddress = $shippingAddress;
     }
@@ -522,44 +547,6 @@ abstract class AbstractInvoice implements
     public function setPaymentMethod($paymentMethod)
     {
         $this->paymentMethod = $paymentMethod;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPaymentReference()
-    {
-        return $this->paymentReference;
-    }
-
-    /**
-     * @param string $paymentReference
-     * @return AbstractInvoice
-     */
-    public function setPaymentReference($paymentReference)
-    {
-        $this->paymentReference = $paymentReference;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPaymentDetails()
-    {
-        return $this->paymentDetails;
-    }
-
-    /**
-     * @param string $paymentDetails
-     * @return AbstractInvoice
-     */
-    public function setPaymentDetails($paymentDetails)
-    {
-        $this->paymentDetails = $paymentDetails;
 
         return $this;
     }
@@ -735,6 +722,52 @@ abstract class AbstractInvoice implements
     }
 
     /**
+     * @return Collection|Payment[]
+     */
+    public function getPayments()
+    {
+        return $this->payments;
+    }
+
+    /**
+     * @param Payment $payment
+     *
+     * @return $this
+     */
+    public function addPayment(Payment $payment)
+    {
+        if (!$this->payments->contains($payment)) {
+            $this->payments->add($payment);
+            $totalPaid = $this->getTotalPaid() ? : 0;
+            $grandTotal = $this->getGrandTotal() ? : 0;
+
+            $this->setTotalPaid($payment->getTotalPaid() + $totalPaid);
+            $this->setTotalDue($grandTotal - $this->getTotalPaid());
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Payment $payment
+     *
+     * @return $this
+     */
+    public function removePayment(Payment $payment)
+    {
+        if ($this->payments->contains($payment)) {
+            $this->payments->removeElement($payment);
+            $totalPaid = $this->getTotalPaid() ? : 0;
+            $grandTotal = $this->getGrandTotal() ? : 0;
+
+            $this->setTotalPaid($totalPaid - $payment->getTotalPaid());
+            $this->setTotalDue($grandTotal - $this->getTotalPaid());
+        }
+
+        return $this;
+    }
+
+    /**
      * @return int
      */
     public function getSubtotal()
@@ -837,6 +870,44 @@ abstract class AbstractInvoice implements
         if (!$this->invoiceNumber) {
             $this->setInvoiceNumber(sprintf('%09d', $id));
         }
+    }
+
+    /**
+     * @return float
+     */
+    public function getTotalDue()
+    {
+        return $this->totalDue;
+    }
+
+    /**
+     * @param float $totalDue
+     * @return $this
+     */
+    public function setTotalDue($totalDue)
+    {
+        $this->totalDue = $totalDue;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getTotalPaid()
+    {
+        return $this->totalPaid;
+    }
+
+    /**
+     * @param float $totalPaid
+     * @return $this
+     */
+    public function setTotalPaid($totalPaid)
+    {
+        $this->totalPaid = $totalPaid;
+
+        return $this;
     }
 
     /**

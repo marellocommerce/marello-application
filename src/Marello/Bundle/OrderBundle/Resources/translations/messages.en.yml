@@ -61,6 +61,7 @@ marello:
             order_totals:           Order Totals
             packing_slips:          Packing Slips
             invoices:               Invoices
+            payments:               Payments
         # OrderItem entity
         orderitem:
             entity_label:           Ordered Item
@@ -101,6 +102,7 @@ marello:
         customer:
             entity_label:                     Customer
             entity_plural_label:              Customers
+            entity_grid_all_view_label:       All %entity_plural_label%
             id.label:                         Id
             organization.label:               Organization
             primary_address.label:            Primary Address

@@ -7,3 +7,14 @@ services:
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after, method: onBuildAfter, priority: 250 }
             - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.after, method: onResultAfter }
+
+    marello_datagrid.extension.totals:
+        class: 'Marello\Bundle\DataGridBundle\Extension\Totals\OrmTotalsExtension'
+        decorates: oro_datagrid.extension.totals
+        arguments:
+            - '@translator'
+            - '@oro_locale.formatter.number'
+            - '@oro_locale.formatter.date_time'
+            - '@oro_security.acl_helper'
+        tags:
+            - { name: oro_datagrid.extension }
