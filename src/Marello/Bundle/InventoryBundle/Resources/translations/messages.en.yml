@@ -6,6 +6,7 @@ marello:
         warehouse:
             entity_label:               Warehouse
             entity_plural_label:        Warehouses
+            entity_grid_all_view_label: All %entity_plural_label%
             label.label:                Name
             code.label:                 Code
             default.label:              Default
@@ -23,12 +24,14 @@ marello:
         warehousetype:
             entity_label:               Warehouse Type
             entity_plural_label:        Warehouse Types
+            entity_grid_all_view_label: All %entity_plural_label%
             label.label:                Label
             name.label:                 Name
 
         warehousegroup:
             entity_label:                       Warehouse Group
             entity_plural_label:                Warehouse Groups
+            entity_grid_all_view_label:         All %entity_plural_label%
             description.label:                  Description
             id.label:                           Id
             name.label:                         Name
@@ -40,6 +43,7 @@ marello:
         warehousechannelgrouplink:
             entity_label:               Warehouse Channel Group Link
             entity_plural_label:        Warehouse Channel Group Links
+            entity_grid_all_view_label: All %entity_plural_label%
             id.label:                   Id
             system.label:               System
             organization.label:         Organization
@@ -55,6 +59,7 @@ marello:
         inventoryitem:
             entity_label:                  Inventory Item
             entity_plural_label:           Inventory Items
+            entity_grid_all_view_label:    All %entity_plural_label%
             id.label:                      Id
             product.label:                 Product
             replenishment.label:           Replenishment
@@ -82,6 +87,7 @@ marello:
         inventorylevel:
             entity_label:                   Inventory Level
             entity_plural_label:            Inventory Levels
+            entity_grid_all_view_label:     All %entity_plural_label%
             id.label:                       Id
             inventory.label:                Inventory Qty
             allocated_inventory.label:      Allocated Inventory Qty
@@ -106,6 +112,7 @@ marello:
         inventorybatch:
             entity_label:                   Inventory Batch
             entity_plural_label:            Inventory Batches
+            entity_grid_all_view_label:     All %entity_plural_label%
             id.label:                       Id
             batch_number.label:             Batch Number
             batch_reference.label:          Batch Reference
@@ -121,6 +128,7 @@ marello:
             id.label:                       Id
             entity_label:                   Inventory Level Logrecord
             entity_plural_label:            Inventory Level Logrecords
+            entity_grid_all_view_label:     All %entity_plural_label%
             allocated_inventory_alteration.label: Allocated Inventory Alteration
             change_trigger.label:           Trigger
             inventory_alteration.label:     Inventory Alteration
@@ -136,6 +144,7 @@ marello:
             id.label:                       Id
             entity_label:                   Balanced Inventory Level
             entity_plural_label:            Balanced Inventory Levels
+            entity_grid_all_view_label:     All %entity_plural_label%
             product.label:                  Product
             saleschannelgroup:              SalesChannel Group
             inventory.label:                Inventory Qty
