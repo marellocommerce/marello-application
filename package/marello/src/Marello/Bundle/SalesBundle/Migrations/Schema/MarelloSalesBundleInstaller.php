@@ -17,7 +17,7 @@ class MarelloSalesBundleInstaller implements Installation
      */
     public function getMigrationVersion()
     {
-        return 'v1_2';
+        return 'v1_3';
     }
 
     /**
@@ -45,9 +45,11 @@ class MarelloSalesBundleInstaller implements Installation
         $table->addColumn('description', 'text', ['notnull' => false]);
         $table->addColumn('is_system', 'boolean', ['default' => false]);
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);
+        $table->addColumn('integration_channel_id', 'integer', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime', []);
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
+        $table->addUniqueIndex(['integration_channel_id'], 'UNIQ_759DCFAB3D6A9E29');
     }
 
     /**
@@ -86,6 +88,13 @@ class MarelloSalesBundleInstaller implements Installation
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_organization'),
             ['organization_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_integration_channel'),
+            ['integration_channel_id'],
             ['id'],
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );

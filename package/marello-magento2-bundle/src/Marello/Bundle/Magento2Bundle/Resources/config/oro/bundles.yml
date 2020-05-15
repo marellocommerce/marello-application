@@ -1,0 +1,2 @@
+bundles:
+    - { name: Marello\Bundle\Magento2Bundle\MarelloMagento2Bundle }

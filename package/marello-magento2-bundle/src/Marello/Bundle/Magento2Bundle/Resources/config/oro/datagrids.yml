@@ -1,0 +1,8 @@
+datagrids:
+    marello-magento2-sales-channel-groups:
+        extends: marello-sales-channel-groups
+        source:
+            query:
+                where:
+                    and:
+                        - scg.integrationChannel IS NULL

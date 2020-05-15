@@ -1,0 +1,53 @@
+services:
+    marello_magento2.group_saleschannels.form.autocomplete.search_handler:
+        class: Marello\Bundle\Magento2Bundle\Autocomplete\GroupSalesChannelHandler
+        parent: marello_sales.group_saleschannels.form.autocomplete.search_handler
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: magento2_group_saleschannels }
+
+    # Handlers
+    marello_magento2.handler.transport_entity_handler:
+        class: Marello\Bundle\Magento2Bundle\Handler\TransportEntityHandler
+        arguments:
+            - '@form.factory'
+
+    marello_magento2.transport.rest_transport:
+        class: Marello\Bundle\Magento2Bundle\Transport\RestTransport
+        arguments:
+            - '@oro_integration.transport.rest.event_dispatchable_client_factory'
+        calls:
+            - [setLogger, ["@oro_integration.logger.strategy"]]
+        tags:
+            - { name: oro_integration.transport, type: magento2_rest, channel_type: magento2 }
+
+    marello_magento2.provider.magento2_channel_type:
+        class: Marello\Bundle\Magento2Bundle\Provider\Magento2ChannelType
+        public: false
+        tags:
+            - { name: oro_integration.channel, type: magento2 }
+
+    marello_magento2.handler.transport_handler:
+        class: Marello\Bundle\Magento2Bundle\Handler\TransportHandler
+        public: true
+        arguments:
+            - '@oro_integration.manager.types_registry'
+            - '@marello_magento2.handler.transport_entity_handler'
+            - '@marello_magento2.provider.websites_provider'
+
+    marello_magento2.provider.websites_provider:
+        class: Marello\Bundle\Magento2Bundle\Provider\WebsitesProvider
+        arguments:
+            - '@translator'
+
+    # Forms
+    marello_magento2.form.extension.channel_connector_extension:
+        class: Marello\Bundle\Magento2Bundle\Form\Extension\ChannelConnectorsExtension
+        tags:
+            - { name: form.type_extension, extended_type: Oro\Bundle\IntegrationBundle\Form\Type\ChannelType }
+
+    marello_magento2.form.extension.channel_sales_group_extension:
+        class: Marello\Bundle\Magento2Bundle\Form\Extension\ChannelSalesGroupExtension
+        arguments:
+            - '@marello_sales.repository.sales_channel_group'
+        tags:
+            - { name: form.type_extension, extended_type: Oro\Bundle\IntegrationBundle\Form\Type\ChannelType }

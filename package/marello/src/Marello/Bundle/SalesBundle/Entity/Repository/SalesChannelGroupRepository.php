@@ -4,6 +4,7 @@ namespace Marello\Bundle\SalesBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
+use Oro\Bundle\IntegrationBundle\Entity\Channel as IntegrationChannel;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class SalesChannelGroupRepository extends EntityRepository
@@ -32,5 +33,15 @@ class SalesChannelGroupRepository extends EntityRepository
         $result = $this->aclHelper->apply($qb)->getResult();
         
         return reset($result);
+    }
+
+    /**
+     * @param IntegrationChannel $integrationChannel
+     * @return SalesChannelGroup|null
+     */
+    public function findSalesChannelGroupAttachedToIntegration(
+        IntegrationChannel $integrationChannel
+    ): ?SalesChannelGroup {
+        return $this->findOneBy(['integrationChannel' => $integrationChannel]);
     }
 }

@@ -1,0 +1,17 @@
+marello:
+    magento2:
+        channel_type:
+            magento2.label:  Magento 2
+        transport:
+            rest.label: REST API
+        connection_validation:
+            button.text: Check Magento 2 Connection
+            result:
+                success.message: 'Connection is valid'
+                authorization_error.message: 'Authentication error has occurred. Please check that API token is valid.'
+                connection_error.message: 'Connection error has occurred. Please, try again later.'
+                not_valid_parameters.message: 'Parameters are not valid!'
+        transport_setting_form:
+            sync_start_date:
+                label: Sync start date
+                tooltip: This is the starting date for data synchronization. Only records updated after this date will be synchronized
