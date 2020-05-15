@@ -66,7 +66,6 @@ class MarelloPaymentBundle implements Migration, ExtendExtensionAwareInterface
             ]
         );
         $table->setPrimaryKey(['id']);
-        $table->addIndex(['invoice_id']);
         $table->addIndex(['organization_id']);
     }
 
@@ -78,12 +77,6 @@ class MarelloPaymentBundle implements Migration, ExtendExtensionAwareInterface
     protected function addMarelloPaymentPaymentForeignKeys(Schema $schema)
     {
         $table = $schema->getTable('marello_payment_payment');
-        $table->addForeignKeyConstraint(
-            $schema->getTable('marello_invoice_invoice'),
-            ['invoice_id'],
-            ['id'],
-            ['onDelete' => 'CASCADE', 'onUpdate' => null]
-        );
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_organization'),
             ['organization_id'],
