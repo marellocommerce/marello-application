@@ -3,7 +3,6 @@
 namespace Marello\Bundle\Magento2Bundle\Controller;
 
 use Marello\Bundle\Magento2Bundle\Entity\Magento2Transport;
-use Marello\Bundle\Magento2Bundle\Exception\RuntimeException;
 use Oro\Bundle\IntegrationBundle\Exception\TransportException;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\Annotation\CsrfProtection;
@@ -25,7 +24,7 @@ class IntegrationConfigController extends AbstractController
      *     requirements={"integrationType"=".+","transportType"=".+"}
      * )
      * @AclAncestor("oro_integration_update")
-     * @ParamConverter("transportEntity", class="MarelloMagento2Bundle:Magento2Transport", options={"id" = "transportId"})
+     * @ParamConverter("transportEntity", options={"id" = "transportId"})
      * @CsrfProtection()
      */
     public function checkAction(
@@ -41,7 +40,7 @@ class IntegrationConfigController extends AbstractController
                 $request,
                 $integrationType,
                 $transportType,
-                $transportEntity
+                $transportEntity ?? new Magento2Transport()
             );
 
             $response = $this->getUpdateSuccessResponse($response);
@@ -58,9 +57,9 @@ class IntegrationConfigController extends AbstractController
      */
     protected function logErrorAndGetResponse(\Exception $e)
     {
-        if ($e instanceof TransportException
-            || ($e instanceof RuntimeException && $e->isTransportException())
-        ) {
+        $message = 'marello.magento2.connection_validation.result.not_valid_parameters.message';
+
+        if ($e instanceof TransportException) {
             switch ($e->getCode()) {
                 case 401:
                     $message = 'marello.magento2.connection_validation.result.authorization_error.message';
@@ -68,46 +67,24 @@ class IntegrationConfigController extends AbstractController
                 case 500:
                     $message = 'marello.magento2.connection_validation.result.connection_error.message';
                     break;
-                default:
-                    $message = 'marello.magento2.connection_validation.result.not_valid_parameters.message';
-                    break;
             }
-
-            $this->logDebugException($e);
-
-            return $this->createFailResponse(
-                $this->get('translator')->trans($message)
-            );
         }
 
-        $this->logCriticalException($e);
+        $this->logErrorException($e);
 
         return $this->createFailResponse(
-            $this
-                ->get('translator')
-                ->trans('marello.magento2.connection_validation.result.not_valid_parameters.message')
+            $this->get('translator')->trans($message)
         );
     }
 
     /**
      * @param \Exception $exception
      */
-    protected function logDebugException(\Exception $exception)
+    protected function logErrorException(\Exception $exception)
     {
         $message = $exception->getMessage();
-        $this->get('logger')->debug(
-            sprintf('Magento 2 check error: %s: %s', $exception->getCode(), $message)
-        );
-    }
-
-    /**
-     * @param \Exception $exception
-     */
-    protected function logCriticalException(\Exception $exception)
-    {
-        $message = $exception->getMessage();
-        $this->get('logger')->critical(
-            sprintf('Magento 2 check error: %s: %s', $exception->getCode(), $message)
+        $this->get('logger')->error(
+            sprintf('[Magento 2] Check connection error: %s: %s', $exception->getCode(), $message)
         );
     }
 

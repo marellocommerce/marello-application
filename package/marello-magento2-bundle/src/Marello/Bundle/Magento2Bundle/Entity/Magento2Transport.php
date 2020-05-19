@@ -3,6 +3,7 @@
 namespace Marello\Bundle\Magento2Bundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\Magento2Bundle\Model\Magento2TransportSettings;
 use Oro\Bundle\IntegrationBundle\Entity\Transport;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
@@ -19,6 +20,8 @@ class Magento2Transport extends Transport
     protected $apiUrl;
 
     /**
+     * @todo Encode API Token
+     *
      * @var string
      *
      * @ORM\Column(name="api_token", type="string", length=255, nullable=false)
@@ -41,10 +44,17 @@ class Magento2Transport extends Transport
 
     /**
      * @var array
+     * [
+     *    [
+     *      'website_code' => string <website_code>,
+     *      'sales_chanel_code' => string <sales_channel_code>
+     *    ],
+     *    ...
+     * ]
      *
-     * @ORM\Column(name="websites", type="array")
+     * @ORM\Column(name="websites_sales_channel_mapping", type="json", nullable=true)
      */
-    protected $websites = [];
+    protected $websiteToSalesChannelMapping = [];
 
     /**
      * @var \DateInterval
@@ -64,13 +74,14 @@ class Magento2Transport extends Transport
     public function getSettingsBag()
     {
         if (null === $this->settings) {
-            $this->settings = new ParameterBag(
+            $this->settings = new Magento2TransportSettings(
                 [
                     'api_url' => $this->getApiUrl(),
-                    'api_toke' => $this->getApiToken(),
+                    'api_token' => $this->getApiToken(),
                     'sync_range' => $this->getSyncRange(),
                     'start_sync_date' => $this->getSyncStartDate(),
-                    'initial_sync_start_date' => $this->getInitialSyncStartDate()
+                    'initial_sync_start_date' => $this->getInitialSyncStartDate(),
+                    'website_to_sales_channel_mapping' => $this->getWebsiteToSalesChannelMapping()
                 ]
             );
         }
@@ -181,18 +192,18 @@ class Magento2Transport extends Transport
     /**
      * @return array
      */
-    public function getWebsites(): array
+    public function getWebsiteToSalesChannelMapping(): array
     {
-        return $this->websites;
+        return $this->websiteToSalesChannelMapping;
     }
 
     /**
-     * @param array $websites
+     * @param array $websiteToSalesChannelMapping
      * @return $this
      */
-    public function setWebsites(array $websites): self
+    public function setWebsiteToSalesChannelMapping(array $websiteToSalesChannelMapping): self
     {
-        $this->websites = $websites;
+        $this->websiteToSalesChannelMapping = $websiteToSalesChannelMapping;
 
         return $this;
     }

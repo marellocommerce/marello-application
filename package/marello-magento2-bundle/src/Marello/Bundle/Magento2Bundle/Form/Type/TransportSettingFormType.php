@@ -10,9 +10,13 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Url;
 
 class TransportSettingFormType extends AbstractType
 {
+    public const ELEMENT_DATA_ROLE_WEBSITE_TO_CHANNEL_MAPPING = 'websiteToSalesChannelMapping';
+    public const ELEMENT_DATA_ROLE_SALES_CHANNEL_GROUP = 'salesChannelGroup';
+
     /**
      * {@inheritDoc}
      */
@@ -23,7 +27,10 @@ class TransportSettingFormType extends AbstractType
             TextType::class,
             [
                 'label' => '',
-                'required' => true
+                'required' => true,
+                'constraints' => [
+                    new Url()
+                ]
             ]
         );
 
@@ -47,23 +54,35 @@ class TransportSettingFormType extends AbstractType
             ]
         );
 
-        $websiteListDataRole = 'website-list';
         $builder->add(
             'check',
             TransportCheckButtonType::class,
             [
                 'label' => 'marello.magento2.connection_validation.button.text',
-                'websiteListSelector' => '[data-role="' . $websiteListDataRole . '"]'
+                'salesGroupSelector' => sprintf('[data-role="%s"]', self::ELEMENT_DATA_ROLE_SALES_CHANNEL_GROUP),
+                'websiteToSalesChannelMappingSelector' => sprintf(
+                    '[data-role="%s"]', self::ELEMENT_DATA_ROLE_WEBSITE_TO_CHANNEL_MAPPING
+                )
             ]
         );
 
         $builder->add(
             $builder
                 ->create(
-                    'websites',
+                    'websiteToSalesChannelMapping',
                     HiddenType::class,
                     [
-                        'attr' => ['data-role' => $websiteListDataRole]
+                        'attr' => ['data-role' => self::ELEMENT_DATA_ROLE_WEBSITE_TO_CHANNEL_MAPPING],
+                        'data' => [
+                            [
+                                'website_code' => 'MAG',
+                                'sales_chanel_code' => 'MAR',
+                            ],
+                            [
+                                'website_code' => 'MAG_2',
+                                'sales_chanel_code' => 'MAR_2',
+                            ]
+                        ]
                     ]
                 )
                 ->addViewTransformer(new ArrayToJsonTransformer())

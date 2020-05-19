@@ -3,6 +3,7 @@
 namespace Marello\Bundle\Magento2Bundle\Handler;
 
 use Marello\Bundle\Magento2Bundle\Entity\Magento2Transport;
+use Marello\Bundle\Magento2Bundle\Provider\SalesChannelsProvider;
 use Marello\Bundle\Magento2Bundle\Provider\WebsitesProvider;
 use Marello\Bundle\Magento2Bundle\Transport\Magento2TransportInterface;
 use Oro\Bundle\IntegrationBundle\Manager\TypesRegistry;
@@ -31,32 +32,40 @@ class TransportHandler
     protected $websitesProvider;
 
     /**
+     * @var SalesChannelsProvider
+     */
+    protected $salesChannelsProvider;
+
+    /**
      * @param TypesRegistry $typesRegistry
      * @param TransportEntityHandler $transportEntityHandler
      * @param WebsitesProvider $websitesProvider
+     * @param SalesChannelsProvider $salesChannelsProvider
      */
     public function __construct(
         TypesRegistry $typesRegistry,
         TransportEntityHandler $transportEntityHandler,
-        WebsitesProvider $websitesProvider
+        WebsitesProvider $websitesProvider,
+        SalesChannelsProvider $salesChannelsProvider
     ) {
         $this->typesRegistry = $typesRegistry;
         $this->transportEntityHandler = $transportEntityHandler;
         $this->websitesProvider = $websitesProvider;
+        $this->salesChannelsProvider = $salesChannelsProvider;
     }
 
     /**
      * @param Request $request
      * @param string $integrationType
      * @param string $transportType
-     * @param Magento2Transport|null $transportEntity
+     * @param Magento2Transport $transportEntity
      * @return array
      */
     public function getCheckResponse(
         Request $request,
         string $integrationType,
         string $transportType,
-        Magento2Transport $transportEntity = null
+        Magento2Transport $transportEntity
     ): array {
         $transport = $this->getMagentoTransport($integrationType, $transportType);
         $transportEntity = $this->transportEntityHandler->getHandledTransportEntity(
@@ -73,10 +82,13 @@ class TransportHandler
         return  [
             'success' => true,
             'websites' => $this->websitesProvider->getFormattedWebsites($transport),
+            'salesChannels' => $this->salesChannelsProvider->getFormattedSalesChannels()
         ];
     }
 
     /**
+     * @param string $integrationType
+     * @param string $transportType
      * @return Magento2TransportInterface
      */
     protected function getMagentoTransport(string $integrationType, string $transportType): Magento2TransportInterface

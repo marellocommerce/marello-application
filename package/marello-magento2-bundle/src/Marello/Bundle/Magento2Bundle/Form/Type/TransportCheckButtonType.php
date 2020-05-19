@@ -32,7 +32,8 @@ class TransportCheckButtonType extends ButtonType
     {
         parent::configureOptions($resolver);
 
-        $resolver->setRequired(['websiteListSelector']);
+        $resolver->setRequired(['websiteToSalesChannelMappingSelector']);
+        $resolver->setRequired(['salesGroupSelector']);
         $resolver->setDefaults(['attr' => ['class' => 'btn btn-primary']]);
     }
 }

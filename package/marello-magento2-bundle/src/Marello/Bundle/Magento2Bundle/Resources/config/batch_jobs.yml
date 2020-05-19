@@ -1,0 +1,30 @@
+connector:
+    name: oro_importexport
+    jobs:
+        marello_magento2_website_rest_import:
+            title: "Website import from Magento2"
+            type:  import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_magento2.connector.website
+                        processor: marello_magento2.importexport.processor.website
+                        writer:    oro_importexport.writer.entity
+                    parameters:
+                        batch_size: 25
+
+        marello_magento2_store_rest_import:
+            title: "Store import from Magento2"
+            type:  import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_magento2.connector.store
+                        processor: marello_magento2.importexport.processor.store
+                        writer:    oro_importexport.writer.entity
+                    parameters:
+                        batch_size: 25
