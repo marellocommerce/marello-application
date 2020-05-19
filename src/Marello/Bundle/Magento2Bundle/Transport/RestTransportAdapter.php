@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\Magento2Bundle\Transport;
 
-use Marello\Bundle\Magento2Bundle\Entity\Magento2Transport;
+use Marello\Bundle\Magento2Bundle\Model\Magento2TransportSettings;
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Transport\RestTransportSettingsInterface;
 
 /**
@@ -13,8 +13,8 @@ class RestTransportAdapter implements RestTransportSettingsInterface
     private const TOKEN_HEADER_KEY  = 'Authorization';
     private const TOKEN_MASK        = 'Bearer %s';
 
-    /** @var Magento2Transport */
-    protected $transportEntity;
+    /** @var Magento2TransportSettings */
+    protected $settingsBag;
 
     /** @var array */
     protected $additionalParams;
@@ -28,14 +28,12 @@ class RestTransportAdapter implements RestTransportSettingsInterface
     ];
 
     /**
-     * RestTransportAdapter constructor.
-     *
-     * @param Magento2Transport $transportEntity
+     * @param Magento2TransportSettings $settingsBag
      * @param array $additionalParams
      */
-    public function __construct(Magento2Transport $transportEntity, array $additionalParams = [])
+    public function __construct(Magento2TransportSettings $settingsBag, array $additionalParams = [])
     {
-        $this->transportEntity = $transportEntity;
+        $this->settingsBag = $settingsBag;
         $this->additionalParams = $additionalParams;
     }
 
@@ -44,7 +42,7 @@ class RestTransportAdapter implements RestTransportSettingsInterface
      */
     public function getBaseUrl()
     {
-        return rtrim($this->transportEntity->getApiUrl(), '/') . '/';
+        return rtrim($this->settingsBag->getApiUrl(), '/') . '/';
     }
 
     /**
@@ -57,7 +55,7 @@ class RestTransportAdapter implements RestTransportSettingsInterface
             $this->additionalParams,
             [
                 'headers' => [
-                    self::TOKEN_HEADER_KEY => sprintf(self::TOKEN_MASK, $this->transportEntity->getApiToken())
+                    self::TOKEN_HEADER_KEY => sprintf(self::TOKEN_MASK, $this->settingsBag->getApiToken())
                 ]
             ]
         );

@@ -36,12 +36,17 @@ define(function(require) {
         /**
          * @property {jQuery}
          */
-        websiteListEl: null,
+        checkConnectionStatusEl: null,
 
         /**
          * @property {jQuery}
          */
-        checkConnectionStatusEl: null,
+        salesGroupEl: null,
+
+        /**
+         * @property {jQuery}
+         */
+        websiteToSalesChannelMappingEl: null,
 
         /**
          * @property {int}
@@ -63,7 +68,13 @@ define(function(require) {
         initialize: function(options) {
             _.extend(this, _.pick(
                 options,
-                ['checkButtonEl', 'websiteListEl', 'checkConnectionStatusEl', 'transportEntityId']
+                [
+                    'checkButtonEl',
+                    'checkConnectionStatusEl',
+                    'salesGroupEl',
+                    'websiteToSalesChannelMappingEl',
+                    'transportEntityId'
+                ]
             ));
             this.url = this.getResolvedUrl();
         },
@@ -72,9 +83,13 @@ define(function(require) {
          * @returns {string}
          */
         getResolvedUrl: function() {
-            var params = _.extend({
-                id: this.id
-            }, this.getIntegrationAndTransportTypeParams() || {});
+            var params = this.getIntegrationAndTransportTypeParams() || {};
+
+            if (!_.isUndefined(this.id)) {
+                params =  _.extend({
+                    transportId: this.id
+                }, params);
+            }
 
             return routing.generate(this.route, params);
         },

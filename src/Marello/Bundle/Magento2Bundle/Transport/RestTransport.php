@@ -5,6 +5,10 @@ namespace Marello\Bundle\Magento2Bundle\Transport;
 use Marello\Bundle\Magento2Bundle\Entity\Magento2Transport;
 use Marello\Bundle\Magento2Bundle\Exception\RuntimeException;
 use Marello\Bundle\Magento2Bundle\Form\Type\TransportSettingFormType;
+use Marello\Bundle\Magento2Bundle\Model\Magento2TransportSettings;
+use Marello\Bundle\Magento2Bundle\Transport\Rest\Iterator\StoreIterator;
+use Marello\Bundle\Magento2Bundle\Transport\Rest\Iterator\WebsiteIterator;
+use Marello\Bundle\Magento2Bundle\Transport\Rest\RequestFactory;
 use Oro\Bundle\IntegrationBundle\Entity\Transport;
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\FactoryInterface as RestClientFactoryInterface;
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestClientInterface;
@@ -16,14 +20,14 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    private const ALL_STORE_VIEW_CODE = 'all';
-    private const API_URL_PREFIX = 'rest';
-    private const API_VERSION = 'V1';
+    public const RESOURCE_WEBSITES = 'store/websites';
+    public const RESOURCE_STORES = 'store/storeViews';
+    public const RESOURCE_STORE_CONFIGS = 'store/storeConfigs';
 
     /**
-     * @var Magento2Transport
+     * @var Magento2TransportSettings
      */
-    protected $transportEntity;
+    protected $settingsBag;
 
     /**
      * @var RestClientFactoryInterface
@@ -31,16 +35,25 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
     protected $clientFactory;
 
     /**
+     * @var RequestFactory
+     */
+    protected $requestFactory;
+
+    /**
      * @var RestClientInterface
      */
     protected $client;
 
     /**
-     * @param RestClientFactoryInterface   $clientFactory
+     * @param RestClientFactoryInterface $clientFactory
+     * @param RequestFactory $requestFactory
      */
-    public function __construct(RestClientFactoryInterface $clientFactory)
-    {
+    public function __construct(
+        RestClientFactoryInterface $clientFactory,
+        RequestFactory $requestFactory
+    ) {
         $this->clientFactory = $clientFactory;
+        $this->requestFactory = $requestFactory;
     }
 
     /**
@@ -56,40 +69,68 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
      */
     public function initWithExtraOptions(Transport $transportEntity, array $clientExtraOptions)
     {
-        $this->transportEntity = $transportEntity;
+        $this->settingsBag = $transportEntity->getSettingsBag();
         $this->client = $this->clientFactory->getClientInstance(
-            new RestTransportAdapter($this->transportEntity, $clientExtraOptions)
+            new RestTransportAdapter(
+                $this->settingsBag,
+                $clientExtraOptions
+            )
         );
-    }
-
-    /**
-     * @param string $resourceUrn
-     * @param string|null $storeCode
-     * @return string
-     */
-    protected function getFullAPIUrn(string $resourceUrn, string $storeCode = null): string
-    {
-        if (null === $storeCode) {
-            $storeCode = self::ALL_STORE_VIEW_CODE;
-        }
-
-        return self::API_URL_PREFIX . '/' . $storeCode . '/' . self::API_VERSION . '/' . $resourceUrn;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getWebsites(): array
+    public function getWebsites(): \Iterator
     {
-        $resourceUrn = $this->getFullAPIUrn('store/websites');
-        try {
-            /**
-             * @todo Refactor this to use iterator
-             */
-            return $this->getClient()->get($resourceUrn)->json();
-        } catch (RestException $e) {
-            return $this->handleException($e, 'getWebsites');
-        }
+        $request = $this->requestFactory->creategetRequest(
+            RequestFactory::METHOD_GET,
+            self::RESOURCE_WEBSITES
+        );
+
+        $data = $this->getClient()->getJSON(
+            $request->getUrn()
+        );
+
+        return new WebsiteIterator($data, $this->settingsBag);
+    }
+
+    /**
+     * @return \Iterator
+     * @throws RestException
+     * @throws RuntimeException
+     */
+    public function getStores(): \Iterator
+    {
+        $storeConfigData = $this->getStoreConfigs();
+
+        $request = $this->requestFactory->creategetRequest(
+            RequestFactory::METHOD_GET,
+            self::RESOURCE_STORES
+        );
+
+        $storeData = $this->getClient()->getJSON(
+            $request->getUrn()
+        );
+
+        return new StoreIterator($storeData, $storeConfigData);
+    }
+
+    /**
+     * @return array
+     * @throws RestException
+     * @throws RuntimeException
+     */
+    protected function getStoreConfigs(): array
+    {
+        $request = $this->requestFactory->creategetRequest(
+            RequestFactory::METHOD_GET,
+            self::RESOURCE_STORE_CONFIGS
+        );
+
+        return $this->getClient()->getJSON(
+            $request->getUrn()
+        );
     }
 
     /**
@@ -128,38 +169,5 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
         }
 
         return $this->client;
-    }
-
-    /**
-     * @param RestException $exception
-     * @param string        $methodName
-     *
-     * @return mixed
-     *
-     * @throws RuntimeException
-     */
-    protected function handleException(RestException $exception, string $methodName)
-    {
-        /**
-         * Exception caused by incorrect client settings or invalid response body
-         *
-         * @todo think about sanitazing exception message
-         */
-        if (null === $exception->getResponse()) {
-            throw new RuntimeException(
-                '[Magento 2] ' . $exception->getMessage(),
-                $exception->getCode(),
-                $exception
-            );
-        }
-
-        throw new RuntimeException(
-            sprintf(
-                '[Magento 2] Server returned unexpected response. Response code %s',
-                $exception->getCode()
-            ),
-            $exception->getCode(),
-            $exception
-        );
     }
 }

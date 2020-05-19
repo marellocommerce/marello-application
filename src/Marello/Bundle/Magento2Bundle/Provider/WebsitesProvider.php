@@ -24,6 +24,6 @@ class WebsitesProvider
      */
     public function getFormattedWebsites(Magento2TransportInterface $transport): array
     {
-        return $transport->getWebsites();
+        return iterator_to_array($transport->getWebsites());
     }
 }

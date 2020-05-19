@@ -17,8 +17,6 @@ define(function(require) {
         },
 
         /**
-         * Initialize component
-         *
          * @param {Object} options
          */
         initialize: function(options) {
@@ -28,12 +26,14 @@ define(function(require) {
                 el: $form,
                 checkButtonEl: $(options._sourceElement),
                 websiteListEl: $(options.websiteListSelector),
+                salesGroupEl: $(options.salesGroupSelector),
+                websiteToSalesChannelMappingEl: $(options.websiteToSalesChannelMappingSelector),
                 checkConnectionStatusEl: $form.find(options.checkConnectionStatusSelector),
                 transportEntityId: options.id
             }, options.viewOptions || {});
 
             var invalidOptionKeys = this.getInvalidJqueryOptionKeys(viewOptions, [
-                'el', 'checkButtonEl', 'websiteListEl', 'checkConnectionStatusEl'
+                'el', 'salesGroupEl', 'websiteToSalesChannelMappingEl', 'checkButtonEl', 'checkConnectionStatusEl'
             ]);
 
             if (invalidOptionKeys.length) {
@@ -57,7 +57,7 @@ define(function(require) {
                  * @var {jQuery} element
                  */
                 var element = options[elementKey];
-                return !element.length;
+                return !_.isUndefined(element) && !element.length;
             });
 
             return invalidKeys.length;

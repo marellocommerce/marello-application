@@ -7,7 +7,12 @@ use Oro\Bundle\IntegrationBundle\Provider\TransportInterface;
 interface Magento2TransportInterface extends TransportInterface
 {
     /**
-     * @return mixed
+     * @return \Iterator
      */
-    public function getWebsites(): array;
+    public function getWebsites(): \Iterator;
+
+    /**
+     * @return \Iterator
+     */
+    public function getStores(): \Iterator;
 }

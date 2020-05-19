@@ -1,0 +1,65 @@
+services:
+    # Strategies
+    marello_magento2.import_strategy.default_magento2_import:
+        class: Marello\Bundle\Magento2Bundle\ImportExport\Strategy\DefaultMagento2ImportStrategy
+        parent: oro_importexport.strategy.configurable_add_or_replace
+
+    marello_magento2.import_strategy.website:
+        parent: marello_magento2.import_strategy.default_magento2_import
+
+    marello_magento2.import_strategy.store:
+        class: Marello\Bundle\Magento2Bundle\ImportExport\Strategy\StoreMagento2ImportStrategy
+        parent: marello_magento2.import_strategy.default_magento2_import
+
+    # Connectors
+    marello_magento2.connector.abstract:
+        class: Marello\Bundle\Magento2Bundle\Connector\AbstractMagento2Connector
+        abstract: true
+        arguments:
+            - '@oro_importexport.context_registry'
+            - '@oro_integration.logger.strategy'
+            - '@oro_integration.provider.connector_context_mediator'
+
+    marello_magento2.connector.website:
+        class: Marello\Bundle\Magento2Bundle\Connector\WebsiteConnector
+        parent: marello_magento2.connector.abstract
+        tags:
+            - { name: oro_integration.connector, type: website_dictionary, channel_type: magento2 }
+
+    marello_magento2.connector.store:
+        class: Marello\Bundle\Magento2Bundle\Connector\StoreConnector
+        parent: marello_magento2.connector.abstract
+        tags:
+            - { name: oro_integration.connector, type: store_dictionary, channel_type: magento2 }
+
+    # Data converters
+    marello_magento2.importexport.converter.website:
+        class: Marello\Bundle\Magento2Bundle\ImportExport\Converter\WebsiteDataConverter
+
+    marello_magento2.importexport.converter.store:
+        class: Marello\Bundle\Magento2Bundle\ImportExport\Converter\StoreDataConverter
+
+    # Processors
+    marello_magento2.importexport.processor.website:
+        parent: oro_integration.importexport.processor.import
+        calls:
+            - [setDataConverter, ["@marello_magento2.importexport.converter.website"]]
+            - [setStrategy, ["@marello_magento2.import_strategy.website"]]
+            - [setEntityName, ['Marello\Bundle\Magento2Bundle\Entity\Website']]
+        tags:
+            - { name: oro_importexport.processor, type: import, entity: 'Marello\Bundle\Magento2Bundle\Entity\Website', alias: marello_magento2.website }
+
+    marello_magento2.importexport.processor.store:
+        parent: oro_integration.importexport.processor.import
+        calls:
+            - [setDataConverter, ["@marello_magento2.importexport.converter.store"]]
+            - [setStrategy, ["@marello_magento2.import_strategy.store"]]
+            - [setEntityName, ['Marello\Bundle\Magento2Bundle\Entity\Store']]
+        tags:
+            - { name: oro_importexport.processor, type: import, entity: 'Marello\Bundle\Magento2Bundle\Entity\Store', alias: marello_magento2.store }
+
+    marello_magento2.integration.initial_schedule_processor:
+        class: Marello\Bundle\Magento2Bundle\Integration\InitialScheduleProcessor
+        parent: oro_integration.sync.processor
+        tags:
+            - { name: oro_integration.sync_processor, integration: magento2 }

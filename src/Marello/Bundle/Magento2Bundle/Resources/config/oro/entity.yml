@@ -1,0 +1,8 @@
+oro_entity:
+    entity_aliases:
+        Marello\Bundle\Magento2Bundle\Entity\Website:
+            alias: marello_magento2_website
+            plural_alias: marello_magento2_websites
+        Marello\Bundle\Magento2Bundle\Entity\Store:
+            alias: marello_magento2_store
+            plural_alias: marello_magento2_stores

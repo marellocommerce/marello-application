@@ -5,6 +5,9 @@ services:
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: magento2_group_saleschannels }
 
+    marello_magento2.transport.rest.request_factory:
+        class: Marello\Bundle\Magento2Bundle\Transport\Rest\RequestFactory
+
     # Handlers
     marello_magento2.handler.transport_entity_handler:
         class: Marello\Bundle\Magento2Bundle\Handler\TransportEntityHandler
@@ -15,6 +18,7 @@ services:
         class: Marello\Bundle\Magento2Bundle\Transport\RestTransport
         arguments:
             - '@oro_integration.transport.rest.event_dispatchable_client_factory'
+            - '@marello_magento2.transport.rest.request_factory'
         calls:
             - [setLogger, ["@oro_integration.logger.strategy"]]
         tags:
@@ -33,13 +37,17 @@ services:
             - '@oro_integration.manager.types_registry'
             - '@marello_magento2.handler.transport_entity_handler'
             - '@marello_magento2.provider.websites_provider'
+            - '@marello_magento2.provider.sales_channel_provider'
 
     marello_magento2.provider.websites_provider:
         class: Marello\Bundle\Magento2Bundle\Provider\WebsitesProvider
         arguments:
             - '@translator'
 
-    # Forms
+    marello_magento2.provider.sales_channel_provider:
+        class: Marello\Bundle\Magento2Bundle\Provider\SalesChannelsProvider
+
+    # Forms and form related logic
     marello_magento2.form.extension.channel_connector_extension:
         class: Marello\Bundle\Magento2Bundle\Form\Extension\ChannelConnectorsExtension
         tags:
@@ -51,3 +59,6 @@ services:
             - '@marello_sales.repository.sales_channel_group'
         tags:
             - { name: form.type_extension, extended_type: Oro\Bundle\IntegrationBundle\Form\Type\ChannelType }
+
+
+
