@@ -50,6 +50,7 @@ marello:
             system.label: System
             organization.label: Organization
             sales_channels.label: Sales Channels
+            integration_channel.label: Integration Channel
 
             datablock:
                 general: General
