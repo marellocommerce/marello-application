@@ -256,10 +256,10 @@ class SalesChannelGroup extends ExtendSalesChannelGroup
     }
 
     /**
-     * @param Channel $integrationChannel
+     * @param Channel|null $integrationChannel
      * @return $this
      */
-    public function setIntegrationChannel(Channel $integrationChannel)
+    public function setIntegrationChannel(Channel $integrationChannel = null)
     {
         $this->integrationChannel = $integrationChannel;
 
