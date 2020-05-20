@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\ProductBundle\Tests\Functional\Entity;
 
-use Marello\Bundle\ProductBundle\Migrations\Data\ORM\LoadDefaultAttributeFamilyData;
+use Marello\Bundle\ProductBundle\Entity\Builder\ProductFamilyBuilder;
 use Oro\Bundle\EntityConfigBundle\Config\AttributeConfigHelper;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
@@ -39,7 +39,7 @@ class ProductTest extends WebTestCase
         /** @var Product $product */
         $product = $this->getReference(LoadProductData::PRODUCT_1_REF);
         static::assertSame(
-            LoadDefaultAttributeFamilyData::DEFAULT_FAMILY_CODE,
+            ProductFamilyBuilder::DEFAULT_FAMILY_CODE,
             $product->getAttributeFamily()->getCode()
         );
     }

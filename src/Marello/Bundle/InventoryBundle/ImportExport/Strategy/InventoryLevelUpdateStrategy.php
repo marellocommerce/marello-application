@@ -253,7 +253,13 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
     protected function getProduct($entity)
     {
         return $this->databaseHelper
-            ->findOneBy(Product::class, ['sku' => $entity->getInventoryItem()->getProduct()->getSku()]);
+            ->findOneBy(
+                Product::class,
+                [
+                    'sku' => $entity->getInventoryItem()->getProduct()->getSku(),
+                    'organization' => $entity->getOrganization()
+                ]
+            );
     }
 
     /**
