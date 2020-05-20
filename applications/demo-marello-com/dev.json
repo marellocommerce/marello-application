@@ -43,8 +43,7 @@
         "oro/health-check-bundle": "4.1.*",
         "marellocommerce/marello": "self.version",
         "marellocommerce/marello-enterprise": "self.version",
-        "marellocommerce/marello-subscriptions": "self.version",
-        "marellocommerce/marello-servicepoints": "self.version"
+        "marellocommerce/marello-subscriptions": "self.version"
     },
     "require-dev": {
         "behat/behat": "3.4.*",
