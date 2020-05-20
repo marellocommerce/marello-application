@@ -29,7 +29,7 @@ class MarelloProductBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_10';
+        return 'v1_11';
     }
 
     /**
@@ -84,7 +84,7 @@ class MarelloProductBundleInstaller implements
         $table->addColumn('preferred_supplier_id', 'integer', ['notnull' => false]);
         $table->addColumn('tax_code_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['sku'], 'marello_product_product_skuidx');
+        $table->addUniqueIndex(['sku', 'organization_id'], 'marello_product_product_skuorgidx');
         $table->addIndex(['created_at'], 'idx_marello_product_created_at', []);
         $table->addIndex(['updated_at'], 'idx_marello_product_updated_at', []);
         $table->addIndex(['product_status'], 'IDX_25845B8D197C24B8', []);

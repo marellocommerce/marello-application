@@ -6,6 +6,7 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
+use Marello\Bundle\ProductBundle\Entity\Builder\ProductFamilyBuilder;
 use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
@@ -21,7 +22,7 @@ class UpdateExistingProductsWithAttributeFamily extends AbstractFixture implemen
     public function getDependencies()
     {
         return [
-            LoadDefaultAttributeFamilyData::class
+            LoadDefaultProductFamilyData::class
         ];
     }
 
@@ -39,7 +40,7 @@ class UpdateExistingProductsWithAttributeFamily extends AbstractFixture implemen
         }
 
         /** @var AttributeFamily $attributeFamily */
-        $attributeFamily = $this->getReference(LoadDefaultAttributeFamilyData::DEFAULT_FAMILY_CODE);
+        $attributeFamily = $this->getReference(ProductFamilyBuilder::DEFAULT_FAMILY_CODE);
         foreach ($products as $product) {
             $product->setAttributeFamily($attributeFamily);
             $manager->persist($product);

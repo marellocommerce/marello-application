@@ -251,7 +251,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         /** @var Product $product */
         $product = $this->manager
             ->getRepository('MarelloProductBundle:Product')
-            ->findOneBy(['sku' => $row['sku']]);
+            ->findOneBy(['sku' => $row['sku'], 'organization' => $organization]);
 
         $itemEntity = new OrderItem();
         $itemEntity->setProduct($product);
