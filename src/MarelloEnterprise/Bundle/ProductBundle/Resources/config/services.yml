@@ -1,0 +1,9 @@
+services:
+  marelloenterprise_product.event_listener.organization:
+    class: 'MarelloEnterprise\Bundle\ProductBundle\EventListener\ORM\OrganizationListener'
+    arguments:
+      - '@oro_entity.doctrine_helper'
+      - '@marello_product.entity.builder.product_family'
+    public: false
+    tags:
+      - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\OrganizationBundle\Entity\Organization', event: prePersist }
