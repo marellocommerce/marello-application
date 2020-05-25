@@ -52,7 +52,7 @@ marello:
             edit_action:            Edit Address
         datablock:
             general:                General
-            billing_and_payment:    Billing & Payment
+            billing_address:        Billing Address
             delivery:               Delivery
             order_items:            Order Items
             activity:               Activity
