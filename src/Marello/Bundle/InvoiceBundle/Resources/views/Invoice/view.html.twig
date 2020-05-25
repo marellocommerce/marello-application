@@ -57,6 +57,10 @@
                 {{ UI.renderProperty('marello.invoice.shipping_amount_incl_tax.label'|trans, entity.shippingAmountInclTax|oro_format_currency({'currency':entity.currency})) }}
                 {{ UI.renderProperty('marello.invoice.total_tax.label'|trans, entity.totalTax|oro_format_currency({'currency':entity.currency})) }}
                 {{ UI.renderProperty('marello.invoice.grand_total.label'|trans, entity.grandTotal|oro_format_currency({'currency':entity.currency})) }}
+                {{ UI.renderProperty('marello.invoice.total_paid.label'|trans, entity.totalPaid|oro_format_currency({'currency':entity.currency})) }}
+                {{ UI.renderProperty('marello.invoice.total_due.label'|trans, entity.totalDue|oro_format_currency({'currency':entity.currency})) }}
+                <br>
+                <br>
             </div>
         </div>
     {% endset %}
@@ -88,28 +92,24 @@
     {% endset %}
     {% set generalSubblocks = generalSubblocks|merge([{'data' : [customerInformation] }]) %}
 
-    {% set paymentSubblocks = [] %}
+    {% set billingSubblocks = [] %}
     {% set billingAddressBlock %}
         {{ oro_widget_render({
             'widgetType': 'block',
             'url': path('marello_order_order_address', {id: entity.billingAddress.id, typeId: 1}),
         }) }}
     {% endset %}
-    {% set paymentSubblocks = paymentSubblocks|merge([{'data' : [billingAddressBlock] }]) %}
+    {% set billingSubblocks = billingSubblocks|merge([{'data' : [billingAddressBlock] }]) %}
 
-    {% set paymentWidget %}
+    {% set emptyWidget %}
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
-                    {{ UI.renderProperty('marello.invoice.payment_method.label'|trans, marello_get_payment_method_label(entity.paymentMethod)|trans) }}
-                    {{ UI.renderProperty('marello.invoice.payment_term.label'|trans, (entity.paymentTerm is not empty ? entity.paymentTerm.labels|localized_value : 'N/A')|trans) }}
-                    {{ UI.renderProperty('marello.invoice.total_paid.label'|trans, entity.totalPaid|oro_format_currency({'currency':entity.currency})) }}
-                    {{ UI.renderProperty('marello.invoice.total_due.label'|trans, entity.totalDue|oro_format_currency({'currency':entity.currency})) }}
                 </div>
             </div>
         </div>
     {% endset %}
-    {% set paymentSubblocks = paymentSubblocks|merge([{'data' : [paymentWidget] }]) %}
+    {% set billingSubblocks = billingSubblocks|merge([{'data' : [emptyWidget] }]) %}
 
     {% set shippingSubblocks = [] %}
     {% set shippingAddressBlock %}
@@ -154,9 +154,9 @@
             'subblocks': generalSubblocks
         },
         {
-            'title': 'marello.invoice.datablock.billing_and_payment'|trans,
+            'title': 'marello.invoice.datablock.billing_address'|trans,
             'class': 'active',
-            'subblocks': paymentSubblocks
+            'subblocks': billingSubblocks
         },
         {
             'title': 'marello.invoice.datablock.delivery'|trans,

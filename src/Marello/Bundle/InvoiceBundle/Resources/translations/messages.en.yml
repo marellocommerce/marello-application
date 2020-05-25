@@ -77,7 +77,7 @@ marello:
 
         datablock:
             general:                General
-            billing_and_payment:    Billing & Payment
+            billing_address:        Billing Address
             delivery:               Delivery
             invoice_items:          Invoice Items
             creditmemo_items:       Credit Memo Items
