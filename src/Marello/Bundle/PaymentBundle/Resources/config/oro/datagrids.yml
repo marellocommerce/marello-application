@@ -132,7 +132,7 @@ datagrids:
                 label:            marello.payment.payment_method.label
                 type:             twig
                 frontend_type:    html
-                template:         MarelloPaymentBundle:Payment/Datagrid:paymentMethodWithOptions.html.twig
+                template:         MarelloPaymentBundle:Payment/Datagrid:paymentMethodWithoutOptions.html.twig
             paymentReference:
                 label:            marello.payment.payment_reference.label
                 frontend_type:    string

@@ -556,7 +556,9 @@ workflows:
             payment_details:
                 type: string
             total_paid:
-                type: float
+                type: object
+                options:
+                    class: Oro\Bundle\CurrencyBundle\Entity\Price
             invoiced_at:
                 type: object
                 options:
@@ -655,11 +657,10 @@ workflows:
                                 constraints:
                                     - NotBlank: ~
                         total_paid:
-                            form_type: Symfony\Component\Form\Extension\Core\Type\NumberType
+                            form_type: Marello\Bundle\OrderBundle\Form\Type\OrderTotalPaidType
                             options:
                                 required: true
-                                constraints:
-                                    - NotBlank: ~
+                                currency: $order.currency
             ship:
                 step_to:  shipped
                 transition_definition: ship_definition
@@ -836,7 +837,9 @@ workflows:
             payment_details:
                 type: string
             total_paid:
-                type: float
+                type: object
+                options:
+                    class: Oro\Bundle\CurrencyBundle\Entity\Price
             invoiced_at:
                 type: object
                 options:
@@ -928,11 +931,10 @@ workflows:
                                 constraints:
                                     - NotBlank: ~
                         total_paid:
-                            form_type: Symfony\Component\Form\Extension\Core\Type\NumberType
+                            form_type: Marello\Bundle\OrderBundle\Form\Type\OrderTotalPaidType
                             options:
                                 required: true
-                                constraints:
-                                    - NotBlank: ~
+                                currency: $order.currency
             ship:
                 step_to:  shipped
                 transition_definition: ship_definition
