@@ -7,9 +7,9 @@ use Marello\Bundle\Magento2Bundle\Model\ExtendWebsite;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Marello\Bundle\Magento2Bundle\Entity\Repository\WebsiteRepository")
  * @ORM\Table(
- *  name="marello_magento2_website",
+ *  name="marello_m2_website",
  *  uniqueConstraints={
  *     @ORM\UniqueConstraint(name="unq_site_idx", columns={"channel_id", "origin_id"})
  *  }

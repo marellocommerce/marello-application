@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\Magento2Bundle\Integration;
 
-use Marello\Bundle\Magento2Bundle\Connector\DictionaryConnectorInterface;
+use Marello\Bundle\Magento2Bundle\Integration\Connector\DictionaryConnectorInterface;
 use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
 use Oro\Bundle\IntegrationBundle\Provider\ConnectorInterface;
 use Oro\Bundle\IntegrationBundle\Provider\SyncProcessor;

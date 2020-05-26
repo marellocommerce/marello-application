@@ -10,7 +10,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 /**
  * @ORM\Entity
  * @ORM\Table(
- *  name="marello_magento2_store",
+ *  name="marello_m2_store",
  *  uniqueConstraints={
  *      @ORM\UniqueConstraint(name="unq_store_code_idx", columns={"code", "channel_id"})
  *  }

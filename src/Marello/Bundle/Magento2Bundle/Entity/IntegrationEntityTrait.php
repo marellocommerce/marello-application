@@ -7,7 +7,7 @@ use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
 trait IntegrationEntityTrait
 {
     /**
-     * @var Integration
+     * @var Integration|null
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\IntegrationBundle\Entity\Channel")
      * @ORM\JoinColumn(name="channel_id", referencedColumnName="id", onDelete="SET NULL")
@@ -18,7 +18,7 @@ trait IntegrationEntityTrait
      * @param Integration $integration
      * @return IntegrationEntityTrait
      */
-    public function setChannel(Integration $integration)
+    public function setChannel(Integration $integration): self
     {
         $this->channel = $integration;
 
@@ -26,17 +26,25 @@ trait IntegrationEntityTrait
     }
 
     /**
-     * @return Integration
+     * @return Integration|null
      */
-    public function getChannel()
+    public function getChannel(): ?Integration
     {
         return $this->channel;
     }
 
     /**
+     * @return int
+     */
+    public function getChannelId(): int
+    {
+        return $this->channel ? $this->channel->getId() : null;
+    }
+
+    /**
      * @return string
      */
-    public function getChannelName()
+    public function getChannelName(): string
     {
         return $this->channel ? $this->channel->getName() : null;
     }

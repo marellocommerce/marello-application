@@ -8,6 +8,30 @@ services:
     marello_magento2.transport.rest.request_factory:
         class: Marello\Bundle\Magento2Bundle\Transport\Rest\RequestFactory
 
+    marello_magento2.repository.website:
+        class: Marello\Bundle\Magento2Bundle\Entity\Repository\WebsiteRepository
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'Marello\Bundle\Magento2Bundle\Entity\Website'
+
+    marello_magento2.repository.product:
+        class: Marello\Bundle\Magento2Bundle\Entity\Repository\ProductRepository
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'Marello\Bundle\Magento2Bundle\Entity\Product'
+
+    marello_magento2.event_listener.doctrine.product_reverse_sync:
+        class: Marello\Bundle\Magento2Bundle\EventListener\Doctrine\ProductReverseSyncListener
+        arguments:
+            - '@property_accessor'
+            - '@marello_magento2.repository.website'
+            - '@oro_integration.sync_scheduler.link'
+            - 'Marello\Bundle\ProductBundle\Entity\Product'
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+            - { name: doctrine.event_listener, event: onClear }
+            - { name: doctrine.event_listener, event: postFlush }
+
     # Handlers
     marello_magento2.handler.transport_entity_handler:
         class: Marello\Bundle\Magento2Bundle\Handler\TransportEntityHandler

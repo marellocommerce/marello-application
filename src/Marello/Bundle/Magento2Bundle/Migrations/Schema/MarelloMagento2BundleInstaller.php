@@ -48,6 +48,9 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
         $this->addStoreForeignKeys($schema);
 
         $this->addSalesChannelWebsiteRelation($schema);
+
+        $this->addMagentoProduct($schema);
+        $this->addMagentoProductForeignKeys($schema);
     }
 
     /**
@@ -70,7 +73,7 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
      */
     protected function createWebsiteTable(Schema $schema)
     {
-        $table = $schema->createTable('marello_magento2_website');
+        $table = $schema->createTable('marello_m2_website');
         $table->addColumn('id', 'integer', ['precision' => 0, 'autoincrement' => true]);
         $table->addColumn('channel_id', 'integer', ['notnull' => false]);
         $table->addColumn('code', 'string', ['length' => 32, 'precision' => 0]);
@@ -86,7 +89,7 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
      */
     protected function createStoreTable(Schema $schema)
     {
-        $table = $schema->createTable('marello_magento2_store');
+        $table = $schema->createTable('marello_m2_store');
         $table->addColumn('id', 'integer', ['precision' => 0, 'autoincrement' => true]);
         $table->addColumn('channel_id', 'integer', ['notnull' => false]);
         $table->addColumn('code', 'string', ['length' => 32, 'precision' => 0]);
@@ -109,7 +112,7 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
      */
     public function addWebsiteForeignKeys(Schema $schema)
     {
-        $table = $schema->getTable('marello_magento2_website');
+        $table = $schema->getTable('marello_m2_website');
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_integration_channel'),
             ['channel_id'],
@@ -123,7 +126,7 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
      */
     public function addStoreForeignKeys(Schema $schema)
     {
-        $table = $schema->getTable('marello_magento2_store');
+        $table = $schema->getTable('marello_m2_store');
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_integration_channel'),
             ['channel_id'],
@@ -132,7 +135,7 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
         );
 
         $table->addForeignKeyConstraint(
-            $schema->getTable('marello_magento2_website'),
+            $schema->getTable('marello_m2_website'),
             ['website_id'],
             ['id'],
             ['onDelete' => 'CASCADE']
@@ -154,7 +157,7 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
     protected function addSalesChannelWebsiteRelation(Schema $schema)
     {
         $table = $schema->getTable('marello_sales_sales_channel');
-        $targetTable = $schema->getTable('marello_magento2_website');
+        $targetTable = $schema->getTable('marello_m2_website');
 
         $this->extendExtension->addManyToOneRelation(
             $schema,
@@ -198,6 +201,58 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
                 'merge' => ['display' => false],
                 'importexport' => ['excluded' => true],
             ]
+        );
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    protected function addMagentoProduct(Schema $schema)
+    {
+        $table = $schema->createTable('marello_m2_product');
+        $table->addColumn('id', 'integer', ['precision' => 0, 'autoincrement' => true]);
+        $table->addColumn('product_id', 'integer');
+        $table->addColumn('channel_id', 'integer');
+        $table->addColumn('origin_id', 'integer', ['notnull' => false, 'precision' => 0, 'unsigned' => true]);
+        $table->addColumn('created_at', 'datetime');
+        $table->addColumn('updated_at', 'datetime');
+        $table->setPrimaryKey(['id']);
+        $table->addUniqueIndex(
+            ['product_id', 'channel_id'],
+            'unq_product_channel_idx'
+        );
+
+        $this->extendExtension->addEnumField(
+            $schema,
+            $table,
+            'status',
+            'marello_m2_p_status',
+            false,
+            true,
+            [
+                'extend' => ['owner' => ExtendScope::OWNER_CUSTOM]
+            ]
+        );
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    protected function addMagentoProductForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('marello_m2_product');
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_product_product'),
+            ['product_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE']
+        );
+
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_integration_channel'),
+            ['channel_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE']
         );
     }
 }

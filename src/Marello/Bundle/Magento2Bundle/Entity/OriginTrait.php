@@ -7,8 +7,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 trait OriginTrait
 {
     /**
-     * Mage entity origin id
-     * @var integer
+     * @var integer|null
      *
      * @ORM\Column(name="origin_id", type="integer", options={"unsigned"=true}, nullable=true)
      * @ConfigField(
