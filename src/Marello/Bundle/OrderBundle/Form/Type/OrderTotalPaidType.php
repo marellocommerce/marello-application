@@ -48,7 +48,6 @@ class OrderTotalPaidType extends AbstractType
                 'currency',
                 ChoiceType::class,
                 [
-                    'disabled' => true,
                     'choices' => [
                         $this->localeSettings->getCurrencySymbolByCurrency($options['currency']) => $options['currency']
                     ]
