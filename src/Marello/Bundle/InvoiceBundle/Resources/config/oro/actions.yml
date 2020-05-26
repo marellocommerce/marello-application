@@ -26,7 +26,9 @@ operations:
         type: string
       total_paid:
         label: marello.payment.total_paid.label
-        type: float
+        type: object
+        options:
+          class: Oro\Bundle\CurrencyBundle\Entity\Price
       action_result:
         label: 'result'
         type: array
@@ -58,11 +60,10 @@ operations:
             constraints:
               - NotBlank: ~
         total_paid:
-          form_type: Symfony\Component\Form\Extension\Core\Type\NumberType
+          form_type: Marello\Bundle\OrderBundle\Form\Type\OrderTotalPaidType
           options:
             required: true
-            constraints:
-              - NotBlank: ~
+            currency: $.data.currency
     frontend_options:
       #template: customDialogTemplate.html.twig
       options:
@@ -81,7 +82,7 @@ operations:
       - '@call_service_method':
           service: marello_payment.action.handler.add_payment
           method: handleAction
-          method_parameters: [$.data, $.payment_method, $.payment_date, $.payment_reference, $.payment_details, $.total_paid]
+          method_parameters: [$.data, $.payment_method, $.payment_date, $.payment_reference, $.payment_details, $.total_paid.value]
           attribute: $.action_result
       - '@flash_message':
           message: $.action_result.message

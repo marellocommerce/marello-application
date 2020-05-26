@@ -37,7 +37,17 @@
 
 {% block content_data %}
     {% set id = 'marello-payment-update' %}
-
+    {% set paymentMethod = marello_get_payment_method_label(entity.paymentMethod)|trans %}
+    {% for name, value in entity.paymentMethodOptions %}
+        {% if name == 'term' %}
+            {% set value = 'marello.payment_term.ui.payment_term.term_days'|trans({'%days%': value }) %}
+            {% set name = 'Term' %}
+        {% elseif name == 'code' %}
+            {% set value = marello_get_payment_term_label_for_code(value) %}
+            {% set name = 'Label' %}
+        {% endif %}
+        {% set paymentMethod = paymentMethod ~ ' <br>' ~ name ~ ': ' ~ value %}
+    {% endfor %}
     {% set dataBlocks = [{
             'title': 'marello.payment.sections.general'|trans,
             'class': 'active',
@@ -46,8 +56,11 @@
             'data': [
                 form_row(form.status),
                 form_row(form.paymentSource),
+                UI.renderHtmlProperty('marello.payment.payment_method.label'|trans, paymentMethod, null, null, {termClass: 'marello-payment-update-property-label'}),
                 form_row(form.paymentReference),
                 form_row(form.paymentDetails),
+                UI.renderProperty('marello.payment.total_paid.label'|trans, entity.totalPaid|oro_format_currency({'currency':entity.currency}), null, null, {termClass: 'marello-payment-update-property-label'}),
+                UI.renderProperty('marello.payment.payment_date.label'|trans, entity.paymentDate|date, null, null, {termClass: 'marello-payment-update-property-label'})
             ]
         }]}
     ] %}
