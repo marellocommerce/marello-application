@@ -23,6 +23,8 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
     public const RESOURCE_WEBSITES = 'store/websites';
     public const RESOURCE_STORES = 'store/storeViews';
     public const RESOURCE_STORE_CONFIGS = 'store/storeConfigs';
+    public const RESOURCE_PRODUCTS = 'products';
+    public const RESOURCE_PRODUCT_WITH_SKU = 'products/%sku%';
 
     /**
      * @var Magento2TransportSettings
@@ -79,6 +81,21 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
     }
 
     /**
+     * @param Magento2TransportSettings $settingsBag
+     * @param array $clientExtraOptions
+     */
+    public function initWithSettingBag(Magento2TransportSettings $settingsBag, array $clientExtraOptions = [])
+    {
+        $this->settingsBag = $settingsBag;
+        $this->client = $this->clientFactory->getClientInstance(
+            new RestTransportAdapter(
+                $this->settingsBag,
+                $clientExtraOptions
+            )
+        );
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function getWebsites(): \Iterator
@@ -114,6 +131,69 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
         );
 
         return new StoreIterator($storeData, $storeConfigData);
+    }
+
+    /**
+     * @param array $data
+     * @return array
+     * @throws RestException
+     * @throws RuntimeException
+     */
+    public function createProduct(array $data): array
+    {
+        $request = $this->requestFactory->creategetRequest(
+            RequestFactory::METHOD_POST,
+            self::RESOURCE_PRODUCTS,
+            [],
+            $data
+        );
+
+        $result = $this->getClient()->post($request->getUrn(), $request->getPayloadData());
+
+        return $result->json();
+    }
+
+    /**
+     * @param string $sku
+     * @param array $data
+     * @return array
+     * @throws RestException
+     * @throws RuntimeException
+     */
+    public function updateProduct(string $sku, array $data): array
+    {
+        $resource = str_replace('%sku%', $sku, self::RESOURCE_PRODUCT_WITH_SKU);
+
+        $request = $this->requestFactory->creategetRequest(
+            RequestFactory::METHOD_POST,
+            $resource,
+            [],
+            $data
+        );
+
+        $result = $this->getClient()->put($request->getUrn(), $request->getPayloadData());
+
+        return $result->json();
+    }
+
+    /**
+     * @param string $sku
+     * @return bool
+     * @throws RestException
+     * @throws RuntimeException
+     */
+    public function removeProduct(string $sku): bool
+    {
+        $resource = str_replace('%sku%', $sku, self::RESOURCE_PRODUCT_WITH_SKU);
+
+        $request = $this->requestFactory->creategetRequest(
+            RequestFactory::METHOD_DELETE,
+            $resource
+        );
+
+        $this->getClient()->delete($request->getUrn());
+
+        return true;
     }
 
     /**

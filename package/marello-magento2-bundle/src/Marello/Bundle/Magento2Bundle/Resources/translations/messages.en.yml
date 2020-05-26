@@ -22,10 +22,9 @@ marello:
                 tooltip: This is the starting date for data synchronization. Only records updated after this date will be synchronized
 
         connector:
-            website:
-                label: Website Connector
-            store:
-                label: Store Connector
+            website.label: Website Connector
+            store.label: Store Connector
+            product.label: Product Connector
 
         website:
             entity_label:         Magento 2 Website
@@ -51,7 +50,6 @@ marello:
         store:
             entity_label:         Magento 2 Store
             entity_plural_label:  Magento 2 Stores
-            entity_description:   A Magento store represents a website by means of which goods are sold and bought by Magento customers.
             id.label:             Id
             origin_id:
                 label:            Origin Id
@@ -80,3 +78,20 @@ marello:
             base_currency_code:
                 label:            Base Currency Code
                 description:      A currency code that represents currency that uses in a store.
+
+        product:
+            entity_label:         Magento 2 Product
+            entity_plural_label:  Magento 2 Products
+            entity_description:   A Magento products represents a product created on Magento side.
+            id.label:             Id
+            origin_id:
+                label:            Origin Id
+                description:      The Magento product ID specified on the Magento side.
+            channel:
+                label:            Integration
+                description:      The integration where Magento product was created.
+            product:
+                label:            Marello Product
+            status:
+                label:            Status
+                description:      The product sync status

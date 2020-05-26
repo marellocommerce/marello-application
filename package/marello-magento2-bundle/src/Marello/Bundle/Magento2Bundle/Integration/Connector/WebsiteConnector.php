@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\Magento2Bundle\Connector;
+namespace Marello\Bundle\Magento2Bundle\Integration\Connector;
 
 use Marello\Bundle\Magento2Bundle\Entity\Website;
 

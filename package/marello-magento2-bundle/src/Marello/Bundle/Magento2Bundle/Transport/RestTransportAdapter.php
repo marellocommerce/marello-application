@@ -22,7 +22,6 @@ class RestTransportAdapter implements RestTransportSettingsInterface
     /** @var array */
     protected $defaultParams = [
         'headers' => [
-            'Content-Type' => 'application/json',
             'Accept' => 'application/json'
         ]
     ];
