@@ -172,6 +172,8 @@ datagrids:
                     data_name: p.createdAt
                 updatedAt:
                     data_name: p.updatedAt
+            default:
+                createdAt: 'DESC'
         filters:
             columns:
                 status:
