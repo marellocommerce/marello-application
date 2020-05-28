@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\Magento2Bundle\Transport\Rest;
+namespace Marello\Bundle\Magento2Bundle\Transport\Rest\Request;
 
 class RequestFactory
 {
@@ -9,35 +9,31 @@ class RequestFactory
     private const API_VERSION = 'V1';
 
     /**
-     * @todo Make client aware about this methods,
-     * or better use constant from it
-     */
-    public const METHOD_GET = 'GET';
-    public const METHOD_POST = 'POST';
-    public const METHOD_PUT = 'PUT';
-    public const METHOD_DELETE = 'DELETE';
-
-    /**
-     * @param string $method
      * @param string $resource
-     * @param array $filters
      * @param array $data
      * @param string $storeCode
+     * @return Request
      */
     public function creategetRequest(
-        string $method,
         string $resource,
-        array $filters = [], /** @todo Use some object or Collection that transforms to request filters */
         array $data = [],
         string $storeCode = self::ALL_STORE_VIEW_CODE
-    ) {
+    ): Request {
         $fullApiUrn = $this->getFullAPIUrn($resource, $storeCode);
-
-        /**
-         * @todo Add logic to add filters to api URN
-         */
-
         return new Request($fullApiUrn, $data);
+    }
+
+    /**
+     * @param string $resource
+     * @param string $storeCode
+     * @return SearchRequest
+     */
+    public function createSearchRequest(
+        string $resource,
+        string $storeCode = self::ALL_STORE_VIEW_CODE
+    ): SearchRequest {
+        $fullApiUrn = $this->getFullAPIUrn($resource, $storeCode);
+        return new SearchRequest($fullApiUrn, []);
     }
 
     /**

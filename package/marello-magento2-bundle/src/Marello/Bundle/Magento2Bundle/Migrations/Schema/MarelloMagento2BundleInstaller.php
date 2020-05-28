@@ -31,7 +31,7 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
      */
     public function getMigrationVersion()
     {
-        return 'v1_0';
+        return 'v1_1';
     }
 
     /**
@@ -49,7 +49,7 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
 
         $this->addSalesChannelWebsiteRelation($schema);
 
-        $this->addMagentoProduct($schema);
+        $this->addMagentoProductTable($schema);
         $this->addMagentoProductForeignKeys($schema);
     }
 
@@ -207,7 +207,7 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
     /**
      * @param Schema $schema
      */
-    protected function addMagentoProduct(Schema $schema)
+    protected function addMagentoProductTable(Schema $schema)
     {
         $table = $schema->createTable('marello_m2_product');
         $table->addColumn('id', 'integer', ['precision' => 0, 'autoincrement' => true]);

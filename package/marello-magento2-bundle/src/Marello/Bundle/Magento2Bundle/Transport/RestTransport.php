@@ -6,9 +6,11 @@ use Marello\Bundle\Magento2Bundle\Entity\Magento2Transport;
 use Marello\Bundle\Magento2Bundle\Exception\RuntimeException;
 use Marello\Bundle\Magento2Bundle\Form\Type\TransportSettingFormType;
 use Marello\Bundle\Magento2Bundle\Model\Magento2TransportSettings;
+use Marello\Bundle\Magento2Bundle\Transport\Rest\Client\SearchClientFactory;
+use Marello\Bundle\Magento2Bundle\Transport\Rest\Iterator\ProductTaxClassesIterator;
 use Marello\Bundle\Magento2Bundle\Transport\Rest\Iterator\StoreIterator;
 use Marello\Bundle\Magento2Bundle\Transport\Rest\Iterator\WebsiteIterator;
-use Marello\Bundle\Magento2Bundle\Transport\Rest\RequestFactory;
+use Marello\Bundle\Magento2Bundle\Transport\Rest\Request\RequestFactory;
 use Oro\Bundle\IntegrationBundle\Entity\Transport;
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\FactoryInterface as RestClientFactoryInterface;
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestClientInterface;
@@ -25,6 +27,7 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
     public const RESOURCE_STORE_CONFIGS = 'store/storeConfigs';
     public const RESOURCE_PRODUCTS = 'products';
     public const RESOURCE_PRODUCT_WITH_SKU = 'products/%sku%';
+    public const RESOURCE_TAX_CLASS_SEARCH = 'taxClasses/search';
 
     /**
      * @var Magento2TransportSettings
@@ -35,6 +38,11 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
      * @var RestClientFactoryInterface
      */
     protected $clientFactory;
+
+    /**
+     * @var SearchClientFactory
+     */
+    protected $searchClientFactory;
 
     /**
      * @var RequestFactory
@@ -49,13 +57,16 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
     /**
      * @param RestClientFactoryInterface $clientFactory
      * @param RequestFactory $requestFactory
+     * @param SearchClientFactory $searchClientFactory
      */
     public function __construct(
         RestClientFactoryInterface $clientFactory,
-        RequestFactory $requestFactory
+        RequestFactory $requestFactory,
+        SearchClientFactory $searchClientFactory
     ) {
         $this->clientFactory = $clientFactory;
         $this->requestFactory = $requestFactory;
+        $this->searchClientFactory = $searchClientFactory;
     }
 
     /**
@@ -101,7 +112,6 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
     public function getWebsites(): \Iterator
     {
         $request = $this->requestFactory->creategetRequest(
-            RequestFactory::METHOD_GET,
             self::RESOURCE_WEBSITES
         );
 
@@ -122,7 +132,6 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
         $storeConfigData = $this->getStoreConfigs();
 
         $request = $this->requestFactory->creategetRequest(
-            RequestFactory::METHOD_GET,
             self::RESOURCE_STORES
         );
 
@@ -134,6 +143,22 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
     }
 
     /**
+     * @return \Iterator
+     * @throws RestException
+     * @throws RuntimeException
+     */
+    public function getProductTaxClasses(): \Iterator
+    {
+        $request = $this->requestFactory->createSearchRequest(
+            self::RESOURCE_TAX_CLASS_SEARCH
+        );
+
+        $searchClient = $this->searchClientFactory->createSearchClient($this->getClient());
+
+        return new ProductTaxClassesIterator($searchClient, $request);
+    }
+
+    /**
      * @param array $data
      * @return array
      * @throws RestException
@@ -142,9 +167,7 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
     public function createProduct(array $data): array
     {
         $request = $this->requestFactory->creategetRequest(
-            RequestFactory::METHOD_POST,
             self::RESOURCE_PRODUCTS,
-            [],
             $data
         );
 
@@ -165,9 +188,7 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
         $resource = str_replace('%sku%', $sku, self::RESOURCE_PRODUCT_WITH_SKU);
 
         $request = $this->requestFactory->creategetRequest(
-            RequestFactory::METHOD_POST,
             $resource,
-            [],
             $data
         );
 
@@ -187,7 +208,6 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
         $resource = str_replace('%sku%', $sku, self::RESOURCE_PRODUCT_WITH_SKU);
 
         $request = $this->requestFactory->creategetRequest(
-            RequestFactory::METHOD_DELETE,
             $resource
         );
 
@@ -204,7 +224,6 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
     protected function getStoreConfigs(): array
     {
         $request = $this->requestFactory->creategetRequest(
-            RequestFactory::METHOD_GET,
             self::RESOURCE_STORE_CONFIGS
         );
 

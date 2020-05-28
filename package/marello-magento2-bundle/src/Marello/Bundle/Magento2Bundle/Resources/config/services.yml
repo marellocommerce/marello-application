@@ -5,8 +5,8 @@ services:
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: magento2_group_saleschannels }
 
-    marello_magento2.transport.rest.request_factory:
-        class: Marello\Bundle\Magento2Bundle\Transport\Rest\RequestFactory
+    marello_magento2.transport.rest.request.request_factory:
+        class: Marello\Bundle\Magento2Bundle\Transport\Rest\Request\RequestFactory
 
     marello_magento2.repository.website:
         class: Marello\Bundle\Magento2Bundle\Entity\Repository\WebsiteRepository
@@ -32,6 +32,9 @@ services:
             - { name: doctrine.event_listener, event: onClear }
             - { name: doctrine.event_listener, event: postFlush }
 
+    marello_magento2.transport.rest.search_client_factory:
+        class: Marello\Bundle\Magento2Bundle\Transport\Rest\Client\SearchClientFactory
+
     # Handlers
     marello_magento2.handler.transport_entity_handler:
         class: Marello\Bundle\Magento2Bundle\Handler\TransportEntityHandler
@@ -42,7 +45,8 @@ services:
         class: Marello\Bundle\Magento2Bundle\Transport\RestTransport
         arguments:
             - '@oro_integration.transport.rest.event_dispatchable_client_factory'
-            - '@marello_magento2.transport.rest.request_factory'
+            - '@marello_magento2.transport.rest.request.request_factory'
+            - '@marello_magento2.transport.rest.search_client_factory'
         calls:
             - [setLogger, ["@oro_integration.logger.strategy"]]
         tags:

@@ -29,6 +29,20 @@ connector:
                     parameters:
                         batch_size: 25
 
+        marello_magento2_product_tax_class_import:
+            title: "Product Tax Class import from Magento 2"
+            type:  import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_magento2.integration.connector.product_tax_class
+                        processor: marello_magento2.importexport.processor.product_tax_class
+                        writer:    oro_importexport.writer.entity
+                    parameters:
+                        batch_size: 25
+
         marello_magento2_product_rest_export:
             title: "Export product data to Magento 2"
             type: export

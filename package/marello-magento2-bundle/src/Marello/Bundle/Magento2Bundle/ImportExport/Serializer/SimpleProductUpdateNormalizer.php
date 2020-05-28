@@ -26,7 +26,7 @@ class SimpleProductUpdateNormalizer implements NormalizerInterface
         $status = $object->getStatus()->getName() === ProductStatus::ENABLED ? 1 : 0;
 
         return [
-            'productId' => $object->getMarrelloProductId(),
+            'productId' => $object->getMarelloProductId(),
             'sku' => $object->getSku(),
             'payload' => [
                 'product' => [
