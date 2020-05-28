@@ -2,6 +2,8 @@
 
 namespace Marello\Bundle\Magento2Bundle\Transport;
 
+use Marello\Bundle\Magento2Bundle\Exception\RuntimeException;
+use Oro\Bundle\IntegrationBundle\Provider\Rest\Exception\RestException;
 use Oro\Bundle\IntegrationBundle\Provider\TransportInterface;
 
 interface Magento2TransportInterface extends TransportInterface
@@ -15,6 +17,11 @@ interface Magento2TransportInterface extends TransportInterface
      * @return \Iterator
      */
     public function getStores(): \Iterator;
+
+    /**
+     * @return \Iterator
+     */
+    public function getProductTaxClasses(): \Iterator;
 
     /**
      * @param string $sku

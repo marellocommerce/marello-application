@@ -191,11 +191,11 @@ class ProductReverseSyncListener
 
         /** @var PersistentCollection $collection */
         foreach ($applicableCollectionUpdates as $collection) {
-            $previousIntegrationChannelInfoArray = $this->translateSalesChannelsToIntegrationChannelInfoArray(
+            $prevIntegrationChannelInfoArray = $this->translateSalesChannelsToIntegrationChannelInfoArray(
                 $collection->getSnapshot()
             );
 
-            $currentIntegrationChannelInfoArray = $this->translateSalesChannelsToIntegrationChannelInfoArray(
+            $curIntegrationChannelInfoArray = $this->translateSalesChannelsToIntegrationChannelInfoArray(
                 $collection->getValues()
             );
 
@@ -204,8 +204,8 @@ class ProductReverseSyncListener
 
             $addedIntegrationIds = \array_keys(
                 \array_diff_key(
-                    $currentIntegrationChannelInfoArray,
-                    $previousIntegrationChannelInfoArray
+                    $curIntegrationChannelInfoArray,
+                    $prevIntegrationChannelInfoArray
                 )
             );
 
@@ -215,8 +215,8 @@ class ProductReverseSyncListener
 
             $removedIntegrationIds = \array_keys(
                 \array_diff_key(
-                    $previousIntegrationChannelInfoArray,
-                    $currentIntegrationChannelInfoArray
+                    $prevIntegrationChannelInfoArray,
+                    $curIntegrationChannelInfoArray
                 )
             );
 
@@ -226,23 +226,16 @@ class ProductReverseSyncListener
 
             $existedIntegrationIds = \array_keys(
                 \array_intersect_key(
-                    $previousIntegrationChannelInfoArray,
-                    $currentIntegrationChannelInfoArray
+                    $prevIntegrationChannelInfoArray,
+                    $curIntegrationChannelInfoArray
                 )
             );
 
             $integrationIdsWithUpdatedWebsites = \array_filter(
                 $existedIntegrationIds,
-                function (int $integrationId) use (
-                    $previousIntegrationChannelInfoArray,
-                    $currentIntegrationChannelInfoArray
-                ) {
-                    $changedWebsites = \array_diff(
-                        $previousIntegrationChannelInfoArray[$integrationId],
-                        $currentIntegrationChannelInfoArray[$integrationId]
-                    );
-
-                    return !empty($changedWebsites);
+                function (int $integrationId) use ($prevIntegrationChannelInfoArray, $curIntegrationChannelInfoArray) {
+                    return $prevIntegrationChannelInfoArray[$integrationId] !==
+                        $curIntegrationChannelInfoArray[$integrationId];
                 }
             );
 

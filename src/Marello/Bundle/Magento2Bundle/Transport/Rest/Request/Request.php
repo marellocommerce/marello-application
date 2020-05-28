@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\Magento2Bundle\Transport\Rest;
+namespace Marello\Bundle\Magento2Bundle\Transport\Rest\Request;
 
 class Request implements RequestInterface
 {

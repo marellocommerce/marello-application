@@ -6,7 +6,6 @@ class ProductSimpleCreateDTO extends ProductSimpleUpdateDTO
 {
     public const TYPE_ID = 'simple';
     public const DEFAULT_ATTR_SET_ID = '4';
-    public const DEFAULT_PRICE = 0.0;
 
     /** @var string */
     protected $typeId = self::TYPE_ID;

@@ -7,8 +7,10 @@ use Marello\Bundle\ProductBundle\Entity\ProductStatus;
 
 class ProductSimpleUpdateDTO
 {
+    public const DEFAULT_PRICE = 0.0;
+
     /** @var int */
-    protected $marrelloProductId;
+    protected $marelloProductId;
 
     /** @var string */
     protected $sku;
@@ -26,20 +28,20 @@ class ProductSimpleUpdateDTO
     protected $status;
 
     /**
-     * @param int $marrelloProductId
+     * @param int $marelloProductId
      * @param string $sku
      * @param string $name
      * @param array $websites
      * @param ProductStatus $status
      */
     public function __construct(
-        int $marrelloProductId,
+        int $marelloProductId,
         string $sku,
         string $name,
         array $websites,
         ProductStatus $status
     ) {
-        $this->marrelloProductId = $marrelloProductId;
+        $this->marelloProductId = $marelloProductId;
         $this->sku = $sku;
         $this->name = $name;
         $this->websites = $websites;
@@ -50,9 +52,9 @@ class ProductSimpleUpdateDTO
     /**
      * @return int
      */
-    public function getMarrelloProductId(): int
+    public function getMarelloProductId(): int
     {
-        return $this->marrelloProductId;
+        return $this->marelloProductId;
     }
 
     /**
