@@ -95,33 +95,6 @@ class OroCommerceSettingsType extends AbstractType
                 ]
             )
             ->add(
-                'inventoryThreshold',
-                TextType::class,
-                [
-                    'label' => 'marello.orocommerce.orocommercesettings.inventory_threshold.label',
-                    'tooltip' => 'marello.orocommerce.orocommercesettings.inventory_threshold.tooltip',
-                    'required' => true
-                ]
-            )
-            ->add(
-                'lowInventoryThreshold',
-                TextType::class,
-                [
-                    'label' => 'marello.orocommerce.orocommercesettings.low_inventory_threshold.label',
-                    'tooltip' => 'marello.orocommerce.orocommercesettings.low_inventory_threshold.tooltip',
-                    'required' => true
-                ]
-            )
-            ->add(
-                'backOrder',
-                CheckboxType::class,
-                [
-                    'label' => 'marello.orocommerce.orocommercesettings.back_order.label',
-                    'tooltip' => 'marello.orocommerce.orocommercesettings.back_order.tooltip',
-                    'required' => false
-                ]
-            )
-            ->add(
                 'deleteRemoteDataOnDeactivation',
                 CheckboxType::class,
                 [
