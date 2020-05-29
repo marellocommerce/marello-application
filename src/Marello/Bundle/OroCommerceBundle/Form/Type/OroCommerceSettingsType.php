@@ -71,7 +71,7 @@ class OroCommerceSettingsType extends AbstractType
                 ]
             )
             ->add(
-                'username',
+                'userName',
                 TextType::class,
                 [
                     'label' => 'marello.orocommerce.orocommercesettings.username.label',
@@ -237,7 +237,7 @@ class OroCommerceSettingsType extends AbstractType
         $form = $event->getForm();
         $paramBag = new ParameterBag([
             OroCommerceSettings::URL_FIELD => $data['url'],
-            OroCommerceSettings::USERNAME_FIELD => $data['username'],
+            OroCommerceSettings::USERNAME_FIELD => $data['userName'],
             OroCommerceSettings::KEY_FIELD => $data['key']
         ]);
 
