@@ -69,7 +69,7 @@ class CustomerImportWriter implements ItemWriterInterface, StepExecutionAwareInt
             $configuration = $this->getConfig();
 
             if (empty($configuration[self::SKIP_CLEAR])) {
-                $entityManager->clear();
+                $entityManager->clear($this->className);
             }
         } catch (RetryableException $e) {
             $context = $this->contextRegistry->getByStepExecution($this->stepExecution);
