@@ -61,7 +61,7 @@ class PaymentTermNormalizer extends AbstractNormalizer implements DenormalizerIn
                         'attributes' => [
                             'entityClass' => 'Oro\Bundle\OrderBundle\Entity\Order',
                             'entityIdentifier' => $object->getOrderReference(),
-                            'paymentStatus' => self::PAID_FULLY_STATUS
+                            'paymentStatus' => OrderNormalizer::PAID_FULLY_STATUS
                         ]
                     ]
                 ];
@@ -81,7 +81,7 @@ class PaymentTermNormalizer extends AbstractNormalizer implements DenormalizerIn
 
     /**
      * @param array $data
-     * @return Order
+     * @return PaymentTerm
      */
     public function createPaymentTerm(array $data)
     {
