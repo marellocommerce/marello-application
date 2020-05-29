@@ -15,7 +15,7 @@ class OroCommerceSettings extends Transport
     const ENTERPRISE_FIELD = 'enterprise';
     const CURRENCY_FIELD = 'currency';
     const KEY_FIELD = 'key';
-    const USERNAME_FIELD = 'username';
+    const USERNAME_FIELD = 'userName';
     const WAREHOUSE_FIELD = 'warehouse';
     const BUSINESSUNIT_FIELD = 'businessunit';
     const PRODUCTUNIT_FIELD = 'productunit';
