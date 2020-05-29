@@ -11,7 +11,9 @@ use Marello\Bundle\OroCommerceBundle\Event\RemoteProductCreatedEvent;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractExportWriter;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractProductExportWriter;
 use Marello\Bundle\OroCommerceBundle\Integration\Connector\OroCommerceInventoryLevelConnector;
+use Marello\Bundle\OroCommerceBundle\Integration\Connector\OroCommerceProductConnector;
 use Marello\Bundle\OroCommerceBundle\Integration\OroCommerceChannelType;
+use Oro\Bundle\IntegrationBundle\Reader\EntityReaderById;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\EntityBundle\Event\OroEventManager;
@@ -75,6 +77,33 @@ class ReverseSyncInventoryLevelListener extends AbstractReverseSyncListener
                             MessagePriority::VERY_HIGH
                         )
                     );
+                    // send update for product too as this entity only has a relation to the inventory_status
+                    // and needs to be updated...
+                    $productConnectorParams = [];
+                    $prodData = $product->getData();
+                    if (isset($prodData[AbstractProductExportWriter::PRODUCT_ID_FIELD]) &&
+                        isset($prodData[AbstractProductExportWriter::PRODUCT_ID_FIELD][$channelId]) &&
+                        $prodData[AbstractProductExportWriter::PRODUCT_ID_FIELD][$channelId] !== null
+                    ) {
+                        $productConnectorParams = [
+                            AbstractExportWriter::ACTION_FIELD => AbstractExportWriter::UPDATE_ACTION,
+                            EntityReaderById::ID_FILTER => $product->getId(),
+                        ];
+                    }
+                    if (!empty($productConnectorParams)) {
+                        $this->producer->send(
+                            sprintf('%s.orocommerce', Topics::REVERS_SYNC_INTEGRATION),
+                            new Message(
+                                [
+                                    'integration_id'       => $integrationChannel->getId(),
+                                    'connector_parameters' => $productConnectorParams,
+                                    'connector'            => OroCommerceProductConnector::TYPE,
+                                    'transport_batch_size' => 100,
+                                ],
+                                MessagePriority::NORMAL
+                            )
+                        );
+                    }
                 }
             }
         }
@@ -228,6 +257,33 @@ class ReverseSyncInventoryLevelListener extends AbstractReverseSyncListener
                                         MessagePriority::HIGH
                                     )
                                 );
+                                // send update for product too as this entity only has a relation to the inventory_status
+                                // and needs to be updated...
+                                $productConnectorParams = [];
+                                $prodData = $product->getData();
+                                if (isset($prodData[AbstractProductExportWriter::PRODUCT_ID_FIELD]) &&
+                                    isset($prodData[AbstractProductExportWriter::PRODUCT_ID_FIELD][$channelId]) &&
+                                    $prodData[AbstractProductExportWriter::PRODUCT_ID_FIELD][$channelId] !== null
+                                ) {
+                                    $productConnectorParams = [
+                                        AbstractExportWriter::ACTION_FIELD => AbstractExportWriter::UPDATE_ACTION,
+                                        EntityReaderById::ID_FILTER => $product->getId(),
+                                    ];
+                                }
+                                if (!empty($productConnectorParams)) {
+                                    $this->producer->send(
+                                        sprintf('%s.orocommerce', Topics::REVERS_SYNC_INTEGRATION),
+                                        new Message(
+                                            [
+                                                'integration_id'       => $integrationChannel->getId(),
+                                                'connector_parameters' => $productConnectorParams,
+                                                'connector'            => OroCommerceProductConnector::TYPE,
+                                                'transport_batch_size' => 100,
+                                            ],
+                                            MessagePriority::NORMAL
+                                        )
+                                    );
+                                }
                             } elseif (false === $transport->isDeleteRemoteDataOnDeactivation()) {
                                 $transportData = $transport->getData();
                                 $transportData[AbstractExportWriter::NOT_SYNCHRONIZED]
