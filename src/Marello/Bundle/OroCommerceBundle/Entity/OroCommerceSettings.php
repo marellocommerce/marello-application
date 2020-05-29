@@ -22,9 +22,6 @@ class OroCommerceSettings extends Transport
     const CUSTOMERTAXCODE_FIELD = 'customertaxcode';
     const PRICELIST_FIELD = 'pricelist';
     const PRODUCTFAMILY_FIELD = 'productfamily';
-    const INVENTORYTHRESHOLD_FIELD = 'inventorythreshold';
-    const LOWINVENTORYTHRESHOLD_FIELD = 'lowinventorythreshold';
-    const BACKORDER_FIELD = 'backorder';
     const DELETE_REMOTE_DATA_ON_DEACTIVATION = 'deleteRemoteDataOnDeactivation';
     const DELETE_REMOTE_DATA_ON_DELETION = 'deleteRemoteDataOnDeletion';
     const DATA = 'data';
@@ -91,27 +88,6 @@ class OroCommerceSettings extends Transport
      * @ORM\Column(name="orocommerce_productfamily", type="integer", nullable=false)
      */
     private $productFamily;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="orocommerce_inventorythreshold", type="integer", nullable=false)
-     */
-    private $inventoryThreshold;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="orocommerce_lowinvthreshold", type="integer", nullable=false)
-     */
-    private $lowInventoryThreshold;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="orocommerce_backorder", type="boolean", nullable=false)
-     */
-    private $backOrder;
 
     /**
      * @var bool
@@ -325,59 +301,59 @@ class OroCommerceSettings extends Transport
     }
 
     /**
+     * @deprecated inventoryThreshold is now using the category default in OroCommerce
      * @return int
      */
     public function getInventoryThreshold()
     {
-        return $this->inventoryThreshold;
+        return 0;
     }
 
     /**
+     * @deprecated inventoryThreshold is now using the category default in OroCommerce
      * @param int $inventoryThreshold
      * @return $this
      */
     public function setInventoryThreshold($inventoryThreshold)
     {
-        $this->inventoryThreshold = $inventoryThreshold;
-
         return $this;
     }
 
     /**
+     * @deprecated lowInventoryThreshold is now using the category default in OroCommerce
      * @return int
      */
     public function getLowInventoryThreshold()
     {
-        return $this->lowInventoryThreshold;
+        return 0;
     }
 
     /**
+     * @deprecated lowInventoryThreshold is now using the category default in OroCommerce
      * @param int $lowInventoryThreshold
      * @return $this
      */
     public function setLowInventoryThreshold($lowInventoryThreshold)
     {
-        $this->lowInventoryThreshold = $lowInventoryThreshold;
-
         return $this;
     }
 
     /**
+     * @deprecated backOrder from InventoryItem is used in synchronisation
      * @return bool
      */
     public function isBackOrder()
     {
-        return $this->backOrder;
+        return false;
     }
 
     /**
+     * @deprecated backOrder from InventoryItem is used in synchronisation
      * @param bool $backOrder
      * @return $this
      */
     public function setBackOrder($backOrder)
     {
-        $this->backOrder = $backOrder;
-
         return $this;
     }
 
@@ -496,9 +472,6 @@ class OroCommerceSettings extends Transport
                     self::CUSTOMERTAXCODE_FIELD => $this->getCustomerTaxCode(),
                     self::PRICELIST_FIELD => $this->getPriceList(),
                     self::PRODUCTFAMILY_FIELD => $this->getProductFamily(),
-                    self::INVENTORYTHRESHOLD_FIELD => $this->getInventoryThreshold(),
-                    self::LOWINVENTORYTHRESHOLD_FIELD => $this->getLowInventoryThreshold(),
-                    self::BACKORDER_FIELD => $this->isBackOrder(),
                     self::DELETE_REMOTE_DATA_ON_DEACTIVATION => $this->isDeleteRemoteDataOnDeactivation(),
                     self::DELETE_REMOTE_DATA_ON_DELETION => $this->isDeleteRemoteDataOnDeletion(),
                     self::DATA => $this->getData()
