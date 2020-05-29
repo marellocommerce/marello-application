@@ -77,10 +77,16 @@ class OroCommerceIntegrationEventListener
     {
         if ($channel->getType() === OroCommerceChannelType::TYPE) {
             $em = $args->getEntityManager();
+            /** @var SalesChannel $salesChannel */
             $salesChannel = $em->getRepository(SalesChannel::class)->findOneBy(['integrationChannel' => $channel]);
+            $salesChannelGroup = $salesChannel->getGroup();
             if ($salesChannel) {
                 $em->getUnitOfWork()->scheduleForDelete($salesChannel);
             }
+            if ($salesChannelGroup) {
+                $em->getUnitOfWork()->scheduleForDelete($salesChannelGroup);
+            }
+
             $section = AbstractProductExportWriter::SECTION_FIELD;
             if ($this->databaseDriver === self::PGSQL_DRIVER) {
                 $formattedDataField = 'CAST(p.data as TEXT)';
