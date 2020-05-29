@@ -10,6 +10,7 @@ services:
         class: Marello\Bundle\OrderBundle\Form\Type\OrderTotalPaidType
         arguments:
             - '@oro_locale.settings'
+            - '@oro_currency.config.currency'
         tags:
             - { name: form.type }
 

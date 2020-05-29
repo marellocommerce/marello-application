@@ -1,0 +1,96 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
+{% set formAction = path('marello_payment_create') %}
+
+{% block navButtons %}
+    {{ UI.cancelButton(path('marello_payment_index')) }}
+    {% set html = UI.saveAndCloseButton({
+        'route': 'marello_payment_index'
+    }) %}
+    {{ UI.dropdownSaveButton({ 'html': html }) }}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'marello.payment.entity_label'|trans}) %}
+    {% include 'OroUIBundle::page_title_block.html.twig' with { title: title } %}
+{% endblock pageHeader %}
+
+{% set pageComponent = {
+    module: 'marellolayout/js/app/components/form-changes-component',
+    options: {
+        route: 'marello_payment_form_changes',
+        prefix: 'payment',
+        routeParams: {id: entity.id|default(0)}
+    }
+} %}
+
+{% block content_data %}
+    {% set id = 'marello-payment-create' %}
+    {% set generalSubblocks = [] %}
+    {% set generalInformation %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    <div class="box-type1">
+                        <div data-page-component-module="oroui/js/app/components/view-component"
+                             data-page-component-options="{{ {
+                                 view: 'marellopayment/js/app/views/payment-source-view',
+                             }|json_encode }}">
+                            {{ form_row(form.paymentSource) }}
+                        </div>
+                        <div data-page-component-module="oroui/js/app/components/view-component"
+                             data-page-component-options="{{ {
+                                 view: 'marellopayment/js/app/views/payment-method-view',
+                             }|json_encode }}">
+                            {{ form_row(form.paymentMethod) }}
+                        </div>
+                        {{ form_row(form.paymentDate) }}
+                        {{ form_row(form.paymentReference) }}
+                        {{ form_row(form.paymentDetails) }}
+                        <div data-page-component-module="oroui/js/app/components/view-component"
+                             data-page-component-options="{{ {
+                                 view: 'marellopayment/js/app/views/total-paid-view',
+                             }|json_encode }}">
+                            {{ form_row(form.totalPaid) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endset %}
+    {% set generalSubblocks = generalSubblocks|merge([{'data' : [generalInformation] }]) %}
+
+
+    {% set dataBlocks = [{
+            'title': 'marello.payment.sections.general'|trans,
+            'class': 'active',
+            'subblocks': generalSubblocks
+    }
+    ] %}
+
+    {% set additionalData = [] %}
+    {% for child in form.children if child.vars.extra_field is defined and child.vars.extra_field %}
+        {% set additionalData = additionalData|merge([form_row(child)]) %}
+    {% endfor %}
+
+    {% if additionalData is not empty %}
+        {% set dataBlocks = dataBlocks|merge([{
+            'title' : 'marello.payment.sections.additional'|trans,
+            'subblocks': [{
+                'title' : null,
+                'useSpan': false,
+                'data' : [
+                    additionalData
+                ]
+            }]
+        }]) %}
+    {% endif %}
+
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': dataBlocks,
+    } %}
+    {{ parent() }}
+{% endblock content_data %}
