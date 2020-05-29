@@ -3,6 +3,7 @@
 namespace Marello\Bundle\OrderBundle\Form\Type;
 
 use Oro\Bundle\CurrencyBundle\Entity\Price;
+use Oro\Bundle\CurrencyBundle\Provider\CurrencyListProviderInterface;
 use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -21,11 +22,18 @@ class OrderTotalPaidType extends AbstractType
     protected $localeSettings;
 
     /**
-     * @param LocaleSettings $localeSettings
+     * @var CurrencyListProviderInterface
      */
-    public function __construct(LocaleSettings $localeSettings)
+    private $currencyListProvider;
+
+    /**
+     * @param LocaleSettings $localeSettings
+     * @param CurrencyListProviderInterface $currencyListProvider
+     */
+    public function __construct(LocaleSettings $localeSettings, CurrencyListProviderInterface $currencyListProvider)
     {
         $this->localeSettings = $localeSettings;
+        $this->currencyListProvider = $currencyListProvider;
     }
 
     /**
@@ -34,6 +42,17 @@ class OrderTotalPaidType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $currencyChoices = [];
+        if (isset($options['currency']) && $options['currency'] !== null) {
+            $currencyChoices[$this->localeSettings->getCurrencySymbolByCurrency($options['currency'])] =
+                $options['currency'];
+        } else {
+            foreach ($this->currencyListProvider->getCurrencyList() as $currency) {
+                $currencyChoices[$this->localeSettings->getCurrencySymbolByCurrency($currency)] =
+                    $currency;
+            }
+        }
+
         $builder
             ->add(
                 'value',
@@ -48,9 +67,7 @@ class OrderTotalPaidType extends AbstractType
                 'currency',
                 ChoiceType::class,
                 [
-                    'choices' => [
-                        $this->localeSettings->getCurrencySymbolByCurrency($options['currency']) => $options['currency']
-                    ]
+                    'choices' => $currencyChoices
                 ]
             );
     }
@@ -62,7 +79,7 @@ class OrderTotalPaidType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Price::class,
-            'currency' => $this->localeSettings->getCurrency()
+            'currency' => null
         ]);
     }
 
