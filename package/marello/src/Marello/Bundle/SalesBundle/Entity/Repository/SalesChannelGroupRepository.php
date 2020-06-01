@@ -44,4 +44,20 @@ class SalesChannelGroupRepository extends EntityRepository
     ): ?SalesChannelGroup {
         return $this->findOneBy(['integrationChannel' => $integrationChannel]);
     }
+
+    /**
+     * @param int $salesChannelGroupId
+     * @return bool
+     */
+    public function hasAttachedIntegration(int $salesChannelGroupId): bool
+    {
+        $qb = $this->createQueryBuilder('scg');
+        $qb
+            ->select('1')
+            ->where($qb->expr()->eq('scg.id', ':salesChannelGroupId'))
+            ->andWhere($qb->expr()->isNotNull('scg.integrationChannel'))
+            ->setParameter('salesChannelGroupId', $salesChannelGroupId);
+
+        return (bool) $qb->getQuery()->getResult();
+    }
 }

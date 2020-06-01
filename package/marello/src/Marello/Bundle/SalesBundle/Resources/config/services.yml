@@ -164,3 +164,12 @@ services:
     marello_sales.placeholder.filter:
         public: true
         class: 'Marello\Bundle\SalesBundle\Placeholder\PlaceholderFilter'
+
+    marello_sales.security.acl.voter.sales_channel_group:
+        class: 'Marello\Bundle\SalesBundle\Acl\Voter\SalesChannelGroupVoter'
+        arguments:
+            - "@oro_entity.doctrine_helper"
+        calls:
+            - [setClassName, ['Marello\Bundle\SalesBundle\Entity\SalesChannelGroup']]
+        tags:
+            - { name: security.voter }

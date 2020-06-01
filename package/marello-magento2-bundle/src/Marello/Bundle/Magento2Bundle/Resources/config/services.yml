@@ -8,6 +8,9 @@ services:
     marello_magento2.transport.rest.request.request_factory:
         class: Marello\Bundle\Magento2Bundle\Transport\Rest\Request\RequestFactory
 
+    marello_magento2.transport.rest.search_client_factory:
+        class: Marello\Bundle\Magento2Bundle\Transport\Rest\Client\SearchClientFactory
+
     marello_magento2.repository.website:
         class: Marello\Bundle\Magento2Bundle\Entity\Repository\WebsiteRepository
         parent: oro_entity.abstract_repository
@@ -20,20 +23,35 @@ services:
         arguments:
             - 'Marello\Bundle\Magento2Bundle\Entity\Product'
 
+    # Event Listeners
     marello_magento2.event_listener.doctrine.product_reverse_sync:
         class: Marello\Bundle\Magento2Bundle\EventListener\Doctrine\ProductReverseSyncListener
         arguments:
             - '@property_accessor'
-            - '@marello_magento2.repository.website'
-            - '@oro_integration.sync_scheduler.link'
-            - 'Marello\Bundle\ProductBundle\Entity\Product'
+            - '@marello_magento2.provider.sales_channel_infos'
+            - '@marello_magento2.stack.changes_by_channel'
         tags:
             - { name: doctrine.event_listener, event: onFlush }
-            - { name: doctrine.event_listener, event: onClear }
+
+    marello_magento2.event_listener.doctrine.sales_channel_reverse_sync_listener:
+        class: Marello\Bundle\Magento2Bundle\EventListener\Doctrine\SalesChannelReverseSyncListener
+        arguments:
+            - '@marello_magento2.provider.sales_channel_infos'
+            - '@marello_magento2.stack.changes_by_channel'
+            - '@marello_product.repository.product'
+            - '@oro_message_queue.message_producer'
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
             - { name: doctrine.event_listener, event: postFlush }
 
-    marello_magento2.transport.rest.search_client_factory:
-        class: Marello\Bundle\Magento2Bundle\Transport\Rest\Client\SearchClientFactory
+    marello_magento2.event_listener.doctrine.sync_changes_by_chanel:
+        class: Marello\Bundle\Magento2Bundle\EventListener\Doctrine\SyncChangesByChannelListener
+        arguments:
+            - '@marello_magento2.stack.changes_by_channel'
+            - '@oro_integration.sync_scheduler.link'
+        tags:
+            - { name: doctrine.event_listener, event: onClear }
+            - { name: doctrine.event_listener, event: postFlush }
 
     # Handlers
     marello_magento2.handler.transport_entity_handler:
@@ -52,12 +70,6 @@ services:
         tags:
             - { name: oro_integration.transport, type: magento2_rest, channel_type: magento2 }
 
-    marello_magento2.provider.magento2_channel_type:
-        class: Marello\Bundle\Magento2Bundle\Provider\Magento2ChannelType
-        public: false
-        tags:
-            - { name: oro_integration.channel, type: magento2 }
-
     marello_magento2.handler.transport_handler:
         class: Marello\Bundle\Magento2Bundle\Handler\TransportHandler
         public: true
@@ -67,6 +79,13 @@ services:
             - '@marello_magento2.provider.websites_provider'
             - '@marello_magento2.provider.sales_channel_provider'
 
+    # Providers
+    marello_magento2.provider.magento2_channel_type:
+        class: Marello\Bundle\Magento2Bundle\Provider\Magento2ChannelType
+        public: false
+        tags:
+            - { name: oro_integration.channel, type: magento2 }
+
     marello_magento2.provider.websites_provider:
         class: Marello\Bundle\Magento2Bundle\Provider\WebsitesProvider
         arguments:
@@ -74,6 +93,11 @@ services:
 
     marello_magento2.provider.sales_channel_provider:
         class: Marello\Bundle\Magento2Bundle\Provider\SalesChannelsProvider
+
+    marello_magento2.provider.sales_channel_infos:
+        class: Marello\Bundle\Magento2Bundle\Provider\SalesChannelInfosProvider
+        arguments:
+            - '@marello_magento2.repository.website'
 
     # Forms and form related logic
     marello_magento2.form.extension.channel_connector_extension:
@@ -88,5 +112,30 @@ services:
         tags:
             - { name: form.type_extension, extended_type: Oro\Bundle\IntegrationBundle\Form\Type\ChannelType }
 
+    # Stack
+    marello_magento2.stack.changes_by_channel:
+        class: Marello\Bundle\Magento2Bundle\Stack\ChangesByChannelStack
 
+    # Message processor
+    marello_magento2.async.sales_channel_removed:
+        class: Marello\Bundle\Magento2Bundle\Async\SalesChannelRemovedProcessor
+        arguments:
+            - '@doctrine'
+            - '@marello_magento2.provider.sales_channel_infos'
+            - '@oro_integration.sync_scheduler.link'
+        calls:
+            - [setLogger,["@logger"]]
+        tags:
+            - { name: oro_message_queue.client.message_processor }
 
+    marello_magento2.async.sales_channel_state_changed:
+        class: Marello\Bundle\Magento2Bundle\Async\SalesChannelStateChangedProcessor
+        arguments:
+            - '@oro_message_queue.job.runner'
+            - '@doctrine'
+            - '@marello_magento2.provider.sales_channel_infos'
+            - '@oro_integration.sync_scheduler.link'
+        calls:
+            - [setLogger,["@logger"]]
+        tags:
+            - { name: oro_message_queue.client.message_processor }

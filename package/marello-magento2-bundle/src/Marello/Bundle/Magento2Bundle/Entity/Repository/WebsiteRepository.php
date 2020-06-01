@@ -8,6 +8,7 @@ use Marello\Bundle\Magento2Bundle\Model\SalesChannelInfo;
 class WebsiteRepository extends EntityRepository
 {
     /**
+     * @return SalesChannelInfo[]
      * [
      *    'sales_channel_id' => SalesChannelInfo <SalesChannelInfo>
      * ]
@@ -16,14 +17,15 @@ class WebsiteRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('m2w');
         $qb
-            ->select('m2w.id as websiteId, salesChannel.id as salesChannelId, channel.id as integrationChannelId')
+            ->select([
+                'm2w.id as websiteId',
+                'salesChannel.id as salesChannelId',
+                'channel.id as integrationChannelId',
+                'salesChannel.active as salesChannelActive',
+                'channel.enabled as integrationActive',
+            ])
             ->innerJoin('m2w.salesChannel', 'salesChannel')
-            ->innerJoin('m2w.channel', 'channel')
-            ->where($qb->expr()->eq('channel.enabled', ':integrationChannelEnabled'))
-            ->andWhere($qb->expr()->eq('salesChannel.active', ':salesChannelActive'))
-            ->setParameter('integrationChannelEnabled', true)
-            ->setParameter('salesChannelActive', true)
-        ;
+            ->innerJoin('m2w.channel', 'channel');
 
         $result = $qb->getQuery()->getResult();
 
@@ -31,7 +33,9 @@ class WebsiteRepository extends EntityRepository
         foreach ($result as $resultItem) {
             $returnResult[$resultItem['salesChannelId']] = new SalesChannelInfo(
                 $resultItem['websiteId'],
-                $resultItem['integrationChannelId']
+                $resultItem['integrationChannelId'],
+                $resultItem['salesChannelActive'],
+                $resultItem['integrationActive']
             );
         }
 

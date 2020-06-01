@@ -118,6 +118,8 @@ class ChangesByChannelDTO
     }
 
     /**
+     * Checks that method called on postFlush when product filled with their new id
+     *
      * @return array
      * @throws RuntimeException
      */
