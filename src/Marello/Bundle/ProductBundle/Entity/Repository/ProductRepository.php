@@ -57,6 +57,38 @@ class ProductRepository extends EntityRepository
     }
 
     /**
+     * @param array $salesChannelIds
+     * @return int[]
+     */
+    public function getProductIdsBySalesChannelIds(array $salesChannelIds): array
+    {
+        if (empty($salesChannelIds)) {
+            return [];
+        }
+
+        $subQb = $this->createQueryBuilder('innerProduct');
+        $subQb
+            ->select('1')
+            ->innerJoin('innerProduct.channels', 'sc')
+            ->where(
+                $subQb->expr()->andX(
+                    $subQb->expr()->in('sc.id', ':salesChannelIds'),
+                    $subQb->expr()->eq('innerProduct.id', 'product.id')
+                )
+            );
+
+        $qb = $this->createQueryBuilder('product');
+        $qb
+            ->select('product.id')
+            ->where($qb->expr()->exists($subQb))
+            ->setParameter('salesChannelIds', $salesChannelIds);
+
+        $result = $this->aclHelper->apply($qb->getQuery())->getResult();
+
+        return \array_column($result, 'id');
+    }
+
+    /**
      * Return products for specified price list and product IDs
      *
      * @param int $salesChannel
