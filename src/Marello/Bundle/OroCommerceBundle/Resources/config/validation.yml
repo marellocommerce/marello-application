@@ -20,3 +20,5 @@ Marello\Bundle\OroCommerceBundle\Entity\OroCommerceSettings:
             - NotBlank: ~
         productFamily:
             - NotBlank: ~
+        salesChannelGroup:
+            - NotBlank: ~
