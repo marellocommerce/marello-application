@@ -3,6 +3,7 @@
 namespace Marello\Bundle\OroCommerceBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Oro\Bundle\IntegrationBundle\Entity\Transport;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
@@ -128,6 +129,14 @@ class OroCommerceSettings extends Transport
      * @var ParameterBag
      */
     private $settings;
+
+    /**
+     * @var SalesChannelGroup
+     *
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\SalesBundle\Entity\SalesChannelGroup")
+     * @ORM\JoinColumn(name="orocommerce_scg_id", referencedColumnName="id", nullable=true)
+     */
+    private $salesChannelGroup;
 
     /**
      * @return string
@@ -451,6 +460,25 @@ class OroCommerceSettings extends Transport
     public function getData()
     {
         return $this->data;
+    }
+
+    /**
+     * @return SalesChannelGroup|null
+     */
+    public function getSalesChannelGroup()
+    {
+        return $this->salesChannelGroup;
+    }
+
+    /**
+     * @param SalesChannelGroup $salesChannelGroup
+     * @return $this
+     */
+    public function setSalesChannelGroup(SalesChannelGroup $salesChannelGroup)
+    {
+        $this->salesChannelGroup = $salesChannelGroup;
+
+        return $this;
     }
 
     /**
