@@ -5,3 +5,4 @@ marello:
             type.config.count.message: 'You must select at least {{ limit }} payment method type|You must select at least {{ limit }} payment method types'
             method.config.count.message: 'You must select at least {{ limit }} payment method|You must select at least {{ limit }} payment methods'
         status.message: 'Only payments with related entity can have status "Assigned" and only payments without related entity can have status "Unassigned"'
+        total_paid.message: "Total Paid can't be higher related entity's Total Due"
