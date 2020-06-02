@@ -6,6 +6,7 @@ use Doctrine\Common\Cache\CacheProvider;
 use Marello\Bundle\OroCommerceBundle\Entity\OroCommerceSettings;
 use Marello\Bundle\OroCommerceBundle\Generator\CacheKeyGenerator;
 use Marello\Bundle\OroCommerceBundle\Generator\CacheKeyGeneratorInterface;
+use Marello\Bundle\SalesBundle\Form\Type\SalesChannelGroupSelectType;
 use Oro\Bundle\CurrencyBundle\Form\Type\CurrencyType;
 use Oro\Bundle\FormBundle\Utils\FormUtils;
 use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
@@ -13,6 +14,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Oro\Bundle\LocaleBundle\Form\Type\LocalizationSelectType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -116,6 +119,15 @@ class OroCommerceSettingsType extends AbstractType
                 [
                     'label' => 'marello.orocommerce.orocommercesettings.enterprise.label',
                     'required' => false
+                ]
+            )
+            ->add(
+                'salesChannelGroup',
+                EntityType::class,
+                [
+                    'label'         => 'marello.orocommerce.orocommercesettings.saleschannelgroup.label',
+                    'class'         => 'MarelloSalesBundle:SalesChannelGroup',
+                    'required'      => true
                 ]
             )
             ->add(

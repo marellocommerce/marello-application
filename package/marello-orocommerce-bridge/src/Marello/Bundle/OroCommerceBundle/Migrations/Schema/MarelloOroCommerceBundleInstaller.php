@@ -13,7 +13,7 @@ class MarelloOroCommerceBundleInstaller implements Installation
      */
     public function getMigrationVersion()
     {
-        return 'v1_4';
+        return 'v1_5';
     }
 
     /**
@@ -46,5 +46,14 @@ class MarelloOroCommerceBundleInstaller implements Installation
         $table->addColumn('orocommerce_deldataondeactiv', 'boolean', ['notnull' => false]);
         $table->addColumn('orocommerce_deldataondel', 'boolean', ['notnull' => false]);
         $table->addColumn('orocommerce_data', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
+        $table->addColumn('orocommerce_scg_id', 'integer', ['notnull' => false]);
+        $table->addIndex(['orocommerce_scg_id'], null, []);
+
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_sales_channel_group'),
+            ['orocommerce_scg_id'],
+            ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
+        );
     }
 }
