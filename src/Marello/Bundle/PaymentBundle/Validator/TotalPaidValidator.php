@@ -4,12 +4,12 @@ namespace Marello\Bundle\PaymentBundle\Validator;
 
 use Marello\Bundle\PaymentBundle\Entity\Payment;
 use Marello\Bundle\PaymentBundle\Migrations\Data\ORM\LoadPaymentStatusData;
-use Marello\Bundle\PaymentBundle\Validator\Constraints\PaymentStatus;
+use Marello\Bundle\PaymentBundle\Validator\Constraints\TotalPaid;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class PaymentStatusValidator extends ConstraintValidator
+class TotalPaidValidator extends ConstraintValidator
 {
     /**
      * Checks if the passed entity is unique in collection.
@@ -19,19 +19,19 @@ class PaymentStatusValidator extends ConstraintValidator
      */
     public function validate($entity, Constraint $constraint)
     {
-        if (!$constraint instanceof PaymentStatus) {
-            throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\PaymentStatus');
+        if (!$constraint instanceof TotalPaid) {
+            throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\TotalPaid');
         }
         if ($entity instanceof Payment) {
             $paymentSource = $entity->getPaymentSource();
-            $status = $entity->getStatus()->getId();
-            if (
-                (!$paymentSource && $status === LoadPaymentStatusData::ASSIGNED) ||
-                ($paymentSource && $status === LoadPaymentStatusData::UNASSIGNED)
-            ) {
-                $this->context->buildViolation($constraint->message)
-                    ->atPath('status')
-                    ->addViolation();
+            if ($paymentSource) {
+                $totalPaid = $entity->getTotalPaid();
+                $totalDue = $paymentSource->getTotalDue();
+                if ($totalPaid > $totalDue) {
+                    $this->context->buildViolation($constraint->message)
+                        ->atPath('totalPaid')
+                        ->addViolation();
+                }
             }
         }
     }

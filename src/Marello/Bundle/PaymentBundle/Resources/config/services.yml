@@ -323,3 +323,8 @@ services:
         class: 'Marello\Bundle\PaymentBundle\Validator\PaymentStatusValidator'
         tags:
             - { name: validator.constraint_validator, alias: marello_payment.payment_status_validator }
+
+    marello_payment.validator.total_paid:
+        class: 'Marello\Bundle\PaymentBundle\Validator\TotalPaidValidator'
+        tags:
+            - { name: validator.constraint_validator, alias: marello_payment.total_paid_validator }

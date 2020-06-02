@@ -4,6 +4,7 @@ namespace Marello\Bundle\PaymentBundle\Form\Type;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Marello\Bundle\InvoiceBundle\Entity\AbstractInvoice;
+use Marello\Bundle\InvoiceBundle\Entity\Repository\AbstractInvoiceRepository;
 use Marello\Bundle\InvoiceBundle\Form\Type\InvoiceSelectType;
 use Marello\Bundle\OrderBundle\Form\Type\OrderTotalPaidType;
 use Marello\Bundle\PaymentBundle\Entity\Payment;
@@ -61,6 +62,10 @@ class PaymentCreateType extends AbstractType
                     'required' => false,
                     'placeholder' => 'Choose Related Entity',
                     'empty_data'  => null,
+                    'query_builder' => function (AbstractInvoiceRepository $repository) {
+                        return $repository->createQueryBuilder('invoice')
+                            ->where('invoice.totalPaid < invoice.grandTotal');
+                    },
                 ]
             )
             ->add(
