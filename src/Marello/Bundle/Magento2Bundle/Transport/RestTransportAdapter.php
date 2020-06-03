@@ -4,6 +4,7 @@ namespace Marello\Bundle\Magento2Bundle\Transport;
 
 use Marello\Bundle\Magento2Bundle\Model\Magento2TransportSettings;
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Transport\RestTransportSettingsInterface;
+use Oro\Bundle\SecurityBundle\Encoder\SymmetricCrypterInterface;
 
 /**
  * Class RestTransportAdapter converts entity to interface suitable for REST client factory
@@ -26,13 +27,21 @@ class RestTransportAdapter implements RestTransportSettingsInterface
         ]
     ];
 
+    /** @var string */
+    protected $apiToken;
+
     /**
      * @param Magento2TransportSettings $settingsBag
+     * @param SymmetricCrypterInterface $crypter
      * @param array $additionalParams
      */
-    public function __construct(Magento2TransportSettings $settingsBag, array $additionalParams = [])
-    {
+    public function __construct(
+        Magento2TransportSettings $settingsBag,
+        SymmetricCrypterInterface $crypter,
+        array $additionalParams = []
+    ) {
         $this->settingsBag = $settingsBag;
+        $this->apiToken = $crypter->decryptData($this->settingsBag->getApiToken());
         $this->additionalParams = $additionalParams;
     }
 
@@ -54,7 +63,7 @@ class RestTransportAdapter implements RestTransportSettingsInterface
             $this->additionalParams,
             [
                 'headers' => [
-                    self::TOKEN_HEADER_KEY => sprintf(self::TOKEN_MASK, $this->settingsBag->getApiToken())
+                    self::TOKEN_HEADER_KEY => sprintf(self::TOKEN_MASK, $this->apiToken)
                 ]
             ]
         );

@@ -23,7 +23,7 @@ class SimpleProductCreateNormalizer implements NormalizerInterface
             }, $object->getWebsites())
         );
 
-        $status = $object->getStatus()->getName() === ProductStatus::ENABLED ? 1 : 0;
+        $status = $object->getStatus()->getName() === ProductStatus::ENABLED ? 1 : 2;
 
         return [
             'productId' => $object->getMarelloProductId(),

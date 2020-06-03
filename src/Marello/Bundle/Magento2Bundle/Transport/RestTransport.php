@@ -15,6 +15,7 @@ use Oro\Bundle\IntegrationBundle\Entity\Transport;
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\FactoryInterface as RestClientFactoryInterface;
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestClientInterface;
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Exception\RestException;
+use Oro\Bundle\SecurityBundle\Encoder\SymmetricCrypterInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
@@ -55,18 +56,26 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
     protected $client;
 
     /**
+     * @var SymmetricCrypterInterface
+     */
+    protected $crypter;
+
+    /**
      * @param RestClientFactoryInterface $clientFactory
      * @param RequestFactory $requestFactory
      * @param SearchClientFactory $searchClientFactory
+     * @param SymmetricCrypterInterface $crypter
      */
     public function __construct(
         RestClientFactoryInterface $clientFactory,
         RequestFactory $requestFactory,
-        SearchClientFactory $searchClientFactory
+        SearchClientFactory $searchClientFactory,
+        SymmetricCrypterInterface $crypter
     ) {
         $this->clientFactory = $clientFactory;
         $this->requestFactory = $requestFactory;
         $this->searchClientFactory = $searchClientFactory;
+        $this->crypter = $crypter;
     }
 
     /**
@@ -86,6 +95,7 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
         $this->client = $this->clientFactory->getClientInstance(
             new RestTransportAdapter(
                 $this->settingsBag,
+                $this->crypter,
                 $clientExtraOptions
             )
         );
@@ -101,6 +111,7 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
         $this->client = $this->clientFactory->getClientInstance(
             new RestTransportAdapter(
                 $this->settingsBag,
+                $this->crypter,
                 $clientExtraOptions
             )
         );
