@@ -97,20 +97,20 @@ class OroCommerceSettingsType extends AbstractType
                 ]
             )
             ->add(
-                'enterprise',
-                CheckboxType::class,
-                [
-                    'label' => 'marello.orocommerce.orocommercesettings.enterprise.label',
-                    'required' => false
-                ]
-            )
-            ->add(
                 'salesChannelGroup',
                 EntityType::class,
                 [
                     'label'         => 'marello.orocommerce.orocommercesettings.saleschannelgroup.label',
                     'class'         => SalesChannelGroup::class,
                     'required'      => true
+                ]
+            )
+            ->add(
+                'enterprise',
+                CheckboxType::class,
+                [
+                    'label' => 'marello.orocommerce.orocommercesettings.enterprise.label',
+                    'required' => false
                 ]
             )
             ->add(
