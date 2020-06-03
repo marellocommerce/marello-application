@@ -31,7 +31,7 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
      */
     public function getMigrationVersion()
     {
-        return 'v1_1';
+        return 'v1_0';
     }
 
     /**
@@ -51,6 +51,10 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
 
         $this->addMagentoProductTable($schema);
         $this->addMagentoProductForeignKeys($schema);
+
+        $this->addMagentoProductTaxTable($schema);
+        $this->addProductClassToTaxCodeRelation($schema);
+        $this->addMagentoProductTaxForeignKeys($schema);
     }
 
     /**
@@ -60,12 +64,17 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
     protected function updateIntegrationTransportTable(Schema $schema)
     {
         $table = $schema->getTable('oro_integration_transport');
-        $table->addColumn('api_url', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('api_token', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('sync_start_date', 'date', ['notnull' => false]);
-        $table->addColumn('sync_range', 'string', ['notnull' => false, 'length' => 50]);
-        $table->addColumn('initial_sync_start_date', 'datetime', ['notnull' => false]);
-        $table->addColumn('websites_sales_channel_mapping', 'json', ['notnull' => false, 'comment' => '(DC2Type:json)']);
+        $table->addColumn('m2_api_url', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('m2_api_token', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('m2_sync_start_date', 'date', ['notnull' => false]);
+        $table->addColumn('m2_sync_range', 'string', ['notnull' => false, 'length' => 50]);
+        $table->addColumn('m2_initial_sync_start_date', 'datetime', ['notnull' => false]);
+        $table->addColumn('m2_websites_sales_channel_map', 'json', [
+            'notnull' => false,
+            'comment' => '(DC2Type:json)'
+        ]);
+        $table->addColumn('m2_del_remote_data_on_deact', 'boolean', ['notnull' => false]);
+        $table->addColumn('m2_del_remote_data_on_del', 'boolean', ['notnull' => false]);
     }
 
     /**
@@ -75,7 +84,7 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
     {
         $table = $schema->createTable('marello_m2_website');
         $table->addColumn('id', 'integer', ['precision' => 0, 'autoincrement' => true]);
-        $table->addColumn('channel_id', 'integer', ['notnull' => false]);
+        $table->addColumn('channel_id', 'integer');
         $table->addColumn('code', 'string', ['length' => 32, 'precision' => 0]);
         $table->addColumn('name', 'string', ['length' => 255, 'precision' => 0]);
         $table->addColumn('origin_id', 'integer', ['notnull' => false, 'precision' => 0, 'unsigned' => true]);
@@ -91,7 +100,7 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
     {
         $table = $schema->createTable('marello_m2_store');
         $table->addColumn('id', 'integer', ['precision' => 0, 'autoincrement' => true]);
-        $table->addColumn('channel_id', 'integer', ['notnull' => false]);
+        $table->addColumn('channel_id', 'integer');
         $table->addColumn('code', 'string', ['length' => 32, 'precision' => 0]);
         $table->addColumn('name', 'string', ['length' => 255, 'precision' => 0]);
         $table->addColumn('base_currency_code', 'string', ['length' => 3, 'precision' => 0, 'notnull' => false]);
@@ -117,7 +126,7 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
             $schema->getTable('oro_integration_channel'),
             ['channel_id'],
             ['id'],
-            ['onDelete' => 'SET NULL']
+            ['onDelete' => 'CASCADE']
         );
     }
 
@@ -131,7 +140,7 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
             $schema->getTable('oro_integration_channel'),
             ['channel_id'],
             ['id'],
-            ['onDelete' => 'SET NULL']
+            ['onDelete' => 'CASCADE']
         );
 
         $table->addForeignKeyConstraint(
@@ -253,6 +262,86 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
             ['channel_id'],
             ['id'],
             ['onDelete' => 'CASCADE']
+        );
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    protected function addMagentoProductTaxTable(Schema $schema)
+    {
+        $table = $schema->createTable('marello_m2_product_tax_class');
+        $table->addColumn('id', 'integer', ['precision' => 0, 'autoincrement' => true]);
+        $table->addColumn('origin_id', 'integer', ['notnull' => false, 'precision' => 0, 'unsigned' => true]);
+        $table->addColumn('class_name', 'string', ['length' => 255]);
+        $table->addColumn('channel_id', 'integer');
+        $table->setPrimaryKey(['id']);
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    protected function addMagentoProductTaxForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('marello_m2_product_tax_class');
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_integration_channel'),
+            ['channel_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE']
+        );
+    }
+
+    /**
+     * @param Schema $schema
+     * @throws \Doctrine\DBAL\Schema\SchemaException
+     */
+    protected function addProductClassToTaxCodeRelation(Schema $schema)
+    {
+        $table = $schema->getTable('marello_tax_tax_code');
+        $targetTable = $schema->getTable('marello_m2_product_tax_class');
+
+        $this->extendExtension->addManyToOneRelation(
+            $schema,
+            $targetTable,
+            'taxCode',
+            $table,
+            'code',
+            [
+                ExtendOptionsManager::MODE_OPTION => ConfigModel::MODE_READONLY,
+                'extend' => [
+                    'is_extend' => true,
+                    'owner' => ExtendScope::OWNER_CUSTOM,
+                    'without_default' => true,
+                    'on_delete' => 'SET NULL',
+                ],
+                'dataaudit' => ['auditable' => true]
+            ]
+        );
+
+        $this->extendExtension->addManyToOneInverseRelation(
+            $schema,
+            $targetTable,
+            'taxCode',
+            $table,
+            'magento2ProductTaxClasses',
+            ['class_name'],
+            ['class_name'],
+            ['class_name'],
+            [
+                ExtendOptionsManager::MODE_OPTION => ConfigModel::MODE_READONLY,
+                'extend' => [
+                    'is_extend' => true,
+                    'owner' => ExtendScope::OWNER_CUSTOM,
+                    'without_default' => true,
+                    'on_delete' => 'SET NULL',
+                ],
+                'datagrid' => ['is_visible' => false],
+                'form' => ['is_enabled' => false],
+                'view' => ['is_displayable' => false],
+                'merge' => ['display' => false],
+                'importexport' => ['excluded' => true],
+            ]
         );
     }
 }

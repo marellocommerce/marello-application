@@ -13,7 +13,7 @@ class ProductRepository extends EntityRepository
      * @param array $productIds
      * @return Product[]
      */
-    public function getMagentoProductByChannelAndProductIds(Channel $channel, array $productIds)
+    public function getMagentoProductByChannelAndProductIds(Channel $channel, array $productIds): array
     {
         $qb = $this->createQueryBuilder('m2p');
         $qb
@@ -25,5 +25,50 @@ class ProductRepository extends EntityRepository
         ;
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param int $channelId
+     * @param int $productId
+     * @return Product|null
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getMagentoProductByChannelIdAndProductId(int $channelId, int $productId): ?Product
+    {
+        $qb = $this->createQueryBuilder('m2p');
+        $qb
+            ->select('m2p')
+            ->where($qb->expr()->eq('m2p.channel', ':channel'))
+            ->andWhere($qb->expr()->eq('m2p.product', ':product'))
+            ->setParameter('channel', $channelId)
+            ->setParameter('product', $productId)
+        ;
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * @param Channel $channel
+     * @return array
+     * [
+     *     int <product_id> => string <product_sku>,
+     *     ...
+     * ]
+     */
+    public function getOriginalProductIdsWithSKUsByIntegration(Channel $channel): array
+    {
+        $qb = $this->createQueryBuilder('m2p');
+        $qb
+            ->select('product.id, product.sku')
+            ->innerJoin('m2p.product', 'product')
+            ->where($qb->expr()->eq('m2p.channel', ':channel'))
+            ->setParameter('channel', $channel);
+
+        $result = $qb->getQuery()->getArrayResult();
+
+        return \array_combine(
+            \array_column($result, 'id'),
+            \array_column($result,'sku')
+        );
     }
 }

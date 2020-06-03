@@ -43,7 +43,7 @@ class TaxCode extends ExtendTaxCode
     /**
      * @var string
      *
-     * @ORM\Column(name="code", type="string", length=32, unique=true, nullable=false)
+     * @ORM\Column(name="code", type="string", length=255, unique=true, nullable=false)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={

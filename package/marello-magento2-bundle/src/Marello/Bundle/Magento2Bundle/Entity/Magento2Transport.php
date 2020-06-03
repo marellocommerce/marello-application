@@ -15,7 +15,7 @@ class Magento2Transport extends Transport
     /**
      * @var string
      *
-     * @ORM\Column(name="api_url", type="string", length=255, nullable=false)
+     * @ORM\Column(name="m2_api_url", type="string", length=255, nullable=true)
      */
     protected $apiUrl;
 
@@ -24,21 +24,21 @@ class Magento2Transport extends Transport
      *
      * @var string
      *
-     * @ORM\Column(name="api_token", type="string", length=255, nullable=false)
+     * @ORM\Column(name="m2_api_token", type="string", length=255, nullable=true)
      */
     protected $apiToken;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="sync_start_date", type="date")
+     * @ORM\Column(name="m2_sync_start_date", type="date", nullable=true)
      */
     protected $syncStartDate;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="initial_sync_start_date", type="datetime", nullable=true)
+     * @ORM\Column(name="m2_initial_sync_start_date", type="datetime", nullable=true)
      */
     protected $initialSyncStartDate;
 
@@ -52,19 +52,33 @@ class Magento2Transport extends Transport
      *    ...
      * ]
      *
-     * @ORM\Column(name="websites_sales_channel_mapping", type="json", nullable=true)
+     * @ORM\Column(name="m2_websites_sales_channel_map", type="json", nullable=true)
      */
     protected $websiteToSalesChannelMapping = [];
 
     /**
      * @var \DateInterval
      *
-     * @ORM\Column(name="sync_range", type="string", length=50)
+     * @ORM\Column(name="m2_sync_range", type="string", length=50, nullable=true)
      */
     protected $syncRange;
 
     /**
-     * @var ParameterBag
+     * @var bool
+     *
+     * @ORM\Column(name="m2_del_remote_data_on_deact", type="boolean", nullable=true)
+     */
+    protected $deleteRemoteDataOnDeactivation = false;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="m2_del_remote_data_on_del", type="boolean", nullable=true)
+     */
+    protected $deleteRemoteDataOnDeletion = false;
+
+    /**
+     * @var Magento2TransportSettings
      */
     protected $settings;
 
@@ -76,12 +90,17 @@ class Magento2Transport extends Transport
         if (null === $this->settings) {
             $this->settings = new Magento2TransportSettings(
                 [
-                    'api_url' => $this->getApiUrl(),
-                    'api_token' => $this->getApiToken(),
-                    'sync_range' => $this->getSyncRange(),
-                    'start_sync_date' => $this->getSyncStartDate(),
-                    'initial_sync_start_date' => $this->getInitialSyncStartDate(),
-                    'website_to_sales_channel_mapping' => $this->getWebsiteToSalesChannelMapping()
+                    Magento2TransportSettings::API_URL_KEY => $this->getApiUrl(),
+                    Magento2TransportSettings::API_TOKEN_KEY => $this->getApiToken(),
+                    Magento2TransportSettings::SYNC_RANGE_KEY => $this->getSyncRange(),
+                    Magento2TransportSettings::START_SYNC_DATE_KEY => $this->getSyncStartDate(),
+                    Magento2TransportSettings::INITIAL_SYNC_START_DATE_KEY => $this->getInitialSyncStartDate(),
+                    Magento2TransportSettings::WEBSITE_TO_SALES_CHANNEL_MAPPING_KEY =>
+                        $this->getWebsiteToSalesChannelMapping(),
+                    Magento2TransportSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION_KEY =>
+                        $this->isDeleteRemoteDataOnDeactivation(),
+                    Magento2TransportSettings::DELETE_REMOTE_DATA_ON_DELETION_KEY =>
+                        $this->isDeleteRemoteDataOnDeletion()
                 ]
             );
         }
@@ -204,6 +223,44 @@ class Magento2Transport extends Transport
     public function setWebsiteToSalesChannelMapping(array $websiteToSalesChannelMapping): self
     {
         $this->websiteToSalesChannelMapping = $websiteToSalesChannelMapping;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDeleteRemoteDataOnDeactivation(): bool
+    {
+        return $this->deleteRemoteDataOnDeactivation;
+    }
+
+    /**
+     * @param bool $deleteRemoteDataOnDeactivation
+     * @return $this
+     */
+    public function setDeleteRemoteDataOnDeactivation(bool $deleteRemoteDataOnDeactivation): self
+    {
+        $this->deleteRemoteDataOnDeactivation = $deleteRemoteDataOnDeactivation;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDeleteRemoteDataOnDeletion(): bool
+    {
+        return $this->deleteRemoteDataOnDeletion;
+    }
+
+    /**
+     * @param bool $deleteRemoteDataOnDeletion
+     * @return $this
+     */
+    public function setDeleteRemoteDataOnDeletion(bool $deleteRemoteDataOnDeletion): self
+    {
+        $this->deleteRemoteDataOnDeletion = $deleteRemoteDataOnDeletion;
 
         return $this;
     }
