@@ -110,6 +110,8 @@ class SalesChannelGroup extends ExtendSalesChannelGroup
     protected $system = false;
     
     /**
+     * @todo Add restriction on removing sales channel from the group in case when it attached to the integration
+     *
      * @var SalesChannel[]
      *
      * @ORM\OneToMany(targetEntity="SalesChannel", mappedBy="group", cascade={"persist"}, fetch="EAGER")
