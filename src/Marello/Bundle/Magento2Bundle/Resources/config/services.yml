@@ -53,6 +53,18 @@ services:
             - { name: doctrine.event_listener, event: onClear }
             - { name: doctrine.event_listener, event: postFlush }
 
+    marello_magento2.event_listener.doctrine.disabling_integration:
+        class: Marello\Bundle\Magento2Bundle\EventListener\Doctrine\DisablingIntegrationListener
+        arguments:
+            - '@marello_magento2.repository.product'
+            - '@marello_magento2.stack.changes_by_channel'
+            - '@oro_message_queue.message_producer'
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+            - { name: doctrine.event_listener, event: onClear }
+            # Before marello_magento2.event_listener.doctrine.sync_changes_by_chanel
+            - { name: doctrine.event_listener, event: postFlush, priority: 5 }
+
     # Handlers
     marello_magento2.handler.transport_entity_handler:
         class: Marello\Bundle\Magento2Bundle\Handler\TransportEntityHandler
@@ -139,3 +151,33 @@ services:
             - [setLogger,["@logger"]]
         tags:
             - { name: oro_message_queue.client.message_processor }
+
+    marello_magento2.async.remove_remote_data_for_disabled_integration:
+        class: Marello\Bundle\Magento2Bundle\Async\RemoveRemoteDataForDisableIntegrationProcessor
+        arguments:
+            - '@oro_message_queue.job.runner'
+            - '@oro_message_queue.message_producer'
+            - '@doctrine'
+        calls:
+            - [setLogger,["@logger"]]
+        tags:
+            - { name: oro_message_queue.client.message_processor }
+
+    marello_magento2.async.remove_remote_product_for_disabled_integration:
+        class: Marello\Bundle\Magento2Bundle\Async\RemoveRemoteProductForDisableIntegrationProcessor
+        arguments:
+            - '@oro_message_queue.job.runner'
+            - '@marello_magento2.transport.rest_transport'
+            - '@doctrine'
+        calls:
+            - [setLogger,["@logger"]]
+        tags:
+            - { name: oro_message_queue.client.message_processor }
+
+    # Constraints
+    marello_magento2.validator.sales_channels_attached_to_integration:
+        class: Marello\Bundle\Magento2Bundle\Validator\SalesChannelsAttachedToIntegrationValidator
+        arguments:
+            - '@marello_magento2.provider.sales_channel_infos'
+        tags:
+            - { name: validator.constraint_validator, alias: marello_magento2.sales_channel_attached_to_integration_validator }

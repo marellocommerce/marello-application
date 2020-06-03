@@ -72,7 +72,7 @@ class SalesChannelStateChangedProcessor implements
 
             $jobName = sprintf(
                 '%s:%s',
-                'marello.magento2.sales_channel_state_changed',
+                'marello_magento2:sales_channel_state_changed',
                 $salesChannel->getId()
             );
 

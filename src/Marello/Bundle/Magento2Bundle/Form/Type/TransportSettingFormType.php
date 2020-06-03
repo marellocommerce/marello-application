@@ -6,6 +6,7 @@ use Marello\Bundle\Magento2Bundle\Entity\Magento2Transport;
 use Oro\Bundle\FormBundle\Form\DataTransformer\ArrayToJsonTransformer;
 use Oro\Bundle\FormBundle\Form\Type\OroDateType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -26,7 +27,7 @@ class TransportSettingFormType extends AbstractType
             'apiUrl',
             TextType::class,
             [
-                'label' => '',
+                'label' => 'marello.magento2.transport_setting_form.api_url.label',
                 'required' => true,
                 'constraints' => [
                     new Url()
@@ -38,7 +39,7 @@ class TransportSettingFormType extends AbstractType
             'apiToken',
             TextType::class,
             [
-                'label' => '',
+                'label' => 'marello.magento2.transport_setting_form.api_token.label',
                 'required' => true
             ]
         );
@@ -51,6 +52,24 @@ class TransportSettingFormType extends AbstractType
                 'required'   => true,
                 'tooltip'    => 'marello.magento2.transport_setting_form.sync_start_date.tooltip',
                 'empty_data' => new \DateTime('2007-01-01', new \DateTimeZone('UTC'))
+            ]
+        );
+
+        $builder->add(
+            'deleteRemoteDataOnDeactivation',
+            CheckboxType::class,
+            [
+                'label' => 'marello.magento2.transport_setting_form.delete_remote_data_on_deactivation.label',
+                'required' => false
+            ]
+        );
+
+        $builder->add(
+            'deleteRemoteDataOnDeletion',
+            CheckboxType::class,
+            [
+                'label' => 'marello.magento2.transport_setting_form.delete_remote_data_on_deletion.label',
+                'required' => false
             ]
         );
 
