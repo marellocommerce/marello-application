@@ -20,8 +20,6 @@ class Magento2Transport extends Transport
     protected $apiUrl;
 
     /**
-     * @todo Encode API Token
-     *
      * @var string
      *
      * @ORM\Column(name="m2_api_token", type="string", length=255, nullable=true)

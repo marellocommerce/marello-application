@@ -77,6 +77,7 @@ services:
             - '@oro_integration.transport.rest.event_dispatchable_client_factory'
             - '@marello_magento2.transport.rest.request.request_factory'
             - '@marello_magento2.transport.rest.search_client_factory'
+            - '@oro_security.encoder.default'
         calls:
             - [setLogger, ["@oro_integration.logger.strategy"]]
         tags:

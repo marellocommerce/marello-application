@@ -8,10 +8,12 @@ use Oro\Bundle\FormBundle\Form\Type\OroDateType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Url;
+use Oro\Bundle\FormBundle\Form\Type\OroEncodedPlaceholderPasswordType;
 
 class TransportSettingFormType extends AbstractType
 {
@@ -37,7 +39,7 @@ class TransportSettingFormType extends AbstractType
 
         $builder->add(
             'apiToken',
-            TextType::class,
+            OroEncodedPlaceholderPasswordType::class,
             [
                 'label' => 'marello.magento2.transport_setting_form.api_token.label',
                 'required' => true
