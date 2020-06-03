@@ -177,6 +177,19 @@ services:
         public: true
         class: 'Marello\Bundle\OroCommerceBundle\Client\Factory\OroCommerceRestClientFactory'
 
+    marello_orocommerce.event_listener.doctrine.saleschannelgroup_integration_check_listener:
+        class: 'Marello\Bundle\OroCommerceBundle\EventListener\Doctrine\SalesChannelGroupIntegrationCheckListener'
+        arguments:
+            - '@session'
+        lazy:  true
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\SalesBundle\Entity\SalesChannelGroup', event: preRemove }
+
+    marello_orocommerce.event_listener.doctrine.update_integration_saleschannels_listener:
+        class: 'Marello\Bundle\OroCommerceBundle\EventListener\Doctrine\UpdateIntegrationSalesChannelsListener'
+        lazy:  true
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
 
     marello_orocommerce.revers_sync_integration_processor:
         class: 'Marello\Bundle\OroCommerceBundle\Async\OroCommerceReversSyncIntegrationProcessor'
