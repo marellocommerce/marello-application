@@ -37,15 +37,23 @@ class OroCommerceIntegrationEventListener
     public function postPersist(Channel $channel, LifecycleEventArgs $args)
     {
         if ($channel->getType() === OroCommerceChannelType::TYPE) {
-            $salesChannel = new SalesChannel($channel->getName());
-            $salesChannel = $this->modifySalesChannel($channel, $salesChannel);
-
             $em = $args->getEntityManager();
-
-            $group = $this->createOwnGroup($salesChannel, $em);
-            $salesChannel->setGroup($group);
-
-            $em->persist($salesChannel);
+            $existingSalesChannels = $em
+                ->getRepository(SalesChannel::class)
+                ->findBy(['integrationChannel' => $channel]);
+            /** @var SalesChannel $existingSalesChannel */
+            // remove integration from the previous saleschannels
+            foreach ($existingSalesChannels as $existingSalesChannel) {
+                $existingSalesChannel->setIntegrationChannel(null);
+                $em->persist($existingSalesChannel);
+            }
+            /** @var OroCommerceSettings $transport */
+            $transport = $channel->getTransport();
+            $salesChannelGroup = $transport->getSalesChannelGroup();
+            foreach ($salesChannelGroup->getSalesChannels() as $salesChannel) {
+                $salesChannel->setIntegrationChannel($channel);
+                $em->persist($salesChannel);
+            }
             $em->flush();
         }
     }
@@ -58,14 +66,24 @@ class OroCommerceIntegrationEventListener
     {
         if ($channel->getType() === OroCommerceChannelType::TYPE) {
             $em = $args->getEntityManager();
-
-            $salesChannel = $em->getRepository(SalesChannel::class)->findOneBy(['integrationChannel' => $channel]);
-            if ($salesChannel) {
-                $salesChannel = $this->modifySalesChannel($channel, $salesChannel);
-
-                $em->persist($salesChannel);
-                $em->flush();
+            $existingSalesChannels = $em
+                ->getRepository(SalesChannel::class)
+                ->findBy(['integrationChannel' => $channel]);
+            /** @var SalesChannel $existingSalesChannel */
+            // remove integration from the previous saleschannels
+            foreach ($existingSalesChannels as $existingSalesChannel) {
+                $existingSalesChannel->setIntegrationChannel(null);
+                $em->persist($existingSalesChannel);
             }
+
+            /** @var OroCommerceSettings $transport */
+            $transport = $channel->getTransport();
+            $salesChannelGroup = $transport->getSalesChannelGroup();
+            foreach ($salesChannelGroup->getSalesChannels() as $salesChannel) {
+                $salesChannel->setIntegrationChannel($channel);
+                $em->persist($salesChannel);
+            }
+            $em->flush();
         }
     }
 
@@ -77,14 +95,13 @@ class OroCommerceIntegrationEventListener
     {
         if ($channel->getType() === OroCommerceChannelType::TYPE) {
             $em = $args->getEntityManager();
+            $salesChannels = $em
+                ->getRepository(SalesChannel::class)
+                ->findBy(['integrationChannel' => $channel]);
             /** @var SalesChannel $salesChannel */
-            $salesChannel = $em->getRepository(SalesChannel::class)->findOneBy(['integrationChannel' => $channel]);
-            $salesChannelGroup = $salesChannel->getGroup();
-            if ($salesChannel) {
-                $em->getUnitOfWork()->scheduleForDelete($salesChannel);
-            }
-            if ($salesChannelGroup) {
-                $em->getUnitOfWork()->scheduleForDelete($salesChannelGroup);
+            foreach ($salesChannels as $salesChannel) {
+                $salesChannel->setIntegrationChannel(null);
+                $em->getUnitOfWork()->scheduleForUpdate($salesChannel);
             }
 
             $section = AbstractProductExportWriter::SECTION_FIELD;
@@ -163,46 +180,5 @@ class OroCommerceIntegrationEventListener
         }
 
         return $productData;
-    }
-
-    /**
-     * @param Channel $channel
-     * @param SalesChannel $salesChannel
-     * @return SalesChannel
-     */
-    private function modifySalesChannel(Channel $channel, SalesChannel $salesChannel)
-    {
-        /** @var OroCommerceSettings $transport */
-        $transport = $channel->getTransport();
-        $salesChannel
-            ->setCode(strtolower($channel->getName()))
-            ->setChannelType(OroCommerceChannelType::TYPE)
-            ->setActive($channel->isEnabled())
-            ->setCurrency($transport->getCurrency())
-            ->setDefault(true)
-            ->setOwner($channel->getOrganization())
-            ->setIntegrationChannel($channel);
-
-        return $salesChannel;
-    }
-
-    /**
-     * @param SalesChannel $entity
-     * @param EntityManager $em
-     * @return SalesChannelGroup
-     */
-    private function createOwnGroup(SalesChannel $entity, EntityManager $em)
-    {
-        $name = $entity->getName();
-        $group = new SalesChannelGroup();
-        $group
-            ->setName($name)
-            ->setDescription(sprintf('%s group', $name))
-            ->setSystem(false);
-
-        $em->persist($group);
-        $em->flush($group);
-
-        return $group;
     }
 }
