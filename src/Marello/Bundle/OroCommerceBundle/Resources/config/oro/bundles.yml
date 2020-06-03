@@ -1,2 +1,2 @@
 bundles:
-    - { name: Marello\Bundle\OroCommerceBundle\MarelloOroCommerceBundle }
+    - { name: Marello\Bundle\OroCommerceBundle\MarelloOroCommerceBundle, priority: 100 }
