@@ -170,7 +170,9 @@ class ProductController extends AbstractController
                 $saveMessage = $this->get('translator')
                     ->trans('marello.product.ui.product.saved_and_duplicated.message');
                 $this->get('session')->getFlashBag()->set('success', $saveMessage);
-                $actionGroup = $this->get('oro_action.action_group_registry')->findByName('marello_product_duplicate');
+                $actionGroup = $this
+                    ->get('marello_product.provider.action_group_registry')
+                    ->findActionByName('marello_product_duplicate');
                 if ($actionGroup) {
                     $actionData = $actionGroup->execute(new ActionData(['data' => $product]));
                     /** @var Product $productCopy */
