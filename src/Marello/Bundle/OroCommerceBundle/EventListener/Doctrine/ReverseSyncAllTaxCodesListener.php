@@ -42,15 +42,16 @@ class ReverseSyncAllTaxCodesListener
     {
 
         if ($channel->getType() === OroCommerceChannelType::TYPE) {
-            $settingsBag = $channel->getTransport()->getSettingsBag();
+            /** @var OroCommerceSettings $transport */
+            $transport = $channel->getTransport();
             $this->entityManager = $args->getEntityManager();
             $changeSet = $args->getEntityChangeSet();
             $channelId = $channel->getId();
             if (count($changeSet) > 0 &&
                 isset($changeSet['enabled']) &&
                 $changeSet['enabled'][1] === false &&
-                $settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION) === true)
-            {
+                true === $transport->isDeleteRemoteDataOnDeactivation()
+            ) {
                 $taxCodes = $this->getSynchronizedTaxCodes();
                 $context = new Context(['channel' => $channelId]);
                 $this->taxCodesBulkDeleteWriter->setImportExportContext($context);
@@ -66,8 +67,9 @@ class ReverseSyncAllTaxCodesListener
     public function preRemove(Channel $channel, LifecycleEventArgs $args)
     {
         if ($channel->getType() === OroCommerceChannelType::TYPE) {
-            $settingsBag = $channel->getTransport()->getSettingsBag();
-            if ($settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DELETION) === true) {
+            /** @var OroCommerceSettings $transport */
+            $transport = $channel->getTransport();
+            if (true === $transport->isDeleteRemoteDataOnDeactivation()) {
                 $this->entityManager = $args->getEntityManager();
                 $taxCodes = $this->getSynchronizedTaxCodes();
                 $context = new Context(['channel' => $channel->getId()]);

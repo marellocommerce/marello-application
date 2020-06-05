@@ -3,14 +3,14 @@
 define(function(require) {
     'use strict';
 
-    var OroCommerceSettingsComponent;
-    var $ = require('jquery');
-    var _ = require('underscore');
-    var routing = require('routing');
-    var LoadingMaskView = require('oroui/js/app/views/loading-mask-view');
-    var BaseComponent = require('oroui/js/app/components/base/component');
+    const $ = require('jquery');
+    const _ = require('underscore');
+    const routing = require('routing');
+    const mediator = require('oroui/js/mediator');
+    const LoadingMaskView = require('oroui/js/app/views/loading-mask-view');
+    const BaseComponent = require('oroui/js/app/components/base/component');
 
-    OroCommerceSettingsComponent = BaseComponent.extend({
+    const OroCommerceSettingsComponent = BaseComponent.extend({
         /**
          * @property {Object}
          */
@@ -32,7 +32,8 @@ define(function(require) {
             customerTaxCodeUpdateRoute: '',
             priceListUpdateRoute: '',
             productFamilyUpdateRoute: '',
-            warehouseUpdateRoute: ''
+            warehouseUpdateRoute: '',
+            isLoading: false
         },
 
         /**
@@ -70,42 +71,45 @@ define(function(require) {
             this.priceListLoadingMaskView = new LoadingMaskView({container: this.$elem.find(this.options.priceListSelector).closest('.controls')});
             this.productFamilyLoadingMaskView = new LoadingMaskView({container: this.$elem.find(this.options.productFamilySelector).closest('.controls')});
             this.warehouseLoadingMaskView = new LoadingMaskView({container: this.$elem.find(this.options.warehouseSelector).closest('.controls')});
+            this.toggleWarehousesVisibility();
             this.$elem.find(this.options.urlSelector)
-                .on('change', _.bind(this.makeChanges, this))
-                .trigger('change');
+                .on('change', _.bind(this.makeChanges, this));
             this.$elem.find(this.options.usernameSelector)
-                .on('change', _.bind(this.makeChanges, this))
-                .trigger('change');
+                .on('change', _.bind(this.makeChanges, this));
             this.$elem.find(this.options.keySelector)
-                .on('change', _.bind(this.makeChanges, this))
-                .trigger('change');
+                .on('change', _.bind(this.makeChanges, this));
             this.$elem.find(this.options.currencySelector)
-                .on('change', _.bind(this.updatePriceLists, this))
-                .trigger('change');
+                .on('change', _.bind(this.updatePriceLists, this));
             this.$elem.find(this.options.enterpriseSelector)
-                .on('change', _.bind(this.toggleWarehousesVisibility, this))
-                .trigger('change');
+                .on('change', _.bind(this.toggleWarehousesVisibility, this));
+            
+            mediator.on('marello_orocommerce:update:productunits', this.updateProductUnits, this);
+            mediator.on('marello_orocommerce:update:customertaxcodes', this.updateCustomerTaxCodes, this);
+            mediator.on('marello_orocommerce:update:pricelists', this.updatePriceLists, this);
+            mediator.on('marello_orocommerce:update:productfamilies', this.updateProductFamilies, this);
+            mediator.on('marello_orocommerce:update:warehouses', this.updateWarehouses, this);
+
+            // start 1 trigger
+            this.makeChanges();
         },
 
         makeChanges: function() {
+            // start the first 'trigger' in order to limit the total of requests at the same time
+            // other parts are updated because of the triggers
             this.updateBusinessUnits();
-            this.updateProductUnits();
-            this.updateCustomerTaxCodes();
-            this.updatePriceLists();
-            this.updateProductFamilies();
-            this.updateWarehouses();
         },
         updateBusinessUnits: function() {
             var url = this.$elem.find(this.options.urlSelector).val();
             var username = this.$elem.find(this.options.usernameSelector).val();
             var key = this.$elem.find(this.options.keySelector).val();
-
+            var triggerUpdate = 'productunits';
             if (url !== '' && username !== '' && key !== '') {
                 this.updateItem(
                     this.options.businessUnitUpdateRoute,
                     this.options.businessUnitSelector,
                     this.businessUnitLoadingMaskView,
-                    this.selectedBusinessUnit
+                    this.selectedBusinessUnit,
+                    triggerUpdate
                 );
             }
         },
@@ -113,13 +117,14 @@ define(function(require) {
             var url = this.$elem.find(this.options.urlSelector).val();
             var username = this.$elem.find(this.options.usernameSelector).val();
             var key = this.$elem.find(this.options.keySelector).val();
-
+            var triggerUpdate = 'customertaxcodes';
             if (url !== '' && username !== '' && key !== '') {
                 this.updateItem(
                     this.options.productUnitUpdateRoute,
                     this.options.productUnitSelector,
                     this.productUnitLoadingMaskView,
-                    this.selectedProductUnit
+                    this.selectedProductUnit,
+                    triggerUpdate
                 );
             }
         },
@@ -127,13 +132,14 @@ define(function(require) {
             var url = this.$elem.find(this.options.urlSelector).val();
             var username = this.$elem.find(this.options.usernameSelector).val();
             var key = this.$elem.find(this.options.keySelector).val();
-
+            var triggerUpdate = 'pricelists';
             if (url !== '' && username !== '' && key !== '') {
                 this.updateItem(
                     this.options.customerTaxCodeUpdateRoute,
                     this.options.customerTaxCodeSelector,
                     this.customerTaxCodeLoadingMaskView,
-                    this.selectedCustomerTaxCode
+                    this.selectedCustomerTaxCode,
+                    triggerUpdate
                 );
             }
         },
@@ -142,13 +148,14 @@ define(function(require) {
             var username = this.$elem.find(this.options.usernameSelector).val();
             var key = this.$elem.find(this.options.keySelector).val();
             var currency = this.$elem.find(this.options.currencySelector).val();
-
+            var triggerUpdate = 'productfamilies';
             if (url !== '' && username !== '' && key !== '' && currency !== '') {
                 this.updateItem(
                     this.options.priceListUpdateRoute,
                     this.options.priceListSelector,
                     this.priceListLoadingMaskView,
-                    this.selectedPriceList
+                    this.selectedPriceList,
+                    triggerUpdate
                 );
             }
         },
@@ -156,13 +163,14 @@ define(function(require) {
             var url = this.$elem.find(this.options.urlSelector).val();
             var username = this.$elem.find(this.options.usernameSelector).val();
             var key = this.$elem.find(this.options.keySelector).val();
-
+            var triggerUpdate = 'warehouses';
             if (url !== '' && username !== '' && key !== '') {
                 this.updateItem(
                     this.options.productFamilyUpdateRoute,
                     this.options.productFamilySelector,
                     this.productFamilyLoadingMaskView,
-                    this.selectedProductFamily
+                    this.selectedProductFamily,
+                    triggerUpdate
                 );
             }
         },
@@ -194,7 +202,7 @@ define(function(require) {
                 warehouseContainer.hide();
             }
         },
-        updateItem: function(route, selector, loadingMaskView, selectedItem) {
+        updateItem: function(route, selector, loadingMaskView, selectedItem, triggerUpdate) {
             var self = this;
             $.ajax({
                 url: route,
@@ -212,8 +220,10 @@ define(function(require) {
                         .remove();
                     var selectedExists = false;
                     $(json).each(function(index, data) {
-                        if (selectedItem.toString() === data.value) {
-                            selectedExists = true
+                        if (selectedItem !== null) {
+                            if (selectedItem.toString() === data.value) {
+                                selectedExists = true
+                            }
                         }
                         $(selector)
                             .append('<option value="' + data.value + '">' + data.label + '</option>');
@@ -225,6 +235,9 @@ define(function(require) {
                 },
                 complete: function() {
                     loadingMaskView.hide();
+                   if (null !== triggerUpdate) {
+                       mediator.trigger('marello_orocommerce:update:'+ triggerUpdate);
+                   }
                 }
             });
         },
@@ -238,7 +251,11 @@ define(function(require) {
             this.$elem.find(this.options.usernameSelector).off();
             this.$elem.find(this.options.keySelector).off();
             this.$elem.find(this.options.currencySelector).off();
-
+            mediator.off('marello_orocommerce:update:productunits', this.updateProductUnits(), this);
+            mediator.off('marello_orocommerce:update:customertaxcodes', this.updateCustomerTaxCodes(), this);
+            mediator.off('marello_orocommerce:update:pricelists', this.updatePriceLists(), this);
+            mediator.off('marello_orocommerce:update:productfamilies', this.updateProductFamilies(), this);
+            mediator.off('marello_orocommerce:update:warehouses', this.updateWarehouses(), this);
             OroCommerceSettingsComponent.__super__.dispose.call(this);
         }
     });

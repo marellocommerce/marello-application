@@ -5,7 +5,7 @@ namespace Marello\Bundle\OroCommerceBundle\ImportExport\Strategy;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityRepository;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
@@ -81,6 +81,12 @@ class OrderImportStrategy extends AbstractImportStrategy
             if (!$item->getOrder()) {
                 $item->setOrder($entityToUpdate);
             }
+            $product = $item->getProduct();
+            $order = $item->getOrder();
+            $taxCode = $product->getSalesChannelTaxCode($order->getSalesChannel()) ? : $product->getTaxCode();
+            $item
+                ->setTaxCode($taxCode)
+                ->setOrganization($order->getOrganization());
         }
     }
 
@@ -100,15 +106,23 @@ class OrderImportStrategy extends AbstractImportStrategy
             /** @var Customer $customer */
             $customer = $this->getEntityByCriteria($criteria, Customer::class);
             $existingPrimaryAddress = null;
+            $existingCompany = null;
             if ($customer) {
                 $existingPrimaryAddress = $customer->getPrimaryAddress();
+                $existingCompany = $customer->getCompany();
                 $this->strategyHelper->importEntity(
                     $customer,
                     $entity,
-                    ['id', 'createdAt', 'primaryAddress', 'organization']
+                    ['id', 'createdAt', 'primaryAddress', 'organization', 'company']
                 );
             } else {
                 $customer = $entity;
+            }
+            $company = $entity->getCompany();
+            if ($company && $existingCompany && $company->getName() === $existingCompany->getName()) {
+                $customer->setCompany($existingCompany);
+            } elseif ($company) {
+                $customer->setCompany($company);
             }
             if (!$customer->getOrganization() && $order->getOrganization()) {
                 $customer->setOrganization($order->getOrganization());

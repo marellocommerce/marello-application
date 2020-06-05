@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\OroCommerceBundle\Form\Extension;
 
+use Marello\Bundle\OroCommerceBundle\Integration\Connector\OroCommerceProductImageConnector;
 use Marello\Bundle\OroCommerceBundle\Integration\OroCommerceChannelType;
 use Oro\Bundle\IntegrationBundle\Form\Type\ChannelType;
 use Symfony\Component\Form\AbstractTypeExtension;
@@ -55,6 +56,10 @@ class ChannelConnectorsExtension extends AbstractTypeExtension
         }
         $options = $event->getForm()['connectors']->getConfig()->getOptions();
         $connectors = array_values($options['choices']);
+        $submittedConnectors = $data->getConnectors();
+        if (!in_array(OroCommerceProductImageConnector::TYPE, $submittedConnectors)) {
+            $connectors = array_diff($connectors, [OroCommerceProductImageConnector::TYPE]);
+        }
         $data->setConnectors($connectors);
     }
 
@@ -71,8 +76,10 @@ class ChannelConnectorsExtension extends AbstractTypeExtension
         }
 
         foreach ($view['connectors']->children as $checkbox) {
-            $checkbox->vars['checked'] = true;
-            $checkbox->vars['disabled'] = true;
+            if ($checkbox->vars['value'] !== OroCommerceProductImageConnector::TYPE) {
+                $checkbox->vars['checked'] = true;
+                $checkbox->vars['disabled'] = true;
+            }
         }
         $isTwoWaySyncEnabled = $view['synchronizationSettings']['isTwoWaySyncEnabled'];
         $isTwoWaySyncEnabled->vars['checked'] = true;
@@ -86,8 +93,8 @@ class ChannelConnectorsExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function getExtendedType()
+    public function getExtendedTypes()
     {
-        return ChannelType::class;
+        return [ChannelType::class];
     }
 }

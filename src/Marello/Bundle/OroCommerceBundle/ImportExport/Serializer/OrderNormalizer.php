@@ -3,7 +3,8 @@
 namespace Marello\Bundle\OroCommerceBundle\ImportExport\Serializer;
 
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Company;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractExportWriter;
@@ -130,6 +131,7 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
         }
         $order
             ->setOrderReference($this->getProperty($data, 'id'))
+            ->setPaymentMethod($this->getProperty($data, 'paymentMethod') ? : 'no payment method')
             ->setShippingMethod(
                 sprintf(
                     '%s, %s',
@@ -164,6 +166,18 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
     {
         $customer = new Customer();
         $customerUser = $this->getProperty($data, 'customerUser');
+        $companyData = $this->getProperty($data, 'customer');
+        if ($companyData) {
+            $companyName = $this->getProperty($companyData, 'name');
+            /** @var Company $company */
+            $company = $this->registry
+                ->getManagerForClass(Company::class)
+                ->getRepository(Company::class)
+                ->findOneBy(['name' => $companyName]);
+            if ($company) {
+                $customer->setCompany($company);
+            }
+        }
 
         if ($firstName = $this->getProperty($customerUser, 'firstName')) {
             $customer->setFirstName($firstName);
@@ -196,10 +210,14 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
     private function prepareOrderItems(array $lineItems, Order $order)
     {
         foreach ($lineItems as $lineItem) {
+            /** @var Product $product */
             $product = $this->registry
                 ->getManagerForClass(Product::class)
                 ->getRepository(Product::class)
-                ->findOneBy(['sku' => $this->getProperty($lineItem, 'productSku')]);
+                ->findOneBy([
+                    'sku' => $this->getProperty($lineItem, 'productSku'),
+                    'organization' => $order->getOrganization()
+                ]);
 
             if ($product) {
                 $this->prepareOrderItem($lineItem, $product, $order);
@@ -293,29 +311,6 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
 
                 return $address;
             }
-        }
-
-        return null;
-    }
-
-    /**
-     * @param mixed $data
-     * @param $property
-     * @return mixed|null
-     */
-    private function getProperty($data, $property)
-    {
-        if (!is_array($data)) {
-            return null;
-        }
-        if (isset($data[$property])) {
-            return $data[$property];
-        }
-        if (isset($data['attributes'][$property])) {
-            return $data['attributes'][$property];
-        }
-        if (isset($data['relationships'][$property])) {
-            return $data['relationships'][$property]['data'];
         }
 
         return null;

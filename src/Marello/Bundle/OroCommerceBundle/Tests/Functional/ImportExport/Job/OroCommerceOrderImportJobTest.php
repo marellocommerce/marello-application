@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\OroCommerceBundle\Tests\Functional\ImportExport\Job;
 
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OroCommerceBundle\Integration\Connector\OroCommerceOrderConnector;
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
