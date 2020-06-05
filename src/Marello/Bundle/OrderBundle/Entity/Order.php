@@ -480,7 +480,7 @@ class Order extends ExtendOrder implements
      *      }
      * )
      */
-    protected $data;
+    protected $data = [];
 
     /**
      * @param AbstractAddress|null $billingAddress
