@@ -11,6 +11,7 @@ use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Provider\SyncProcessor;
+use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 abstract class AbstractOroCommerceJobTest extends WebTestCase
@@ -52,7 +53,10 @@ abstract class AbstractOroCommerceJobTest extends WebTestCase
 
         $this->stubResources();
         $this->managerRegistry = $this->getContainer()->get('doctrine');
-        $this->loadFixtures([LoadChannelData::class]);
+        $this->loadFixtures([
+            LoadProductData::class,
+            LoadChannelData::class
+        ]);
         $this->channel = $this->getReference('orocommerce_channel:first_test_channel');
     }
 
@@ -122,7 +126,6 @@ abstract class AbstractOroCommerceJobTest extends WebTestCase
 
     protected function stubResources()
     {
-
         $this->restClient = $this->createMock(OroCommerceRestClient::class);
         $this->restClientFactory = $this->createMock(OroCommerceRestClientFactory::class);
         $this->restClientFactory
