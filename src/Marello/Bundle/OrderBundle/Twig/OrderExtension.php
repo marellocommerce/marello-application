@@ -66,7 +66,8 @@ class OrderExtension extends AbstractExtension
     public function canReturn(Order $order)
     {
         foreach ($order->getItems() as $orderItem) {
-            if (!in_array($orderItem->getStatus()->getId(), $this->getOrderItemStatuses(), true)) {
+            if (!$orderItem->getStatus() ||
+                !in_array($orderItem->getStatus()->getId(), $this->getOrderItemStatuses(), true)) {
                 return false;
             }
         }

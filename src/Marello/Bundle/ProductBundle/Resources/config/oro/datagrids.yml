@@ -1,6 +1,8 @@
 datagrids:
     marello-products-grid:
         extended_entity_name: Marello\Bundle\ProductBundle\Entity\Product
+        inline_editing:
+            enable: true
         source:
             type: orm
             acl_resource: marello_product_view
@@ -17,22 +19,30 @@ datagrids:
                     - { table: MarelloProductBundle:Product, alias: p }
                 groupBy: p.id
         columns:
-            type:
-                label:              marello.product.type.label
-                frontend_type:      string
             sku:
                 label:              marello.product.sku.label
                 frontend_type:      string
             name:
                 label:              marello.product.names.label
+                inline_editing:
+                    enable: false
+            type:
+                label:              marello.product.type.label
+                frontend_type:      string
+                inline_editing:
+                    enable: false
             manufacturingCode:
                 label:              marello.product.manufacturing_code.label
                 frontend_type:      string
                 renderable:         false
+                inline_editing:
+                    enable: false
             weight:
                 label:              marello.product.weight.label
                 frontend_type:      number
                 renderable:         false
+                inline_editing:
+                    enable: false
             createdAt:
                 label:              oro.ui.created_at
                 frontend_type:      datetime
@@ -65,15 +75,15 @@ datagrids:
                 name: 'DESC'
         filters:
             columns:
-                type:
-                    type:             string
-                    data_name:        p.type
                 sku:
                     type:             string
                     data_name:        p.sku
                 name:
                     type:             string
                     data_name:        name
+                type:
+                    type:             string
+                    data_name:        p.type
                 manufacturingCode:
                     data_name:          p.manufacturingCode
                     type:               string
@@ -208,6 +218,7 @@ datagrids:
                             false
                         END) as hasVariant
                     - p.sku
+                    - p.type
                     - s.label as status
                     - COALESCE(SUM(il.inventory), 0) AS inventoryQty
                 from:
@@ -235,17 +246,19 @@ datagrids:
                 label:              ~
                 editable:           true
                 frontend_type:      boolean
+            status:
+                label:              marello.product.status.label
+                frontend_type:      string
             sku:
                 label:              marello.product.sku.label
                 frontend_type:      string
             name:
                 label:              marello.product.names.label
-            inventoryQty:
-                label:              marello.inventory.inventorylevel.inventory.label
-                frontend_type:      number
-                data_name:          inventoryQty
-            status:
-                label:              marello.product.status.label
+            type:
+                label:              marello.product.type.label
+                frontend_type:      string
+            manufacturingCode:
+                label:              marello.product.manufacturing_code.label
                 frontend_type:      string
         filters:
             columns:
@@ -253,14 +266,25 @@ datagrids:
                     label:            marello.product.variant.selected_variants.label
                     type:             boolean
                     data_name:        hasVariant
-                name:
-                    label:            marello.product.names.label
+                status:
+                    label:            marello.product.status.label
                     type:             string
-                    data_name:        name
+                    data_name:        s.label
                 sku:
                     label:            marello.product.sku.label
                     type:             string
                     data_name:        p.sku
+                name:
+                    label:            marello.product.names.label
+                    type:             string
+                    data_name:        name
+                type:
+                    type:             string
+                    data_name:        p.type
+                manufacturingCode:
+                    data_name:          p.manufacturingCode
+                    type:               string
+                    enabled:            false
         sorters:
             columns:
                 name:           { data_name: name }
@@ -278,7 +302,6 @@ datagrids:
             rowSelection:
                 dataField: id
                 columnName: hasVariant
-                selectAll: true
                 selectors:
                     included: '#addVariants'
                     excluded: '#removeVariants'
@@ -625,7 +648,6 @@ datagrids:
             rowSelection:
                 dataField: id
                 columnName: inCategory
-                selectAll: true
                 selectors:
                     included: '#productAppendCategories'
                     excluded: '#productRemoveCategories'

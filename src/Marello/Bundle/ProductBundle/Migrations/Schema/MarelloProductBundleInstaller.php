@@ -29,7 +29,7 @@ class MarelloProductBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_9';
+        return 'v1_10';
     }
 
     /**
@@ -101,7 +101,7 @@ class MarelloProductBundleInstaller implements
         $table->addColumn('product_id', 'integer', []);
         $table->addColumn('localized_value_id', 'integer', []);
         $table->setPrimaryKey(['product_id', 'localized_value_id']);
-        $table->addUniqueIndex(['localized_value_id'], 'uniq_ba57d521eb576e89');
+        $table->addUniqueIndex(['localized_value_id'], 'uniq_58b39126eb576e89');
     }
 
     /**

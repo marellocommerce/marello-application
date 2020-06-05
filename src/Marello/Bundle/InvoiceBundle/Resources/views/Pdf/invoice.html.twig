@@ -225,6 +225,9 @@
                     {% else %}
                         &nbsp;<br>
                     {% endif %}
+                    {% if address.company is not empty %}
+                        {{ address.company }}<br>
+                    {% endif %}
                     {% if name is not empty %}
                         {{ name }}<br>
                     {% endif %}

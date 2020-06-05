@@ -1,6 +1,7 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% import 'OroEntityConfigBundle::macros.html.twig' as entityConfig %}
 
 {% oro_title_set({params : {"%id%": entity.orderNumber }}) %}
 
@@ -85,17 +86,17 @@
                         <div class="title">
                             <span class="widget-title">{{ 'marello.order.datablock.customer_information'|trans }}</span>
                         </div>
-                        {{ UI.renderHtmlProperty(
-                            'marello.customer.entity_label'|trans,
-                            UI.entityViewLink(entity.customer, entity.customer|oro_format_name, 'marello_customer_view')
-                        )}}
-                        {{ UI.renderProperty('marello.customer.email.label'|trans, entity.customer.email) }}
                         {% if entity.customer.company %}
                             {{ UI.renderHtmlProperty(
                             'marello.customer.company.entity_label'|trans,
                             UI.entityViewLink(entity.customer.company, entity.customer.company.name, 'marello_customer_company_view')
                             ) }}
                         {% endif %}
+                        {{ UI.renderHtmlProperty(
+                            'marello.customer.entity_label'|trans,
+                            UI.entityViewLink(entity.customer, entity.customer|oro_format_name, 'marello_customer_view')
+                        )}}
+                        {{ UI.renderProperty('marello.customer.email.label'|trans, entity.customer.email) }}
                     </div>
                 </div>
             </div>
@@ -211,6 +212,21 @@
             ]
         }
     ] %}
+
+    {% set additionalData %}
+        {{ entityConfig.renderDynamicFields(entity) }}
+    {% endset %}
+
+    {% set dataBlocks = dataBlocks|merge([{
+        'title' : 'marello.order.sections.additional'|trans,
+        'subblocks': [{
+            'title' : null,
+            'useSpan': false,
+            'data' : [
+                additionalData
+            ]
+        }]
+    }]) %}
 
     {%- set additionalInfoPlaceholders = marello_get_additional_placeholder_data('order') -%}
     {% for additionalInfo in additionalInfoPlaceholders %}

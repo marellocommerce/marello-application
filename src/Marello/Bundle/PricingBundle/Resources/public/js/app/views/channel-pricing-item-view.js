@@ -88,7 +88,7 @@ define(function(require) {
         },
 
         /**
-         * @param {Object} prices
+         * @param {Object} currency
          */
         setCurrency: function(currency) {
             if (currency === undefined) {

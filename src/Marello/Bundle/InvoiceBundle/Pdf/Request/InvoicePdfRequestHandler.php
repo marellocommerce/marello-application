@@ -80,12 +80,16 @@ class InvoicePdfRequestHandler implements PdfRequestHandlerInterface
      */
     public function handle(Request $request)
     {
+        $response = new Response();
+
         $entity = $this->doctrine
             ->getManagerForClass(Invoice::class)
             ->getRepository(Invoice::class)
             ->find($request->attributes->get('id'));
         if (!$entity) {
-            return null;
+            // either throw an error that the entity cannot be found or
+            // null and handle the response somewhere else (i.e. the Downloadcontroller)
+            return $response;
         }
         if ($request->query->get('download')) {
             $disposition = ResponseHeaderBag::DISPOSITION_ATTACHMENT;
@@ -95,7 +99,10 @@ class InvoicePdfRequestHandler implements PdfRequestHandlerInterface
 
         $filename = sprintf('%s.pdf', $this->translator->trans(
             'marello.invoice.pdf.filename.label',
-            ['%entityNumber%' => $entity->getInvoiceNumber()]
+            [
+                '%invoiceType%' => $entity->getInvoiceType(),
+                '%entityNumber%' => $entity->getInvoiceNumber()
+            ]
         ));
 
         $params = $this->parametersProvider
@@ -105,7 +112,6 @@ class InvoicePdfRequestHandler implements PdfRequestHandlerInterface
             ->render('MarelloInvoiceBundle:Pdf:invoice.html.twig', $params)
         ;
 
-        $response = new Response();
         $response->setContent($pdf);
         $response->headers->set('Content-Type', 'application/pdf');
 

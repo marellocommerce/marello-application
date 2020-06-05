@@ -3,6 +3,7 @@ marello:
         id.label:               Id
         entity_label:           Email Notification
         entity_plural_label:    Email Notifications
+        entity_grid_all_view_label: All %entity_plural_label%
         body.label:             Body
         recipients.label:       Recipients
         organization.label:     Organization

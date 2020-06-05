@@ -1,8 +1,9 @@
 marello:
     order:
         # Order entity
-        entity_plural_label:        Orders
         entity_label:               Order
+        entity_plural_label:        Orders
+        entity_grid_all_view_label: All %entity_plural_label%
         id.label:                   Id
         customer.label:             Customer
         items.label:                Items
@@ -47,6 +48,7 @@ marello:
         address:
             email.label:            E-Mail
             phone.label:            Phone
+            company.label:          Company
             edit_action:            Edit Address
         datablock:
             general:                General
@@ -63,6 +65,7 @@ marello:
         orderitem:
             entity_label:           Ordered Item
             entity_plural_label:    Ordered Items
+            entity_grid_all_view_label: All %entity_plural_label%
             id.label:               Id
             sku.label:              SKU
             tax.label:              Tax
