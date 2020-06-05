@@ -400,7 +400,7 @@ class SalesChannel extends ExtendSalesChannel implements
      * @param Channel $integrationChannel
      * @return $this
      */
-    public function setIntegrationChannel(Channel $integrationChannel)
+    public function setIntegrationChannel(Channel $integrationChannel = null)
     {
         $this->integrationChannel = $integrationChannel;
 

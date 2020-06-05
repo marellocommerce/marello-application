@@ -17,7 +17,7 @@ class MarelloSalesBundleInstaller implements Installation
      */
     public function getMigrationVersion()
     {
-        return 'v1_2';
+        return 'v1_3';
     }
 
     /**
@@ -73,7 +73,6 @@ class MarelloSalesBundleInstaller implements Installation
         $table->addColumn('integration_channel_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['code'], 'marello_sales_sales_channel_codeidx');
-        $table->addUniqueIndex(['integration_channel_id'], 'UNIQ_75C456C9F5B7AF7511');
         $table->addIndex(['owner_id'], 'idx_37c71d17e3c61f9', []);
     }
     
