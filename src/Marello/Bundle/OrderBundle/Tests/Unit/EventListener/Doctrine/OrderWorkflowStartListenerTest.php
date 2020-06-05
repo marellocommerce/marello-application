@@ -10,6 +10,7 @@ use Doctrine\ORM\Event\PostFlushEventArgs;
 use PHPUnit\Framework\TestCase;
 
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
@@ -27,13 +28,17 @@ class OrderWorkflowStartListenerTest extends TestCase
     /** @var  OrderWorkflowStartListener $orderWorkflowStartListener */
     private $orderWorkflowStartListener;
 
+    /** @var DoctrineHelper|\PHPUnit_Framework_MockObject_MockObject $doctrineHelperMock */
+    private $doctrineHelperMock;
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
         $this->workflowManagerMock = $this->createMock(WorkflowManager::class);
+        $this->doctrineHelperMock = $this->createMock(DoctrineHelper::class);
         $this->orderWorkflowStartListener = new OrderWorkflowStartListener($this->workflowManagerMock);
+        $this->orderWorkflowStartListener->setDoctrineHelper($this->doctrineHelperMock);
     }
 
     /**
@@ -45,8 +50,8 @@ class OrderWorkflowStartListenerTest extends TestCase
         $this->runFirstSequenceOfWorkflowListenerTest($entity, static::never());
         /** @var PostFlushEventArgs|\PHPUnit\Framework\MockObject\MockObject $eventPostFlushArgs */
         $eventPostFlushArgs = $this->createMock(PostFlushEventArgs::class);
-        $eventPostFlushArgs->expects(static::never())
-            ->method('getEntityManager');
+        $this->doctrineHelperMock->expects(static::never())
+            ->method('getEntityManagerForClass');
 
         $this->orderWorkflowStartListener->postFlush($eventPostFlushArgs);
     }
@@ -181,8 +186,8 @@ class OrderWorkflowStartListenerTest extends TestCase
     {
         $eventPostFlushArgs = $this->createMock(PostFlushEventArgs::class);
         $entityManager = $this->createMock(EntityManagerInterface::class);
-        $eventPostFlushArgs->expects(static::once())
-            ->method('getEntityManager')
+        $this->doctrineHelperMock->expects(static::once())
+            ->method('getEntityManagerForClass')
             ->willReturn($entityManager);
 
         $entityRepository = $this->createMock(EntityRepository::class);
