@@ -110,10 +110,10 @@ services:
     marello_sales.event_listener.datagrid.products_grid:
         class: 'Marello\Bundle\SalesBundle\EventListener\Datagrid\SalesChannelsDatagridListener'
         arguments:
-            - 'Marello\Bundle\ProductBundle\Entity\Product'
-            - '@marello_sales.provider.basic_sales_channels_choices'
+            - '@oro_entity.doctrine_helper'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-products-grid, method: onBuildBefore }
+            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.after.marello-products-grid, method: onResultAfter }
 
     marello_sales.datagrid.saleschannelgroup.action_permission_provider:
         class: 'Marello\Bundle\SalesBundle\Datagrid\SalesChannelGroupActionPermissionProvider'

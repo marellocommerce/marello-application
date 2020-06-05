@@ -1,3 +1,4 @@
-{% for index, channel in record.getValue('channels') %}
-    {{ channel|trans }}<br>
+{% set product = record.getValue('product') %}
+{% for index, channel in product.channels %}
+    {{ channel.name }}<br>
 {% endfor %}
