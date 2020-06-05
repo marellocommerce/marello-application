@@ -2,11 +2,13 @@
 
 namespace Marello\Bundle\SalesBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\LocaleBundle\Model\LocalizationAwareInterface;
 use Marello\Bundle\LocaleBundle\Model\LocalizationTrait;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
+use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Model\ExtendSalesChannel;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
@@ -196,6 +198,28 @@ class SalesChannel extends ExtendSalesChannel implements
     protected $integrationChannel;
 
     /**
+     * @var ArrayCollection
+     * @ORM\ManyToMany(targetEntity="Marello\Bundle\ProductBundle\Entity\Product", mappedBy="channels")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
+     *          "importexport"={
+     *              "excluded"=true
+     *          },
+     *          "attribute"={
+     *              "is_attribute"=true
+     *          },
+     *          "extend"={
+     *              "owner"="System"
+     *          }
+     *      }
+     * )
+     */
+    protected $products;
+
+    /**
      * @param string|null $name
      */
     public function __construct($name = null)
@@ -203,6 +227,15 @@ class SalesChannel extends ExtendSalesChannel implements
         parent::__construct();
         
         $this->name = $name;
+        $this->products = new ArrayCollection();
+    }
+
+    public function __clone()
+    {
+        if ($this->id) {
+            $this->id                   = null;
+            $this->products = new ArrayCollection();
+        }
     }
 
     /**
@@ -405,5 +438,30 @@ class SalesChannel extends ExtendSalesChannel implements
         $this->integrationChannel = $integrationChannel;
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasProducts()
+    {
+        return count($this->products) > 0;
+    }
+
+    /**
+     * @param Product $product
+     * @return bool
+     */
+    public function hasProduct(Product $product)
+    {
+        return $this->products->contains($product);
+    }
+
+    /**
+     * @return ArrayCollection|SalesChannel|Product[]
+     */
+    public function getProducts()
+    {
+        return $this->products;
     }
 }
