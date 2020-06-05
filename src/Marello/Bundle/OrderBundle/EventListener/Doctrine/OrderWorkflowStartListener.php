@@ -6,6 +6,7 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
@@ -20,6 +21,9 @@ class OrderWorkflowStartListener
 
     /** @var string $orderId*/
     private $orderId;
+
+    /** @var DoctrineHelper $doctrineHelper */
+    private $doctrineHelper;
 
     /**
      * @param WorkflowManager $workflowManager
@@ -49,7 +53,8 @@ class OrderWorkflowStartListener
         if ($this->orderId) {
             $entityManager = $args->getEntityManager();
             /** @var Order $entity */
-            $entity = $entityManager
+            $entity = $this->doctrineHelper
+                ->getEntityManagerForClass(Order::class)
                 ->getRepository(Order::class)
                 ->find($this->orderId);
             if ($entity && $workflow = $this->getApplicableWorkflow($entity)) {
@@ -96,5 +101,13 @@ class OrderWorkflowStartListener
             WorkflowNameProviderInterface::ORDER_DEPRECATED_WORKFLOW_1,
             WorkflowNameProviderInterface::ORDER_DEPRECATED_WORKFLOW_2
         ];
+    }
+
+    /**
+     * @param DoctrineHelper $doctrineHelper
+     */
+    public function setDoctrineHelper(DoctrineHelper $doctrineHelper)
+    {
+        $this->doctrineHelper = $doctrineHelper;
     }
 }
