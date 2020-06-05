@@ -102,16 +102,17 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
     public function denormalize($data, $class, $format = null, array $context = array())
     {
         /** @var Order $order */
-        $order = $this->createOrder($data);
+        $order = $this->createOrder($data, $context);
 
         return $order->getItems()->count() > 0 ? $order : null;
     }
 
     /**
      * @param array $data
+     * @param array $context
      * @return Order
      */
-    public function createOrder(array $data)
+    public function createOrder(array $data, array $context = array())
     {
         $paymentStatus = $this->getProperty($data, 'paymentStatus');
         $taxValue = $this->getProperty($data, 'taxvalues');
@@ -123,13 +124,19 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
             $subtotal = $subtotal + (float)$total['taxAmount'];
         }
         $order = new Order();
-        $customer = $this->prepareCustomer($data);
+        $customer = null;
+        if ($this->getProperty($data, 'customerUser')) {
+            $customer = $this->prepareCustomer($data);
+        }
+
         if ($paymentStatus) {
             $order->setData([
                 self::PAYMENT_STATUS => $this->getProperty($paymentStatus, 'paymentStatus')
             ]);
         }
+        $integrationChannel = $this->getIntegrationChannel($context['channel']);
         $order
+            ->setOrganization($integrationChannel->getOrganization())
             ->setOrderReference($this->getProperty($data, 'id'))
             ->setPaymentMethod($this->getProperty($data, 'paymentMethod') ? : 'no payment method')
             ->setShippingMethod(
@@ -251,7 +258,6 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
             ->setRowTotalExclTax((float)$row['excludingTax'])
             ->setProduct($product)
             ->setProductName((string)$product->getName());
-
         $order->addItem($item);
     }
 

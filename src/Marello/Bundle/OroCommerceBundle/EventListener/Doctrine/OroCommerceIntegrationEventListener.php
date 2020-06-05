@@ -41,18 +41,22 @@ class OroCommerceIntegrationEventListener
             $existingSalesChannels = $em
                 ->getRepository(SalesChannel::class)
                 ->findBy(['integrationChannel' => $channel]);
+
             /** @var SalesChannel $existingSalesChannel */
             // remove integration from the previous saleschannels
             foreach ($existingSalesChannels as $existingSalesChannel) {
                 $existingSalesChannel->setIntegrationChannel(null);
                 $em->persist($existingSalesChannel);
             }
+
             /** @var OroCommerceSettings $transport */
             $transport = $channel->getTransport();
             $salesChannelGroup = $transport->getSalesChannelGroup();
-            foreach ($salesChannelGroup->getSalesChannels() as $salesChannel) {
-                $salesChannel->setIntegrationChannel($channel);
-                $em->persist($salesChannel);
+            if ($salesChannelGroup) {
+                foreach ($salesChannelGroup->getSalesChannels() as $salesChannel) {
+                    $salesChannel->setIntegrationChannel($channel);
+                    $em->persist($salesChannel);
+                }
             }
             $em->flush();
         }

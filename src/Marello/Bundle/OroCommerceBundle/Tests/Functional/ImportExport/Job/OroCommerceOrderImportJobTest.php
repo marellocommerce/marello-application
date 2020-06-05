@@ -3,6 +3,8 @@
 namespace Marello\Bundle\OroCommerceBundle\Tests\Functional\ImportExport\Job;
 
 use Marello\Bundle\CustomerBundle\Entity\Customer;
+use Marello\Bundle\OroCommerceBundle\Tests\Functional\DataFixtures\LoadAdditionalSalesData;
+use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OroCommerceBundle\Integration\Connector\OroCommerceOrderConnector;
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
@@ -42,56 +44,12 @@ class OroCommerceOrderImportJobTest extends AbstractOroCommerceJobTest
             ->willReturn(json_decode($orderLineItemsTaxValuesResponseFile, true));
     }
 
-    public function testImportOrdersWithNotExistentProducts()
-    {
-        $ordersBefore = $this->managerRegistry
-            ->getManagerForClass(Order::class)
-            ->getRepository(Order::class)
-            ->findAll();
-        $this->assertEmpty($ordersBefore);
-
-        $customersBefore = $this->managerRegistry
-            ->getManagerForClass(Customer::class)
-            ->getRepository(Customer::class)
-            ->findAll();
-        $this->assertEmpty($customersBefore);
-
-        $jobLog = [];
-
-        $this->runImportExportConnectorsJob(
-            self::SYNC_PROCESSOR,
-            $this->channel,
-            OroCommerceOrderConnector::TYPE,
-            [],
-            $jobLog
-        );
-
-        $ordersAfter = $this->managerRegistry
-            ->getManagerForClass(Order::class)
-            ->getRepository(Order::class)
-            ->findAll();
-        $this->assertEmpty($ordersAfter);
-
-        $customersAfter = $this->managerRegistry
-            ->getManagerForClass(Customer::class)
-            ->getRepository(Customer::class)
-            ->findAll();
-        $this->assertEmpty($customersAfter);
-    }
-    
     public function testImportOrdersWithExistentProducts()
     {
-        $this->loadFixtures([LoadProductData::class]);
-        $ordersBefore = $this->managerRegistry
-            ->getManagerForClass(Order::class)
-            ->getRepository(Order::class)
-            ->findAll();
+        $ordersBefore = $this->findAllEntities(Order::class);
         $this->assertEmpty($ordersBefore);
 
-        $customersBefore = $this->managerRegistry
-            ->getManagerForClass(Customer::class)
-            ->getRepository(Customer::class)
-            ->findAll();
+        $customersBefore = $this->findAllEntities(Customer::class);
         $this->assertEmpty($customersBefore);
 
         $jobLog = [];
@@ -104,16 +62,71 @@ class OroCommerceOrderImportJobTest extends AbstractOroCommerceJobTest
             $jobLog
         );
 
-        $ordersAfter = $this->managerRegistry
-            ->getManagerForClass(Order::class)
-            ->getRepository(Order::class)
-            ->findAll();
+        $ordersAfter = $this->findAllEntities(Order::class);
         $this->assertCount(1, $ordersAfter);
-        
-        $customersAfter = $this->managerRegistry
-            ->getManagerForClass(Customer::class)
-            ->getRepository(Customer::class)
-            ->findAll();
+
+        $customersAfter = $this->findAllEntities(Customer::class);
         $this->assertCount(1, $customersAfter);
+    }
+
+    public function testImportOrdersWithNotExistentProducts()
+    {
+        $this->removeProductsFromSalesChannels();
+        $ordersBefore = $this->findAllEntities(Order::class);
+        $this->assertCount(1, $ordersBefore);
+
+        $customersBefore = $this->findAllEntities(Customer::class);
+        $this->assertCount(1, $customersBefore);
+
+        $jobLog = [];
+
+        $this->runImportExportConnectorsJob(
+            self::SYNC_PROCESSOR,
+            $this->channel,
+            OroCommerceOrderConnector::TYPE,
+            [],
+            $jobLog
+        );
+
+        $ordersAfter = $this->findAllEntities(Order::class);
+        // should be the same count as before :)
+        $this->assertCount(count($ordersBefore), $ordersAfter);
+
+        $customersAfter = $this->findAllEntities(Customer::class);
+        $this->assertCount(count($customersBefore), $customersAfter);
+    }
+
+    /**
+     * Get all the entities for a certain entity
+     * @param $entityClassName
+     * @return \object[]
+     */
+    private function findAllEntities($entityClassName)
+    {
+        return $this->managerRegistry
+            ->getManagerForClass($entityClassName)
+            ->getRepository($entityClassName)
+            ->findAll();
+    }
+
+    /**
+     * Remove products from the orocommerce saleschannel in order to test that non existing products
+     * will not be imported
+     */
+    private function removeProductsFromSalesChannels()
+    {
+        $products = [
+            $this->getReference(LoadProductData::PRODUCT_1_REF),
+            $this->getReference(LoadProductData::PRODUCT_2_REF),
+            $this->getReference(LoadProductData::PRODUCT_3_REF)
+        ];
+        $manager = $this->managerRegistry
+            ->getManagerForClass(Product::class);
+        /** @var Product $product */
+        foreach ($products as $product) {
+            $product->removeChannel($this->getReference(LoadAdditionalSalesData::TEST_SALESCHANNEL_OROCOMMERCE));
+            $manager->persist($product);
+            $manager->flush();
+        }
     }
 }
