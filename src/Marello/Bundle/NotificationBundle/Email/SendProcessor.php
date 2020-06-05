@@ -117,6 +117,11 @@ class SendProcessor
                 )
             );
         }
+
+        if ($this->recipientsNullOrEmpty($recipients)) {
+            return;
+        }
+
         $emailModel = $this->emailTemplateManager->getLocalizedModel($template, $entity);
         if (null === $emailModel) {
             $emailModel = $this->createEmailModel($template);
@@ -239,5 +244,25 @@ class SendProcessor
         return $emailTemplate->getType() === EmailTemplate::TYPE_HTML
             ? EmailTemplateModel::CONTENT_TYPE_HTML
             : EmailTemplateModel::CONTENT_TYPE_TEXT;
+    }
+
+    /**
+     * check if recipients are available for sending out the email notification
+     * @param array $recipients
+     * @return bool
+     */
+    private function recipientsNullOrEmpty(array $recipients)
+    {
+        if (empty($recipients)) {
+            return true;
+        }
+
+        foreach ($recipients as $recipient) {
+            if (null === $recipient) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
