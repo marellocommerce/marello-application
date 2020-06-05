@@ -362,9 +362,9 @@ class Product extends ExtendProduct implements
 
     /**
      * @var ArrayCollection
-     * unidirectional many-to-many
      * @ORM\ManyToMany(targetEntity="Marello\Bundle\SalesBundle\Entity\SalesChannel",
-     *      fetch="EAGER"
+     *     inversedBy="products",
+     *     fetch="EAGER"
      * )
      * @ORM\JoinTable(name="marello_product_saleschannel")
      * @Oro\ConfigField(
@@ -546,7 +546,7 @@ class Product extends ExtendProduct implements
     /**
      * @var ArrayCollection|Category[]
      *
-     * @ORM\ManyToMany(targetEntity="Marello\Bundle\CatalogBundle\Entity\Category", mappedBy="products")
+     * @ORM\ManyToMany(targetEntity="Marello\Bundle\CatalogBundle\Entity\Category", mappedBy="products", fetch="EAGER")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
