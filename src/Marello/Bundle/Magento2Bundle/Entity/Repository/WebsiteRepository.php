@@ -41,4 +41,21 @@ class WebsiteRepository extends EntityRepository
 
         return $returnResult;
     }
+
+    /**
+     * @param int $integrationId
+     * @return int[]
+     */
+    public function getWebsitesIdsByIntegrationId(int $integrationId): array
+    {
+        $qb = $this->createQueryBuilder('m2w');
+        $qb
+            ->select('m2w.id')
+            ->where($qb->expr()->eq('m2w.channel', ':integrationId'))
+            ->setParameter('integrationId', $integrationId);
+
+        $result = $qb->getQuery()->getArrayResult();
+
+        return \array_column($result, 'id');
+    }
 }

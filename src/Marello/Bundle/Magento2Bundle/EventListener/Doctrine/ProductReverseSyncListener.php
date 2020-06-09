@@ -8,7 +8,7 @@ use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\UnitOfWork;
 use Doctrine\Persistence\Proxy;
 use Marello\Bundle\Magento2Bundle\Model\SalesChannelInfo;
-use Marello\Bundle\Magento2Bundle\Provider\SalesChannelInfosProvider;
+use Marello\Bundle\Magento2Bundle\Provider\SalesChannelProvider;
 use Marello\Bundle\Magento2Bundle\Stack\ChangesByChannelStack;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
@@ -37,17 +37,17 @@ class ProductReverseSyncListener
     /** @var PropertyAccessor $propertyAccessor */
     protected $propertyAccessor;
 
-    /** @var SalesChannelInfosProvider */
+    /** @var SalesChannelProvider */
     protected $salesChannelInfosProvider;
 
     /**
      * @param PropertyAccessor $propertyAccessor
-     * @param SalesChannelInfosProvider $salesChannelInfosProvider
+     * @param SalesChannelProvider $salesChannelInfosProvider
      * @param ChangesByChannelStack $changesByChannelStack
      */
     public function __construct(
         PropertyAccessor $propertyAccessor,
-        SalesChannelInfosProvider $salesChannelInfosProvider,
+        SalesChannelProvider $salesChannelInfosProvider,
         ChangesByChannelStack $changesByChannelStack
     ) {
         $this->propertyAccessor = $propertyAccessor;

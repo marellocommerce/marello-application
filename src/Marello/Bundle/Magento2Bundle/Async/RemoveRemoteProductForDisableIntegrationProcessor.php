@@ -7,7 +7,6 @@ use Marello\Bundle\Magento2Bundle\Entity\Product;
 use Marello\Bundle\Magento2Bundle\Entity\Repository\ProductRepository;
 use Marello\Bundle\Magento2Bundle\Exception\RuntimeException;
 use Marello\Bundle\Magento2Bundle\Transport\RestTransport;
-use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Exception\RestException;
 use Oro\Component\MessageQueue\Client\TopicSubscriberInterface;
 use Oro\Component\MessageQueue\Consumption\MessageProcessorInterface;
@@ -63,16 +62,7 @@ class RemoveRemoteProductForDisableIntegrationProcessor implements
 
             $result = $this
                 ->jobRunner
-                ->runDelayed($wrappedMessage->getJobId(), function () use ($wrappedMessage, $context) {
-                    if (!$this->isAllowedToStart($wrappedMessage)) {
-                        $this->logger->debug(
-                            '[Magento 2] Remove Remote Product is not allow to start.',
-                            $context
-                        );
-
-                        return false;
-                    }
-
+                ->runDelayed($wrappedMessage->getJobId(), function () use ($wrappedMessage) {
                     return $this->processRemovingProduct($wrappedMessage);
                 });
         } catch (\Throwable $exception) {
@@ -99,33 +89,10 @@ class RemoveRemoteProductForDisableIntegrationProcessor implements
 
     /**
      * @param RemoveRemoteProductForDisableIntegrationMessage $message
-     * @return bool
-     */
-    protected function isAllowedToStart(RemoveRemoteProductForDisableIntegrationMessage $message): bool
-    {
-        if ($message->isRemoved()) {
-            return true;
-        }
-
-        /** @var Channel $integration */
-        $integration = $this->managerRegistry
-            ->getManagerForClass(Channel::class)
-            ->getRepository(Channel::class)
-            ->find($message->getIntegrationId());
-
-        if (null === $integration) {
-            return true;
-        }
-
-        return !$integration->isEnabled();
-    }
-
-    /**
-     * @param RemoveRemoteProductForDisableIntegrationMessage $message
      * @throws RuntimeException
      * @throws RestException
      */
-    protected function processRemovingProduct(RemoveRemoteProductForDisableIntegrationMessage $message)
+    protected function processRemovingProduct(RemoveRemoteProductForDisableIntegrationMessage $message): void
     {
         $this->transport->initWithSettingBag($message->getTransportSettingBag());
         $isSuccessfull = $this->transport->removeProduct($message->getProductSku());
@@ -139,7 +106,7 @@ class RemoveRemoteProductForDisableIntegrationProcessor implements
             );
 
             if ($product === null) {
-                return;
+                return true;
             }
 
             $productManager->remove($product);

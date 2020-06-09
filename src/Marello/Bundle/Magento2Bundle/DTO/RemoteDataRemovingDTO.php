@@ -3,7 +3,7 @@
 namespace Marello\Bundle\Magento2Bundle\DTO;
 
 use Marello\Bundle\Magento2Bundle\Model\Magento2TransportSettings;
-use Marello\Bundle\Magento2Bundle\Async\RemoveRemoteDataForDisableIntegrationMessage as Message;
+use Marello\Bundle\Magento2Bundle\Async\RemoveRemoteDataForDisabledIntegrationMessage as Message;
 
 class RemoteDataRemovingDTO
 {
@@ -47,6 +47,14 @@ class RemoteDataRemovingDTO
         $this->status = $status;
         $this->transportSettings = $transportSettings;
         $this->productIdWithSkuToRemove = $productIdWithSkuToRemove;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRemovedIntegration(): bool
+    {
+        return $this->status === self::STATUS_DEACTIVATED;
     }
 
     /**

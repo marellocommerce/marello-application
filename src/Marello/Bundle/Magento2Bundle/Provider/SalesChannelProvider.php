@@ -5,7 +5,7 @@ namespace Marello\Bundle\Magento2Bundle\Provider;
 use Marello\Bundle\Magento2Bundle\Entity\Repository\WebsiteRepository;
 use Marello\Bundle\Magento2Bundle\Model\SalesChannelInfo;
 
-class SalesChannelInfosProvider
+class SalesChannelProvider
 {
     /** @var array|null */
     protected $salesChannelsInfoArray;

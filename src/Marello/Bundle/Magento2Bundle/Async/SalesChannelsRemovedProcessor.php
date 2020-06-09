@@ -16,12 +16,11 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 
-class SalesChannelStateChangedProcessor implements
+class SalesChannelsRemovedProcessor implements
     MessageProcessorInterface,
     TopicSubscriberInterface,
     LoggerAwareInterface
 {
-    use LoggerAwareTrait;
     use LoggerAwareTrait;
 
     /** @var JobRunner */
@@ -55,13 +54,13 @@ class SalesChannelStateChangedProcessor implements
     {
         $context = [];
         try {
-            $wrappedMessage = SalesChannelStateChangedMessage::createFromMessage($message);
+            $wrappedMessage = SalesChannelsRemovedMessage::createFromMessage($message);
             $context = $wrappedMessage->getContextParams();
 
             if (!$this->isIntegrationApplicable($wrappedMessage)) {
                 $this->logger->info(
                     '[Magento 2] Integration is not available or disabled. ' .
-                    'Reject to process changing of Sales Channel state.',
+                    'Can\'t process removing of sales channel.',
                     $context
                 );
 
@@ -70,8 +69,8 @@ class SalesChannelStateChangedProcessor implements
 
             $jobName = sprintf(
                 '%s:%s',
-                'marello_magento2:sales_channel_state_changed',
-                $wrappedMessage->getSalesChannelId()
+                'marello_magento2:sales_channels_removed',
+                $wrappedMessage->getIntegrationId()
             );
 
             $result = $this->jobRunner->runUnique(
@@ -87,7 +86,7 @@ class SalesChannelStateChangedProcessor implements
             $context['exception'] = $exception;
 
             $this->logger->critical(
-                '[Magento 2] Sales Channel state synchronization failed. Reason: ' . $exception->getMessage(),
+                '[Magento 2] Processing removing sales channel failed. Reason: ' . $exception->getMessage(),
                 $context
             );
 
@@ -105,17 +104,9 @@ class SalesChannelStateChangedProcessor implements
     }
 
     /**
-     * {@inheritDoc}
+     * @param SalesChannelsRemovedMessage $message
      */
-    public static function getSubscribedTopics()
-    {
-        return [Topics::SALES_CHANNEL_STATE_CHANGED];
-    }
-
-    /**
-     * @param SalesChannelStateChangedMessage $message
-     */
-    protected function processChangedProducts(SalesChannelStateChangedMessage $message): void
+    protected function processChangedProducts(SalesChannelsRemovedMessage $message): void
     {
         foreach ($message->getRemovedProductIds() as $productId) {
             $this->syncScheduler->getService()->schedule(
@@ -125,18 +116,6 @@ class SalesChannelStateChangedProcessor implements
                     'ids' => [$productId],
                     ExclusiveItemStep::OPTION_KEY_EXCLUSIVE_STEP_NAME =>
                         ProductConnector::EXPORT_STEP_DELETE_ON_CHANNEL
-                ]
-            );
-        }
-
-        foreach ($message->getCreatedProductIds() as $productId) {
-            $this->syncScheduler->getService()->schedule(
-                $message->getIntegrationId(),
-                ProductConnector::TYPE,
-                [
-                    'ids' => [$productId],
-                    ExclusiveItemStep::OPTION_KEY_EXCLUSIVE_STEP_NAME =>
-                        ProductConnector::EXPORT_STEP_CREATE
                 ]
             );
         }
@@ -155,10 +134,18 @@ class SalesChannelStateChangedProcessor implements
     }
 
     /**
-     * @param SalesChannelStateChangedMessage $message
+     * {@inheritDoc}
+     */
+    public static function getSubscribedTopics()
+    {
+        return [Topics::SALES_CHANNELS_REMOVED];
+    }
+
+    /**
+     * @param IntegrationAwareMessageInterface $message
      * @return bool
      */
-    protected function isIntegrationApplicable(SalesChannelStateChangedMessage $message): bool
+    protected function isIntegrationApplicable(IntegrationAwareMessageInterface $message): bool
     {
         /** @var Integration $integration */
         $integration = $this->managerRegistry

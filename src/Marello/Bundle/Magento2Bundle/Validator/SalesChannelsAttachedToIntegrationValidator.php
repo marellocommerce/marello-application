@@ -5,7 +5,7 @@ namespace Marello\Bundle\Magento2Bundle\Validator;
 use Doctrine\Common\Collections\AbstractLazyCollection;
 use Doctrine\ORM\PersistentCollection;
 use Marello\Bundle\Magento2Bundle\Provider\Magento2ChannelType;
-use Marello\Bundle\Magento2Bundle\Provider\SalesChannelInfosProvider;
+use Marello\Bundle\Magento2Bundle\Provider\SalesChannelProvider;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Symfony\Component\Validator\Constraint;
@@ -13,14 +13,14 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class SalesChannelsAttachedToIntegrationValidator extends ConstraintValidator
 {
-    /** @var SalesChannelInfosProvider */
+    /** @var SalesChannelProvider */
     protected $salesChannelInfosProvider;
 
     /**
-     * @param SalesChannelInfosProvider $salesChannelInfosProvider
+     * @param SalesChannelProvider $salesChannelInfosProvider
      */
     public function __construct(
-        SalesChannelInfosProvider $salesChannelInfosProvider
+        SalesChannelProvider $salesChannelInfosProvider
     ) {
         $this->salesChannelInfosProvider = $salesChannelInfosProvider;
     }
@@ -39,6 +39,10 @@ class SalesChannelsAttachedToIntegrationValidator extends ConstraintValidator
 
         $salesChannels = $value->getSalesChannels();
         if ($salesChannels instanceof AbstractLazyCollection && !$salesChannels->isInitialized()) {
+            return;
+        }
+
+        if ($salesChannels instanceof PersistentCollection && !$salesChannels->isDirty()) {
             return;
         }
 
@@ -62,8 +66,6 @@ class SalesChannelsAttachedToIntegrationValidator extends ConstraintValidator
         if (empty($restrictedToRemoveSalesChannelIds)) {
             return;
         }
-
-
 
         $violationBuilder = $this->context
             ->buildViolation($constraint->message)

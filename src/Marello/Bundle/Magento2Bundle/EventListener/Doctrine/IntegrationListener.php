@@ -5,6 +5,7 @@ namespace Marello\Bundle\Magento2Bundle\EventListener\Doctrine;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
+use Marello\Bundle\Magento2Bundle\Async\ClearInternalDataForDisabledIntegrationMessage;
 use Marello\Bundle\Magento2Bundle\Async\Topics;
 use Marello\Bundle\Magento2Bundle\DTO\RemoteDataRemovingDTO;
 use Marello\Bundle\Magento2Bundle\Entity\Repository\ProductRepository;
@@ -13,16 +14,19 @@ use Marello\Bundle\Magento2Bundle\Provider\Magento2ChannelType;
 use Marello\Bundle\Magento2Bundle\Stack\ChangesByChannelStack;
 use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
 use Oro\Component\MessageQueue\Client\Message;
-use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Oro\Component\MessageQueue\Client\MessagePriority;
+use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 
-class DisablingIntegrationListener
+class IntegrationListener
 {
     /** @var string  */
     private const ENABLED_PROPERTY_NAME = 'enabled';
 
     /** @var RemoteDataRemovingDTO[] */
     protected $remoteDataRemovingDTOs = [];
+
+    /** @var Integration[]  */
+    protected $integrationOnClearInternalData = [];
 
     /** @var ProductRepository  */
     protected $productRepository;
@@ -63,6 +67,7 @@ class DisablingIntegrationListener
     public function onClear()
     {
         $this->remoteDataRemovingDTOs = [];
+        $this->integrationOnClearInternalData = [];
     }
 
     /**
@@ -75,6 +80,7 @@ class DisablingIntegrationListener
          */
         foreach ($this->remoteDataRemovingDTOs as $integrationId => $remoteDataRemovingDTO) {
             $this->changesByChannelStack->clearChangesByChannelId($integrationId);
+            unset($this->integrationOnClearInternalData[$integrationId]);
             if (!$remoteDataRemovingDTO->hasProductsOnRemoteRemove()) {
                 continue;
             }
@@ -85,12 +91,31 @@ class DisablingIntegrationListener
                     Topics::REMOVE_REMOTE_DATA_FOR_DISABLED_INTEGRATION,
                     new Message(
                         $remoteDataRemovingDTO->getMessageBody(),
-                        MessagePriority::VERY_LOW
+                        $remoteDataRemovingDTO->isRemovedIntegration() ? MessagePriority::VERY_LOW : null
                     )
                 );
         }
 
+        /**
+         * Clear info about remote products and links between sales channel and website,
+         * to re-sync all existing data after integration will be re-enabled right after website
+         * will be linked to existed sales channel
+         */
+        foreach ($this->integrationOnClearInternalData as $integrationId) {
+            $this->changesByChannelStack->clearChangesByChannelId($integrationId);
+
+            $this
+                ->producer
+                ->send(
+                    Topics::CLEAR_INTERNAL_DATA_FOR_DISABLED_INTEGRATION,
+                    [
+                        ClearInternalDataForDisabledIntegrationMessage::INTEGRATION_ID => $integrationId
+                    ]
+                );
+        }
+
         $this->remoteDataRemovingDTOs = [];
+        $this->integrationOnClearInternalData = [];
     }
 
     /**
@@ -127,35 +152,40 @@ class DisablingIntegrationListener
      */
     protected function loadDeactivatedIntegrationData(UnitOfWork $unitOfWork)
     {
-        /** @var Integration $entityUpdates */
-        foreach ($unitOfWork->getScheduledEntityUpdates() as $entityUpdates) {
-            if ($this->isApplicableEntity($entityUpdates)) {
-                if (isset($this->remoteDataRemovingDTOs[$entityUpdates->getId()])) {
+        /** @var Integration $updatedEntity */
+        foreach ($unitOfWork->getScheduledEntityUpdates() as $updatedEntity) {
+            if ($this->isApplicableEntity($updatedEntity)) {
+                if (isset($this->remoteDataRemovingDTOs[$updatedEntity->getId()])) {
                     return;
                 }
 
-                if ($entityUpdates->isEnabled()) {
-                    continue;
-                }
-
-                $entityChangeSet = $unitOfWork->getEntityChangeSet($entityUpdates);
+                $entityChangeSet = $unitOfWork->getEntityChangeSet($updatedEntity);
                 if (!\array_key_exists(self::ENABLED_PROPERTY_NAME, $entityChangeSet)) {
                     continue;
                 }
 
+                /**
+                 * Activation will be processed within website sync
+                 */
+                if ($updatedEntity->isEnabled()) {
+                    continue;
+                }
+
                 /** @var Magento2TransportSettings $settingBag */
-                $settingBag = $entityUpdates->getTransport()->getSettingsBag();
+                $settingBag = $updatedEntity->getTransport()->getSettingsBag();
                 if (!$settingBag->isDeleteRemoteDataOnDeactivation()) {
+                    $this->integrationOnClearInternalData[$updatedEntity->getId()] = $updatedEntity;
+
                     continue;
                 }
 
                 $productIdWithSkuToRemove = $this->productRepository->getOriginalProductIdsWithSKUsByIntegration(
-                    $entityUpdates
+                    $updatedEntity
                 );
 
-                $this->remoteDataRemovingDTOs[$entityUpdates->getId()] =
+                $this->remoteDataRemovingDTOs[$updatedEntity->getId()] =
                     new RemoteDataRemovingDTO(
-                        $entityUpdates->getId(),
+                        $updatedEntity->getId(),
                         RemoteDataRemovingDTO::STATUS_DEACTIVATED,
                         $settingBag,
                         $productIdWithSkuToRemove

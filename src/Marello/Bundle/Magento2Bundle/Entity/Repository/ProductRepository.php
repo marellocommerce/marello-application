@@ -44,7 +44,23 @@ class ProductRepository extends EntityRepository
             ->setParameter('product', $productId)
         ;
 
+
         return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * @param int $channelId
+     */
+    public function deleteByIntegrationId(int $channelId): void
+    {
+        $qb = $this->createQueryBuilder('m2p');
+        $qb->delete()
+            ->where(
+                $qb->expr()->eq('m2p.channel', ':channel')
+            )
+            ->setParameter('channel', $channelId);
+
+        $qb->getQuery()->execute();
     }
 
     /**

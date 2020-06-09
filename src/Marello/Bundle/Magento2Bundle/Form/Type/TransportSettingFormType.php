@@ -87,10 +87,6 @@ class TransportSettingFormType extends AbstractType
             ]
         );
 
-        /**
-         * @todo Implement WebsiteSyncListener to track changes between website and sales channel
-         * when do replace of this mapping on fields to manage mapping between sales channel and website
-         */
         $builder->add(
             $builder
                 ->create(

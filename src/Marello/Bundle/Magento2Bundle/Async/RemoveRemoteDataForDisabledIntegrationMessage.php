@@ -2,10 +2,11 @@
 
 namespace Marello\Bundle\Magento2Bundle\Async;
 
+use Oro\Component\MessageQueue\Client\Message;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
 use Oro\Component\MessageQueue\Util\JSON;
 
-class RemoveRemoteDataForDisableIntegrationMessage
+class RemoveRemoteDataForDisabledIntegrationMessage extends Message implements IntegrationAwareMessageInterface
 {
     public const INTEGRATION_ID = 'integration_id';
     public const IS_REMOVED = 'is_removed';
@@ -103,13 +104,13 @@ class RemoveRemoteDataForDisableIntegrationMessage
 
     /**
      * @param MessageInterface $message
-     * @return RemoveRemoteDataForDisableIntegrationMessage
+     * @return RemoveRemoteDataForDisabledIntegrationMessage
      */
-    public static function createFromMessage(MessageInterface $message): RemoveRemoteDataForDisableIntegrationMessage
+    public static function createFromMessage(MessageInterface $message): RemoveRemoteDataForDisabledIntegrationMessage
     {
         $messageData = JSON::decode($message->getBody());
 
-        $message = new RemoveRemoteDataForDisableIntegrationMessage(
+        $message = new RemoveRemoteDataForDisabledIntegrationMessage(
             $messageData[self::INTEGRATION_ID],
             $messageData[self::IS_REMOVED],
             $messageData[self::IS_DEACTIVATED],
