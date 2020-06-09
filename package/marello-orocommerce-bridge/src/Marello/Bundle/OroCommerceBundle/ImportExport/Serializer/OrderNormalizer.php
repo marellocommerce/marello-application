@@ -146,6 +146,7 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
                     $this->getProperty($data, 'shippingMethodType')
                 )
             )
+//            ->setPurchaseDate(new \DateTime($this->getProperty($data, 'createdAt')))
             ->setShippingAmountInclTax($shipping['includingTax'])
             ->setShippingAmountExclTax($shipping['excludingTax'])
             ->setDiscountAmount((float)$this->getProperty($data, 'totalDiscountsAmount'))
@@ -313,6 +314,9 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
                 }
                 if ($phone = $this->getProperty($data, 'phone')) {
                     $address->setPhone($phone);
+                }
+                if ($company = $this->getProperty($data, 'organization')) {
+                    $address->setCompany($company);
                 }
 
                 return $address;
