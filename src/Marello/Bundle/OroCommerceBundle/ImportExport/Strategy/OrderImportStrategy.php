@@ -62,11 +62,9 @@ class OrderImportStrategy extends AbstractImportStrategy
             $this->processCustomer($order);
             $billingAddress = $this->processAddress($entity->getBillingAddress());
             $shippingAddress = $this->processAddress($entity->getShippingAddress());
-            if ((string)$shippingAddress === (string)$billingAddress) {
-                $order
-                    ->setBillingAddress($billingAddress)
-                    ->setShippingAddress($billingAddress);
-            }
+            $order
+                ->setBillingAddress($billingAddress)
+                ->setShippingAddress($shippingAddress);
 
             return $this->validateAndUpdateContext($order);
         }
@@ -132,8 +130,7 @@ class OrderImportStrategy extends AbstractImportStrategy
             }
             $primaryAddress = $entity->getPrimaryAddress();
             $primaryAddress
-                ->setCustomer($customer)
-                ->setOrganization($customer->getOrganization());
+                ->setCustomer($customer);
 
             if (!$existingPrimaryAddress) {
                 $customer->setPrimaryAddress($this->processAddress($primaryAddress));
@@ -165,7 +162,7 @@ class OrderImportStrategy extends AbstractImportStrategy
         $address = $this->getEntityByCriteria($criteria, MarelloAddress::class);
         if ($address) {
             if ($entity->getOrganization()) {
-                $address->setOrganization($entity->getOrganization());
+                $address->setCompany($entity->getOrganization());
             }
             if ($entity->getCountry()) {
                 $address->setCountry($entity->getCountry());
