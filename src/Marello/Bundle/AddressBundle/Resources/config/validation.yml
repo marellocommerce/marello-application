@@ -1,0 +1,13 @@
+Marello\Bundle\AddressBundle\Entity\MarelloAddress:
+    properties:
+        street:
+            - NotBlank: ~
+        city:
+            - NotBlank: ~
+        postalCode:
+            - NotBlank: ~
+        country:
+            - NotBlank: ~
+        phone:
+            - Length:
+                max: 255
