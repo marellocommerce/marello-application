@@ -57,6 +57,24 @@ class ProductRepository extends EntityRepository
     }
 
     /**
+     * @param int $productId
+     * @return array
+     */
+    public function getSalesChannelIdsByProductId(int $productId): array
+    {
+        $qb = $this->createQueryBuilder('product');
+        $qb
+            ->select('sc.id')
+            ->innerJoin('product.channels', 'sc')
+            ->where($qb->expr()->eq('product.id', ':productId'))
+            ->setParameter('productId', $productId);
+
+        $result = $qb->getQuery()->getArrayResult();
+
+        return array_column($result, 'id');
+    }
+
+    /**
      * @param array $salesChannelIds
      * @return int[]
      */
