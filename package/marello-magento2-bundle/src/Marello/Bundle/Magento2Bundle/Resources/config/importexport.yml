@@ -5,6 +5,7 @@ services:
         parent: oro_importexport.strategy.configurable_add_or_replace
 
     marello_magento2.import_strategy.website:
+        class: Marello\Bundle\Magento2Bundle\ImportExport\Strategy\WebsiteMagento2ImportStrategy
         parent: marello_magento2.import_strategy.default_magento2_import
 
     marello_magento2.import_strategy.store:

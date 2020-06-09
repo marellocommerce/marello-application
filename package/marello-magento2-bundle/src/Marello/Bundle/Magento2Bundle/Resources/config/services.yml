@@ -28,7 +28,7 @@ services:
         class: Marello\Bundle\Magento2Bundle\EventListener\Doctrine\ProductReverseSyncListener
         arguments:
             - '@property_accessor'
-            - '@marello_magento2.provider.sales_channel_infos'
+            - '@marello_magento2.provider.sales_channel'
             - '@marello_magento2.stack.changes_by_channel'
         tags:
             - { name: doctrine.event_listener, event: onFlush }
@@ -36,13 +36,14 @@ services:
     marello_magento2.event_listener.doctrine.sales_channel_reverse_sync_listener:
         class: Marello\Bundle\Magento2Bundle\EventListener\Doctrine\SalesChannelReverseSyncListener
         arguments:
-            - '@marello_magento2.provider.sales_channel_infos'
+            - '@marello_magento2.provider.sales_channel'
             - '@marello_magento2.stack.changes_by_channel'
             - '@marello_product.repository.product'
             - '@oro_message_queue.message_producer'
         tags:
             - { name: doctrine.event_listener, event: onFlush }
             - { name: doctrine.event_listener, event: postFlush }
+            - { name: doctrine.event_listener, event: onClear }
 
     marello_magento2.event_listener.doctrine.sync_changes_by_chanel:
         class: Marello\Bundle\Magento2Bundle\EventListener\Doctrine\SyncChangesByChannelListener
@@ -53,8 +54,8 @@ services:
             - { name: doctrine.event_listener, event: onClear }
             - { name: doctrine.event_listener, event: postFlush }
 
-    marello_magento2.event_listener.doctrine.disabling_integration:
-        class: Marello\Bundle\Magento2Bundle\EventListener\Doctrine\DisablingIntegrationListener
+    marello_magento2.event_listener.doctrine.integration:
+        class: Marello\Bundle\Magento2Bundle\EventListener\Doctrine\IntegrationListener
         arguments:
             - '@marello_magento2.repository.product'
             - '@marello_magento2.stack.changes_by_channel'
@@ -64,6 +65,18 @@ services:
             - { name: doctrine.event_listener, event: onClear }
             # Before marello_magento2.event_listener.doctrine.sync_changes_by_chanel
             - { name: doctrine.event_listener, event: postFlush, priority: 5 }
+
+    marello_magento2.event_listener.doctrine.website_sales_channel:
+        class: Marello\Bundle\Magento2Bundle\EventListener\Doctrine\WebsiteSalesChannelListener
+        arguments:
+            - '@marello_magento2.repository.website'
+            - '@marello_product.repository.product'
+            - '@marello_magento2.provider.sales_channel'
+            - '@oro_integration.sync_scheduler.link'
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+            - { name: doctrine.event_listener, event: postFlush }
+            - { name: doctrine.event_listener, event: onClear }
 
     # Handlers
     marello_magento2.handler.transport_entity_handler:
@@ -90,7 +103,6 @@ services:
             - '@oro_integration.manager.types_registry'
             - '@marello_magento2.handler.transport_entity_handler'
             - '@marello_magento2.provider.websites_provider'
-            - '@marello_magento2.provider.sales_channel_provider'
 
     # Providers
     marello_magento2.provider.magento2_channel_type:
@@ -104,11 +116,8 @@ services:
         arguments:
             - '@translator'
 
-    marello_magento2.provider.sales_channel_provider:
-        class: Marello\Bundle\Magento2Bundle\Provider\SalesChannelsProvider
-
-    marello_magento2.provider.sales_channel_infos:
-        class: Marello\Bundle\Magento2Bundle\Provider\SalesChannelInfosProvider
+    marello_magento2.provider.sales_channel:
+        class: Marello\Bundle\Magento2Bundle\Provider\SalesChannelProvider
         arguments:
             - '@marello_magento2.repository.website'
 
@@ -130,11 +139,11 @@ services:
         class: Marello\Bundle\Magento2Bundle\Stack\ChangesByChannelStack
 
     # Message processor
-    marello_magento2.async.sales_channel_removed:
-        class: Marello\Bundle\Magento2Bundle\Async\SalesChannelRemovedProcessor
+    marello_magento2.async.sales_channels_removed:
+        class: Marello\Bundle\Magento2Bundle\Async\SalesChannelsRemovedProcessor
         arguments:
+            - '@oro_message_queue.job.runner'
             - '@doctrine'
-            - '@marello_magento2.provider.sales_channel_infos'
             - '@oro_integration.sync_scheduler.link'
         calls:
             - [setLogger,["@logger"]]
@@ -146,15 +155,25 @@ services:
         arguments:
             - '@oro_message_queue.job.runner'
             - '@doctrine'
-            - '@marello_magento2.provider.sales_channel_infos'
             - '@oro_integration.sync_scheduler.link'
         calls:
             - [setLogger,["@logger"]]
         tags:
             - { name: oro_message_queue.client.message_processor }
 
+    marello_magento2.async.clear_internal_data_for_disabled_integration:
+        class: Marello\Bundle\Magento2Bundle\Async\ClearInternalDataForDisabledIntegrationProcessor
+        arguments:
+            - '@oro_message_queue.job.runner'
+            - '@oro_message_queue.message_producer'
+            - '@doctrine'
+        calls:
+            - [setLogger,["@logger"]]
+        tags:
+            - { name: oro_message_queue.client.message_processor }
+
     marello_magento2.async.remove_remote_data_for_disabled_integration:
-        class: Marello\Bundle\Magento2Bundle\Async\RemoveRemoteDataForDisableIntegrationProcessor
+        class: Marello\Bundle\Magento2Bundle\Async\RemoveRemoteDataForDisabledIntegrationProcessor
         arguments:
             - '@oro_message_queue.job.runner'
             - '@oro_message_queue.message_producer'
@@ -179,6 +198,6 @@ services:
     marello_magento2.validator.sales_channels_attached_to_integration:
         class: Marello\Bundle\Magento2Bundle\Validator\SalesChannelsAttachedToIntegrationValidator
         arguments:
-            - '@marello_magento2.provider.sales_channel_infos'
+            - '@marello_magento2.provider.sales_channel'
         tags:
             - { name: validator.constraint_validator, alias: marello_magento2.sales_channel_attached_to_integration_validator }

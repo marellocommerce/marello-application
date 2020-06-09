@@ -15,7 +15,7 @@ class UpdateTranslator extends CreateTranslator
     public function translate($entity, array $context = [])
     {
         /**
-         * @todo Throw exception in case when input data doesn't fix requirements
+         * @todo Throw exception in case when input data doesn't fit to requirements
          */
         if (!$entity instanceof Product || empty($context['channel'])) {
             return null;

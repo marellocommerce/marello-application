@@ -32,26 +32,18 @@ class TransportHandler
     protected $websitesProvider;
 
     /**
-     * @var SalesChannelsProvider
-     */
-    protected $salesChannelsProvider;
-
-    /**
      * @param TypesRegistry $typesRegistry
      * @param TransportEntityHandler $transportEntityHandler
      * @param WebsitesProvider $websitesProvider
-     * @param SalesChannelsProvider $salesChannelsProvider
      */
     public function __construct(
         TypesRegistry $typesRegistry,
         TransportEntityHandler $transportEntityHandler,
-        WebsitesProvider $websitesProvider,
-        SalesChannelsProvider $salesChannelsProvider
+        WebsitesProvider $websitesProvider
     ) {
         $this->typesRegistry = $typesRegistry;
         $this->transportEntityHandler = $transportEntityHandler;
         $this->websitesProvider = $websitesProvider;
-        $this->salesChannelsProvider = $salesChannelsProvider;
     }
 
     /**
@@ -81,8 +73,7 @@ class TransportHandler
 
         return  [
             'success' => true,
-            'websites' => $this->websitesProvider->getFormattedWebsites($transport),
-            'salesChannels' => $this->salesChannelsProvider->getFormattedSalesChannels()
+            'websites' => $this->websitesProvider->getFormattedWebsites($transport)
         ];
     }
 

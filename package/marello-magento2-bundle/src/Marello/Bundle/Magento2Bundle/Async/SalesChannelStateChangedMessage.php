@@ -6,11 +6,14 @@ use Oro\Component\MessageQueue\Client\Message;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
 use Oro\Component\MessageQueue\Util\JSON;
 
-class SalesChannelStateChangedMessage extends Message
+class SalesChannelStateChangedMessage extends Message implements IntegrationAwareMessageInterface
 {
+    public const INTEGRATION_ID = 'integration_id';
     public const SALES_CHANNEL_ID_KEY = 'sales_channel_id';
     public const IS_ACTIVE_KEY = 'is_active';
-    public const INTEGRATION_ID = 'integration_id';
+    public const CREATED_PRODUCT_IDS = 'created_product_ids';
+    public const UPDATED_PRODUCT_IDS = 'updated_product_ids';
+    public const REMOVED_PRODUCT_IDS = 'removed_product_ids';
 
     /** @var int */
     protected $salesChannelId;
@@ -21,20 +24,37 @@ class SalesChannelStateChangedMessage extends Message
     /** @var int */
     protected $integrationId;
 
+    /** @var array */
+    protected $createdProductIds;
+
+    /** @var array */
+    protected $updatedProductIds;
+
+    /** @var array */
+    protected $removedProductIds;
+
     /**
+     * @param int $integrationId
      * @param int $salesChannelId
      * @param bool $isActive
-     * @param int $integrationId
-     * @param $body
-     * @param $priority
+     * @param array $createdProductIds
+     * @param array $updatedProductIds
+     * @param array $removedProductIds
      */
-    public function __construct(int $salesChannelId, bool $isActive, int $integrationId, $body, $priority)
-    {
+    public function __construct(
+        int $integrationId,
+        int $salesChannelId,
+        bool $isActive,
+        array $createdProductIds,
+        array $updatedProductIds,
+        array $removedProductIds
+    ) {
+        $this->integrationId = $integrationId;
         $this->salesChannelId = $salesChannelId;
         $this->isActive = $isActive;
-        $this->integrationId = $integrationId;
-
-        parent::__construct($body, $priority);
+        $this->createdProductIds = $createdProductIds;
+        $this->updatedProductIds = $updatedProductIds;
+        $this->removedProductIds = $removedProductIds;
     }
 
     /**
@@ -54,13 +74,49 @@ class SalesChannelStateChangedMessage extends Message
     }
 
     /**
+     * @return int
+     */
+    public function getIntegrationId(): int
+    {
+        return $this->integrationId;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCreatedProductIds(): array
+    {
+        return $this->createdProductIds;
+    }
+
+    /**
+     * @return array
+     */
+    public function getUpdatedProductIds(): array
+    {
+        return $this->updatedProductIds;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRemovedProductIds(): array
+    {
+        return $this->removedProductIds;
+    }
+
+    /**
      * @return array
      */
     public function getContextParams(): array
     {
         return [
+            self::INTEGRATION_ID => $this->integrationId,
             self::SALES_CHANNEL_ID_KEY => $this->salesChannelId,
-            self::IS_ACTIVE_KEY => $this->isActive
+            self::IS_ACTIVE_KEY => $this->isActive,
+            self::CREATED_PRODUCT_IDS => $this->createdProductIds,
+            self::UPDATED_PRODUCT_IDS => $this->updatedProductIds,
+            self::REMOVED_PRODUCT_IDS => $this->removedProductIds
         ];
     }
 
@@ -73,11 +129,12 @@ class SalesChannelStateChangedMessage extends Message
         $messageData = JSON::decode($message->getBody());
 
         $message = new SalesChannelStateChangedMessage(
+            $message[self::INTEGRATION_ID],
             $messageData[self::SALES_CHANNEL_ID_KEY],
             $messageData[self::IS_ACTIVE_KEY],
-            $message[self::INTEGRATION_ID],
-            $message->getBody(),
-            $message->getPriority()
+            $messageData[self::CREATED_PRODUCT_IDS],
+            $messageData[self::UPDATED_PRODUCT_IDS],
+            $messageData[self::REMOVED_PRODUCT_IDS]
         );
 
         return $message;

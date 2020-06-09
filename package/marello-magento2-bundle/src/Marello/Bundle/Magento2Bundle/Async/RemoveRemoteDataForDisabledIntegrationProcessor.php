@@ -3,7 +3,8 @@
 namespace Marello\Bundle\Magento2Bundle\Async;
 
 use Doctrine\DBAL\Exception\RetryableException;
-use Oro\Bundle\IntegrationBundle\Entity\Channel;
+use Marello\Bundle\Magento2Bundle\Entity\Website;
+use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Oro\Component\MessageQueue\Client\TopicSubscriberInterface;
 use Oro\Component\MessageQueue\Consumption\MessageProcessorInterface;
@@ -15,7 +16,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 
-class RemoveRemoteDataForDisableIntegrationProcessor implements
+class RemoveRemoteDataForDisabledIntegrationProcessor implements
     MessageProcessorInterface,
     TopicSubscriberInterface,
     LoggerAwareInterface
@@ -53,12 +54,12 @@ class RemoveRemoteDataForDisableIntegrationProcessor implements
     {
         $context = [];
         try {
-            $wrappedMessage = RemoveRemoteDataForDisableIntegrationMessage::createFromMessage(
+            $wrappedMessage = RemoveRemoteDataForDisabledIntegrationMessage::createFromMessage(
                 $message
             );
             $context = $wrappedMessage->getContextParams();
 
-            if (!$this->isAllowedToStart($wrappedMessage)) {
+            if (!$this->isIntegrationApplicable($wrappedMessage)) {
                 $this->logger->debug(
                     '[Magento 2] Remove Remote Data is not allow to start.',
                     $context
@@ -77,32 +78,8 @@ class RemoveRemoteDataForDisableIntegrationProcessor implements
                 $message->getMessageId(),
                 $jobName,
                 function (JobRunner $jobRunner) use ($wrappedMessage) {
-                    foreach ($wrappedMessage->getProductIdsWithSku() as $productId => $productSku) {
-                        $jobRunner->createDelayed(
-                            sprintf(
-                                '%s:%s:%s',
-                                'marello_magento2:remove_remote_data_for_disabled_integration',
-                                $wrappedMessage->getIntegrationId(),
-                                $productId
-                            ),
-                            function (JobRunner $jobRunner, Job $child) use ($wrappedMessage, $productId, $productSku) {
-                                $this->producer->send(
-                                    Topics::REMOVE_REMOTE_PRODUCT_FOR_DISABLED_INTEGRATION,
-                                    [
-                                        RemoveRemoteProductForDisableIntegrationMessage::PRODUCT_ID => $productId,
-                                        RemoveRemoteProductForDisableIntegrationMessage::PRODUCT_SKU => $productSku,
-                                        RemoveRemoteProductForDisableIntegrationMessage::INTEGRATION_ID =>
-                                            $wrappedMessage->getIntegrationId(),
-                                        RemoveRemoteProductForDisableIntegrationMessage::TRANSPORT_SETTING_BAG =>
-                                            $wrappedMessage->getTransportSettingBagSerialized(),
-                                        RemoveRemoteProductForDisableIntegrationMessage::IS_DEACTIVATED =>
-                                            $wrappedMessage->isDeactivated(),
-                                        RemoveRemoteProductForDisableIntegrationMessage::IS_REMOVED =>
-                                            $wrappedMessage->isRemoved(),
-                                        RemoveRemoteProductForDisableIntegrationMessage::JOB_ID => $child->getId()
-                                    ]);
-                            });
-                    }
+                    $this->scheduleRemovingProducts($jobRunner, $wrappedMessage);
+                    $this->unsetLinksBetweenSalesChannelsAndWebsites($wrappedMessage->getIntegrationId());
 
                     return true;
                 }
@@ -131,26 +108,79 @@ class RemoveRemoteDataForDisableIntegrationProcessor implements
     }
 
     /**
-     * @param RemoveRemoteDataForDisableIntegrationMessage $message
+     * @param int $integrationId
+     */
+    protected function unsetLinksBetweenSalesChannelsAndWebsites(int $integrationId): void
+    {
+        $em = $this->managerRegistry->getManagerForClass(Website::class);
+
+        /** @var Website[] $websites */
+        $websites = $em
+            ->getRepository(Website::class)
+            ->findBy(['channel' => $integrationId]);
+
+        if (empty($websites)) {
+            return;
+        }
+
+        foreach ($websites as $website) {
+            $website->setSalesChannel(null);
+        }
+
+        $em->flush();
+    }
+
+    /**
+     * @param JobRunner $jobRunner
+     * @param RemoveRemoteDataForDisabledIntegrationMessage $message
+     */
+    protected function scheduleRemovingProducts(
+        JobRunner $jobRunner,
+        RemoveRemoteDataForDisabledIntegrationMessage $message
+    ): void {
+        foreach ($message->getProductIdsWithSku() as $productId => $productSku) {
+            $jobRunner->createDelayed(
+                sprintf(
+                    '%s:%s:%s',
+                    'marello_magento2:remove_remote_data_for_disabled_integration',
+                    $message->getIntegrationId(),
+                    $productId
+                ),
+                function (JobRunner $jobRunner, Job $child) use ($message, $productId, $productSku) {
+                    $this->producer->send(
+                        Topics::REMOVE_REMOTE_PRODUCT_FOR_DISABLED_INTEGRATION,
+                        [
+                            RemoveRemoteProductForDisableIntegrationMessage::PRODUCT_ID => $productId,
+                            RemoveRemoteProductForDisableIntegrationMessage::PRODUCT_SKU => $productSku,
+                            RemoveRemoteProductForDisableIntegrationMessage::INTEGRATION_ID =>
+                                $message->getIntegrationId(),
+                            RemoveRemoteProductForDisableIntegrationMessage::TRANSPORT_SETTING_BAG =>
+                                $message->getTransportSettingBagSerialized(),
+                            RemoveRemoteProductForDisableIntegrationMessage::IS_DEACTIVATED =>
+                                $message->isDeactivated(),
+                            RemoveRemoteProductForDisableIntegrationMessage::IS_REMOVED => $message->isRemoved(),
+                            RemoveRemoteProductForDisableIntegrationMessage::JOB_ID => $child->getId()
+                        ]);
+                });
+        }
+    }
+
+    /**
+     * @param IntegrationAwareMessageInterface $message
      * @return bool
      */
-    protected function isAllowedToStart(RemoveRemoteDataForDisableIntegrationMessage $message): bool
+    protected function isIntegrationApplicable(IntegrationAwareMessageInterface $message): bool
     {
         if ($message->isRemoved()) {
             return true;
         }
 
-        /** @var Channel $integration */
+        /** @var Integration $integration */
         $integration = $this->managerRegistry
-            ->getManagerForClass(Channel::class)
-            ->getRepository(Channel::class)
+            ->getRepository(Integration::class)
             ->find($message->getIntegrationId());
 
-        if (null === $integration) {
-            return true;
-        }
-
-        return !$integration->isEnabled();
+        return $integration && !$integration->isEnabled();
     }
 
     /**
