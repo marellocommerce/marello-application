@@ -202,3 +202,9 @@ services:
         lazy:  true
         tags:
             - { name: doctrine.event_listener, event: onFlush }
+
+    marello_product.provider.action_group_registry:
+        public: true
+        class: Marello\Bundle\ProductBundle\Provider\ActionGroupRegistryProvider
+        arguments:
+            - '@oro_action.action_group_registry'
