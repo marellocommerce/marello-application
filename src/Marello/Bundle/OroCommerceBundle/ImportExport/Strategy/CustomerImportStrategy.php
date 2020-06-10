@@ -114,7 +114,7 @@ class CustomerImportStrategy extends AbstractImportStrategy
         $address = $this->getEntityByCriteria($criteria, MarelloAddress::class);
         if ($address) {
             if ($entity->getOrganization()) {
-                $address->setOrganization($entity->getOrganization());
+                $address->setCompany($entity->getOrganization());
             }
             if ($entity->getCountry()) {
                 $address->setCountry($entity->getCountry());

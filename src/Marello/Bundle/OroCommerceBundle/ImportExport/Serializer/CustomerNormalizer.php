@@ -146,7 +146,9 @@ class CustomerNormalizer extends AbstractNormalizer implements DenormalizerInter
                 if ($phone = $this->getProperty($data, 'phone')) {
                     $address->setPhone($phone);
                 }
-
+                if ($company = $this->getProperty($data, 'organization')) {
+                    $address->setCompany($company);
+                }
                 return $address;
             }
         }
