@@ -34,7 +34,7 @@ class MarelloCustomerBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_3';
+        return 'v1_4';
     }
 
     /**
@@ -63,6 +63,7 @@ class MarelloCustomerBundleInstaller implements
 
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('name', 'string', ['length' => 255]);
+        $table->addColumn('code', 'string', ['length' => 255, 'notnull' => false]);
         $table->addColumn('payment_term_id', 'integer', ['notnull' => false]);
         $table->addColumn('parent_id', 'integer', ['notnull' => false]);
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);
