@@ -3,6 +3,7 @@
 namespace Marello\Bundle\OroCommerceBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Oro\Bundle\IntegrationBundle\Entity\Transport;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
@@ -15,16 +16,13 @@ class OroCommerceSettings extends Transport
     const ENTERPRISE_FIELD = 'enterprise';
     const CURRENCY_FIELD = 'currency';
     const KEY_FIELD = 'key';
-    const USERNAME_FIELD = 'username';
+    const USERNAME_FIELD = 'userName';
     const WAREHOUSE_FIELD = 'warehouse';
     const BUSINESSUNIT_FIELD = 'businessunit';
     const PRODUCTUNIT_FIELD = 'productunit';
     const CUSTOMERTAXCODE_FIELD = 'customertaxcode';
     const PRICELIST_FIELD = 'pricelist';
     const PRODUCTFAMILY_FIELD = 'productfamily';
-    const INVENTORYTHRESHOLD_FIELD = 'inventorythreshold';
-    const LOWINVENTORYTHRESHOLD_FIELD = 'lowinventorythreshold';
-    const BACKORDER_FIELD = 'backorder';
     const DELETE_REMOTE_DATA_ON_DEACTIVATION = 'deleteRemoteDataOnDeactivation';
     const DELETE_REMOTE_DATA_ON_DELETION = 'deleteRemoteDataOnDeletion';
     const DATA = 'data';
@@ -93,27 +91,6 @@ class OroCommerceSettings extends Transport
     private $productFamily;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="orocommerce_inventorythreshold", type="integer", nullable=false)
-     */
-    private $inventoryThreshold;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="orocommerce_lowinvthreshold", type="integer", nullable=false)
-     */
-    private $lowInventoryThreshold;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="orocommerce_backorder", type="boolean", nullable=false)
-     */
-    private $backOrder;
-
-    /**
      * @var bool
      *
      * @ORM\Column(name="orocommerce_deldataondeactiv", type="boolean", nullable=true)
@@ -152,6 +129,14 @@ class OroCommerceSettings extends Transport
      * @var ParameterBag
      */
     private $settings;
+
+    /**
+     * @var SalesChannelGroup
+     *
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\SalesBundle\Entity\SalesChannelGroup")
+     * @ORM\JoinColumn(name="orocommerce_scg_id", referencedColumnName="id", nullable=true)
+     */
+    private $salesChannelGroup;
 
     /**
      * @return string
@@ -325,59 +310,59 @@ class OroCommerceSettings extends Transport
     }
 
     /**
+     * @deprecated inventoryThreshold is now using the category default in OroCommerce
      * @return int
      */
     public function getInventoryThreshold()
     {
-        return $this->inventoryThreshold;
+        return 0;
     }
 
     /**
+     * @deprecated inventoryThreshold is now using the category default in OroCommerce
      * @param int $inventoryThreshold
      * @return $this
      */
     public function setInventoryThreshold($inventoryThreshold)
     {
-        $this->inventoryThreshold = $inventoryThreshold;
-
         return $this;
     }
 
     /**
+     * @deprecated lowInventoryThreshold is now using the category default in OroCommerce
      * @return int
      */
     public function getLowInventoryThreshold()
     {
-        return $this->lowInventoryThreshold;
+        return 0;
     }
 
     /**
+     * @deprecated lowInventoryThreshold is now using the category default in OroCommerce
      * @param int $lowInventoryThreshold
      * @return $this
      */
     public function setLowInventoryThreshold($lowInventoryThreshold)
     {
-        $this->lowInventoryThreshold = $lowInventoryThreshold;
-
         return $this;
     }
 
     /**
+     * @deprecated backOrder from InventoryItem is used in synchronisation
      * @return bool
      */
     public function isBackOrder()
     {
-        return $this->backOrder;
+        return false;
     }
 
     /**
+     * @deprecated backOrder from InventoryItem is used in synchronisation
      * @param bool $backOrder
      * @return $this
      */
     public function setBackOrder($backOrder)
     {
-        $this->backOrder = $backOrder;
-
         return $this;
     }
 
@@ -478,6 +463,25 @@ class OroCommerceSettings extends Transport
     }
 
     /**
+     * @return SalesChannelGroup|null
+     */
+    public function getSalesChannelGroup()
+    {
+        return $this->salesChannelGroup;
+    }
+
+    /**
+     * @param SalesChannelGroup $salesChannelGroup
+     * @return $this
+     */
+    public function setSalesChannelGroup(SalesChannelGroup $salesChannelGroup)
+    {
+        $this->salesChannelGroup = $salesChannelGroup;
+
+        return $this;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getSettingsBag()
@@ -496,9 +500,6 @@ class OroCommerceSettings extends Transport
                     self::CUSTOMERTAXCODE_FIELD => $this->getCustomerTaxCode(),
                     self::PRICELIST_FIELD => $this->getPriceList(),
                     self::PRODUCTFAMILY_FIELD => $this->getProductFamily(),
-                    self::INVENTORYTHRESHOLD_FIELD => $this->getInventoryThreshold(),
-                    self::LOWINVENTORYTHRESHOLD_FIELD => $this->getLowInventoryThreshold(),
-                    self::BACKORDER_FIELD => $this->isBackOrder(),
                     self::DELETE_REMOTE_DATA_ON_DEACTIVATION => $this->isDeleteRemoteDataOnDeactivation(),
                     self::DELETE_REMOTE_DATA_ON_DELETION => $this->isDeleteRemoteDataOnDeletion(),
                     self::DATA => $this->getData()

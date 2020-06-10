@@ -5,6 +5,7 @@ namespace Marello\Bundle\OroCommerceBundle\ImportExport\Strategy;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityRepository;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use Marello\Bundle\CustomerBundle\Entity\Company;
 use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
@@ -18,13 +19,23 @@ class OrderImportStrategy extends AbstractImportStrategy
      */
     public function process($entity)
     {
-
         if ($entity instanceof Order) {
             $channel = $this->context->getValue('channel');
             $organization = $channel->getOrganization();
             /** @var SalesChannel $salesChannel */
-            $salesChannel = $this->getEntityRepository(SalesChannel::class)
-                ->findOneBy(['name' => $channel->getName()]);
+            $salesChannel = $this
+                ->getEntityRepository(SalesChannel::class)
+                ->findOneBy([
+                    'integrationChannel' => $channel,
+                    'channelType' => $channel->getType()
+                ]);
+
+            if (!$salesChannel) {
+                $this->context->incrementErrorEntriesCount();
+                $this->strategyHelper->addValidationErrors(['No SalesChannel found for Order'], $this->context);
+                return null;
+            }
+
             /** @var Order $entity */
             $entity
                 ->setSalesChannel($salesChannel)
@@ -45,24 +56,16 @@ class OrderImportStrategy extends AbstractImportStrategy
             } else {
                 $order = $entity;
             }
+
             $order->setOrganization($organization);
             $this->processItems($order, $entity);
             $this->processCustomer($order);
-            $shippingAddress = $entity->getShippingAddress();
-            $primaryAddress = $order->getCustomer()->getPrimaryAddress();
-            if ((string)$shippingAddress === (string)$primaryAddress) {
+            $billingAddress = $this->processAddress($entity->getBillingAddress());
+            $shippingAddress = $this->processAddress($entity->getShippingAddress());
+            if ((string)$shippingAddress === (string)$billingAddress) {
                 $order
-                    ->setBillingAddress($primaryAddress)
-                    ->setShippingAddress($primaryAddress);
-            } else {
-                foreach ($order->getCustomer()->getAddresses() as $address) {
-                    if ((string)$shippingAddress === (string)$address) {
-                        $order
-                            ->setBillingAddress($address)
-                            ->setShippingAddress($address);
-                        break;
-                    }
-                }
+                    ->setBillingAddress($billingAddress)
+                    ->setShippingAddress($billingAddress);
             }
 
             return $this->validateAndUpdateContext($order);
@@ -238,7 +241,7 @@ class OrderImportStrategy extends AbstractImportStrategy
     private function validateAndUpdateContext($entity)
     {
         // validate entity
-        $validationErrors = $this->strategyHelper->validateEntity($entity);
+        $validationErrors = $this->strategyHelper->validateEntity($entity, null, 'commerce');
         if ($validationErrors) {
             $this->context->incrementErrorEntriesCount();
             $this->strategyHelper->addValidationErrors($validationErrors, $this->context);
@@ -250,6 +253,7 @@ class OrderImportStrategy extends AbstractImportStrategy
         } else {
             $this->context->incrementAddCount();
         }
+
         return $entity;
     }
 }

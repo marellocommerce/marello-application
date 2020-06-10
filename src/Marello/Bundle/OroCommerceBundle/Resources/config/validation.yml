@@ -1,3 +1,24 @@
 Marello\Bundle\OroCommerceBundle\Entity\OroCommerceSettings:
     constraints:
         - Marello\Bundle\OroCommerceBundle\Validator\Constraints\WarehouseExistsForEnterpriseEditionConstraint: ~
+    properties:
+        url:
+            - NotBlank: ~
+        userName:
+            - NotBlank: ~
+        key:
+            - NotBlank: ~
+        currency:
+            - NotBlank: ~
+        businessUnit:
+            - NotBlank: ~
+        productUnit:
+            - NotBlank: ~
+        customerTaxCode:
+            - NotBlank: ~
+        priceList:
+            - NotBlank: ~
+        productFamily:
+            - NotBlank: ~
+        salesChannelGroup:
+            - NotBlank: ~

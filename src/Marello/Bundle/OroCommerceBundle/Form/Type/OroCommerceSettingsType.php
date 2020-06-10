@@ -6,6 +6,7 @@ use Doctrine\Common\Cache\CacheProvider;
 use Marello\Bundle\OroCommerceBundle\Entity\OroCommerceSettings;
 use Marello\Bundle\OroCommerceBundle\Generator\CacheKeyGenerator;
 use Marello\Bundle\OroCommerceBundle\Generator\CacheKeyGeneratorInterface;
+use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Oro\Bundle\CurrencyBundle\Form\Type\CurrencyType;
 use Oro\Bundle\FormBundle\Utils\FormUtils;
 use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
@@ -13,6 +14,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -71,7 +73,7 @@ class OroCommerceSettingsType extends AbstractType
                 ]
             )
             ->add(
-                'username',
+                'userName',
                 TextType::class,
                 [
                     'label' => 'marello.orocommerce.orocommercesettings.username.label',
@@ -95,46 +97,12 @@ class OroCommerceSettingsType extends AbstractType
                 ]
             )
             ->add(
-                'inventoryThreshold',
-                TextType::class,
+                'salesChannelGroup',
+                EntityType::class,
                 [
-                    'label' => 'marello.orocommerce.orocommercesettings.inventory_threshold.label',
-                    'tooltip' => 'marello.orocommerce.orocommercesettings.inventory_threshold.tooltip',
-                    'required' => true
-                ]
-            )
-            ->add(
-                'lowInventoryThreshold',
-                TextType::class,
-                [
-                    'label' => 'marello.orocommerce.orocommercesettings.low_inventory_threshold.label',
-                    'tooltip' => 'marello.orocommerce.orocommercesettings.low_inventory_threshold.tooltip',
-                    'required' => true
-                ]
-            )
-            ->add(
-                'backOrder',
-                CheckboxType::class,
-                [
-                    'label' => 'marello.orocommerce.orocommercesettings.back_order.label',
-                    'tooltip' => 'marello.orocommerce.orocommercesettings.back_order.tooltip',
-                    'required' => false
-                ]
-            )
-            ->add(
-                'deleteRemoteDataOnDeactivation',
-                CheckboxType::class,
-                [
-                    'label' => 'marello.orocommerce.orocommercesettings.delete_remote_data_on_deactivation.label',
-                    'required' => false
-                ]
-            )
-            ->add(
-                'deleteRemoteDataOnDeletion',
-                CheckboxType::class,
-                [
-                    'label' => 'marello.orocommerce.orocommercesettings.delete_remote_data_on_deletion.label',
-                    'required' => false
+                    'label'         => 'marello.orocommerce.orocommercesettings.saleschannelgroup.label',
+                    'class'         => SalesChannelGroup::class,
+                    'required'      => true
                 ]
             )
             ->add(
@@ -193,6 +161,22 @@ class OroCommerceSettingsType extends AbstractType
                     'required' => true
                 ]
             )
+            ->add(
+                'deleteRemoteDataOnDeactivation',
+                CheckboxType::class,
+                [
+                    'label' => 'marello.orocommerce.orocommercesettings.delete_remote_data_on_deactivation.label',
+                    'required' => false
+                ]
+            )
+            ->add(
+                'deleteRemoteDataOnDeletion',
+                CheckboxType::class,
+                [
+                    'label' => 'marello.orocommerce.orocommercesettings.delete_remote_data_on_deletion.label',
+                    'required' => false
+                ]
+            )
             ->addEventListener(
                 FormEvents::PRE_SET_DATA,
                 [$this, 'onPreSet']
@@ -237,7 +221,7 @@ class OroCommerceSettingsType extends AbstractType
         $form = $event->getForm();
         $paramBag = new ParameterBag([
             OroCommerceSettings::URL_FIELD => $data['url'],
-            OroCommerceSettings::USERNAME_FIELD => $data['username'],
+            OroCommerceSettings::USERNAME_FIELD => $data['userName'],
             OroCommerceSettings::KEY_FIELD => $data['key']
         ]);
 

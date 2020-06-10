@@ -66,7 +66,6 @@ class ReverseSyncAllProductsListener
      */
     public function preUpdate(PreUpdateEventArgs $args)
     {
-
         $channel = $args->getEntity();
         if ($channel instanceof Channel && $channel->getType() === OroCommerceChannelType::TYPE) {
             $this->entityManager = $args->getEntityManager();

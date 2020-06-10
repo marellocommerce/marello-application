@@ -19,6 +19,7 @@ marello:
             delete_remote_data_on_deactivation.label: 'Delete Remote Synchronized Data On Deactivation'
             delete_remote_data_on_deletion.label: 'Delete Remote Synchronized Data On Deletion'
             data.label: 'Data'
+            saleschannelgroup.label: 'Sales Channel Group'
         channel_type:
             label: 'OroCommerce'
         connector:

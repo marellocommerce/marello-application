@@ -5,6 +5,7 @@ namespace MarelloOroCommerce\src\Marello\Bundle\OroCommerceBundle\Tests\Function
 use Marello\Bundle\OroCommerceBundle\Client\Factory\OroCommerceRestClientFactory;
 use Marello\Bundle\OroCommerceBundle\Client\OroCommerceRestClient;
 use Marello\Bundle\OroCommerceBundle\Controller\AjaxOroCommerceController;
+use Marello\Bundle\OroCommerceBundle\Tests\Functional\DataFixtures\LoadAdditionalSalesData;
 use Marello\Bundle\OroCommerceBundle\Tests\Functional\DataFixtures\LoadChannelData;
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Exception\RestException;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
@@ -43,9 +44,8 @@ abstract class AbstractConnectionValidationTest extends WebTestCase
                     'username' => $user,
                     'key' => 'qwerty',
                     'currency' => 'USD',
-                    'inventoryThreshold' => 1,
-                    'lowInventoryThreshold' => 1,
-                    'backOrder' => 1,
+                    'salesChannelGroup'
+                        => $this->getReference(LoadAdditionalSalesData::TEST_SALESCHANNELGROUP_OROCOMMERCE),
                     'productUnit' => 'each',
                     'customerTaxCode' => 1,
                     'priceList' => 1,
