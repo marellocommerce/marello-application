@@ -75,6 +75,12 @@
                             'marello.customer.company.entity_label'|trans,
                             UI.entityViewLink(entity.customer.company, entity.customer.company.name, 'marello_customer_company_view')
                             ) }}
+                            {% if entity.customer.company.code %}
+                                {{ UI.renderHtmlProperty(
+                                    'marello.customer.company.entity_label'|trans ~ ' ' ~ 'marello.customer.company.code.label'|trans,
+                                    entity.customer.company.code
+                                ) }}
+                            {% endif %}
                         {% endif %}
                         {{ UI.renderHtmlProperty(
                             'marello.customer.entity_label'|trans,

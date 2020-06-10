@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Marello\Bundle\CustomerBundle\Entity\Customer:
     properties:
         firstName:
@@ -9,6 +10,8 @@ Marello\Bundle\CustomerBundle\Entity\Customer:
             - Email: ~
 
 Marello\Bundle\CustomerBundle\Entity\Company:
+    constraints:
+        - Marello\Bundle\CustomerBundle\Validator\Constraints\CompanyCode: ~
     properties:
         name:
             - NotBlank: ~
