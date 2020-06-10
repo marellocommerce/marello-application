@@ -16,6 +16,7 @@ use Oro\Bundle\AddressBundle\Entity\Region;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityBundle\ORM\Registry;
 use Oro\Bundle\ImportExportBundle\Serializer\Normalizer\DenormalizerInterface;
+use Oro\Bundle\ImportExportBundle\Serializer\Normalizer\DateTimeNormalizer;
 
 class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterface
 {
@@ -27,6 +28,9 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
      */
     protected $configManager;
 
+    /** @var DateTimeNormalizer $isoNormalizer */
+    protected $isoNormalizer;
+
     /**
      * @param Registry $registry
      * @param ConfigManager $configManager
@@ -36,6 +40,7 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
         parent::__construct($registry);
         
         $this->configManager = $configManager;
+        $this->isoNormalizer = new DateTimeNormalizer(\DateTime::ISO8601, 'Y-m-d', 'H:i:s', 'UTC');
     }
 
     /**
@@ -146,6 +151,7 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
                     $this->getProperty($data, 'shippingMethodType')
                 )
             )
+            ->setPurchaseDate($this->prepareDateTime($this->getProperty($data, 'createdAt'), Order::class))
             ->setShippingAmountInclTax($shipping['includingTax'])
             ->setShippingAmountExclTax($shipping['excludingTax'])
             ->setDiscountAmount((float)$this->getProperty($data, 'totalDiscountsAmount'))
@@ -314,11 +320,25 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
                 if ($phone = $this->getProperty($data, 'phone')) {
                     $address->setPhone($phone);
                 }
+                if ($company = $this->getProperty($data, 'organization')) {
+                    $address->setCompany($company);
+                }
 
                 return $address;
             }
         }
 
         return null;
+    }
+
+    /**
+     * Run a string date through the isoNormalizer in order to get the DateTime
+     * @param string $date
+     * @param string $entityClass
+     * @return \DateTime|null
+     */
+    private function prepareDateTime(string $date, string $entityClass)
+    {
+        return $this->isoNormalizer->denormalize($date, $entityClass);
     }
 }
