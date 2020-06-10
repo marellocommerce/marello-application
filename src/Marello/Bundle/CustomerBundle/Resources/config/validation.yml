@@ -1,0 +1,3 @@
+Marello\Bundle\CustomerBundle\Entity\Company:
+    constraints:
+        - Marello\Bundle\CustomerBundle\Validator\Constraints\CompanyCode: ~
