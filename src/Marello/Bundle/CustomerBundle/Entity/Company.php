@@ -84,6 +84,23 @@ class Company extends ExtendCompany implements OrganizationAwareInterface
     protected $name;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
+     *          "importexport"={
+     *              "order"=35
+     *          }
+     *      }
+     * )
+     */
+    protected $code;
+
+    /**
      * @var PaymentTerm
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\PaymentTermBundle\Entity\PaymentTerm")
@@ -224,6 +241,25 @@ class Company extends ExtendCompany implements OrganizationAwareInterface
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * @param string|null $code
+     * @return $this
+     */
+    public function setCode($code = null)
+    {
+        $this->code = $code;
+
+        return $this;
     }
 
     /**
