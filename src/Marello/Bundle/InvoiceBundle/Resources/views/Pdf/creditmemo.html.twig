@@ -210,8 +210,10 @@
             </div>
 
             <div class="customer-info">
-                {# Customer details #}
                 <p class="customer-address">
+                    {% if entity.customer.company.code %}
+                        {{ 'marello.customer.company.entity_label'|trans ~ ' ' ~ 'marello.customer.company.code.label'|trans ~ ': ' ~ entity.customer.company.code }}
+                    {% endif %}
                     {% set address = entity.billingAddress %}
                     {% set name = address|oro_format_name(locale) %}
                     {% if name is empty %}
