@@ -1,0 +1,14 @@
+Marello\Bundle\CustomerBundle\Entity\Customer:
+    properties:
+        firstName:
+            - NotBlank: ~
+        lastName:
+            - NotBlank: ~
+        email:
+            - NotBlank: ~
+            - Email: ~
+
+Marello\Bundle\CustomerBundle\Entity\Company:
+    properties:
+        name:
+            - NotBlank: ~
