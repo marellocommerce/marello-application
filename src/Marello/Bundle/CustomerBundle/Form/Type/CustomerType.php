@@ -28,25 +28,19 @@ class CustomerType extends AbstractType
                 'required' => false,
             ])
             ->add('firstName', TextType::class, [
-                'required'    => true,
-                'constraints' => new NotNull,
+                'required'    => true
             ])
             ->add('middleName', TextType::class, [
                 'required' => false,
             ])
             ->add('lastName', TextType::class, [
-                'required'    => true,
-                'constraints' => new NotNull,
+                'required'    => true
             ])
             ->add('nameSuffix', TextType::class, [
                 'required' => false,
             ])
             ->add('email', EmailType::class, [
-                'required'    => true,
-                'constraints' => [
-                    new NotNull,
-                    new Email,
-                ],
+                'required'    => true
             ])
             ->add('taxIdentificationNumber', TextType::class, [
                 'required' => false,

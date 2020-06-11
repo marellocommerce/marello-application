@@ -101,15 +101,6 @@ class InventoryItemType extends AbstractType
                 ]
             )
             ->add(
-                'replenishment',
-                EnumChoiceType::class,
-                [
-                    'enum_code' => 'marello_inv_reple',
-                    'required'  => true,
-                    'label'     => 'marello.inventory.inventoryitem.replenishment.label',
-                ]
-            )
-            ->add(
                 'desiredInventory',
                 NumberType::class,
                 [
