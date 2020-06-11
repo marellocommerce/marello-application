@@ -1,0 +1,6 @@
+marello:
+    shipping:
+        shippingrule:
+            enabled.message: 'Shipping method can not be enabled'
+            type.config.count.message: 'At least one shipping method needs to be enabled in this group'
+            method.config.count.message: 'At least one shipping method needs to be configured for this rule.'
