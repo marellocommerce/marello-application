@@ -53,15 +53,17 @@ class OrderImportStrategy extends AbstractImportStrategy
                     ['id', 'createdAt', 'customer', 'orderNumber', 'data', 'organization']
                 );
                 $order->setData(array_merge($entity->getData(), $order->getData()) ? : []);
+                $billingAddress = $this->processAddress($entity->getBillingAddress());
+                $shippingAddress = $this->processAddress($entity->getShippingAddress());
             } else {
                 $order = $entity;
+                $billingAddress = $this->processAddress($entity->getBillingAddress(), true);
+                $shippingAddress = $this->processAddress($entity->getShippingAddress(), true);
             }
 
             $order->setOrganization($organization);
             $this->processItems($order, $entity);
             $this->processCustomer($order);
-            $billingAddress = $this->processAddress($entity->getBillingAddress());
-            $shippingAddress = $this->processAddress($entity->getShippingAddress());
             $order
                 ->setBillingAddress($billingAddress)
                 ->setShippingAddress($shippingAddress);
@@ -148,9 +150,10 @@ class OrderImportStrategy extends AbstractImportStrategy
 
     /**
      * @param MarelloAddress $entity
+     * @param bool $createNew
      * @return MarelloAddress
      */
-    public function processAddress(MarelloAddress $entity)
+    public function processAddress(MarelloAddress $entity, $createNew = false)
     {
         $criteria = [
             'firstName' => $entity->getFirstName(),
@@ -185,7 +188,9 @@ class OrderImportStrategy extends AbstractImportStrategy
             if ($entity->getPhone() && strlen($entity->getPhone()) > 0) {
                 $address->setPhone($entity->getPhone());
             }
-        } else {
+        }
+
+        if (!$address || $createNew) {
             $address = $entity;
         }
 
