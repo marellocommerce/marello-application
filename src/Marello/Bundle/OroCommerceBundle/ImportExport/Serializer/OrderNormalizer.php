@@ -144,13 +144,8 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
             ->setOrganization($integrationChannel->getOrganization())
             ->setOrderReference($this->getProperty($data, 'id'))
             ->setPaymentMethod($this->getProperty($data, 'paymentMethod') ? : 'no payment method')
-            ->setShippingMethod(
-                sprintf(
-                    '%s, %s',
-                    $this->getProperty($data, 'shippingMethod'),
-                    $this->getProperty($data, 'shippingMethodType')
-                )
-            )
+            ->setShippingMethod($this->getProperty($data, 'shippingMethod'))
+            ->setShippingMethodType($this->getProperty($data, 'shippingMethodType'))
             ->setPurchaseDate($this->prepareDateTime($this->getProperty($data, 'createdAt'), Order::class))
             ->setShippingAmountInclTax($shipping['includingTax'])
             ->setShippingAmountExclTax($shipping['excludingTax'])
@@ -162,6 +157,11 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
             ->setCustomer($customer)
             ->setBillingAddress($this->prepareAddress($this->getProperty($data, 'billingAddress')))
             ->setShippingAddress($this->prepareAddress($this->getProperty($data, 'shippingAddress')));
+
+        // keep bc just to be sure
+        if (method_exists($order, 'setShippingMethodReference')) {
+            $order->setShippingMethodReference($this->getProperty($data, 'shippingMethod'));
+        }
 
         $this->prepareOrderItems(
             $this->getProperty($data, 'lineItems'),
