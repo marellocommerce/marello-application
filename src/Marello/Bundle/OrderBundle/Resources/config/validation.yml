@@ -28,7 +28,7 @@ Marello\Bundle\OrderBundle\Entity\Order:
         paymentMethod:
             - NotBlank: { groups: [Default, commerce] }
         shippingMethod:
-            - NotBlank: { groups: [Default, commerce] }
+            - NotBlank: { groups: [Default] }
         billingAddress:
             - NotBlank: { groups: [Default, commerce], message: 'marello.order.address.validation.billing_not_blank' }
 
