@@ -1103,7 +1103,7 @@ class Order extends ExtendOrder implements
      * @param string $shippingMethodReference
      * @return $this
      */
-    public function setShippingMethodReference(string $shippingMethodReference)
+    public function setShippingMethodReference(string $shippingMethodReference = null)
     {
         $this->shippingMethodReference = $shippingMethodReference;
 
