@@ -291,6 +291,13 @@ class Order extends ExtendOrder implements
     protected $shippingMethodType;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="shipping_method_reference", type="string", length=255, nullable=true)
+     */
+    protected $shippingMethodReference;
+
+    /**
      * @var float
      *
      * @ORM\Column(name="estimated_shipping_cost_amount", type="money", nullable=true)
@@ -1075,11 +1082,30 @@ class Order extends ExtendOrder implements
 
     /**
      * @param string $shippingMethodType
-     * @return Order
+     * @return $this
      */
     public function setShippingMethodType($shippingMethodType)
     {
         $this->shippingMethodType = (string) $shippingMethodType;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShippingMethodReference(): ?string
+    {
+        return $this->shippingMethodReference;
+    }
+
+    /**
+     * @param string $shippingMethodReference
+     * @return $this
+     */
+    public function setShippingMethodReference(string $shippingMethodReference)
+    {
+        $this->shippingMethodReference = $shippingMethodReference;
 
         return $this;
     }
