@@ -5,7 +5,7 @@ namespace Marello\Bundle\Magento2Bundle\Validator;
 use Doctrine\Common\Collections\AbstractLazyCollection;
 use Doctrine\ORM\PersistentCollection;
 use Marello\Bundle\Magento2Bundle\Provider\Magento2ChannelType;
-use Marello\Bundle\Magento2Bundle\Provider\SalesChannelProvider;
+use Marello\Bundle\Magento2Bundle\Provider\TrackedSalesChannelProvider;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Symfony\Component\Validator\Constraint;
@@ -13,15 +13,14 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class SalesChannelsAttachedToIntegrationValidator extends ConstraintValidator
 {
-    /** @var SalesChannelProvider */
+    /** @var TrackedSalesChannelProvider */
     protected $salesChannelInfosProvider;
 
     /**
-     * @param SalesChannelProvider $salesChannelInfosProvider
+     * @param TrackedSalesChannelProvider $salesChannelInfosProvider
      */
-    public function __construct(
-        SalesChannelProvider $salesChannelInfosProvider
-    ) {
+    public function __construct(TrackedSalesChannelProvider $salesChannelInfosProvider)
+    {
         $this->salesChannelInfosProvider = $salesChannelInfosProvider;
     }
 

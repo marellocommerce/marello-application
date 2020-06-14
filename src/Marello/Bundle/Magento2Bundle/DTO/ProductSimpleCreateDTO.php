@@ -2,8 +2,15 @@
 
 namespace Marello\Bundle\Magento2Bundle\DTO;
 
-class ProductSimpleCreateDTO extends ProductSimpleUpdateDTO
+use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\Magento2Bundle\Entity\Website;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Entity\ProductStatus;
+
+class ProductSimpleCreateDTO
 {
+    public const DEFAULT_PRICE = 0.0;
     public const TYPE_ID = 'simple';
     public const DEFAULT_ATTR_SET_ID = '4';
 
@@ -12,6 +19,94 @@ class ProductSimpleCreateDTO extends ProductSimpleUpdateDTO
 
     /** @var string */
     protected $attrSetID = self::DEFAULT_ATTR_SET_ID;
+
+    /** @var Product */
+    protected $product;
+
+    /** @var float */
+    protected $price;
+
+    /** @var Website[] */
+    protected $websites = [];
+
+    /** @var ProductStatus */
+    protected $status;
+
+    /** @var InventoryItem */
+    protected $inventoryItem;
+
+    /** @var BalancedInventoryLevel */
+    protected $balancedInventoryLevel;
+
+    /**
+     * @param Product $product
+     * @param Website[] $websites
+     * @param ProductStatus $status
+     * @param InventoryItem $inventoryItem
+     * @param BalancedInventoryLevel|null $balancedInventoryLevel
+     */
+    public function __construct(
+        Product $product,
+        array $websites,
+        ProductStatus $status,
+        InventoryItem $inventoryItem,
+        BalancedInventoryLevel $balancedInventoryLevel = null
+    ) {
+        $this->product = $product;
+        $this->websites = $websites;
+        $this->status = $status;
+        $this->inventoryItem = $inventoryItem;
+        $this->balancedInventoryLevel = $balancedInventoryLevel;
+        $this->price = static::DEFAULT_PRICE;
+    }
+
+    /**
+     * @return Product
+     */
+    public function getProduct(): Product
+    {
+        return $this->product;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrice(): string
+    {
+        return $this->price;
+    }
+
+    /**
+     * @return Website[]
+     */
+    public function getWebsites(): array
+    {
+        return $this->websites;
+    }
+
+    /**
+     * @return ProductStatus
+     */
+    public function getStatus(): ProductStatus
+    {
+        return $this->status;
+    }
+
+    /**
+     * @return InventoryItem
+     */
+    public function getInventoryItem(): InventoryItem
+    {
+        return $this->inventoryItem;
+    }
+
+    /**
+     * @return BalancedInventoryLevel|null
+     */
+    public function getBalancedInventoryLevel(): ?BalancedInventoryLevel
+    {
+        return $this->balancedInventoryLevel;
+    }
 
     /**
      * @return string

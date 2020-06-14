@@ -3,10 +3,10 @@
 namespace Marello\Bundle\Magento2Bundle\Async;
 
 use Doctrine\DBAL\Exception\RetryableException;
-use Marello\Bundle\Magento2Bundle\Batch\Step\ExclusiveItemStep;
-use Marello\Bundle\Magento2Bundle\Integration\Connector\ProductConnector;
+use Marello\Bundle\Magento2Bundle\Entity\Website;
+use Marello\Bundle\Magento2Bundle\Scheduler\ProductSchedulerInterface;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
-use Oro\Component\DependencyInjection\ServiceLink;
 use Oro\Component\MessageQueue\Client\TopicSubscriberInterface;
 use Oro\Component\MessageQueue\Consumption\MessageProcessorInterface;
 use Oro\Component\MessageQueue\Job\JobRunner;
@@ -30,22 +30,22 @@ class SalesChannelStateChangedProcessor implements
     /** @var ManagerRegistry */
     protected $managerRegistry;
 
-    /** @var ServiceLink */
-    protected $syncScheduler;
+    /** @var ProductSchedulerInterface */
+    protected $productScheduler;
 
     /**
      * @param JobRunner $jobRunner
      * @param ManagerRegistry $managerRegistry
-     * @param ServiceLink $syncScheduler
+     * @param ProductSchedulerInterface $productScheduler
      */
     public function __construct(
         JobRunner $jobRunner,
         ManagerRegistry $managerRegistry,
-        ServiceLink $syncScheduler
+        ProductSchedulerInterface $productScheduler
     ) {
         $this->jobRunner = $jobRunner;
         $this->managerRegistry = $managerRegistry;
-        $this->syncScheduler = $syncScheduler;
+        $this->productScheduler = $productScheduler;
     }
 
     /**
@@ -117,40 +117,40 @@ class SalesChannelStateChangedProcessor implements
      */
     protected function processChangedProducts(SalesChannelStateChangedMessage $message): void
     {
-        foreach ($message->getRemovedProductIds() as $productId) {
-            $this->syncScheduler->getService()->schedule(
-                $message->getIntegrationId(),
-                ProductConnector::TYPE,
-                [
-                    'ids' => [$productId],
-                    ExclusiveItemStep::OPTION_KEY_EXCLUSIVE_STEP_NAME =>
-                        ProductConnector::EXPORT_STEP_DELETE_ON_CHANNEL
-                ]
-            );
+        $this->productScheduler->scheduleDeleteProductsOnChannel(
+            $message->getIntegrationId(),
+            $message->getRemovedProductIds()
+        );
+
+        $salesChannel = $this->getSalesChannel($message);
+        if (null === $salesChannel) {
+            return;
         }
 
-        foreach ($message->getCreatedProductIds() as $productId) {
-            $this->syncScheduler->getService()->schedule(
-                $message->getIntegrationId(),
-                ProductConnector::TYPE,
-                [
-                    'ids' => [$productId],
-                    ExclusiveItemStep::OPTION_KEY_EXCLUSIVE_STEP_NAME =>
-                        ProductConnector::EXPORT_STEP_CREATE
-                ]
-            );
-        }
+        $website = $salesChannel->getMagento2Websites()->first();
+
+        $this->productScheduler->scheduleCreateProductsOnChannel(
+            $message->getIntegrationId(),
+            $message->getCreatedProductIds()
+        );
 
         foreach ($message->getUpdatedProductIds() as $productId) {
-            $this->syncScheduler->getService()->schedule(
+            $this->productScheduler->scheduleUpdateProductOnChannel(
                 $message->getIntegrationId(),
-                ProductConnector::TYPE,
-                [
-                    'ids' => [$productId],
-                    ExclusiveItemStep::OPTION_KEY_EXCLUSIVE_STEP_NAME =>
-                        ProductConnector::EXPORT_STEP_UPDATE
-                ]
+                $productId
             );
+
+            /**
+             * We should put website scope data for product in case if website is activated\re-activated,
+             * because when product removes from website all product website scope data removes alongside to it.
+             */
+            if ($website instanceof Website && $message->isActive()) {
+                $this->productScheduler->scheduleUpdateWebsiteScopeDataProductOnChannel(
+                    $message->getIntegrationId(),
+                    $website->getId(),
+                    $productId
+                );
+            }
         }
     }
 
@@ -166,5 +166,19 @@ class SalesChannelStateChangedProcessor implements
             ->find($message->getIntegrationId());
 
         return $integration && $integration->isEnabled();
+    }
+
+    /**
+     * @param SalesChannelStateChangedMessage $message
+     * @return SalesChannel|null
+     */
+    protected function getSalesChannel(SalesChannelStateChangedMessage $message): ?SalesChannel
+    {
+        /** @var SalesChannel $salesChannel */
+        $salesChannel = $this->managerRegistry
+            ->getRepository(SalesChannel::class)
+            ->find($message->getSalesChannelId());
+
+        return $salesChannel;
     }
 }

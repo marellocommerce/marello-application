@@ -63,7 +63,9 @@ class RemoveRemoteProductForDisableIntegrationProcessor implements
             $result = $this
                 ->jobRunner
                 ->runDelayed($wrappedMessage->getJobId(), function () use ($wrappedMessage) {
-                    return $this->processRemovingProduct($wrappedMessage);
+                    $this->processRemovingProduct($wrappedMessage);
+
+                    return true;
                 });
         } catch (\Throwable $exception) {
             $context['exception'] = $exception;
@@ -89,8 +91,9 @@ class RemoveRemoteProductForDisableIntegrationProcessor implements
 
     /**
      * @param RemoveRemoteProductForDisableIntegrationMessage $message
-     * @throws RuntimeException
      * @throws RestException
+     * @throws RuntimeException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     protected function processRemovingProduct(RemoveRemoteProductForDisableIntegrationMessage $message): void
     {
@@ -106,14 +109,12 @@ class RemoveRemoteProductForDisableIntegrationProcessor implements
             );
 
             if ($product === null) {
-                return true;
+                return;
             }
 
             $productManager->remove($product);
             $productManager->flush();
         }
-
-        return true;
     }
 
     /**

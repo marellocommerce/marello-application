@@ -23,6 +23,7 @@ class WebsiteRepository extends EntityRepository
                 'channel.id as integrationChannelId',
                 'salesChannel.active as salesChannelActive',
                 'channel.enabled as integrationActive',
+                'salesChannel.currency as salesChannelCurrency',
             ])
             ->innerJoin('m2w.salesChannel', 'salesChannel')
             ->innerJoin('m2w.channel', 'channel');
@@ -32,10 +33,12 @@ class WebsiteRepository extends EntityRepository
         $returnResult = [];
         foreach ($result as $resultItem) {
             $returnResult[$resultItem['salesChannelId']] = new SalesChannelInfo(
+                $resultItem['salesChannelId'],
                 $resultItem['websiteId'],
                 $resultItem['integrationChannelId'],
                 $resultItem['salesChannelActive'],
-                $resultItem['integrationActive']
+                $resultItem['integrationActive'],
+                $resultItem['salesChannelCurrency']
             );
         }
 

@@ -8,10 +8,11 @@ class SearchClientFactory
 {
     /**
      * @param RestClientInterface $client
+     * @param int|null $crossItemPercentPerPage
      * @return SearchClient
      */
-    public function createSearchClient(RestClientInterface $client): SearchClient
+    public function createSearchClient(RestClientInterface $client, int $crossItemPercentPerPage = null): SearchClient
     {
-        return new SearchClient($client);
+        return new SearchClient($client, $crossItemPercentPerPage);
     }
 }

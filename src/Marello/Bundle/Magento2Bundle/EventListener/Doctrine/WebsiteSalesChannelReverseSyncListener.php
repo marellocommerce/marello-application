@@ -6,20 +6,19 @@ use Doctrine\ORM\Event\OnClearEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
-use Marello\Bundle\Magento2Bundle\Batch\Step\ExclusiveItemStep;
 use Marello\Bundle\Magento2Bundle\Entity\Repository\WebsiteRepository;
 use Marello\Bundle\Magento2Bundle\Entity\Website;
-use Marello\Bundle\Magento2Bundle\Integration\Connector\ProductConnector;
-use Marello\Bundle\Magento2Bundle\Provider\SalesChannelProvider;
+use Marello\Bundle\Magento2Bundle\Model\SalesChannelInfo;
+use Marello\Bundle\Magento2Bundle\Provider\TrackedSalesChannelProvider;
+use Marello\Bundle\Magento2Bundle\Scheduler\ProductSchedulerInterface;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Oro\Component\DependencyInjection\ServiceLink;
 use Oro\Component\MessageQueue\Transport\Exception\Exception;
 
 /**
  * Process creating of website with attached sales channel
  */
-class WebsiteSalesChannelListener
+class WebsiteSalesChannelReverseSyncListener
 {
     /** @var string */
     private const SALES_CHANNEL_FIELD_NAME = 'salesChannel';
@@ -39,28 +38,28 @@ class WebsiteSalesChannelListener
     /** @var ProductRepository */
     protected $productRepository;
 
-    /** @var ServiceLink */
-    protected $syncScheduler;
-
-    /** @var SalesChannelProvider */
+    /** @var TrackedSalesChannelProvider */
     protected $salesChannelProvider;
+
+    /** @var ProductSchedulerInterface */
+    protected $productScheduler;
 
     /**
      * @param WebsiteRepository $websiteRepository
      * @param ProductRepository $productRepository
-     * @param SalesChannelProvider $salesChannelProvider
-     * @param ServiceLink $syncScheduler
+     * @param TrackedSalesChannelProvider $salesChannelProvider
+     * @param ProductSchedulerInterface $productScheduler
      */
     public function __construct(
         WebsiteRepository $websiteRepository,
         ProductRepository $productRepository,
-        SalesChannelProvider $salesChannelProvider,
-        ServiceLink $syncScheduler
+        TrackedSalesChannelProvider $salesChannelProvider,
+        ProductSchedulerInterface $productScheduler
     ) {
         $this->websiteRepository = $websiteRepository;
         $this->productRepository = $productRepository;
         $this->salesChannelProvider = $salesChannelProvider;
-        $this->syncScheduler = $syncScheduler;
+        $this->productScheduler = $productScheduler;
     }
 
     /**
@@ -138,22 +137,25 @@ class WebsiteSalesChannelListener
 
         $this->salesChannelProvider->clearCache();
         foreach ($integrationIds as $integrationId) {
+            $this->assignedSChPerIntegr[$integrationId] = $this->assignedSChPerIntegr[$integrationId] ?? [];
+            $this->unAssignedSChPerIntegr[$integrationId] = $this->unAssignedSChPerIntegr[$integrationId] ?? [];
+
             $salesChannelIdsChangedAssignedWebsite = \array_keys(
                 \array_intersect_key(
-                    $this->assignedSChPerIntegr[$integrationId] ?? [],
-                    $this->unAssignedSChPerIntegr[$integrationId] ?? []
+                    $this->assignedSChPerIntegr[$integrationId],
+                    $this->unAssignedSChPerIntegr[$integrationId]
                 )
             );
 
             $assignedSalesChannelIds = \array_diff(
-                \array_keys($this->assignedSChPerIntegr),
+                \array_keys($this->assignedSChPerIntegr[$integrationId]),
                 $salesChannelIdsChangedAssignedWebsite
             );
 
             $this->processAssignSalesChannelsToWebsites($integrationId, $assignedSalesChannelIds);
 
             $unAssignedSalesChannelIds = \array_diff(
-                \array_keys($this->unAssignedSChPerIntegr),
+                \array_keys($this->unAssignedSChPerIntegr[$integrationId]),
                 $salesChannelIdsChangedAssignedWebsite
             );
 
@@ -184,27 +186,49 @@ class WebsiteSalesChannelListener
             );
 
             if (empty($existedProductSChLinkedToWebsites)) {
-                $this->syncScheduler->getService()->schedule(
+                $this->productScheduler->scheduleCreateProductOnChannel(
                     $integrationId,
-                    ProductConnector::TYPE,
-                    [
-                        'ids' => [$productId],
-                        ExclusiveItemStep::OPTION_KEY_EXCLUSIVE_STEP_NAME =>
-                            ProductConnector::EXPORT_STEP_CREATE
-                    ]
+                    $productId
                 );
 
-                return;
+                continue;
             }
 
-            $this->syncScheduler->getService()->schedule(
+            $this->productScheduler->scheduleUpdateProductOnChannel(
                 $integrationId,
-                ProductConnector::TYPE,
-                [
-                    'ids' => [$productId],
-                    ExclusiveItemStep::OPTION_KEY_EXCLUSIVE_STEP_NAME =>
-                        ProductConnector::EXPORT_STEP_UPDATE
-                ]
+                $productId
+            );
+
+            $this->scheduleUpdateWebsiteScopeData(
+                $productId,
+                $integrationId,
+                $assignedSalesChannelIds
+            );
+        }
+    }
+
+    /**
+     * @param int $productId
+     * @param int $integrationId
+     * @param array $productSalesChannelIds
+     */
+    protected function scheduleUpdateWebsiteScopeData(
+        int $productId,
+        int $integrationId,
+        array $productSalesChannelIds
+    ): void {
+        $salesChannelInfoArray = $this->salesChannelProvider->getSalesChannelsInfoArray();
+        foreach ($productSalesChannelIds as $assignedSalesChannelId) {
+            /** @var SalesChannelInfo $salesChannelInfo */
+            $salesChannelInfo = $salesChannelInfoArray[$assignedSalesChannelId] ?? null;
+            if (null === $salesChannelInfo) {
+                continue;
+            }
+
+            $this->productScheduler->scheduleUpdateWebsiteScopeDataProductOnChannel(
+                $integrationId,
+                $salesChannelInfo->getWebsiteId(),
+                $productId
             );
         }
     }
@@ -222,27 +246,17 @@ class WebsiteSalesChannelListener
             $productSChLinkedToWebsites = \array_intersect($productSalesChannelIds, $registeredSalesChannelIds);
 
             if (empty($productSChLinkedToWebsites)) {
-                $this->syncScheduler->getService()->schedule(
+                $this->productScheduler->scheduleDeleteProductOnChannel(
                     $integrationId,
-                    ProductConnector::TYPE,
-                    [
-                        'ids' => [$productId],
-                        ExclusiveItemStep::OPTION_KEY_EXCLUSIVE_STEP_NAME =>
-                            ProductConnector::EXPORT_STEP_DELETE_ON_CHANNEL
-                    ]
+                    $productId
                 );
 
-                return;
+                continue;
             }
 
-            $this->syncScheduler->getService()->schedule(
+            $this->productScheduler->scheduleUpdateProductOnChannel(
                 $integrationId,
-                ProductConnector::TYPE,
-                [
-                    'ids' => [$productId],
-                    ExclusiveItemStep::OPTION_KEY_EXCLUSIVE_STEP_NAME =>
-                        ProductConnector::EXPORT_STEP_UPDATE
-                ]
+                $productId
             );
         }
     }
@@ -255,14 +269,15 @@ class WebsiteSalesChannelListener
     {
         $productIds = $this->productRepository->getProductIdsBySalesChannelIds($salesChannelIds);
         foreach ($productIds as $productId) {
-            $this->syncScheduler->getService()->schedule(
+            $this->productScheduler->scheduleUpdateProductOnChannel(
                 $integrationId,
-                ProductConnector::TYPE,
-                [
-                    'ids' => [$productId],
-                    ExclusiveItemStep::OPTION_KEY_EXCLUSIVE_STEP_NAME =>
-                        ProductConnector::EXPORT_STEP_UPDATE
-                ]
+                $productId
+            );
+
+            $this->scheduleUpdateWebsiteScopeData(
+                $productId,
+                $integrationId,
+                $salesChannelIds
             );
         }
     }
@@ -274,17 +289,10 @@ class WebsiteSalesChannelListener
     protected function processInitialSync(int $integrationId, array $salesChannelIds): void
     {
         $productIds = $this->productRepository->getProductIdsBySalesChannelIds($salesChannelIds);
-        foreach ($productIds as $productId) {
-            $this->syncScheduler->getService()->schedule(
-                $integrationId,
-                ProductConnector::TYPE,
-                [
-                    'ids' => [$productId],
-                    ExclusiveItemStep::OPTION_KEY_EXCLUSIVE_STEP_NAME =>
-                        ProductConnector::EXPORT_STEP_CREATE
-                ]
-            );
-        }
+        $this->productScheduler->scheduleCreateProductsOnChannel(
+            $integrationId,
+            $productIds
+        );
     }
 
     protected function convertCreatedWebsiteToAssignedSalesChannel(): void
@@ -401,8 +409,7 @@ class WebsiteSalesChannelListener
     protected function getValueableChangeSetForIntegration(
         SalesChannel $oldValue = null,
         SalesChannel $newValue = null
-    ): array
-    {
+    ): array {
         if ((($oldValue && !$oldValue->isActive()) || $oldValue === null) && $newValue && $newValue->isActive()) {
             return [
                 'assigned' => $newValue,

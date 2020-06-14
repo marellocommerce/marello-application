@@ -2,11 +2,10 @@
 
 namespace Marello\Bundle\Magento2Bundle\Async;
 
-use Oro\Component\MessageQueue\Client\Message;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
 use Oro\Component\MessageQueue\Util\JSON;
 
-class SalesChannelsRemovedMessage extends Message implements IntegrationAwareMessageInterface
+class SalesChannelsRemovedMessage implements IntegrationAwareMessageInterface
 {
     public const INTEGRATION_ID = 'integration_id';
     public const UPDATED_PRODUCT_IDS_KEY = 'updated_product_ids';

@@ -2,6 +2,8 @@
 
 namespace Marello\Bundle\Magento2Bundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\Magento2Bundle\Model\ExtendWebsite;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
@@ -42,6 +44,21 @@ class Website extends ExtendWebsite implements OriginAwareInterface, Integration
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
      */
     protected $name;
+
+    /**
+     * @var Collection|Store[]
+     *
+     *  @ORM\OneToMany(
+     *     targetEntity="Marello\Bundle\Magento2Bundle\Entity\Store",
+     *     mappedBy="website"
+     * )
+     */
+    protected $stores;
+
+    public function __construct()
+    {
+        $this->stores = new ArrayCollection();
+    }
 
     /**
      * @return int
@@ -90,6 +107,49 @@ class Website extends ExtendWebsite implements OriginAwareInterface, Integration
         return $this->name;
     }
 
+    /**
+     * @return Collection|Store[]
+     */
+    public function getStores()
+    {
+        return $this->stores;
+    }
+
+    /**
+     * @param Store $store
+     *
+     * @return $this
+     */
+    public function addStore(Store $store)
+    {
+        $this->stores->add($store->setWebsite($this));
+
+        return $this;
+    }
+
+    /**
+     * @param Store $store
+     *
+     * @return $this
+     */
+    public function removeStore(Store $store)
+    {
+        $this->stores->removeElement($store->setWebsite(null));
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getFirstActiveStoreCode(): ?string
+    {
+        $store = $this->stores->filter(function (Store $store) {
+            return $store->isActive();
+        })->first();
+
+        return $store instanceof Store ? $store->getCode(): null;
+    }
     /**
      * @return string
      */

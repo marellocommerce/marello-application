@@ -49,9 +49,8 @@ abstract class AbstractExportWriter extends PersistentBatchWriter
 
     /**
      * @param $item
-     * @return mixed
      */
-    abstract protected function doWrite($item);
+    abstract protected function doWrite($item): void;
 
     /**
      * @return Channel

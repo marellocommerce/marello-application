@@ -9,35 +9,24 @@ use Doctrine\ORM\UnitOfWork;
 use Marello\Bundle\Magento2Bundle\Async\SalesChannelsRemovedMessage;
 use Marello\Bundle\Magento2Bundle\Async\SalesChannelStateChangedMessage;
 use Marello\Bundle\Magento2Bundle\Async\Topics;
-use Marello\Bundle\Magento2Bundle\Provider\SalesChannelProvider;
-use Marello\Bundle\Magento2Bundle\Stack\ChangesByChannelStack;
+use Marello\Bundle\Magento2Bundle\Provider\TrackedSalesChannelProvider;
+use Marello\Bundle\Magento2Bundle\Stack\ProductChangesByChannelStack;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Oro\Component\MessageQueue\Transport\Exception\Exception;
 
 /**
- * @todo
- *
- * 1. Collect info about product ids on remove and update +
- * 2. Implement removing for website, store and product tax class import that doesn't imported (Skip for now)
- *
- *
- *
- * 3. Implement price connector better and skip inventory connector
- * 4. Order import
- * 5. Implement simple converter and listener
- *
- *
+ * @todo Block changes currency and block changes in sales channel code
  */
 class SalesChannelReverseSyncListener
 {
     private const ACTIVE_PROPERTY_NAME = 'active';
 
-    /** @var SalesChannelProvider */
-    protected $salesChannelInfosProvider;
+    /** @var TrackedSalesChannelProvider */
+    protected $salesChannelProvider;
 
-    /** @var ChangesByChannelStack */
+    /** @var ProductChangesByChannelStack */
     protected $changesByChannelStack;
 
     /** @var ProductRepository */
@@ -53,18 +42,18 @@ class SalesChannelReverseSyncListener
     protected $salesChannelsWithUpdatedActiveField = [];
 
     /**
-     * @param SalesChannelProvider $salesChannelInfosProvider
-     * @param ChangesByChannelStack $changesByChannelStack
+     * @param TrackedSalesChannelProvider $salesChannelInfosProvider
+     * @param ProductChangesByChannelStack $changesByChannelStack
      * @param ProductRepository $productRepository
      * @param MessageProducerInterface $producer
      */
     public function __construct(
-        SalesChannelProvider $salesChannelInfosProvider,
-        ChangesByChannelStack $changesByChannelStack,
+        TrackedSalesChannelProvider $salesChannelInfosProvider,
+        ProductChangesByChannelStack $changesByChannelStack,
         ProductRepository $productRepository,
         MessageProducerInterface $producer
     ) {
-        $this->salesChannelInfosProvider = $salesChannelInfosProvider;
+        $this->salesChannelProvider = $salesChannelInfosProvider;
         $this->changesByChannelStack = $changesByChannelStack;
         $this->productRepository = $productRepository;
         $this->producer = $producer;
@@ -75,7 +64,7 @@ class SalesChannelReverseSyncListener
      */
     public function onFlush(OnFlushEventArgs $args)
     {
-        if (empty($this->salesChannelInfosProvider->getSalesChannelsInfoArray(false))) {
+        if (false === $this->salesChannelProvider->hasTrackedSalesChannels(false)) {
             return;
         }
 
@@ -94,7 +83,7 @@ class SalesChannelReverseSyncListener
         $integrationIdsWithSalesChannelIds = [];
         $removedSalesChannelIds = $this->getRemovedSalesChannelIds($unitOfWork);
         foreach ($removedSalesChannelIds as $removedSalesChannelId) {
-            $integrationId = $this->salesChannelInfosProvider->getIntegrationIdBySalesChannelId(
+            $integrationId = $this->salesChannelProvider->getIntegrationIdBySalesChannelId(
                 $removedSalesChannelId
             );
 
@@ -125,13 +114,13 @@ class SalesChannelReverseSyncListener
      */
     public function postFlush(PostFlushEventArgs $args)
     {
-        $this->salesChannelInfosProvider->clearCache();
+        $this->salesChannelProvider->clearCache();
         foreach ($this->integrationChannelIdsWithProductIds as $integrationId => $modifiedProductIds) {
             if (empty($modifiedProductIds)) {
                 continue;
             }
 
-            $exitedSalesChannelIds = $this->salesChannelInfosProvider->getSalesChannelIdsByIntegrationId(
+            $exitedSalesChannelIds = $this->salesChannelProvider->getSalesChannelIdsByIntegrationId(
                 $integrationId
             );
 
@@ -155,10 +144,10 @@ class SalesChannelReverseSyncListener
             );
         }
 
-        $this->salesChannelsWithUpdatedActiveField = [];
+        $this->integrationChannelIdsWithProductIds = [];
 
         foreach ($this->salesChannelsWithUpdatedActiveField as $salesChannel) {
-            $integrationId = $this->salesChannelInfosProvider->getIntegrationIdBySalesChannelId(
+            $integrationId = $this->salesChannelProvider->getIntegrationIdBySalesChannelId(
                 $salesChannel->getId(),
                 false
             );
@@ -175,7 +164,7 @@ class SalesChannelReverseSyncListener
                 continue;
             }
 
-            $integrationSalesChannelIds = $this->salesChannelInfosProvider->getSalesChannelIdsByIntegrationId(
+            $integrationSalesChannelIds = $this->salesChannelProvider->getSalesChannelIdsByIntegrationId(
                 $integrationId
             );
 
@@ -208,7 +197,7 @@ class SalesChannelReverseSyncListener
             );
         }
 
-        $this->integrationChannelIdsWithProductIds = [];
+        $this->salesChannelsWithUpdatedActiveField = [];
     }
 
     /**
@@ -268,11 +257,6 @@ class SalesChannelReverseSyncListener
             return false;
         }
 
-        return \array_key_exists(
-            $entity->getId(),
-            $this->salesChannelInfosProvider->getSalesChannelsInfoArray(
-                $onlyActiveSalesChannel
-            )
-        );
+        return $this->salesChannelProvider->isTrackedSalesChannel($entity, $onlyActiveSalesChannel);
     }
 }

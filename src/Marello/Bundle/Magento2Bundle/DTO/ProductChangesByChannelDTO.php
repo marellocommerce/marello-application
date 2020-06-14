@@ -5,32 +5,35 @@ namespace Marello\Bundle\Magento2Bundle\DTO;
 use Marello\Bundle\Magento2Bundle\Exception\RuntimeException;
 use Marello\Bundle\ProductBundle\Entity\Product;
 
-class ChangesByChannelDTO
+class ProductChangesByChannelDTO
 {
     /** @var int */
-    protected $channelId;
+    protected $integrationChannelId;
 
     /** @var array */
     protected $removedProductIdsWithSku = [];
 
     /** @var array */
-    protected $updatedProductIdsWithSku = [];
+    protected $updatedProductIds = [];
 
     /** @var Product[] */
     protected $insertedProducts = [];
 
     /** @var array */
-    protected $assignedFromChannelProductIdsWithSku = [];
+    protected $assignedFromChannelProductIds = [];
 
     /** @var array */
-    protected $unassignedFromChannelProductIdsWithSku = [];
+    protected $unassignedFromChannelProductIds = [];
+
+    /** @var ProductChangesByWebsiteDTO[] */
+    protected $productChangesByWebsiteDTOs = [];
 
     /**
-     * @param int $channelId
+     * @param int $integrationChannelId
      */
-    public function __construct(int $channelId)
+    public function __construct(int $integrationChannelId)
     {
-        $this->channelId = $channelId;
+        $this->integrationChannelId = $integrationChannelId;
     }
 
     /**
@@ -62,7 +65,25 @@ class ChangesByChannelDTO
             return;
         }
 
-        $this->updatedProductIdsWithSku[$product->getId()] = $product->getSku();
+        $this->updatedProductIds[$product->getId()] = $product->getId();
+    }
+
+    /**
+     * @param Product $product
+     * @param int $websiteId
+     */
+    public function addProductChangesForWebsiteScope(Product $product, int $websiteId)
+    {
+        $productChangesByWebsite = $this->createOrGetProductChangesForWebsiteScope($websiteId);
+        $productChangesByWebsite->addUpdatedProduct($product);
+    }
+
+    /**
+     * @return array|ProductChangesByWebsiteDTO[]
+     */
+    public function getProductChangesForWebsiteScopeArray(): array
+    {
+        return $this->productChangesByWebsiteDTOs;
     }
 
     /**
@@ -74,7 +95,7 @@ class ChangesByChannelDTO
             return;
         }
 
-        $this->unassignedFromChannelProductIdsWithSku[$product->getId()] = $product->getSku();
+        $this->unassignedFromChannelProductIds[$product->getId()] = $product->getId();
     }
 
     /**
@@ -86,7 +107,7 @@ class ChangesByChannelDTO
             return;
         }
 
-        $this->assignedFromChannelProductIdsWithSku[$product->getId()] = $product->getSku();
+        $this->assignedFromChannelProductIds[$product->getId()] = $product->getId();
     }
 
     /**
@@ -138,29 +159,9 @@ class ChangesByChannelDTO
     /**
      * @return array
      */
-    public function getInsertedProductSkus(): array
-    {
-        return \array_unique(
-            \array_map(function (Product $product) {
-                return $product->getSku();
-            }, $this->insertedProducts)
-        );
-    }
-
-    /**
-     * @return array
-     */
     public function getUpdatedProductIds(): array
     {
-        return \array_keys($this->updatedProductIdsWithSku);
-    }
-
-    /**
-     * @return array
-     */
-    public function getUpdatedProductSkus(): array
-    {
-        return $this->updatedProductIdsWithSku;
+        return $this->updatedProductIds;
     }
 
     /**
@@ -168,7 +169,7 @@ class ChangesByChannelDTO
      */
     public function getUnassignedProductIds(): array
     {
-        return \array_keys($this->unassignedFromChannelProductIdsWithSku);
+        return $this->unassignedFromChannelProductIds;
     }
 
     /**
@@ -176,14 +177,22 @@ class ChangesByChannelDTO
      */
     public function getAssignedProductIds(): array
     {
-        return \array_keys($this->assignedFromChannelProductIdsWithSku);
+        return $this->assignedFromChannelProductIds;
     }
 
     /**
-     * @return array
+     * @param int $websiteId
+     * @return ProductChangesByWebsiteDTO
      */
-    public function getUnassignedProductSkus(): array
+    protected function createOrGetProductChangesForWebsiteScope(int $websiteId): ProductChangesByWebsiteDTO
     {
-        return $this->unassignedFromChannelProductIdsWithSku;
+        if (!\array_key_exists($websiteId, $this->productChangesByWebsiteDTOs)) {
+            $this->productChangesByWebsiteDTOs[$websiteId] = new ProductChangesByWebsiteDTO(
+                $this->integrationChannelId,
+                $websiteId
+            );
+        }
+
+        return $this->productChangesByWebsiteDTOs[$websiteId];
     }
 }

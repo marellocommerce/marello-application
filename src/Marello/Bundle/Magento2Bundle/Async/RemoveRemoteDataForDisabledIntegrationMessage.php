@@ -2,11 +2,10 @@
 
 namespace Marello\Bundle\Magento2Bundle\Async;
 
-use Oro\Component\MessageQueue\Client\Message;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
 use Oro\Component\MessageQueue\Util\JSON;
 
-class RemoveRemoteDataForDisabledIntegrationMessage extends Message implements IntegrationAwareMessageInterface
+class RemoveRemoteDataForDisabledIntegrationMessage implements IntegrationAwareMessageInterface
 {
     public const INTEGRATION_ID = 'integration_id';
     public const IS_REMOVED = 'is_removed';

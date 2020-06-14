@@ -2,13 +2,18 @@
 
 namespace Marello\Bundle\Magento2Bundle\ImportExport\Translator\SimpleProduct;
 
-use Marello\Bundle\Magento2Bundle\DTO\ProductSimpleUpdateDTO;
+use Marello\Bundle\Magento2Bundle\DTO\ProductDeleteOnChannelDTO;
 use Marello\Bundle\Magento2Bundle\Entity\Product as MagentoProduct;
 use Marello\Bundle\Magento2Bundle\Entity\Repository\ProductRepository as MagentoProductRepository;
+use Marello\Bundle\Magento2Bundle\ImportExport\Translator\TranslatorInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 
-class UpdateTranslator extends ProductTranslator
+class ProductDeleteOnChannelTranslator implements TranslatorInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /** @var MagentoProductRepository */
     protected $magentoProductRepository;
 
@@ -23,14 +28,14 @@ class UpdateTranslator extends ProductTranslator
     /**
      * @param Product $entity
      * @param array $context
-     * @return ProductSimpleUpdateDTO|null
+     * @return ProductDeleteOnChannelDTO|null
      */
     public function translate($entity, array $context = [])
     {
         if (!$entity instanceof Product || empty($context['channel'])) {
             $this->logger->warning(
                 '[Magento 2] Input data doesn\'t fit to requirements. ' .
-                'Skip to update remote product.',
+                'Skip to product delete on channel.',
                 [
                     'product_id' => $entity instanceof Product ? $entity->getId() : null,
                     'integration_channel_id' => $context['channel']
@@ -50,7 +55,7 @@ class UpdateTranslator extends ProductTranslator
         if (!$internalMagentoProduct instanceof MagentoProduct) {
             $this->logger->warning(
                 '[Magento 2] Can\'t find Magento product. ' .
-                'Skip to update remote product.',
+                'Skip to product delete on channel.',
                 [
                     'product_id' => $entity instanceof Product ? $entity->getId() : null,
                     'integration_channel_id' => $context['channel']
@@ -60,30 +65,9 @@ class UpdateTranslator extends ProductTranslator
             return null;
         }
 
-        $websites = $this->getWebsitesProductAttachedTo($entity, $context['channel']);
-        $status = $entity->getStatus();
-
-        if (empty($websites)) {
-            $this->logger->warning(
-                '[Magento 2] No websites attached to the entity with channel. ' .
-                'Skip to update remote product.',
-                [
-                    'product_id' => $entity->getId(),
-                    'integration_channel_id' => $context['channel']
-                ]
-            );
-
-            return null;
-        }
-
-        $balancedInventoryLevel = $this->getBalancedInventoryLevel($entity, current($websites));
-        return new ProductSimpleUpdateDTO(
+        return new ProductDeleteOnChannelDTO(
             $internalMagentoProduct,
-            $entity,
-            $websites,
-            $status,
-            $entity->getInventoryItems()->first(),
-            $balancedInventoryLevel
+            $entity
         );
     }
 }

@@ -3,10 +3,8 @@
 namespace Marello\Bundle\Magento2Bundle\Async;
 
 use Doctrine\DBAL\Exception\RetryableException;
-use Marello\Bundle\Magento2Bundle\Batch\Step\ExclusiveItemStep;
-use Marello\Bundle\Magento2Bundle\Integration\Connector\ProductConnector;
+use Marello\Bundle\Magento2Bundle\Scheduler\ProductSchedulerInterface;
 use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
-use Oro\Component\DependencyInjection\ServiceLink;
 use Oro\Component\MessageQueue\Client\TopicSubscriberInterface;
 use Oro\Component\MessageQueue\Consumption\MessageProcessorInterface;
 use Oro\Component\MessageQueue\Job\JobRunner;
@@ -29,22 +27,22 @@ class SalesChannelsRemovedProcessor implements
     /** @var ManagerRegistry */
     protected $managerRegistry;
 
-    /** @var ServiceLink */
-    protected $syncScheduler;
+    /** @var ProductSchedulerInterface */
+    protected $productScheduler;
 
     /**
      * @param JobRunner $jobRunner
      * @param ManagerRegistry $managerRegistry
-     * @param ServiceLink $syncScheduler
+     * @param ProductSchedulerInterface $productScheduler
      */
     public function __construct(
         JobRunner $jobRunner,
         ManagerRegistry $managerRegistry,
-        ServiceLink $syncScheduler
+        ProductSchedulerInterface $productScheduler
     ) {
         $this->jobRunner = $jobRunner;
         $this->managerRegistry = $managerRegistry;
-        $this->syncScheduler = $syncScheduler;
+        $this->productScheduler = $productScheduler;
     }
 
     /**
@@ -108,29 +106,15 @@ class SalesChannelsRemovedProcessor implements
      */
     protected function processChangedProducts(SalesChannelsRemovedMessage $message): void
     {
-        foreach ($message->getRemovedProductIds() as $productId) {
-            $this->syncScheduler->getService()->schedule(
-                $message->getIntegrationId(),
-                ProductConnector::TYPE,
-                [
-                    'ids' => [$productId],
-                    ExclusiveItemStep::OPTION_KEY_EXCLUSIVE_STEP_NAME =>
-                        ProductConnector::EXPORT_STEP_DELETE_ON_CHANNEL
-                ]
-            );
-        }
+        $this->productScheduler->scheduleDeleteProductsOnChannel(
+            $message->getIntegrationId(),
+            $message->getRemovedProductIds()
+        );
 
-        foreach ($message->getUpdatedProductIds() as $productId) {
-            $this->syncScheduler->getService()->schedule(
-                $message->getIntegrationId(),
-                ProductConnector::TYPE,
-                [
-                    'ids' => [$productId],
-                    ExclusiveItemStep::OPTION_KEY_EXCLUSIVE_STEP_NAME =>
-                        ProductConnector::EXPORT_STEP_UPDATE
-                ]
-            );
-        }
+        $this->productScheduler->scheduleUpdateProductsOnChannel(
+            $message->getIntegrationId(),
+            $message->getRemovedProductIds()
+        );
     }
 
     /**

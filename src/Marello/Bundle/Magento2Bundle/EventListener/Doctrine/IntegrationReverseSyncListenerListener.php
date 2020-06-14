@@ -11,13 +11,14 @@ use Marello\Bundle\Magento2Bundle\DTO\RemoteDataRemovingDTO;
 use Marello\Bundle\Magento2Bundle\Entity\Repository\ProductRepository;
 use Marello\Bundle\Magento2Bundle\Model\Magento2TransportSettings;
 use Marello\Bundle\Magento2Bundle\Provider\Magento2ChannelType;
-use Marello\Bundle\Magento2Bundle\Stack\ChangesByChannelStack;
+use Marello\Bundle\Magento2Bundle\Stack\ProductChangesByChannelStack;
 use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
 use Oro\Component\MessageQueue\Client\Message;
 use Oro\Component\MessageQueue\Client\MessagePriority;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
+use Oro\Component\MessageQueue\Transport\Exception\Exception;
 
-class IntegrationListener
+class IntegrationReverseSyncListenerListener
 {
     /** @var string  */
     private const ENABLED_PROPERTY_NAME = 'enabled';
@@ -31,7 +32,7 @@ class IntegrationListener
     /** @var ProductRepository  */
     protected $productRepository;
 
-    /** @var ChangesByChannelStack */
+    /** @var ProductChangesByChannelStack */
     protected $changesByChannelStack;
 
     /** @var MessageProducerInterface */
@@ -39,12 +40,12 @@ class IntegrationListener
 
     /**
      * @param ProductRepository $productRepository
-     * @param ChangesByChannelStack $changesByChannelStack
+     * @param ProductChangesByChannelStack $changesByChannelStack
      * @param MessageProducerInterface $producer
      */
     public function __construct(
         ProductRepository $productRepository,
-        ChangesByChannelStack $changesByChannelStack,
+        ProductChangesByChannelStack $changesByChannelStack,
         MessageProducerInterface $producer
     ) {
         $this->productRepository = $productRepository;
@@ -55,7 +56,7 @@ class IntegrationListener
     /**
      * @param OnFlushEventArgs $args
      */
-    public function onFlush(OnFlushEventArgs $args)
+    public function onFlush(OnFlushEventArgs $args): void
     {
         $entityManager = $args->getEntityManager();
         $unitOfWork = $entityManager->getUnitOfWork();
@@ -64,7 +65,7 @@ class IntegrationListener
         $this->loadDeactivatedIntegrationData($unitOfWork);
     }
 
-    public function onClear()
+    public function onClear(): void
     {
         $this->remoteDataRemovingDTOs = [];
         $this->integrationOnClearInternalData = [];
@@ -72,18 +73,13 @@ class IntegrationListener
 
     /**
      * @param PostFlushEventArgs $args
+     * @throws Exception
      */
-    public function postFlush(PostFlushEventArgs $args)
+    public function postFlush(PostFlushEventArgs $args): void
     {
-        /**
-         * @var RemoteDataRemovingDTO $remoteDataRemovingDTO
-         */
         foreach ($this->remoteDataRemovingDTOs as $integrationId => $remoteDataRemovingDTO) {
             $this->changesByChannelStack->clearChangesByChannelId($integrationId);
             unset($this->integrationOnClearInternalData[$integrationId]);
-            if (!$remoteDataRemovingDTO->hasProductsOnRemoteRemove()) {
-                continue;
-            }
 
             $this
                 ->producer
@@ -101,15 +97,15 @@ class IntegrationListener
          * to re-sync all existing data after integration will be re-enabled right after website
          * will be linked to existed sales channel
          */
-        foreach ($this->integrationOnClearInternalData as $integrationId) {
-            $this->changesByChannelStack->clearChangesByChannelId($integrationId);
+        foreach ($this->integrationOnClearInternalData as $integration) {
+            $this->changesByChannelStack->clearChangesByChannelId($integration->getId());
 
             $this
                 ->producer
                 ->send(
                     Topics::CLEAR_INTERNAL_DATA_FOR_DISABLED_INTEGRATION,
                     [
-                        ClearInternalDataForDisabledIntegrationMessage::INTEGRATION_ID => $integrationId
+                        ClearInternalDataForDisabledIntegrationMessage::INTEGRATION_ID => $integration->getId()
                     ]
                 );
         }

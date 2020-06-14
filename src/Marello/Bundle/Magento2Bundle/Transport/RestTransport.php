@@ -122,7 +122,7 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
      */
     public function getWebsites(): \Iterator
     {
-        $request = $this->requestFactory->creategetRequest(
+        $request = $this->requestFactory->createGetRequest(
             self::RESOURCE_WEBSITES
         );
 
@@ -142,7 +142,7 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
     {
         $storeConfigData = $this->getStoreConfigs();
 
-        $request = $this->requestFactory->creategetRequest(
+        $request = $this->requestFactory->createGetRequest(
             self::RESOURCE_STORES
         );
 
@@ -177,7 +177,7 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
      */
     public function createProduct(array $data): array
     {
-        $request = $this->requestFactory->creategetRequest(
+        $request = $this->requestFactory->createGetRequest(
             self::RESOURCE_PRODUCTS,
             $data
         );
@@ -190,17 +190,19 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
     /**
      * @param string $sku
      * @param array $data
+     * @param string|null $storeCode
      * @return array
      * @throws RestException
      * @throws RuntimeException
      */
-    public function updateProduct(string $sku, array $data): array
+    public function updateProduct(string $sku, array $data, string $storeCode = null): array
     {
         $resource = str_replace('%sku%', $sku, self::RESOURCE_PRODUCT_WITH_SKU);
 
-        $request = $this->requestFactory->creategetRequest(
+        $request = $this->requestFactory->createGetRequest(
             $resource,
-            $data
+            $data,
+            $storeCode
         );
 
         $result = $this->getClient()->put($request->getUrn(), $request->getPayloadData());
@@ -218,7 +220,7 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
     {
         $resource = str_replace('%sku%', $sku, self::RESOURCE_PRODUCT_WITH_SKU);
 
-        $request = $this->requestFactory->creategetRequest(
+        $request = $this->requestFactory->createGetRequest(
             $resource
         );
 
@@ -234,7 +236,7 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
      */
     protected function getStoreConfigs(): array
     {
-        $request = $this->requestFactory->creategetRequest(
+        $request = $this->requestFactory->createGetRequest(
             self::RESOURCE_STORE_CONFIGS
         );
 

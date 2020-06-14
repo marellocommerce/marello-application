@@ -4,22 +4,22 @@ namespace Marello\Bundle\Magento2Bundle\ImportExport\Writer;
 
 use Doctrine\ORM\EntityManager;
 use Marello\Bundle\Magento2Bundle\Entity\Product as InternalMagentoProduct;
-use Marello\Bundle\Magento2Bundle\ImportExport\Message\SimpleProductUpdateMessage;
+use Marello\Bundle\Magento2Bundle\ImportExport\Message\SimpleProductUpdateWebsiteScopeMessage;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Exception\RestException;
 
-class ProductExportUpdateWriter extends AbstractExportWriter
+class ProductExportUpdateWebsiteScopeDataWriter extends AbstractExportWriter
 {
     /**
-     * @param SimpleProductUpdateMessage $item
+     * @param SimpleProductUpdateWebsiteScopeMessage $item
      */
     protected function doWrite($item): void
     {
-        if (!$item instanceof SimpleProductUpdateMessage) {
+        if (!$item instanceof SimpleProductUpdateWebsiteScopeMessage) {
             $this->logger->warning(
-                '[Magento 2] Given incorrect input data for writing in ProductExportUpdateWriter.',
+                '[Magento 2] Given incorrect input data for writing in ProductExportUpdateWebsiteScopeDataWriter.',
                 [
-                    'expected' => SimpleProductUpdateMessage::class,
+                    'expected' => SimpleProductUpdateWebsiteScopeMessage::class,
                     'given' => is_object($item) ? get_class($item) : gettype($item)
                 ]
             );
@@ -29,7 +29,6 @@ class ProductExportUpdateWriter extends AbstractExportWriter
 
         /** @var EntityManager $em */
         $internalProductEm = $this->registry->getManagerForClass(InternalMagentoProduct::class);
-        /** @var InternalMagentoProduct $internalMagentoProduct */
         $internalMagentoProduct = $internalProductEm->find(
             InternalMagentoProduct::class,
             $item->getInternalMagentoProductId()
@@ -38,7 +37,8 @@ class ProductExportUpdateWriter extends AbstractExportWriter
         try {
             $responseData = $this->getTransport()->updateProduct(
                 $item->getProductSku(),
-                $item->getPayload()
+                $item->getPayload(),
+                $item->getStoreCode()
             );
         } catch (RestException $restException) {
             $className = ExtendHelper::buildEnumValueClassName(InternalMagentoProduct::STATUS_CODE);
@@ -51,17 +51,6 @@ class ProductExportUpdateWriter extends AbstractExportWriter
             $internalProductEm->flush($internalMagentoProduct);
 
             throw $restException;
-        }
-
-        if (!empty($responseData['sku'])) {
-            $internalMagentoProduct->setSku($responseData['sku']);
-        } else {
-            $this->logger->warning(
-                '[Magento 2] Response of updating product doesn\'t contain valid SKU.',
-                [
-                    'responseData' => $responseData
-                ]
-            );
         }
 
         $internalMagentoProduct->setUpdatedAt(new \DateTime('now', new \DateTimeZone('UTC')));
