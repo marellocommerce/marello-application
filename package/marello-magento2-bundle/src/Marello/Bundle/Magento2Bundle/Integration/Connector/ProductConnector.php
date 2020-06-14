@@ -15,10 +15,11 @@ class ProductConnector extends AbstractMagento2Connector implements
     public const TYPE = 'product';
     public const EXPORT_JOB = 'marello_magento2_product_rest_export';
 
-    public const EXPORT_STEP_CREATE = 'create';
-    public const EXPORT_STEP_UPDATE = 'update';
-    public const EXPORT_STEP_DELETE = 'delete';
-    public const EXPORT_STEP_DELETE_ON_CHANNEL = 'deleteOnChannel';
+    public const EXPORT_ACTION_CREATE = 'create';
+    public const EXPORT_ACTION_UPDATE = 'update';
+    public const EXPORT_ACTION_UPDATE_WEBSITE_SCOPE_DATA = 'updatedWebsiteScopeData';
+    public const EXPORT_ACTION_DELETE = 'delete';
+    public const EXPORT_ACTION_DELETE_ON_CHANNEL = 'deleteOnChannel';
 
     /**
      * {@inheritDoc}

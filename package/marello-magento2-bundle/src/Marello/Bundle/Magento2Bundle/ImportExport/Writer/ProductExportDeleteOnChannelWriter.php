@@ -4,39 +4,42 @@ namespace Marello\Bundle\Magento2Bundle\ImportExport\Writer;
 
 use Doctrine\ORM\EntityManager;
 use Marello\Bundle\Magento2Bundle\Entity\Product as InternalMagentoProduct;
-use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\Magento2Bundle\ImportExport\Message\ProductDeleteOnChannelMessage;
 
 class ProductExportDeleteOnChannelWriter extends AbstractExportWriter
 {
     /**
-     * @param Product $item
-     * @return mixed|void
+     * @param ProductDeleteOnChannelMessage $item
      */
-    protected function doWrite($item)
+    protected function doWrite($item): void
     {
+        if (!$item instanceof ProductDeleteOnChannelMessage) {
+            $this->logger->warning(
+                '[Magento 2] Given incorrect input data for writing in ProductExportDeleteOnChannelWriter.',
+                [
+                    'expected' => ProductDeleteOnChannelMessage::class,
+                    'given' => is_object($item) ? get_class($item) : gettype($item)
+                ]
+            );
+
+            return;
+        }
+
         $this->logger->info(
-            sprintf('[Magento 2] Starting removing product with SKU "%s".', $item->getSku())
+            sprintf('[Magento 2] Starting removing product with SKU "%s".', $item->getProductSku())
         );
 
-        $this->getTransport()->removeProduct($item->getSku());
+        $this->getTransport()->removeProduct($item->getProductSku());
 
         $this->logger->info(
-            sprintf('[Magento 2] Product with SKU "%s" successfully removed.', $item->getSku())
+            sprintf('[Magento 2] Product with SKU "%s" successfully removed.', $item->getProductSku())
         );
-
-        $productIdsWithInternalProductIds = $this->stepExecution
-                ->getJobExecution()
-                ->getExecutionContext()
-                ->get(InternalMagentoProductWriter::INTERNAL_MAGENTO_PRODUCT_IDS_CONTEXT) ?? [];
-
-        /** @var InternalMagentoProduct $internalMagentoProduct */
-        $internalMagentoProductId = $productIdsWithInternalProductIds[$item->getId()];
 
         /** @var EntityManager $em */
         $internalProductEm = $this->registry->getManagerForClass(InternalMagentoProduct::class);
-        $internalMagentoProduct = $internalProductEm->getReference(
+        $internalMagentoProduct = $internalProductEm->find(
             InternalMagentoProduct::class,
-            $internalMagentoProductId
+            $item->getInternalMagentoProductId()
         );
 
         $internalProductEm->remove($internalMagentoProduct);

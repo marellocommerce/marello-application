@@ -2,11 +2,10 @@
 
 namespace Marello\Bundle\Magento2Bundle\Async;
 
-use Oro\Component\MessageQueue\Client\Message;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
 use Oro\Component\MessageQueue\Util\JSON;
 
-class SalesChannelStateChangedMessage extends Message implements IntegrationAwareMessageInterface
+class SalesChannelStateChangedMessage implements IntegrationAwareMessageInterface
 {
     public const INTEGRATION_ID = 'integration_id';
     public const SALES_CHANNEL_ID_KEY = 'sales_channel_id';
@@ -129,7 +128,7 @@ class SalesChannelStateChangedMessage extends Message implements IntegrationAwar
         $messageData = JSON::decode($message->getBody());
 
         $message = new SalesChannelStateChangedMessage(
-            $message[self::INTEGRATION_ID],
+            $messageData[self::INTEGRATION_ID],
             $messageData[self::SALES_CHANNEL_ID_KEY],
             $messageData[self::IS_ACTIVE_KEY],
             $messageData[self::CREATED_PRODUCT_IDS],

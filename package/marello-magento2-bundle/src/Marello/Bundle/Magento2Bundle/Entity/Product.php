@@ -46,6 +46,13 @@ class Product extends ExtendProduct implements
     protected $id;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="sku", type="string", nullable=false)
+     */
+    protected $sku;
+
+    /**
      * @var Product
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\Product")
@@ -56,9 +63,28 @@ class Product extends ExtendProduct implements
     /**
      * @return int
      */
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSku(): string
+    {
+        return $this->sku;
+    }
+
+    /**
+     * @param string $sku
+     * @return $this
+     */
+    public function setSku(string $sku): self
+    {
+        $this->sku = $sku;
+
+        return $this;
     }
 
     /**

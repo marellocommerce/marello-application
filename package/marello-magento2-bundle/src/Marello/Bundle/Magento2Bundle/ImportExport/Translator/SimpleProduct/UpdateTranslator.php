@@ -3,10 +3,23 @@
 namespace Marello\Bundle\Magento2Bundle\ImportExport\Translator\SimpleProduct;
 
 use Marello\Bundle\Magento2Bundle\DTO\ProductSimpleUpdateDTO;
+use Marello\Bundle\Magento2Bundle\Entity\Product as MagentoProduct;
+use Marello\Bundle\Magento2Bundle\Entity\Repository\ProductRepository as MagentoProductRepository;
 use Marello\Bundle\ProductBundle\Entity\Product;
 
-class UpdateTranslator extends CreateTranslator
+class UpdateTranslator extends ProductTranslator
 {
+    /** @var MagentoProductRepository */
+    protected $magentoProductRepository;
+
+    /**
+     * @param MagentoProductRepository $magentoProductRepository
+     */
+    public function __construct(MagentoProductRepository $magentoProductRepository)
+    {
+        $this->magentoProductRepository = $magentoProductRepository;
+    }
+
     /**
      * @param Product $entity
      * @param array $context
@@ -14,27 +27,63 @@ class UpdateTranslator extends CreateTranslator
      */
     public function translate($entity, array $context = [])
     {
-        /**
-         * @todo Throw exception in case when input data doesn't fit to requirements
-         */
         if (!$entity instanceof Product || empty($context['channel'])) {
+            $this->logger->warning(
+                '[Magento 2] Input data doesn\'t fit to requirements. ' .
+                'Skip to update remote product.',
+                [
+                    'product_id' => $entity instanceof Product ? $entity->getId() : null,
+                    'integration_channel_id' => $context['channel']
+                ]
+            );
+
             return null;
         }
 
-        /**
-         * @todo Check possibility to change sku
-         */
-        $sku = $entity->getSku();
-        $name = $entity->getDefaultName();
+        $internalMagentoProduct = $this->magentoProductRepository->findOneBy(
+            [
+                'channel' => $context['channel'],
+                'product' => $entity->getId()
+            ]
+        );
+
+        if (!$internalMagentoProduct instanceof MagentoProduct) {
+            $this->logger->warning(
+                '[Magento 2] Can\'t find Magento product. ' .
+                'Skip to update remote product.',
+                [
+                    'product_id' => $entity instanceof Product ? $entity->getId() : null,
+                    'integration_channel_id' => $context['channel']
+                ]
+            );
+
+            return null;
+        }
+
         $websites = $this->getWebsitesProductAttachedTo($entity, $context['channel']);
         $status = $entity->getStatus();
 
+        if (empty($websites)) {
+            $this->logger->warning(
+                '[Magento 2] No websites attached to the entity with channel. ' .
+                'Skip to update remote product.',
+                [
+                    'product_id' => $entity->getId(),
+                    'integration_channel_id' => $context['channel']
+                ]
+            );
+
+            return null;
+        }
+
+        $balancedInventoryLevel = $this->getBalancedInventoryLevel($entity, current($websites));
         return new ProductSimpleUpdateDTO(
-            $entity->getId(),
-            $sku,
-            $name,
+            $internalMagentoProduct,
+            $entity,
             $websites,
-            $status
+            $status,
+            $entity->getInventoryItems()->first(),
+            $balancedInventoryLevel
         );
     }
 }

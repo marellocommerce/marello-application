@@ -2,21 +2,21 @@
 
 namespace Marello\Bundle\Magento2Bundle\Stack;
 
-use Marello\Bundle\Magento2Bundle\DTO\ChangesByChannelDTO;
+use Marello\Bundle\Magento2Bundle\DTO\ProductChangesByChannelDTO;
 
-class ChangesByChannelStack
+class ProductChangesByChannelStack
 {
-    /** @var ChangesByChannelDTO[] */
+    /** @var ProductChangesByChannelDTO[] */
     protected $changesByChannel = [];
 
     /**
      * @param int $integrationChannelId
-     * @return ChangesByChannelDTO
+     * @return ProductChangesByChannelDTO
      */
-    public function getOrCreateChangesDtoByChannelId(int $integrationChannelId): ChangesByChannelDTO
+    public function getOrCreateChangesDtoByChannelId(int $integrationChannelId): ProductChangesByChannelDTO
     {
         if (!array_key_exists($integrationChannelId, $this->changesByChannel)) {
-            $this->changesByChannel[$integrationChannelId] = new ChangesByChannelDTO($integrationChannelId);
+            $this->changesByChannel[$integrationChannelId] = new ProductChangesByChannelDTO($integrationChannelId);
         }
 
         return $this->changesByChannel[$integrationChannelId];
@@ -31,7 +31,7 @@ class ChangesByChannelStack
     }
 
     /**
-     * @return ChangesByChannelDTO[]
+     * @return ProductChangesByChannelDTO[]
      */
     public function getChangesDTOs(): array
     {

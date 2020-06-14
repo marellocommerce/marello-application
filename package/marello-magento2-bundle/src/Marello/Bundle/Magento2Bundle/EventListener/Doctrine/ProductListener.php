@@ -7,15 +7,17 @@ use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\UnitOfWork;
 use Doctrine\Persistence\Proxy;
-use Marello\Bundle\Magento2Bundle\Model\SalesChannelInfo;
-use Marello\Bundle\Magento2Bundle\Provider\SalesChannelProvider;
-use Marello\Bundle\Magento2Bundle\Stack\ChangesByChannelStack;
+use Marello\Bundle\Magento2Bundle\Provider\TrackedSalesChannelProvider;
+use Marello\Bundle\Magento2Bundle\Stack\ProductChangesByChannelStack;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
-class ProductReverseSyncListener
+/**
+ * Listen for all changes in product entity
+ */
+class ProductListener
 {
     /** @var array */
     protected $mapping = [
@@ -31,28 +33,28 @@ class ProductReverseSyncListener
     /** @var string */
     protected $channelsFieldName = 'channels';
 
-    /** @var ChangesByChannelStack */
-    protected $changesByChannelStack;
+    /** @var ProductChangesByChannelStack */
+    protected $productChangesStack;
 
     /** @var PropertyAccessor $propertyAccessor */
     protected $propertyAccessor;
 
-    /** @var SalesChannelProvider */
-    protected $salesChannelInfosProvider;
+    /** @var TrackedSalesChannelProvider */
+    protected $salesChannelProvider;
 
     /**
      * @param PropertyAccessor $propertyAccessor
-     * @param SalesChannelProvider $salesChannelInfosProvider
-     * @param ChangesByChannelStack $changesByChannelStack
+     * @param TrackedSalesChannelProvider $salesChannelProvider
+     * @param ProductChangesByChannelStack $productChangesStack
      */
     public function __construct(
         PropertyAccessor $propertyAccessor,
-        SalesChannelProvider $salesChannelInfosProvider,
-        ChangesByChannelStack $changesByChannelStack
+        TrackedSalesChannelProvider $salesChannelProvider,
+        ProductChangesByChannelStack $productChangesStack
     ) {
         $this->propertyAccessor = $propertyAccessor;
-        $this->salesChannelInfosProvider = $salesChannelInfosProvider;
-        $this->changesByChannelStack = $changesByChannelStack;
+        $this->salesChannelProvider = $salesChannelProvider;
+        $this->productChangesStack = $productChangesStack;
     }
 
     /**
@@ -60,7 +62,7 @@ class ProductReverseSyncListener
      */
     public function onFlush(OnFlushEventArgs $args)
     {
-        if (empty($this->salesChannelInfosProvider->getSalesChannelsInfoArray(false))) {
+        if (false === $this->salesChannelProvider->hasTrackedSalesChannels(false)) {
             return;
         }
 
@@ -82,7 +84,7 @@ class ProductReverseSyncListener
         foreach ($unitOfWork->getScheduledEntityDeletions() as $entityDeletion) {
             if ($this->isApplicableEntity($entityDeletion, false)) {
                 foreach ($this->getAssignedChannelIds($entityDeletion) as $channelId) {
-                    $this->changesByChannelStack
+                    $this->productChangesStack
                         ->getOrCreateChangesDtoByChannelId($channelId)
                         ->addRemovedProduct($entityDeletion);
                 }
@@ -99,7 +101,7 @@ class ProductReverseSyncListener
         foreach ($unitOfWork->getScheduledEntityInsertions() as $createdEntity) {
             if ($this->isApplicableEntity($createdEntity, false)) {
                 foreach ($this->getAssignedChannelIds($createdEntity) as $channelId) {
-                    $this->changesByChannelStack
+                    $this->productChangesStack
                         ->getOrCreateChangesDtoByChannelId($channelId)
                         ->addInsertedProduct($createdEntity);
                 }
@@ -123,10 +125,14 @@ class ProductReverseSyncListener
                     \array_keys($entityChangeSet)
                 );
 
+                /**
+                 * @todo Issue with changed sku
+                 */
+
                 if ($changedTrackedFieldValues) {
                     $updatedProductIds[] = $updatedProduct->getId();
                     foreach ($this->getAssignedChannelIds($updatedProduct) as $channelId) {
-                        $this->changesByChannelStack
+                        $this->productChangesStack
                             ->getOrCreateChangesDtoByChannelId($channelId)
                             ->addUpdatedProduct($updatedProduct);
                     }
@@ -183,7 +189,7 @@ class ProductReverseSyncListener
             );
 
             \array_walk($addedIntegrationIds, function ($integrationId) use ($owner) {
-                $this->changesByChannelStack
+                $this->productChangesStack
                     ->getOrCreateChangesDtoByChannelId($integrationId)
                     ->addAssignedProduct($owner);
             });
@@ -196,7 +202,7 @@ class ProductReverseSyncListener
             );
 
             \array_walk($removedIntegrationIds, function ($integrationId) use ($owner) {
-                $this->changesByChannelStack
+                $this->productChangesStack
                     ->getOrCreateChangesDtoByChannelId($integrationId)
                     ->addUnassignedProduct($owner);
             });
@@ -208,19 +214,27 @@ class ProductReverseSyncListener
                 )
             );
 
-            $integrationIdsWithUpdatedWebsites = \array_filter(
-                $existedIntegrationIds,
-                function (int $integrationId) use ($prevIntegrationChannelInfoArray, $curIntegrationChannelInfoArray) {
-                    return $prevIntegrationChannelInfoArray[$integrationId] !==
-                        $curIntegrationChannelInfoArray[$integrationId];
+            foreach ($existedIntegrationIds as $existedIntegrationId) {
+                if ($curIntegrationChannelInfoArray[$existedIntegrationId] ===
+                    $prevIntegrationChannelInfoArray[$existedIntegrationId]) {
+                    continue;
                 }
-            );
 
-            \array_walk($integrationIdsWithUpdatedWebsites, function ($integrationId) use ($owner) {
-                $this->changesByChannelStack
-                    ->getOrCreateChangesDtoByChannelId($integrationId)
+                $this->productChangesStack
+                    ->getOrCreateChangesDtoByChannelId($existedIntegrationId)
                     ->addUpdatedProduct($owner);
-            });
+
+                $newWebsiteIds = \array_diff(
+                    $curIntegrationChannelInfoArray[$existedIntegrationId],
+                    $prevIntegrationChannelInfoArray[$existedIntegrationId]
+                );
+
+                foreach ($newWebsiteIds as $newWebsiteId) {
+                    $this->productChangesStack
+                        ->getOrCreateChangesDtoByChannelId($existedIntegrationId)
+                        ->addProductChangesForWebsiteScope($owner, $newWebsiteId);
+                }
+            }
         }
     }
 
@@ -236,20 +250,19 @@ class ProductReverseSyncListener
     protected function translateSalesChannelsToIntegrationChannelInfoArray(array $salesChannels): array
     {
         $integrationChanelInfoArray = [];
-        $salesChannelInfoArray = $this->salesChannelInfosProvider->getSalesChannelsInfoArray();
-
+        $salesChannelInfoArray = $this->salesChannelProvider->getSalesChannelsInfoArray();
         foreach ($salesChannels as $salesChannel) {
             $salesChannelInfoDTO = $salesChannelInfoArray[$salesChannel->getId()] ?? null;
             if (null === $salesChannelInfoDTO) {
                 continue;
             }
 
-            if (empty($integrationChanelInfoArray[$salesChannelInfoDTO->getIntegrationChannelId()])) {
-                $integrationChanelInfoArray[$salesChannelInfoDTO->getIntegrationChannelId()] = [];
+            $integrationId = $salesChannelInfoDTO->getIntegrationChannelId();
+            if (empty($integrationChanelInfoArray[$integrationId])) {
+                $integrationChanelInfoArray[$integrationId] = [];
             }
 
-            $integrationChanelInfoArray[$salesChannelInfoDTO->getIntegrationChannelId()][] =
-                $salesChannelInfoDTO->getWebsiteId();
+            $integrationChanelInfoArray[$integrationId][] = $salesChannelInfoDTO->getWebsiteId();
         }
 
         return $integrationChanelInfoArray;
@@ -273,15 +286,7 @@ class ProductReverseSyncListener
             return false;
         }
 
-        $salesChannelInfoArray = $this->salesChannelInfosProvider->getSalesChannelsInfoArray();
-
-        $trackedSalesChannels = $entity
-            ->getChannels()
-            ->filter(function(SalesChannel $salesChannel) use ($salesChannelInfoArray) {
-                return \array_key_exists($salesChannel->getId(), $salesChannelInfoArray);
-            });
-
-        return false === $trackedSalesChannels->isEmpty();
+        return $this->salesChannelProvider->isSalesChannelAwareEntityHasTrackedSalesChannels($entity);
     }
 
     /**
@@ -290,17 +295,7 @@ class ProductReverseSyncListener
      */
     protected function getAssignedChannelIds(Product $product): array
     {
-        $salesChannelInfoArray = $this->salesChannelInfosProvider->getSalesChannelsInfoArray();
-
-        $integrationChannelIds = [];
-        foreach ($product->getChannels() as $channel) {
-            $salesChannelInfo = $salesChannelInfoArray[$channel->getId()] ?? null;
-            if ($salesChannelInfo instanceof SalesChannelInfo) {
-                $integrationChannelIds[$salesChannelInfo->getIntegrationChannelId()] = true;
-            }
-        }
-
-        return \array_keys($integrationChannelIds);
+        return $this->salesChannelProvider->getIntegrationIdsFromSalesChannelAwareEntity($product);
     }
 
     /**
@@ -330,8 +325,9 @@ class ProductReverseSyncListener
         }
 
         $products = $this->getApplicableKnownProductEntities($unitOfWork);
+
         /**
-         * Products array without inserted products
+         * Product array without inserted products and without product that already waiting on update
          */
         $products = \array_filter($products, function (Product $product) use ($updatedProductIds) {
             return null !== $product->getId() && !\in_array($product->getId(), $updatedProductIds, true);
@@ -341,9 +337,14 @@ class ProductReverseSyncListener
          * @var $localizedValue LocalizedFallbackValue
          */
         foreach ($products as $product) {
-            if ($this->isProductChangedInLocalizableValue($product, $defaultLocalizedValues)) {
+            $foundLocalizableValue = null;
+            if (empty($defaultLocalizedValues)) {
+                break;
+            }
+
+            if ($this->isProductContainsChangedLocValue($product, $defaultLocalizedValues)) {
                 foreach ($this->getAssignedChannelIds($product) as $channelId) {
-                    $this->changesByChannelStack
+                    $this->productChangesStack
                         ->getOrCreateChangesDtoByChannelId($channelId)
                         ->addUpdatedProduct($product);
                 }
@@ -356,9 +357,11 @@ class ProductReverseSyncListener
      * @param array $changedLocalizableValues
      * @return bool
      */
-    protected function isProductChangedInLocalizableValue(Product $product, array $changedLocalizableValues): bool
-    {
-        foreach ($changedLocalizableValues as $localizedValue) {
+    protected function isProductContainsChangedLocValue(
+        Product $product,
+        array &$changedLocalizableValues
+    ): bool {
+        foreach ($changedLocalizableValues as $key => $localizedValue) {
             foreach ($this->mapping['localizableFields'] as $localizableField) {
                 if (!$this->propertyAccessor->isReadable($product, $localizableField)) {
                     continue;
@@ -372,6 +375,7 @@ class ProductReverseSyncListener
                 }
 
                 if ($localizableCollection->contains($localizedValue)) {
+                    unset($changedLocalizableValues[$key]);
                     return true;
                 }
             }

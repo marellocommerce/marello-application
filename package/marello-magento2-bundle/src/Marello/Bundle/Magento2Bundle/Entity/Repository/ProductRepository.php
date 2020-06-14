@@ -21,8 +21,7 @@ class ProductRepository extends EntityRepository
             ->where($qb->expr()->eq('m2p.channel', ':channel'))
             ->andWhere($qb->expr()->in('m2p.product', ':productIds'))
             ->setParameter('channel', $channel)
-            ->setParameter('productIds', $productIds)
-        ;
+            ->setParameter('productIds', $productIds);
 
         return $qb->getQuery()->getResult();
     }
@@ -41,9 +40,7 @@ class ProductRepository extends EntityRepository
             ->where($qb->expr()->eq('m2p.channel', ':channel'))
             ->andWhere($qb->expr()->eq('m2p.product', ':product'))
             ->setParameter('channel', $channelId)
-            ->setParameter('product', $productId)
-        ;
-
+            ->setParameter('product', $productId);
 
         return $qb->getQuery()->getOneOrNullResult();
     }
@@ -75,8 +72,7 @@ class ProductRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('m2p');
         $qb
-            ->select('product.id, product.sku')
-            ->innerJoin('m2p.product', 'product')
+            ->select(['IDENTITY(m2p.product) as id', 'm2p.sku'])
             ->where($qb->expr()->eq('m2p.channel', ':channel'))
             ->setParameter('channel', $channel);
 

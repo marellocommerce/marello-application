@@ -31,7 +31,7 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
      */
     public function getMigrationVersion()
     {
-        return 'v1_0';
+        return 'v1_1';
     }
 
     /**
@@ -220,6 +220,7 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
     {
         $table = $schema->createTable('marello_m2_product');
         $table->addColumn('id', 'integer', ['precision' => 0, 'autoincrement' => true]);
+        $table->addColumn('sku', 'string', ['length' => 255]);
         $table->addColumn('product_id', 'integer');
         $table->addColumn('channel_id', 'integer');
         $table->addColumn('origin_id', 'integer', ['notnull' => false, 'precision' => 0, 'unsigned' => true]);

@@ -2,24 +2,20 @@
 
 namespace Marello\Bundle\Magento2Bundle\DTO;
 
+use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\Magento2Bundle\Entity\Website;
+use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\ProductStatus;
+use Marello\Bundle\Magento2Bundle\Entity\Product as InternalMagentoProduct;
 
 class ProductSimpleUpdateDTO
 {
-    public const DEFAULT_PRICE = 0.0;
+    /** @var InternalMagentoProduct */
+    protected $internalMagentoProduct;
 
-    /** @var int */
-    protected $marelloProductId;
-
-    /** @var string */
-    protected $sku;
-
-    /** @var string */
-    protected $name;
-
-    /** @var float */
-    protected $price;
+    /** @var Product */
+    protected $product;
 
     /** @var Website[] */
     protected $websites = [];
@@ -27,58 +23,50 @@ class ProductSimpleUpdateDTO
     /** @var ProductStatus */
     protected $status;
 
+    /** @var InventoryItem */
+    protected $inventoryItem;
+
+    /** @var BalancedInventoryLevel */
+    protected $balancedInventoryLevel;
+
     /**
-     * @param int $marelloProductId
-     * @param string $sku
-     * @param string $name
-     * @param array $websites
+     * @param InternalMagentoProduct $internalMagentoProduct
+     * @param Product $product
+     * @param Website[] $websites
      * @param ProductStatus $status
+     * @param InventoryItem $inventoryItem
+     * @param BalancedInventoryLevel|null $balancedInventoryLevel
      */
     public function __construct(
-        int $marelloProductId,
-        string $sku,
-        string $name,
+        InternalMagentoProduct $internalMagentoProduct,
+        Product $product,
         array $websites,
-        ProductStatus $status
+        ProductStatus $status,
+        InventoryItem $inventoryItem,
+        BalancedInventoryLevel $balancedInventoryLevel = null
     ) {
-        $this->marelloProductId = $marelloProductId;
-        $this->sku = $sku;
-        $this->name = $name;
+        $this->internalMagentoProduct = $internalMagentoProduct;
+        $this->product = $product;
         $this->websites = $websites;
         $this->status = $status;
-        $this->price = static::DEFAULT_PRICE;
+        $this->inventoryItem = $inventoryItem;
+        $this->balancedInventoryLevel = $balancedInventoryLevel;
     }
 
     /**
-     * @return int
+     * @return InternalMagentoProduct
      */
-    public function getMarelloProductId(): int
+    public function getInternalMagentoProduct(): InternalMagentoProduct
     {
-        return $this->marelloProductId;
+        return $this->internalMagentoProduct;
     }
 
     /**
-     * @return string
+     * @return Product
      */
-    public function getSku(): string
+    public function getProduct(): Product
     {
-        return $this->sku;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPrice(): string
-    {
-        return $this->price;
+        return $this->product;
     }
 
     /**
@@ -95,5 +83,21 @@ class ProductSimpleUpdateDTO
     public function getStatus(): ProductStatus
     {
         return $this->status;
+    }
+
+    /**
+     * @return InventoryItem
+     */
+    public function getInventoryItem(): InventoryItem
+    {
+        return $this->inventoryItem;
+    }
+
+    /**
+     * @return BalancedInventoryLevel|null
+     */
+    public function getBalancedInventoryLevel(): ?BalancedInventoryLevel
+    {
+        return $this->balancedInventoryLevel;
     }
 }

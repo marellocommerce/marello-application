@@ -11,14 +11,15 @@ class RequestFactory
     /**
      * @param string $resource
      * @param array $data
-     * @param string $storeCode
+     * @param string|null $storeCode
      * @return Request
      */
-    public function creategetRequest(
+    public function createGetRequest(
         string $resource,
         array $data = [],
-        string $storeCode = self::ALL_STORE_VIEW_CODE
+        string $storeCode = null
     ): Request {
+        $storeCode = $storeCode ?? self::ALL_STORE_VIEW_CODE;
         $fullApiUrn = $this->getFullAPIUrn($resource, $storeCode);
         return new Request($fullApiUrn, $data);
     }

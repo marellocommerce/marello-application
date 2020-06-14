@@ -5,6 +5,9 @@ namespace Marello\Bundle\Magento2Bundle\Model;
 class SalesChannelInfo
 {
     /** @var int */
+    protected $salesChannelId;
+
+    /** @var int */
     protected $websiteId;
 
     /** @var int */
@@ -16,22 +19,39 @@ class SalesChannelInfo
     /** @var bool */
     protected $integrationActive;
 
+    /** @var string */
+    protected $salesChannelCurrency;
+
     /**
+     * @param int $salesChannelId
      * @param int $websiteId
      * @param int $integrationChannelId
      * @param bool $salesChannelActive
      * @param bool $integrationActive
+     * @param string $salesChannelCurrency
      */
     public function __construct(
+        int $salesChannelId,
         int $websiteId,
         int $integrationChannelId,
         bool $salesChannelActive,
-        bool $integrationActive
+        bool $integrationActive,
+        string $salesChannelCurrency
     ) {
+        $this->salesChannelId = $salesChannelId;
         $this->websiteId = $websiteId;
         $this->integrationChannelId = $integrationChannelId;
         $this->salesChannelActive = $salesChannelActive;
         $this->integrationActive = $integrationActive;
+        $this->salesChannelCurrency = $salesChannelCurrency;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSalesChannelId(): int
+    {
+        return $this->salesChannelId;
     }
 
     /**
@@ -64,5 +84,13 @@ class SalesChannelInfo
     public function isIntegrationActive(): bool
     {
         return $this->integrationActive;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSalesChannelCurrency(): string
+    {
+        return $this->salesChannelCurrency;
     }
 }

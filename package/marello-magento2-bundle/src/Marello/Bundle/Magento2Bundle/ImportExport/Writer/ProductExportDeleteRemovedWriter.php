@@ -5,10 +5,9 @@ namespace Marello\Bundle\Magento2Bundle\ImportExport\Writer;
 class ProductExportDeleteRemovedWriter extends AbstractExportWriter
 {
     /**
-     * @param $sku
-     * @return mixed|void
+     * @param string $sku
      */
-    protected function doWrite($sku)
+    protected function doWrite($sku): void
     {
         if (!$sku) {
             $this->logger->error("[Magento 2] Can't delete product by empty sku.");
