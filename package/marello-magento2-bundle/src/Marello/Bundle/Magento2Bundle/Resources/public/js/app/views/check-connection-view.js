@@ -84,12 +84,9 @@ define(function(require) {
          */
         getResolvedUrl: function() {
             var params = this.getIntegrationAndTransportTypeParams() || {};
-
-            if (!_.isUndefined(this.id)) {
-                params =  _.extend({
-                    transportId: this.id
-                }, params);
-            }
+            params =  _.extend({
+                transportId: !_.isNull(this.transportEntityId) ? this.transportEntityId : 0
+            }, params);
 
             return routing.generate(this.route, params);
         },
