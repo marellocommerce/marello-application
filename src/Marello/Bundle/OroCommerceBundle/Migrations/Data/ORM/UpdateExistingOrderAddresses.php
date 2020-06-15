@@ -26,10 +26,15 @@ class UpdateExistingOrderAddresses extends AbstractFixture
             ->getRepository(Order::class)
             ->findAll();
 
+        /** @var Order $order */
         foreach ($orders as $order) {
-            /** @var SalesChannel $sc */
-            $sc = $order->getSalesChannel();
-            if ($integrationChannel = $sc->getIntegrationChannel()) {
+            /** @var SalesChannel $salesChannel */
+            $salesChannel = $order->getSalesChannel();
+            if (!$salesChannel) {
+                continue;
+            }
+            
+            if ($integrationChannel = $salesChannel->getIntegrationChannel()) {
                 if ($integrationChannel->getType() === OroCommerceChannelType::TYPE) {
                     if ($order->getBillingAddress()->getId() === $order->getShippingAddress()->getId()) {
                         $billingAddress = clone $order->getBillingAddress();
