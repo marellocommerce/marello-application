@@ -28,6 +28,7 @@ marello:
             entity_grid_all_view_label: All %entity_plural_label%
             id.label:               'Id'
             name.label:             'Name'
+            company_number.label:   'Company Number'
             parent.label:           'Parent'
             children.label:         'Children'
             addresses.label:        'Addresses'
