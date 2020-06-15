@@ -387,6 +387,23 @@ class Product extends ExtendProduct implements
     protected $channels;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="channels_codes", type="text", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $channelsCodes;
+
+    /**
      * @var Variant
      *
      * @ORM\ManyToOne(targetEntity="Variant", inversedBy="products")
@@ -565,6 +582,23 @@ class Product extends ExtendProduct implements
      * )
      */
     protected $categories;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="categories_codes", type="text", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $categoriesCodes;
 
     /**
      * @var AttributeFamily
@@ -916,6 +950,33 @@ class Product extends ExtendProduct implements
     {
         if (!$this->channels->contains($channel)) {
             $this->channels->add($channel);
+            $this->addChannelCode($channel->getCode());
+        }
+
+        return $this;
+    }
+    
+    /**
+     * @param string $code
+     * @return $this
+     */
+    public function addChannelCode($code)
+    {
+        if (strpos($this->channelsCodes, '|') === false) {
+            $channelsCodes = [];
+        } else {
+            $channelsCodes = $this->channelsCodes;
+            if (substr($channelsCodes, 0, 1) === '|') {
+                $channelsCodes = substr($channelsCodes, 1);
+            }
+            if (substr($channelsCodes, -1, 1) === '|') {
+                $channelsCodes = substr($channelsCodes, 0, -1);
+            }
+            $channelsCodes = explode("|", $channelsCodes);
+        }
+        if (!in_array($code, $channelsCodes)) {
+            $channelsCodes[] = $code;
+            $this->channelsCodes = sprintf('|%s|', implode('|', $channelsCodes));
         }
 
         return $this;
@@ -949,6 +1010,16 @@ class Product extends ExtendProduct implements
     {
         if ($this->channels->contains($channel)) {
             $this->channels->removeElement($channel);
+            $channelsCodes = $this->channelsCodes;
+            if (substr($channelsCodes, 0, 1) === '|') {
+                $channelsCodes = substr($channelsCodes, 1);
+            }
+            if (substr($channelsCodes, -1, 1) === '|') {
+                $channelsCodes = substr($channelsCodes, 0, -1);
+            }
+            $channelsCodes = explode("|", $channelsCodes);
+            $channelsCodes = array_diff([$channelsCodes], [$channel->getCode()]);
+            $this->channelsCodes = sprintf('|%s|', implode('|', $channelsCodes));
         }
 
         return $this;
@@ -1280,7 +1351,36 @@ class Product extends ExtendProduct implements
     {
         if (!$this->hasCategory($category)) {
             $this->categories->add($category);
-            $category->addProduct($this);
+            if (!$category->hasProduct($this)) {
+                $category->addProduct($this);
+            }
+            $this->addCategoryCode($category->getCode());
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param string $code
+     * @return $this
+     */
+    public function addCategoryCode($code)
+    {
+        if (strpos($this->categoriesCodes, '|') === false) {
+            $categoriesCodes = [];
+        } else {
+            $categoriesCodes = $this->categoriesCodes;
+            if (substr($categoriesCodes, 0, 1) === '|') {
+                $categoriesCodes = substr($categoriesCodes, 1);
+            }
+            if (substr($categoriesCodes, -1, 1) === '|') {
+                $categoriesCodes = substr($categoriesCodes, 0, -1);
+            }
+            $categoriesCodes = explode("|", $categoriesCodes);
+        }
+        if (!in_array($code, $categoriesCodes)) {
+            $categoriesCodes[] = $code;
+            $this->categoriesCodes = sprintf('|%s|', implode('|', $categoriesCodes));
         }
 
         return $this;
@@ -1295,10 +1395,21 @@ class Product extends ExtendProduct implements
         if ($this->hasCategory($category)) {
             $this->categories->removeElement($category);
             $category->removeProduct($this);
+            $categoriesCodes = $this->categoriesCodes;
+            if (substr($categoriesCodes, 0, 1) === '|') {
+                $categoriesCodes = substr($categoriesCodes, 1);
+            }
+            if (substr($categoriesCodes, -1, 1) === '|') {
+                $categoriesCodes = substr($categoriesCodes, 0, -1);
+            }
+            $categoriesCodes = explode("|", $categoriesCodes);
+            $categoriesCodes = array_diff([$categoriesCodes], [$category->getCode()]);
+            $this->categoriesCodes = sprintf('|%s|', implode('|', $categoriesCodes));
         }
 
         return $this;
     }
+    
 
     /**
      * @param Category $category

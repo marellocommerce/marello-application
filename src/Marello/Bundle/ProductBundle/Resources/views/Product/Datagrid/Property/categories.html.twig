@@ -1,0 +1,6 @@
+{% set codes = record.getValue('categoriesCodes')|split('|') %}
+{% for index, code in codes %}
+    {% if index > 0 %}
+        {{ marello_get_category_name_by_code(code) }}<br>
+    {% endif %}
+{% endfor %}

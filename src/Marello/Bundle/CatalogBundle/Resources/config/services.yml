@@ -20,15 +20,6 @@ services:
             - '@request_stack'
             - '@doctrine.orm.entity_manager'
 
-    marello_catalog.event_listener.datagrid.products_grid:
-        class: 'Marello\Bundle\CatalogBundle\EventListener\Datagrid\CategoriesDatagridListener'
-        arguments:
-            - '@oro_entity.doctrine_helper'
-            - '@marello_catalog.provider.categories_choices'
-        tags:
-            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-products-grid, method: onBuildBefore }
-            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.after.marello-products-grid, method: onResultAfter }
-
     marello_catalog.listener.datagrid.category_products_column_listener:
         class: 'Marello\Bundle\CatalogBundle\EventListener\Datagrid\CategoryProductsColumnListener'
         arguments:
@@ -58,3 +49,9 @@ services:
         calls:
             - [setAclHelper, ['@oro_security.acl_helper']]
 
+    marello_catalog.twig.category_extension:
+        class: 'Marello\Bundle\CatalogBundle\Twig\CategoryExtension'
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: twig.extension }
