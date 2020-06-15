@@ -1,4 +1,4 @@
 marello:
     customer:
         company:
-            code.message: 'Company code should be unique per Organization.'
+            number.message: 'Company number should be unique per Organization.'
