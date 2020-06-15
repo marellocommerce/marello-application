@@ -18,7 +18,7 @@ class IntegrationConfigController extends AbstractController
      * @return JsonResponse
      *
      * @Route(
-     *     "/check/{integrationType}/{transportType}",
+     *     "/check/{integrationType}/{transportType}/{transportId}",
      *     methods={"POST"},
      *     name="marello_magento2_integration_check",
      *     requirements={"integrationType"=".+","transportType"=".+"}
