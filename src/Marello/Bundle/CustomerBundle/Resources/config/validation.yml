@@ -10,7 +10,7 @@ Marello\Bundle\CustomerBundle\Entity\Customer:
 
 Marello\Bundle\CustomerBundle\Entity\Company:
     constraints:
-        - Marello\Bundle\CustomerBundle\Validator\Constraints\CompanyCode: ~
+        - Marello\Bundle\CustomerBundle\Validator\Constraints\CompanyNumber: ~
     properties:
         name:
             - NotBlank: ~
