@@ -13,6 +13,8 @@ datagrids:
                     - p.type
                     - p.weight
                     - p.manufacturingCode
+                    - p.channelsCodes
+                    - p.categoriesCodes
                     - p.createdAt
                     - p.updatedAt
                 from:
@@ -29,6 +31,22 @@ datagrids:
             type:
                 label:              marello.product.type.label
                 frontend_type:      string
+                inline_editing:
+                    enable: false
+            channels:
+                label:              marello.product.channels.label
+                type:               twig
+                frontend_type:      html
+                template:           MarelloProductBundle:Product/Datagrid/Property:channels.html.twig
+                renderable:         false
+                inline_editing:
+                    enable: false
+            categories:
+                label:              marello.product.categories.label
+                type:               twig
+                frontend_type:      html
+                template:           MarelloProductBundle:Product/Datagrid/Property:categories.html.twig
+                renderable:         false
                 inline_editing:
                     enable: false
             manufacturingCode:
@@ -69,6 +87,8 @@ datagrids:
                 sku:                    { data_name: p.sku }
                 name:                   { data_name: name }
                 weight:                 { data_name: p.weight }
+                channels:               { data_name: p.channelsCodes }
+                categories:             { data_name: p.categoriesCodes }
                 createdAt:              { data_name: p.createdAt }
                 updatedAt:              { data_name: p.updatedAt }
             default:
@@ -87,6 +107,22 @@ datagrids:
                 manufacturingCode:
                     data_name:          p.manufacturingCode
                     type:               string
+                    enabled:            false
+                channels:
+                    data_name:          p.channelsCodes
+                    type:               choice_like
+                    options:
+                        field_options:
+                            multiple:   true
+                            choices:    '@marello_sales.provider.basic_sales_channels_choices->getChannels()'
+                    enabled:            false
+                categories:
+                    data_name:          p.categoriesCodes
+                    type:               choice_like
+                    options:
+                        field_options:
+                            multiple:   true
+                            choices:    '@marello_catalog.provider.categories_choices->getCategories()'
                     enabled:            false
                 weight:
                     data_name:          p.weight

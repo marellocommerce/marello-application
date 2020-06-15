@@ -218,6 +218,7 @@ class Category extends ExtendCategory implements OrganizationAwareInterface
     {
         if (!$this->hasProduct($product)) {
             $this->products->add($product);
+            $product->addCategoryCode($this->getCode());
         }
 
         return $this;
@@ -230,6 +231,7 @@ class Category extends ExtendCategory implements OrganizationAwareInterface
     public function removeProduct(Product $product)
     {
         if ($this->hasProduct($product)) {
+            $product->removeCategory($this);
             $this->products->removeElement($product);
         }
 
