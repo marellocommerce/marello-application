@@ -23,6 +23,7 @@
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
                     {{ UI.renderProperty('marello.customer.company.name.label'|trans, entity.name) }}
+                    {{ UI.renderProperty('marello.customer.company.company_number.label'|trans, entity.companyNumber ? entity.companyNumber : 'N/A') }}
                     {{ UI.renderProperty('oro.ui.created_at'|trans, entity.createdAt ? entity.createdAt|oro_format_datetime : 'N/A') }}
                     {{ UI.renderProperty('oro.ui.updated_at'|trans, entity.updatedAt ? entity.updatedAt|oro_format_datetime : 'N/A') }}
                     {% if entity.parent %}

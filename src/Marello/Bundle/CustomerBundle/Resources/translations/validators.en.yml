@@ -1,0 +1,4 @@
+marello:
+    customer:
+        company:
+            number.message: 'Company number should be unique per Organization.'
