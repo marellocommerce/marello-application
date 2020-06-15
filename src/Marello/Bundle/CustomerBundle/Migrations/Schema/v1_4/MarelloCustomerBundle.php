@@ -11,29 +11,15 @@ use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterfac
 
 use Marello\Bundle\CustomerBundle\Migrations\Schema\MarelloCustomerBundleInstaller;
 
-class MarelloCustomerBundle implements Migration, ActivityExtensionAwareInterface
+class MarelloCustomerBundle implements Migration
 {
-    /**
-     * @var ActivityExtension
-     */
-    protected $activityExtension;
-
     /**
      * @inheritDoc
      */
     public function up(Schema $schema, QueryBag $queries)
     {
         $table = $schema->getTable(MarelloCustomerBundleInstaller::MARELLO_COMPANY_TABLE);
-        $table->addColumn('code', 'string', ['length' => 255, 'notnull' => false]);
-    }
-
-    /**
-     * Sets the ActivityExtension
-     *
-     * @param ActivityExtension $activityExtension
-     */
-    public function setActivityExtension(ActivityExtension $activityExtension)
-    {
-        $this->activityExtension = $activityExtension;
+        $table->addColumn('company_number', 'string', ['length' => 255, 'notnull' => false]);
+        $table->addUniqueIndex(['company_number', 'organization_id'], 'marello_customer_company_compnrorgidx');
     }
 }
