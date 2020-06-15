@@ -32,6 +32,7 @@ marello:
         payment_reference.label:    Payment Reference
         shipping_method.label:      Shipping Method
         shipping_method_type.label: Shipping Method Type
+        shipping_method_reference.label: Shipping Method Reference
         shipment.label:             Shipment
         data.label:                 Data
         shipping_amount_incl_tax.label:      Shipping Costs Incl. tax
@@ -61,6 +62,7 @@ marello:
             order_totals:           Order Totals
             packing_slips:          Packing Slips
             invoices:               Invoices
+            source_references_information: Source References
         # OrderItem entity
         orderitem:
             entity_label:           Ordered Item
@@ -101,6 +103,7 @@ marello:
         customer:
             entity_label:                     Customer
             entity_plural_label:              Customers
+            entity_grid_all_view_label:       All %entity_plural_label%
             id.label:                         Id
             organization.label:               Organization
             primary_address.label:            Primary Address
