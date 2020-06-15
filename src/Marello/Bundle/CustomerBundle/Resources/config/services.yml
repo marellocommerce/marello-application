@@ -131,9 +131,9 @@ services:
     marello_customer.provider.customer_address:
         class: 'Marello\Bundle\CustomerBundle\Provider\CustomerAddressProvider'
 
-    marello_customer.form.validator.company_code:
-        class: 'Marello\Bundle\CustomerBundle\Validator\CompanyCodeValidator'
+    marello_customer.form.validator.company_number:
+        class: 'Marello\Bundle\CustomerBundle\Validator\CompanyNumberValidator'
         arguments:
             - '@oro_entity.doctrine_helper'
         tags:
-            - { name: validator.constraint_validator, alias: marello_customer.company_code_validator }
+            - { name: validator.constraint_validator, alias: marello_customer.company_number_validator }
