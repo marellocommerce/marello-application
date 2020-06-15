@@ -42,6 +42,10 @@ class CompanyType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, ['label' => 'marello.customer.company.name.label'])
+            ->add('companyNumber', TextType::class, [
+                'label' => 'marello.customer.company.company_number.label',
+                'required' => false
+            ])
             ->add(
                 'parent',
                 ParentCompanySelectType::class,
