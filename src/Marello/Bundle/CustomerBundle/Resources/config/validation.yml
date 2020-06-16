@@ -9,6 +9,8 @@ Marello\Bundle\CustomerBundle\Entity\Customer:
             - Email: ~
 
 Marello\Bundle\CustomerBundle\Entity\Company:
+    constraints:
+        - Marello\Bundle\CustomerBundle\Validator\Constraints\CompanyNumber: ~
     properties:
         name:
             - NotBlank: ~
