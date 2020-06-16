@@ -48,9 +48,17 @@ datagrids:
                 method:           formatCurrency
                 context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
                 align:            right
+            poNumber:
+                label:            marello.order.po_number.label
+                frontend_type:    string
+                renderable:       false
             purchaseDate:
                 frontend_type:    datetime
                 label:            marello.order.purchase_date.label
+                renderable:       false
+            deliveryDate:
+                frontend_type:    datetime
+                label:            marello.order.delivery_date.label
                 renderable:       false
             createdAt:
                 label:            oro.ui.created_at
@@ -74,8 +82,12 @@ datagrids:
                     data_name: shippingName
                 grandTotal:
                     data_name: o.grandTotal
+                poNumber:
+                    data_name: o.poNumber
                 purchaseDate:
                     data_name: o.purchaseDate
+                deliveryDate:
+                    data_name: o.deliveryDate
                 createdAt:
                     data_name: o.createdAt
                 updatedAt:
@@ -102,9 +114,17 @@ datagrids:
                 shippingAddress:
                     type: string
                     data_name: shippingName             # This alias is generated using OrderGrdiAddressFilterListener
+                poNumber:
+                    type: string
+                    data_name: o.poNumber
+                    enabled: false
                 purchaseDate:
                     type: datetime
                     data_name: o.purchaseDate
+                    enabled: false
+                deliveryDate:
+                    type: datetime
+                    data_name: o.deliveryDate
                     enabled: false
                 createdAt:
                     type: datetime
@@ -305,6 +325,10 @@ datagrids:
             quantity:
                 label:            marello.order.orderitem.quantity.label
                 frontend_type:    number
+            productUnit:
+                label:            marello.order.orderitem.product_unit.label
+                frontend_type:    string
+                data_name:        productUnit
             price:
                 label:            marello.order.orderitem.price.per_unit.label
                 type:             localized_number

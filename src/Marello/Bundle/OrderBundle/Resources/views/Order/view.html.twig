@@ -178,6 +178,22 @@
     {% set invoices %}
         {{ dataGrid.renderGrid('marello-order-invoices-grid', {'orderId': entity.id}) }}
     {% endset %}
+    
+    {% set payments %}
+        {{ dataGrid.renderGrid('marello-order-payments-grid', {'orderId': entity.id}) }}
+    {% endset %}
+
+    {% set optionalWidget %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ UI.renderProperty('marello.order.delivery_date.label'|trans, entity.deliveryDate|oro_format_datetime) }}
+                    {{ UI.renderProperty('marello.order.po_number.label'|trans, entity.poNumber) }}
+                    {{ UI.renderProperty('marello.order.order_note.label'|trans, entity.orderNote) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
 
     {% set dataBlocks = [
         {
@@ -214,6 +230,13 @@
             'class': 'active',
             'subblocks': [
                 { 'data' : [packingSlips] }
+            ]
+        },
+        {
+            'title': 'marello.order.datablock.optional'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data' : [optionalWidget] }
             ]
         }
     ] %}

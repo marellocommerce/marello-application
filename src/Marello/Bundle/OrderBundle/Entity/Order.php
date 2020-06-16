@@ -490,6 +490,48 @@ class Order extends ExtendOrder implements
     protected $data = [];
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="delivery_date", type="datetime", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $deliveryDate;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="order_note",type="text", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $orderNote;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="po_number",type="string", nullable=true, length=255)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $poNumber;
+
+    /**
      * @param AbstractAddress|null $billingAddress
      * @param AbstractAddress|null $shippingAddress
      */
@@ -1226,5 +1268,62 @@ class Order extends ExtendOrder implements
     public function getData()
     {
         return $this->data;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDeliveryDate()
+    {
+        return $this->deliveryDate;
+    }
+
+    /**
+     * @param \DateTime $deliveryDate
+     * @return $this
+     */
+    public function setDeliveryDate(\DateTime $deliveryDate = null)
+    {
+        $this->deliveryDate = $deliveryDate;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrderNote()
+    {
+        return $this->orderNote;
+    }
+
+    /**
+     * @param string $orderNote
+     * @return $this
+     */
+    public function setOrderNote(string $orderNote)
+    {
+        $this->orderNote = $orderNote;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPoNumber()
+    {
+        return $this->poNumber;
+    }
+
+    /**
+     * @param string $poNumber
+     * @return $this
+     */
+    public function setPoNumber(string $poNumber)
+    {
+        $this->poNumber = $poNumber;
+
+        return $this;
     }
 }

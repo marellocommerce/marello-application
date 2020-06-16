@@ -43,7 +43,7 @@ class MarelloOrderBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_11';
+        return 'v1_12';
     }
 
     /**
@@ -145,6 +145,9 @@ class MarelloOrderBundleInstaller implements
         $table->addIndex(['billing_address_id'], 'IDX_A619DD6443656FE6', []);
         $table->addIndex(['shipping_address_id'], 'IDX_A619DD64B1835C8F', []);
         $table->addIndex(['salesChannel_id'], 'IDX_A619DD644C7A5B2E', []);
+        $table->addColumn('delivery_date', 'datetime', ['notnull' => false]);
+        $table->addColumn('order_note', 'text', ['notnull' => false]);
+        $table->addColumn('po_number', 'string', ['length' => 255, 'notnull' => false]);
         $table->addIndex(['organization_id']);
 
         $this->activityExtension->addActivityAssociation($schema, 'marello_notification', $table->getName());
@@ -218,6 +221,17 @@ class MarelloOrderBundleInstaller implements
             $table,
             'status',
             'marello_item_status',
+            false,
+            false,
+            [
+                'extend' => ['owner' => ExtendScope::OWNER_SYSTEM],
+            ]
+        );
+        $this->extendExtension->addEnumField(
+            $schema,
+            $table,
+            'productUnit',
+            'marello_product_unit',
             false,
             false,
             [
