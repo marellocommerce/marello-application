@@ -31,6 +31,7 @@ class TransportSettingFormType extends AbstractType
             [
                 'label' => 'marello.magento2.transport_setting_form.api_url.label',
                 'required' => true,
+                'tooltip'    => 'marello.magento2.transport_setting_form.api_url.tooltip',
                 'constraints' => [
                     new Url()
                 ]
@@ -42,7 +43,8 @@ class TransportSettingFormType extends AbstractType
             OroEncodedPlaceholderPasswordType::class,
             [
                 'label' => 'marello.magento2.transport_setting_form.api_token.label',
-                'required' => true
+                'required' => true,
+                'tooltip'    => 'marello.magento2.transport_setting_form.api_token.tooltip'
             ]
         );
 
