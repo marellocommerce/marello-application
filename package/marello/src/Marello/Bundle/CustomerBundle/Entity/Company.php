@@ -20,7 +20,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
  *      uniqueConstraints={
  *          @ORM\UniqueConstraint(
  *              name="marello_customer_company_compnrorgidx",
- *              columns={"company_number,organization_id"}
+ *              columns={"company_number","organization_id"}
  *          )
  *      }
  *
