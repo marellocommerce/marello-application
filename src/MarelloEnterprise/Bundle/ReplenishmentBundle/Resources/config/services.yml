@@ -25,8 +25,6 @@ services:
         parent: oro_entity.abstract_repository
         arguments:
             - 'MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrder'
-        calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
 
     marelloenterprise_replenishment.twig.replenishment_extension:
         class: 'MarelloEnterprise\Bundle\ReplenishmentBundle\Twig\ReplenishmentExtension'
