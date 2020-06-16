@@ -32,6 +32,13 @@ services:
         tags:
             - { name: doctrine.event_listener, event: postPersist }
 
+    marello_order.listener.doctrine.order_item_product_unit:
+        class: Marello\Bundle\OrderBundle\EventListener\Doctrine\OrderItemProductUnitListener
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
+
     marello_order.listener.doctrine.order_item_status:
         class: Marello\Bundle\OrderBundle\EventListener\Doctrine\OrderItemStatusListener
         arguments:
