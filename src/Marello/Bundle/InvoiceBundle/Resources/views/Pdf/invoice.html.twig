@@ -237,7 +237,7 @@
                     {{ address.postalCode }} {{ address.city }}<br>
                     {{ ('country.' ~ address.country.iso2code)|trans({}, 'entities', language) }}
                 </p>
-
+                {% set paymentTerm = marello_get_payment_term_for_customer(entity.customer) %}
                 {# Invoice details #}
                 <div class="invoice-details">
                     <div class="invoice-dl clearfix">
@@ -249,6 +249,8 @@
                             <div class="dt">{{ 'marello.customer.company.pdf.company_number.label'|trans({}, 'pdf', language) }}:</div>
                             <div class="dd">{{ entity.customer.company.companyNumber }}</div>
                         {% endif %}
+                        <div class="dt">{{ 'marello.pdf.invoice.payment_term.label'|trans({}, 'pdf', language) }}:</div>
+                        <div class="dd">{{ 'marello.payment_term.ui.payment_term.term_days'|trans({'%days%': paymentTerm.term }) }}</div>
                     </div>
                 </div>
             </div>
