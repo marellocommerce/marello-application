@@ -162,3 +162,15 @@
         {{ form_rest(form) }}
     {% endif %}
 {% endblock %}
+
+{% block marello_order_total_paid_widget %}
+    <div class="currency-select-enabled">
+        <div class="multicurrency-fields-wrapper value-field input-append">
+            {{ form_widget(form.value) }}
+            {{ form_widget(form.currency) }}
+            {{ form_errors(form.value) }}
+            {{ form_errors(form.currency) }}
+        </div>
+    </div>
+{% endblock %}
+
