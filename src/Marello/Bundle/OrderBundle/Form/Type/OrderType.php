@@ -16,6 +16,7 @@ use Oro\Bundle\LocaleBundle\Form\Type\LocalizationSelectType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -94,6 +95,28 @@ class OrderType extends AbstractType
             ->add(
                 'purchaseDate',
                 OroDateTimeType::class,
+                [
+                    'required' => false
+                ]
+            )
+            ->add(
+                'deliveryDate',
+                OroDateTimeType::class,
+                [
+                    'required' => false
+                ]
+            )
+            ->add(
+                'poNumber',
+                TextType::class,
+                [
+                    'label' => 'marello.order.po_number.label',
+                    'required' => false
+                ]
+            )
+            ->add(
+                'orderNote',
+                TextareaType::class,
                 [
                     'required' => false
                 ]
