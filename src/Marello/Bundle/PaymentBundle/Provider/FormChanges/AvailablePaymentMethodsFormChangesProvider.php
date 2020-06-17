@@ -73,7 +73,7 @@ class AvailablePaymentMethodsFormChangesProvider implements FormChangesProviderI
                             ]
                         )
                         ->getForm();
-                 }
+                }
             } else {
                 $form = $this->formFactory
                     ->createNamedBuilder($paymentFormName)
