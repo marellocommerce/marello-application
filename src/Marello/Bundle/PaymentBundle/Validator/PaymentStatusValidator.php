@@ -25,8 +25,7 @@ class PaymentStatusValidator extends ConstraintValidator
         if ($entity instanceof Payment) {
             $paymentSource = $entity->getPaymentSource();
             $status = $entity->getStatus()->getId();
-            if (
-                (!$paymentSource && $status === LoadPaymentStatusData::ASSIGNED) ||
+            if ((!$paymentSource && $status === LoadPaymentStatusData::ASSIGNED) ||
                 ($paymentSource && $status === LoadPaymentStatusData::UNASSIGNED)
             ) {
                 $this->context->buildViolation($constraint->message)

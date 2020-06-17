@@ -245,12 +245,14 @@
                         <div class="dd">{{ entity.invoicedAt|date('d-m-Y') }}</div>
                         <div class="dt">{{ 'marello.pdf.invoice.invoice_number.label'|trans({}, 'pdf', language) }}:</div>
                         <div class="dd">{% if entity.invoiceNumber is not empty %}{{ entity.invoiceNumber }}{% else %}&nbsp;{% endif %}</div>
-                        {% if entity.customer.company.companyNumber %}
+                        {% if entity.customer.company and entity.customer.company.companyNumber %}
                             <div class="dt">{{ 'marello.customer.company.pdf.company_number.label'|trans({}, 'pdf', language) }}:</div>
                             <div class="dd">{{ entity.customer.company.companyNumber }}</div>
                         {% endif %}
-                        <div class="dt">{{ 'marello.pdf.invoice.payment_term.label'|trans({}, 'pdf', language) }}:</div>
-                        <div class="dd">{{ 'marello.payment_term.ui.payment_term.term_days'|trans({'%days%': paymentTerm.term }) }}</div>
+                        {% if paymentTerm %}
+                            <div class="dt">{{ 'marello.pdf.invoice.payment_term.label'|trans({}, 'pdf', language) }}:</div>
+                            <div class="dd">{{ 'marello.payment_term.ui.payment_term.term_days'|trans({'%days%': paymentTerm.term }) }}</div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -258,10 +260,10 @@
 
         <div class="contents clearfix">
             {# Invoice lines table #}
-    {% set total = 0.0 %}
-    {% set taxtotal = 0.0 %}
-    {% set tables = get_document_tables(entity) %}
-    {% for table in tables %}
+            {% set total = 0.0 %}
+            {% set taxtotal = 0.0 %}
+            {% set tables = get_document_tables(entity) %}
+            {% for table in tables %}
             {% set subtotal = 0.0 %}
             <table class="invoice-lines" autosize="0">
                 <thead>

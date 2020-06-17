@@ -182,7 +182,8 @@ class OrderExtension extends AbstractExtension
      * @param Order $order
      * @return float|int
      */
-    public function getOrderTotalPaid(Order $order) {
+    public function getOrderTotalPaid(Order $order)
+    {
         $orderInvoices = $this->getOrderInvoices($order);
         $totalPaid = 0.0;
         foreach ($orderInvoices as $invoice) {
@@ -195,7 +196,8 @@ class OrderExtension extends AbstractExtension
      * @param Order $order
      * @return float|int
      */
-    public function getOrderTotalDue(Order $order) {
+    public function getOrderTotalDue(Order $order)
+    {
         $orderInvoices = $this->getOrderInvoices($order);
         $totalDue = 0.0;
         foreach ($orderInvoices as $invoice) {
