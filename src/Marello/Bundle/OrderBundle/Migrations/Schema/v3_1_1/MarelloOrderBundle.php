@@ -27,7 +27,7 @@ class MarelloOrderBundle implements Migration, ExtendExtensionAwareInterface
 
     private function updateOrderTable(Schema $schema)
     {
-        $table = $schema->createTable('marello_order_order');
+        $table = $schema->getTable('marello_order_order');
         $table->addColumn('delivery_date', 'datetime', ['notnull' => false]);
         $table->addColumn('order_note', 'text', ['notnull' => false]);
         $table->addColumn('po_number', 'string', ['length' => 255, 'notnull' => false]);
@@ -45,7 +45,7 @@ class MarelloOrderBundle implements Migration, ExtendExtensionAwareInterface
         $this->extendExtension->addEnumField(
             $schema,
             $table,
-            'status',
+            'productUnit',
             'marello_product_unit',
             false,
             false,
