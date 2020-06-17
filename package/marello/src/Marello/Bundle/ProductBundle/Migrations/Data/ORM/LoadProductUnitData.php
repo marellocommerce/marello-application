@@ -11,13 +11,15 @@ class LoadProductUnitData extends AbstractFixture
 {
     const PRODUCT_UNIT_ENUM_CLASS = 'marello_product_unit';
     
-    const ITEM = 'item';
-    const SET = 'set';
+    const PU_ITEM = 'item';
+    const PU_BOX = 'box';
+    const PU_PALLET = 'pallet';
 
     /** @var array */
     protected $data = [
-        self::ITEM => true,
-        self::SET => false,
+        self::PU_ITEM => true,
+        self::PU_BOX => false,
+        self::PU_PALLET => false
     ];
 
     /**
