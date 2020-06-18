@@ -178,10 +178,6 @@
     {% set invoices %}
         {{ dataGrid.renderGrid('marello-order-invoices-grid', {'orderId': entity.id}) }}
     {% endset %}
-    
-    {% set payments %}
-        {{ dataGrid.renderGrid('marello-order-payments-grid', {'orderId': entity.id}) }}
-    {% endset %}
 
     {% set optionalWidget %}
         <div class="widget-content">
