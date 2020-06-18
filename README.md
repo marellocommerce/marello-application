@@ -7,7 +7,7 @@ Marello (Enterprise) contains the possibility to integrate with the Commerce pla
 Requirements
 ------------
 
-The Marello Magento bundle requires Marello (EE) 3.0.x or above and having a Magento (Enterprise) 2.2.x or above installed, in order to function correctly. 
+The Marello Magento bundle requires Marello (EE) 3.0.x or above and having a Magento (Enterprise) 2.3.x or above installed, in order to function correctly. 
 
 General information
 ------------

@@ -51,9 +51,21 @@ class SimpleProductCreateNormalizer implements NormalizerInterface
                         'backorders' => $isBackorderAllowed,
                         'qty' => $inventoryQty
                     ]
-                ]
+                ],
+                'custom_attributes' => []
             ]
         ];
+
+        if ($object->getProductTaxClass() && $object->getProductTaxClass()->getOriginId()) {
+            $payload['product']['custom_attributes'][] = [
+                'attribute_code' => 'tax_class_id',
+                'value' => $object->getProductTaxClass()->getOriginId()
+            ];
+        }
+
+        if ($inventoryQty > 0 || $isBackorderAllowed) {
+            $payload['product']['extension_attributes']['stock_item']['is_in_stock'] = true;
+        }
 
         $websiteIds = \array_values(
             \array_map(function (Website $website) {

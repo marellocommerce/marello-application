@@ -4,6 +4,7 @@ namespace Marello\Bundle\Magento2Bundle\DTO;
 
 use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\Magento2Bundle\Entity\ProductTaxClass;
 use Marello\Bundle\Magento2Bundle\Entity\Website;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\ProductStatus;
@@ -35,7 +36,10 @@ class ProductSimpleCreateDTO
     /** @var InventoryItem */
     protected $inventoryItem;
 
-    /** @var BalancedInventoryLevel */
+    /** @var ProductTaxClass|null */
+    protected $productTaxClass;
+
+    /** @var BalancedInventoryLevel|null */
     protected $balancedInventoryLevel;
 
     /**
@@ -43,6 +47,7 @@ class ProductSimpleCreateDTO
      * @param Website[] $websites
      * @param ProductStatus $status
      * @param InventoryItem $inventoryItem
+     * @param ProductTaxClass|null $productTaxClass
      * @param BalancedInventoryLevel|null $balancedInventoryLevel
      */
     public function __construct(
@@ -50,12 +55,14 @@ class ProductSimpleCreateDTO
         array $websites,
         ProductStatus $status,
         InventoryItem $inventoryItem,
+        ProductTaxClass $productTaxClass = null,
         BalancedInventoryLevel $balancedInventoryLevel = null
     ) {
         $this->product = $product;
         $this->websites = $websites;
         $this->status = $status;
         $this->inventoryItem = $inventoryItem;
+        $this->productTaxClass = $productTaxClass;
         $this->balancedInventoryLevel = $balancedInventoryLevel;
         $this->price = static::DEFAULT_PRICE;
     }
@@ -98,6 +105,14 @@ class ProductSimpleCreateDTO
     public function getInventoryItem(): InventoryItem
     {
         return $this->inventoryItem;
+    }
+
+    /**
+     * @return ProductTaxClass|null
+     */
+    public function getProductTaxClass(): ?ProductTaxClass
+    {
+        return $this->productTaxClass;
     }
 
     /**

@@ -1,36 +1,36 @@
 <?php
 
-namespace Marello\Bundle\Magento2Bundle\ImportExport\Translator\SimpleProduct;
+namespace Marello\Bundle\Magento2Bundle\ImportExport\Helper;
 
+use Doctrine\Common\Collections\Collection;
 use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\Repository\BalancedInventoryRepository;
+use Marello\Bundle\Magento2Bundle\Entity\ProductTaxClass;
 use Marello\Bundle\Magento2Bundle\Entity\Website;
-use Marello\Bundle\Magento2Bundle\ImportExport\Translator\TranslatorInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 
-abstract class ProductTranslator implements TranslatorInterface, LoggerAwareInterface
+/**
+ * Contains generic methods that used by simple product translators
+ */
+class SimpleProductTranslatorHelper
 {
-    use LoggerAwareTrait;
-
     /** @var BalancedInventoryRepository */
     protected $balancedInventoryRepository;
 
     /**
      * @param BalancedInventoryRepository $balancedInventoryRepository
      */
-    public function setBalancedInventoryRepository(BalancedInventoryRepository $balancedInventoryRepository)
+    public function __construct(BalancedInventoryRepository $balancedInventoryRepository)
     {
         $this->balancedInventoryRepository = $balancedInventoryRepository;
     }
 
     /**
      * @param Product $product
-     * @param int $channelId
+     * @param int $integrationId
      * @return Website[]
      */
-    protected function getWebsitesProductAttachedTo(Product $product, int $channelId): array
+    public function getWebsitesProductAttachedTo(Product $product, int $integrationId): array
     {
         $websites = [];
         $salesChannels = $product->getChannels();
@@ -44,7 +44,7 @@ abstract class ProductTranslator implements TranslatorInterface, LoggerAwareInte
                 continue;
             }
 
-            if ($website->getChannelId() === $channelId) {
+            if ($website->getChannelId() === $integrationId) {
                 $websites[$website->getId()] = $website;
             }
         }
@@ -57,7 +57,7 @@ abstract class ProductTranslator implements TranslatorInterface, LoggerAwareInte
      * @param Website $website
      * @return BalancedInventoryLevel|null
      */
-    protected function getBalancedInventoryLevel(Product $product, Website $website): ?BalancedInventoryLevel
+    public function getBalancedInventoryLevel(Product $product, Website $website): ?BalancedInventoryLevel
     {
         $salesChannelGroup = $website->getSalesChannel()->getGroup();
         if (null === $salesChannelGroup) {
@@ -68,5 +68,25 @@ abstract class ProductTranslator implements TranslatorInterface, LoggerAwareInte
             $product,
             $salesChannelGroup
         );
+    }
+
+    /**
+     * @param Product $product
+     * @param int $integrationId
+     * @return ProductTaxClass
+     */
+    public function getMagentoProductTaxClass(Product $product, int $integrationId): ?ProductTaxClass
+    {
+        if (null === $product->getTaxCode()) {
+            return null;
+        }
+
+        /** @var Collection $productClasses */
+        $productClasses = $product->getTaxCode()->getMagento2ProductTaxClasses();
+        $targetTaxClasses = $productClasses->filter(function (ProductTaxClass $productTaxClass) use ($integrationId) {
+                return $productTaxClass->getChannelId() === $integrationId;
+        });
+
+        return $targetTaxClasses->first();
     }
 }
