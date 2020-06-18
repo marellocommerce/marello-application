@@ -43,16 +43,28 @@ class SimpleProductUpdateNormalizer implements NormalizerInterface
                 'sku' => $currentSku,
                 'name' => $name,
                 'status' => $status,
-                "extension_attributes" => [
+                'extension_attributes' => [
                     'website_ids' => $websiteIds,
                     'stock_item' => [
                         'use_config_backorders' => false,
                         'backorders' => $isBackorderAllowed,
                         'qty' => $inventoryQty
                     ]
-                ]
+                ],
+                'custom_attributes' => []
             ]
         ];
+
+        if ($object->getProductTaxClass() && $object->getProductTaxClass()->getOriginId()) {
+            $payload['product']['custom_attributes'][] = [
+                'attribute_code' => 'tax_class_id',
+                'value' => $object->getProductTaxClass()->getOriginId()
+            ];
+        }
+
+        if ($inventoryQty > 0 || $isBackorderAllowed) {
+            $payload['product']['extension_attributes']['stock_item']['is_in_stock'] = true;
+        }
 
         return SimpleProductUpdateMessage::create(
             $internalProductId,

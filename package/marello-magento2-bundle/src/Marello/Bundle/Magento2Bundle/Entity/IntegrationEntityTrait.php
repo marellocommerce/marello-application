@@ -2,12 +2,13 @@
 
 namespace Marello\Bundle\Magento2Bundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
 
 trait IntegrationEntityTrait
 {
     /**
-     * @var Integration|null
+     * @var Integration
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\IntegrationBundle\Entity\Channel")
      * @ORM\JoinColumn(name="channel_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
@@ -26,9 +27,9 @@ trait IntegrationEntityTrait
     }
 
     /**
-     * @return Integration|null
+     * @return Integration
      */
-    public function getChannel(): ?Integration
+    public function getChannel(): Integration
     {
         return $this->channel;
     }
@@ -38,7 +39,7 @@ trait IntegrationEntityTrait
      */
     public function getChannelId(): int
     {
-        return $this->channel ? $this->channel->getId() : null;
+        return $this->channel->getId();
     }
 
     /**
@@ -46,6 +47,6 @@ trait IntegrationEntityTrait
      */
     public function getChannelName(): string
     {
-        return $this->channel ? $this->channel->getName() : null;
+        return $this->channel->getName();
     }
 }

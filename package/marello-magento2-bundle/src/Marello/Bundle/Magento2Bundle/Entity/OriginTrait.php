@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\Magento2Bundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
 trait OriginTrait

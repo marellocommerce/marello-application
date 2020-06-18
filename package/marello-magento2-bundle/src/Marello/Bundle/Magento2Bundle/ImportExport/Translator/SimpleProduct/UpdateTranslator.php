@@ -5,18 +5,31 @@ namespace Marello\Bundle\Magento2Bundle\ImportExport\Translator\SimpleProduct;
 use Marello\Bundle\Magento2Bundle\DTO\ProductSimpleUpdateDTO;
 use Marello\Bundle\Magento2Bundle\Entity\Product as MagentoProduct;
 use Marello\Bundle\Magento2Bundle\Entity\Repository\ProductRepository as MagentoProductRepository;
+use Marello\Bundle\Magento2Bundle\ImportExport\Helper\SimpleProductTranslatorHelper;
+use Marello\Bundle\Magento2Bundle\ImportExport\Translator\TranslatorInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 
-class UpdateTranslator extends ProductTranslator
+class UpdateTranslator implements TranslatorInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
+    /** @var SimpleProductTranslatorHelper */
+    protected $helper;
+
     /** @var MagentoProductRepository */
     protected $magentoProductRepository;
 
     /**
+     * @param SimpleProductTranslatorHelper $helper
      * @param MagentoProductRepository $magentoProductRepository
      */
-    public function __construct(MagentoProductRepository $magentoProductRepository)
-    {
+    public function __construct(
+        SimpleProductTranslatorHelper $helper,
+        MagentoProductRepository $magentoProductRepository
+    ) {
+        $this->helper = $helper;
         $this->magentoProductRepository = $magentoProductRepository;
     }
 
@@ -60,9 +73,7 @@ class UpdateTranslator extends ProductTranslator
             return null;
         }
 
-        $websites = $this->getWebsitesProductAttachedTo($entity, $context['channel']);
-        $status = $entity->getStatus();
-
+        $websites = $this->helper->getWebsitesProductAttachedTo($entity, $context['channel']);
         if (empty($websites)) {
             $this->logger->warning(
                 '[Magento 2] No websites attached to the entity with channel. ' .
@@ -76,13 +87,16 @@ class UpdateTranslator extends ProductTranslator
             return null;
         }
 
-        $balancedInventoryLevel = $this->getBalancedInventoryLevel($entity, current($websites));
+        $status = $entity->getStatus();
+        $productTaxClass = $this->helper->getMagentoProductTaxClass($entity, $context['channel']);
+        $balancedInventoryLevel = $this->helper->getBalancedInventoryLevel($entity, current($websites));
         return new ProductSimpleUpdateDTO(
             $internalMagentoProduct,
             $entity,
             $websites,
             $status,
             $entity->getInventoryItems()->first(),
+            $productTaxClass,
             $balancedInventoryLevel
         );
     }

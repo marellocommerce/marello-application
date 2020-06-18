@@ -3,10 +3,27 @@
 namespace Marello\Bundle\Magento2Bundle\ImportExport\Translator\SimpleProduct;
 
 use Marello\Bundle\Magento2Bundle\DTO\ProductSimpleCreateDTO;
+use Marello\Bundle\Magento2Bundle\ImportExport\Helper\SimpleProductTranslatorHelper;
+use Marello\Bundle\Magento2Bundle\ImportExport\Translator\TranslatorInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 
-class CreateTranslator extends ProductTranslator
+class CreateTranslator implements TranslatorInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
+    /** @var SimpleProductTranslatorHelper */
+    protected $helper;
+
+    /**
+     * @param SimpleProductTranslatorHelper $helper
+     */
+    public function __construct(SimpleProductTranslatorHelper $helper)
+    {
+        $this->helper = $helper;
+    }
+
     /**
      * @param Product $entity
      * @param array $context
@@ -27,9 +44,7 @@ class CreateTranslator extends ProductTranslator
             return null;
         }
 
-        $websites = $this->getWebsitesProductAttachedTo($entity, $context['channel']);
-        $status = $entity->getStatus();
-
+        $websites = $this->helper->getWebsitesProductAttachedTo($entity, $context['channel']);
         if (empty($websites)) {
             $this->logger->warning(
                 '[Magento 2] No websites attached to the entity with channel. ' .
@@ -43,15 +58,19 @@ class CreateTranslator extends ProductTranslator
             return null;
         }
 
-        $balancedInventoryLevel = $this->getBalancedInventoryLevel($entity, current($websites));
+        $status = $entity->getStatus();
+        $productTaxClass = $this->helper->getMagentoProductTaxClass($entity, $context['channel']);
+        $balancedInventoryLevel = $this->helper->getBalancedInventoryLevel($entity, current($websites));
         $productDTO = new ProductSimpleCreateDTO(
             $entity,
             $websites,
             $status,
             $entity->getInventoryItems()->first(),
+            $productTaxClass,
             $balancedInventoryLevel
         );
 
         return $productDTO;
     }
+
 }

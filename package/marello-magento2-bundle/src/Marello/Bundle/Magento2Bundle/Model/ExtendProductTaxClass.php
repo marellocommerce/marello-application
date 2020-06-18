@@ -2,7 +2,12 @@
 
 namespace Marello\Bundle\Magento2Bundle\Model;
 
+use Marello\Bundle\Magento2Bundle\Entity\ProductTaxClass;
+use Marello\Bundle\TaxBundle\Entity\TaxCode;
+
 /**
+ * @method TaxCode|null getTaxCode()
+ * @method ProductTaxClass setTaxCode(TaxCode $taxCode = null)
  */
 class ExtendProductTaxClass
 {

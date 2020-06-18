@@ -23,7 +23,8 @@ class ProductListener
     protected $mapping = [
         'fields' => [
             'status',
-            'sku'
+            'sku',
+            'taxCode'
         ],
         'localizableFields' => [
             'names'
@@ -124,10 +125,6 @@ class ProductListener
                     $this->mapping['fields'],
                     \array_keys($entityChangeSet)
                 );
-
-                /**
-                 * @todo Issue with changed sku
-                 */
 
                 if ($changedTrackedFieldValues) {
                     $updatedProductIds[] = $updatedProduct->getId();

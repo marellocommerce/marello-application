@@ -219,22 +219,20 @@ services:
             - { name: oro_integration.sync_processor, integration: magento2 }
 
     # Translators
-    marello_magento2.importexport.translator.simple_product.product:
-        class: Marello\Bundle\Magento2Bundle\ImportExport\Translator\SimpleProduct\ProductTranslator
-        abstract: true
-        calls:
-            - ['setBalancedInventoryRepository', ['@marello_inventory.repository.balancedinventory']]
-            - [setLogger, ['@logger']]
-
     marello_magento2.importexport.translator.simple_product.create:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Translator\SimpleProduct\CreateTranslator
-        parent: marello_magento2.importexport.translator.simple_product.product
+        arguments:
+            - '@marello_magento2.importexport.helper.simple_product_translator'
+        calls:
+            - [setLogger, ['@logger']]
 
     marello_magento2.importexport.translator.simple_product.update:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Translator\SimpleProduct\UpdateTranslator
-        parent: marello_magento2.importexport.translator.simple_product.product
         arguments:
+            - '@marello_magento2.importexport.helper.simple_product_translator'
             - '@marello_magento2.repository.product'
+        calls:
+            - [setLogger, ['@logger']]
 
     marello_magento2.importexport.translator.product_delete_on_channel:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Translator\SimpleProduct\ProductDeleteOnChannelTranslator
@@ -273,3 +271,9 @@ services:
        class: Marello\Bundle\Magento2Bundle\ImportExport\Serializer\ProductDeleteOnChannelNormalizer
        tags:
              - { name: oro_importexport.normalizer, priority: 30 }
+
+    # Helpers
+    marello_magento2.importexport.helper.simple_product_translator:
+        class: Marello\Bundle\Magento2Bundle\ImportExport\Helper\SimpleProductTranslatorHelper
+        arguments:
+            - '@marello_inventory.repository.balancedinventory'
