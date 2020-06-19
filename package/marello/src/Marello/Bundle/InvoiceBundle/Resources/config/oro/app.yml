@@ -1,7 +1,0 @@
-liip_imagine:
-    filter_sets:
-        invoice_logo:
-            quality: 100
-            filters:
-                relative_resize:
-                    heighten: 59
