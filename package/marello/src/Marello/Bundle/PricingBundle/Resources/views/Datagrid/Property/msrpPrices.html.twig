@@ -1,7 +1,0 @@
-{% set prices = record.getValue('msrpPrices')|split(';') %}
-{% for index, valueSet in prices %}
-    {% set values = valueSet|split('|') %}
-    {% if values|length == 2 %}
-        {{ values[0]|oro_format_currency({'currency': values[1]}) }}<br>
-    {% endif %}
-{% endfor %}

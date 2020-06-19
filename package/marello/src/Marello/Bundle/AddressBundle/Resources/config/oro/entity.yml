@@ -1,5 +1,0 @@
-oro_entity:
-    entity_aliases:
-        Marello\Bundle\AddressBundle\Entity\MarelloAddress:
-            alias:        marelloaddress
-            plural_alias: marelloaddresses
