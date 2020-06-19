@@ -1,5 +1,0 @@
-dynamic-imports:
-    marellosubscription:
-        - marellosubscription/js/app/views/subscription-address-view
-        - marellosubscription/js/app/components/customer-selection-component
-        - marellosubscription/js/app/views/subscription-possible-shipping-methods-view
