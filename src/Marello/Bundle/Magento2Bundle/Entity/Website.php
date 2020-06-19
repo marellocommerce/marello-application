@@ -144,11 +144,13 @@ class Website extends ExtendWebsite implements OriginAwareInterface, Integration
      */
     public function getFirstActiveStoreCode(): ?string
     {
-        $store = $this->stores->filter(function (Store $store) {
-            return $store->isActive();
-        })->first();
+        foreach ($this->stores as $store) {
+            if ($store->isActive()) {
+                return $store->getCode();
+            }
+        }
 
-        return $store instanceof Store ? $store->getCode(): null;
+        return null;
     }
     /**
      * @return string
