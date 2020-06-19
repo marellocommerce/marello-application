@@ -4686,6 +4686,48 @@
             }
         },
         {
+            "name": "marellocommerce/marello-magento2-bundle",
+            "version": "dev-develop",
+            "dist": {
+                "type": "path",
+                "url": "../../package/marello-magento2-bundle",
+                "reference": "604e608411c5cdbabbfb6f89b63d84e96164c6d8"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "": "src/"
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Madia B.V.",
+                    "homepage": "https://www.marello.com"
+                }
+            ],
+            "description": "Marello package",
+            "keywords": [
+                "Integration",
+                "Magento2",
+                "Marello",
+                "Product"
+            ],
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
             "name": "michelf/php-markdown",
             "version": "1.9.0",
             "source": {

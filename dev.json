@@ -35,7 +35,8 @@
         "oro/platform": "4.1.*",
         "oro/platform-serialised-fields": "4.1.*",
         "oro/calendar-bundle": "4.1.*",
-        "marellocommerce/marello": "self.version"
+        "marellocommerce/marello": "self.version",
+        "marellocommerce/marello-magento2-bundle": "self.version"
     },
     "require-dev": {
         "behat/behat": "3.4.*",
