@@ -18,7 +18,7 @@ class MarelloTaxBundleInstaller implements Installation
      */
     public function getMigrationVersion()
     {
-        return 'v1_3_1';
+        return 'v1_4';
     }
 
     /**
@@ -48,7 +48,7 @@ class MarelloTaxBundleInstaller implements Installation
     {
         $table = $schema->createTable('marello_tax_tax_code');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
-        $table->addColumn('code', 'string', ['notnull' => true, 'length' => 32]);
+        $table->addColumn('code', 'string', ['notnull' => true, 'length' => 255]);
         $table->addColumn('description', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('data', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
         $table->setPrimaryKey(['id']);
