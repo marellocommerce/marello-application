@@ -24,7 +24,7 @@ use Marello\Bundle\PricingBundle\Model\ExtendAssembledChannelPriceList;
  * )
  * @ORM\Table(name="marello_assembled_ch_pr_list")
  */
-class AssembledChannelPriceList extends ExtendAssembledChannelPriceList
+class AssembledChannelPriceList extends ExtendAssembledChannelPriceList implements PriceListInterface
 {
     use EntityCreatedUpdatedAtTrait;
     

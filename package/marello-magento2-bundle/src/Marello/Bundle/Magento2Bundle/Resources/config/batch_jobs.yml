@@ -1,0 +1,109 @@
+connector:
+    name: oro_importexport
+    jobs:
+        marello_magento2_website_rest_import:
+            title: "Website import from Magento 2"
+            type:  import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_magento2.integration.connector.website
+                        processor: marello_magento2.importexport.processor.website
+                        writer:    oro_importexport.writer.entity
+                    parameters:
+                        batch_size: 25
+                # @todo Implement removing of abandoned website
+
+        marello_magento2_store_rest_import:
+            title: "Store import from Magento 2"
+            type:  import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_magento2.integration.connector.store
+                        processor: marello_magento2.importexport.processor.store
+                        writer:    oro_importexport.writer.entity
+                    parameters:
+                        batch_size: 25
+                # @todo Implement removing of abandoned stores
+
+        marello_magento2_product_tax_class_import:
+            title: "Product Tax Class import from Magento 2"
+            type:  import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_magento2.integration.connector.product_tax_class
+                        processor: marello_magento2.importexport.processor.product_tax_class
+                        writer:    oro_importexport.writer.entity
+                    parameters:
+                        batch_size: 25
+                # @todo Implement removing of abandoned tax class
+
+        marello_magento2_product_rest_export:
+            title: "Export product data to Magento 2"
+            type: export
+            steps:
+                findInternalMagentoProduct:
+                    title: export
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_magento2.importexport.reader.find_internal_magento_product
+                        processor: marello_magento2.importexport.processor.find_internal_magento_product
+                        writer:    marello_magento2.importexport.writer.find_internal_magento_product
+                create:
+                    title: export
+                    class: Marello\Bundle\Magento2Bundle\Batch\Step\ActionItemStep
+                    services:
+                        reader:    marello_magento2.importexport.reader.entity.create_action
+                        processor: marello_magento2.importexport.processor.export.product.create_action
+                        writer:    marello_magento2.importexport.writer.export.product.create
+                    parameters:
+                        batch_size: 1
+                        ActionName: 'create'
+                update:
+                    title: export
+                    class: Marello\Bundle\Magento2Bundle\Batch\Step\ActionItemStep
+                    services:
+                        reader:    marello_magento2.importexport.reader.entity.update_action
+                        processor: marello_magento2.importexport.processor.export.product.update_action
+                        writer:    marello_magento2.importexport.writer.export.product.update
+                    parameters:
+                        batch_size: 1
+                        ActionName: 'update'
+                updatedWebsiteScopeData:
+                    title: export
+                    class: Marello\Bundle\Magento2Bundle\Batch\Step\ActionItemStep
+                    services:
+                        reader:    marello_magento2.importexport.reader.entity.update_website_data_action
+                        processor: marello_magento2.importexport.processor.export.product.update_website_scope_data_action
+                        writer:    marello_magento2.importexport.writer.export.product.update_website_scope_data
+                    parameters:
+                        batch_size: 1
+                        ActionName: 'updatedWebsiteScopeData'
+                delete:
+                    title: export
+                    class: Marello\Bundle\Magento2Bundle\Batch\Step\ActionItemStep
+                    services:
+                        reader:    marello_magento2.importexport.reader.export.product_delete_removed
+                        processor: marello_magento2.importexport.processor.export.product_delete_removed
+                        writer:    marello_magento2.importexport.writer.export.product_delete_removed
+                    parameters:
+                        batch_size: 1
+                        ActionName: 'delete'
+                deleteOnChannel:
+                    title: export
+                    class: Marello\Bundle\Magento2Bundle\Batch\Step\ActionItemStep
+                    services:
+                        reader:    marello_magento2.importexport.reader.entity.delete_on_channel_action
+                        processor: marello_magento2.importexport.processor.export.product.delete_on_channel_action
+                        writer:    marello_magento2.importexport.writer.export.product.delete_on_channel
+                    parameters:
+                        batch_size: 1
+                        ActionName: 'deleteOnChannel'
