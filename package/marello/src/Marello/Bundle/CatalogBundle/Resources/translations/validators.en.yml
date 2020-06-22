@@ -1,6 +1,0 @@
-marello:
-    catalog:
-        category:
-            messages:
-                error:
-                    code: Category with same code already exists. Please provide unique code for this Category
