@@ -1,0 +1,24 @@
+{% block marello_magento2_transport_check_button_widget %}
+    {% set options = form.vars.options|default({})|merge({
+        id: form.parent.vars.value and form.parent.vars.value.id is defined ? form.parent.vars.value.id : null,
+        parentElementSelector: 'form',
+        checkConnectionStatusSelector: '.check-connection-messages'
+    }) %}
+    {% set attr = attr|merge({
+        'data-role': 'check-connection-btn',
+        'data-page-component-module':  'marellomagento2/js/app/components/check-connection-component',
+        'data-page-component-options': options|json_encode|raw,
+    }) %}
+    <div class="control-group">
+        <div class="controls">
+            <button type="{{ type|default('button') }}" {{ block('button_attributes') }}>
+                {{ label|trans({}, translation_domain) }}
+            </button>
+            <div class="check-connection-messages"></div>
+        </div>
+    </div>
+{% endblock marello_magento2_transport_check_button_widget %}
+
+{% block marello_magento2_transport_check_button_row %}
+    {{ block('button_row') }}
+{% endblock marello_magento2_transport_check_button_row %}

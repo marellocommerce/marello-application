@@ -1,0 +1,3 @@
+dynamic-imports:
+    marellomagento2:
+        - marellomagento2/js/app/components/check-connection-component

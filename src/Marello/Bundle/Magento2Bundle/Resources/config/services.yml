@@ -1,0 +1,228 @@
+services:
+    marello_magento2.group_saleschannels.form.autocomplete.search_handler:
+        class: Marello\Bundle\Magento2Bundle\Autocomplete\GroupSalesChannelHandler
+        parent: marello_sales.group_saleschannels.form.autocomplete.search_handler
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: magento2_group_saleschannels }
+
+    marello_magento2.transport.rest.request.request_factory:
+        class: Marello\Bundle\Magento2Bundle\Transport\Rest\Request\RequestFactory
+
+    marello_magento2.transport.rest.search_client_factory:
+        class: Marello\Bundle\Magento2Bundle\Transport\Rest\Client\SearchClientFactory
+
+    marello_magento2.repository.website:
+        class: Marello\Bundle\Magento2Bundle\Entity\Repository\WebsiteRepository
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'Marello\Bundle\Magento2Bundle\Entity\Website'
+
+    marello_magento2.repository.product:
+        class: Marello\Bundle\Magento2Bundle\Entity\Repository\ProductRepository
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'Marello\Bundle\Magento2Bundle\Entity\Product'
+
+    # Event Listeners
+    marello_magento2.event_listener.doctrine.product:
+        class: Marello\Bundle\Magento2Bundle\EventListener\Doctrine\ProductListener
+        arguments:
+            - '@property_accessor'
+            - '@marello_magento2.provider.tracked_sales_channel'
+            - '@marello_magento2.stack.product_changes_by_channel'
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+
+    marello_magento2.event_listener.doctrine.product_price:
+        class: Marello\Bundle\Magento2Bundle\EventListener\Doctrine\ProductPriceListener
+        arguments:
+            - '@marello_magento2.stack.product_changes_by_channel'
+            - '@marello_magento2.provider.tracked_sales_channel'
+            - '@marello_product.repository.product'
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+
+    marello_magento2.event_listener.doctrine.product_relation:
+        class: Marello\Bundle\Magento2Bundle\EventListener\Doctrine\ProductRelationListener
+        arguments:
+            - '@marello_magento2.stack.product_changes_by_channel'
+            - '@marello_magento2.provider.tracked_sales_channel'
+            - '@marello_product.repository.product'
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+
+    marello_magento2.event_listener.doctrine.sales_channel_reverse_sync_listener:
+        class: Marello\Bundle\Magento2Bundle\EventListener\Doctrine\SalesChannelReverseSyncListener
+        arguments:
+            - '@marello_magento2.provider.tracked_sales_channel'
+            - '@marello_magento2.stack.product_changes_by_channel'
+            - '@marello_product.repository.product'
+            - '@oro_message_queue.message_producer'
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+            - { name: doctrine.event_listener, event: postFlush }
+            - { name: doctrine.event_listener, event: onClear }
+
+    marello_magento2.event_listener.doctrine.product_changes_by_chanel_reverse_sync:
+        class: Marello\Bundle\Magento2Bundle\EventListener\Doctrine\ProductChangesByChannelReverseSyncListener
+        arguments:
+            - '@marello_magento2.stack.product_changes_by_channel'
+            - '@marello_magento2.scheduler.product'
+        tags:
+            - { name: doctrine.event_listener, event: onClear }
+            # After all event listeners that registered in this bundle
+            - { name: doctrine.event_listener, event: postFlush, priority: -10 }
+
+    marello_magento2.event_listener.doctrine.integration_reverse_sync:
+        class: Marello\Bundle\Magento2Bundle\EventListener\Doctrine\IntegrationReverseSyncListenerListener
+        arguments:
+            - '@marello_magento2.repository.product'
+            - '@marello_magento2.stack.product_changes_by_channel'
+            - '@oro_message_queue.message_producer'
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+            - { name: doctrine.event_listener, event: onClear }
+            # Before marello_magento2.event_listener.doctrine.product_changes_by_chanel_reverse_sync
+            - { name: doctrine.event_listener, event: postFlush}
+
+    marello_magento2.event_listener.doctrine.website_sales_channel_reverse_sync:
+        class: Marello\Bundle\Magento2Bundle\EventListener\Doctrine\WebsiteSalesChannelReverseSyncListener
+        arguments:
+            - '@marello_magento2.repository.website'
+            - '@marello_product.repository.product'
+            - '@marello_magento2.provider.tracked_sales_channel'
+            - '@marello_magento2.scheduler.product'
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+            - { name: doctrine.event_listener, event: postFlush }
+            - { name: doctrine.event_listener, event: onClear }
+
+    # Handlers
+    marello_magento2.handler.transport_entity_handler:
+        class: Marello\Bundle\Magento2Bundle\Handler\TransportEntityHandler
+        arguments:
+            - '@form.factory'
+
+    marello_magento2.transport.rest_transport:
+        class: Marello\Bundle\Magento2Bundle\Transport\RestTransport
+        arguments:
+            - '@oro_integration.transport.rest.event_dispatchable_client_factory'
+            - '@marello_magento2.transport.rest.request.request_factory'
+            - '@marello_magento2.transport.rest.search_client_factory'
+            - '@oro_security.encoder.default'
+        calls:
+            - [setLogger, ["@oro_integration.logger.strategy"]]
+        tags:
+            - { name: oro_integration.transport, type: magento2_rest, channel_type: magento2 }
+
+    marello_magento2.handler.transport_handler:
+        class: Marello\Bundle\Magento2Bundle\Handler\TransportHandler
+        public: true
+        arguments:
+            - '@oro_integration.manager.types_registry'
+            - '@marello_magento2.handler.transport_entity_handler'
+            - '@marello_magento2.provider.websites_provider'
+
+    # Providers
+    marello_magento2.provider.magento2_channel_type:
+        class: Marello\Bundle\Magento2Bundle\Provider\Magento2ChannelType
+        public: false
+        tags:
+            - { name: oro_integration.channel, type: magento2 }
+
+    marello_magento2.provider.websites_provider:
+        class: Marello\Bundle\Magento2Bundle\Provider\WebsitesProvider
+        arguments:
+            - '@translator'
+
+    marello_magento2.provider.tracked_sales_channel:
+        class: Marello\Bundle\Magento2Bundle\Provider\TrackedSalesChannelProvider
+        arguments:
+            - '@marello_magento2.repository.website'
+
+    # Forms and form related logic
+    marello_magento2.form.extension.channel_connector_extension:
+        class: Marello\Bundle\Magento2Bundle\Form\Extension\ChannelConnectorsExtension
+        tags:
+            - { name: form.type_extension, extended_type: Oro\Bundle\IntegrationBundle\Form\Type\ChannelType }
+
+    marello_magento2.form.extension.channel_sales_group_extension:
+        class: Marello\Bundle\Magento2Bundle\Form\Extension\ChannelSalesGroupExtension
+        arguments:
+            - '@marello_sales.repository.sales_channel_group'
+        tags:
+            - { name: form.type_extension, extended_type: Oro\Bundle\IntegrationBundle\Form\Type\ChannelType }
+
+    # Stack
+    marello_magento2.stack.product_changes_by_channel:
+        class: Marello\Bundle\Magento2Bundle\Stack\ProductChangesByChannelStack
+
+    # Message processor
+    marello_magento2.async.sales_channels_removed:
+        class: Marello\Bundle\Magento2Bundle\Async\SalesChannelsRemovedProcessor
+        arguments:
+            - '@oro_message_queue.job.runner'
+            - '@doctrine'
+            - '@marello_magento2.scheduler.product'
+        calls:
+            - [setLogger, ['@logger']]
+        tags:
+            - { name: oro_message_queue.client.message_processor }
+
+    marello_magento2.async.sales_channel_state_changed:
+        class: Marello\Bundle\Magento2Bundle\Async\SalesChannelStateChangedProcessor
+        arguments:
+            - '@oro_message_queue.job.runner'
+            - '@doctrine'
+            - '@marello_magento2.scheduler.product'
+        calls:
+            - [setLogger, ['@logger']]
+        tags:
+            - { name: oro_message_queue.client.message_processor }
+
+    marello_magento2.async.clear_internal_data_for_disabled_integration:
+        class: Marello\Bundle\Magento2Bundle\Async\ClearInternalDataForDisabledIntegrationProcessor
+        arguments:
+            - '@oro_message_queue.job.runner'
+            - '@oro_message_queue.message_producer'
+            - '@doctrine'
+        calls:
+            - [setLogger, ['@logger']]
+        tags:
+            - { name: oro_message_queue.client.message_processor }
+
+    marello_magento2.async.remove_remote_data_for_disabled_integration:
+        class: Marello\Bundle\Magento2Bundle\Async\RemoveRemoteDataForDisabledIntegrationProcessor
+        arguments:
+            - '@oro_message_queue.job.runner'
+            - '@oro_message_queue.message_producer'
+            - '@doctrine'
+        calls:
+            - [setLogger, ['@logger']]
+        tags:
+            - { name: oro_message_queue.client.message_processor }
+
+    marello_magento2.async.remove_remote_product_for_disabled_integration:
+        class: Marello\Bundle\Magento2Bundle\Async\RemoveRemoteProductForDisableIntegrationProcessor
+        arguments:
+            - '@oro_message_queue.job.runner'
+            - '@marello_magento2.transport.rest_transport'
+            - '@doctrine'
+        calls:
+            - [setLogger, ['@logger']]
+        tags:
+            - { name: oro_message_queue.client.message_processor }
+
+    # Constraints
+    marello_magento2.validator.sales_channels_attached_to_integration:
+        class: Marello\Bundle\Magento2Bundle\Validator\SalesChannelsAttachedToIntegrationValidator
+        arguments:
+            - '@marello_magento2.provider.tracked_sales_channel'
+        tags:
+            - { name: validator.constraint_validator, alias: marello_magento2.sales_channel_attached_to_integration_validator }
+
+    # Scheduler
+    marello_magento2.scheduler.product:
+        class: Marello\Bundle\Magento2Bundle\Scheduler\ProductScheduler
+        arguments:
+            - '@oro_integration.sync_scheduler.link'
