@@ -1,3 +1,0 @@
-Marello\Bundle\SalesBundle\Entity\SalesChannelGroup:
-    constraints:
-        - Marello\Bundle\Magento2Bundle\Validator\Constraints\SalesChannelsAttachedToIntegration: ~
