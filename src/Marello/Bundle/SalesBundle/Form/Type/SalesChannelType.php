@@ -70,10 +70,6 @@ class SalesChannelType extends AbstractType
                 'label' => 'marello.sales.saleschannel.create_own_group.label'
             ]);
         }
-
-        if ($channel->getId()) {
-            FormUtils::replaceField($form, 'code', ['disabled' => true]);
-        }
     }
 
     /**
