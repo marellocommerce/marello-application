@@ -1,2 +1,0 @@
-bundles:
-    - { name: Marello\Bundle\RefundBundle\MarelloRefundBundle, priority: 30 }

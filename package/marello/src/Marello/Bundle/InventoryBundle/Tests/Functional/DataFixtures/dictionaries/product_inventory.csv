@@ -1,6 +1,0 @@
-sku,inventory_qty,replenishment,purchaseInventory,desiredInventory,orderOnDemandAllowed
-p1,100,never_out_of_stock,125,250,false
-p2,100,discontinued,100,100,false
-p3,100,never_out_of_stock,100,150,false
-p4,100,discontinued,50,100,false
-p6,0,never_out_of_stock,0,0,true

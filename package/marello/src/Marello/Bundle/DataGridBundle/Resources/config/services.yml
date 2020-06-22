@@ -1,9 +1,0 @@
-services:
-    marello_datagrid.datagridhelper:
-        class: Marello\Bundle\DataGridBundle\Helper\DatagridHelper
-
-    marello_datagrid.event_listener.row_selection_select_all:
-        class: 'Marello\Bundle\DataGridBundle\EventListener\Datagrid\RowSelectionSelectAllListener'
-        tags:
-            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after, method: onBuildAfter, priority: 250 }
-            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.after, method: onResultAfter }
