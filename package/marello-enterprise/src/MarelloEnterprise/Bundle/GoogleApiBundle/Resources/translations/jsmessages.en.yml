@@ -1,4 +1,0 @@
-marelloenterprise:
-    google_api:
-        validation:
-            api_key_not_blank: "Google Client Secret should be filled first"

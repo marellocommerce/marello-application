@@ -1,4 +1,0 @@
-marello_return_return:
-    resource: "@MarelloReturnBundle/Controller/ReturnController.php"
-    type:     annotation
-    prefix:   /marello/return
