@@ -1,3 +1,0 @@
-dynamic-imports:
-    marelloinventory:
-        - marelloinventory/js/app/components/marelloinventory-chart-component

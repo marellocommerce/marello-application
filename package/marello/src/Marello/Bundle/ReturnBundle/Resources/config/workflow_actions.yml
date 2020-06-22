@@ -1,8 +1,0 @@
-services:
-    marello_return.workflow.return_inspection_ok_action:
-        class: Marello\Bundle\ReturnBundle\Workflow\InspectionAction
-        arguments:
-            - '@oro_action.expression.context_accessor'
-            - '@event_dispatcher'
-        tags:
-            - { name: oro_action.action, alias: return_inspection_ok }

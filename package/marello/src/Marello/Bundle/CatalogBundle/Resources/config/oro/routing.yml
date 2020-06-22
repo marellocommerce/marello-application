@@ -1,4 +1,0 @@
-marello_catalog_category:
-    resource:     "@MarelloCatalogBundle/Controller/CategoryController.php"
-    type:         annotation
-    prefix:       /marello/catalog/category
