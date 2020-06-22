@@ -1,4 +1,0 @@
-dynamic-imports:
-    marellosupplier:
-        - marellosupplier/js/app/views/product-supplier-view
-        - marellosupplier/js/app/views/product-suppliers-view

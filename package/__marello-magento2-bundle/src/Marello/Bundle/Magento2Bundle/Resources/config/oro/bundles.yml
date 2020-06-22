@@ -1,2 +1,0 @@
-bundles:
-    - { name: Marello\Bundle\Magento2Bundle\MarelloMagento2Bundle, priority: 30 # After MarelloSalesBundle }
