@@ -98,12 +98,16 @@ class TransportSettingFormType extends AbstractType
                         'attr' => ['data-role' => self::ELEMENT_DATA_ROLE_WEBSITE_TO_CHANNEL_MAPPING],
                         'data' => [
                             [
-                                'website_code' => 'MAG',
-                                'sales_chanel_code' => 'MAR',
+                                'website_code' => 'base',
+                                'sales_chanel_code' => 'zonnebrillen',
                             ],
                             [
-                                'website_code' => 'MAG_2',
-                                'sales_chanel_code' => 'MAR_2',
+                                'website_code' => 'sonnenbrillen',
+                                'sales_chanel_code' => 'zonnebrillen_de',
+                            ],
+                            [
+                                'website_code' => 'lunettesdesoleil',
+                                'sales_chanel_code' => 'lunettesdesoleil_com',
                             ]
                         ]
                     ]
