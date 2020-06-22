@@ -1,9 +1,0 @@
-oro_entity:
-    entity_aliases:
-        Marello\Bundle\PaymentTermBundle\Entity\PaymentTerm:
-            alias: marellopaymentterm
-            plural_alias: marellopaymentterms
-
-        Marello\Bundle\PaymentTermBundle\Entity\MarelloPaymentTermSettings:
-            alias: marellopaymenttermsetting
-            plural_alias: marellopaymenttermsettings
