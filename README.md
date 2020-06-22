@@ -1,100 +1,131 @@
-# Marello Monolithic Development Repository
+Marello Unified Commerce Application
+==============================
 
-This monolithic repository is used by the product development team as the main source code repository ("upstream repository") for all development activities. It contains the source code of all products and applications. The code changes and the new code are frequently distributed to the individual application repositories ("downstream repositories"). Occasionally, code changes are accepted back from the downstream repositories (e.g. pull requests from the community get tested in the mono repo on the version the PR has been created for).
+Marello Unified Commerce Management provides capabilities to meet and exceed rising expectations in commerce. Add and manage any sales channel, gain real-time insight into your B2C and B2B orders, inventory, fulfillment, customers and more. A unique unified experience allows shoppers to buy anywhere, fulfill anywhere, and return anywhere with one piece of software, one single version of the truth.
 
-## Repository Structure
+This document contains information on how to download, install, and start
+using Marello.
 
-The monolithic repository contains codes of individual packages, applications and environments: 
+## Requirements
 
-- applications - an application is a Symfony application that contains referenceres to all required package dependencies.
-In order to avoid duplication of dependencies, they are handled with 
-[path](https://getcomposer.org/doc/05-repositories.md#path) repository type in dev.json files.
-- package - a package is a group of related functional modules that are used primarily together in a certain application.
-- environments - basic docker setup for development purposes which includes docker-compose files and build files for applications to run
+Marello is a Symfony 4.4 based application with the following requirements:
 
-## Installation and Initialization
+* PHP 7.3.13 or above with command line interface
+* PHP Extensions
+    * Ctype
+    * Fileinfo
+    * GD 2.0 and above
+    * Intl (ICU library 4.4 and above)
+    * JSON
+    * Mbstring
+    * Mysql
+    * PCRE 8.0 and above
+    * SimpleXML
+    * Tokenizer
+    * Xml
+    * Zip    
+* MySQL 5.7 or above
 
-* [Install composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx) globally 
-* Clone repository to the local environment:
+## Installation instructions
+
+As both Symfony and Marello use [Composer][1] to manage their dependencies, this is the recommended way to install Marello.
+
+- Clone Marello application repository:
+
 ```bash
-git clone https://github.com/marellocommerce/development-mono-repository.git
-```
-* Go to the cloned repository folder:
-```bash
-cd development-mono-repository
-```
-* Make sure you have installed [fxpio/composer-asset-plugin](https://github.com/fxpio/composer-asset-plugin/blob/master/Resources/doc/index.md) globally (per user). If not, install:
-```bash
-composer self-update
-composer global require "fxp/composer-asset-plugin"
-```
-* Install tools in `tool` folder:
-```bash
-composer install --working-dir=tool
-```
-* Install all dependencies for the application you are going to work on, for example:
-```bash
-COMPOSER=dev.json composer install --working-dir=applications/marello-application
-```
-* Install application via web or command line interface or use composer script in dev.json 'marello-reset'
-```bash
-COMPOSER=dev.json COMPOSER_PROCESS_TIMEOUT=3000 composer marello-reset --working-dir=applications/marello-application
-```
-* Repeat the previous two steps (install application dependencies and run application installer) for as many applications as necessary.
-
-## Development Experience
-
-* Enable PHPStorm configuration for the application you are going to work on:
-```bash
-php tool/console phpstorm:init-application {application_name}
-```
-* Create a feature branch
-* Perform code changes and testing
-* Push your branch to the remote repository and create a pull request
-
-*Note:* to see all existing applications run `phpstorm:init-application` without parameters:
-```bash
-php tool/console phpstorm:init-application
+git clone -b x.y.z https://github.com/marellocommerce/marello-application.git
 ```
 
-## Release manager experience
+where x.y.z is the latest [release tag](https://github.com/marellocommerce/marello-application/releases) or use the latest master:
 
-* Start at #installation and initialization
-* Add / make sure remote repositories have been added to main repo
-* Checkout new branch if necessary (create from develop when it's a new version otherwise create from maintenance branch if available)
-* Test application(s); run tests and try install of application and update of existing application
-* If tests are all ok, merge back into develop and master branch
-* Push branches (develop & master) to remote repo (mono repository)
-* Check versions in the composer.json files before pushing to the individual downstream repositories
-* Git subtree push to the individual downstream repositories to the corresponding branch (needs to be done for all individual downstream repositories)
-
-**NOTE**: subtree push to the packages first since they are needed to create the composer lock files for the applications
 ```bash
-git subtree push  --prefix <package or application directory in mono-repo> <remote repository> <remote branch> --squash
-```
-* Create tags on the remote repository / add release notes, from the correct branch with the correct new tag
-* Create maintenance branch for released version (if it's is a new version)
-* Repeat previous steps for applications and generate lock files
-* Push new maintenance branch to remote of the mono repository
-
-**Pushing to individual downstream repo's master branches, make sure you've pulled from the downstream repo's first** 
-```
-git push marello $(git subtree split --prefix=package/marello --onto=marello/master):master
-git push marello-enterprise $(git subtree split --prefix=package/marello-enterprise --onto=marello-enterprise/master):master
-git push marello-subscriptions $(git subtree split --prefix=package/marello-subscriptions --onto=marello-subscriptions/master):master
+    git clone https://github.com/marellocommerce/marello-application.git
 ```
 
+- Install [Composer][1] globally following the official Composer installation documentation
 
-## Checking PR's
-* Create branch locally based of the branch on which the PR is based
-* Git subtree pull into the correct package or application from forked repo or remote repo 
+- Make sure that you have [NodeJS][3] >=12.0 installed
+
+- Install Marello dependencies with composer. If installation process seems too slow you can use `--prefer-dist` option. Go to marello-application folder and run composer installation:
+
 ```bash
-git subtree pull --prefix <package or application> <remote repo> <remote branch> --squash
-``` 
-* Review changes
-* Run tests against changes
-* Merge into maintenance or master branch
-* Push the changes to downstream repositories
+composer install --prefer-dist --no-dev
+```
+
+- Create the database with the name specified on previous step (default name is "marello_application").
+
+- On some systems it might be necessary to temporarily increase memory_limit setting to 1 GB in php.ini configuration file for the duration of the installation process:
 ```bash
-git subtree push --prefix <package or application> <remote repo> <remote branch> --squash
-``` 
+memory_limit=1024M
+```
+
+**Note:** After the installation is finished the memory_limit configuration can be changed back to the recommended value (512 MB or more).
+
+- Install application and admin user with Installation Wizard by opening install.php in the browser or from CLI:
+
+```bash  
+php bin/console oro:install --env prod
+```
+
+**Note** If the installation process times out, add the `--timeout=0` argument to the oro:install command.
+
+- Enable WebSockets messaging
+
+```bash
+php bin/console gos:websocket:server --env prod
+```
+
+- Configure crontab or scheduled tasks execution to run the command below every minute:
+
+```bash
+php bin/console oro:cron --env prod
+
+```
+- Launch the message queue processing:
+```bash
+php bin/console oro:message-queue:consume --env=prod
+```
+**Note** We do recommend to use a supervisor for running the ``oro:message-queue:consume`` command. This will make sure that the command and
+the consumer will run all the time. This has become important for every Oro Platform based application since a lot of background tasks depend
+ on the consumer to run. For more information about configuration and what supervisor can do for you can either be found in the [Oro(CRM) docs][5] or the
+ [site of Supervisord][6].
+ 
+**Note:** ``bin/console`` is a path from project root folder. Please make sure you are using full path for crontab configuration or if you running console command from other location.
+
+## Installation notes
+
+Installed PHP Accelerators must be compatible with Symfony and Doctrine (support DOCBLOCKs)
+
+Note that the port used in Websocket must be open in firewall for outgoing/incoming connections
+
+Using MySQL 5.6 on HDD is potentially risky because of performance issues
+
+Recommended configuration for this case:
+
+    innodb_file_per_table = 0
+
+And ensure that timeout has default value
+
+    wait_timeout = 28800
+
+See [Optimizing InnoDB Disk I/O][2] for more
+
+## Web Server Configuration
+
+The Marello application is based on the Symfony standard application so web server configuration recommendations are the [same][4].
+
+## Package Manager Configuration
+
+Github OAuth token should be configured in package manager settings
+
+## Need Support?
+
+[Join the Community Chat][7] and get help from other users in the Marello community.
+
+[1]:  https://getcomposer.org/
+[2]:  https://dev.mysql.com/doc/refman/5.6/en/optimizing-innodb-diskio.html
+[3]:  https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager
+[4]:  https://symfony.com/doc/3.4/setup/web_server_configuration.html
+[5]:  https://oroinc.com/orocrm/doc/current/install-upgrade/installation-quick-start-dev/crm#step-4-post-installation-environment-configuration
+[6]:  https://supervisord.org/
+[7]:  https://www.marello.com/community/

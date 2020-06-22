@@ -1,6 +1,0 @@
-marello:
-    ups:
-        settings:
-            shipping_service:
-                blank.message: 'At least one shipping service should be selected.'
-                wrong_country.message: '"%shipping_service%" shipping service refers to %shipping_service_country%. Ups integration country is %settings_country%'
