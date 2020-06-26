@@ -84,7 +84,7 @@ class InventoryManager extends BaseInventoryManager
         }
         /** @var InventoryBatch[] $updatedBatches */
         $updatedBatches = $context->getInventoryBatches();
-        if (count($updatedBatches) === 1 && $updatedBatches[0]->getId() === null) {
+        if (count($updatedBatches) === 1) {
             $level->addInventoryBatch($updatedBatches[0]);
         }
         $updatedLevel = $this->updateInventory($level, $inventory, $allocatedInventory);
@@ -94,6 +94,13 @@ class InventoryManager extends BaseInventoryManager
             InventoryUpdateEvent::INVENTORY_UPDATE_AFTER,
             new InventoryUpdateEvent($context)
         );
+        if (!empty($context->getInventoryBatches())) {
+            // for some reason multiple batches are not saved when this flush is not triggered..
+            // which causes issues when replenishing multiple batches :/ (can't complete the replenishment order)
+            $this->doctrineHelper
+                ->getEntityManagerForClass(InventoryBatch::class)
+                ->flush();
+        }
     }
 
     /**
