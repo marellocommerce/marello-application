@@ -19,6 +19,7 @@ class MarelloSalesBundle implements Migration
     {
         /** Tables generation **/
         $this->modifyMarelloSalesSalesChannelTable($schema);
+        $this->modifyMarelloSalesSalesChannelGroupTable($schema);
     }
 
     /**
@@ -32,4 +33,20 @@ class MarelloSalesBundle implements Migration
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    protected function modifyMarelloSalesSalesChannelGroupTable(Schema $schema)
+    {
+        $table = $schema->getTable('marello_sales_channel_group');
+        $table->addColumn('integration_channel_id', 'integer', ['notnull' => false]);
+        $table->addUniqueIndex(['integration_channel_id'], 'UNIQ_759DCFAB3D6A9E29');
+
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_integration_channel'),
+            ['integration_channel_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+    }
 }
