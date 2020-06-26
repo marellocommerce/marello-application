@@ -56,7 +56,7 @@ class WarehouseGroupType extends AbstractType
                 [
                     'attr' => [
                         'data-entity-id' => $entityId,
-                        'disabled' => $fixedType
+                        'readonly' => $fixedType
                     ],
                     'required' => true
                 ]
