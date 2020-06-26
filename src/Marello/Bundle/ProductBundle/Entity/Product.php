@@ -36,7 +36,7 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
  *      uniqueConstraints={
  *          @ORM\UniqueConstraint(
  *              name="marello_product_product_skuorgidx",
- *              columns={"sku,organization_id"}
+ *              columns={"sku","organization_id"}
  *          )
  *      }
  * )
