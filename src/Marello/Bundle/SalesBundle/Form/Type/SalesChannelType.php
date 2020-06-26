@@ -5,6 +5,7 @@ namespace Marello\Bundle\SalesBundle\Form\Type;
 use Marello\Bundle\PricingBundle\Form\EventListener\CurrencySubscriber;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\CurrencyBundle\Form\Type\CurrencyType;
+use Oro\Bundle\FormBundle\Utils\FormUtils;
 use Oro\Bundle\LocaleBundle\Form\Type\LocalizationSelectType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
