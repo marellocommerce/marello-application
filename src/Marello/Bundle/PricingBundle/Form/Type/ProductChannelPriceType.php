@@ -4,6 +4,7 @@ namespace Marello\Bundle\PricingBundle\Form\Type;
 
 use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
 use Marello\Bundle\SalesBundle\Form\Type\SalesChannelSelectType;
+use Oro\Bundle\CurrencyBundle\Form\DataTransformer\MoneyValueTransformer;
 use Oro\Bundle\FormBundle\Form\Type\OroMoneyType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -32,6 +33,8 @@ class ProductChannelPriceType extends AbstractType
                 'constraints' => $options['allowed_empty_value'] === false ? new NotNull() : null,
                 'label'    => 'marello.pricing.productprice.value.label',
             ]);
+
+        $builder->get('value')->addModelTransformer(new MoneyValueTransformer());
     }
 
     /**

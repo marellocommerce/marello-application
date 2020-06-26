@@ -23,7 +23,7 @@ use Marello\Bundle\PricingBundle\Model\ExtendAssembledPriceList;
  * )
  * @ORM\Table(name="marello_assembled_price_list")
  */
-class AssembledPriceList extends ExtendAssembledPriceList
+class AssembledPriceList extends ExtendAssembledPriceList implements PriceListInterface
 {
     use EntityCreatedUpdatedAtTrait;
 
