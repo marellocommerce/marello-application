@@ -4,6 +4,7 @@ define(function(require) {
     const _ = require('underscore');
     const Backbone = require('backbone');
     const DialogWidget = require('oro/dialog-widget');
+    const mediator = require('oroui/js/mediator');
 
     /**
      * @export  oroform/js/multiple-entity/view
@@ -102,12 +103,14 @@ define(function(require) {
             this.model.set('purchasePrice', price);
 
             let rowTotal = parseFloat(amount) * parseFloat(price);
+            let currencySymbol = this.model.get('currency');
             if (!isNaN(rowTotal)) {
-                let currencySymbol = this.model.get('currency');
                 this.$el.find('td.purchase-order-line-item-row-total').html(currencySymbol + rowTotal.toFixed(2));
             } else {
                 this.$el.find('td.purchase-order-line-item-row-total').html('');
             }
+
+            mediator.trigger('po:row:total:changed', {'currency': currencySymbol});
         }
     });
 
