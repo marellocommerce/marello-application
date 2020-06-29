@@ -9,6 +9,7 @@ use Marello\Bundle\InvoiceBundle\Form\Type\InvoiceSelectType;
 use Marello\Bundle\PaymentBundle\Entity\Payment;
 use Marello\Bundle\PaymentBundle\Migrations\Data\ORM\LoadPaymentStatusData;
 use Oro\Bundle\EntityExtendBundle\Form\Type\EnumSelectType;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -56,7 +57,7 @@ class PaymentUpdateType extends AbstractType
                     'label'    => 'marello.payment.payment_source.label',
                     'required' => true,
                     'placeholder' => 'Choose Related Entity',
-                    'empty_data'  => null,
+                    'empty_data'  => null
                 ]
             )
             ->add(
@@ -120,6 +121,7 @@ class PaymentUpdateType extends AbstractType
                             'query_builder' => function (AbstractInvoiceRepository $repository) use ($currency) {
                                 return $repository->createQueryBuilder('invoice')
                                     ->where('invoice.currency = :currency')
+                                    ->andWhere('invoice.totalPaid < invoice.grandTotal')
                                     ->setParameter('currency', $currency);
                             },
                         ]
@@ -142,6 +144,10 @@ class PaymentUpdateType extends AbstractType
             if ($source instanceof AbstractInvoice) {
                 $payment->setPaymentSource($source);
             }
+            if ($source) {
+                $payment->setStatus($this->getStatus(LoadPaymentStatusData::ASSIGNED));
+            }
+
             $event->setData($payment);
         });
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
@@ -186,5 +192,24 @@ class PaymentUpdateType extends AbstractType
     public function getBlockPrefix()
     {
         return self::BLOCK_PREFIX;
+    }
+
+    /**
+     * @param string $name
+     * @return null|object
+     */
+    private function getStatus($name)
+    {
+        $statusClass = ExtendHelper::buildEnumValueClassName(LoadPaymentStatusData::PAYMENT_STATUS_ENUM_CLASS);
+        $status = $this->registry
+            ->getManagerForClass($statusClass)
+            ->getRepository($statusClass)
+            ->find($name);
+
+        if ($status) {
+            return $status;
+        }
+
+        return null;
     }
 }

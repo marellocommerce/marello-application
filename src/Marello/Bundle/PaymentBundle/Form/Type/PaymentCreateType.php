@@ -112,7 +112,7 @@ class PaymentCreateType extends AbstractType
             )
             ->add(
                 'currency',
-                HiddenType::class,
+                HiddenType::class
             );
         $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
             $form = $event->getForm();
