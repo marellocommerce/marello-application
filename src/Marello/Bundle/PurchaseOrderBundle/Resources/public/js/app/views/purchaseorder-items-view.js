@@ -42,8 +42,7 @@ define(function(require) {
                 }
             });
             mediator.trigger('po:items:total:changed', {'value': total.toFixed(2), 'currency': data.currency, 'type': 'additional', 'label': 'Additional items Total'});
-        },
-
+        }
     });
 
     return PurchaseOrderItemsView;
