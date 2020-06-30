@@ -1,3 +1,10 @@
+aliases:
+    oro/select2-autocomplete-magento2-sales-channel-in-group-component$: marellomagento2/js/app/components/select2-autocomplete-sales-channel-in-group-component
 dynamic-imports:
     marellomagento2:
+        - marellomagento2/js/app/components/select2-autocomplete-sales-channel-in-group-component
         - marellomagento2/js/app/components/check-connection-component
+        - marellomagento2/js/app/components/website-component
+        - marellomagento2/js/app/components/website-to-sales-channel-controls-component
+    common:
+        - oro/select2-autocomplete-magento2-sales-channel-in-group-component

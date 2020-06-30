@@ -5,6 +5,15 @@ services:
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: magento2_group_saleschannels }
 
+    marello_magento2.saleschannels_in_group.form.autocomplete.search_handler:
+        class: 'Marello\Bundle\Magento2Bundle\Autocomplete\SalesChannelInGroupHandler'
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - 'Marello\Bundle\SalesBundle\Entity\SalesChannel'
+            - ['name']
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: magento2_saleschannels_in_group, acl_resource: marello_product_view }
+
     marello_magento2.transport.rest.request.request_factory:
         class: Marello\Bundle\Magento2Bundle\Transport\Rest\Request\RequestFactory
 
@@ -152,6 +161,13 @@ services:
             - '@marello_sales.repository.sales_channel_group'
         tags:
             - { name: form.type_extension, extended_type: Oro\Bundle\IntegrationBundle\Form\Type\ChannelType }
+
+    marello_magento2.form.type.website_select:
+        class: Marello\Bundle\Magento2Bundle\Form\Type\WebsiteSelectType
+        arguments:
+            - '@translator'
+        tags:
+            - { name: form.type }
 
     # Stack
     marello_magento2.stack.product_changes_by_channel:

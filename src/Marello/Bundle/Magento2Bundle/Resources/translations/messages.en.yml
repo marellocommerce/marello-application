@@ -16,6 +16,10 @@ marello:
                 authorization_error.message: 'Authentication error has occurred. Please check that API token is valid.'
                 connection_error.message: 'Connection error has occurred. Please, try again later.'
                 not_valid_parameters.message: 'Parameters are not valid!'
+        website_form:
+            website:
+                label: Website
+                placeholder: Select Website
         transport_setting_form:
             api_url:
                 label: API Url
@@ -28,6 +32,18 @@ marello:
             sync_start_date:
                 label: Sync start date
                 tooltip: This is the starting date for data synchronization. Only records updated after this date will be synchronized
+
+        mapping_control_form:
+            add_mapping_btn:
+                label: Add Mapping
+            mapping_grid:
+                columns:
+                    sales_channel_id: 'Sales Channel ID'
+                    sales_channel_name: 'Sales Channel Name'
+                    original_website_id: 'Original Website ID'
+                    website_name: 'Website Name'
+                    actions: 'Actions'
+                no_data: 'Please configure at least one relation between Website and Sales Channel.'
 
         connector:
             website.label: Website Connector

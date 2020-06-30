@@ -35,18 +35,19 @@ class WebsiteIterator extends AbstractLoadeableIterator implements LoggerAwareIn
     protected function getData(): array
     {
         $data = \array_filter($this->data, function (array $websiteData) {
-            return isset($websiteData['id']) && self::ADMIN_WEBSITE_ID !== $websiteData['id'];
+            return isset($websiteData[WebsiteDataConverter::ID_COLUMN_NAME]) &&
+                self::ADMIN_WEBSITE_ID !== $websiteData[WebsiteDataConverter::ID_COLUMN_NAME];
         });
 
         return \array_map(function (array $websiteData) {
-            $websiteData[WebsiteDataConverter::SALES_CHANNEL_CODE_COLUMN_NAME] = null;
-            if (isset($websiteData['code'])) {
-                $salesChannelCode = $this->settingsBag->getSalesChannelCodeByWebsiteCode(
-                    $websiteData['code']
+            $websiteData[WebsiteDataConverter::SALES_CHANNEL_CODE_COLUMN_ID] = null;
+            if (isset($websiteData[WebsiteDataConverter::ID_COLUMN_NAME])) {
+                $salesChannelId = $this->settingsBag->getSalesChannelIdByWebsiteId(
+                    $websiteData[WebsiteDataConverter::ID_COLUMN_NAME]
                 );
-                $websiteData[WebsiteDataConverter::SALES_CHANNEL_CODE_COLUMN_NAME] = $salesChannelCode;
+                $websiteData[WebsiteDataConverter::SALES_CHANNEL_CODE_COLUMN_ID] = $salesChannelId;
             } else {
-                $this->logNoSalesChannelForWebsiteFound($websiteData['code']);
+                $this->logInvalidWebsiteDataFound($websiteData);
             }
 
             return $websiteData;
@@ -54,15 +55,13 @@ class WebsiteIterator extends AbstractLoadeableIterator implements LoggerAwareIn
     }
 
     /**
-     * @param string $code
+     * @param array $websiteData
      */
-    protected function logNoSalesChannelForWebsiteFound(string $code): void
+    protected function logInvalidWebsiteDataFound(array $websiteData): void
     {
         $this->logger->warning(
-            sprintf(
-                '[Magento 2] Website with code "%s" has no attached Sales Channel.',
-                $code
-            )
+            '[Magento 2] Website data dooesn\'t contains id column.',
+            $websiteData
         );
     }
 }

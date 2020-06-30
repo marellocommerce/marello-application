@@ -1,0 +1,8 @@
+marello:
+    magento2:
+        connection:
+            no_websites: 'No websites available, probably connection is invalid. Please check the credentials.'
+        mapping_grid:
+            delete_action: 'Delete'
+        mapping_form:
+            no_sales_group_selected: 'Please specify "Sales Group" before use "Sales Channel" select.'
