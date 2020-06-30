@@ -1,0 +1,4 @@
+marello:
+    magento2:
+        validator:
+            not_empty_website_to_sales_channel_mapping: 'At least one relation between Website and Sales Channel must be configured.'

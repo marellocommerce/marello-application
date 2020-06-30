@@ -1,14 +1,24 @@
 define(function(require) {
     'use strict';
 
-    var $ = require('jquery');
-    var _ = require('underscore');
-    var BaseComponent = require('oroui/js/app/components/base/component');
-    var CheckConnectionView = require('../views/check-connection-view');
-    var CheckConnectionModel = require('../models/check-connection-model');
-    var CheckConnectionComponent;
+    const $ = require('jquery');
+    const _ = require('underscore');
+    const BaseComponent = require('oroui/js/app/components/base/component');
+    const CheckConnectionView = require('../views/check-connection-view');
+    const CheckConnectionModel = require('../models/check-connection-model');
+    const WebsiteProvider = require('../provider/website-provider');
+    const Utils = require('../utils/utils');
+    const CheckConnectionComponent = BaseComponent.extend({
+        /**
+         * @property {jQuery}
+         */
+        $el: null,
 
-    CheckConnectionComponent = BaseComponent.extend({
+        /**
+         * @property {CheckConnectionModel}
+         */
+        model: null,
+
         /**
          * @inheritDoc
          */
@@ -20,48 +30,86 @@ define(function(require) {
          * @param {Object} options
          */
         initialize: function(options) {
-            var $form = $(options._sourceElement).closest(options.parentElementSelector);
-            var viewOptions = _.extend({
-                model: new CheckConnectionModel({}),
-                el: $form,
-                checkButtonEl: $(options._sourceElement),
-                websiteListEl: $(options.websiteListSelector),
-                salesGroupEl: $(options.salesGroupSelector),
-                websiteToSalesChannelMappingEl: $(options.websiteToSalesChannelMappingSelector),
-                checkConnectionStatusEl: $form.find(options.checkConnectionStatusSelector),
-                transportEntityId: options.id
-            }, options.viewOptions || {});
+            CheckConnectionComponent.__super__.initialize.apply(this, arguments);
 
-            var invalidOptionKeys = this.getInvalidJqueryOptionKeys(viewOptions, [
-                'el', 'salesGroupEl', 'websiteToSalesChannelMappingEl', 'checkButtonEl', 'checkConnectionStatusEl'
-            ]);
+            this.model = new CheckConnectionModel({});
+            this.$el = $(options._sourceElement);
 
-            if (invalidOptionKeys.length) {
-                // unable to initialize
-                $(options._sourceElement).remove();
-                throw new TypeError('Missing required form element (s): ' + invalidOptionKeys.join(','));
-            } else {
-                this.view = new CheckConnectionView(viewOptions);
-            }
+            let viewOptions = this.getPreparedViewOptions(options);
+            this.view = new CheckConnectionView(viewOptions);
+
+            WebsiteProvider.setSubProvider(this);
         },
 
         /**
          * @param {Object} options
-         * @param {array} elementKeys
-         *
-         * @return {array}
+         * @return {Object}
          */
-        getInvalidJqueryOptionKeys: function (options, elementKeys) {
-            var invalidKeys = _.filter(elementKeys, function (elementKey) {
-                /**
-                 * @var {jQuery} element
-                 */
-                var element = options[elementKey];
-                return !_.isUndefined(element) && !element.length;
-            });
+        getPreparedViewOptions: function(options) {
+            let $form = this.$el.closest(options.parentElementSelector);
+            let viewOptions = _.extend({
+                model: this.model,
+                el: $form,
+                $checkConnectionStatusEl: $form.find(options.checkConnectionStatusSelector),
+                selectorForFieldsRequiredReCheckConnection: options.selectorForFieldsRequiredReCheckConnection,
+                transportEntityId: options.id
+            }, options.viewOptions || {});
 
-            return invalidKeys.length;
+            let invalidOptionKeys = Utils.getInvalidJqueryOptionKeys(viewOptions, [
+                'el', '$checkConnectionStatusEl'
+            ]);
+
+            if (invalidOptionKeys.length) {
+                // unable to initialize
+                this.$el.remove();
+                throw new TypeError(
+                    'Missing required form element(s): ' + invalidOptionKeys.join(', ')
+                );
+            }
+
+            if (_.isUndefined(options.selectorForFieldsRequiredReCheckConnection)) {
+                this.$el.remove();
+                throw new TypeError('Missing required option: selectorForFieldsRequiredReCheckConnection');
+            }
+
+            invalidOptionKeys = Utils.getInvalidJqueryOptionKeys(
+                options.selectorForFieldsRequiredReCheckConnection,
+                _.keys(options.selectorForFieldsRequiredReCheckConnection)
+            );
+
+            if (invalidOptionKeys.length) {
+                // unable to initialize
+                this.$el.remove();
+                throw new TypeError(
+                    'Can\'t find element by key(s) in selectorForFieldsRequiredReCheckConnection: ' +
+                    invalidOptionKeys.join(', ')
+                );
+            }
+
+            return viewOptions;
         },
+
+        /**
+         * @return {Promise}
+         */
+        getWebsiteDTOsPromise: function () {
+            return this.view.getWebsiteDTOsPromise();
+        },
+
+        dispose: function() {
+            if (this.disposed) {
+                return;
+            }
+
+            WebsiteProvider.cleanSubProvider();
+
+            const properties = ['$el', 'model'];
+            _.each(properties, _.bind(function (property) {
+                delete this[property];
+            }, this));
+
+            CheckConnectionComponent.__super__.dispose.call(this);
+        }
     });
 
 

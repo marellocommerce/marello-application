@@ -66,6 +66,13 @@ class TransportHandler
             $transportEntity
         );
 
+        if (!$this->isValidTransportEntityToConnect($transportEntity)) {
+            return  [
+                'success' => false,
+                'message' => 'Form is invalid'
+            ];
+        }
+
         $transport->initWithExtraOptions(
             $transportEntity,
             MultiAttemptsConfigTrait::getMultiAttemptsDisabledConfig()
@@ -75,6 +82,17 @@ class TransportHandler
             'success' => true,
             'websites' => $this->websitesProvider->getFormattedWebsites($transport)
         ];
+    }
+
+    /**
+     * @todo Replace with validator
+     *
+     * @param Magento2Transport $transportEntity
+     * @return bool
+     */
+    protected function isValidTransportEntityToConnect(Magento2Transport $transportEntity): bool
+    {
+        return $transportEntity->getApiUrl() && $transportEntity->getApiToken();
     }
 
     /**

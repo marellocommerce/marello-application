@@ -1,5 +1,5 @@
 {% block marello_magento2_transport_check_button_widget %}
-    {% set options = form.vars.options|default({})|merge({
+    {% set component_options = component_options|default({})|merge({
         id: form.parent.vars.value and form.parent.vars.value.id is defined ? form.parent.vars.value.id : null,
         parentElementSelector: 'form',
         checkConnectionStatusSelector: '.check-connection-messages'
@@ -7,7 +7,7 @@
     {% set attr = attr|merge({
         'data-role': 'check-connection-btn',
         'data-page-component-module':  'marellomagento2/js/app/components/check-connection-component',
-        'data-page-component-options': options|json_encode|raw,
+        'data-page-component-options': component_options|json_encode,
     }) %}
     <div class="control-group">
         <div class="controls">
@@ -17,8 +17,64 @@
             <div class="check-connection-messages"></div>
         </div>
     </div>
-{% endblock marello_magento2_transport_check_button_widget %}
+{% endblock %}
 
 {% block marello_magento2_transport_check_button_row %}
     {{ block('button_row') }}
-{% endblock marello_magento2_transport_check_button_row %}
+{% endblock %}
+
+{% block marello_magento2_website_to_sales_channel_controls_widget %}
+    <div data-role="website-to-sales-channel-controls"
+         data-page-component-options="{{ component_options|default({})|json_encode }}"
+         data-page-component-module="marellomagento2/js/app/components/website-to-sales-channel-controls-component"
+    >
+        {{ block('form_widget') }}
+        <div class="control-group">
+            <a class="btn add-marello-mapping-item" data-role="add-mapping-item" href="javascript: void(0);">
+                <i class="fa-plus"></i>
+                {{ 'marello.magento2.mapping_control_form.add_mapping_btn.label'|trans }}
+            </a>
+        </div>
+        <table class="grid sales-channel-to-website-mapping-grid table-hover table table-bordered table-condensed">
+            <thead>
+                <tr>
+                    <th>{{ 'marello.magento2.mapping_control_form.mapping_grid.columns.sales_channel_id'|trans }}</th>
+                    <th>{{ 'marello.magento2.mapping_control_form.mapping_grid.columns.sales_channel_name'|trans }}</th>
+                    <th>{{ 'marello.magento2.mapping_control_form.mapping_grid.columns.original_website_id'|trans }}</th>
+                    <th>{{ 'marello.magento2.mapping_control_form.mapping_grid.columns.website_name'|trans }}</th>
+                    <th>{{ 'marello.magento2.mapping_control_form.mapping_grid.columns.actions'|trans }}</th>
+                </tr>
+            </thead>
+            <tbody data-role="sales-channel-to-website-mapping-table-body"></tbody>
+        </table>
+        <div class="no-data" style="display: none">
+            {{ 'marello.magento2.mapping_control_form.mapping_grid.no_data'|trans }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block marello_magento2_website_select_widget %}
+    {% if configs.placeholder is defined %}
+        {% set configs = configs|merge({'placeholder': configs.placeholder|trans|escape }) %}
+    {% endif %}
+
+    {% set component_options = component_options|default({})|merge({'configs': configs}) %}
+
+    {% set attr = attr|default({})|merge({
+        'class': 'select2',
+        'data-page-component-options': component_options|json_encode|raw
+    }) %}
+
+    {{ block('form_widget') }}
+{% endblock %}
+
+{% block marello_magento2_website_select_row %}
+    {{ block('form_row') }}
+{% endblock %}
+
+{% block marello_magento2_website_to_sales_channel_widget %}
+    {# @todo: Move this scss file #}
+    <div class="hidden-group" style="padding-left: 282px;">
+        {{ block('hidden_widget') }}
+    </div>
+{% endblock %}

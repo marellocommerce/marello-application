@@ -1,16 +1,16 @@
 define(function(require) {
     'use strict';
 
-    var CheckConnectionView;
-    var $ = require('jquery');
-    var _ = require('underscore');
-    var __ = require('orotranslation/js/translator');
-    var routing = require('routing');
-    var mediator = require('oroui/js/mediator');
-    var messenger = require('oroui/js/messenger');
-    var BaseView = require('oroui/js/app/views/base/view');
-
-    CheckConnectionView = BaseView.extend({
+    const $ = require('jquery');
+    const _ = require('underscore');
+    const __ = require('orotranslation/js/translator');
+    const routing = require('routing');
+    const mediator = require('oroui/js/mediator');
+    const messenger = require('oroui/js/messenger');
+    const BaseView = require('oroui/js/app/views/base/view');
+    const logger = require('oroui/js/tools/logger');
+    const WebsiteDTO = require('../dto/website');
+    const CheckConnectionView = BaseView.extend({
         /**
          * @property {string}
          */
@@ -31,22 +31,7 @@ define(function(require) {
         /**
          * @property {jQuery}
          */
-        checkButtonEl: null,
-
-        /**
-         * @property {jQuery}
-         */
-        checkConnectionStatusEl: null,
-
-        /**
-         * @property {jQuery}
-         */
-        salesGroupEl: null,
-
-        /**
-         * @property {jQuery}
-         */
-        websiteToSalesChannelMappingEl: null,
+        $checkConnectionStatusEl: null,
 
         /**
          * @property {int}
@@ -59,6 +44,11 @@ define(function(require) {
         jqXHR: null,
 
         /**
+         * @property {jqXHR}
+         */
+        websiteJqXHR: null,
+
+        /**
          * @inheritDoc
          */
         constructor: function CheckConnectionView() {
@@ -69,21 +59,31 @@ define(function(require) {
             _.extend(this, _.pick(
                 options,
                 [
-                    'checkButtonEl',
-                    'checkConnectionStatusEl',
-                    'salesGroupEl',
-                    'websiteToSalesChannelMappingEl',
+                    '$checkConnectionStatusEl',
                     'transportEntityId'
                 ]
             ));
             this.url = this.getResolvedUrl();
+            this.attachAdditionalEvents(options);
+        },
+
+        attachAdditionalEvents: function(options) {
+            let selectorForFieldsRequiredReCheckConnection = options.selectorForFieldsRequiredReCheckConnection || [];
+            _.each(selectorForFieldsRequiredReCheckConnection, _.bind(function (selector) {
+                this.$el.on('change', selector, _.bind(this.resetToDefaultCheckConnectionData, this));
+            }, this));
+        },
+
+        resetToDefaultCheckConnectionData: function() {
+            this.model.setConnectionRequiredToCheck();
+            this.model.resetWebsiteDTOsField();
         },
 
         /**
          * @returns {string}
          */
         getResolvedUrl: function() {
-            var params = this.getIntegrationAndTransportTypeParams() || {};
+            let params = this.getIntegrationAndTransportTypeParams() || {};
             params =  _.extend({
                 transportId: !_.isNull(this.transportEntityId) ? this.transportEntityId : 0
             }, params);
@@ -92,9 +92,9 @@ define(function(require) {
         },
 
         getIntegrationAndTransportTypeParams: function() {
-            var params = {};
-            var fields = this.$el.formToArray();
-            var integrationType = _.first(
+            let params = {};
+            let fields = this.$el.formToArray();
+            let integrationType = _.first(
                 _.filter(fields, function(field) {
                     return field.name.indexOf('[type]') !== -1;
                 })
@@ -107,13 +107,13 @@ define(function(require) {
                  * In case we on edit page and field type is disabled
                  * so we can't get it from element data array
                  */
-                var typeEl = this.$el.find('[name$="[type]"]').first();
+                let typeEl = this.$el.find('[name$="[type]"]').first();
                 if (typeEl.length) {
                     params.integrationType = typeEl.val();
                 }
             }
 
-            var transportType = _.first(
+            let transportType = _.first(
                 _.filter(fields, function(field) {
                     return field.name.indexOf('[transportType]') !== -1;
                 })
@@ -123,7 +123,7 @@ define(function(require) {
                 params.transportType = transportType.value;
             }
 
-            var requiredMissed = ['integrationType', 'transportType'].filter(function(option) {
+            let requiredMissed = ['integrationType', 'transportType'].filter(function(option) {
                 return _.isUndefined(params[option]);
             });
 
@@ -139,7 +139,7 @@ define(function(require) {
          * @returns {Array}
          */
         getDataForRequestFromFields: function(fields) {
-            var data = _.filter(fields, function(field) {
+            let data = _.filter(fields, function(field) {
                 return field.name.indexOf('[transport]') !== -1;
             });
 
@@ -149,38 +149,95 @@ define(function(require) {
             });
         },
 
+        /**
+         * @return {Promise}
+         */
+        getWebsiteDTOsPromise: function() {
+            let deferredObject = $.Deferred();
+            let model = this.model;
+            // Get cached data in model in case if previous request was successful
+            if (false === model.isConnectionRequiredToCheck()) {
+                deferredObject.resolve(model.getWebsiteDTOs());
+                return deferredObject;
+            }
+
+            // Update data in model
+            let self = this;
+            let data = this.getDataForRequestFromFields(this.$el.formToArray());
+            this.websiteJqXHR = $.ajax({
+                type: 'POST',
+                url: this.url,
+                data: $.param(data),
+                success: this.saveResultSuccessHandler.bind(this),
+                error: this.errorHandler.bind(this),
+                complete: function() {
+                    delete self.websiteJqXHR;
+                }
+            });
+
+            this.websiteJqXHR.always(function () {
+                if (!model.hasWebsites()) {
+                    messenger.notificationFlashMessage(
+                        'error',
+                        __('marello.magento2.connection.no_websites')
+                    );
+                }
+
+                deferredObject.resolve(model.getWebsiteDTOs());
+            });
+            return deferredObject;
+        },
+
         onCheckConnection: function() {
             this.$el.validate();
-
             if (this.$el.valid()) {
-                this.checkConnection();
+                this.processCheckConnection(false);
             }
         },
 
-        checkConnection: function() {
-            var data = this.getDataForRequestFromFields(this.$el.formToArray());
+        processCheckConnection: function() {
+            if (this.jqXHR) {
+                logger.warn(
+                    'Trying to check connection while another request on checking connection in progress!',
+                    {
+                        request: this.jqXHR
+                    }
+                );
+
+                return false;
+            }
+
+            let self = this;
+            let data = this.getDataForRequestFromFields(this.$el.formToArray());
             this.jqXHR = $.ajax({
                 type: 'POST',
                 url: this.url,
                 data: $.param(data),
                 beforeSend: this.beforeSend.bind(this),
-                success: this.successHandler.bind(this),
+                success: this.checkConnectionSuccessHandler.bind(this),
+                error: this.errorHandler.bind(this),
                 complete: function() {
                     mediator.execute('hideLoading');
+                    // Clear request object
+                    delete self.jqXHR;
                 }
             });
         },
 
         beforeSend: function () {
-            this.checkConnectionStatusEl.find('.alert').remove();
+            this.$checkConnectionStatusEl.find('.alert').remove();
             mediator.execute('showLoading');
         },
 
+        errorHandler: function() {
+            this.resetToDefaultCheckConnectionData();
+        },
+
         /**
-         * @param {{success: bool, message: string}} response
+         * @param {{success: bool, message: string, websites: object}} response
          */
-        successHandler: function(response) {
-            var type = 'error';
+        checkConnectionSuccessHandler: function(response) {
+            let type = 'error';
             if (response.success) {
                 type = 'success';
             }
@@ -189,10 +246,28 @@ define(function(require) {
                 type,
                 response.message,
                 {
-                    container: this.checkConnectionStatusEl,
+                    container: this.$checkConnectionStatusEl,
                     delay: 0
                 }
             );
+
+            this.saveResultSuccessHandler(response);
+        },
+
+        /**
+         * @param {{success: bool, message: string, websites: object}} response
+         */
+        saveResultSuccessHandler: function(response) {
+            if (response.success) {
+                this.model.setConnectionChecked();
+                let websites = _.map(response.websites, function (name, id) {
+                    return new WebsiteDTO(id, name);
+                });
+
+                this.model.setWebsiteDTOs(websites);
+            } else {
+                this.resetToDefaultCheckConnectionData();
+            }
         },
 
         dispose: function() {
@@ -203,6 +278,15 @@ define(function(require) {
             if (this.jqXHR) {
                 this.jqXHR.abort();
             }
+
+            if (this.websiteJqXHR) {
+                this.websiteJqXHR.abort();
+            }
+
+            const properties = ['jqXHR', 'websiteJqXHR', '$checkConnectionStatusEl'];
+            _.each(properties, _.bind(function (property) {
+                delete this[property];
+            }, this));
 
             CheckConnectionView.__super__.dispose.call(this);
         }

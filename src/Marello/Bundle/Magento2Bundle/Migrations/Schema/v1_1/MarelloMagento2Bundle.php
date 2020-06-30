@@ -6,6 +6,9 @@ use Doctrine\DBAL\Schema\Schema;
 use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
+/**
+ * @todo Remove this in final version
+ */
 class MarelloMagento2Bundle implements Migration
 {
     /**

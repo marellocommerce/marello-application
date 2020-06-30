@@ -3,22 +3,33 @@
 namespace Marello\Bundle\Magento2Bundle\Form\Type;
 
 use Marello\Bundle\Magento2Bundle\Entity\Magento2Transport;
-use Oro\Bundle\FormBundle\Form\DataTransformer\ArrayToJsonTransformer;
 use Oro\Bundle\FormBundle\Form\Type\OroDateType;
+use Oro\Bundle\FormBundle\Form\Type\OroEncodedPlaceholderPasswordType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Url;
-use Oro\Bundle\FormBundle\Form\Type\OroEncodedPlaceholderPasswordType;
 
 class TransportSettingFormType extends AbstractType
 {
+    private const BLOCK_PREFIX = 'marello_magento2_transport_setting';
+
     public const ELEMENT_DATA_ROLE_WEBSITE_TO_CHANNEL_MAPPING = 'websiteToSalesChannelMapping';
     public const ELEMENT_DATA_ROLE_SALES_CHANNEL_GROUP = 'salesChannelGroup';
+
+    public const ELEMENT_DATA_ROLE_API_URL = 'apiUrl';
+    public const ELEMENT_DATA_ROLE_API_TOKEN = 'apiToken';
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBlockPrefix()
+    {
+        return self::BLOCK_PREFIX;
+    }
 
     /**
      * {@inheritDoc}
@@ -33,8 +44,10 @@ class TransportSettingFormType extends AbstractType
                 'required' => true,
                 'tooltip'    => 'marello.magento2.transport_setting_form.api_url.tooltip',
                 'constraints' => [
-                    new Url()
-                ]
+                    new Url(),
+                    new NotBlank()
+                ],
+                'attr' => ['data-role' => TransportSettingFormType::ELEMENT_DATA_ROLE_API_URL]
             ]
         );
 
@@ -44,7 +57,11 @@ class TransportSettingFormType extends AbstractType
             [
                 'label' => 'marello.magento2.transport_setting_form.api_token.label',
                 'required' => true,
-                'tooltip'    => 'marello.magento2.transport_setting_form.api_token.tooltip'
+                'tooltip'    => 'marello.magento2.transport_setting_form.api_token.tooltip',
+                'constraints' => [
+                    new NotBlank()
+                ],
+                'attr' => ['data-role' => TransportSettingFormType::ELEMENT_DATA_ROLE_API_TOKEN]
             ]
         );
 
@@ -55,7 +72,10 @@ class TransportSettingFormType extends AbstractType
                 'label'      => 'marello.magento2.transport_setting_form.sync_start_date.label',
                 'required'   => true,
                 'tooltip'    => 'marello.magento2.transport_setting_form.sync_start_date.tooltip',
-                'empty_data' => new \DateTime('2007-01-01', new \DateTimeZone('UTC'))
+                'empty_data' => new \DateTime('2007-01-01', new \DateTimeZone('UTC')),
+                'constraints' => [
+                    new NotBlank()
+                ]
             ]
         );
 
@@ -82,33 +102,42 @@ class TransportSettingFormType extends AbstractType
             TransportCheckButtonType::class,
             [
                 'label' => 'marello.magento2.connection_validation.button.text',
-                'salesGroupSelector' => sprintf('[data-role="%s"]', self::ELEMENT_DATA_ROLE_SALES_CHANNEL_GROUP),
-                'websiteToSalesChannelMappingSelector' => sprintf(
-                    '[data-role="%s"]', self::ELEMENT_DATA_ROLE_WEBSITE_TO_CHANNEL_MAPPING
-                )
+                'selectorForFieldsRequiredReCheckConnection' => [
+                    sprintf('[data-role="%s"]', self::ELEMENT_DATA_ROLE_API_URL)
+                ]
             ]
         );
 
         $builder->add(
-            $builder
-                ->create(
-                    'websiteToSalesChannelMapping',
-                    HiddenType::class,
-                    [
-                        'attr' => ['data-role' => self::ELEMENT_DATA_ROLE_WEBSITE_TO_CHANNEL_MAPPING],
-                        'data' => [
-                            [
-                                'website_code' => 'MAG',
-                                'sales_chanel_code' => 'MAR',
-                            ],
-                            [
-                                'website_code' => 'MAG_2',
-                                'sales_chanel_code' => 'MAR_2',
-                            ]
-                        ]
-                    ]
-                )
-                ->addViewTransformer(new ArrayToJsonTransformer())
+            'websiteToSalesChannelMappingControls',
+            WebsiteToSalesChannelMappingControlsType::class,
+            [
+                'label' => 'Website To Sales Channel Mapping',
+                'selectorSalesChannelGroup' => sprintf(
+                    '[data-role="%s"]',
+                    self::ELEMENT_DATA_ROLE_SALES_CHANNEL_GROUP
+                ),
+                'selectorWebsiteToSalesChannelMapping' => sprintf(
+                    '[data-role="%s"]',
+                    self::ELEMENT_DATA_ROLE_WEBSITE_TO_CHANNEL_MAPPING
+                ),
+                'mapped' => false
+            ]
+        );
+
+        $builder->add(
+            'websiteToSalesChannelMapping',
+            WebsiteToSalesChannelMappingType::class,
+            [
+                'attr' => [
+                    'data-role' => TransportSettingFormType::ELEMENT_DATA_ROLE_WEBSITE_TO_CHANNEL_MAPPING
+                ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'marello.magento2.validator.not_empty_website_to_sales_channel_mapping'
+                    ])
+                ]
+            ]
         );
     }
 
@@ -117,6 +146,8 @@ class TransportSettingFormType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(['data_class' => Magento2Transport::class]);
+        $resolver->setDefaults([
+            'data_class' => Magento2Transport::class
+        ]);
     }
 }
