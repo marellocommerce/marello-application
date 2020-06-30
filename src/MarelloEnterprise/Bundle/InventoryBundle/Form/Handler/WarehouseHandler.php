@@ -78,8 +78,12 @@ class WarehouseHandler implements FormHandlerInterface
 
         if ($typeBefore !== $typeAfter) {
             if ($typeBefore === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED) {
+                $systemGroup = $this->getSystemWarehouseGroup();
+                // set the group here as we need to use another group first, before removing the existing one
+                $entity->setGroup($systemGroup);
                 $this->manager->remove($group);
-                $entity->setGroup($this->getSystemWarehouseGroup());
+                // set the group to null as the entity already has the systemgroup as group
+                $group = null;
             } elseif ($typeAfter === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED) {
                 $label = $entity->getLabel();
                 if ($group && !$group->isSystem() && $group->getWarehouses()->count() === 1) {
