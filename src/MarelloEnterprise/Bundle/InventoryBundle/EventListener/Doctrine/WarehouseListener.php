@@ -65,6 +65,7 @@ class WarehouseListener
                     ->getRepository(WarehouseGroup::class)
                     ->findSystemWarehouseGroup();
             }
+
             if ($group) {
                 $warehouse->setGroup($group);
             }
@@ -97,7 +98,7 @@ class WarehouseListener
             throw new ForbiddenException($message);
         }
         if ($group = $warehouse->getGroup()) {
-            if (!$group->isSystem() && $group->getWarehouses()->count() <= 1) {
+            if (!$group->isSystem() && $group->getWarehouses()->count() < 1) {
                 $args->getEntityManager()->remove($group);
             }
         }
