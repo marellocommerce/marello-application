@@ -160,7 +160,7 @@ class WarehouseHandlerTest extends TestCase
             ->method('flush');
 
         $this->entity
-            ->expects(static::exactly(2))
+            ->expects(static::once())
             ->method('setGroup');
 
         $this->warehouseHandler->process($this->entity, $this->form, $this->request);
