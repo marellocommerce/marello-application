@@ -31,7 +31,7 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
      */
     public function getMigrationVersion()
     {
-        return 'v1_1';
+        return 'v1_2';
     }
 
     /**
@@ -44,17 +44,23 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
         $this->createWebsiteTable($schema);
         $this->createStoreTable($schema);
 
-        $this->addWebsiteForeignKeys($schema);
-        $this->addStoreForeignKeys($schema);
+        $this->createWebsiteForeignKeys($schema);
+        $this->createStoreForeignKeys($schema);
 
-        $this->addSalesChannelWebsiteRelation($schema);
+        $this->createSalesChannelWebsiteRelation($schema);
 
-        $this->addMagentoProductTable($schema);
-        $this->addMagentoProductForeignKeys($schema);
+        $this->createMagentoProductTable($schema);
+        $this->createMagentoProductForeignKeys($schema);
 
-        $this->addMagentoProductTaxTable($schema);
-        $this->addProductClassToTaxCodeRelation($schema);
-        $this->addMagentoProductTaxForeignKeys($schema);
+        $this->createMagentoProductTaxTable($schema);
+        $this->createProductClassToTaxCodeRelation($schema);
+        $this->createMagentoProductTaxForeignKeys($schema);
+
+        $this->createCustomerTable($schema);
+        $this->createOrderTable($schema);
+
+        $this->createCustomerForeignKeys($schema);
+        $this->createOrderForeignKeys($schema);
     }
 
     /**
@@ -87,8 +93,11 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
         $table->addColumn('channel_id', 'integer');
         $table->addColumn('code', 'string', ['length' => 32, 'precision' => 0]);
         $table->addColumn('name', 'string', ['length' => 255, 'precision' => 0]);
-        $table->addColumn('origin_id', 'integer', ['notnull' => false, 'precision' => 0, 'unsigned' => true]);
-        $table->addIndex(['channel_id'], 'IDX_D427981972F5A1AA', []);
+        $table->addColumn('origin_id', 'integer', [
+            'notnull' => false,
+            'precision' => 0,
+            'unsigned' => true
+        ]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['channel_id', 'origin_id'], 'unq_site_idx');
     }
@@ -103,15 +112,24 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
         $table->addColumn('channel_id', 'integer');
         $table->addColumn('code', 'string', ['length' => 32, 'precision' => 0]);
         $table->addColumn('name', 'string', ['length' => 255, 'precision' => 0]);
-        $table->addColumn('base_currency_code', 'string', ['length' => 3, 'precision' => 0, 'notnull' => false]);
-        $table->addColumn('origin_id', 'integer', ['notnull' => false, 'precision' => 0, 'unsigned' => true]);
+        $table->addColumn('base_currency_code', 'string', [
+            'length' => 3,
+            'precision' => 0,
+            'notnull' => false
+        ]);
+        $table->addColumn('origin_id', 'integer', [
+            'notnull' => false,
+            'precision' => 0,
+            'unsigned' => true
+        ]);
         $table->addColumn('website_id', 'integer', []);
         $table->addColumn('is_active', 'boolean', ['default' => false]);
-        $table->addColumn('locale_id', 'string', ['notnull' => false, 'length' => 255, 'precision' => 0]);
+        $table->addColumn('locale_id', 'string', [
+            'notnull' => false,
+            'length' => 255,
+            'precision' => 0
+        ]);
         $table->addColumn('localization_id', 'integer', ['notnull' => false]);
-        $table->addIndex(['website_id'], 'IDX_C14EB5DC18F45C82', []);
-        $table->addIndex(['channel_id'], 'IDX_C14EB5DC72F5A1AA', []);
-        $table->addIndex(['localization_id'], 'IDX_C14EB5DC6A2856C7', []);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['code', 'channel_id'], 'unq_store_code_idx');
     }
@@ -119,7 +137,7 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
     /**
      * @param Schema $schema
      */
-    public function addWebsiteForeignKeys(Schema $schema)
+    public function createWebsiteForeignKeys(Schema $schema)
     {
         $table = $schema->getTable('marello_m2_website');
         $table->addForeignKeyConstraint(
@@ -133,7 +151,7 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
     /**
      * @param Schema $schema
      */
-    public function addStoreForeignKeys(Schema $schema)
+    public function createStoreForeignKeys(Schema $schema)
     {
         $table = $schema->getTable('marello_m2_store');
         $table->addForeignKeyConstraint(
@@ -163,7 +181,7 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
      *
      * @param Schema $schema
      */
-    protected function addSalesChannelWebsiteRelation(Schema $schema)
+    protected function createSalesChannelWebsiteRelation(Schema $schema)
     {
         $table = $schema->getTable('marello_sales_sales_channel');
         $targetTable = $schema->getTable('marello_m2_website');
@@ -216,14 +234,18 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
     /**
      * @param Schema $schema
      */
-    protected function addMagentoProductTable(Schema $schema)
+    protected function createMagentoProductTable(Schema $schema)
     {
         $table = $schema->createTable('marello_m2_product');
         $table->addColumn('id', 'integer', ['precision' => 0, 'autoincrement' => true]);
         $table->addColumn('sku', 'string', ['length' => 255]);
         $table->addColumn('product_id', 'integer');
         $table->addColumn('channel_id', 'integer');
-        $table->addColumn('origin_id', 'integer', ['notnull' => false, 'precision' => 0, 'unsigned' => true]);
+        $table->addColumn('origin_id', 'integer', [
+            'notnull' => false,
+            'precision' => 0,
+            'unsigned' => true
+        ]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime');
         $table->setPrimaryKey(['id']);
@@ -248,7 +270,7 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
     /**
      * @param Schema $schema
      */
-    protected function addMagentoProductForeignKeys(Schema $schema)
+    protected function createMagentoProductForeignKeys(Schema $schema)
     {
         $table = $schema->getTable('marello_m2_product');
         $table->addForeignKeyConstraint(
@@ -269,11 +291,15 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
     /**
      * @param Schema $schema
      */
-    protected function addMagentoProductTaxTable(Schema $schema)
+    protected function createMagentoProductTaxTable(Schema $schema)
     {
         $table = $schema->createTable('marello_m2_product_tax_class');
         $table->addColumn('id', 'integer', ['precision' => 0, 'autoincrement' => true]);
-        $table->addColumn('origin_id', 'integer', ['notnull' => false, 'precision' => 0, 'unsigned' => true]);
+        $table->addColumn('origin_id', 'integer', [
+            'notnull' => false,
+            'precision' => 0,
+            'unsigned' => true
+        ]);
         $table->addColumn('class_name', 'string', ['length' => 255]);
         $table->addColumn('channel_id', 'integer');
         $table->setPrimaryKey(['id']);
@@ -282,7 +308,7 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
     /**
      * @param Schema $schema
      */
-    protected function addMagentoProductTaxForeignKeys(Schema $schema)
+    protected function createMagentoProductTaxForeignKeys(Schema $schema)
     {
         $table = $schema->getTable('marello_m2_product_tax_class');
         $table->addForeignKeyConstraint(
@@ -297,7 +323,7 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
      * @param Schema $schema
      * @throws \Doctrine\DBAL\Schema\SchemaException
      */
-    protected function addProductClassToTaxCodeRelation(Schema $schema)
+    protected function createProductClassToTaxCodeRelation(Schema $schema)
     {
         $table = $schema->getTable('marello_tax_tax_code');
         $targetTable = $schema->getTable('marello_m2_product_tax_class');
@@ -343,6 +369,90 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
                 'merge' => ['display' => false],
                 'importexport' => ['excluded' => true],
             ]
+        );
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    protected function createCustomerTable(Schema $schema)
+    {
+        $table = $schema->createTable('marello_m2_customer');
+        $table->addColumn('id', 'integer', ['precision' => 0, 'autoincrement' => true]);
+        $table->addColumn('channel_id', 'integer');
+        $table->addColumn('origin_id', 'integer', [
+            'notnull' => false,
+            'precision' => 0,
+            'unsigned' => true
+        ]);
+        $table->addColumn('inner_customer_id', 'integer');
+        $table->addColumn('hash_id', 'string', ['length' => 32]);
+        $table->setPrimaryKey(['id']);
+        $table->addIndex(['hash_id'], 'idx_m2_customer_hash_id');
+        $table->addIndex(['origin_id'], 'idx_m2_customer_origin_id');
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    protected function createCustomerForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('marello_m2_customer');
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_integration_channel'),
+            ['channel_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE']
+        );
+
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_customer_customer'),
+            ['inner_customer_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE']
+        );
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    protected function createOrderTable(Schema $schema)
+    {
+        $table = $schema->createTable('marello_m2_order');
+        $table->addColumn('id', 'integer', ['precision' => 0, 'autoincrement' => true]);
+        $table->addColumn('channel_id', 'integer');
+        $table->addColumn('origin_id', 'integer', ['precision' => 0, 'unsigned' => true]);
+        $table->addColumn('inner_order_id', 'integer');
+        $table->addColumn('m2_customer_id', 'integer', ['notnull' => false]);
+        $table->setPrimaryKey(['id']);
+        $table->addUniqueIndex(['channel_id', 'origin_id'], 'unq_order_channel_idx');
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    protected function createOrderForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('marello_m2_order');
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_integration_channel'),
+            ['channel_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE']
+        );
+
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_order_order'),
+            ['inner_order_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE']
+        );
+
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_m2_customer'),
+            ['m2_customer_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL']
         );
     }
 }

@@ -32,6 +32,12 @@ services:
         arguments:
             - 'Marello\Bundle\Magento2Bundle\Entity\Product'
 
+    marello_magento2.repository.customer:
+        class: Marello\Bundle\Magento2Bundle\Entity\Repository\CustomerRepository
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'Marello\Bundle\Magento2Bundle\Entity\Customer'
+
     # Event Listeners
     marello_magento2.event_listener.doctrine.product:
         class: Marello\Bundle\Magento2Bundle\EventListener\Doctrine\ProductListener
@@ -106,6 +112,16 @@ services:
             - { name: doctrine.event_listener, event: postFlush }
             - { name: doctrine.event_listener, event: onClear }
 
+
+    marello_magento2.event_listener.doctrine.customer_hash_id_sync_listener:
+        class: Marello\Bundle\Magento2Bundle\EventListener\Doctrine\CustomerHashIdSyncListener
+        arguments:
+            - '@doctrine'
+            - '@marello_magento2.generator.customer_hash_id'
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\Magento2Bundle\Entity\Customer', event: prePersist }
+            - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\CustomerBundle\Entity\Customer', event: postUpdate }
+
     # Handlers
     marello_magento2.handler.transport_entity_handler:
         class: Marello\Bundle\Magento2Bundle\Handler\TransportEntityHandler
@@ -168,6 +184,10 @@ services:
             - '@translator'
         tags:
             - { name: form.type }
+
+    # Generator
+    marello_magento2.generator.customer_hash_id:
+        class: Marello\Bundle\Magento2Bundle\Generator\CustomerHashIdGenerator
 
     # Stack
     marello_magento2.stack.product_changes_by_channel:

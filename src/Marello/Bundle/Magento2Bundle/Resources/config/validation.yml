@@ -1,3 +1,11 @@
 Marello\Bundle\SalesBundle\Entity\SalesChannelGroup:
     constraints:
         - Marello\Bundle\Magento2Bundle\Validator\Constraints\SalesChannelsAttachedToIntegration: ~
+
+Marello\Bundle\Magento2Bundle\Entity\Customer:
+    properties:
+        innerCustomer:
+            - NotBlank: ~
+            - Valid: ~
+        hashId:
+            - Oro\Bundle\FormBundle\Validator\Constraints\UnchangeableField: ~
