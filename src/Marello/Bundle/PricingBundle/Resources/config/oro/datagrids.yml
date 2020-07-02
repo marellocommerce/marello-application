@@ -29,19 +29,16 @@ datagrids:
                 type:             localized_number
                 method:           formatCurrency
                 context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
-                align:            right
             specialPrice:
                 label:            marello.pricing.assembledpricelist.special_price.label
                 type:             localized_number
                 method:           formatCurrency
                 context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
-                align:            right
             msrpPrice:
                 label:            marello.pricing.assembledpricelist.msrp_price.label
                 type:             localized_number
                 method:           formatCurrency
                 context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
-                align:            right
         sorters:
             columns:
                 currency:       { data_name: apl.currency }
@@ -85,13 +82,11 @@ datagrids:
                 type:             localized_number
                 method:           formatCurrency
                 context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
-                align:            right
             specialPrice:
                 label:            marello.pricing.assembledpricelist.special_price.label
                 type:             localized_number
                 method:           formatCurrency
                 context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
-                align:            right
         sorters:
             columns:
                 channelName:    { data_name: sc.name }
@@ -127,7 +122,6 @@ datagrids:
                 type:             localized_number
                 method:           formatCurrency
                 context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
-                align:            right
         sorters:
             columns:
                 currency:       { data_name: productPrice.currency }
@@ -168,7 +162,6 @@ datagrids:
                 type:             localized_number
                 method:           formatCurrency
                 context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
-                align:            right
         sorters:
             columns:
                 channelName:    { data_name: salesChannel.name }
