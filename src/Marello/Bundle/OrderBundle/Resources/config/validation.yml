@@ -31,7 +31,13 @@ Marello\Bundle\OrderBundle\Entity\Order:
             - NotBlank: { groups: [Default] }
         billingAddress:
             - NotBlank: { groups: [Default, commerce], message: 'marello.order.address.validation.billing_not_blank' }
-
         shippingAddress:
             - NotBlank: { groups: [Default, commerce], message: 'marello.order.address.validation.shipping_not_blank' }
 
+    constraints:
+        - Marello\Bundle\CoreBundle\Validator\Constraints\GreaterThanDate:
+            field: 'deliveryDate'
+            greaterThan: 'today'
+            nullable: true
+            errorPath: deliveryDate
+            message: 'marello.order.delivery_date.messages.error.greater_than_date'

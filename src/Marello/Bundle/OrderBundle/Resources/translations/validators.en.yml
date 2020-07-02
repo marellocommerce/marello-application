@@ -12,3 +12,8 @@ marello:
             validation:
                 shipping_not_blank: 'Shipping Address should not be empty'
                 billing_not_blank: 'Billing Address should not be empty'
+
+        delivery_date:
+            messages:
+                error:
+                    greater_than_date: Delivery Date must be greater than %date%
