@@ -334,37 +334,31 @@ datagrids:
                 type:             localized_number
                 method:           formatCurrency
                 context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
-                align:            right
             originalPriceInclTax:
                 label:            marello.order.orderitem.original_price_incl_tax.label
                 type:             localized_number
                 method:           formatCurrency
                 context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
-                align:            right
             originalPriceExclTax:
                 label:            marello.order.orderitem.original_price_excl_tax.label
                 type:             localized_number
                 method:           formatCurrency
                 context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
-                align:            right
             tax:
                 label:            marello.order.orderitem.tax.label
                 type:             localized_number
                 method:           formatCurrency
                 context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
-                align:            right
             rowTotalInclTax:
                 label:            marello.order.orderitem.total_price_incl_tax.label
                 type:             localized_number
                 method:           formatCurrency
                 context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
-                align:            right
             rowTotalExclTax:
                 label:            marello.order.orderitem.total_price_excl_tax.label
                 type:             localized_number
                 method:           formatCurrency
                 context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
-                align:            right
             status:
                 label:            marello.order.orderitem.status.label
                 frontend_type:    string
