@@ -43,7 +43,9 @@ class IntegrationConfigController extends AbstractController
                 $transportEntity ?? new Magento2Transport()
             );
 
-            $response = $this->getUpdateSuccessResponse($response);
+            if ($response['success']) {
+                $response = $this->getUpdateSuccessResponse($response);
+            }
         } catch (\Exception $e) {
             $response = $this->logErrorAndGetResponse($e);
         }

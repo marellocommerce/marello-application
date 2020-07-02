@@ -90,12 +90,13 @@ class UpdateTranslator implements TranslatorInterface, LoggerAwareInterface
         $status = $entity->getStatus();
         $productTaxClass = $this->helper->getMagentoProductTaxClass($entity, $context['channel']);
         $balancedInventoryLevel = $this->helper->getBalancedInventoryLevel($entity, current($websites));
+        $inventoryItem = $entity->getInventoryItems()->first();
         return new ProductSimpleUpdateDTO(
             $internalMagentoProduct,
             $entity,
             $websites,
             $status,
-            $entity->getInventoryItems()->first(),
+            $inventoryItem,
             $productTaxClass,
             $balancedInventoryLevel
         );

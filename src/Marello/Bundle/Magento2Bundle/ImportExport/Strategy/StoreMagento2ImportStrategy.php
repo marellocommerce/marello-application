@@ -13,9 +13,6 @@ class StoreMagento2ImportStrategy extends DefaultMagento2ImportStrategy
     {
         $existingEntity = null;
 
-        /**
-         * @todo Think about complex logic for guessing Localization, by part of formatting code
-         */
         if ($entity instanceof Localization && null !== $entity->getFormattingCode()) {
             //for Localization we looking for the first localization by formattingCode
             return $this->databaseHelper->findOneBy(

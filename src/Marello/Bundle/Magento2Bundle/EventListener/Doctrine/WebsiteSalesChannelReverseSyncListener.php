@@ -341,7 +341,7 @@ class WebsiteSalesChannelReverseSyncListener
     protected function loadUpdatedWebsites(UnitOfWork $unitOfWork)
     {
         foreach ($unitOfWork->getScheduledEntityUpdates() as $entityUpdate) {
-            if ($entityUpdate instanceof Website && $this->isApplicableWebsite($entityUpdate)) {
+            if ($entityUpdate instanceof Website) {
                 $changeSet = $unitOfWork->getEntityChangeSet($entityUpdate);
 
                 if (!\array_key_exists(self::SALES_CHANNEL_FIELD_NAME, $changeSet)) {

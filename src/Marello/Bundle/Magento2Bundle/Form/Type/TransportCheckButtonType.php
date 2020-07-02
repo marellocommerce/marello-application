@@ -3,26 +3,20 @@
 namespace Marello\Bundle\Magento2Bundle\Form\Type;
 
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TransportCheckButtonType extends ButtonType
 {
-    public const NAME = 'marello_magento2_transport_check_button';
+    private const BLOCK_PREFIX = 'marello_magento2_transport_check_button';
 
     /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
-
-    /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 
     /**
@@ -32,8 +26,21 @@ class TransportCheckButtonType extends ButtonType
     {
         parent::configureOptions($resolver);
 
-        $resolver->setRequired(['websiteToSalesChannelMappingSelector']);
-        $resolver->setRequired(['salesGroupSelector']);
+        $resolver->setRequired(['selectorForFieldsRequiredReCheckConnection']);
         $resolver->setDefaults(['attr' => ['class' => 'btn btn-primary']]);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        parent::buildView($view, $form, $options);
+
+        $view->vars = \array_replace_recursive($view->vars, [
+            'component_options' => [
+                'selectorForFieldsRequiredReCheckConnection' => $options['selectorForFieldsRequiredReCheckConnection']
+            ]
+        ]);
     }
 }
