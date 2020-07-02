@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\Magento2Bundle\Model;
 
+use Marello\Bundle\Magento2Bundle\DTO\WebsiteToSalesChannelMappingItemDTO;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class Magento2TransportSettings extends ParameterBag
@@ -72,15 +73,16 @@ class Magento2TransportSettings extends ParameterBag
     }
 
     /**
-     * @param string $websiteCode
-     * @return string|null
+     * @param int $websiteId
+     * @return int|null
      */
-    public function getSalesChannelCodeByWebsiteCode(string $websiteCode): ?string
+    public function getSalesChannelIdByWebsiteId(int $websiteId): ?int
     {
         $websiteToSalesChannelMapping = $this->get(self::WEBSITE_TO_SALES_CHANNEL_MAPPING_KEY, []);
         foreach ($websiteToSalesChannelMapping as $websiteToSalesChannelMappingItem) {
-            if ($websiteCode === $websiteToSalesChannelMappingItem['website_code']) {
-                return $websiteToSalesChannelMappingItem['sales_chanel_code'];
+            $mappingItem = new WebsiteToSalesChannelMappingItemDTO($websiteToSalesChannelMappingItem);
+            if ($mappingItem->getOriginWebsiteId() === $websiteId) {
+                return $mappingItem->getSalesChannelId();
             }
         }
 

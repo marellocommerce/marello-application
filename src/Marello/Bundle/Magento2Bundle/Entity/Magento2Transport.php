@@ -42,13 +42,8 @@ class Magento2Transport extends Transport
 
     /**
      * @var array
-     * [
-     *    [
-     *      'website_code' => string <website_code>,
-     *      'sales_chanel_code' => string <sales_channel_code>
-     *    ],
-     *    ...
-     * ]
+     *
+     * The structure described in constant REQUIRED_KEYS of @see WebsiteToSalesChannelMappingItemDTO
      *
      * @ORM\Column(name="m2_websites_sales_channel_map", type="json", nullable=true)
      */

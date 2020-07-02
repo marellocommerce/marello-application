@@ -15,6 +15,7 @@ connector:
                     parameters:
                         batch_size: 25
                 # @todo Implement removing of abandoned website
+                # @todo Implement updating config WEBSITE_TO_SALES_CHANNEL_MAPPING_KEY
 
         marello_magento2_store_rest_import:
             title: "Store import from Magento 2"

@@ -73,7 +73,7 @@ class SimpleProductTranslatorHelper
     /**
      * @param Product $product
      * @param int $integrationId
-     * @return ProductTaxClass
+     * @return ProductTaxClass|null
      */
     public function getMagentoProductTaxClass(Product $product, int $integrationId): ?ProductTaxClass
     {
@@ -83,10 +83,12 @@ class SimpleProductTranslatorHelper
 
         /** @var Collection $productClasses */
         $productClasses = $product->getTaxCode()->getMagento2ProductTaxClasses();
-        $targetTaxClasses = $productClasses->filter(function (ProductTaxClass $productTaxClass) use ($integrationId) {
-                return $productTaxClass->getChannelId() === $integrationId;
-        });
+        foreach ($productClasses as $productTaxClass) {
+            if ($productTaxClass->getChannelId() === $integrationId) {
+                return $productTaxClass;
+            }
+        }
 
-        return $targetTaxClasses->first();
+        return null;
     }
 }
