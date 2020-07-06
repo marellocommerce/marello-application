@@ -283,6 +283,21 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
     protected $enableBatchInventory;
 
     /**
+     * @var \Extend\Entity\EV_Marello_Product_Unit
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $unitOfMeasurement;
+
+    /**
      * InventoryItem constructor.
      *
      * @param ProductInterface|Product $product
@@ -592,6 +607,26 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
     {
         $this->enableBatchInventory = $enableBatchInventory;
         
+        return $this;
+    }
+
+
+    /**
+     * @return \Extend\Entity\EV_Marello_Product_Unit
+     */
+    public function getUnitOfMeasurement()
+    {
+        return $this->unitOfMeasurement;
+    }
+
+    /**
+     * @param string $unitOfMeasurement
+     * @return $this
+     */
+    public function setUnitOfMeasurement($unitOfMeasurement)
+    {
+        $this->unitOfMeasurement = $unitOfMeasurement;
+
         return $this;
     }
 }

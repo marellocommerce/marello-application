@@ -2,10 +2,13 @@
 
 namespace Marello\Bundle\InventoryBundle\Manager;
 
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
+use Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository;
+
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\ProductBundle\Migrations\Data\ORM\LoadProductUnitData;
 
 class InventoryItemManager implements InventoryItemManagerInterface
 {
@@ -74,6 +77,18 @@ class InventoryItemManager implements InventoryItemManagerInterface
         $replenishmentClass = ExtendHelper::buildEnumValueClassName('marello_inv_reple');
         $repo = $this->doctrineHelper->getEntityRepository($replenishmentClass);
         return $repo->findOneBy(['default' => 1]);
+    }
+
+    /**
+     * Get default unit of measurement for InventoryItem
+     * @return null|object
+     */
+    public function getDefaultUnitOfMeasurement()
+    {
+        $unitOfMeasurement = ExtendHelper::buildEnumValueClassName(LoadProductUnitData::PRODUCT_UNIT_ENUM_CLASS);
+        /** @var EnumValueRepository $repo */
+        $repo = $this->doctrineHelper->getEntityRepository($unitOfMeasurement);
+        return $repo->findOneByDefault(true);
     }
 
     /**
