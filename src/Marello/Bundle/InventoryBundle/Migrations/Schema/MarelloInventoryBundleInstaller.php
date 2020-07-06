@@ -25,7 +25,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
      */
     public function getMigrationVersion()
     {
-        return 'v2_4';
+        return 'v2_4_1';
     }
 
     /**
@@ -87,6 +87,17 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
             false,
             [
                 'extend' => ['owner' => ExtendScope::OWNER_CUSTOM],
+            ]
+        );
+        $this->extendExtension->addEnumField(
+            $schema,
+            $table,
+            'unitOfMeasurement',
+            'marello_product_unit',
+            false,
+            false,
+            [
+                'extend' => ['owner' => ExtendScope::OWNER_SYSTEM],
             ]
         );
 
