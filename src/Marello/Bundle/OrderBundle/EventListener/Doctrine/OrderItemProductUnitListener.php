@@ -3,26 +3,22 @@
 namespace Marello\Bundle\OrderBundle\EventListener\Doctrine;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
+
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use Marello\Bundle\ProductBundle\Migrations\Data\ORM\LoadProductUnitData;
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
+use Marello\Bundle\InventoryBundle\Manager\InventoryItemManager;
 
 class OrderItemProductUnitListener
 {
-    /**
-     * @var DoctrineHelper
-     */
-    protected $doctrineHelper;
+    /** @var InventoryItemManager $inventoryItemManager  */
+    protected $inventoryItemManager;
 
     /**
-     * @param DoctrineHelper $doctrineHelper
+     * @param InventoryItemManager $inventoryItemManager
      */
-    public function __construct(DoctrineHelper $doctrineHelper)
+    public function __construct(InventoryItemManager $inventoryItemManager)
     {
-        $this->doctrineHelper = $doctrineHelper;
+        $this->inventoryItemManager = $inventoryItemManager;
     }
-
 
     /**
      * @param LifecycleEventArgs $args
@@ -31,25 +27,13 @@ class OrderItemProductUnitListener
     {
         $entity = $args->getEntity();
         if ($entity instanceof OrderItem && $entity->getProductUnit() === null) {
-            $entity->setProductUnit($this->findDefaultProductUnit());
+            // try getting product unit from inventory item
+            $inventoryItem = $this->inventoryItemManager->getInventoryItem($entity->getProduct());
+            if ($uom = $inventoryItem->getUnitOfMeasurement()) {
+                $entity->setProductUnit($uom);
+            } else {
+                $entity->setProductUnit($this->inventoryItemManager->getDefaultUnitOfMeasurement());
+            }
         }
-    }
-
-    /**
-     * @return null|object
-     */
-    private function findDefaultProductUnit()
-    {
-        $productUnitClass = ExtendHelper::buildEnumValueClassName(LoadProductUnitData::PRODUCT_UNIT_ENUM_CLASS);
-        $productUnit = $this->doctrineHelper
-            ->getEntityManagerForClass($productUnitClass)
-            ->getRepository($productUnitClass)
-            ->findOneByDefault(true);
-
-        if ($productUnit) {
-            return $productUnit;
-        }
-
-        return null;
     }
 }
