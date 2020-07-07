@@ -80,14 +80,14 @@ class InventoryItemManager implements InventoryItemManagerInterface
     }
 
     /**
-     * Get default unit of measurement for InventoryItem
+     * Get default product unit for InventoryItem
      * @return null|object
      */
-    public function getDefaultUnitOfMeasurement()
+    public function getDefaultProductUnit()
     {
-        $unitOfMeasurement = ExtendHelper::buildEnumValueClassName(LoadProductUnitData::PRODUCT_UNIT_ENUM_CLASS);
+        $productUnit = ExtendHelper::buildEnumValueClassName(LoadProductUnitData::PRODUCT_UNIT_ENUM_CLASS);
         /** @var EnumValueRepository $repo */
-        $repo = $this->doctrineHelper->getEntityRepository($unitOfMeasurement);
+        $repo = $this->doctrineHelper->getEntityRepository($productUnit);
         return $repo->findOneByDefault(true);
     }
 

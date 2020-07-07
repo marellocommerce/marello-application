@@ -92,7 +92,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $this->extendExtension->addEnumField(
             $schema,
             $table,
-            'unitOfMeasurement',
+            'productUnit',
             'marello_product_unit',
             false,
             false,

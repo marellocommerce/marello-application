@@ -40,6 +40,7 @@ marello:
             status.label:           Status
             organization.label:     Organization
             inventory_batches.label: Inventory Batches
+            product_unit.label:     Unit
 
         datagrid:
             columns:
