@@ -3,6 +3,7 @@
 namespace Marello\Bundle\InvoiceBundle\Migrations\Schema;
 
 use Doctrine\DBAL\Schema\Schema;
+
 use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
@@ -17,7 +18,7 @@ class MarelloInvoiceBundleInstaller implements Installation
      */
     public function getMigrationVersion()
     {
-        return 'v1_2';
+        return 'v1_3';
     }
 
     /**
@@ -131,6 +132,11 @@ class MarelloInvoiceBundleInstaller implements Installation
                 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)'
             ]
         );
+        // cannot add extend product unit option because of inheritance table and the related entities it facilitates
+        // see vendor/oro/platform/src/Oro/Bundle/EntityExtendBundle/Migration/ExtendOptionsBuilder.php#166,
+        // the count of entityClassnames is > 1 so it will throw an error, for now we will workaround this by using a simple string column
+        $table->addColumn('product_unit', 'string', ['length' => 255, 'notnull' => false]);
+
         $table->setPrimaryKey(['id']);
     }
     

@@ -127,12 +127,12 @@ class InventoryItemType extends AbstractType
                 ]
             )
             ->add(
-                'unitOfMeasurement',
+                'productUnit',
                 EnumChoiceType::class,
                 [
                     'enum_code' => 'marello_product_unit',
                     'required'  => false,
-                    'label'     => 'marello.inventory.inventoryitem.unit_of_measurement.label',
+                    'label'     => 'marello.inventory.inventoryitem.product_unit.label',
                 ]
             )
             ->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'preSetDataListener']);

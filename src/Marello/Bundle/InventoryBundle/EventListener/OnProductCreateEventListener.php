@@ -58,7 +58,7 @@ class OnProductCreateEventListener
         $result = $this->inventoryItemManager->createInventoryItem($entity);
         if ($result) {
             $inventoryItem = $this->checkReplenishment($result);
-            $inventoryItem = $this->checkUnitOfMeasurement($inventoryItem);
+            $inventoryItem = $this->checkProductUnit($inventoryItem);
             $this->em->persist($inventoryItem);
             $classMeta = $this->em->getClassMetadata(get_class($inventoryItem));
             $this->unitOfWork->computeChangeSet($classMeta, $inventoryItem);
@@ -86,13 +86,13 @@ class OnProductCreateEventListener
      * @param InventoryItem $item
      * @return mixed
      */
-    protected function checkUnitOfMeasurement($item)
+    protected function checkProductUnit($item)
     {
-        if (!$item->getUnitOfMeasurement()) {
-            // get default unitOfMeasurement option
-            $unitOfMeasurement = $this->inventoryItemManager->getDefaultUnitOfMeasurement();
-            if ($unitOfMeasurement) {
-                $item->setUnitOfMeasurement($unitOfMeasurement);
+        if (!$item->getProductUnit()) {
+            // get default product unit option
+            $productUnit = $this->inventoryItemManager->getDefaultProductUnit();
+            if ($productUnit) {
+                $item->setProductUnit($productUnit);
             }
         }
 
