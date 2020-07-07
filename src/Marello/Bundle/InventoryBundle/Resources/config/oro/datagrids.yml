@@ -8,6 +8,7 @@ datagrids:
                     - p.denormalizedDefaultName as productName
                     - p.sku as productSku
                     - i.enableBatchInventory as enableBatchInventory
+                    - productUnit.name as productUnit
                     - COALESCE(SUM(il.inventory), 0) AS inventoryQty
                     - COALESCE(SUM(il.allocatedInventory), 0) AS allocatedInventoryQty
                     - COALESCE(SUM(il.inventory - il.allocatedInventory), 0) AS virtualInventoryQty
@@ -17,6 +18,7 @@ datagrids:
                     left:
                         - { join: i.product, alias: p }
                         - { join: i.inventoryLevels, alias: il }
+                        - { join: i.productUnit, alias: productUnit }
                 groupBy: i.id
         columns:
             productSku:
@@ -29,6 +31,10 @@ datagrids:
                 label:              marello.product.names.label
                 frontend_type:      string
                 data_name:          productName
+            productUnit:
+                label:              marello.inventory.inventoryitem.product_unit.label
+                frontend_type:      string
+                data_name:          productUnit
             enableBatchInventory:
                 label:              marello.inventory.inventoryitem.enable_batch_inventory.label
                 frontend_type:      boolean
@@ -49,6 +55,7 @@ datagrids:
             columns:
                 productSku:             { data_name: p.sku }
                 productName:            { data_name: p.denormalizedDefaultName }
+                productUnit:            { data_name: productUnit }
                 enableBatchInventory:   { data_name: enableBatchInventory }
                 inventoryQty:           { data_name: inventoryQty }
                 allocatedInventoryQty:  { data_name: allocatedInventoryQty }
@@ -63,6 +70,10 @@ datagrids:
                 productName:
                     type:             string
                     data_name:        p.denormalizedDefaultName
+                productUnit:
+                    type:             enum
+                    data_name:        productUnit
+                    enum_code:        marello_product_unit
                 enableBatchInventory:
                     type:             boolean
                     data_name:        enableBatchInventory
