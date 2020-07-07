@@ -16,6 +16,7 @@ marello:
             price.label: "Unit Price"
             vat.label: "VAT"
             total_inc_tax.label: "Total Price"
+            product_unit.label: "Unit"
         creditmemo:
             creditmemo_date.label: "Creditmemo date"
             creditmemo_number.label: "Creditmemo number"
@@ -32,3 +33,4 @@ marello:
             price.label: "Unit Price"
             vat.label: "VAT"
             total_inc_tax.label: "Total Price"
+            product_unit.label: "Unit"
