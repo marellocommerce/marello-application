@@ -40,6 +40,18 @@
                             'title': 'marello.product.product_information'|trans
                         }) }}
                     </div>
+                    <div class="box-type1">
+                        <div class="title">
+                            <span class="widget-title">{{ 'marello.inventory.inventoryitem.section.unit_of_measurement.label'|trans }}</span>
+                        </div>
+                        <div class="widget-content">
+                            <div class="row-fluid form-horizontal">
+                                <div class="responsive-block">
+                                    {{ UI.renderProperty('marello.inventory.inventoryitem.unit_of_measurement.label'|trans, entity.unitOfMeasurement|default('N/A')) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
