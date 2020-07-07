@@ -267,6 +267,7 @@
                         <th>{{ 'marello.pdf.creditmemo_line.productSku.label'|trans({}, 'pdf', language) }}</th>
                         <th>{{ 'marello.pdf.creditmemo_line.productName.label'|trans({}, 'pdf', language) }}</th>
                         <th class="quantity c">{{ 'marello.pdf.creditmemo_line.quantity.label'|trans({}, 'pdf', language) }}</th>
+                        <th class="unit c">{{ 'marello.pdf.creditmemo_line.product_unit.label'|trans({}, 'pdf', language) }}</th>
                         <th class="price c">{{ 'marello.pdf.creditmemo_line.price.label'|trans({}, 'pdf', language) }}</th>
                         <th class="amount c">{{ 'marello.pdf.creditmemo_line.vat.label'|trans({}, 'pdf', language) }}</th>
                         <th class="amount r">{{ 'marello.pdf.creditmemo_line.total_inc_tax.label'|trans({}, 'pdf', language) }}</th>
@@ -291,6 +292,13 @@
                                 {{- line['quantity'] -}}
                             {%- else -%}
                                 &nbsp;
+                            {%- endif -%}
+                        </td>
+                        <td class="unit c">
+                            {%- if line['productUnit'] is not empty -%}
+                                {{- line['productUnit'] -}}
+                            {%- else -%}
+
                             {%- endif -%}
                         </td>
                         <td class="price c">
