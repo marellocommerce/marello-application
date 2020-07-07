@@ -89,6 +89,7 @@ class OrderToInvoiceMapper extends AbstractInvoiceMapper
     {
         $invoiceItem = new InvoiceItem();
         $invoiceItemData = $this->getData($orderItem, InvoiceItem::class);
+        $invoiceItemData['productUnit'] = $orderItem->getProductUnit() ? $orderItem->getProductUnit()->getId() : null;
         $this->assignData($invoiceItem, $invoiceItemData);
 
         return $invoiceItem;

@@ -230,7 +230,7 @@ class MarelloOrderBundleInstaller implements
         $this->extendExtension->addEnumField(
             $schema,
             $table,
-            'unitOfMeasurement',
+            'productUnit',
             'marello_product_unit',
             false,
             false,

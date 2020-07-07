@@ -192,6 +192,7 @@ abstract class AbstractInvoiceItem implements
 
     /**
      * @var string
+     * @ORM\Column(name="product_unit",type="string", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
