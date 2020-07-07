@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\InventoryBundle\Migrations\Schema\v2_4_1;
+namespace Marello\Bundle\PackingBundle\Migrations\Schema\v1_4;
 
 use Doctrine\DBAL\Schema\Schema;
 
@@ -10,9 +10,9 @@ use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
 
-class UpdateInventoryItemTable implements Migration, ExtendExtensionAwareInterface
+class UpdatePackingSlipItemTable implements Migration, ExtendExtensionAwareInterface
 {
-    const INVENTORY_ITEM_TABLE_NAME = 'marello_inventory_item';
+    const MARELLO_PACKING_SLIP_ITEM_TABLE = 'marello_packing_pack_slip_item';
     /**
      * @var ExtendExtension
      */
@@ -23,7 +23,7 @@ class UpdateInventoryItemTable implements Migration, ExtendExtensionAwareInterfa
      */
     public function up(Schema $schema, QueryBag $queries)
     {
-        $this->updateInventoryItemTable($schema);
+        $this->updatePackingSlipItemTable($schema);
     }
 
     /**
@@ -32,9 +32,9 @@ class UpdateInventoryItemTable implements Migration, ExtendExtensionAwareInterfa
      * @param QueryBag $queries
      * @throws \Doctrine\DBAL\Schema\SchemaException
      */
-    protected function updateInventoryItemTable(Schema $schema)
+    protected function updatePackingSlipItemTable(Schema $schema)
     {
-        $table = $schema->getTable(self::INVENTORY_ITEM_TABLE_NAME);
+        $table = $schema->getTable(self::MARELLO_PACKING_SLIP_ITEM_TABLE);
         $this->extendExtension->addEnumField(
             $schema,
             $table,

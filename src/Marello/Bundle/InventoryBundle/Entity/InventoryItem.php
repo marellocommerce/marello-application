@@ -295,7 +295,7 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
      *      }
      * )
      */
-    protected $unitOfMeasurement;
+    protected $productUnit;
 
     /**
      * InventoryItem constructor.
@@ -610,22 +610,21 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
         return $this;
     }
 
-
     /**
      * @return \Extend\Entity\EV_Marello_Product_Unit
      */
-    public function getUnitOfMeasurement()
+    public function getProductUnit()
     {
-        return $this->unitOfMeasurement;
+        return $this->productUnit;
     }
 
     /**
-     * @param string $unitOfMeasurement
+     * @param string $productUnit
      * @return $this
      */
-    public function setUnitOfMeasurement($unitOfMeasurement)
+    public function setProductUnit($productUnit)
     {
-        $this->unitOfMeasurement = $unitOfMeasurement;
+        $this->productUnit = $productUnit;
 
         return $this;
     }

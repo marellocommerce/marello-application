@@ -29,10 +29,10 @@ class OrderItemProductUnitListener
         if ($entity instanceof OrderItem && $entity->getProductUnit() === null) {
             // try getting product unit from inventory item
             $inventoryItem = $this->inventoryItemManager->getInventoryItem($entity->getProduct());
-            if ($uom = $inventoryItem->getUnitOfMeasurement()) {
+            if ($uom = $inventoryItem->getProductUnit()) {
                 $entity->setProductUnit($uom);
             } else {
-                $entity->setProductUnit($this->inventoryItemManager->getDefaultUnitOfMeasurement());
+                $entity->setProductUnit($this->inventoryItemManager->getDefaultProductUnit());
             }
         }
     }
