@@ -126,6 +126,15 @@ class InventoryItemType extends AbstractType
                     'label' => 'marello.inventory.inventoryitem.enable_batch_inventory.label'
                 ]
             )
+            ->add(
+                'productUnit',
+                EnumChoiceType::class,
+                [
+                    'enum_code' => 'marello_product_unit',
+                    'required'  => false,
+                    'label'     => 'marello.inventory.inventoryitem.product_unit.label',
+                ]
+            )
             ->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'preSetDataListener']);
         if ($this->subscriber !== null) {
             $builder->addEventSubscriber($this->subscriber);
