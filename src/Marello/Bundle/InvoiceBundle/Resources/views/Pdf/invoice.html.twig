@@ -267,6 +267,7 @@
                         <th>{{ 'marello.pdf.invoice_line.productSku.label'|trans({}, 'pdf', language) }}</th>
                         <th>{{ 'marello.pdf.invoice_line.productName.label'|trans({}, 'pdf', language) }}</th>
                         <th class="quantity c">{{ 'marello.pdf.invoice_line.quantity.label'|trans({}, 'pdf', language) }}</th>
+                        <th class="unit c">{{ 'marello.pdf.invoice_line.product_unit.label'|trans({}, 'pdf', language) }}</th>
                         <th class="price c">{{ 'marello.pdf.invoice_line.price.label'|trans({}, 'pdf', language) }}</th>
                         <th class="amount c">{{ 'marello.pdf.invoice_line.vat.label'|trans({}, 'pdf', language) }}</th>
                         <th class="amount r">{{ 'marello.pdf.invoice_line.total_inc_tax.label'|trans({}, 'pdf', language) }}</th>
@@ -291,6 +292,13 @@
                                 {{- line['quantity'] -}}
                             {%- else -%}
                                 &nbsp;
+                            {%- endif -%}
+                        </td>
+                        <td class="unit c">
+                            {%- if line['productUnit'] is not empty -%}
+                                {{- line['productUnit'] -}}
+                            {%- else -%}
+
                             {%- endif -%}
                         </td>
                         <td class="price c">
