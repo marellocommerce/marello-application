@@ -18,7 +18,7 @@ class MarelloInvoiceBundleInstaller implements Installation
      */
     public function getMigrationVersion()
     {
-        return 'v1_3';
+        return 'v2_1';
     }
 
     /**
