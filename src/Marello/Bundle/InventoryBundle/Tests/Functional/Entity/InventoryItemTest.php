@@ -46,7 +46,7 @@ class InventoryItemTest extends WebTestCase
         $this->assertEquals(false, $inventoryItem->hasInventoryLevels());
         $this->assertEmpty($inventoryItem->getInventoryLevels());
         $this->assertEmpty($inventoryItem->getReplenishment());
-        $this->assertEmpty($inventoryItem->getUnitOfMeasurement());
+        $this->assertEmpty($inventoryItem->getProductUnit());
 
         /** @var InventoryUpdateContext $context */
         $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
@@ -75,7 +75,7 @@ class InventoryItemTest extends WebTestCase
         $this->assertEquals(false, $inventoryItem->hasInventoryLevels());
         $this->assertEmpty($inventoryItem->getInventoryLevels());
         $this->assertEmpty($inventoryItem->getReplenishment());
-        $this->assertEmpty($inventoryItem->getUnitOfMeasurement());
+        $this->assertEmpty($inventoryItem->getProductUnit());
 
         /** @var InventoryUpdateContext $context */
         $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
