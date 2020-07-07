@@ -515,6 +515,9 @@
                                                 <th class="item-info item-info-right" style="background-color: #f8f8f8; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px;">
                                                     Quantity
                                                 </th>
+                                                <th class="item-info" style="background-color: #f8f8f8; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px;">
+                                                    Unit
+                                                </th>
                                                 <th class="item-info" style="background-color: #f8f8f8; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; text-align:right;">
                                                     Price excl Tax
                                                 </th>
@@ -538,6 +541,9 @@
                                                     <td class="item-info item-info-right" style="border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px;">
                                                         {{ item.quantity }}
                                                     </td>
+                                                    <td class="item-info" style="border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px;">
+                                                        {{ item.productUnit }}
+                                                    </td>
                                                     <td class="item-info" style="border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px; text-align:right;">
                                                         {{ item.price|oro_format_currency({'currency': entity.currency}) }}
                                                     </td>
@@ -552,7 +558,7 @@
                                             </tbody>
                                             <tfoot class="order-totals">
                                             <tr class="subtotal">
-                                                <th colspan="5" scope="row" style="background-color: #f8f8f8; border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; text-align: right;">
+                                                <th colspan="6" scope="row" style="background-color: #f8f8f8; border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; text-align: right;">
                                                     Subtotal:
                                                 </th>
                                                 <td data-th="subtotaal" style="background-color: #f8f8f8; border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px; text-align: right;">
@@ -560,7 +566,7 @@
                                                 </td>
                                             </tr>
                                             <tr class="tax">
-                                                <th colspan="5" scope="row" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; padding-top: 0; text-align: right;">
+                                                <th colspan="6" scope="row" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; padding-top: 0; text-align: right;">
                                                     Tax:
                                                 </th>
                                                 <td data-th="tax" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px; padding-top: 0; text-align: right;">
@@ -569,7 +575,7 @@
                                             </tr>
                                             <!--{% if entity.discountAmount %}-->
                                                 <tr class="discount">
-                                                    <th colspan="5" scope="row" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; padding-top: 0; text-align: right;">
+                                                    <th colspan="6" scope="row" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; padding-top: 0; text-align: right;">
                                                         Discount:
                                                     </th>
                                                     <td data-th="discount" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px; padding-top: 0; text-align: right;">
@@ -578,7 +584,7 @@
                                                 </tr>
                                             <!--{% endif %}-->
                                             <tr class="shipping">
-                                                <th colspan="5" scope="row" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; padding-top: 0; text-align: right;">
+                                                <th colspan="6" scope="row" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; padding-top: 0; text-align: right;">
                                                     Shipping cost:
                                                 </th>
                                                 <td data-th="Verzending en verwerking" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px; padding-top: 0; text-align: right;">
@@ -586,7 +592,7 @@
                                                 </td>
                                             </tr>
                                             <tr class="grand_total">
-                                                <th colspan="5" scope="row" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; padding-top: 0; text-align: right;">
+                                                <th colspan="6" scope="row" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; padding-top: 0; text-align: right;">
                                                     <strong style="font-weight: 600;">
                                                         Total:
                                                     </strong>

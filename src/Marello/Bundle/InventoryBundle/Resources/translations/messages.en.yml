@@ -76,8 +76,10 @@ marello:
             pre_orders_datetime.label:     Pre-orders Datetime
             order_on_demand_allowed.label: Order on demand allowed
             enable_batch_inventory.label:  Enable Batch Inventory
+            product_unit.label:            Unit
 
             section:
+                unit_of_measurement.label:  Unit of Measurement
                 backorder_preorder.label:   Backorder/Pre-order
                 backorder.label:            Backorder
                 preorder.label:             Pre-order
