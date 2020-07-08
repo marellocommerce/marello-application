@@ -29,7 +29,7 @@ class Product extends ExtendProduct implements
     CreatedAtAwareInterface,
     UpdatedAtAwareInterface
 {
-    use IntegrationEntityTrait, OriginTrait, CreatedAtAwareTrait, UpdatedAtAwareTrait;
+    use IntegrationEntityTrait, NullableOriginTrait, CreatedAtAwareTrait, UpdatedAtAwareTrait;
 
     const STATUS_CODE = 'marello_m2_p_status';
 
@@ -53,6 +53,8 @@ class Product extends ExtendProduct implements
     protected $sku;
 
     /**
+     * @todo Think about renaming field on innerProduct, wrappedProduct and etc.
+     *
      * @var Product
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\Product")
