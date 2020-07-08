@@ -95,11 +95,11 @@ class ExportProcessor implements StepExecutionAwareInterface, ContextAwareProces
     public function process($object)
     {
         if (! $this->translator) {
-            throw new RuntimeException('Translator must be injected.');
+            throw new RuntimeException('[Magento 2] Translator must be injected.');
         }
 
         if (! $this->serializer) {
-            throw new RuntimeException('Serializer must be injected.');
+            throw new RuntimeException('[Magento 2] Serializer must be injected.');
         }
 
         $context = $this->context->getConfiguration();

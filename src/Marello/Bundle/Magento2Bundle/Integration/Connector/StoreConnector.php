@@ -3,10 +3,12 @@
 namespace Marello\Bundle\Magento2Bundle\Integration\Connector;
 
 use Marello\Bundle\Magento2Bundle\Entity\Store;
-use Oro\Bundle\IntegrationBundle\Provider\AbstractConnector;
 
 class StoreConnector extends AbstractConnector implements DictionaryConnectorInterface
 {
+    /** @var string */
+    public const TYPE = 'store_dictionary';
+
     /**
      * {@inheritDoc}
      */
@@ -36,11 +38,11 @@ class StoreConnector extends AbstractConnector implements DictionaryConnectorInt
      */
     public function getType()
     {
-        return 'store_dictionary';
+        return self::TYPE;
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getImportJobName()
     {

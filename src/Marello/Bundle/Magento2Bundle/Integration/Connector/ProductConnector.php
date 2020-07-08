@@ -8,7 +8,7 @@ use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Provider\AllowedConnectorInterface;
 use Oro\Bundle\IntegrationBundle\Provider\TwoWaySyncConnectorInterface;
 
-class ProductConnector extends AbstractMagento2Connector implements
+class ProductConnector extends AbstractConnector implements
     AllowedConnectorInterface,
     TwoWaySyncConnectorInterface
 {
@@ -60,7 +60,7 @@ class ProductConnector extends AbstractMagento2Connector implements
      */
     public function getImportJobName()
     {
-        throw new RuntimeException('ProductConnector is not support import!');
+        throw new RuntimeException('[Magento 2] ProductConnector is not support import!');
     }
 
     /**
