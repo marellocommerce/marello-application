@@ -18,7 +18,7 @@ class SimpleProductUpdateNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        $websiteIds = \array_values(
+        $originWebsiteIds = \array_values(
             \array_map(function (Website $website) {
                 return $website->getOriginId();
             }, $object->getWebsites())
@@ -44,7 +44,7 @@ class SimpleProductUpdateNormalizer implements NormalizerInterface
                 'name' => $name,
                 'status' => $status,
                 'extension_attributes' => [
-                    'website_ids' => $websiteIds,
+                    'website_ids' => $originWebsiteIds,
                     'stock_item' => [
                         'use_config_backorders' => false,
                         'backorders' => $isBackorderAllowed,
