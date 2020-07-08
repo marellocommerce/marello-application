@@ -20,7 +20,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
  */
 class Website extends ExtendWebsite implements OriginAwareInterface, IntegrationAwareInterface
 {
-    use IntegrationEntityTrait, OriginTrait;
+    use IntegrationEntityTrait, NullableOriginTrait;
 
     /**
      * @var integer
@@ -48,7 +48,7 @@ class Website extends ExtendWebsite implements OriginAwareInterface, Integration
     /**
      * @var Collection|Store[]
      *
-     *  @ORM\OneToMany(
+     * @ORM\OneToMany(
      *     targetEntity="Marello\Bundle\Magento2Bundle\Entity\Store",
      *     mappedBy="website"
      * )

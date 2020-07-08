@@ -19,7 +19,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
  */
 class Store extends ExtendStore implements OriginAwareInterface, IntegrationAwareInterface
 {
-    use IntegrationEntityTrait, OriginTrait;
+    use IntegrationEntityTrait, NullableOriginTrait;
 
     /**
      * @var integer
@@ -47,7 +47,7 @@ class Store extends ExtendStore implements OriginAwareInterface, IntegrationAwar
     /**
      * @var Website
      *
-     * @ORM\ManyToOne(targetEntity="Marello\Bundle\Magento2Bundle\Entity\Website")
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\Magento2Bundle\Entity\Website", inversedBy="stores")
      * @ORM\JoinColumn(name="website_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      */
     protected $website;
