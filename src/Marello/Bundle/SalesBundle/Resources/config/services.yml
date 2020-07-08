@@ -47,7 +47,7 @@ services:
             - 'Marello\Bundle\SalesBundle\Entity\SalesChannelGroup'
             - ['name']
         tags:
-            - { name: oro_form.autocomplete.search_handler, alias: group_saleschannels }
+            - { name: oro_form.autocomplete.search_handler, alias: group_saleschannels, acl_resource: marello_product_view }
 
     marello_sales.active_saleschannels.form.autocomplete.search_handler:
         class: 'Marello\Bundle\SalesBundle\Autocomplete\ActiveSalesChannelHandler'
