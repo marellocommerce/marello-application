@@ -30,19 +30,25 @@ class ProductPriceListener
     /** @var ProductRepository */
     protected $productRepository;
 
+    /** @var array */
+    protected $trackedPriceTypes;
+
     /**
      * @param ProductChangesByChannelStack $productChangesStack
      * @param TrackedSalesChannelProvider $salesChannelProvider
      * @param ProductRepository $productRepository
+     * @param array $trackedPriceTypes
      */
     public function __construct(
         ProductChangesByChannelStack $productChangesStack,
         TrackedSalesChannelProvider $salesChannelProvider,
-        ProductRepository $productRepository
+        ProductRepository $productRepository,
+        array $trackedPriceTypes
     ) {
         $this->productChangesStack = $productChangesStack;
         $this->salesChannelProvider = $salesChannelProvider;
         $this->productRepository = $productRepository;
+        $this->trackedPriceTypes = $trackedPriceTypes;
     }
 
     /**
@@ -50,6 +56,10 @@ class ProductPriceListener
      */
     public function onFlush(OnFlushEventArgs $args)
     {
+        if (empty($this->trackedPriceTypes)) {
+            return;
+        }
+
         if (false === $this->salesChannelProvider->hasTrackedSalesChannels(false)) {
             return;
         }
@@ -78,9 +88,14 @@ class ProductPriceListener
         $salesChannelInfoArray = $this->salesChannelProvider->getSalesChannelsInfoArray();
         $currenciesWSChInfos = $this->salesChannelProvider->getTrackedSalesChannelCurrenciesWithSalesChannelInfos();
         foreach ($entities as $entity) {
-            if (($entity instanceof ProductChannelPrice || $entity instanceof ProductPrice) &&
-                $entity->getProduct()->getId() === null) {
-                continue;
+            if ($entity instanceof ProductChannelPrice || $entity instanceof ProductPrice) {
+                if ($entity->getProduct()->getId() === null) {
+                    continue;
+                }
+
+                if (!\in_array($entity->getType()->getName(), $this->trackedPriceTypes, true)) {
+                    continue;
+                }
             }
 
             if ($entity instanceof ProductChannelPrice) {
@@ -112,6 +127,12 @@ class ProductPriceListener
         $salesChannelInfoArray = $this->salesChannelProvider->getSalesChannelsInfoArray();
         $currenciesWSChInfos = $this->salesChannelProvider->getTrackedSalesChannelCurrenciesWithSalesChannelInfos();
         foreach ($entities as $entity) {
+            if ($entity instanceof ProductChannelPrice || $entity instanceof ProductPrice) {
+                if (!\in_array($entity->getType()->getName(), $this->trackedPriceTypes, true)) {
+                    continue;
+                }
+            }
+
             if ($entity instanceof ProductChannelPrice) {
                 $entityChangeSet = $unitOfWork->getEntityChangeSet($entity);
                 if (\array_key_exists(self::PRICE_CHANNEL_FIELD_NAME, $entityChangeSet)) {

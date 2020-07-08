@@ -60,6 +60,9 @@ services:
             - '@marello_magento2.stack.product_changes_by_channel'
             - '@marello_magento2.provider.tracked_sales_channel'
             - '@marello_product.repository.product'
+            -
+                - !php/const Marello\Bundle\PricingBundle\Model\PriceTypeInterface::DEFAULT_PRICE
+                - !php/const Marello\Bundle\PricingBundle\Model\PriceTypeInterface::SPECIAL_PRICE
         tags:
             - { name: doctrine.event_listener, event: onFlush }
 
