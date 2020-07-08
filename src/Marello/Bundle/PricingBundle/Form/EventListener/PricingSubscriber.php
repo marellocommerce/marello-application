@@ -116,21 +116,31 @@ class PricingSubscriber implements EventSubscriberInterface
             $assembledPriceList->getDefaultPrice()
                 ->setType($this->getPriceType(PriceTypeInterface::DEFAULT_PRICE))
                 ->setCurrency($assembledPriceList->getCurrency());
-            if ($assembledPriceList->getSpecialPrice() !== null &&
-                $assembledPriceList->getSpecialPrice()->getValue() === null) {
-                $assembledPriceList->setSpecialPrice(null);
-            } elseif ($assembledPriceList->getSpecialPrice() !== null) {
+
+            /** Restores currency in case if product price exists */
+            if ($assembledPriceList->getSpecialPrice() !== null) {
                 $assembledPriceList->getSpecialPrice()
                     ->setType($this->getPriceType(PriceTypeInterface::SPECIAL_PRICE))
                     ->setCurrency($assembledPriceList->getCurrency());
             }
-            if ($assembledPriceList->getMsrpPrice() !== null &&
-                $assembledPriceList->getMsrpPrice()->getValue() === null) {
-                $assembledPriceList->setMsrpPrice(null);
-            } elseif ($assembledPriceList->getMsrpPrice() !== null) {
+
+            /** Removes product price from price list in case if user clear its value */
+            if ($assembledPriceList->getSpecialPrice() !== null &&
+                $assembledPriceList->getSpecialPrice()->getValue() === null) {
+                $assembledPriceList->setSpecialPrice(null);
+            }
+
+            /** Restores currency in case if product price exists */
+            if ($assembledPriceList->getMsrpPrice() !== null) {
                 $assembledPriceList->getMsrpPrice()
                     ->setType($this->getPriceType(PriceTypeInterface::MSRP_PRICE))
                     ->setCurrency($assembledPriceList->getCurrency());
+            }
+
+            /** Removes product price from price list in case if user clear its value */
+            if ($assembledPriceList->getMsrpPrice() !== null &&
+                $assembledPriceList->getMsrpPrice()->getValue() === null) {
+                $assembledPriceList->setMsrpPrice(null);
             }
         }
         
