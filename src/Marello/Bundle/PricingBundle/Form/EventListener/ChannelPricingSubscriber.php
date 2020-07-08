@@ -146,13 +146,18 @@ class ChannelPricingSubscriber implements EventSubscriberInterface
             $assembledChannelPriceList->getDefaultPrice()
                 ->setType($this->getPriceType(PriceTypeInterface::DEFAULT_PRICE))
                 ->setCurrency($assembledChannelPriceList->getCurrency());
-            if ($assembledChannelPriceList->getSpecialPrice() !== null &&
-                $assembledChannelPriceList->getSpecialPrice()->getValue() === null) {
-                $assembledChannelPriceList->setSpecialPrice(null);
-            } elseif ($assembledChannelPriceList->getSpecialPrice() !== null) {
+
+            /** Restores currency in case if product price exists */
+            if ($assembledChannelPriceList->getSpecialPrice() !== null) {
                 $assembledChannelPriceList->getSpecialPrice()
                     ->setType($this->getPriceType(PriceTypeInterface::SPECIAL_PRICE))
                     ->setCurrency($assembledChannelPriceList->getCurrency());
+            }
+
+            /** Removes product price from price list in case if user clear its value */
+            if ($assembledChannelPriceList->getSpecialPrice() !== null &&
+                $assembledChannelPriceList->getSpecialPrice()->getValue() === null) {
+                $assembledChannelPriceList->setSpecialPrice(null);
             }
         }
 
@@ -190,7 +195,9 @@ class ChannelPricingSubscriber implements EventSubscriberInterface
     protected function getPricingEnabled(FormInterface $form)
     {
         if (!$form->has(PricingAwareInterface::CHANNEL_PRICING_STATE_KEY)) {
-            throw new \InvalidArgumentException(sprintf('%s form child is missing'));
+            throw new \InvalidArgumentException(
+                sprintf('%s form child is missing', PricingAwareInterface::CHANNEL_PRICING_STATE_KEY)
+            );
         }
 
         $data = $form->get(PricingAwareInterface::CHANNEL_PRICING_STATE_KEY)->getData();
