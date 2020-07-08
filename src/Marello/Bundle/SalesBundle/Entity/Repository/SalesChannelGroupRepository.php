@@ -3,6 +3,7 @@
 namespace Marello\Bundle\SalesBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Oro\Bundle\IntegrationBundle\Entity\Channel as IntegrationChannel;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
@@ -59,5 +60,21 @@ class SalesChannelGroupRepository extends EntityRepository
             ->setParameter('salesChannelGroupId', $salesChannelGroupId);
 
         return (bool) $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param string $searchTerm
+     * @return QueryBuilder
+     */
+    public function getNonSystemSalesChannelBySearchTermQB(string $searchTerm): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('scg');
+        $qb
+            ->where($qb->expr()->like('LOWER(scg.name)', ':searchTerm'))
+            ->andWhere(($qb->expr()->eq('scg.system', $qb->expr()->literal(false))))
+            ->setParameter('searchTerm', '%' . mb_strtolower($searchTerm) . '%')
+            ->orderBy('scg.name', 'ASC');
+
+        return $qb;
     }
 }
