@@ -8,10 +8,12 @@ use Marello\Bundle\Magento2Bundle\Form\Type\TransportSettingFormType;
 use Marello\Bundle\Magento2Bundle\Model\Magento2TransportSettings;
 use Marello\Bundle\Magento2Bundle\Transport\Rest\Client\SearchClientFactory;
 use Marello\Bundle\Magento2Bundle\Transport\Rest\Iterator\AttributeSetIterator;
+use Marello\Bundle\Magento2Bundle\Transport\Rest\Iterator\OrderIterator;
 use Marello\Bundle\Magento2Bundle\Transport\Rest\Iterator\ProductTaxClassesIterator;
 use Marello\Bundle\Magento2Bundle\Transport\Rest\Iterator\StoreIterator;
 use Marello\Bundle\Magento2Bundle\Transport\Rest\Iterator\WebsiteIterator;
 use Marello\Bundle\Magento2Bundle\Transport\Rest\Request\RequestFactory;
+use Marello\Bundle\Magento2Bundle\Transport\Rest\SearchCriteria\FilterFactoryInterface;
 use Oro\Bundle\IntegrationBundle\Entity\Transport;
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\FactoryInterface as RestClientFactoryInterface;
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestClientInterface;
@@ -29,8 +31,9 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
     public const RESOURCE_STORE_CONFIGS = 'store/storeConfigs';
     public const RESOURCE_PRODUCTS = 'products';
     public const RESOURCE_PRODUCT_WITH_SKU = 'products/%sku%';
-    public const RESOURCE_TAX_CLASS_SEARCH = 'taxClasses/search';
     public const RESOURCE_ATTRIBUTE_SET_LIST_SEARCH = 'products/attribute-sets/sets/list';
+    public const RESOURCE_TAX_CLASSES_SEARCH = 'taxClasses/search';
+    public const RESOURCE_ORDERS_SEARCH = 'orders';
 
     /**
      * @var Magento2TransportSettings
@@ -63,21 +66,29 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
     protected $crypter;
 
     /**
+     * @var FilterFactoryInterface
+     */
+    protected $filterFactory;
+
+    /**
      * @param RestClientFactoryInterface $clientFactory
      * @param RequestFactory $requestFactory
      * @param SearchClientFactory $searchClientFactory
      * @param SymmetricCrypterInterface $crypter
+     * @param FilterFactoryInterface $filterFactory
      */
     public function __construct(
         RestClientFactoryInterface $clientFactory,
         RequestFactory $requestFactory,
         SearchClientFactory $searchClientFactory,
-        SymmetricCrypterInterface $crypter
+        SymmetricCrypterInterface $crypter,
+        FilterFactoryInterface $filterFactory
     ) {
         $this->clientFactory = $clientFactory;
         $this->requestFactory = $requestFactory;
         $this->searchClientFactory = $searchClientFactory;
         $this->crypter = $crypter;
+        $this->filterFactory = $filterFactory;
     }
 
     /**
@@ -163,12 +174,12 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
     public function getProductTaxClasses(): \Iterator
     {
         $request = $this->requestFactory->createSearchRequest(
-            self::RESOURCE_TAX_CLASS_SEARCH
+            self::RESOURCE_TAX_CLASSES_SEARCH
         );
 
         $searchClient = $this->searchClientFactory->createSearchClient($this->getClient());
 
-        return new ProductTaxClassesIterator($searchClient, $request);
+        return new ProductTaxClassesIterator($searchClient, $request, $this->filterFactory);
     }
 
     /**
@@ -182,7 +193,7 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
 
         $searchClient = $this->searchClientFactory->createSearchClient($this->getClient());
 
-        return new AttributeSetIterator($searchClient, $request);
+        return new AttributeSetIterator($searchClient, $request, $this->filterFactory);
     }
 
     /**
@@ -246,6 +257,21 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
     }
 
     /**
+     * @return \Iterator
+     * @throws RuntimeException
+     */
+    public function getOrders(): \Iterator
+    {
+        $request = $this->requestFactory->createSearchRequest(
+            self::RESOURCE_ORDERS_SEARCH
+        );
+
+        $searchClient = $this->searchClientFactory->createSearchClient($this->getClient());
+
+        return new OrderIterator($searchClient, $request, $this->filterFactory);
+    }
+
+    /**
      * @return array
      * @throws RestException
      * @throws RuntimeException
@@ -283,6 +309,31 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
     public function getSettingsEntityFQCN()
     {
         return Magento2Transport::class;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getRemoteServerDateFromLastResponse(): ?\DateTime
+    {
+        $lastResponse = $this->client->getLastResponse();
+        if (null === $lastResponse) {
+            return null;
+        }
+
+        if (!$lastResponse->hasHeader('date')) {
+            return null;
+        }
+
+        $stringDate = $lastResponse->getHeader('date');
+
+        $serverDate = \DateTime::createFromFormat(
+            \DateTimeInterface::RFC7231,
+            $stringDate,
+            new \DateTimeZone('UTC')
+        );
+
+        return false !== $serverDate ? $serverDate : null;
     }
 
     /**

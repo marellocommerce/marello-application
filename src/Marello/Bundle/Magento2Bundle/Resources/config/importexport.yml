@@ -18,14 +18,33 @@ services:
     marello_magento2.import_strategy.attributeset:
         parent: marello_magento2.import_strategy.default_magento2_import
 
+    # Provider
+    marello_magento2.integration.provider.last_sync:
+        class: Marello\Bundle\Magento2Bundle\Integration\Provider\LastSyncProvider
+
     # Connectors
     marello_magento2.integration.connector.abstract:
-        class: Marello\Bundle\Magento2Bundle\Integration\Connector\AbstractMagento2Connector
+        class: Marello\Bundle\Magento2Bundle\Integration\Connector\AbstractConnector
         abstract: true
         arguments:
             - '@oro_importexport.context_registry'
             - '@oro_integration.logger.strategy'
             - '@oro_integration.provider.connector_context_mediator'
+
+    marello_magento2.integration.connector.abstract_initial_import:
+        class: Marello\Bundle\Magento2Bundle\Integration\Connector\AbstractInitialImportConnector
+        parent: marello_magento2.integration.connector.abstract
+        abstract: true
+        calls:
+            - ['setSearchParametersConverter', ['@marello_magento2.converter.initial_search_parameters']]
+
+    marello_magento2.integration.connector.abstract_import:
+        class: Marello\Bundle\Magento2Bundle\Integration\Connector\AbstractImportConnector
+        parent: marello_magento2.integration.connector.abstract
+        abstract: true
+        calls:
+            - ['setSearchParametersConverter', ['@marello_magento2.converter.general_search_parameters']]
+            - ['setLastSyncProvider', ['@marello_magento2.integration.provider.last_sync']]
 
     marello_magento2.integration.connector.product:
         class: Marello\Bundle\Magento2Bundle\Integration\Connector\ProductConnector
