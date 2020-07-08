@@ -47,6 +47,20 @@ connector:
                         batch_size: 25
                 # @todo Implement removing of abandoned tax class
 
+        marello_magento2_attributeset_rest_import:
+            title: "Attributeset import from Magento 2"
+            type:  import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_magento2.integration.connector.attributeset
+                        processor: marello_magento2.importexport.processor.attributeset
+                        writer:    oro_importexport.writer.entity
+                    parameters:
+                        batch_size: 25
+
         marello_magento2_product_rest_export:
             title: "Export product data to Magento 2"
             type: export

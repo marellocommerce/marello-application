@@ -15,6 +15,9 @@ services:
     marello_magento2.import_strategy.product_tax_class:
         parent: marello_magento2.import_strategy.default_magento2_import
 
+    marello_magento2.import_strategy.attributeset:
+        parent: marello_magento2.import_strategy.default_magento2_import
+
     # Connectors
     marello_magento2.integration.connector.abstract:
         class: Marello\Bundle\Magento2Bundle\Integration\Connector\AbstractMagento2Connector
@@ -47,6 +50,12 @@ services:
         parent: marello_magento2.integration.connector.abstract
         tags:
             - { name: oro_integration.connector, type: product_tax_class_dictionary, channel_type: magento2 }
+
+    marello_magento2.integration.connector.attributeset:
+        class: Marello\Bundle\Magento2Bundle\Integration\Connector\AttributeSetConnector
+        parent: marello_magento2.integration.connector.abstract
+        tags:
+            - { name: oro_integration.connector, type: magento2_attributeset, channel_type: magento2 }
 
     # Readers
     marello_magento2.importexport.reader.export.product_delete_removed:
@@ -151,6 +160,9 @@ services:
     marello_magento2.importexport.converter.product.delete_on_channel_action:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Converter\ProductDeleteOnChannelDataConverter
 
+    marello_magento2.importexport.converter.attributeset:
+        class: Marello\Bundle\Magento2Bundle\ImportExport\Converter\AttributeSetDataConverter
+
     # Processors
     marello_magento2.importexport.processor.website:
         parent: oro_integration.importexport.processor.import
@@ -178,6 +190,15 @@ services:
             - [setEntityName, ['Marello\Bundle\Magento2Bundle\Entity\ProductTaxClass']]
         tags:
             - { name: oro_importexport.processor, type: import, entity: 'Marello\Bundle\Magento2Bundle\Entity\ProductTaxClass', alias: marello_magento2.product_tax_class }
+
+    marello_magento2.importexport.processor.attributeset:
+        parent: oro_integration.importexport.processor.import
+        calls:
+            - [setDataConverter, ['@marello_magento2.importexport.converter.attributeset']]
+            - [setStrategy, ['@marello_magento2.import_strategy.attributeset']]
+            - [setEntityName, ['Marello\Bundle\Magento2Bundle\Entity\AttributeSet']]
+        tags:
+            - { name: oro_importexport.processor, type: import, entity: 'Marello\Bundle\Magento2Bundle\Entity\AttributeSet', alias: marello_magento2.attributeset }
 
     marello_magento2.importexport.processor.export_abstract:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Processor\ExportProcessor
@@ -276,4 +297,4 @@ services:
     marello_magento2.importexport.helper.simple_product_translator:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Helper\SimpleProductTranslatorHelper
         arguments:
-            - '@marello_inventory.repository.balancedinventory'
+            - '@oro_entity.doctrine_helper'
