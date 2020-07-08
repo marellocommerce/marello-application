@@ -7,6 +7,7 @@ use Marello\Bundle\Magento2Bundle\Exception\RuntimeException;
 use Marello\Bundle\Magento2Bundle\Form\Type\TransportSettingFormType;
 use Marello\Bundle\Magento2Bundle\Model\Magento2TransportSettings;
 use Marello\Bundle\Magento2Bundle\Transport\Rest\Client\SearchClientFactory;
+use Marello\Bundle\Magento2Bundle\Transport\Rest\Iterator\AttributeSetIterator;
 use Marello\Bundle\Magento2Bundle\Transport\Rest\Iterator\ProductTaxClassesIterator;
 use Marello\Bundle\Magento2Bundle\Transport\Rest\Iterator\StoreIterator;
 use Marello\Bundle\Magento2Bundle\Transport\Rest\Iterator\WebsiteIterator;
@@ -29,6 +30,7 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
     public const RESOURCE_PRODUCTS = 'products';
     public const RESOURCE_PRODUCT_WITH_SKU = 'products/%sku%';
     public const RESOURCE_TAX_CLASS_SEARCH = 'taxClasses/search';
+    public const RESOURCE_ATTRIBUTE_SET_LIST_SEARCH = 'products/attribute-sets/sets/list';
 
     /**
      * @var Magento2TransportSettings
@@ -167,6 +169,20 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
         $searchClient = $this->searchClientFactory->createSearchClient($this->getClient());
 
         return new ProductTaxClassesIterator($searchClient, $request);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAttributeSets(): \Iterator
+    {
+        $request = $this->requestFactory->createSearchRequest(
+            self::RESOURCE_ATTRIBUTE_SET_LIST_SEARCH
+        );
+
+        $searchClient = $this->searchClientFactory->createSearchClient($this->getClient());
+
+        return new AttributeSetIterator($searchClient, $request);
     }
 
     /**

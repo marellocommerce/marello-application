@@ -61,6 +61,7 @@ class CreateTranslator implements TranslatorInterface, LoggerAwareInterface
         $status = $entity->getStatus();
         $productTaxClass = $this->helper->getMagentoProductTaxClass($entity, $context['channel']);
         $balancedInventoryLevel = $this->helper->getBalancedInventoryLevel($entity, current($websites));
+        $attributeSet = $this->helper->getMagentoAttributeSetForProduct($entity, $context['channel']);
         $inventoryItem = $entity->getInventoryItems()->first();
         $productDTO = new ProductSimpleCreateDTO(
             $entity,
@@ -68,7 +69,8 @@ class CreateTranslator implements TranslatorInterface, LoggerAwareInterface
             $status,
             $inventoryItem,
             $productTaxClass,
-            $balancedInventoryLevel
+            $balancedInventoryLevel,
+            $attributeSet
         );
 
         return $productDTO;

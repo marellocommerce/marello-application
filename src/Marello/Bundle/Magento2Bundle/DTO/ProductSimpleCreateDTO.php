@@ -4,6 +4,7 @@ namespace Marello\Bundle\Magento2Bundle\DTO;
 
 use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\Magento2Bundle\Entity\AttributeSet;
 use Marello\Bundle\Magento2Bundle\Entity\ProductTaxClass;
 use Marello\Bundle\Magento2Bundle\Entity\Website;
 use Marello\Bundle\ProductBundle\Entity\Product;
@@ -42,6 +43,9 @@ class ProductSimpleCreateDTO
     /** @var BalancedInventoryLevel|null */
     protected $balancedInventoryLevel;
 
+    /** @var AttributeSet|null */
+    protected $attributeSet;
+
     /**
      * @param Product $product
      * @param Website[] $websites
@@ -49,6 +53,7 @@ class ProductSimpleCreateDTO
      * @param InventoryItem $inventoryItem
      * @param ProductTaxClass|null $productTaxClass
      * @param BalancedInventoryLevel|null $balancedInventoryLevel
+     * @param AttributeSet|null $attributeSet
      */
     public function __construct(
         Product $product,
@@ -56,7 +61,8 @@ class ProductSimpleCreateDTO
         ProductStatus $status,
         InventoryItem $inventoryItem,
         ProductTaxClass $productTaxClass = null,
-        BalancedInventoryLevel $balancedInventoryLevel = null
+        BalancedInventoryLevel $balancedInventoryLevel = null,
+        AttributeSet $attributeSet = null
     ) {
         $this->product = $product;
         $this->websites = $websites;
@@ -64,6 +70,7 @@ class ProductSimpleCreateDTO
         $this->inventoryItem = $inventoryItem;
         $this->productTaxClass = $productTaxClass;
         $this->balancedInventoryLevel = $balancedInventoryLevel;
+        $this->attributeSet = $attributeSet;
         $this->price = static::DEFAULT_PRICE;
     }
 
@@ -136,6 +143,6 @@ class ProductSimpleCreateDTO
      */
     public function getAttrSetID(): string
     {
-        return $this->attrSetID;
+        return ($this->attributeSet) ? (string)$this->attributeSet->getOriginId() : $this->attrSetID;
     }
 }
