@@ -4,8 +4,11 @@ namespace Marello\Bundle\Magento2Bundle\Integration\Connector;
 
 use Marello\Bundle\Magento2Bundle\Entity\Website;
 
-class WebsiteConnector extends AbstractMagento2Connector implements DictionaryConnectorInterface
+class WebsiteConnector extends AbstractConnector implements DictionaryConnectorInterface
 {
+    /** @var string */
+    public const TYPE = 'website_dictionary';
+
     /**
      * {@inheritDoc}
      */
@@ -35,11 +38,11 @@ class WebsiteConnector extends AbstractMagento2Connector implements DictionaryCo
      */
     public function getType()
     {
-        return 'website_dictionary';
+        return self::TYPE;
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getImportJobName()
     {

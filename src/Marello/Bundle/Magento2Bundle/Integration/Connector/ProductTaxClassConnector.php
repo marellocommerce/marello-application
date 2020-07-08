@@ -7,6 +7,9 @@ use Oro\Bundle\IntegrationBundle\Provider\AbstractConnector;
 
 class ProductTaxClassConnector extends AbstractConnector implements DictionaryConnectorInterface
 {
+    /** @var string */
+    public const TYPE = 'product_tax_class_dictionary';
+
     /**
      * {@inheritDoc}
      */
@@ -44,6 +47,6 @@ class ProductTaxClassConnector extends AbstractConnector implements DictionaryCo
      */
     public function getType()
     {
-        return 'product_tax_class_dictionary';
+        return self::TYPE;
     }
 }

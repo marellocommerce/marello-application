@@ -53,4 +53,11 @@ interface Magento2TransportInterface extends TransportInterface
      * @throws RestException
      */
     public function updateProduct(string $sku, array $data, string $storeCode = null): array;
+
+    /**
+     * @return \Iterator
+     *
+     * @throws RestException
+     */
+    public function getOrders(): \Iterator;
 }

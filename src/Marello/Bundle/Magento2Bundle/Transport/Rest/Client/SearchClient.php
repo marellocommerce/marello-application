@@ -48,6 +48,7 @@ class SearchClient
             $searchRequest->getQueryParams()
         );
 
+//        $this->innerClient->getLastResponse()
 
         return new SearchResponseDTO(
             $data['items'],

@@ -9,6 +9,10 @@ use Oro\Bundle\IntegrationBundle\Provider\SyncProcessor;
 
 class InitialScheduleProcessor extends SyncProcessor
 {
+    public const LAST_SYNC_ITEM_DATE_DATA_KEY = 'lastSyncItemDate';
+    public const LAST_SYNC_ITEM_DATE_FORMAT = \DateTime::ISO8601;
+    public const IMPORT_CONNECTOR_SEARCH_SETTINGS_KEY = 'searchSetting';
+
     /** @var bool */
     protected $dictionaryDataLoaded = false;
 
