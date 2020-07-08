@@ -52,6 +52,7 @@ marello:
             system.label: System
             organization.label: Organization
             sales_channels.label: Sales Channels
+            integration_channel.label: Integration Channel
 
             datablock:
                 general: General
@@ -61,3 +62,6 @@ marello:
                     saved: Sales Channel Group has been saved successfully
                 warning:
                     is_system_update_attempt: System Sales Channel Group can't be updated
+
+        form:
+            choose.sales_channel_group: 'Choose Sales Channel Group'
