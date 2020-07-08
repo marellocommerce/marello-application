@@ -38,6 +38,12 @@ services:
         arguments:
             - 'Marello\Bundle\Magento2Bundle\Entity\Customer'
 
+    marello_magento2.repository.store:
+        class: Marello\Bundle\Magento2Bundle\Entity\Repository\StoreRepository
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'Marello\Bundle\Magento2Bundle\Entity\Store'
+
     # Event Listeners
     marello_magento2.event_listener.doctrine.product:
         class: Marello\Bundle\Magento2Bundle\EventListener\Doctrine\ProductListener
@@ -135,6 +141,7 @@ services:
             - '@marello_magento2.transport.rest.request.request_factory'
             - '@marello_magento2.transport.rest.search_client_factory'
             - '@oro_security.encoder.default'
+            - '@marello_magento2.transport.rest.search_criteria.filter_factory'
         calls:
             - [setLogger, ["@oro_integration.logger.strategy"]]
         tags:
@@ -192,6 +199,17 @@ services:
     # Stack
     marello_magento2.stack.product_changes_by_channel:
         class: Marello\Bundle\Magento2Bundle\Stack\ProductChangesByChannelStack
+
+    # Converter
+    marello_magento2.converter.general_search_parameters:
+        class: Marello\Bundle\Magento2Bundle\Integration\ContextConverter\GeneralSearchParametersConverter
+        arguments:
+            - '@marello_magento2.repository.store'
+
+    marello_magento2.converter.initial_search_parameters:
+        class: Marello\Bundle\Magento2Bundle\Integration\ContextConverter\InitialSearchParametersConverter
+        arguments:
+            - '@marello_magento2.repository.store'
 
     # Message processor
     marello_magento2.async.sales_channels_removed:
@@ -262,3 +280,13 @@ services:
         class: Marello\Bundle\Magento2Bundle\Scheduler\ProductScheduler
         arguments:
             - '@oro_integration.sync_scheduler.link'
+
+    # Factory
+    marello_magento2.transport.rest.search_criteria.filter_factory:
+        class: Marello\Bundle\Magento2Bundle\Transport\Rest\SearchCriteria\FilterFactory
+        arguments:
+            - '@marello_magento2.transport.rest.search_criteria.search_value_normalizer'
+
+    # Normalizer
+    marello_magento2.transport.rest.search_criteria.search_value_normalizer:
+        class: Marello\Bundle\Magento2Bundle\Transport\Rest\SearchCriteria\SearchValueNormalizer

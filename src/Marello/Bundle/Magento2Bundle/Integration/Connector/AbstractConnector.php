@@ -4,9 +4,9 @@ namespace Marello\Bundle\Magento2Bundle\Integration\Connector;
 
 use Marello\Bundle\Magento2Bundle\Transport\RestTransport;
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
-use Oro\Bundle\IntegrationBundle\Provider\AbstractConnector;
+use Oro\Bundle\IntegrationBundle\Provider\AbstractConnector as AbstractParentConnector;
 
-abstract class AbstractMagento2Connector extends AbstractConnector
+abstract class AbstractConnector extends AbstractParentConnector
 {
     /**
      * @var RestTransport

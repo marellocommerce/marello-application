@@ -5,6 +5,7 @@ namespace Marello\Bundle\Magento2Bundle\Transport\Rest\Iterator;
 use Marello\Bundle\Magento2Bundle\DTO\SearchResponseDTO;
 use Marello\Bundle\Magento2Bundle\Transport\Rest\Client\SearchClient;
 use Marello\Bundle\Magento2Bundle\Transport\Rest\Request\SearchRequest;
+use Marello\Bundle\Magento2Bundle\Transport\Rest\SearchCriteria\FilterFactoryInterface;
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Exception\RestException;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -18,6 +19,9 @@ abstract class AbstractSearchIterator implements LoggerAwareInterface, \Iterator
 
     /** @var SearchRequest */
     protected $searchRequest;
+
+    /** @var FilterFactoryInterface */
+    protected $filterFactory;
 
     /** @var bool */
     protected $firstLoaded = false;
@@ -60,11 +64,16 @@ abstract class AbstractSearchIterator implements LoggerAwareInterface, \Iterator
     /**
      * @param SearchClient $searchClient
      * @param SearchRequest $searchRequest
+     * @param FilterFactoryInterface $filterFactory
      */
-    public function __construct(SearchClient $searchClient, SearchRequest $searchRequest)
-    {
+    public function __construct(
+        SearchClient $searchClient,
+        SearchRequest $searchRequest,
+        FilterFactoryInterface $filterFactory
+    ) {
         $this->searchClient = $searchClient;
         $this->searchRequest = $searchRequest;
+        $this->filterFactory = $filterFactory;
     }
 
     /**

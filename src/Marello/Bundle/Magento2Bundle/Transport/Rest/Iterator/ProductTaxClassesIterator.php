@@ -39,7 +39,7 @@ class ProductTaxClassesIterator extends AbstractSearchIterator
     {
         $searchCriteria = $this->searchRequest->getSearchCriteria();
         $searchCriteria->addFilters(
-            new Filter(
+            $this->filterFactory->createFilter(
                 ProductTaxClassDataConverter::MAGENTO_FIELD_TAX_TYPE_NAME,
                 Filter::CONDITION_EQ,
                 'PRODUCT'

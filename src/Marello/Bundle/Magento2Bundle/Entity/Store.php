@@ -8,7 +8,7 @@ use Oro\Bundle\LocaleBundle\Entity\Localization;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Marello\Bundle\Magento2Bundle\Entity\Repository\StoreRepository")
  * @ORM\Table(
  *  name="marello_m2_store",
  *  uniqueConstraints={
