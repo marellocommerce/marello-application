@@ -10,7 +10,7 @@ trait OriginTrait
     /**
      * @var integer|null
      *
-     * @ORM\Column(name="origin_id", type="integer", options={"unsigned"=true}, nullable=true)
+     * @ORM\Column(name="origin_id", type="integer", options={"unsigned"=true})
      * @ConfigField(
      *      defaultValues={
      *          "importexport"={

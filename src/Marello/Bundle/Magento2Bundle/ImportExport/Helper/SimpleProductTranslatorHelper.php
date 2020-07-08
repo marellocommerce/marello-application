@@ -3,8 +3,12 @@
 namespace Marello\Bundle\Magento2Bundle\ImportExport\Helper;
 
 use Doctrine\Common\Collections\Collection;
+
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+
 use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\Repository\BalancedInventoryRepository;
+use Marello\Bundle\Magento2Bundle\Entity\AttributeSet;
 use Marello\Bundle\Magento2Bundle\Entity\ProductTaxClass;
 use Marello\Bundle\Magento2Bundle\Entity\Website;
 use Marello\Bundle\ProductBundle\Entity\Product;
@@ -14,15 +18,15 @@ use Marello\Bundle\ProductBundle\Entity\Product;
  */
 class SimpleProductTranslatorHelper
 {
-    /** @var BalancedInventoryRepository */
-    protected $balancedInventoryRepository;
+    /** @var DoctrineHelper */
+    protected $doctrineHelper;
 
     /**
-     * @param BalancedInventoryRepository $balancedInventoryRepository
+     * @param DoctrineHelper $doctrineHelper
      */
-    public function __construct(BalancedInventoryRepository $balancedInventoryRepository)
+    public function __construct(DoctrineHelper $doctrineHelper)
     {
-        $this->balancedInventoryRepository = $balancedInventoryRepository;
+        $this->doctrineHelper = $doctrineHelper;
     }
 
     /**
@@ -64,16 +68,16 @@ class SimpleProductTranslatorHelper
             return null;
         }
 
-        return $this->balancedInventoryRepository->findExistingBalancedInventory(
-            $product,
-            $salesChannelGroup
-        );
+        return $this->doctrineHelper
+            ->getEntityManagerForClass(BalancedInventoryLevel::class)
+            ->getRepository(BalancedInventoryLevel::class)
+            ->findExistingBalancedInventory($product, $salesChannelGroup);
     }
 
     /**
      * @param Product $product
      * @param int $integrationId
-     * @return ProductTaxClass
+     * @return ProductTaxClass|null
      */
     public function getMagentoProductTaxClass(Product $product, int $integrationId): ?ProductTaxClass
     {
@@ -83,10 +87,27 @@ class SimpleProductTranslatorHelper
 
         /** @var Collection $productClasses */
         $productClasses = $product->getTaxCode()->getMagento2ProductTaxClasses();
-        $targetTaxClasses = $productClasses->filter(function (ProductTaxClass $productTaxClass) use ($integrationId) {
-                return $productTaxClass->getChannelId() === $integrationId;
-        });
+        foreach ($productClasses as $productTaxClass) {
+            if ($productTaxClass->getChannelId() === $integrationId) {
+                return $productTaxClass;
+            }
+        }
 
-        return $targetTaxClasses->first();
+        return null;
+    }
+
+    /**
+     * @param Product $product
+     * @param int $integrationId
+     * @return AttributeSet|null
+     */
+    public function getMagentoAttributeSetForProduct(Product $product, int $integrationId): ?AttributeSet
+    {
+        $attributeFamily = $product->getAttributeFamily();
+
+        return $this->doctrineHelper
+            ->getEntityManagerForClass(AttributeSet::class)
+            ->getRepository(AttributeSet::class)
+            ->findOneBy(['attributeFamily' => $attributeFamily, 'channel' => $integrationId]);
     }
 }

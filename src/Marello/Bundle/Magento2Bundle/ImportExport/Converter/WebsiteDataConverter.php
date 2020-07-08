@@ -6,8 +6,10 @@ use Oro\Bundle\IntegrationBundle\ImportExport\DataConverter\IntegrationAwareData
 
 class WebsiteDataConverter extends IntegrationAwareDataConverter
 {
-    /** @var string */
-    public const SALES_CHANNEL_CODE_COLUMN_NAME = 'salesChannelGroupCode';
+    public const ID_COLUMN_NAME = 'id';
+    public const CODE_COLUMN_NAME = 'code';
+    public const NAME_COLUMN_NAME = 'name';
+    public const SALES_CHANNEL_CODE_COLUMN_ID = 'salesChannelId';
 
     private const NAME_MAX_LENGTH = 255;
     private const CODE_MAX_LENGTH = 32;
@@ -19,10 +21,10 @@ class WebsiteDataConverter extends IntegrationAwareDataConverter
     protected function getHeaderConversionRules()
     {
         return [
-            'id' => 'originId',
-            'code' => 'code',
-            'name' => 'name',
-            self::SALES_CHANNEL_CODE_COLUMN_NAME => 'salesChannel:code'
+            self::ID_COLUMN_NAME => 'originId',
+            self::CODE_COLUMN_NAME => 'code',
+            self::NAME_COLUMN_NAME => 'name',
+            self::SALES_CHANNEL_CODE_COLUMN_ID => 'salesChannel:id'
         ];
     }
 

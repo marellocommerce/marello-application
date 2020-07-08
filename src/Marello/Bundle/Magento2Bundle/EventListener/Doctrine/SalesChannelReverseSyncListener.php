@@ -16,9 +16,6 @@ use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Oro\Component\MessageQueue\Transport\Exception\Exception;
 
-/**
- * @todo Block changes currency and block changes in sales channel code
- */
 class SalesChannelReverseSyncListener
 {
     private const ACTIVE_PROPERTY_NAME = 'active';
