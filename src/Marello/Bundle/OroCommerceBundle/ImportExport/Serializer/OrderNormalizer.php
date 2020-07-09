@@ -17,6 +17,8 @@ use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityBundle\ORM\Registry;
 use Oro\Bundle\ImportExportBundle\Serializer\Normalizer\DenormalizerInterface;
 use Oro\Bundle\ImportExportBundle\Serializer\Normalizer\DateTimeNormalizer;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
+use Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository;
 
 class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterface
 {
@@ -264,6 +266,21 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
             ->setRowTotalExclTax((float)$row['excludingTax'])
             ->setProduct($product)
             ->setProductName((string)$product->getName());
+
+        $productUnitCode = $this->getProperty($lineItem, 'productUnitCode');
+        if ($productUnitCode) {
+            $productUnitClass = ExtendHelper::buildEnumValueClassName('marello_product_unit');
+            if (class_exists($productUnitClass)) {
+                /** @var EnumValueRepository $repo */
+                $repo = $this->registry
+                    ->getManagerForClass($productUnitClass)
+                    ->getRepository($productUnitClass);
+                if ($productUnit = $repo->find($productUnitCode)) {
+                    $item->setProductUnit($productUnit);
+                }
+            }
+        }
+
         $order->addItem($item);
     }
 
