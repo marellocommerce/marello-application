@@ -135,7 +135,7 @@ class OrderImportStrategy extends AbstractImportStrategy
                 ->setCustomer($customer);
 
             if (!$existingPrimaryAddress) {
-                $customer->setPrimaryAddress($this->processAddress($primaryAddress));
+                $customer->setPrimaryAddress($this->processAddress($primaryAddress, true));
             } else {
                 $customer->addAddress($this->processAddress($primaryAddress));
             }
