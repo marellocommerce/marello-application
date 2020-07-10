@@ -2,6 +2,8 @@
 
 namespace Marello\Bundle\Magento2Bundle\DTO;
 
+use Marello\Bundle\Magento2Bundle\Exception\RuntimeException;
+
 class WebsiteToSalesChannelMappingItemDTO implements \JsonSerializable
 {
     /** @var string[] */
@@ -29,12 +31,11 @@ class WebsiteToSalesChannelMappingItemDTO implements \JsonSerializable
     {
         $notExistedKeys = \array_diff_key(\array_flip(self::REQUIRED_KEYS), $data);
         if (!empty($notExistedKeys)) {
-            throw new \LogicException(
-                'The website to sales channel mapping item must contains all required keys.',
-                [
-                    'missedKeys' => $notExistedKeys,
-                    'originalData' => $data
-                ]
+            throw new RuntimeException(
+                sprintf(
+                    'The website to sales channel mapping item must contains all required keys. Next keys missed:"%s".',
+                    implode(', ', $notExistedKeys)
+                )
             );
         }
 

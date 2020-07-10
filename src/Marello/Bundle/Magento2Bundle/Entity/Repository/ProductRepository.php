@@ -3,6 +3,7 @@
 namespace Marello\Bundle\Magento2Bundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Marello\Bundle\Magento2Bundle\Entity\Product;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 
@@ -30,7 +31,7 @@ class ProductRepository extends EntityRepository
      * @param int $channelId
      * @param int $productId
      * @return Product|null
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function getMagentoProductByChannelIdAndProductId(int $channelId, int $productId): ?Product
     {

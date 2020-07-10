@@ -148,9 +148,7 @@ class ProductChangesByChannelDTO
     {
         $productIdArray = $this->getInsertedProductIds();
         if (count($productIdArray) !== count($this->insertedProducts)) {
-            throw new RuntimeException(
-                '[Magento 2] Some of products has no identifiers !'
-            );
+            throw new RuntimeException('Some of products has no identifiers !');
         }
 
         return $productIdArray;

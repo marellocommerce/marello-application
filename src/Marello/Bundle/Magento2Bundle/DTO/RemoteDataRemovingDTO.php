@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\Magento2Bundle\DTO;
 
+use Marello\Bundle\Magento2Bundle\Exception\RuntimeException;
 use Marello\Bundle\Magento2Bundle\Model\Magento2TransportSettings;
 use Marello\Bundle\Magento2Bundle\Async\RemoveRemoteDataForDisabledIntegrationMessage as Message;
 
@@ -35,11 +36,8 @@ class RemoteDataRemovingDTO
         array $productIdWithSkuToRemove = []
     ) {
         if (!\in_array($status, [self::STATUS_REMOVED, self::STATUS_DEACTIVATED], true)) {
-            throw new \LogicException(
-                sprintf(
-                    'Status must be "removed" or "deactivated", but "%s" given !',
-                    $status
-                )
+            throw new RuntimeException(
+                sprintf('Status must be "removed" or "deactivated", but "%s" given !', $status)
             );
         }
 

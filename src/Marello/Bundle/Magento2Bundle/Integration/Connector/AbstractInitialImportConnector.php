@@ -2,8 +2,9 @@
 
 namespace Marello\Bundle\Magento2Bundle\Integration\Connector;
 
+use Marello\Bundle\Magento2Bundle\Converter\SearchParametersConverterInterface;
+use Marello\Bundle\Magento2Bundle\Exception\InvalidConfigurationException;
 use Marello\Bundle\Magento2Bundle\Integration\Connector\Settings\ImportConnectorSearchSettingsDTO;
-use Marello\Bundle\Magento2Bundle\Integration\ContextConverter\SearchParametersConverterInterface;
 use Marello\Bundle\Magento2Bundle\Integration\InitialScheduleProcessor;
 use Marello\Bundle\Magento2Bundle\Iterator\UpdatableSearchLoaderInterface;
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
@@ -31,7 +32,7 @@ abstract class AbstractInitialImportConnector extends AbstractConnector
      */
     public function getSourceIterator()
     {
-        parent::getSourceIterator();
+        return parent::getSourceIterator();
     }
 
     /**
@@ -54,34 +55,26 @@ abstract class AbstractInitialImportConnector extends AbstractConnector
     }
 
     /**
-     * @throws \LogicException
+     * @throws InvalidConfigurationException
      */
     protected function validateIterator(): void
     {
         if (!$this->getSourceIterator() instanceof UpdatableSearchLoaderInterface) {
-            throw new \LogicException(
-                'The iterator must implements "' .
-                UpdatableSearchLoaderInterface::class .
-                '" to use in Magento2ImportConnector.'
+            throw new InvalidConfigurationException(
+                'The iterator must implement "UpdatableSearchLoaderInterface" to use in Magento2ImportConnector.'
             );
         }
     }
 
     /**
-     * @throws \LogicException
+     * @throws InvalidConfigurationException
      */
     protected function validateSearchSettings(): void
     {
-        /**
-         * @todo Refactor this exception
-         */
         if (!$this->connectorSearchSettings instanceof ImportConnectorSearchSettingsDTO) {
-            throw new \LogicException(
-                'The configuration option " ' .
-                InitialScheduleProcessor::IMPORT_CONNECTOR_SEARCH_SETTINGS_KEY
-                . '" must contain instance of "' .
-                ImportConnectorSearchSettingsDTO::class .
-                '" but other given.'
+            throw new InvalidConfigurationException(
+                'The configuration option "' . InitialScheduleProcessor::IMPORT_CONNECTOR_SEARCH_SETTINGS_KEY
+                . '" must contain instance of "ImportConnectorSearchSettingsDTO" but other given.'
             );
         }
     }

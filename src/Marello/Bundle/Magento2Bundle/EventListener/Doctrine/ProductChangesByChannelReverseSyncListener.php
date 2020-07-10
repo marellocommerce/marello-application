@@ -5,7 +5,6 @@ namespace Marello\Bundle\Magento2Bundle\EventListener\Doctrine;
 use Doctrine\ORM\Event\OnClearEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Marello\Bundle\Magento2Bundle\DTO\ProductChangesByChannelDTO;
-use Marello\Bundle\Magento2Bundle\Exception\RuntimeException;
 use Marello\Bundle\Magento2Bundle\Scheduler\ProductSchedulerInterface;
 use Marello\Bundle\Magento2Bundle\Stack\ProductChangesByChannelStack;
 
@@ -93,7 +92,6 @@ class ProductChangesByChannelReverseSyncListener
     /**
      * @param int $integrationChannelId
      * @param ProductChangesByChannelDTO $changesByChannelDTO
-     * @throws RuntimeException
      */
     protected function scheduleSyncCreateProducts(
         int $integrationChannelId,

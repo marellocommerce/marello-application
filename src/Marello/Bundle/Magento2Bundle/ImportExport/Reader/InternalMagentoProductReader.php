@@ -3,7 +3,7 @@
 namespace Marello\Bundle\Magento2Bundle\ImportExport\Reader;
 
 use Marello\Bundle\Magento2Bundle\Entity\Repository\ProductRepository;
-use Marello\Bundle\Magento2Bundle\Exception\RuntimeException;
+use Marello\Bundle\Magento2Bundle\Exception\InvalidArgumentException;
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
 use Oro\Bundle\ImportExportBundle\Reader\IteratorBasedReader;
@@ -39,7 +39,7 @@ class InternalMagentoProductReader extends IteratorBasedReader
     {
         $channel = $this->contextMediator->getChannel($context);
         if (!$channel) {
-            throw new RuntimeException('[Magento 2] MagentoProductReader must have initialized channel!');
+            throw new InvalidArgumentException('MagentoProductReader must have initialized channel!');
         }
 
         $productIds = $context->getOption('ids', []);

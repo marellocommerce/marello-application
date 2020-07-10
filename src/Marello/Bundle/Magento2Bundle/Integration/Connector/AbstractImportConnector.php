@@ -2,16 +2,14 @@
 
 namespace Marello\Bundle\Magento2Bundle\Integration\Connector;
 
+use Marello\Bundle\Magento2Bundle\Converter\SearchParametersConverterInterface;
+use Marello\Bundle\Magento2Bundle\Exception\InvalidConfigurationException;
 use Marello\Bundle\Magento2Bundle\Integration\Connector\Settings\ImportConnectorSearchSettingsDTO;
-use Marello\Bundle\Magento2Bundle\Integration\ContextConverter\SearchParametersConverterInterface;
 use Marello\Bundle\Magento2Bundle\Integration\InitialScheduleProcessor;
 use Marello\Bundle\Magento2Bundle\Integration\Provider\LastSyncProviderInterface;
 use Marello\Bundle\Magento2Bundle\Iterator\UpdatableSearchLoaderInterface;
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 
-/**
- * @todo Think about put batch size to SearchParameters
- */
 abstract class AbstractImportConnector extends AbstractConnector
 {
     /** @var \DateTime|null */
@@ -25,6 +23,14 @@ abstract class AbstractImportConnector extends AbstractConnector
 
     /** @var SearchParametersConverterInterface */
     protected $searchParametersConverter;
+
+    /**
+     * @param LastSyncProviderInterface $lastSyncProvider
+     */
+    public function setLastSyncProvider(LastSyncProviderInterface $lastSyncProvider)
+    {
+        $this->lastSyncProvider = $lastSyncProvider;
+    }
 
     /**
      * @param SearchParametersConverterInterface $searchParametersConverter
@@ -56,7 +62,7 @@ abstract class AbstractImportConnector extends AbstractConnector
      */
     public function getSourceIterator()
     {
-        parent::getSourceIterator();
+        return parent::getSourceIterator();
     }
 
     /**
@@ -79,34 +85,26 @@ abstract class AbstractImportConnector extends AbstractConnector
     }
 
     /**
-     * @throws \LogicException
+     * @throws InvalidConfigurationException
      */
     protected function validateIterator(): void
     {
         if (!$this->getSourceIterator() instanceof UpdatableSearchLoaderInterface) {
-            throw new \LogicException(
-                'The iterator must implements "' .
-                UpdatableSearchLoaderInterface::class .
-                '" to use in Magento2ImportConnector.'
+            throw new InvalidConfigurationException(
+                'The Source Iterator must implement "UpdatableSearchLoaderInterface".'
             );
         }
     }
 
     /**
-     * @throws \LogicException
+     * @throws InvalidConfigurationException
      */
     protected function validateSearchSettings(): void
     {
-        /**
-         * @todo Refactor this exception
-         */
         if (!$this->connectorSearchSettings instanceof ImportConnectorSearchSettingsDTO) {
-            throw new \LogicException(
-                'The configuration option " ' .
-                InitialScheduleProcessor::IMPORT_CONNECTOR_SEARCH_SETTINGS_KEY
-                . '" must contain instance of "' .
-                ImportConnectorSearchSettingsDTO::class .
-                '" but other given.'
+            throw new InvalidConfigurationException(
+                'The configuration option "' . InitialScheduleProcessor::IMPORT_CONNECTOR_SEARCH_SETTINGS_KEY
+                . '" must contain instance of "ImportConnectorSearchSettingsDTO" but other given.'
             );
         }
     }

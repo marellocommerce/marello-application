@@ -3,9 +3,9 @@
 namespace Marello\Bundle\Magento2Bundle\Async;
 
 use Doctrine\DBAL\Exception\RetryableException;
+use Doctrine\ORM\NonUniqueResultException;
 use Marello\Bundle\Magento2Bundle\Entity\Product;
 use Marello\Bundle\Magento2Bundle\Entity\Repository\ProductRepository;
-use Marello\Bundle\Magento2Bundle\Exception\RuntimeException;
 use Marello\Bundle\Magento2Bundle\Transport\RestTransport;
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Exception\RestException;
 use Oro\Component\MessageQueue\Client\TopicSubscriberInterface;
@@ -91,9 +91,8 @@ class RemoveRemoteProductForDisableIntegrationProcessor implements
 
     /**
      * @param RemoveRemoteProductForDisableIntegrationMessage $message
+     * @throws NonUniqueResultException
      * @throws RestException
-     * @throws RuntimeException
-     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     protected function processRemovingProduct(RemoveRemoteProductForDisableIntegrationMessage $message): void
     {

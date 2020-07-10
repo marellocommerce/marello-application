@@ -2,6 +2,8 @@
 
 namespace Marello\Bundle\Magento2Bundle\Transport\Rest\SearchCriteria;
 
+use Marello\Bundle\Magento2Bundle\Exception\InvalidArgumentException;
+
 class SortOrder
 {
     public const DIRECTION_ASC = 'ASC';
@@ -20,9 +22,9 @@ class SortOrder
     public function __construct(string $fieldName, string $direction = self::DIRECTION_DESC)
     {
         if (!\in_array($direction, [static::DIRECTION_ASC, static::DIRECTION_DESC], true)) {
-            throw new \LogicException(
+            throw new InvalidArgumentException(
                 sprintf(
-                    'Given not supported direction "%s" , please use one of this instead "%s".',
+                    'Given not supported direction "%s", please use one of this instead "%s".',
                     $direction,
                     static::DIRECTION_ASC . ', ' . static::DIRECTION_DESC
                 )

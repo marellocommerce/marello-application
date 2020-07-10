@@ -2,6 +2,8 @@
 
 namespace Marello\Bundle\Magento2Bundle\Exception;
 
-class RuntimeException extends \Exception
+use Oro\Bundle\ImportExportBundle\Exception\RuntimeException as ParentException;
+
+class RuntimeException extends ParentException
 {
 }

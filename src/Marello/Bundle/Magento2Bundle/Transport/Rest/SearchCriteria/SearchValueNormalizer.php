@@ -2,9 +2,8 @@
 
 namespace Marello\Bundle\Magento2Bundle\Transport\Rest\SearchCriteria;
 
-use Symfony\Component\Serializer\Exception\UnexpectedValueException;
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Exception\ExceptionInterface;
 
 class SearchValueNormalizer implements NormalizerInterface
 {
@@ -32,8 +31,8 @@ class SearchValueNormalizer implements NormalizerInterface
             $this->normalizeIterableData($data, $format, $context);
         }
 
-        throw new UnexpectedValueException(
-            sprintf('An unexpected value could not be normalized: %s', var_export($data, true))
+        throw new InvalidArgumentException(
+            sprintf('[Magento 2] An unexpected value could not be normalized: %s', var_export($data, true))
         );
     }
 
@@ -64,8 +63,10 @@ class SearchValueNormalizer implements NormalizerInterface
      * @param $data
      * @param null $format
      * @param array $context
+     *
      * @return string
-     * @throws ExceptionInterface
+     *
+     * @throws InvalidArgumentException
      */
     protected function normalizeIterableData($data, $format = null, array $context = []): string
     {

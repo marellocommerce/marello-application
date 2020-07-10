@@ -2,6 +2,8 @@
 
 namespace Marello\Bundle\Magento2Bundle\Transport\Rest\SearchCriteria;
 
+use Marello\Bundle\Magento2Bundle\Exception\InvalidArgumentException;
+
 class Filter
 {
     public const CONDITION_EQ = 'eq';
@@ -61,9 +63,9 @@ class Filter
         string $searchValue = null
     ) {
         if (!\in_array($conditionType, $this->allowedConditions, true)) {
-            throw new \LogicException(
+            throw new InvalidArgumentException(
                 sprintf(
-                    'Given not supported filter condition type "%s" , please use one of this instead "%s".',
+                    'Given not supported filter condition type "%s", please use one of this instead "%s".',
                     $this->conditionType,
                     implode(', ', $this->allowedConditions)
                 )
