@@ -4,14 +4,12 @@ namespace Marello\Bundle\Magento2Bundle\ImportExport\Processor;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Marello\Bundle\Magento2Bundle\Exception\InvalidConfigurationException;
 use Marello\Bundle\Magento2Bundle\ImportExport\Translator\TranslatorInterface;
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
-use Oro\Bundle\ImportExportBundle\Exception\InvalidConfigurationException;
-use Oro\Bundle\ImportExportBundle\Exception\RuntimeException;
 use Oro\Bundle\ImportExportBundle\Processor\ContextAwareProcessor;
 use Oro\Bundle\ImportExportBundle\Serializer\SerializerInterface;
-use Symfony\Component\Serializer\Exception\ExceptionInterface;
 
 class ExportProcessor implements StepExecutionAwareInterface, ContextAwareProcessor
 {
@@ -64,7 +62,7 @@ class ExportProcessor implements StepExecutionAwareInterface, ContextAwareProces
         $this->stepExecution = $stepExecution;
 
         if (!$this->contextRegistry) {
-            throw new \InvalidArgumentException('Missing ContextRegistry');
+            throw new InvalidConfigurationException('ContextRegistry must be injected.');
         }
 
         $this->setImportExportContext($this->contextRegistry->getByStepExecution($this->stepExecution));
@@ -72,7 +70,6 @@ class ExportProcessor implements StepExecutionAwareInterface, ContextAwareProces
 
     /**
      * @param ContextInterface $context
-     * @throws InvalidConfigurationException
      */
     public function setImportExportContext(ContextInterface $context)
     {
@@ -90,16 +87,16 @@ class ExportProcessor implements StepExecutionAwareInterface, ContextAwareProces
     /**
      * @param object $object
      * @return array
-     * @throws ExceptionInterface
+     * @throws InvalidConfigurationException
      */
     public function process($object)
     {
         if (! $this->translator) {
-            throw new RuntimeException('[Magento 2] Translator must be injected.');
+            throw new InvalidConfigurationException('Translator must be injected.');
         }
 
         if (! $this->serializer) {
-            throw new RuntimeException('[Magento 2] Serializer must be injected.');
+            throw new InvalidConfigurationException('Serializer must be injected.');
         }
 
         $context = $this->context->getConfiguration();

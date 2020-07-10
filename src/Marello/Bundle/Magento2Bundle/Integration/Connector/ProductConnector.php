@@ -60,7 +60,7 @@ class ProductConnector extends AbstractConnector implements
      */
     public function getImportJobName()
     {
-        throw new RuntimeException('[Magento 2] ProductConnector is not support import!');
+        throw new RuntimeException('"ProductConnector" is not support import!');
     }
 
     /**

@@ -3,13 +3,12 @@
 namespace Marello\Bundle\Magento2Bundle\Handler;
 
 use Marello\Bundle\Magento2Bundle\Entity\Magento2Transport;
-use Marello\Bundle\Magento2Bundle\Provider\SalesChannelsProvider;
+use Marello\Bundle\Magento2Bundle\Exception\InvalidConfigurationException;
 use Marello\Bundle\Magento2Bundle\Provider\WebsitesProvider;
 use Marello\Bundle\Magento2Bundle\Transport\Magento2TransportInterface;
 use Oro\Bundle\IntegrationBundle\Manager\TypesRegistry;
 use Oro\Bundle\IntegrationBundle\Utils\MultiAttemptsConfigTrait;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * Handler has method getCheckResponse which allows to check configuration of the integration
@@ -106,7 +105,7 @@ class TransportHandler
         $transport = $this->typesRegistry->getTransportType($integrationType, $transportType);
 
         if (!$transport instanceof Magento2TransportInterface) {
-            throw new UnexpectedTypeException($transport, Magento2TransportInterface::class);
+            throw new InvalidConfigurationException('Transport must be instance of "Magento2TransportInterface".');
         }
 
         return $transport;

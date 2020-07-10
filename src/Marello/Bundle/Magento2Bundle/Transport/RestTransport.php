@@ -3,7 +3,7 @@
 namespace Marello\Bundle\Magento2Bundle\Transport;
 
 use Marello\Bundle\Magento2Bundle\Entity\Magento2Transport;
-use Marello\Bundle\Magento2Bundle\Exception\RuntimeException;
+use Marello\Bundle\Magento2Bundle\Exception\InvalidConfigurationException;
 use Marello\Bundle\Magento2Bundle\Form\Type\TransportSettingFormType;
 use Marello\Bundle\Magento2Bundle\Model\Magento2TransportSettings;
 use Marello\Bundle\Magento2Bundle\Transport\Rest\Client\SearchClientFactory;
@@ -149,7 +149,6 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
     /**
      * @return \Iterator
      * @throws RestException
-     * @throws RuntimeException
      */
     public function getStores(): \Iterator
     {
@@ -168,8 +167,6 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
 
     /**
      * @return \Iterator
-     * @throws RestException
-     * @throws RuntimeException
      */
     public function getProductTaxClasses(): \Iterator
     {
@@ -200,7 +197,6 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
      * @param array $data
      * @return array
      * @throws RestException
-     * @throws RuntimeException
      */
     public function createProduct(array $data): array
     {
@@ -218,9 +214,9 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
      * @param string $sku
      * @param array $data
      * @param string|null $storeCode
+     *
      * @return array
      * @throws RestException
-     * @throws RuntimeException
      */
     public function updateProduct(string $sku, array $data, string $storeCode = null): array
     {
@@ -239,9 +235,9 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
 
     /**
      * @param string $sku
+     *
      * @return bool
      * @throws RestException
-     * @throws RuntimeException
      */
     public function removeProduct(string $sku): bool
     {
@@ -258,7 +254,6 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
 
     /**
      * @return \Iterator
-     * @throws RuntimeException
      */
     public function getOrders(): \Iterator
     {
@@ -274,7 +269,6 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
     /**
      * @return array
      * @throws RestException
-     * @throws RuntimeException
      */
     protected function getStoreConfigs(): array
     {
@@ -339,12 +333,12 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
     /**
      * @return RestClientInterface
      *
-     * @throws RuntimeException
+     * @throws InvalidConfigurationException
      */
     protected function getClient()
     {
         if (null === $this->client) {
-            throw new RuntimeException("[Magento 2] REST Transport isn't configured properly.");
+            throw new InvalidConfigurationException("REST Transport isn't configured properly.");
         }
 
         return $this->client;

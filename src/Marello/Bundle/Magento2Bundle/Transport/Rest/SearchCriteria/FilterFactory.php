@@ -31,9 +31,7 @@ class FilterFactory implements FilterFactoryInterface
         array $searchValueContext = []
     ): Filter {
         if (!$this->searchValueNormalizer->supportsNormalization($searchValue)) {
-            throw new RuntimeException(
-                '[Magento 2] Failed to normalize search filter value.'
-            );
+            throw new RuntimeException('Normalization of search filter value is not supported.');
         }
 
         $normalizedSearchValue = $this->searchValueNormalizer->normalize(

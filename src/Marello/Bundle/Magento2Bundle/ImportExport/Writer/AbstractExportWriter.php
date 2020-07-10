@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\Magento2Bundle\ImportExport\Writer;
 
+use Marello\Bundle\Magento2Bundle\Exception\InvalidArgumentException;
 use Marello\Bundle\Magento2Bundle\Transport\Magento2TransportInterface;
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
@@ -58,14 +59,14 @@ abstract class AbstractExportWriter extends PersistentBatchWriter
     protected function getChannel(): Channel
     {
         if (!$this->getContext()->hasOption('channel')) {
-            throw new \InvalidArgumentException('Channel id is missing');
+            throw new InvalidArgumentException('Channel ID is missing.');
         }
 
-        $channelId = $this->getContext()->getOption('channel');
+        $channelId = (int) $this->getContext()->getOption('channel');
         $channel = $this->registry->getRepository($this->channelClassName)->find($channelId);
 
         if (!$channel) {
-            throw new \InvalidArgumentException('Channel is missing');
+            throw new InvalidArgumentException(sprintf("Can't find Channel with ID '%d'.", $channelId));
         }
 
         return $channel;
@@ -85,7 +86,7 @@ abstract class AbstractExportWriter extends PersistentBatchWriter
     protected function getTransport(): Magento2TransportInterface
     {
         if (!$this->transport) {
-            throw new \InvalidArgumentException('Transport was not provided');
+            throw new InvalidArgumentException("Transport wasn't provided.");
         }
 
         return $this->transport;
