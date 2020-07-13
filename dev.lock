@@ -5100,6 +5100,42 @@
             }
         },
         {
+            "name": "marellocommerce/marello-magento2-bundle",
+            "version": "dev-3.0-test",
+            "dist": {
+                "type": "path",
+                "url": "../../package/marello-magento2-bundle",
+                "reference": "b6644f13bcbe08050b523c6eed03d82ca4d25f6b"
+            },
+            "require": {
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "": "src/"
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "authors": [
+                {
+                    "name": "Marello B.V.",
+                    "homepage": "https://www.marello.com"
+                }
+            ],
+            "description": "Marello Unified Commerce Management Enterprise edition",
+            "homepage": "https://github.com/marellocommerce/marello-magento2-bundle.git",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
             "name": "michelf/php-markdown",
             "version": "1.9.0",
             "source": {
