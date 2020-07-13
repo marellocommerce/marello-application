@@ -66,6 +66,13 @@ services:
             - { name: kernel.event_listener, event: marello_order.order_shipping_context_building, method: onOrderShippingContextBuilding }
             - { name: kernel.event_listener, event: marello_order.order_items_for_notification, method: onSelectingOrderItemsForNotification }
 
+    marello_order.listener.doctrine.pending_order_status:
+        class: Marello\Bundle\OrderBundle\EventListener\Doctrine\PendingOrderStatusListener
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
+
     marello_order.provider.order_statistic_provider:
         class: 'Marello\Bundle\OrderBundle\Provider\OrderDashboardStatisticProvider'
         arguments:
