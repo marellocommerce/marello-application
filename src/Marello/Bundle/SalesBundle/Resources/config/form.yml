@@ -11,7 +11,7 @@ services:
         class: 'Marello\Bundle\SalesBundle\Form\Type\SalesChannelGroupType'
         tags:
             - { name: form.type }
-             
+
     marello_sales_form_type.saleschannel_multi_select:
         class: 'Marello\Bundle\SalesBundle\Form\Type\SalesChannelMultiSelectType'
         arguments:
