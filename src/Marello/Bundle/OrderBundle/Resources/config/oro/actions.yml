@@ -87,3 +87,14 @@ action_groups:
                                                 - filename: '$.filename'
                                                   body: '$.invoice_pdf'
                                                   mimetype: 'application/pdf'
+    marello_order_status_change:
+        parameters:
+            order:
+                type: object
+            status:
+                type: string
+        actions:
+            - '@request_enum_entity':
+                enum_code: 'marello_order_status'
+                attribute: $.order.orderStatus
+                identifier: $.status
