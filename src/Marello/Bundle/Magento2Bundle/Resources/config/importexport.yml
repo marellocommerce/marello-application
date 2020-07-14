@@ -186,7 +186,7 @@ services:
         parent: marello_magento2.importexport.writer.export.abstract
 
     # Data converters
-   marello_magento2.importexport.converter.website:
+    marello_magento2.importexport.converter.website:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Converter\WebsiteDataConverter
 
     marello_magento2.importexport.converter.store:
@@ -204,7 +204,6 @@ services:
     marello_magento2.importexport.converter.magento_order:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Converter\MagentoOrderDataConverter
         calls:
-            - [setLogger, ['@oro_integration.logger.strategy']]
             - [addNodeDataConverter, ['marello_order_data_alias', '@marello_magento2.importexport.converter.marello_order']]
             - [addNodeDataConverter, ['customer_data_alias', '@marello_magento2.importexport.converter.customer']]
             - [addNodeDataConverter, ['items', '@marello_magento2.importexport.converter.marello_order_item', true]]
@@ -212,7 +211,6 @@ services:
     marello_magento2.importexport.converter.marello_order:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Converter\MarelloOrderDataConverter
         calls:
-            - [setLogger, ['@oro_integration.logger.strategy']]
             - [addNodeDataConverter, ['shippingAddress', '@marello_magento2.importexport.converter.marello_order_address']]
             - [addNodeDataConverter, ['billingAddress', '@marello_magento2.importexport.converter.marello_order_address']]
 
@@ -220,20 +218,14 @@ services:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Converter\MarelloOrderAddressDataConverter
         arguments:
             - '@marello_magento2.provider.country_iso2_code'
-        calls:
-            - [setLogger, ['@oro_integration.logger.strategy']]
 
     marello_magento2.importexport.converter.customer:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Converter\CustomerDataConverter
         arguments:
             - '@marello_magento2.generator.customer_hash_id'
-        calls:
-            - [setLogger, ['@oro_integration.logger.strategy']]
 
     marello_magento2.importexport.converter.marello_order_item:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Converter\MarelloOrderItemDataConverter
-        calls:
-            - [setLogger, ['@oro_integration.logger.strategy']]
 
     # Processors
     marello_magento2.importexport.processor.website:
