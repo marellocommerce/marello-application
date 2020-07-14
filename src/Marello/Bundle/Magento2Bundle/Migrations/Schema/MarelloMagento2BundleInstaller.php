@@ -31,7 +31,7 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
      */
     public function getMigrationVersion()
     {
-        return 'v1_2';
+        return 'v1_4';
     }
 
     /**
@@ -392,8 +392,8 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
         $table->addColumn('inner_customer_id', 'integer');
         $table->addColumn('hash_id', 'string', ['length' => 32]);
         $table->setPrimaryKey(['id']);
-        $table->addIndex(['hash_id'], 'idx_m2_customer_hash_id');
-        $table->addIndex(['origin_id'], 'idx_m2_customer_origin_id');
+        $table->addIndex(['channel_id', 'hash_id'], 'idx_customer_hash_channel_idx');
+        $table->addUniqueIndex(['channel_id', 'origin_id'], 'unq_customer_channel_idx');
     }
 
     /**
@@ -457,6 +457,11 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
         $table->addColumn('origin_id', 'integer', ['precision' => 0, 'unsigned' => true]);
         $table->addColumn('inner_order_id', 'integer');
         $table->addColumn('m2_customer_id', 'integer', ['notnull' => false]);
+        $table->addColumn('created_at', 'datetime');
+        $table->addColumn('updated_at', 'datetime');
+        $table->addColumn('imported_at', 'datetime');
+        $table->addColumn('synced_at', 'datetime');
+        $table->addColumn('m2_store_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['channel_id', 'origin_id'], 'unq_order_channel_idx');
     }
@@ -484,6 +489,13 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_m2_customer'),
             ['m2_customer_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL']
+        );
+
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_m2_store'),
+            ['m2_store_id'],
             ['id'],
             ['onDelete' => 'SET NULL']
         );

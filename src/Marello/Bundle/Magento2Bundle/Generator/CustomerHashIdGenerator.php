@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\Magento2Bundle\Generator;
 
-use Marello\Bundle\CustomerBundle\Entity\Customer;
+use Marello\Bundle\Magento2Bundle\DTO\CustomerIdentityDataDTO;
 
 /**
  * Generate skeleton of method that work on generating hash id by customer identities fields
@@ -12,13 +12,13 @@ class CustomerHashIdGenerator implements CustomerHashIdGeneratorInterface
     /**
      * @inheritDoc
      */
-    public function generateHashId(Customer $customer): string
+    public function generateHashId(CustomerIdentityDataDTO $customerIdentityDataDTO): string
     {
         $stringToHashing = sprintf(
             '%s_%s_%s',
-            $customer->getEmail(),
-            $customer->getFirstName(),
-            $customer->getLastName()
+            $customerIdentityDataDTO->getEmail(),
+            $customerIdentityDataDTO->getFirstName(),
+            $customerIdentityDataDTO->getLastName()
         );
 
         return md5($stringToHashing);

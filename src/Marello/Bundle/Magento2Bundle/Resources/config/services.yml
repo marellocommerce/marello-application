@@ -175,6 +175,11 @@ services:
         arguments:
             - '@marello_magento2.repository.website'
 
+    marello_magento2.provider.country_iso2_code:
+        class: Marello\Bundle\Magento2Bundle\Provider\CountryIso2CodeProvider
+        arguments:
+            - '@oro_address.repository.country'
+
     # Forms and form related logic
     marello_magento2.form.extension.channel_connector_extension:
         class: Marello\Bundle\Magento2Bundle\Form\Extension\ChannelConnectorsExtension
@@ -205,12 +210,12 @@ services:
 
     # Converter
     marello_magento2.converter.general_search_parameters:
-        class: Marello\Bundle\Magento2Bundle\Integration\ContextConverter\GeneralSearchParametersConverter
+        class: Marello\Bundle\Magento2Bundle\Converter\GeneralSearchParametersConverter
         arguments:
             - '@marello_magento2.repository.store'
 
     marello_magento2.converter.initial_search_parameters:
-        class: Marello\Bundle\Magento2Bundle\Integration\ContextConverter\InitialSearchParametersConverter
+        class: Marello\Bundle\Magento2Bundle\Converter\InitialSearchParametersConverter
         arguments:
             - '@marello_magento2.repository.store'
 

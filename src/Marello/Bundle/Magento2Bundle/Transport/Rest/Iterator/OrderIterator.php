@@ -4,17 +4,18 @@ namespace Marello\Bundle\Magento2Bundle\Transport\Rest\Iterator;
 
 use Marello\Bundle\Magento2Bundle\DTO\SearchParametersDTO;
 use Marello\Bundle\Magento2Bundle\DTO\SearchResponseDTO;
-use Marello\Bundle\Magento2Bundle\Exception\RuntimeException;
+use Marello\Bundle\Magento2Bundle\Exception\InvalidConfigurationException;
+use Marello\Bundle\Magento2Bundle\ImportExport\Converter\MagentoOrderDataConverter;
 use Marello\Bundle\Magento2Bundle\Iterator\UpdatableSearchLoaderInterface;
 use Marello\Bundle\Magento2Bundle\Transport\Rest\SearchCriteria\Filter;
 use Marello\Bundle\Magento2Bundle\Transport\Rest\SearchCriteria\SortOrder;
+use Oro\Bundle\IntegrationBundle\Provider\Rest\Exception\RestException;
 
-/**
- * Add websiteAware filtering support
- * Add filtering by datetime
- */
 class OrderIterator extends AbstractSearchIterator implements UpdatableSearchLoaderInterface
 {
+    /** @var int */
+    public const DEFAULT_PAGE_SIZE = 10;
+
     /**
      * @var SearchParametersDTO
      */
@@ -39,6 +40,7 @@ class OrderIterator extends AbstractSearchIterator implements UpdatableSearchLoa
 
     /**
      * @return SearchResponseDTO
+     * @throws RestException
      */
     protected function loadPage(): SearchResponseDTO
     {
@@ -57,21 +59,21 @@ class OrderIterator extends AbstractSearchIterator implements UpdatableSearchLoa
         return $this->searchClient->search($this->searchRequest);
     }
 
+    /**
+     * @throws InvalidConfigurationException
+     */
     protected function initSearchCriteria(): void
     {
         if (null === $this->searchParametersDTO) {
-            throw new RuntimeException(
-                sprintf(
-                    '[Magento 2] Search Parameters must be specified before iterator "%s" start to loading process.',
-                    OrderIterator::class
-                )
+            throw new InvalidConfigurationException(
+                'Search Parameters must be specified before iterator "OrderIterator" start to loading process.'
             );
         }
 
         $searchCriteria = $this->searchRequest->getSearchCriteria();
         $searchCriteria->addFilters(
             $this->filterFactory->createFilter(
-                $this->searchParametersDTO->getDateFieldName(),
+                $this->getDateFilterColumnName(),
                 Filter::CONDITION_FROM,
                 $this->searchParametersDTO->getStartDateTime()
             )
@@ -79,7 +81,7 @@ class OrderIterator extends AbstractSearchIterator implements UpdatableSearchLoa
 
         $searchCriteria->addFilters(
             $this->filterFactory->createFilter(
-                $this->searchParametersDTO->getDateFieldName(),
+                $this->getDateFilterColumnName(),
                 Filter::CONDITION_TO,
                 $this->searchParametersDTO->getEndDateTime()
             )
@@ -88,7 +90,7 @@ class OrderIterator extends AbstractSearchIterator implements UpdatableSearchLoa
         if ($this->searchParametersDTO->getOriginStoreIds()) {
             $searchCriteria->addFilters(
                 $this->filterFactory->createFilter(
-                    'store_id',
+                    MagentoOrderDataConverter::STORE_ID_COLUMN_NAME,
                     Filter::CONDITION_IN,
                     $this->searchParametersDTO->getOriginStoreIds()
                 )
@@ -96,20 +98,44 @@ class OrderIterator extends AbstractSearchIterator implements UpdatableSearchLoa
         }
 
         $searchCriteria->addSortOrder(
-            new SortOrder(
-                $this->searchParametersDTO->getDateFieldName(),
-                $this->searchParametersDTO->isOrderDESC() ? SortOrder::DIRECTION_DESC : SortOrder::DIRECTION_ASC
-            )
+            new SortOrder($this->getDateSortColumnName(), $this->getDateSortOrder())
         );
 
-        /**
-         * @todo Fix page size assigment
-         */
-//        $searchCriteria->setPageSize($this->searchParametersDTO->getPageSize());
+        $searchCriteria->setPageSize(self::DEFAULT_PAGE_SIZE);
 
         $this->logger->info(
             '[Magento 2] Applying search criteria Order search request.',
             $searchCriteria->getSearchCriteriaParams()
         );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getDateFilterColumnName(): string
+    {
+        return $this->searchParametersDTO->isInitialMode() ?
+            MagentoOrderDataConverter::CREATED_AT_COLUMN_NAME :
+            MagentoOrderDataConverter::UPDATED_AT_COLUMN_NAME;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getDateSortColumnName(): string
+    {
+        return $this->searchParametersDTO->isInitialMode() ?
+            MagentoOrderDataConverter::CREATED_AT_COLUMN_NAME :
+            MagentoOrderDataConverter::UPDATED_AT_COLUMN_NAME;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getDateSortOrder(): string
+    {
+        return $this->searchParametersDTO->isInitialMode() ?
+            SortOrder::DIRECTION_DESC :
+            SortOrder::DIRECTION_ASC;
     }
 }

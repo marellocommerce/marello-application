@@ -6,10 +6,7 @@ use Oro\Bundle\IntegrationBundle\ImportExport\DataConverter\IntegrationAwareData
 
 class ProductTaxClassDataConverter extends IntegrationAwareDataConverter
 {
-    /** @var string */
     public const MAGENTO_FIELD_ID_NAME = 'class_id';
-
-    /** @var string */
     public const MAGENTO_FIELD_TAX_TYPE_NAME = 'class_type';
 
     /**

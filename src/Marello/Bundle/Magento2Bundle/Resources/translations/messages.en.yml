@@ -53,6 +53,9 @@ marello:
             product.label: Product Connector
             product_tax_class.label: Product Tax Class Connector
             attributeset.label: Attributeset Connector
+            order.label: Order Connector
+            initial:
+                order.label: Initial Order Connector
 
         website:
             entity_label:         Magento 2 Website

@@ -9,9 +9,6 @@ use Marello\Bundle\Magento2Bundle\Transport\Rest\SearchCriteria\SortOrder;
 
 class ProductTaxClassesIterator extends AbstractSearchIterator
 {
-    /** @var int */
-    private const DEFAULT_PAGE_SIZE = 25;
-
     /**
      * {@inheritDoc}
      */

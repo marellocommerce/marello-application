@@ -6,8 +6,8 @@ use Marello\Bundle\Magento2Bundle\Entity\Website;
 
 class WebsiteConnector extends AbstractConnector implements DictionaryConnectorInterface
 {
-    /** @var string */
     public const TYPE = 'website_dictionary';
+    public const IMPORT_JOB_NAME = 'marello_magento2_website_rest_import';
 
     /**
      * {@inheritDoc}
@@ -46,6 +46,6 @@ class WebsiteConnector extends AbstractConnector implements DictionaryConnectorI
      */
     public function getImportJobName()
     {
-        return 'marello_magento2_website_rest_import';
+        return self::IMPORT_JOB_NAME;
     }
 }

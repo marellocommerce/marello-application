@@ -6,6 +6,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\Magento2Bundle\Model\ExtendOrder;
 use Marello\Bundle\OrderBundle\Entity\Order as InnerOrder;
 use Marello\Bundle\Magento2Bundle\Entity\Customer as MagentoCustomer;
+use Oro\Bundle\EntityBundle\EntityProperty\CreatedAtAwareInterface;
+use Oro\Bundle\EntityBundle\EntityProperty\CreatedAtAwareTrait;
+use Oro\Bundle\EntityBundle\EntityProperty\UpdatedAtAwareInterface;
+use Oro\Bundle\EntityBundle\EntityProperty\UpdatedAtAwareTrait;
 
 /**
  * @todo Skip customer that has not email, first name, last name
@@ -19,9 +23,13 @@ use Marello\Bundle\Magento2Bundle\Entity\Customer as MagentoCustomer;
  *  }
  * )
  */
-class Order extends ExtendOrder implements OriginAwareInterface, IntegrationAwareInterface
+class Order extends ExtendOrder implements
+    OriginAwareInterface,
+    IntegrationAwareInterface,
+    UpdatedAtAwareInterface,
+    CreatedAtAwareInterface
 {
-    use IntegrationEntityTrait, OriginTrait;
+    use IntegrationEntityTrait, OriginTrait, UpdatedAtAwareTrait, CreatedAtAwareTrait;
 
     /**
      * @var integer
@@ -51,6 +59,28 @@ class Order extends ExtendOrder implements OriginAwareInterface, IntegrationAwar
     protected $magentoCustomer;
 
     /**
+     * @var Store
+     *
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\Magento2Bundle\Entity\Store")
+     * @ORM\JoinColumn(name="m2_store_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
+     */
+    protected $store;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="imported_at", type="datetime")
+     */
+    protected $importedAt;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="synced_at", type="datetime")
+     */
+    protected $syncedAt;
+
+    /**
      * @return int
      */
     public function getId(): int
@@ -78,9 +108,9 @@ class Order extends ExtendOrder implements OriginAwareInterface, IntegrationAwar
     }
 
     /**
-     * @return MagentoCustomer
+     * @return MagentoCustomer|null
      */
-    public function getMagentoCustomer(): MagentoCustomer
+    public function getMagentoCustomer(): ?MagentoCustomer
     {
         return $this->magentoCustomer;
     }
@@ -113,5 +143,62 @@ class Order extends ExtendOrder implements OriginAwareInterface, IntegrationAwar
         );
 
         return true;
+    }
+
+    /**
+     * @return Store|null
+     */
+    public function getStore(): ?Store
+    {
+        return $this->store;
+    }
+
+    /**
+     * @param Store|null $store
+     * @return $this
+     */
+    public function setStore(Store $store = null): self
+    {
+        $this->store = $store;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getImportedAt(): ?\DateTime
+    {
+        return $this->importedAt;
+    }
+
+    /**
+     * @param \DateTime|null $importedAt
+     * @return self
+     */
+    public function setImportedAt(\DateTime $importedAt = null): self
+    {
+        $this->importedAt = $importedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getSyncedAt(): ?\DateTime
+    {
+        return $this->syncedAt;
+    }
+
+    /**
+     * @param \DateTime|null $syncedAt
+     * @return self
+     */
+    public function setSyncedAt(\DateTime $syncedAt = null): self
+    {
+        $this->syncedAt = $syncedAt;
+
+        return $this;
     }
 }

@@ -4,6 +4,7 @@ namespace Marello\Bundle\Magento2Bundle\EventListener\Doctrine;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Marello\Bundle\CustomerBundle\Entity\Customer;
+use Marello\Bundle\Magento2Bundle\DTO\CustomerIdentityDataDTO;
 use Marello\Bundle\Magento2Bundle\Entity\Customer as MagentoCustomer;
 use Marello\Bundle\Magento2Bundle\Entity\Repository\CustomerRepository;
 use Marello\Bundle\Magento2Bundle\Generator\CustomerHashIdGeneratorInterface;
@@ -35,7 +36,11 @@ class CustomerHashIdSyncListener
      */
     public function prePersist(MagentoCustomer $magentoCustomer)
     {
-        $hashId = $this->hashIdGenerator->generateHashId($magentoCustomer->getInnerCustomer());
+        $customerIdentityDTO = CustomerIdentityDataDTO::createFromMarelloCustomer(
+            $magentoCustomer->getInnerCustomer()
+        );
+
+        $hashId = $this->hashIdGenerator->generateHashId($customerIdentityDTO);
         $magentoCustomer->setHashId($hashId);
     }
 
@@ -53,7 +58,8 @@ class CustomerHashIdSyncListener
      */
     protected function updateMagentoCustomersHashId(Customer $customer)
     {
-        $hashId = $this->hashIdGenerator->generateHashId($customer);
+        $customerIdentityDTO = CustomerIdentityDataDTO::createFromMarelloCustomer($customer);
+        $hashId = $this->hashIdGenerator->generateHashId($customerIdentityDTO);
         /** @var CustomerRepository $repository */
         $repository = $this->registry
             ->getManagerForClass(MagentoCustomer::class)

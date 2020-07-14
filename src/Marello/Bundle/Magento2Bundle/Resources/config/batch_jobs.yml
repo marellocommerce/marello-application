@@ -29,10 +29,10 @@ connector:
                         processor: marello_magento2.importexport.processor.store
                         writer:    oro_importexport.writer.entity
                     parameters:
-                        batch_size: 25
+                        batch_size: 100
                 # @todo Implement removing of abandoned stores
 
-        marello_magento2_product_tax_class_import:
+        marello_magento2_product_tax_class_rest_import:
             title: "Product Tax Class import from Magento 2"
             type:  import
             steps:
@@ -72,6 +72,8 @@ connector:
                         reader:    marello_magento2.importexport.reader.find_internal_magento_product
                         processor: marello_magento2.importexport.processor.find_internal_magento_product
                         writer:    marello_magento2.importexport.writer.find_internal_magento_product
+                    parameters:
+                        batch_size: 10000
                 create:
                     title: export
                     class: Marello\Bundle\Magento2Bundle\Batch\Step\ActionItemStep
@@ -122,3 +124,31 @@ connector:
                     parameters:
                         batch_size: 1
                         ActionName: 'deleteOnChannel'
+
+        marello_magento2_order_rest_import:
+            title: "Order import from Magento 2"
+            type:  import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_magento2.integration.connector.order
+                        processor: marello_magento2.importexport.processor.product_tax_class
+                        writer:    oro_importexport.writer.entity
+                    parameters:
+                        batch_size: 10
+
+        marello_magento2_order_rest_import_initial:
+            title: "Initial Order import from Magento 2"
+            type:  import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_magento2.integration.connector.initial_order
+                        processor: marello_magento2.importexport.processor.product_tax_class
+                        writer:    oro_importexport.writer.entity
+                    parameters:
+                        batch_size: 10

@@ -2,11 +2,27 @@
 
 namespace Marello\Bundle\Magento2Bundle\ImportExport\Strategy;
 
-use Oro\Bundle\ImportExportBundle\Strategy\Import\ConfigurableAddOrReplaceStrategy;
 use Marello\Bundle\Magento2Bundle\Entity\IntegrationAwareInterface;
+use Oro\Bundle\ImportExportBundle\Strategy\Import\ConfigurableAddOrReplaceStrategy;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 
-class DefaultMagento2ImportStrategy extends ConfigurableAddOrReplaceStrategy
+class DefaultMagento2ImportStrategy extends ConfigurableAddOrReplaceStrategy implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
+    /** @var PropertyAccessor */
+    protected $propertyAccessor;
+
+    /**
+     * @param PropertyAccessor $propertyAccessor
+     */
+    public function setPropertyAccessor(PropertyAccessor $propertyAccessor)
+    {
+        $this->propertyAccessor = $propertyAccessor;
+    }
+
     /**
      * Specify channel as identity field
      *
