@@ -3,11 +3,7 @@
 namespace Marello\Bundle\Magento2Bundle\DTO;
 
 /**
- * Provides values for parameter that uses to make correct search request
- *
- * @todo
- * Add sort order and sort order params
- * Add pageCount
+ * Provides values to build search criteria, every connector should know how to use them
  */
 class SearchParametersDTO
 {
@@ -32,16 +28,6 @@ class SearchParametersDTO
     protected $endDateTime;
 
     /**
-     * @var string
-     */
-    protected $dateFieldName;
-
-    /**
-     * @var bool
-     */
-    protected $useOrderDESC;
-
-    /**
      * List of store ids that use to filter remote data,
      * in case of empty array store filters not applicable
      *
@@ -53,33 +39,19 @@ class SearchParametersDTO
      * @param string $mode
      * @param \DateTime $startDateTime
      * @param \DateTime $endDateTime
-     * @param string $dateFieldName
-     * @param bool $useOrderDESC
      * @param array $originStoreIds
      */
     public function __construct(
         string $mode,
         \DateTime $startDateTime,
         \DateTime $endDateTime,
-        string $dateFieldName,
-        bool $useOrderDESC = false,
         array $originStoreIds = []
     ) {
         $this->mode = $mode;
         $this->startDateTime = $startDateTime;
         $this->endDateTime = $endDateTime;
-        $this->dateFieldName = $dateFieldName;
-        $this->useOrderDESC = $useOrderDESC;
         $this->originStoreIds = $originStoreIds;
     }
-
-//    /**
-//     * @return mixed
-//     */
-//    public function getPageSize()
-//    {
-//        return $this->pageSize;
-//    }
 
     /**
      * @return string
@@ -87,6 +59,14 @@ class SearchParametersDTO
     public function getMode(): string
     {
         return $this->mode;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInitialMode(): bool
+    {
+        return $this->mode === self::IMPORT_MODE_INITIAL;
     }
 
     /**
@@ -103,19 +83,6 @@ class SearchParametersDTO
     public function getEndDateTime(): \DateTime
     {
         return $this->endDateTime;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDateFieldName(): string
-    {
-        return $this->dateFieldName;
-    }
-
-    public function isOrderDESC(): bool
-    {
-        return $this->useOrderDESC;
     }
 
     /**

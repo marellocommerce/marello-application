@@ -39,7 +39,7 @@ class ProductTaxClassConnector extends AbstractConnector implements DictionaryCo
      */
     public function getImportJobName()
     {
-        return 'marello_magento2_product_tax_class_import';
+        return 'marello_magento2_product_tax_class_rest_import';
     }
 
     /**

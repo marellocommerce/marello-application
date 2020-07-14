@@ -3,39 +3,48 @@
 namespace Marello\Bundle\Magento2Bundle\Integration\Connector;
 
 use Marello\Bundle\Magento2Bundle\Entity\Order;
-use Marello\Bundle\Magento2Bundle\Exception\RuntimeException;
 use Marello\Bundle\Magento2Bundle\Transport\Rest\Iterator\OrderIterator;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Provider\AllowedConnectorInterface;
 
 class InitialOrderConnector extends AbstractInitialImportConnector implements
     AllowedConnectorInterface,
-    SingleWebsiteConnectorInterface
+    SingleWebsiteConnectorInterface,
+    InitialConnectorInterface
 {
     public const TYPE = 'order_initial';
+    public const IMPORT_JOB_NAME = 'marello_magento2_order_rest_import_initial';
 
     /**
      * @return OrderIterator
-     * @throws RuntimeException
      */
     protected function getConnectorSource()
     {
         return $this->transport->getOrders();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getLabel()
     {
-        // TODO: Implement getLabel() method.
+        return 'marello.magento2.connector.initial.order.label';
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getImportEntityFQCN()
     {
         return Order::class;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getImportJobName()
     {
-        // TODO: Implement getImportJobName() method.
+        return self::IMPORT_JOB_NAME;
     }
 
     /**

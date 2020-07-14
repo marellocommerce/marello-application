@@ -14,6 +14,9 @@ abstract class AbstractSearchIterator implements LoggerAwareInterface, \Iterator
 {
     use LoggerAwareTrait;
 
+    /** @var int */
+    public const DEFAULT_PAGE_SIZE = 25;
+
     /** @var SearchClient */
     protected $searchClient;
 
@@ -155,6 +158,28 @@ abstract class AbstractSearchIterator implements LoggerAwareInterface, \Iterator
     }
 
     /**
+     * @param int $pageSize
+     */
+    public function setPageSize(int $pageSize): void
+    {
+        $searchCriteria = $this->searchRequest->getSearchCriteria();
+        $searchCriteria->setPageSize($pageSize);
+    }
+
+    /**
+     * Load page
+     *
+     * @return SearchResponseDTO
+     * @throws RestException
+     */
+    abstract protected function loadPage(): SearchResponseDTO;
+
+    /**
+     * Prepares search criteria and set it to the Search Request
+     */
+    abstract protected function initSearchCriteria(): void;
+
+    /**
      * Attempts to load next page
      *
      * @return bool If page loaded successfully
@@ -177,17 +202,4 @@ abstract class AbstractSearchIterator implements LoggerAwareInterface, \Iterator
 
         return count($this->rows) > 0;
     }
-
-    /**
-     * Load page
-     *
-     * @return SearchResponseDTO
-     * @throws RestException
-     */
-    abstract protected function loadPage(): SearchResponseDTO;
-
-    /**
-     * Prepare search criteria and set it to the Search Request
-     */
-    abstract protected function initSearchCriteria(): void;
 }

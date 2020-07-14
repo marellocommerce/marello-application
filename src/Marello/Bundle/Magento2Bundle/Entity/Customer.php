@@ -13,8 +13,10 @@ use Marello\Bundle\Magento2Bundle\Model\ExtendCustomer;
  * @ORM\Table(
  *  name="marello_m2_customer",
  *  indexes={
- *     @ORM\Index(name="idx_m2_customer_hash_id", columns={"hash_id"}),
- *     @ORM\Index(name="idx_m2_customer_origin_id", columns={"origin_id"})
+ *     @ORM\Index(name="idx_customer_hash_channel_idx", columns={"channel_id", "hash_id"})
+ *  },
+ *  uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="unq_customer_channel_idx", columns={"channel_id", "origin_id"})
  *  }
  * )
  */

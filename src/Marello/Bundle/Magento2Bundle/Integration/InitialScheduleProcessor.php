@@ -33,7 +33,7 @@ class InitialScheduleProcessor extends SyncProcessor
     {
         if (null === $callback) {
             $callback = function ($connector) {
-                return strpos($connector, DictionaryConnectorInterface::DICTIONARY_CONNECTOR_SUFFIX) === false;
+                return strpos($connector, DictionaryConnectorInterface::CONNECTOR_SUFFIX) === false;
             };
         }
 

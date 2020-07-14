@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\Magento2Bundle\Integration\ContextConverter;
+namespace Marello\Bundle\Magento2Bundle\Converter;
 
 use Marello\Bundle\Magento2Bundle\DTO\SearchParametersDTO;
 use Marello\Bundle\Magento2Bundle\Entity\Repository\StoreRepository;
@@ -49,8 +49,6 @@ class InitialSearchParametersConverter implements SearchParametersConverterInter
             SearchParametersDTO::IMPORT_MODE_INITIAL,
             $startDateTime,
             $endDateTime,
-            'created_at',
-            true,
             $originStoreIds
         );
     }

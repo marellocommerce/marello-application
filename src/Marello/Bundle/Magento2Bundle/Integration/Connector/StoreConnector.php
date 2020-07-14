@@ -8,6 +8,7 @@ class StoreConnector extends AbstractConnector implements DictionaryConnectorInt
 {
     /** @var string */
     public const TYPE = 'store_dictionary';
+    public const IMPORT_JOB_NAME = 'marello_magento2_store_rest_import';
 
     /**
      * {@inheritDoc}
@@ -46,6 +47,6 @@ class StoreConnector extends AbstractConnector implements DictionaryConnectorInt
      */
     public function getImportJobName()
     {
-        return 'marello_magento2_store_rest_import';
+        return self::IMPORT_JOB_NAME;
     }
 }

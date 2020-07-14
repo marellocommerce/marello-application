@@ -3,6 +3,9 @@ services:
     marello_magento2.import_strategy.default_magento2_import:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Strategy\DefaultMagento2ImportStrategy
         parent: oro_importexport.strategy.configurable_add_or_replace
+        calls:
+            - ['setLogger', ['@oro_integration.logger.strategy']]
+            - ['propertyAccessor', ['@property_accessor']]
 
     marello_magento2.import_strategy.website:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Strategy\WebsiteMagento2ImportStrategy
@@ -16,6 +19,10 @@ services:
         parent: marello_magento2.import_strategy.default_magento2_import
 
     marello_magento2.import_strategy.attributeset:
+        parent: marello_magento2.import_strategy.default_magento2_import
+
+    marello_magento2.import_strategy.order:
+        class: Marello\Bundle\Magento2Bundle\ImportExport\Strategy\OrderMagento2ImportStrategy
         parent: marello_magento2.import_strategy.default_magento2_import
 
     # Provider
@@ -76,6 +83,18 @@ services:
         tags:
             - { name: oro_integration.connector, type: magento2_attributeset, channel_type: magento2 }
 
+    marello_magento2.integration.connector.order:
+        class: Marello\Bundle\Magento2Bundle\Integration\Connector\OrderConnector
+        parent: marello_magento2.integration.connector.abstract_import
+        tags:
+            - { name: oro_integration.connector, type: order, channel_type: magento2 }
+
+    marello_magento2.integration.connector.initial_order:
+        class: Marello\Bundle\Magento2Bundle\Integration\Connector\InitialOrderConnector
+        parent: marello_magento2.integration.connector.abstract_initial_import
+        tags:
+            - { name: oro_integration.connector, type: order_initial, channel_type: magento2 }
+
     # Readers
     marello_magento2.importexport.reader.export.product_delete_removed:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Reader\ProductExportDeleteRemovedReader
@@ -94,7 +113,7 @@ services:
         abstract: true
         parent: oro_importexport.reader.entity
         calls:
-            - ['setLogger', ['@logger']]
+            - ['setLogger', ['@oro_integration.logger.strategy']]
 
     marello_magento2.importexport.reader.entity.create_action:
         parent: marello_magento2.importexport.reader.entity.entity_reader_filterable_by_internal_magento_product
@@ -167,7 +186,7 @@ services:
         parent: marello_magento2.importexport.writer.export.abstract
 
     # Data converters
-    marello_magento2.importexport.converter.website:
+   marello_magento2.importexport.converter.website:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Converter\WebsiteDataConverter
 
     marello_magento2.importexport.converter.store:
@@ -182,12 +201,46 @@ services:
     marello_magento2.importexport.converter.attributeset:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Converter\AttributeSetDataConverter
 
+    marello_magento2.importexport.converter.magento_order:
+        class: Marello\Bundle\Magento2Bundle\ImportExport\Converter\MagentoOrderDataConverter
+        calls:
+            - [setLogger, ['@oro_integration.logger.strategy']]
+            - [addNodeDataConverter, ['marello_order_data_alias', '@marello_magento2.importexport.converter.marello_order']]
+            - [addNodeDataConverter, ['customer_data_alias', '@marello_magento2.importexport.converter.customer']]
+            - [addNodeDataConverter, ['items', '@marello_magento2.importexport.converter.marello_order_item', true]]
+
+    marello_magento2.importexport.converter.marello_order:
+        class: Marello\Bundle\Magento2Bundle\ImportExport\Converter\MarelloOrderDataConverter
+        calls:
+            - [setLogger, ['@oro_integration.logger.strategy']]
+            - [addNodeDataConverter, ['shippingAddress', '@marello_magento2.importexport.converter.marello_order_address']]
+            - [addNodeDataConverter, ['billingAddress', '@marello_magento2.importexport.converter.marello_order_address']]
+
+    marello_magento2.importexport.converter.marello_order_address:
+        class: Marello\Bundle\Magento2Bundle\ImportExport\Converter\MarelloOrderAddressDataConverter
+        arguments:
+            - '@marello_magento2.provider.country_iso2_code'
+        calls:
+            - [setLogger, ['@oro_integration.logger.strategy']]
+
+    marello_magento2.importexport.converter.customer:
+        class: Marello\Bundle\Magento2Bundle\ImportExport\Converter\CustomerDataConverter
+        arguments:
+            - '@marello_magento2.generator.customer_hash_id'
+        calls:
+            - [setLogger, ['@oro_integration.logger.strategy']]
+
+    marello_magento2.importexport.converter.marello_order_item:
+        class: Marello\Bundle\Magento2Bundle\ImportExport\Converter\MarelloOrderItemDataConverter
+        calls:
+            - [setLogger, ['@oro_integration.logger.strategy']]
+
     # Processors
     marello_magento2.importexport.processor.website:
         parent: oro_integration.importexport.processor.import
         calls:
-            - [setDataConverter, ["@marello_magento2.importexport.converter.website"]]
-            - [setStrategy, ["@marello_magento2.import_strategy.website"]]
+            - [setDataConverter, ['@marello_magento2.importexport.converter.website']]
+            - [setStrategy, ['@marello_magento2.import_strategy.website']]
             - [setEntityName, ['Marello\Bundle\Magento2Bundle\Entity\Website']]
         tags:
             - { name: oro_importexport.processor, type: import, entity: 'Marello\Bundle\Magento2Bundle\Entity\Website', alias: marello_magento2.website }
@@ -195,8 +248,8 @@ services:
     marello_magento2.importexport.processor.store:
         parent: oro_integration.importexport.processor.import
         calls:
-            - [setDataConverter, ["@marello_magento2.importexport.converter.store"]]
-            - [setStrategy, ["@marello_magento2.import_strategy.store"]]
+            - [setDataConverter, ['@marello_magento2.importexport.converter.store']]
+            - [setStrategy, ['@marello_magento2.import_strategy.store']]
             - [setEntityName, ['Marello\Bundle\Magento2Bundle\Entity\Store']]
         tags:
             - { name: oro_importexport.processor, type: import, entity: 'Marello\Bundle\Magento2Bundle\Entity\Store', alias: marello_magento2.store }
@@ -204,8 +257,8 @@ services:
     marello_magento2.importexport.processor.product_tax_class:
         parent: oro_integration.importexport.processor.import
         calls:
-            - [setDataConverter, ["@marello_magento2.importexport.converter.product_tax_class"]]
-            - [setStrategy, ["@marello_magento2.import_strategy.product_tax_class"]]
+            - [setDataConverter, ['@marello_magento2.importexport.converter.product_tax_class']]
+            - [setStrategy, ['@marello_magento2.import_strategy.product_tax_class']]
             - [setEntityName, ['Marello\Bundle\Magento2Bundle\Entity\ProductTaxClass']]
         tags:
             - { name: oro_importexport.processor, type: import, entity: 'Marello\Bundle\Magento2Bundle\Entity\ProductTaxClass', alias: marello_magento2.product_tax_class }
@@ -218,6 +271,16 @@ services:
             - [setEntityName, ['Marello\Bundle\Magento2Bundle\Entity\AttributeSet']]
         tags:
             - { name: oro_importexport.processor, type: import, entity: 'Marello\Bundle\Magento2Bundle\Entity\AttributeSet', alias: marello_magento2.attributeset }
+
+    marello_magento2.importexport.processor.order:
+        parent: oro_integration.importexport.processor.import
+        calls:
+            - [setDataConverter, ['@marello_magento2.importexport.converter.magento_order']]
+            - [setStrategy, ['@marello_magento2.import_strategy.order']]
+            - [setEntityName, ['Marello\Bundle\Magento2Bundle\Entity\Order']]
+        tags:
+            - { name: oro_importexport.processor, type: import, entity: 'Marello\Bundle\Magento2Bundle\Entity\Order', alias: marello_magento2.order }
+
 
     marello_magento2.importexport.processor.export_abstract:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Processor\ExportProcessor
@@ -264,7 +327,7 @@ services:
         arguments:
             - '@marello_magento2.importexport.helper.simple_product_translator'
         calls:
-            - [setLogger, ['@logger']]
+            - [setLogger, ['@oro_integration.logger.strategy']]
 
     marello_magento2.importexport.translator.simple_product.update:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Translator\SimpleProduct\UpdateTranslator
@@ -272,14 +335,14 @@ services:
             - '@marello_magento2.importexport.helper.simple_product_translator'
             - '@marello_magento2.repository.product'
         calls:
-            - [setLogger, ['@logger']]
+            - [setLogger, ['@oro_integration.logger.strategy']]
 
     marello_magento2.importexport.translator.product_delete_on_channel:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Translator\SimpleProduct\ProductDeleteOnChannelTranslator
         arguments:
             - '@marello_magento2.repository.product'
         calls:
-            - [setLogger, ['@logger']]
+            - [setLogger, ['@oro_integration.logger.strategy']]
 
     marello_magento2.importexport.translator.product_simple_update_website_scope:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Translator\SimpleProduct\ProductSimpleUpdateWebsiteScopeTranslator
@@ -287,7 +350,7 @@ services:
             - '@marello_magento2.repository.website'
             - '@marello_magento2.repository.product'
         calls:
-            - [setLogger, ['@logger']]
+            - [setLogger, ['@oro_integration.logger.strategy']]
 
     # Serializers
     marello_magento2.importexport.normalizer.simple_product_create:
