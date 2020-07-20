@@ -2,6 +2,7 @@
 marello:
     order:
         shipping_method.label: Shipping Method
+        locale_id.label: Locale ID
         previous_shipping_method.label: Previously selected Shipping Method
         possible_shipping_methods.no_method: No shipping methods are available
         possible_shipping_methods.confirmation.title: Review Shipping Cost

@@ -368,6 +368,10 @@ class OrderItem extends ExtendOrderItem implements
      */
     public function prePersist()
     {
+        if (null === $this->product) {
+            return;
+        }
+
         // prevent overriding product name if already being set
         if (is_null($this->productName)) {
             $this->setProductName((string)$this->product->getName());

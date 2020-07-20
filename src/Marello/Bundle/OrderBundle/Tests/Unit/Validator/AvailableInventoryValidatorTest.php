@@ -138,34 +138,6 @@ class AvailableInventoryValidatorTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    public function testValidateNoValueForProperty()
-    {
-        $entity = new \StdClass();
-        $entity->test = null;
-
-        $this->doctrineHelper->expects($this->once())
-            ->method('getEntityManagerForClass')
-            ->willReturn($this->objectManager);
-
-        $this->objectManager->expects($this->once())
-            ->method('getClassMetadata')
-            ->willReturn($this->classMetaData);
-
-        $this->classMetaData->expects($this->atLeastOnce())
-            ->method('hasField')
-            ->willReturn(true);
-
-        $this->expectException(ConstraintDefinitionException::class);
-        $this->expectExceptionMessage(
-            'Cannot get inventory when not all required values are set'
-        );
-
-        $this->getValidator()->validate($entity, $this->getConstraint(['fields' => ['test']]));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function testValidateViolationIsBuild()
     {
         $orderMock = $this->createMock(Order::class);
@@ -216,50 +188,6 @@ class AvailableInventoryValidatorTest extends TestCase
 
         $violationBuilderMock->expects($this->exactly(1))
             ->method('addViolation');
-
-        $this->getValidator()->validate($entity, $constraint);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function testQuantityFieldIsNotSet()
-    {
-        $orderMock = $this->createMock(Order::class);
-        $salesChannelMock = $this->createMock(SalesChannel::class);
-        $entity = new \StdClass();
-        $entity->product = $this->createMock(Product::class);
-        $entity->order = $orderMock;
-        $constraint = $this->getConstraint([
-            'fields' => ['product', 'order'],
-            'errorPath' => 'quantity'
-        ]);
-
-        $this->doctrineHelper->expects($this->once())
-            ->method('getEntityManagerForClass')
-            ->willReturn($this->objectManager);
-
-        $this->objectManager->expects($this->once())
-            ->method('getClassMetadata')
-            ->willReturn($this->classMetaData);
-
-        $this->classMetaData->expects($this->atLeastOnce())
-            ->method('hasField')
-            ->willReturn(true);
-
-        $orderMock->expects($this->atLeastOnce())
-            ->method('getSalesChannel')
-            ->willReturn($salesChannelMock);
-
-        $this->inventoryProvider->expects($this->exactly(1))
-            ->method('getAvailableInventory')
-            ->with($entity->product, $salesChannelMock)
-            ->willReturn(100);
-
-        $this->expectException(ConstraintDefinitionException::class);
-        $this->expectExceptionMessage(
-            'Cannot compare values if because there nothing to compare'
-        );
 
         $this->getValidator()->validate($entity, $constraint);
     }
