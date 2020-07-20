@@ -70,6 +70,7 @@ class OrderDashboardOrderItemsByStatusProvider
         $orderitemRepository = $this->registry->getRepository('MarelloOrderBundle:Order');
         $qb = $orderitemRepository->createQueryBuilder('o')
             ->select('IDENTITY (oi.status) status, COUNT(oi.id) as quantity')
+            ->andWhere('IDENTITY (oi.status) IS NOT NULL')
             ->innerJoin('o.items', 'oi')
             ->groupBy('oi.status')
             ->orderBy('quantity', 'DESC');
