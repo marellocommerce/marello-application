@@ -2,8 +2,8 @@
 
 namespace Marello\Bundle\Magento2Bundle\Converter;
 
+use Marello\Bundle\Magento2Bundle\DTO\ImportConnectorSearchSettingsDTO;
 use Marello\Bundle\Magento2Bundle\DTO\SearchParametersDTO;
-use Marello\Bundle\Magento2Bundle\Integration\Connector\Settings\ImportConnectorSearchSettingsDTO;
 
 interface SearchParametersConverterInterface
 {

@@ -7,5 +7,11 @@ Marello\Bundle\Magento2Bundle\Entity\Customer:
         innerCustomer:
             - NotBlank: ~
             - Valid: ~
-        hashId:
-            - Oro\Bundle\FormBundle\Validator\Constraints\UnchangeableField: ~
+
+Marello\Bundle\Magento2Bundle\Entity\Order:
+    properties:
+        innerOrder:
+            - NotBlank: ~
+            - Valid: ~
+        magentoCustomer:
+            - Valid: ~

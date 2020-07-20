@@ -2,9 +2,9 @@
 
 namespace Marello\Bundle\Magento2Bundle\Converter;
 
+use Marello\Bundle\Magento2Bundle\DTO\ImportConnectorSearchSettingsDTO;
 use Marello\Bundle\Magento2Bundle\DTO\SearchParametersDTO;
 use Marello\Bundle\Magento2Bundle\Entity\Repository\StoreRepository;
-use Marello\Bundle\Magento2Bundle\Integration\Connector\Settings\ImportConnectorSearchSettingsDTO;
 
 class GeneralSearchParametersConverter implements SearchParametersConverterInterface
 {
@@ -26,14 +26,14 @@ class GeneralSearchParametersConverter implements SearchParametersConverterInter
     {
         $originStoreIds = [];
 
-        $startDateTime = clone $connectorSearchSettingsDTO->getSyncStartDate();
+        $startDateTime = $connectorSearchSettingsDTO->getSyncStartDateTime(true);
+        $endDateTime = (clone $startDateTime)->add(
+            $connectorSearchSettingsDTO->getSyncDateInterval()
+        );
+
         if ($connectorSearchSettingsDTO->getMissTimingDateInterval() instanceof \DateInterval) {
             $startDateTime->sub($connectorSearchSettingsDTO->getMissTimingDateInterval());
         }
-
-        $endDateTime = (clone $startDateTime)->add(
-            $connectorSearchSettingsDTO->getSyncRangeDateInterval()
-        );
 
         if (!$connectorSearchSettingsDTO->isNoWebsiteSet()) {
             $originStoreIds = $this->storeRepository->getOriginStoreIdsByWebsiteId(

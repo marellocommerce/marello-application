@@ -12,9 +12,6 @@ use Oro\Bundle\EntityExtendBundle\Migration\ExtendOptionsManager;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
 
-/**
- * @todo Remove this in final version
- */
 class MarelloMagento2Bundle implements Migration, ExtendExtensionAwareInterface
 {
     /**

@@ -28,7 +28,7 @@ class SearchValueNormalizer implements NormalizerInterface
         }
 
         if (is_iterable($data)) {
-            $this->normalizeIterableData($data, $format, $context);
+            return $this->normalizeIterableData($data, $format, $context);
         }
 
         throw new InvalidArgumentException(

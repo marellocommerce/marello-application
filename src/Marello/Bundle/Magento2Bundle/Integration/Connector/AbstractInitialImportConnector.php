@@ -3,9 +3,9 @@
 namespace Marello\Bundle\Magento2Bundle\Integration\Connector;
 
 use Marello\Bundle\Magento2Bundle\Converter\SearchParametersConverterInterface;
+use Marello\Bundle\Magento2Bundle\DTO\ImportConnectorSearchSettingsDTO;
 use Marello\Bundle\Magento2Bundle\Exception\InvalidConfigurationException;
-use Marello\Bundle\Magento2Bundle\Integration\Connector\Settings\ImportConnectorSearchSettingsDTO;
-use Marello\Bundle\Magento2Bundle\Integration\InitialScheduleProcessor;
+use Marello\Bundle\Magento2Bundle\Integration\SyncProcessor\AbstractSyncProcessor;
 use Marello\Bundle\Magento2Bundle\Iterator\UpdatableSearchLoaderInterface;
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 
@@ -42,7 +42,7 @@ abstract class AbstractInitialImportConnector extends AbstractConnector
     {
         parent::initializeFromContext($context);
         $this->connectorSearchSettings = $context->getOption(
-            InitialScheduleProcessor::IMPORT_CONNECTOR_SEARCH_SETTINGS_KEY
+            AbstractSyncProcessor::IMPORT_CONNECTOR_SEARCH_SETTINGS_KEY
         );
 
         $this->validateIterator();
@@ -73,7 +73,7 @@ abstract class AbstractInitialImportConnector extends AbstractConnector
     {
         if (!$this->connectorSearchSettings instanceof ImportConnectorSearchSettingsDTO) {
             throw new InvalidConfigurationException(
-                'The configuration option "' . InitialScheduleProcessor::IMPORT_CONNECTOR_SEARCH_SETTINGS_KEY
+                'The configuration option "' . AbstractSyncProcessor::IMPORT_CONNECTOR_SEARCH_SETTINGS_KEY
                 . '" must contain instance of "ImportConnectorSearchSettingsDTO" but other given.'
             );
         }

@@ -22,7 +22,6 @@ class SalesChannelStateChangedProcessor implements
     LoggerAwareInterface
 {
     use LoggerAwareTrait;
-    use LoggerAwareTrait;
 
     /** @var JobRunner */
     protected $jobRunner;

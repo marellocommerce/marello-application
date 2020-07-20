@@ -48,8 +48,8 @@ class SearchParametersDTO
         array $originStoreIds = []
     ) {
         $this->mode = $mode;
-        $this->startDateTime = $startDateTime;
-        $this->endDateTime = $endDateTime;
+        $this->startDateTime = clone $startDateTime;
+        $this->endDateTime = clone $endDateTime;
         $this->originStoreIds = $originStoreIds;
     }
 
@@ -70,18 +70,28 @@ class SearchParametersDTO
     }
 
     /**
+     * @param bool $clone
      * @return \DateTime
      */
-    public function getStartDateTime(): \DateTime
+    public function getStartDateTime(bool $clone = true): \DateTime
     {
+        if ($clone) {
+            return clone $this->startDateTime;
+        }
+
         return $this->startDateTime;
     }
 
     /**
+     * @param bool $clone
      * @return \DateTime
      */
-    public function getEndDateTime(): \DateTime
+    public function getEndDateTime(bool $clone = true): \DateTime
     {
+        if ($clone) {
+            return clone $this->endDateTime;
+        }
+
         return $this->endDateTime;
     }
 

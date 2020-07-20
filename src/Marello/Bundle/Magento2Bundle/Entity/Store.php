@@ -183,18 +183,18 @@ class Store extends ExtendStore implements OriginAwareInterface, IntegrationAwar
     /**
      * @return string|null
      */
-    public function getLocalId(): ?string
+    public function getLocaleId(): ?string
     {
-        return $this->localId;
+        return $this->localeId;
     }
 
     /**
      * @param string|null $localId
      * @return $this
      */
-    public function setLocalId(string $localId = null): self
+    public function setLocaleId(string $localId = null): self
     {
-        $this->localId = $localId;
+        $this->localeId = $localId;
 
         return $this;
     }

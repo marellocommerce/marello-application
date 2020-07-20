@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\Magento2Bundle\Migrations\Schema\v1_1;
+namespace Marello\Bundle\Magento2Bundle\Migrations\Schema\v1_7;
 
 use Doctrine\DBAL\Schema\Schema;
 use Oro\Bundle\MigrationBundle\Migration\Migration;
@@ -13,7 +13,7 @@ class MarelloMagento2Bundle implements Migration
      */
     public function up(Schema $schema, QueryBag $queries)
     {
-        $table = $schema->getTable('marello_m2_product');
-        $table->addColumn('sku', 'string', ['notnull' => false, 'length' => 255]);
+        $table = $schema->getTable('marello_m2_customer');
+        $table->getColumn('hash_id')->setNotnull(false);
     }
 }

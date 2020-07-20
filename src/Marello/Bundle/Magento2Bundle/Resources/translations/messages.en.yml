@@ -7,6 +7,13 @@ marello:
     tax.taxcode.magento2_product_tax_classes.label: Magento 2 Product Tax Class
 
     magento2:
+        configuration:
+            import_sync_interval:
+                label: Import Step Interval
+                tooltip: 'This interval will be used in initial sync, connector will walk starting from now or last initial import date and will import data from now till previous date by step interval.'
+            miss_timing_assumption_interval:
+                label: Miss Timing Assumption Interval
+                tooltip: 'There is possibility to have miss timing between web-nodes if Magento instance is deployed as a web farm in order to prevent loss of data sync process always include some additional time assumption.'
         channel_type:
             magento2.label:  Magento 2
         transport:
@@ -31,8 +38,8 @@ marello:
                 tooltip: Magento's integration Access Token. The token can be found under the System > Extensions > Integrations > [Your integration] > Integration Details in your Magento installation.
             delete_remote_data_on_deactivation.label: Delete Remote Synchronizaed Data on Deactivation
             delete_remote_data_on_deletion.label: Delete Remote Synchronizaed Data on Deletion
-            sync_start_date:
-                label: Sync start date
+            initial_sync_start_date:
+                label: Initial Sync Start Date
                 tooltip: This is the starting date for data synchronization. Only records updated after this date will be synchronized
 
         mapping_control_form:

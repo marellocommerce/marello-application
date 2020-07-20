@@ -5,7 +5,7 @@ services:
         parent: oro_importexport.strategy.configurable_add_or_replace
         calls:
             - ['setLogger', ['@oro_integration.logger.strategy']]
-            - ['propertyAccessor', ['@property_accessor']]
+            - ['setPropertyAccessor', ['@property_accessor']]
 
     marello_magento2.import_strategy.website:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Strategy\WebsiteMagento2ImportStrategy
@@ -206,13 +206,13 @@ services:
         calls:
             - [addNodeDataConverter, ['marello_order_data_alias', '@marello_magento2.importexport.converter.marello_order']]
             - [addNodeDataConverter, ['customer_data_alias', '@marello_magento2.importexport.converter.customer']]
-            - [addNodeDataConverter, ['items', '@marello_magento2.importexport.converter.marello_order_item', true]]
 
     marello_magento2.importexport.converter.marello_order:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Converter\MarelloOrderDataConverter
         calls:
             - [addNodeDataConverter, ['shippingAddress', '@marello_magento2.importexport.converter.marello_order_address']]
             - [addNodeDataConverter, ['billingAddress', '@marello_magento2.importexport.converter.marello_order_address']]
+            - [addNodeDataConverter, ['items', '@marello_magento2.importexport.converter.marello_order_item', true]]
 
     marello_magento2.importexport.converter.marello_order_address:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Converter\MarelloOrderAddressDataConverter
@@ -307,11 +307,36 @@ services:
     marello_magento2.importexport.processor.export.product_delete_removed:
         class: Akeneo\Bundle\BatchBundle\Item\Support\NoopProcessor
 
-    marello_magento2.integration.initial_schedule_processor:
-        class: Marello\Bundle\Magento2Bundle\Integration\InitialScheduleProcessor
+    # Sync Processors
+    marello_magento2.integration.sync_processor.abstract:
+        class: Marello\Bundle\Magento2Bundle\Integration\SyncProcessor\AbstractSyncProcessor
         parent: oro_integration.sync.processor
+        abstract: true
+        calls:
+            - ['setConnectorSyncSettingsProvider', ['@marello_magento2.integration.connector_sync_settings']]
+
+    marello_magento2.integration.sync_processor:
+        class: Marello\Bundle\Magento2Bundle\Integration\SyncProcessor\SyncProcessor
+        parent: marello_magento2.integration.sync_processor.abstract
+        calls:
+            - ['setInitialSyncProcessor', ['@marello_magento2.integration.sync_processor.initial_sync_processor']]
         tags:
             - { name: oro_integration.sync_processor, integration: magento2 }
+
+    marello_magento2.integration.sync_processor.initial_sync_processor:
+        class: Marello\Bundle\Magento2Bundle\Integration\SyncProcessor\InitialSyncProcessor
+        parent: marello_magento2.integration.sync_processor.abstract
+        calls:
+            - ['setMessageProducer', ['@oro_message_queue.message_producer']]
+
+    # Providers
+    marello_magento2.integration.connector_sync_settings:
+        class: Marello\Bundle\Magento2Bundle\Integration\Provider\ConnectorSyncSettingsProvider
+        arguments:
+            - '@marello_magento2.provider.tracked_sales_channel'
+            - '@oro_config.manager'
+            - '@oro_integration.repository.channel'
+            - '@marello_magento2.repository.website_integration_status'
 
     # Translators
     marello_magento2.importexport.translator.simple_product.create:

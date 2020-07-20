@@ -134,7 +134,7 @@ connector:
                     class: Oro\Bundle\BatchBundle\Step\ItemStep
                     services:
                         reader:    marello_magento2.integration.connector.order
-                        processor: marello_magento2.importexport.processor.product_tax_class
+                        processor: marello_magento2.importexport.processor.order
                         writer:    oro_importexport.writer.entity
                     parameters:
                         batch_size: 10
@@ -148,7 +148,7 @@ connector:
                     class: Oro\Bundle\BatchBundle\Step\ItemStep
                     services:
                         reader:    marello_magento2.integration.connector.initial_order
-                        processor: marello_magento2.importexport.processor.product_tax_class
+                        processor: marello_magento2.importexport.processor.order
                         writer:    oro_importexport.writer.entity
                     parameters:
                         batch_size: 10

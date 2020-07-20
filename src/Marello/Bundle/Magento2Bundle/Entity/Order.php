@@ -3,25 +3,27 @@
 namespace Marello\Bundle\Magento2Bundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\Magento2Bundle\Entity\Customer as MagentoCustomer;
 use Marello\Bundle\Magento2Bundle\Model\ExtendOrder;
 use Marello\Bundle\OrderBundle\Entity\Order as InnerOrder;
-use Marello\Bundle\Magento2Bundle\Entity\Customer as MagentoCustomer;
 use Oro\Bundle\EntityBundle\EntityProperty\CreatedAtAwareInterface;
 use Oro\Bundle\EntityBundle\EntityProperty\CreatedAtAwareTrait;
 use Oro\Bundle\EntityBundle\EntityProperty\UpdatedAtAwareInterface;
 use Oro\Bundle\EntityBundle\EntityProperty\UpdatedAtAwareTrait;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
 /**
- * @todo Skip customer that has not email, first name, last name
- *
  * Keeps syncing states of order with remote Magento 2 instance by single channel
  *
+ * @ORM\Entity
  * @ORM\Table(
  *  name="marello_m2_order",
  *  uniqueConstraints={
  *     @ORM\UniqueConstraint(name="unq_order_channel_idx", columns={"channel_id", "origin_id"})
  *  }
  * )
+ * @Config()
  */
 class Order extends ExtendOrder implements
     OriginAwareInterface,
@@ -45,16 +47,30 @@ class Order extends ExtendOrder implements
      *
      * @var InnerOrder
      *
-     * @ORM\ManyToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\Order")
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\Order", cascade={"persist"})
      * @ORM\JoinColumn(name="inner_order_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "full"=true
+     *          }
+     *      }
+     * )
      */
     protected $innerOrder;
 
     /**
      * @var MagentoCustomer
      *
-     * @ORM\ManyToOne(targetEntity="Marello\Bundle\Magento2Bundle\Entity\Customer")
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\Magento2Bundle\Entity\Customer", cascade={"persist"})
      * @ORM\JoinColumn(name="m2_customer_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "full"=true
+     *          }
+     *      }
+     * )
      */
     protected $magentoCustomer;
 
@@ -81,17 +97,17 @@ class Order extends ExtendOrder implements
     protected $syncedAt;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
-     * @return InnerOrder
+     * @return InnerOrder|null
      */
-    public function getInnerOrder(): InnerOrder
+    public function getInnerOrder(): ?InnerOrder
     {
         return $this->innerOrder;
     }

@@ -28,10 +28,8 @@ class MarelloOrderAddressDataConverter extends IntegrationAwareDataConverter
         return [
             'firstName' => 'firstname',
             'lastName' => 'lastname',
-            'street' => 'street:0',
-            'street2' => 'street:1',
-            'phone' => 'telephone',
-            'postalCode' => 'postcode',
+            'telephone' => 'phone',
+            'postcode' => 'postalCode',
             'city' => 'city'
         ];
     }
@@ -53,8 +51,20 @@ class MarelloOrderAddressDataConverter extends IntegrationAwareDataConverter
         }
 
         if (empty($importedRecord['region:combinedCode'])) {
-            $importedRecord['regionText'] = 'region';
+            $importedRecord['regionText'] = $importedRecord['region'];
         }
+
+        if (!empty($importedRecord['street']) && is_array($importedRecord['street'])) {
+            $streets = $importedRecord['street'];
+            $streetFieldKeys = ['street', 'street2'];
+            foreach ($streetFieldKeys as $index => $fieldKey) {
+                if (!empty($streets[$index])) {
+                    $importedRecord[$fieldKey] = $streets[$index];
+                }
+            }
+        }
+
+        unset($importedRecord['region']);
 
         return parent::convertToImportFormat($importedRecord, $skipNullValues);
     }

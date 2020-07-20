@@ -67,8 +67,6 @@ class LastSyncProvider implements LastSyncProviderInterface
     }
 
     /**
-     * @todo Log info when $lastSyncItemDate is not accessible
-     *
      * @param array $item
      * @param string $updatedAtColumnName
      * @param string $updatedAtColumnFormat

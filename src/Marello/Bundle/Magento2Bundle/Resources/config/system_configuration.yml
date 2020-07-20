@@ -1,0 +1,34 @@
+system_configuration:
+    fields:
+        marello_magento2.import_sync_interval:
+            data_type: string
+            type: Symfony\Component\Form\Extension\Core\Type\DateIntervalType
+            search_type: text
+            priority: 10
+            options:
+                label: marello.magento2.configuration.import_sync_interval.label
+                tooltip: marello.magento2.configuration.import_sync_interval.tooltip
+                required: false
+                widget: integer
+                input: string
+                with_years: false
+                with_months: false
+                with_days: true
+                with_hours: true
+
+        marello_magento2.miss_timing_assumption_interval:
+            data_type: string
+            type: Symfony\Component\Form\Extension\Core\Type\DateIntervalType
+            search_type: text
+            priority: 10
+            options:
+                label: marello.magento2.configuration.miss_timing_assumption_interval.label
+                tooltip: marello.magento2.configuration.miss_timing_assumption_interval.tooltip
+                required: false
+                widget: integer
+                input: string
+                with_years: false
+                with_months: false
+                with_days: false
+                with_hours: false
+                with_minutes: true
