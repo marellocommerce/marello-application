@@ -8,9 +8,6 @@ use Marello\Bundle\Magento2Bundle\DTO\WebsiteToSalesChannelMappingItemDTO;
 use Marello\Bundle\Magento2Bundle\Entity\Website;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 
-/**
- * @todo Remove this in final version
- */
 class ConvertWebsiteToSalesChannelMappingToNewFormat extends AbstractFixture
 {
     /**

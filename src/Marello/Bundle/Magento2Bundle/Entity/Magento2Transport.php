@@ -5,7 +5,6 @@ namespace Marello\Bundle\Magento2Bundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\Magento2Bundle\Model\Magento2TransportSettings;
 use Oro\Bundle\IntegrationBundle\Entity\Transport;
-use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
  * @ORM\Entity
@@ -27,16 +26,18 @@ class Magento2Transport extends Transport
     protected $apiToken;
 
     /**
+     * Date time that we use as starting point for end date for initial sync and start date for regular sync
+     *
      * @var \DateTime
      *
-     * @ORM\Column(name="m2_sync_start_date", type="date", nullable=true)
+     * @ORM\Column(name="m2_sync_start_date", type="datetime", nullable=true)
      */
     protected $syncStartDate;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="m2_initial_sync_start_date", type="datetime", nullable=true)
+     * @ORM\Column(name="m2_initial_sync_start_date", type="date", nullable=true)
      */
     protected $initialSyncStartDate;
 
@@ -48,13 +49,6 @@ class Magento2Transport extends Transport
      * @ORM\Column(name="m2_websites_sales_channel_map", type="json", nullable=true)
      */
     protected $websiteToSalesChannelMapping = [];
-
-    /**
-     * @var \DateInterval
-     *
-     * @ORM\Column(name="m2_sync_range", type="string", length=50, nullable=true)
-     */
-    protected $syncRange;
 
     /**
      * @var bool
@@ -76,7 +70,7 @@ class Magento2Transport extends Transport
     protected $settings;
 
     /**
-     * @return ParameterBag|void
+     * @return Magento2TransportSettings
      */
     public function getSettingsBag()
     {
@@ -85,8 +79,7 @@ class Magento2Transport extends Transport
                 [
                     Magento2TransportSettings::API_URL_KEY => $this->getApiUrl(),
                     Magento2TransportSettings::API_TOKEN_KEY => $this->getApiToken(),
-                    Magento2TransportSettings::SYNC_RANGE_KEY => $this->getSyncRange(),
-                    Magento2TransportSettings::START_SYNC_DATE_KEY => $this->getSyncStartDate(),
+                    Magento2TransportSettings::SYNC_START_DATE_KEY => $this->getSyncStartDate(),
                     Magento2TransportSettings::INITIAL_SYNC_START_DATE_KEY => $this->getInitialSyncStartDate(),
                     Magento2TransportSettings::WEBSITE_TO_SALES_CHANNEL_MAPPING_KEY =>
                         $this->getWebsiteToSalesChannelMapping(),
@@ -99,11 +92,6 @@ class Magento2Transport extends Transport
         }
 
         return $this->settings;
-    }
-
-    public function __construct()
-    {
-        $this->setSyncStartDate(new \DateTime('2007-01-01', new \DateTimeZone('UTC')));
     }
 
     /**
@@ -183,25 +171,6 @@ class Magento2Transport extends Transport
     }
 
     /**
-     * @return \DateInterval|null
-     */
-    public function getSyncRange(): ?\DateInterval
-    {
-        return $this->syncRange;
-    }
-
-    /**
-     * @param \DateInterval $syncRange
-     * @return $this
-     */
-    public function setSyncRange(\DateInterval $syncRange): self
-    {
-        $this->syncRange = $syncRange;
-
-        return $this;
-    }
-
-    /**
      * @return array
      */
     public function getWebsiteToSalesChannelMapping(): array
@@ -256,5 +225,13 @@ class Magento2Transport extends Transport
         $this->deleteRemoteDataOnDeletion = $deleteRemoteDataOnDeletion;
 
         return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersistTimestamp()
+    {
+        $this->syncStartDate = new \DateTime('now', new \DateTimeZone('UTC'));
     }
 }

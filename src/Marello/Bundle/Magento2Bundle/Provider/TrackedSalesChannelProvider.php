@@ -124,15 +124,15 @@ class TrackedSalesChannelProvider
      * @param int $integrationId
      * @param bool $onlyActiveSalesChannel
      * @param bool $onlyActiveIntegration
-     * @return array
+     * @return SalesChannelInfo[]
      */
-    public function getSalesChannelIdsByIntegrationId(
+    public function getSalesChannelInfosByIntegrationId(
         int $integrationId,
         bool $onlyActiveSalesChannel = true,
         bool $onlyActiveIntegration = true
     ): array {
         $this->loadSalesChannelsInfo();
-        $filteredSalesChannelInfos = \array_filter(
+        return \array_filter(
             $this->salesChannelsInfoArray,
             function (SalesChannelInfo $salesChannelInfo) use (
                 $integrationId,
@@ -145,6 +145,24 @@ class TrackedSalesChannelProvider
                         $onlyActiveIntegration
                     ) && $salesChannelInfo->getIntegrationChannelId() === $integrationId;
             });
+    }
+
+    /**
+     * @param int $integrationId
+     * @param bool $onlyActiveSalesChannel
+     * @param bool $onlyActiveIntegration
+     * @return array
+     */
+    public function getSalesChannelIdsByIntegrationId(
+        int $integrationId,
+        bool $onlyActiveSalesChannel = true,
+        bool $onlyActiveIntegration = true
+    ): array {
+        $filteredSalesChannelInfos = $this->getSalesChannelInfosByIntegrationId(
+            $integrationId,
+            $onlyActiveSalesChannel,
+            $onlyActiveIntegration
+        );
 
         return \array_keys($filteredSalesChannelInfos);
     }

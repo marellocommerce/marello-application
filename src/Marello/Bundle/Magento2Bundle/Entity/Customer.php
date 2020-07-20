@@ -5,6 +5,8 @@ namespace Marello\Bundle\Magento2Bundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CustomerBundle\Entity\Customer as InnerCustomer;
 use Marello\Bundle\Magento2Bundle\Model\ExtendCustomer;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
 /**
  * Keeps syncing states of order with remote Magento 2 instance by single channel
@@ -19,6 +21,7 @@ use Marello\Bundle\Magento2Bundle\Model\ExtendCustomer;
  *     @ORM\UniqueConstraint(name="unq_customer_channel_idx", columns={"channel_id", "origin_id"})
  *  }
  * )
+ * @Config()
  */
 class Customer extends ExtendCustomer implements OriginAwareInterface, IntegrationAwareInterface
 {
@@ -38,8 +41,15 @@ class Customer extends ExtendCustomer implements OriginAwareInterface, Integrati
      *
      * @var InnerCustomer
      *
-     * @ORM\ManyToOne(targetEntity="Marello\Bundle\CustomerBundle\Entity\Customer")
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\CustomerBundle\Entity\Customer", cascade={"persist"})
      * @ORM\JoinColumn(name="inner_customer_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "full"=true
+     *          }
+     *      }
+     * )
      */
     protected $innerCustomer;
 
@@ -50,22 +60,22 @@ class Customer extends ExtendCustomer implements OriginAwareInterface, Integrati
      *
      * @var string
      *
-     * @ORM\Column(name="hash_id", type="string", length=32, nullable=false)
+     * @ORM\Column(name="hash_id", type="string", length=32, nullable=true)
      */
     protected $hashId;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
-     * @return InnerCustomer
+     * @return InnerCustomer|null
      */
-    public function getInnerCustomer(): InnerCustomer
+    public function getInnerCustomer(): ?InnerCustomer
     {
         return $this->innerCustomer;
     }
@@ -82,7 +92,7 @@ class Customer extends ExtendCustomer implements OriginAwareInterface, Integrati
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getHashId(): ?string
     {

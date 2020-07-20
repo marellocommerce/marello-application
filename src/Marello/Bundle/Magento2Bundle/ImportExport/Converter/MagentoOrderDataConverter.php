@@ -36,19 +36,22 @@ class MagentoOrderDataConverter extends AbstractTreeDataConverter
             CustomerDataConverter::LAST_NAME => 'customer_lastname',
         ],
         'marello_order_data_alias' => [
+            MarelloOrderDataConverter::ORDER_NUMBER => self::ID_COLUMN_NAME,
             MarelloOrderDataConverter::ORDER_REF => 'increment_id',
             MarelloOrderDataConverter::COUPON_CODE => 'coupon_code',
             MarelloOrderDataConverter::BILLING_ADDRESS => 'billing_address',
-            MarelloOrderDataConverter::PAYMENT_METHOD => 'payment:method',
+            MarelloOrderDataConverter::PAYMENT_METHOD => 'payment.method',
             MarelloOrderDataConverter::SHIPPING_ADDRESS =>
-                'extension_attributes:shipping_assignments:0:shipping:address',
-            MarelloOrderDataConverter::SHIPPING_METHOD => 'extension_attributes:shipping_assignments:0:shipping:method',
+                'extension_attributes.shipping_assignments[0].shipping.address',
+            MarelloOrderDataConverter::SHIPPING_METHOD =>
+                'extension_attributes.shipping_assignments[0].shipping.method',
             MarelloOrderDataConverter::PURCHASE_DATE => 'created_at',
             MarelloOrderDataConverter::SHIPPING_AMOUNT_INCL_TAX => 'shipping_incl_tax',
             MarelloOrderDataConverter::TOTAL_TAX => 'tax_amount',
             MarelloOrderDataConverter::DISCOUNT_AMOUNT => 'discount_amount',
             MarelloOrderDataConverter::SUBTOTAL => 'subtotal',
-            MarelloOrderDataConverter::GRAND_TOTAL => 'grand_total'
+            MarelloOrderDataConverter::GRAND_TOTAL => 'grand_total',
+            MarelloOrderDataConverter::ITEMS => 'items'
         ]
     ];
 
@@ -68,11 +71,11 @@ class MagentoOrderDataConverter extends AbstractTreeDataConverter
     protected function getHeaderConversionRules()
     {
         return [
-            'originId' => self::ID_COLUMN_NAME,
-            'magentoCustomer' => 'customer_data_alias',
-            'innerOrder' => 'marello_order_data_alias',
-            'createdAt' => self::CREATED_AT_COLUMN_NAME,
-            'updatedAt' => self::UPDATED_AT_COLUMN_NAME
+            self::ID_COLUMN_NAME => 'originId',
+            'customer_data_alias' => 'magentoCustomer',
+            'marello_order_data_alias' => 'innerOrder',
+            self::CREATED_AT_COLUMN_NAME => 'createdAt',
+            self::UPDATED_AT_COLUMN_NAME => 'updatedAt'
         ];
     }
 
@@ -81,10 +84,10 @@ class MagentoOrderDataConverter extends AbstractTreeDataConverter
      */
     public function convertToImportFormat(array $importedRecord, $skipNullValues = true)
     {
-        $this->copyDataByPathToAlias($importedRecord);
+        $importedRecord = $this->copyDataByPathToAlias($importedRecord);
 
         if (!empty($importedRecord[self::STORE_ID_COLUMN_NAME])) {
-            $importedRecord['store:id'] = $importedRecord[self::STORE_ID_COLUMN_NAME];
+            $importedRecord['store:originId'] = $importedRecord[self::STORE_ID_COLUMN_NAME];
         }
 
         return parent::convertToImportFormat($importedRecord, $skipNullValues);
@@ -92,12 +95,18 @@ class MagentoOrderDataConverter extends AbstractTreeDataConverter
 
     /**
      * @param array $importedRecord
+     * @return array
      */
-    protected function copyDataByPathToAlias(array &$importedRecord): void
+    protected function copyDataByPathToAlias(array $importedRecord): array
     {
         foreach ($this->aliasesToPaths as $alias => $path) {
             if (is_array($path)) {
-                $importedRecord[$alias] = \array_map([$this, 'copyDataByPathToAlias'], $path);
+                foreach ($path as $subAlias => $subPath) {
+                    $importedRecord[$alias][$subAlias] = $this->propertyAccessor->getValue(
+                        $importedRecord,
+                        $subPath
+                    );
+                }
             } else {
                 $importedRecord[$alias] = $this->propertyAccessor->getValue(
                     $importedRecord,
@@ -105,6 +114,8 @@ class MagentoOrderDataConverter extends AbstractTreeDataConverter
                 );
             }
         }
+
+        return $importedRecord;
     }
 
     /**

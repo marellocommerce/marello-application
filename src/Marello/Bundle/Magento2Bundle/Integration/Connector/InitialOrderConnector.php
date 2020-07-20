@@ -8,7 +8,6 @@ use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Provider\AllowedConnectorInterface;
 
 class InitialOrderConnector extends AbstractInitialImportConnector implements
-    AllowedConnectorInterface,
     SingleWebsiteConnectorInterface,
     InitialConnectorInterface
 {
@@ -61,17 +60,5 @@ class InitialOrderConnector extends AbstractInitialImportConnector implements
     public function supportsForceSync()
     {
         return true;
-    }
-
-    /**
-     * @todo Remove this after connector was fully implemented
-     *
-     * @param Channel $integration
-     * @param array $processedConnectorsStatuses
-     * @return bool
-     */
-    public function isAllowed(Channel $integration, array $processedConnectorsStatuses)
-    {
-        return false;
     }
 }

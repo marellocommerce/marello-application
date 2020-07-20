@@ -38,6 +38,14 @@ services:
         arguments:
             - 'Marello\Bundle\Magento2Bundle\Entity\Customer'
 
+    marello_magento2.repository.website_integration_status:
+        class: Marello\Bundle\Magento2Bundle\Entity\Repository\WebsiteIntegrationStatusRepository
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'Marello\Bundle\Magento2Bundle\Entity\WebsiteIntegrationStatus'
+        calls:
+            - ['setChannelRepository', ['@oro_integration.repository.channel']]
+
     marello_magento2.repository.store:
         class: Marello\Bundle\Magento2Bundle\Entity\Repository\StoreRepository
         parent: oro_entity.abstract_repository
@@ -237,6 +245,18 @@ services:
             - '@oro_message_queue.job.runner'
             - '@doctrine'
             - '@marello_magento2.scheduler.product'
+        calls:
+            - [setLogger, ['@logger']]
+        tags:
+            - { name: oro_message_queue.client.message_processor }
+
+    marello_magento2.async.sync_initial_integration:
+        class: Marello\Bundle\Magento2Bundle\Async\SyncInitialIntegrationProcessor
+        arguments:
+            - '@oro_message_queue.job.runner'
+            - '@doctrine'
+            - '@security.token_storage'
+            - '@marello_magento2.integration.sync_processor.initial_sync_processor'
         calls:
             - [setLogger, ['@logger']]
         tags:

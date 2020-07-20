@@ -69,12 +69,12 @@ class TransportSettingFormType extends AbstractType
          * @todo Schedule initial sync on changing this value
          */
         $builder->add(
-            'syncStartDate',
+            'initialSyncStartDate',
             OroDateType::class,
             [
-                'label'      => 'marello.magento2.transport_setting_form.sync_start_date.label',
+                'label'      => 'marello.magento2.transport_setting_form.initial_sync_start_date.label',
                 'required'   => true,
-                'tooltip'    => 'marello.magento2.transport_setting_form.sync_start_date.tooltip',
+                'tooltip'    => 'marello.magento2.transport_setting_form.initial_sync_start_date.tooltip',
                 'empty_data' => new \DateTime('2007-01-01', new \DateTimeZone('UTC')),
                 'constraints' => [
                     new NotBlank()

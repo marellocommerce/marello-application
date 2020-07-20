@@ -7,28 +7,43 @@ use Oro\Bundle\IntegrationBundle\ImportExport\DataConverter\IntegrationAwareData
 
 class MarelloOrderItemDataConverter extends IntegrationAwareDataConverter
 {
+    const PRODUCT_SKU_COLUMN_NAME = 'sku';
+
     /**
      * {@inheritDoc}
      */
     protected function getHeaderConversionRules()
     {
         return [
-            'productName' => 'name',
-            'productSku' => 'sku',
-            'quantity' => 'qty_ordered',
+            'name' => 'productName',
+            self::PRODUCT_SKU_COLUMN_NAME => 'productSku',
+            'qty_ordered' => 'quantity',
             'price' => 'price',
-            'originalPriceInclTax' => 'base_price_incl_tax',
-            'originalPriceExlTax' => 'base_original_price',
-            'tax' => 'tax_amount',
-            'taxPercent' => 'tax_percent',
-            'discountPercent' => 'discount_percent',
-            'discountAmount' => 'discount_amount',
-            'rowTotalInclTax' => 'row_total_incl_tax',
-            'rowTotalExclTax' => 'row_total',
-            'subtotal' => 'row_total',
-            'totalTax' => 'tax_amount',
-            'grandTotal' => 'row_total_incl_tax'
+            'base_price_incl_tax' => 'originalPriceInclTax',
+            'base_original_price' => 'originalPriceExlTax',
+            'tax_amount' => 'tax',
+            'tax_percent' => 'taxPercent',
+            'discount_percent' => 'discountPercent',
+            'discount_amount' => 'discountAmount',
+            'row_total_incl_tax' => 'rowTotalInclTax',
+            'row_total' => 'rowTotalExclTax'
         ];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function convertToImportFormat(array $importedRecord, $skipNullValues = true)
+    {
+        $importedRecord['subtotal'] = $importedRecord['row_total'] ?? null;
+        $importedRecord['totalTax'] = $importedRecord['tax_amount'] ?? null;
+        $importedRecord['grandTotal'] = $importedRecord['row_total_incl_tax'] ?? null;
+
+        if (!empty($importedRecord[self::PRODUCT_SKU_COLUMN_NAME])) {
+            $importedRecord['product:sku'] = $importedRecord[self::PRODUCT_SKU_COLUMN_NAME];
+        }
+
+        return parent::convertToImportFormat($importedRecord, $skipNullValues);
     }
 
     /**

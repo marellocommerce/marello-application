@@ -2,10 +2,13 @@
 
 namespace Marello\Bundle\Magento2Bundle\DTO;
 
-class ImportConnectorSearchSettingsDTO
+use Marello\Bundle\Magento2Bundle\Model\SalesChannelInfo;
+use Oro\Bundle\IntegrationBundle\Provider\ConnectorInterface;
+
+class ConnectorSyncSettingsDTO
 {
-    /** @var int */
-    public const NO_WEBSITE_ID = 0;
+    /** @var ConnectorInterface */
+    protected $connector;
 
     /** @var \DateTime */
     protected $syncStartDateTime;
@@ -16,25 +19,36 @@ class ImportConnectorSearchSettingsDTO
     /** @var \DateInterval */
     protected $missTimingDateInterval;
 
-    /** @var int */
-    protected $websiteId = self::NO_WEBSITE_ID;
+    /** @var SalesChannelInfo|null */
+    protected $salesChannelInfo;
 
     /**
+     * @param ConnectorInterface $connector
      * @param \DateTime $syncStartDateTime
      * @param \DateInterval $syncDateInterval
      * @param \DateInterval $missTimingDateInterval
-     * @param int $websiteId
+     * @param SalesChannelInfo|null $salesChannelInfo
      */
     public function __construct(
+        ConnectorInterface $connector,
         \DateTime $syncStartDateTime,
         \DateInterval $syncDateInterval,
         \DateInterval $missTimingDateInterval,
-        int $websiteId = self::NO_WEBSITE_ID
+        SalesChannelInfo $salesChannelInfo = null
     ) {
+        $this->connector = $connector;
         $this->syncStartDateTime = clone $syncStartDateTime;
         $this->syncDateInterval = clone $syncDateInterval;
         $this->missTimingDateInterval = clone $missTimingDateInterval;
-        $this->websiteId = $websiteId;
+        $this->salesChannelInfo = $salesChannelInfo;
+    }
+
+    /**
+     * @return ConnectorInterface
+     */
+    public function getConnector(): ConnectorInterface
+    {
+        return $this->connector;
     }
 
     /**
@@ -67,18 +81,33 @@ class ImportConnectorSearchSettingsDTO
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getWebsiteId(): int
+    public function getWebsiteId(): ?int
     {
-        return $this->websiteId;
+        return $this->salesChannelInfo ? $this->salesChannelInfo->getWebsiteId() : null;
     }
 
     /**
-     * @return bool
+     * @return int|null
      */
-    public function isNoWebsiteSet(): bool
+    public function getSalesChannelId(): ?int
     {
-        return $this->websiteId === self::NO_WEBSITE_ID;
+        return $this->salesChannelInfo ? $this->salesChannelInfo->getSalesChannelId() : null;
+    }
+
+    /**
+     * @param \DateTime $startDate
+     * @return $this
+     */
+    public function createSettingsWithNewStartDate(\DateTime $startDate): self
+    {
+        return new static(
+            $this->connector,
+            $startDate,
+            $this->syncDateInterval,
+            $this->missTimingDateInterval,
+            $this->salesChannelInfo
+        );
     }
 }

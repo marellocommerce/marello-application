@@ -10,7 +10,6 @@ use Oro\Bundle\IntegrationBundle\Provider\AllowedConnectorInterface;
 use Oro\Bundle\IntegrationBundle\Provider\TwoWaySyncConnectorInterface;
 
 class OrderConnector extends AbstractImportConnector implements
-    AllowedConnectorInterface,
     TwoWaySyncConnectorInterface,
     SingleWebsiteConnectorInterface
 {
@@ -74,22 +73,18 @@ class OrderConnector extends AbstractImportConnector implements
     }
 
     /**
-     * @todo Remove this after connector was fully implemented
-     *
-     * @param Channel $integration
-     * @param array $processedConnectorsStatuses
-     * @return bool
-     */
-    public function isAllowed(Channel $integration, array $processedConnectorsStatuses)
-    {
-        return false;
-    }
-
-    /**
      * {@inheritDoc}
      */
     public function getExportJobName()
     {
         // TODO: Implement getExportJobName() method.
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function supportsForceSync()
+    {
+        return true;
     }
 }

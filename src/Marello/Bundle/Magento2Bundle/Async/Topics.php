@@ -12,4 +12,5 @@ final class Topics
         'marello.magento2.remove_remote_product_for_disabled_integration';
     public const CLEAR_INTERNAL_DATA_FOR_DISABLED_INTEGRATION =
         'marello.magento2.clear_internal_data_for_disabled_integration';
+    public const SYNC_INITIAL_INTEGRATION = 'marello.magento2.sync_initial_integration';
 }

@@ -31,7 +31,7 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
      */
     public function getMigrationVersion()
     {
-        return 'v1_4';
+        return 'v1_7';
     }
 
     /**
@@ -65,6 +65,8 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
         $this->createMagentoAttributeSetTable($schema);
         $this->addMagentoAttributeSetForeignKeys($schema);
         $this->addAttributeSetToAttributeFamilyRelation($schema);
+        $this->createWebsiteIntegrationStatus($schema);
+        $this->createWebsiteIntegrationStatusForeignKeys($schema);
     }
 
     /**
@@ -76,9 +78,8 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
         $table = $schema->getTable('oro_integration_transport');
         $table->addColumn('m2_api_url', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('m2_api_token', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('m2_sync_start_date', 'date', ['notnull' => false]);
-        $table->addColumn('m2_sync_range', 'string', ['notnull' => false, 'length' => 50]);
-        $table->addColumn('m2_initial_sync_start_date', 'datetime', ['notnull' => false]);
+        $table->addColumn('m2_initial_sync_start_date', 'date', ['notnull' => false]);
+        $table->addColumn('m2_sync_start_date', 'datetime', ['notnull' => false]);
         $table->addColumn('m2_websites_sales_channel_map', 'json', [
             'notnull' => false,
             'comment' => '(DC2Type:json)'
@@ -390,7 +391,7 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
             'unsigned' => true
         ]);
         $table->addColumn('inner_customer_id', 'integer');
-        $table->addColumn('hash_id', 'string', ['length' => 32]);
+        $table->addColumn('hash_id', 'string', ['length' => 32, 'notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['channel_id', 'hash_id'], 'idx_customer_hash_channel_idx');
         $table->addUniqueIndex(['channel_id', 'origin_id'], 'unq_customer_channel_idx');
@@ -551,6 +552,40 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
                 'merge' => ['display' => false],
                 'importexport' => ['excluded' => true],
             ]
+        );
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    protected function createWebsiteIntegrationStatus(Schema $schema)
+    {
+        $table = $schema->createTable('marello_m2_webs_integr_status');
+        $table->addColumn('id', 'integer', ['precision' => 0, 'autoincrement' => true]);
+        $table->addColumn('website_id', 'integer');
+        $table->addColumn('status_id', 'integer');
+        $table->setPrimaryKey(['id']);
+        $table->addUniqueIndex(['status_id'], 'unq_integration_status');
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    protected function createWebsiteIntegrationStatusForeignKeys(Schema $schema)
+    {
+        $websiteIntegrationTable = $schema->getTable('marello_m2_webs_integr_status');
+        $websiteIntegrationTable->addForeignKeyConstraint(
+            $schema->getTable('marello_m2_website'),
+            ['website_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE']
+        );
+
+        $websiteIntegrationTable->addForeignKeyConstraint(
+            $schema->getTable('oro_integration_channel_status'),
+            ['status_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE']
         );
     }
 }

@@ -31,7 +31,7 @@ class CustomerDataConverter extends IntegrationAwareDataConverter
     protected function getHeaderConversionRules()
     {
         return [
-            'originId' => self::ORIGIN_ID
+            self::ORIGIN_ID => 'originId'
         ];
     }
 
@@ -40,8 +40,7 @@ class CustomerDataConverter extends IntegrationAwareDataConverter
      */
     public function convertToImportFormat(array $importedRecord, $skipNullValues = true)
     {
-        if (null === $importedRecord[self::ORIGIN_ID] &&
-            $importedRecord[self::EMAIL] && $importedRecord[self::FIRST_NAME] && $importedRecord[self::LAST_NAME]) {
+        if ($importedRecord[self::EMAIL] && $importedRecord[self::FIRST_NAME] && $importedRecord[self::LAST_NAME]) {
             $customerIdentityDTO = new CustomerIdentityDataDTO(
                 $importedRecord[self::EMAIL],
                 $importedRecord[self::FIRST_NAME],
@@ -51,23 +50,21 @@ class CustomerDataConverter extends IntegrationAwareDataConverter
             $importedRecord['hashId'] = $this->customerHashIdGenerator->generateHashId($customerIdentityDTO);
         }
 
-        $importedRecord = parent::convertToImportFormat($importedRecord, $skipNullValues);
+        $resultRecord = parent::convertToImportFormat($importedRecord, $skipNullValues);
 
-        $importedRecord['innerCustomer'] = [
+        $resultRecord['innerCustomer'] = [
             'email' => $importedRecord[self::EMAIL],
             'firstName' => $importedRecord[self::FIRST_NAME],
             'lastName' => $importedRecord[self::LAST_NAME],
         ];
 
         if ($this->context && $this->context->hasOption('salesChannel')) {
-            $importedRecord['innerCustomer'] = [
-                'salesChannel' => [
-                    'id' => $this->context->getOption('salesChannel')
-                ]
+            $resultRecord['innerCustomer']['salesChannel'] = [
+                'id' => $this->context->getOption('salesChannel')
             ];
         }
 
-        return $importedRecord;
+        return $resultRecord;
     }
 
     /**
