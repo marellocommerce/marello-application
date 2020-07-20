@@ -148,6 +148,7 @@ class OrderDashboardOrderItemsByStatusProviderTest extends TestCase
                     'SELECT IDENTITY (oi.status) status, COUNT(oi.id) as quantity '
                     . 'FROM MarelloOrderBundle:Order o '
                     . 'INNER JOIN o.items oi '
+                    . 'WHERE IDENTITY (oi.status) IS NOT NULL '
                     . 'GROUP BY oi.status '
                     . 'ORDER BY quantity DESC'
             ],
@@ -160,6 +161,7 @@ class OrderDashboardOrderItemsByStatusProviderTest extends TestCase
                     'SELECT IDENTITY (oi.status) status, COUNT(oi.id) as quantity '
                     . 'FROM MarelloOrderBundle:Order o '
                     . 'INNER JOIN o.items oi '
+                    . 'WHERE IDENTITY (oi.status) IS NOT NULL '
                     . 'GROUP BY oi.status '
                     . 'ORDER BY quantity DESC'
             ],
