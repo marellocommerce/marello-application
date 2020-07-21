@@ -85,7 +85,8 @@ marello:
             channel:
                 label:            Integration
                 description:      The integration via which information about a Magento website is received.
-            stores.label:         Magento 2 Stores
+            stores:
+                label:            Magento Stores
         store:
             entity_label:         Magento 2 Store
             entity_plural_label:  Magento 2 Stores
@@ -138,12 +139,59 @@ marello:
                 description:      The product sync status
             sku.label:            Sku
 
+        customer:
+            entity_label:         Magento 2 Customer
+            entity_plural_label:  Magento 2 Customers
+            id.label:             Id
+            origin_id:
+                label:            Origin Id
+                description:      The Magento customer ID specified on the Magento side.
+            hash_id:
+                label:            Hash Id
+                description:      Hashed identity fields of Marello customer that linked to.
+            channel:
+                label:            Integration
+                description:      The integration via which information about a Magento customer is received.
+            inner_customer:
+                label:            Marello Customer
+
         producttaxclass:
-            entity_label: Magento 2 Product Tax class
-            entity_plural_label: Magento 2 Product Tax classes
-            entity_grid_all_view_label: All Magento 2 Product Tax classes
-            id.label: Id
-            class_name.label: ClassName
-            origin_id.label: Origin Id
-            channel.label: Channel
-            tax_code.label: Tax Code
+            entity_label:         Magento 2 Product Tax Class
+            entity_plural_label:  Magento 2 Product Tax Classes
+            id.label:             Id
+            origin_id:
+                label:            Origin Id
+                description:      The Magento 2 Tax Class ID specified on the Magento side.
+            channel:
+                label:            Integration
+                description:      The integration via which information about a Magento tax class is received.
+            class_name:
+                label:            Class Name
+                description:      The class name of class which use on Magento side.
+            tax_code:
+                label:            Marello Tax Code
+
+        order:
+            entity_label:         Magento 2 Order
+            entity_plural_label:  Magento 2 Orders
+            id.label:             Id
+            origin_id:
+                label:            Origin Id
+                description:      The Magento 2 Order ID specified on the Magento side.
+            channel:
+                label:            Integration
+                description:      The integration via which information about a Magento order is received.
+            store:
+                label:            Magento Store
+                description:      The store via order was submitted on Magento side.
+            magento_customer:
+                label:            Magento Customer
+                description:      The customer who created the order.
+            synced_at:
+                label:            Synced At
+                description:      The date when this order was updated through import in Marello
+            imported_at:
+                label:            Imported At
+                description:      The date when order was imported to Marello
+            inner_order:
+                label:            Marello Order

@@ -7,6 +7,7 @@ use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\Magento2Bundle\Entity\Customer as MagentoCustomer;
 use Marello\Bundle\Magento2Bundle\Entity\Order as MagentoOrder;
+use Marello\Bundle\Magento2Bundle\Entity\Repository\CustomerRepository;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
@@ -15,18 +16,22 @@ use Marello\Bundle\TaxBundle\Entity\TaxCode;
 class OrderMagento2ImportStrategy extends DefaultMagento2ImportStrategy
 {
     /** @var MagentoOrder */
-    protected $existingEntity;
+    protected $mainEntity;
 
     /**
      * {@inheritDoc}
      */
     protected function findExistingEntity($entity, array $searchContext = [])
     {
+        $existingEntity = parent::findExistingEntity($entity, $searchContext);
         if ($entity instanceof MagentoOrder) {
-            $this->existingEntity = $entity;
+            if (null === $existingEntity) {
+                $this->mainEntity = $entity;
+            } else {
+                $this->mainEntity = $existingEntity;
+            }
         }
 
-        $existingEntity = parent::findExistingEntity($entity, $searchContext);
         if (null !== $existingEntity) {
             return $existingEntity;
         }
@@ -73,8 +78,10 @@ class OrderMagento2ImportStrategy extends DefaultMagento2ImportStrategy
         $this->setCustomerToInnerOrder($entity);
         $this->resetMagentoStoreIfEntityNotFound($entity);
         $this->copyLocalizationInfoFromStoreToOrder($entity);
+        $this->fillCurrencyInInnerOrder($entity);
+        $this->fixOriginIdForGuestCustomer($entity);
 
-        $this->existingEntity = null;
+        $this->mainEntity = null;
 
         return parent::afterProcessEntity($entity);
     }
@@ -177,22 +184,64 @@ class OrderMagento2ImportStrategy extends DefaultMagento2ImportStrategy
     }
 
     /**
+     * @param MagentoOrder $order
+     */
+    protected function fillCurrencyInInnerOrder(MagentoOrder $order): void
+    {
+        $innerOrder = $order->getInnerOrder();
+        if (null === $innerOrder || null === $innerOrder->getSalesChannel()) {
+            return;
+        }
+
+        $innerOrder->setCurrency(
+            $innerOrder->getSalesChannel()->getCurrency()
+        );
+    }
+
+    /**
+     * In case when guest customer has the same identity fields as registered customer,
+     * we can find it by hash id. Because this customer doesn't have origin id, system
+     * tries update existing Magento Customer and put null value to originId property, to
+     * prevent this we use next logic.
+     *
+     * @param MagentoOrder $order
+     */
+    protected function fixOriginIdForGuestCustomer(MagentoOrder $order): void
+    {
+        $magentoCustomer = $order->getMagentoCustomer();
+        if (null === $magentoCustomer || null === $magentoCustomer->getId()) {
+            return;
+        }
+
+        if ($magentoCustomer->getOriginId()) {
+            return;
+        }
+
+        /**
+         * @var CustomerRepository
+         */
+        $magentoCustomerRepository = $this->doctrineHelper->getEntityRepository(MagentoCustomer::class);
+        $originId = $magentoCustomerRepository->getOriginIdByCustomerId($magentoCustomer->getId());
+        $magentoCustomer->setOriginId($originId);
+    }
+
+    /**
      * @param Order $entity
      * @return Order|null
      */
     protected function tryFindMarelloOrder(Order $entity): ?Order
     {
-        if (null === $entity->getId()) {
-            return $this->databaseHelper->findOneBy(
-                Order::class,
-                [
-                    'orderNumber' => (string) $entity->getOrderNumber(),
-                    'salesChannel' => $entity->getSalesChannel()->getId()
-                ]
-            );
+        if (null !== $this->mainEntity->getId()) {
+            return $this->mainEntity->getInnerOrder();
         }
 
-        return null;
+        return $this->databaseHelper->findOneBy(
+            Order::class,
+            [
+                'orderReference' => (string) $entity->getOrderReference(),
+                'salesChannel' => $entity->getSalesChannel()->getId()
+            ]
+        );
     }
 
     /**
@@ -220,18 +269,30 @@ class OrderMagento2ImportStrategy extends DefaultMagento2ImportStrategy
      */
     protected function tryFindCustomer(Customer $entity): ?Customer
     {
-        if (!$entity->getEmail() || !$entity->getFirstName() || !$entity->getLastName()) {
-            return null;
+        $customer = null;
+        if (null !== $this->mainEntity->getMagentoCustomer() &&
+            null !== $this->mainEntity->getMagentoCustomer()->getId()) {
+            /** @var MagentoCustomer $magentoCustomer */
+            $magentoCustomer = $this->databaseHelper->find(
+                MagentoCustomer::class,
+                $this->mainEntity->getMagentoCustomer()->getId()
+            );
+
+            $customer = $magentoCustomer->getInnerCustomer();
         }
 
-        return $this->databaseHelper->findOneBy(
-            Customer::class,
-            [
-                'email' => $entity->getEmail(),
-                'firstName' => $entity->getFirstName(),
-                'lastName' => $entity->getLastName()
-            ]
-        );
+        if (null === $customer && $entity->getEmail() && $entity->getFirstName() && $entity->getLastName()) {
+            $customer = $this->databaseHelper->findOneBy(
+                Customer::class,
+                [
+                    'email' => $entity->getEmail(),
+                    'firstName' => $entity->getFirstName(),
+                    'lastName' => $entity->getLastName()
+                ]
+            );
+        }
+
+        return $customer;
     }
 
     /**
@@ -240,11 +301,11 @@ class OrderMagento2ImportStrategy extends DefaultMagento2ImportStrategy
      */
     protected function tryFindAddress(MarelloAddress $address): ?MarelloAddress
     {
-        if (null !== $this->existingEntity->getId()) {
+        if (null !== $this->mainEntity->getId()) {
             return null;
         }
 
-        $billingAddress = $this->existingEntity
+        $billingAddress = $this->mainEntity
             ->getInnerOrder()
             ->getBillingAddress();
 
@@ -252,7 +313,7 @@ class OrderMagento2ImportStrategy extends DefaultMagento2ImportStrategy
             return $billingAddress;
         }
 
-        $shippingAddress = $this->existingEntity
+        $shippingAddress = $this->mainEntity
             ->getInnerOrder()
             ->getShippingAddress();
 
@@ -287,16 +348,20 @@ class OrderMagento2ImportStrategy extends DefaultMagento2ImportStrategy
      */
     protected function tryFindOrderItem(OrderItem $orderItem): ?OrderItem
     {
-        if (null !== $this->existingEntity->getId()) {
+        if (null === $this->mainEntity->getInnerOrder()) {
+            return null;
+        }
+
+        $marelloOrder = $this->tryFindMarelloOrder($this->mainEntity->getInnerOrder());
+        if (null === $marelloOrder) {
             return null;
         }
 
         $criteria = new Criteria(
-            Criteria::expr()->eq('productName', $orderItem->getProductName())
+            Criteria::expr()->eq('productSku', $orderItem->getProductSku())
         );
 
-        return $this->existingEntity
-            ->getInnerOrder()
+        return $marelloOrder
             ->getItems()
             ->matching($criteria)
             ->first();

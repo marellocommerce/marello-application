@@ -203,6 +203,8 @@ services:
 
     marello_magento2.importexport.converter.magento_order:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Converter\MagentoOrderDataConverter
+        arguments:
+            - '@marello_magento2.converter.order_status_id'
         calls:
             - [addNodeDataConverter, ['marello_order_data_alias', '@marello_magento2.importexport.converter.marello_order']]
             - [addNodeDataConverter, ['customer_data_alias', '@marello_magento2.importexport.converter.customer']]

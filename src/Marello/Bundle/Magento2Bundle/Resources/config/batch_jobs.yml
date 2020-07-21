@@ -137,7 +137,7 @@ connector:
                         processor: marello_magento2.importexport.processor.order
                         writer:    oro_importexport.writer.entity
                     parameters:
-                        batch_size: 10
+                        batch_size: 1
 
         marello_magento2_order_rest_import_initial:
             title: "Initial Order import from Magento 2"
@@ -151,4 +151,4 @@ connector:
                         processor: marello_magento2.importexport.processor.order
                         writer:    oro_importexport.writer.entity
                     parameters:
-                        batch_size: 10
+                        batch_size: 1

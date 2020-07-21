@@ -20,7 +20,7 @@ class MarelloOrderItemDataConverter extends IntegrationAwareDataConverter
             'qty_ordered' => 'quantity',
             'price' => 'price',
             'base_price_incl_tax' => 'originalPriceInclTax',
-            'base_original_price' => 'originalPriceExlTax',
+            'base_original_price' => 'originalPriceExclTax',
             'tax_amount' => 'tax',
             'tax_percent' => 'taxPercent',
             'discount_percent' => 'discountPercent',

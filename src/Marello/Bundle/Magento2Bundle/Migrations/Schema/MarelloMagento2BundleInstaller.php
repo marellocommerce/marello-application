@@ -31,7 +31,7 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
      */
     public function getMigrationVersion()
     {
-        return 'v1_7';
+        return 'v1_8';
     }
 
     /**
@@ -99,7 +99,6 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
         $table->addColumn('code', 'string', ['length' => 32, 'precision' => 0]);
         $table->addColumn('name', 'string', ['length' => 255, 'precision' => 0]);
         $table->addColumn('origin_id', 'integer', [
-            'notnull' => false,
             'precision' => 0,
             'unsigned' => true
         ]);
@@ -123,7 +122,6 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
             'notnull' => false
         ]);
         $table->addColumn('origin_id', 'integer', [
-            'notnull' => false,
             'precision' => 0,
             'unsigned' => true
         ]);
@@ -301,7 +299,6 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
         $table = $schema->createTable('marello_m2_product_tax_class');
         $table->addColumn('id', 'integer', ['precision' => 0, 'autoincrement' => true]);
         $table->addColumn('origin_id', 'integer', [
-            'notnull' => false,
             'precision' => 0,
             'unsigned' => true
         ]);
