@@ -337,7 +337,7 @@ class AvailableInventoryValidator extends ConstraintValidator
      */
     protected function isAllRequiredFieldsHasValue(array $values): bool
     {
-        $requiredFields = [self::PRODUCT_FIELD, self::SALES_CHANNEL_FIELD, self::PRODUCT_FIELD];
+        $requiredFields = [self::PRODUCT_FIELD, self::SALES_CHANNEL_FIELD, self::SALES_CHANNEL_FIELD];
         foreach ($requiredFields as $requiredField) {
             if (!\array_key_exists($requiredField, $values)) {
                 return false;

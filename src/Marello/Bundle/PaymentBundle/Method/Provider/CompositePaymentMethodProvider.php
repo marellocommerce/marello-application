@@ -2,8 +2,14 @@
 
 namespace Marello\Bundle\PaymentBundle\Method\Provider;
 
-class CompositePaymentMethodProvider implements PaymentMethodProviderInterface
+use Marello\Bundle\PaymentBundle\Method\RemotePaymentMethod;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+
+class CompositePaymentMethodProvider implements PaymentMethodProviderInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * @var PaymentMethodProviderInterface[]
      */
@@ -40,8 +46,15 @@ class CompositePaymentMethodProvider implements PaymentMethodProviderInterface
                 return $provider->getPaymentMethod($identifier);
             }
         }
-        
-        throw new \InvalidArgumentException('There is no payment method for "' . $identifier . '" identifier');
+
+        $this->logger->warning(
+            'There is no payment method found for given identifier.',
+            [
+                'identifier' => $identifier
+            ]
+        );
+
+        return new RemotePaymentMethod($identifier);
     }
 
     /**
