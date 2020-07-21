@@ -50,11 +50,7 @@ class CountryIso2CodeProvider
             return $this->iso3Mapping[$countryId];
         }
 
-        if (isset($this->nameMapping[$countryId])) {
-            return $this->nameMapping[$countryId];
-        }
-
-        return null;
+        return $this->nameMapping[$countryId] ?? null;
     }
 
     private function ensureMappingsLoaded(): void

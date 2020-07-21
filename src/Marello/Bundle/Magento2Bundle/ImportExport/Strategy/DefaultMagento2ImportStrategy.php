@@ -32,7 +32,7 @@ class DefaultMagento2ImportStrategy extends ConfigurableAddOrReplaceStrategy imp
      */
     protected function findEntityByIdentityValues($entityName, array $identityValues)
     {
-        if (is_a($entityName, IntegrationAwareInterface::class, true)) {
+        if (!empty($identityValues) && is_a($entityName, IntegrationAwareInterface::class, true)) {
             $identityValues['channel'] = $this->context->getOption('channel');
         }
 
@@ -50,7 +50,7 @@ class DefaultMagento2ImportStrategy extends ConfigurableAddOrReplaceStrategy imp
      */
     protected function combineIdentityValues($entity, $entityClass, array $searchContext)
     {
-        if (is_a($entityClass, IntegrationAwareInterface::class, true)) {
+        if (!empty($searchContext) && is_a($entityClass, IntegrationAwareInterface::class, true)) {
             $searchContext['channel'] = $this->context->getOption('channel');
         }
 

@@ -8,6 +8,7 @@ use Oro\Bundle\IntegrationBundle\ImportExport\DataConverter\AbstractTreeDataConv
 class MarelloOrderDataConverter extends AbstractTreeDataConverter
 {
     public const ORDER_NUMBER = 'orderNumber';
+    public const ORDER_STATUS_ID = 'orderStatus';
     public const ORDER_REF = 'orderReference';
     public const COUPON_CODE = 'couponCode';
     public const PAYMENT_METHOD = 'paymentMethod';
@@ -30,7 +31,7 @@ class MarelloOrderDataConverter extends AbstractTreeDataConverter
         return [
             self::ORDER_NUMBER  => 'orderNumber',
             self::ORDER_REF => 'orderReference',
-//@todo     'status' => // use status map
+            self::ORDER_STATUS_ID => 'orderStatus:id',
             self::COUPON_CODE => 'couponCode',
             self::PAYMENT_METHOD => 'paymentMethod',
             self::SHIPPING_METHOD => 'shippingMethod',
@@ -40,7 +41,7 @@ class MarelloOrderDataConverter extends AbstractTreeDataConverter
             self::TOTAL_TAX => 'totalTax',
             self::DISCOUNT_AMOUNT => 'discount_amount' ,
             self::SUBTOTAL => 'subtotal',
-            self::GRAND_TOTAL => 'grand_total',
+            self::GRAND_TOTAL => 'grandTotal',
             self::PURCHASE_DATE => 'purchaseDate',
             self::ITEMS => 'items',
         ];

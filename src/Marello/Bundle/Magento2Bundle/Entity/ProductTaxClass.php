@@ -13,7 +13,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
  */
 class ProductTaxClass extends ExtendProductTaxClass implements OriginAwareInterface, IntegrationAwareInterface
 {
-    use IntegrationEntityTrait, NullableOriginTrait;
+    use IntegrationEntityTrait, OriginTrait;
 
     /**
      * @var integer

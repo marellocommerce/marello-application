@@ -227,6 +227,9 @@ services:
         arguments:
             - '@marello_magento2.repository.store'
 
+    marello_magento2.converter.order_status_id:
+        class: Marello\Bundle\Magento2Bundle\Converter\OrderStatusIdConverter
+
     # Message processor
     marello_magento2.async.sales_channels_removed:
         class: Marello\Bundle\Magento2Bundle\Async\SalesChannelsRemovedProcessor

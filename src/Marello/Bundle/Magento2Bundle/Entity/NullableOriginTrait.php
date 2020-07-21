@@ -14,7 +14,7 @@ trait NullableOriginTrait
      * @ConfigField(
      *      defaultValues={
      *          "importexport"={
-     *              "identity"=true
+     *              "identity"=-1
      *          }
      *      }
      * )

@@ -26,4 +26,25 @@ class CustomerRepository extends EntityRepository
 
         return $qb->getQuery()->execute();
     }
+
+    /**
+     * @param int $customerId
+     * @return string|null
+     */
+    public function getOriginIdByCustomerId(int $customerId): ?string
+    {
+        $qb = $this->createQueryBuilder('m2c');
+        $qb
+            ->select('m2c.originId')
+            ->where($qb->expr()->eq('m2c.id', ':id'))
+            ->setParameter('id', $customerId);
+
+        $qb
+            ->setFirstResult(0)
+            ->setMaxResults(1);
+
+        $result = $qb->getQuery()->getOneOrNullResult();
+
+        return $result['originId'] ?? null;
+    }
 }

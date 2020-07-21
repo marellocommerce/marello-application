@@ -19,7 +19,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
  */
 class Store extends ExtendStore implements OriginAwareInterface, IntegrationAwareInterface
 {
-    use IntegrationEntityTrait, NullableOriginTrait;
+    use IntegrationEntityTrait, OriginTrait;
 
     /**
      * @var integer

@@ -20,7 +20,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
  */
 class Website extends ExtendWebsite implements OriginAwareInterface, IntegrationAwareInterface
 {
-    use IntegrationEntityTrait, NullableOriginTrait;
+    use IntegrationEntityTrait, OriginTrait;
 
     /**
      * @var integer
