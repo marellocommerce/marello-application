@@ -36,6 +36,7 @@ class CreateTranslator implements TranslatorInterface, LoggerAwareInterface
                 '[Magento 2] Input data doesn\'t fit to requirements. ' .
                 'Skip to create remote product.',
                 [
+                    'entity_type' => is_object($entity) ? get_class($entity) : gettype($entity),
                     'product_id' => $entity instanceof Product ? $entity->getId() : null,
                     'integration_channel_id' => $context['channel']
                 ]

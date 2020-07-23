@@ -14,6 +14,11 @@ class SyncProcessor extends AbstractSyncProcessor
     /** @var bool */
     protected $dictionaryDataLoaded = false;
 
+    /** @var string[] */
+    protected $optionalListenerIdOnDisabling = [
+        'marello_magento2.event_listener.doctrine.order_status'
+    ];
+
     /** @var InitialSyncProcessor */
     protected $initialSyncProcessor;
 
@@ -34,6 +39,7 @@ class SyncProcessor extends AbstractSyncProcessor
             return false;
         }
 
+        $this->disableOptionalListeners();
         $this->processDictionaryConnectors($integration);
         /** @var Integration $integration */
         $integration = $this->reloadIntegrationEntity($integration);
@@ -47,8 +53,10 @@ class SyncProcessor extends AbstractSyncProcessor
         }
 
         $this->initialSyncProcessor->scheduleInitialSyncIfRequired($integration, $this->isForceSync($parameters));
+        $processResult = parent::process($integration, $connector, $parameters);
+        $this->enableOptionalListeners();
 
-        return parent::process($integration, $connector, $parameters);
+        return $processResult;
     }
 
     /**

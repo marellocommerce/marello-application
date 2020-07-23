@@ -78,9 +78,9 @@ connector:
                     title: export
                     class: Marello\Bundle\Magento2Bundle\Batch\Step\ActionItemStep
                     services:
-                        reader:    marello_magento2.importexport.reader.entity.create_action
+                        reader:    marello_magento2.importexport.reader.export.product.create_action
                         processor: marello_magento2.importexport.processor.export.product.create_action
-                        writer:    marello_magento2.importexport.writer.export.product.create
+                        writer:    marello_magento2.importexport.writer.export.product.create_action
                     parameters:
                         batch_size: 1
                         ActionName: 'create'
@@ -88,9 +88,9 @@ connector:
                     title: export
                     class: Marello\Bundle\Magento2Bundle\Batch\Step\ActionItemStep
                     services:
-                        reader:    marello_magento2.importexport.reader.entity.update_action
+                        reader:    marello_magento2.importexport.reader.export.product.update_action
                         processor: marello_magento2.importexport.processor.export.product.update_action
-                        writer:    marello_magento2.importexport.writer.export.product.update
+                        writer:    marello_magento2.importexport.writer.export.product.update_action
                     parameters:
                         batch_size: 1
                         ActionName: 'update'
@@ -98,9 +98,9 @@ connector:
                     title: export
                     class: Marello\Bundle\Magento2Bundle\Batch\Step\ActionItemStep
                     services:
-                        reader:    marello_magento2.importexport.reader.entity.update_website_data_action
+                        reader:    marello_magento2.importexport.reader.export.product.update_website_scope_data_action
                         processor: marello_magento2.importexport.processor.export.product.update_website_scope_data_action
-                        writer:    marello_magento2.importexport.writer.export.product.update_website_scope_data
+                        writer:    marello_magento2.importexport.writer.export.product.update_website_scope_data_action
                     parameters:
                         batch_size: 1
                         ActionName: 'updatedWebsiteScopeData'
@@ -108,9 +108,9 @@ connector:
                     title: export
                     class: Marello\Bundle\Magento2Bundle\Batch\Step\ActionItemStep
                     services:
-                        reader:    marello_magento2.importexport.reader.export.product_delete_removed
-                        processor: marello_magento2.importexport.processor.export.product_delete_removed
-                        writer:    marello_magento2.importexport.writer.export.product_delete_removed
+                        reader:    marello_magento2.importexport.reader.export.product_delete_removed_action
+                        processor: marello_magento2.importexport.processor.export.product_delete_removed_action
+                        writer:    marello_magento2.importexport.writer.export.product_delete_removed_action
                     parameters:
                         batch_size: 1
                         ActionName: 'delete'
@@ -118,9 +118,9 @@ connector:
                     title: export
                     class: Marello\Bundle\Magento2Bundle\Batch\Step\ActionItemStep
                     services:
-                        reader:    marello_magento2.importexport.reader.entity.delete_on_channel_action
+                        reader:    marello_magento2.importexport.reader.export.product.delete_on_channel_action
                         processor: marello_magento2.importexport.processor.export.product.delete_on_channel_action
-                        writer:    marello_magento2.importexport.writer.export.product.delete_on_channel
+                        writer:    marello_magento2.importexport.writer.export.product.delete_on_channel_action
                     parameters:
                         batch_size: 1
                         ActionName: 'deleteOnChannel'
@@ -138,6 +138,30 @@ connector:
                         writer:    oro_importexport.writer.entity
                     parameters:
                         batch_size: 1
+
+        marello_magento2_order_rest_export:
+            title: "Export order data to Magento 2"
+            type: export
+            steps:
+                findInternalMagentoOrder:
+                    title: export
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_magento2.importexport.reader.find_internal_magento_order
+                        processor: marello_magento2.importexport.processor.find_internal_magento_order
+                        writer:    marello_magento2.importexport.writer.find_internal_magento_order
+                    parameters:
+                        batch_size: 10000
+                create:
+                    title: export
+                    class: Marello\Bundle\Magento2Bundle\Batch\Step\ActionItemStep
+                    services:
+                        reader:    marello_magento2.importexport.reader.export.order.update_status_action
+                        processor: marello_magento2.importexport.processor.export.order.update_order_action
+                        writer:    marello_magento2.importexport.writer.export.order.update_status_action
+                    parameters:
+                        batch_size: 1
+                        ActionName: 'updateStatus'
 
         marello_magento2_order_rest_import_initial:
             title: "Initial Order import from Magento 2"

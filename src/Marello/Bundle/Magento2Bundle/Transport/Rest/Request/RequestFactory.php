@@ -14,7 +14,7 @@ class RequestFactory
      * @param string|null $storeCode
      * @return Request
      */
-    public function createGetRequest(
+    public function createSimpleRequest(
         string $resource,
         array $data = [],
         string $storeCode = null

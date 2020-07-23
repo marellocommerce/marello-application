@@ -65,6 +65,7 @@ class UpdateTranslator implements TranslatorInterface, LoggerAwareInterface
                 '[Magento 2] Can\'t find Magento product. ' .
                 'Skip to update remote product.',
                 [
+                    'entity_type' => is_object($entity) ? get_class($entity) : gettype($entity),
                     'product_id' => $entity instanceof Product ? $entity->getId() : null,
                     'integration_channel_id' => $context['channel']
                 ]

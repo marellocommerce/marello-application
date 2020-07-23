@@ -34,6 +34,7 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
     public const RESOURCE_ATTRIBUTE_SET_LIST_SEARCH = 'products/attribute-sets/sets/list';
     public const RESOURCE_TAX_CLASSES_SEARCH = 'taxClasses/search';
     public const RESOURCE_ORDERS_SEARCH = 'orders';
+    public const RESOURCE_ORDERS_ADD_COMMENT = 'orders/%id%/comments';
 
     /**
      * @var Magento2TransportSettings
@@ -135,7 +136,7 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
      */
     public function getWebsites(): \Iterator
     {
-        $request = $this->requestFactory->createGetRequest(
+        $request = $this->requestFactory->createSimpleRequest(
             self::RESOURCE_WEBSITES
         );
 
@@ -154,7 +155,7 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
     {
         $storeConfigData = $this->getStoreConfigs();
 
-        $request = $this->requestFactory->createGetRequest(
+        $request = $this->requestFactory->createSimpleRequest(
             self::RESOURCE_STORES
         );
 
@@ -200,7 +201,7 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
      */
     public function createProduct(array $data): array
     {
-        $request = $this->requestFactory->createGetRequest(
+        $request = $this->requestFactory->createSimpleRequest(
             self::RESOURCE_PRODUCTS,
             $data
         );
@@ -222,7 +223,7 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
     {
         $resource = str_replace('%sku%', $sku, self::RESOURCE_PRODUCT_WITH_SKU);
 
-        $request = $this->requestFactory->createGetRequest(
+        $request = $this->requestFactory->createSimpleRequest(
             $resource,
             $data,
             $storeCode
@@ -243,7 +244,7 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
     {
         $resource = str_replace('%sku%', $sku, self::RESOURCE_PRODUCT_WITH_SKU);
 
-        $request = $this->requestFactory->createGetRequest(
+        $request = $this->requestFactory->createSimpleRequest(
             $resource
         );
 
@@ -267,12 +268,31 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
     }
 
     /**
+     * @param int $magentoOrderOriginId
+     * @param array $data
+     * @return array
+     * @throws RestException
+     */
+    public function updateOrderStatus(int $magentoOrderOriginId, array $data): array
+    {
+        $resource = str_replace('%id%', $magentoOrderOriginId, self::RESOURCE_ORDERS_ADD_COMMENT);
+
+        $request = $this->requestFactory->createSimpleRequest($resource, $data);
+
+        $result = $this->getClient()->post($request->getUrn(), $request->getPayloadData());
+
+        return [
+            'success' => $result->json()
+        ];
+    }
+
+    /**
      * @return array
      * @throws RestException
      */
     protected function getStoreConfigs(): array
     {
-        $request = $this->requestFactory->createGetRequest(
+        $request = $this->requestFactory->createSimpleRequest(
             self::RESOURCE_STORE_CONFIGS
         );
 

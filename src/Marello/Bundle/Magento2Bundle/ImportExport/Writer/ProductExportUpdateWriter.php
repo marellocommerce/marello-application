@@ -35,6 +35,13 @@ class ProductExportUpdateWriter extends AbstractExportWriter
             $item->getInternalMagentoProductId()
         );
 
+        $this->logger->info(
+            '[Magento 2] Starting update product.',
+            [
+                'product_id' => $item->getProductId()
+            ]
+        );
+
         try {
             $responseData = $this->getTransport()->updateProduct(
                 $item->getProductSku(),
@@ -52,6 +59,13 @@ class ProductExportUpdateWriter extends AbstractExportWriter
 
             throw $restException;
         }
+
+        $this->logger->info(
+            '[Magento 2] Product was successfully updated.',
+            [
+                'product_id' => $item->getProductId()
+            ]
+        );
 
         if (!empty($responseData['sku'])) {
             $internalMagentoProduct->setSku($responseData['sku']);

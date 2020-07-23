@@ -34,6 +34,14 @@ class ProductExportUpdateWebsiteScopeDataWriter extends AbstractExportWriter
             $item->getInternalMagentoProductId()
         );
 
+        $this->logger->info(
+            '[Magento 2] Starting update product website scope data.',
+            [
+                'product_id' => $item->getProductId(),
+                'website_id' => $item->getWebsiteId(),
+            ]
+        );
+
         try {
             $responseData = $this->getTransport()->updateProduct(
                 $item->getProductSku(),
@@ -52,6 +60,14 @@ class ProductExportUpdateWebsiteScopeDataWriter extends AbstractExportWriter
 
             throw $restException;
         }
+
+        $this->logger->info(
+            '[Magento 2] Update product website scope data was successfully finished.',
+            [
+                'product_id' => $item->getProductId(),
+                'website_id' => $item->getWebsiteId(),
+            ]
+        );
 
         $internalMagentoProduct->setUpdatedAt(new \DateTime('now', new \DateTimeZone('UTC')));
         $internalProductEm->persist($internalMagentoProduct);

@@ -40,7 +40,15 @@ class ProductExportCreateWriter extends AbstractExportWriter
             return;
         }
 
+        $this->logger->info(
+            sprintf('[Magento 2] Starting create product status with ID "%s".', $item->getProductId())
+        );
+
         $responseData = $this->getTransport()->createProduct($item->getPayload());
+
+        $this->logger->info(
+            sprintf('[Magento 2] Product with ID "%s" was successfully created.', $item->getProductId())
+        );
 
         /** @var EntityManager $productEm */
         $productEm = $this->registry->getManagerForClass(Product::class);

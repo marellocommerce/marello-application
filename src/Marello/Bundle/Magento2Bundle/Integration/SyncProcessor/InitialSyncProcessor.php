@@ -19,6 +19,11 @@ class InitialSyncProcessor extends AbstractSyncProcessor
     public const DEFAULT_MAX_INTERVAL_COUNT = 100;
     public const MAX_INTERVAL_COUNT_CONNECTOR_PARAMS_KEY = 'maxIntervalCount';
 
+    /** @var string[] */
+    protected $optionalListenerIdOnDisabling = [
+        'marello_magento2.event_listener.doctrine.order_status'
+    ];
+
     /** @var MessageProducerInterface */
     protected $messageProducer;
 
@@ -55,6 +60,18 @@ class InitialSyncProcessor extends AbstractSyncProcessor
                 )
             );
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function process(Integration $integration, $connector = null, array $parameters = [])
+    {
+        $this->disableOptionalListeners();
+        $processResult = parent::process($integration, $connector, $parameters);
+        $this->enableOptionalListeners();
+
+        return $processResult;
     }
 
     /**

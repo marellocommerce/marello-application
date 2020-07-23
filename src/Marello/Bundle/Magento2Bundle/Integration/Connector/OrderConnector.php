@@ -5,8 +5,6 @@ namespace Marello\Bundle\Magento2Bundle\Integration\Connector;
 use Marello\Bundle\Magento2Bundle\Entity\Order;
 use Marello\Bundle\Magento2Bundle\ImportExport\Converter\MagentoOrderDataConverter;
 use Marello\Bundle\Magento2Bundle\Transport\Rest\Iterator\OrderIterator;
-use Oro\Bundle\IntegrationBundle\Entity\Channel;
-use Oro\Bundle\IntegrationBundle\Provider\AllowedConnectorInterface;
 use Oro\Bundle\IntegrationBundle\Provider\TwoWaySyncConnectorInterface;
 
 class OrderConnector extends AbstractImportConnector implements
@@ -15,6 +13,9 @@ class OrderConnector extends AbstractImportConnector implements
 {
     public const TYPE = 'order';
     public const IMPORT_JOB_NAME = 'marello_magento2_order_rest_import';
+    public const EXPORT_JOB_NAME = 'marello_magento2_order_rest_export';
+
+    public const EXPORT_ACTION_UPDATE_ORDER_STATUS = 'updateStatus';
 
     /**
      * @return OrderIterator
@@ -77,7 +78,7 @@ class OrderConnector extends AbstractImportConnector implements
      */
     public function getExportJobName()
     {
-        // TODO: Implement getExportJobName() method.
+        return self::EXPORT_JOB_NAME;
     }
 
     /**

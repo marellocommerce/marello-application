@@ -47,39 +47,58 @@ class EntityReaderFilterableByInternalMagentoProduct extends EntityReader
      */
     protected function initializeFromContext(ContextInterface $context)
     {
-        $productIdsWithInternalProductIds = $this->stepExecution
+        $marelloProductIdsWithMagentoProductIds = $this->stepExecution
             ->getJobExecution()
             ->getExecutionContext()
             ->get(InternalMagentoProductWriter::INTERNAL_MAGENTO_PRODUCT_IDS_CONTEXT) ?? [];
 
-        $ids = $context->getOption('ids', []);
-        $productIdsWithInternalProduct = \array_keys($productIdsWithInternalProductIds);
+        $marelloProductIdsOnExport = $context->getOption('ids', []);
+        $marelloProductIdsWithInternalProduct = \array_keys($marelloProductIdsWithMagentoProductIds);
 
         if ($this->skipWithInternalProduct) {
             $message = <<<MESSAGE
-The next Product IDs "%s" were skipped, because action "%s" processed only Product without Internal Magento Product.
+Some Product IDs were skipped, because the current export action 
+processes only Marello Product without Internal Magento Product.
 MESSAGE;
-            $conflictIds = \array_intersect($ids, $productIdsWithInternalProduct);
-            $ids = \array_diff($ids, $productIdsWithInternalProduct);
+            $marelloSkippedProductIds = \array_intersect(
+                $marelloProductIdsOnExport,
+                $marelloProductIdsWithInternalProduct
+            );
+            $newMarelloProductIdsOnExport = \array_diff(
+                $marelloProductIdsOnExport,
+                $marelloProductIdsWithInternalProduct
+            );
         } else {
             $message = <<<MESSAGE
-The next Product IDs "%s" were skipped, because action "%s" processed only Product with Internal Magento Product.
+Some Product IDs were skipped, because the current export action 
+processes only Marello Product with Internal Magento Product.
 MESSAGE;
 
-            $conflictIds = \array_diff($ids, $productIdsWithInternalProduct);
-            $ids = \array_intersect($ids, $productIdsWithInternalProduct);
+            $marelloSkippedProductIds = \array_diff(
+                $marelloProductIdsOnExport,
+                $marelloProductIdsWithInternalProduct
+            );
+            $newMarelloProductIdsOnExport = \array_intersect(
+                $marelloProductIdsOnExport,
+                $marelloProductIdsWithInternalProduct
+            );
         }
 
-        if (!empty($conflictIds)) {
+        if (!empty($marelloSkippedProductIds)) {
             $this->logger->warning(
-                sprintf($message, implode(', ', $conflictIds), $this->actionName)
+                $message,
+                [
+                    'currentActionName' => $this->actionName,
+                    'skippedProductIds' => $marelloSkippedProductIds
+                ]
             );
         }
 
         $this->setSourceEntityName(
             $context->getOption('entityName'),
             $context->getOption('organization'),
-            empty($ids) ? [0] :  $ids // in case when no product allowed use 0 ids to prevent loading any Product
+            // in case when no product allowed use 0 ids to prevent loading any Product
+            empty($newMarelloProductIdsOnExport) ? [0] : $newMarelloProductIdsOnExport
         );
     }
 }

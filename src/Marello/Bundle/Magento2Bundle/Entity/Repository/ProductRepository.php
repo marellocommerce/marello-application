@@ -4,6 +4,8 @@ namespace Marello\Bundle\Magento2Bundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
+use Marello\Bundle\Magento2Bundle\DTO\ProductIdentifierDTO;
+use Marello\Bundle\Magento2Bundle\Entity\Hydrator\ProductIdentifierDTOHydrator;
 use Marello\Bundle\Magento2Bundle\Entity\Product;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 
@@ -11,29 +13,36 @@ class ProductRepository extends EntityRepository
 {
     /**
      * @param Channel $channel
-     * @param array $productIds
-     * @return Product[]
+     * @param array $marelloProductIds
+     * @return ProductIdentifierDTO[]
      */
-    public function getMagentoProductByChannelAndProductIds(Channel $channel, array $productIds): array
+    public function getProductIdentifierDTOsByChannelAndProductIds(Channel $channel, array $marelloProductIds): array
     {
         $qb = $this->createQueryBuilder('m2p');
         $qb
-            ->select('m2p')
+            ->select('m2p.id as magentoProductId', 'IDENTITY(m2p.product) as marelloProductId')
             ->where($qb->expr()->eq('m2p.channel', ':channel'))
             ->andWhere($qb->expr()->in('m2p.product', ':productIds'))
             ->setParameter('channel', $channel)
-            ->setParameter('productIds', $productIds);
+            ->setParameter('productIds', $marelloProductIds);
 
-        return $qb->getQuery()->getResult();
+        $this->_em
+            ->getConfiguration()
+            ->addCustomHydrationMode(
+                'ProductIdentifierDTOHydrator',
+                ProductIdentifierDTOHydrator::class
+            );
+
+        return $qb->getQuery()->getResult('ProductIdentifierDTOHydrator');
     }
 
     /**
      * @param int $channelId
-     * @param int $productId
+     * @param int $marelloProductId
      * @return Product|null
      * @throws NonUniqueResultException
      */
-    public function getMagentoProductByChannelIdAndProductId(int $channelId, int $productId): ?Product
+    public function getMagentoProductByChannelIdAndProductId(int $channelId, int $marelloProductId): ?Product
     {
         $qb = $this->createQueryBuilder('m2p');
         $qb
@@ -41,7 +50,7 @@ class ProductRepository extends EntityRepository
             ->where($qb->expr()->eq('m2p.channel', ':channel'))
             ->andWhere($qb->expr()->eq('m2p.product', ':product'))
             ->setParameter('channel', $channelId)
-            ->setParameter('product', $productId);
+            ->setParameter('product', $marelloProductId);
 
         return $qb->getQuery()->getOneOrNullResult();
     }
@@ -65,7 +74,7 @@ class ProductRepository extends EntityRepository
      * @param Channel $channel
      * @return array
      * [
-     *     int <product_id> => string <product_sku>,
+     *     int <marello_product_id> => string <product_sku>,
      *     ...
      * ]
      */
