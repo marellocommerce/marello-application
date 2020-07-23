@@ -70,7 +70,7 @@ class OrderConnector extends AbstractImportConnector implements
      */
     public function getUpdateAtColumnFormat(): string
     {
-        return MagentoOrderDataConverter::UPDATED_AT_COLUMN_FORMAT;
+        return MagentoOrderDataConverter::DATE_TIME_COLUMN_FORMAT;
     }
 
     /**
