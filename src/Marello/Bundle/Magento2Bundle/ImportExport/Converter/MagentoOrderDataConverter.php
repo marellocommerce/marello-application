@@ -12,7 +12,7 @@ class MagentoOrderDataConverter extends AbstractTreeDataConverter
     public const ID_COLUMN_NAME = 'entity_id';
     public const CREATED_AT_COLUMN_NAME = 'created_at';
     public const UPDATED_AT_COLUMN_NAME = 'updated_at';
-    public const UPDATED_AT_COLUMN_FORMAT = 'Y-m-d H:i:s';
+    public const DATE_TIME_COLUMN_FORMAT = 'Y-m-d H:i:s';
     public const STORE_ID_COLUMN_NAME = 'store_id';
 
     private const MARELLO_STATUS_COLUMN_NAME = 'marello_status';
@@ -98,6 +98,8 @@ class MagentoOrderDataConverter extends AbstractTreeDataConverter
             $importedRecord['status'] ?? null
         );
 
+        $this->convertDateTimeColumnsValueToDefaultFormat($importedRecord);
+
         $importedRecord = $this->copyDataByPathToAlias($importedRecord);
 
         if (!empty($importedRecord[self::STORE_ID_COLUMN_NAME])) {
@@ -105,6 +107,23 @@ class MagentoOrderDataConverter extends AbstractTreeDataConverter
         }
 
         return parent::convertToImportFormat($importedRecord, $skipNullValues);
+    }
+
+    /**
+     * @param array $importedRecord
+     */
+    protected function convertDateTimeColumnsValueToDefaultFormat(array &$importedRecord): void
+    {
+        $dateTimeColumns = ['created_at', 'updated_at'];
+        foreach ($dateTimeColumns as $dateTimeColumn) {
+            if (!empty($importedRecord[$dateTimeColumn])) {
+                $importedRecord[$dateTimeColumn] = \DateTime::createFromFormat(
+                    self::DATE_TIME_COLUMN_FORMAT,
+                    $importedRecord[$dateTimeColumn],
+                    new \DateTimeZone('UTC')
+                )->format(\DateTime::ISO8601);
+            }
+        }
     }
 
     /**
