@@ -13,7 +13,7 @@ use Marello\Bundle\ProductBundle\Entity\Product;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
-class ProductSimpleUpdateWebsiteScopeTranslator implements TranslatorInterface, LoggerAwareInterface
+class UpdateWebsiteScopeTranslator implements TranslatorInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
@@ -48,6 +48,7 @@ class ProductSimpleUpdateWebsiteScopeTranslator implements TranslatorInterface, 
                 '[Magento 2] Input data doesn\'t fit to requirements. ' .
                 'Skip to update website scope data for remote product.',
                 [
+                    'entity_type' => is_object($entity) ? get_class($entity) : gettype($entity),
                     'product_id' => $entity instanceof Product ? $entity->getId() : null,
                     'website_id' => $websiteId,
                     'integration_channel_id' => $context['channel']

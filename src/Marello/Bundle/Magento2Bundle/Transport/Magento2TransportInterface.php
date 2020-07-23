@@ -60,4 +60,13 @@ interface Magento2TransportInterface extends TransportInterface
      * @throws RestException
      */
     public function getOrders(): \Iterator;
+
+    /**
+     * @param int $magentoOrderOriginId
+     * @param array $data
+     * @return array
+     *
+     * @throws RestException
+     */
+    public function updateOrderStatus(int $magentoOrderOriginId, array $data): array;
 }

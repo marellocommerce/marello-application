@@ -9,6 +9,7 @@ use Marello\Bundle\Magento2Bundle\Integration\Provider\ConnectorSyncSettingsProv
 use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
 use Oro\Bundle\IntegrationBundle\Entity\Status;
 use Oro\Bundle\IntegrationBundle\Provider\SyncProcessor;
+use Oro\Bundle\PlatformBundle\Manager\OptionalListenerManager;
 
 abstract class AbstractSyncProcessor extends SyncProcessor
 {
@@ -20,8 +21,14 @@ abstract class AbstractSyncProcessor extends SyncProcessor
     public const LAST_SYNC_ITEM_DATE_TIME_FORMAT = \DateTime::ISO8601;
     public const IMPORT_CONNECTOR_SEARCH_SETTINGS_KEY = 'searchSetting';
 
+    /** @var array */
+    protected $optionalListenerIdOnDisabling = [];
+
     /** @var ConnectorSyncSettingsProviderInterface */
     protected $syncSettingsProvider;
+
+    /** @var OptionalListenerManager */
+    private $optionalListenerManager;
 
     /**
      * @param ConnectorSyncSettingsProviderInterface $syncSettingsProvider
@@ -29,6 +36,14 @@ abstract class AbstractSyncProcessor extends SyncProcessor
     public function setConnectorSyncSettingsProvider(ConnectorSyncSettingsProviderInterface $syncSettingsProvider)
     {
         $this->syncSettingsProvider = $syncSettingsProvider;
+    }
+
+    /**
+     * @param OptionalListenerManager $optionalListenerManager
+     */
+    public function setOptionalListenerManager(OptionalListenerManager $optionalListenerManager)
+    {
+        $this->optionalListenerManager = $optionalListenerManager;
     }
 
     /**
@@ -113,5 +128,23 @@ abstract class AbstractSyncProcessor extends SyncProcessor
     protected function isForceSync(array $connectorParameters): bool
     {
         return $connectorParameters[self::FORCE_SYNC_CONNECTOR_PARAMETER_KEY] ?? false;
+    }
+
+    protected function disableOptionalListeners():void
+    {
+        if (empty($this->optionalListenerIdOnDisabling)) {
+            return;
+        }
+
+        $this->optionalListenerManager->disableListeners($this->optionalListenerIdOnDisabling);
+    }
+
+    protected function enableOptionalListeners(): void
+    {
+        if (empty($this->optionalListenerIdOnDisabling)) {
+            return;
+        }
+
+        $this->optionalListenerManager->enableListeners($this->optionalListenerIdOnDisabling);
     }
 }

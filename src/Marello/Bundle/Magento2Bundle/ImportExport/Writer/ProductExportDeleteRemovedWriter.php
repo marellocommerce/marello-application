@@ -22,7 +22,7 @@ class ProductExportDeleteRemovedWriter extends AbstractExportWriter
         $this->getTransport()->removeProduct($sku);
 
         $this->logger->info(
-            sprintf('[Magento 2] Product with SKU "%s" successfully removed.', $sku)
+            sprintf('[Magento 2] Product with SKU "%s" was successfully removed.', $sku)
         );
     }
 }

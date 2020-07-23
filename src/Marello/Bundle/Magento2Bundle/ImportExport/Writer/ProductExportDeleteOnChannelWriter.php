@@ -32,7 +32,7 @@ class ProductExportDeleteOnChannelWriter extends AbstractExportWriter
         $this->getTransport()->removeProduct($item->getProductSku());
 
         $this->logger->info(
-            sprintf('[Magento 2] Product with SKU "%s" successfully removed.', $item->getProductSku())
+            sprintf('[Magento 2] Product with SKU "%s" was successfully removed.', $item->getProductSku())
         );
 
         /** @var EntityManager $em */

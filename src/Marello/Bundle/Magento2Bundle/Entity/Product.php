@@ -54,6 +54,7 @@ class Product extends ExtendProduct implements
 
     /**
      * @todo Think about renaming field on innerProduct, wrappedProduct and etc.
+     * @todo Update repository after that
      *
      * @var Product
      *

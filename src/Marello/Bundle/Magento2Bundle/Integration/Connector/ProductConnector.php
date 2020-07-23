@@ -13,7 +13,7 @@ class ProductConnector extends AbstractConnector implements
     TwoWaySyncConnectorInterface
 {
     public const TYPE = 'product';
-    public const EXPORT_JOB = 'marello_magento2_product_rest_export';
+    public const EXPORT_JOB_NAME = 'marello_magento2_product_rest_export';
 
     public const EXPORT_ACTION_CREATE = 'create';
     public const EXPORT_ACTION_UPDATE = 'update';
@@ -68,7 +68,7 @@ class ProductConnector extends AbstractConnector implements
      */
     public function getExportJobName()
     {
-        return self::EXPORT_JOB;
+        return self::EXPORT_JOB_NAME;
     }
 
     /**

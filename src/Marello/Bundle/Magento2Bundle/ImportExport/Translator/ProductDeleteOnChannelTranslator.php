@@ -1,11 +1,10 @@
 <?php
 
-namespace Marello\Bundle\Magento2Bundle\ImportExport\Translator\SimpleProduct;
+namespace Marello\Bundle\Magento2Bundle\ImportExport\Translator;
 
 use Marello\Bundle\Magento2Bundle\DTO\ProductDeleteOnChannelDTO;
 use Marello\Bundle\Magento2Bundle\Entity\Product as MagentoProduct;
 use Marello\Bundle\Magento2Bundle\Entity\Repository\ProductRepository as MagentoProductRepository;
-use Marello\Bundle\Magento2Bundle\ImportExport\Translator\TranslatorInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;

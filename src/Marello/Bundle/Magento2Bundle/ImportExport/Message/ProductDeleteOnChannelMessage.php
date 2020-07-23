@@ -4,7 +4,7 @@ namespace Marello\Bundle\Magento2Bundle\ImportExport\Message;
 
 class ProductDeleteOnChannelMessage extends \ArrayObject
 {
-    public const INTERNAL_MAGENTO_PRODUCT_ID_KEY = 'internal_magento_product_id';
+    public const INTERNAL_MAGENTO_PRODUCT_ID_KEY = 'internalMagentoProductId';
     public const PRODUCT_ID_KEY = 'productId';
     public const PRODUCT_SKU_KEY = 'productSku';
 

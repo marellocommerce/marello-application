@@ -143,6 +143,10 @@ class SalesChannelReverseSyncListener
 
         $this->integrationChannelIdsWithProductIds = [];
 
+        /**
+         * @todo Extend this logic to call initial sync on integration
+         * that has enabled sales channels
+         */
         foreach ($this->salesChannelsWithUpdatedActiveField as $salesChannel) {
             $integrationId = $this->salesChannelProvider->getIntegrationIdBySalesChannelId(
                 $salesChannel->getId(),
@@ -150,7 +154,7 @@ class SalesChannelReverseSyncListener
             );
 
             /**
-             * Skip when integration is disabled
+             * Skip when integration is disabled or doesn't exists
              */
             if (null === $integrationId) {
                 continue;

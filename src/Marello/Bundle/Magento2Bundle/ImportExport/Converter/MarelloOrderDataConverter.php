@@ -7,7 +7,6 @@ use Oro\Bundle\IntegrationBundle\ImportExport\DataConverter\AbstractTreeDataConv
 
 class MarelloOrderDataConverter extends AbstractTreeDataConverter
 {
-    public const ORDER_NUMBER = 'orderNumber';
     public const ORDER_STATUS_ID = 'orderStatus';
     public const ORDER_REF = 'orderReference';
     public const COUPON_CODE = 'couponCode';
@@ -29,7 +28,6 @@ class MarelloOrderDataConverter extends AbstractTreeDataConverter
     protected function getHeaderConversionRules()
     {
         return [
-            self::ORDER_NUMBER  => 'orderNumber',
             self::ORDER_REF => 'orderReference',
             self::ORDER_STATUS_ID => 'orderStatus:id',
             self::COUPON_CODE => 'couponCode',

@@ -96,7 +96,7 @@ services:
             - { name: oro_integration.connector, type: order_initial, channel_type: magento2 }
 
     # Readers
-    marello_magento2.importexport.reader.export.product_delete_removed:
+    marello_magento2.importexport.reader.export.product_delete_removed_action:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Reader\ProductExportDeleteRemovedReader
         arguments:
             - '@oro_importexport.context_registry'
@@ -108,6 +108,13 @@ services:
             - '@marello_magento2.repository.product'
             - '@oro_integration.provider.connector_context_mediator'
 
+    marello_magento2.importexport.reader.find_internal_magento_order:
+        class: Marello\Bundle\Magento2Bundle\ImportExport\Reader\InternalMagentoOrderReader
+        arguments:
+            - '@oro_importexport.context_registry'
+            - '@marello_magento2.repository.order'
+            - '@oro_integration.provider.connector_context_mediator'
+
     marello_magento2.importexport.reader.entity.entity_reader_filterable_by_internal_magento_product:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Reader\EntityReaderFilterableByInternalMagentoProduct
         abstract: true
@@ -115,29 +122,41 @@ services:
         calls:
             - ['setLogger', ['@oro_integration.logger.strategy']]
 
-    marello_magento2.importexport.reader.entity.create_action:
+    marello_magento2.importexport.reader.export.product.create_action:
         parent: marello_magento2.importexport.reader.entity.entity_reader_filterable_by_internal_magento_product
         calls:
-            - ['setActionName', ['create']]
+            - ['setActionName', [!php/const Marello\Bundle\Magento2Bundle\Integration\Connector\ProductConnector::EXPORT_ACTION_CREATE]]
             - ['setSkipWithInternalProduct', [true]]
 
-    marello_magento2.importexport.reader.entity.update_action:
+    marello_magento2.importexport.reader.export.product.update_action:
         parent: marello_magento2.importexport.reader.entity.entity_reader_filterable_by_internal_magento_product
         calls:
-            - ['setActionName', ['update']]
+            - ['setActionName', [!php/const Marello\Bundle\Magento2Bundle\Integration\Connector\ProductConnector::EXPORT_ACTION_UPDATE]]
             - ['setSkipWithInternalProduct', [false]]
 
-    marello_magento2.importexport.reader.entity.update_website_data_action:
+    marello_magento2.importexport.reader.export.product.update_website_scope_data_action:
         parent: marello_magento2.importexport.reader.entity.entity_reader_filterable_by_internal_magento_product
         calls:
-            - ['setActionName', ['updatedWebsiteData']]
+            - ['setActionName', [!php/const Marello\Bundle\Magento2Bundle\Integration\Connector\ProductConnector::EXPORT_ACTION_UPDATE_WEBSITE_SCOPE_DATA]]
             - ['setSkipWithInternalProduct', [false]]
 
-    marello_magento2.importexport.reader.entity.delete_on_channel_action:
+    marello_magento2.importexport.reader.export.product.delete_on_channel_action:
         parent: marello_magento2.importexport.reader.entity.entity_reader_filterable_by_internal_magento_product
         calls:
-            - ['setActionName', ['deleteOnChannel']]
+            - ['setActionName', [!php/const Marello\Bundle\Magento2Bundle\Integration\Connector\ProductConnector::EXPORT_ACTION_DELETE_ON_CHANNEL]]
             - ['setSkipWithInternalProduct', [false]]
+
+    marello_magento2.importexport.reader.entity.entity_reader_filterable_by_internal_magento_order:
+        class: Marello\Bundle\Magento2Bundle\ImportExport\Reader\EntityReaderFilterableByInternalMagentoOrder
+        abstract: true
+        parent: oro_importexport.reader.entity
+        calls:
+            - ['setLogger', ['@oro_integration.logger.strategy']]
+
+    marello_magento2.importexport.reader.export.order.update_status_action:
+        parent: marello_magento2.importexport.reader.entity.entity_reader_filterable_by_internal_magento_order
+        calls:
+            - ['setActionName', [!php/const Marello\Bundle\Magento2Bundle\Integration\Connector\OrderConnector::EXPORT_ACTION_UPDATE_ORDER_STATUS]]
 
     oro_importexport.reader.entity:
         class: Oro\Bundle\ImportExportBundle\Reader\EntityReader
@@ -160,29 +179,36 @@ services:
             - [setTransport, ["@marello_magento2.transport.rest_transport"]]
             - [setChannelClassName, ['Oro\Bundle\IntegrationBundle\Entity\Channel']]
 
-    marello_magento2.importexport.writer.export.product_delete_removed:
+    marello_magento2.importexport.writer.export.product_delete_removed_action:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Writer\ProductExportDeleteRemovedWriter
         parent: marello_magento2.importexport.writer.export.abstract
 
-    marello_magento2.importexport.writer.export.product.delete_on_channel:
+    marello_magento2.importexport.writer.export.product.delete_on_channel_action:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Writer\ProductExportDeleteOnChannelWriter
         parent: marello_magento2.importexport.writer.export.abstract
 
     marello_magento2.importexport.writer.find_internal_magento_product:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Writer\InternalMagentoProductWriter
 
-    marello_magento2.importexport.writer.export.product.create:
+    marello_magento2.importexport.writer.find_internal_magento_order:
+        class: Marello\Bundle\Magento2Bundle\ImportExport\Writer\InternalMagentoOrderWriter
+
+    marello_magento2.importexport.writer.export.product.create_action:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Writer\ProductExportCreateWriter
         parent: marello_magento2.importexport.writer.export.abstract
         calls:
             - ['setProductScheduler', ['@marello_magento2.scheduler.product']]
 
-    marello_magento2.importexport.writer.export.product.update:
+    marello_magento2.importexport.writer.export.product.update_action:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Writer\ProductExportUpdateWriter
         parent: marello_magento2.importexport.writer.export.abstract
 
-    marello_magento2.importexport.writer.export.product.update_website_scope_data:
+    marello_magento2.importexport.writer.export.product.update_website_scope_data_action:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Writer\ProductExportUpdateWebsiteScopeDataWriter
+        parent: marello_magento2.importexport.writer.export.abstract
+
+    marello_magento2.importexport.writer.export.order.update_status_action:
+        class: Marello\Bundle\Magento2Bundle\ImportExport\Writer\OrderExportUpdateStatusWriter
         parent: marello_magento2.importexport.writer.export.abstract
 
     # Data converters
@@ -296,17 +322,25 @@ services:
     marello_magento2.importexport.processor.export.product.update_website_scope_data_action:
         parent: marello_magento2.importexport.processor.export_abstract
         calls:
-            - [setTranslator, ['@marello_magento2.importexport.translator.product_simple_update_website_scope']]
+            - [setTranslator, ['@marello_magento2.importexport.translator.simple_product.update_website_scope']]
 
     marello_magento2.importexport.processor.export.product.delete_on_channel_action:
         parent: marello_magento2.importexport.processor.export_abstract
         calls:
             - [setTranslator, ['@marello_magento2.importexport.translator.product_delete_on_channel']]
 
+    marello_magento2.importexport.processor.export.order.update_order_action:
+        parent: marello_magento2.importexport.processor.export_abstract
+        calls:
+            - [setTranslator, ['@marello_magento2.importexport.translator.order.update_status']]
+
     marello_magento2.importexport.processor.find_internal_magento_product:
         class: Akeneo\Bundle\BatchBundle\Item\Support\NoopProcessor
 
-    marello_magento2.importexport.processor.export.product_delete_removed:
+    marello_magento2.importexport.processor.find_internal_magento_order:
+        class: Akeneo\Bundle\BatchBundle\Item\Support\NoopProcessor
+
+    marello_magento2.importexport.processor.export.product_delete_removed_action:
         class: Akeneo\Bundle\BatchBundle\Item\Support\NoopProcessor
 
     # Sync Processors
@@ -316,6 +350,7 @@ services:
         abstract: true
         calls:
             - ['setConnectorSyncSettingsProvider', ['@marello_magento2.integration.connector_sync_settings']]
+            - ['setOptionalListenerManager', ['@oro_platform.optional_listeners.manager']]
 
     marello_magento2.integration.sync_processor:
         class: Marello\Bundle\Magento2Bundle\Integration\SyncProcessor\SyncProcessor
@@ -357,17 +392,22 @@ services:
             - [setLogger, ['@oro_integration.logger.strategy']]
 
     marello_magento2.importexport.translator.product_delete_on_channel:
-        class: Marello\Bundle\Magento2Bundle\ImportExport\Translator\SimpleProduct\ProductDeleteOnChannelTranslator
+        class: Marello\Bundle\Magento2Bundle\ImportExport\Translator\ProductDeleteOnChannelTranslator
         arguments:
             - '@marello_magento2.repository.product'
         calls:
             - [setLogger, ['@oro_integration.logger.strategy']]
 
-    marello_magento2.importexport.translator.product_simple_update_website_scope:
-        class: Marello\Bundle\Magento2Bundle\ImportExport\Translator\SimpleProduct\ProductSimpleUpdateWebsiteScopeTranslator
+    marello_magento2.importexport.translator.simple_product.update_website_scope:
+        class: Marello\Bundle\Magento2Bundle\ImportExport\Translator\SimpleProduct\UpdateWebsiteScopeTranslator
         arguments:
             - '@marello_magento2.repository.website'
             - '@marello_magento2.repository.product'
+        calls:
+            - [setLogger, ['@oro_integration.logger.strategy']]
+
+    marello_magento2.importexport.translator.order.update_status:
+        class: Marello\Bundle\Magento2Bundle\ImportExport\Translator\Order\UpdateStatusTranslator
         calls:
             - [setLogger, ['@oro_integration.logger.strategy']]
 
@@ -393,6 +433,13 @@ services:
        class: Marello\Bundle\Magento2Bundle\ImportExport\Serializer\ProductDeleteOnChannelNormalizer
        tags:
              - { name: oro_importexport.normalizer, priority: 30 }
+
+    marello_magento2.importexport.normalizer.order_status_update:
+        class: Marello\Bundle\Magento2Bundle\ImportExport\Serializer\OrderStatusUpdateNormalizer
+        arguments:
+            - '@marello_magento2.converter.order_status_id'
+        tags:
+            - { name: oro_importexport.normalizer, priority: 30 }
 
     # Helpers
     marello_magento2.importexport.helper.simple_product_translator:
