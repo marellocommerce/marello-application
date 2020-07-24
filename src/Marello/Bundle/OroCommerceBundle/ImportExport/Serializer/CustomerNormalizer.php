@@ -50,16 +50,16 @@ class CustomerNormalizer extends AbstractNormalizer implements DenormalizerInter
 
     /**
      * @param array $data
-     * @return Order
+     * @return Company
      */
     public function createCompany(array $data)
     {
         $parentData = $this->getProperty($data, 'parent');
         $addresses = $this->getProperty($data, 'addresses');
         $paymentTermData = $this->getProperty($data, 'paymentTerm');
-
         $company = new Company();
         $company->setName($this->getProperty($data, 'name'));
+        $company->setOrocommerceOriginId($this->getProperty($data, 'id'));
         if ($parentData['id']) {
             $parent = new Company();
             $parent->setName($this->getProperty($parentData, 'name'));
@@ -69,7 +69,9 @@ class CustomerNormalizer extends AbstractNormalizer implements DenormalizerInter
             $company->setPaymentTerm($this->preparePaymentTerm($paymentTermData));
         }
         foreach ($addresses as $address) {
-            $company->addAddress($this->prepareAddress($address));
+            if ($companyAddress = $this->prepareAddress($address)) {
+                $company->addAddress($companyAddress);
+            }
         }
         
         return $company;
@@ -97,12 +99,14 @@ class CustomerNormalizer extends AbstractNormalizer implements DenormalizerInter
      * @param array $data
      * @return MarelloAddress
      */
-    private function prepareAddress(array $data)
+    public function prepareAddress(array $data)
     {
         if (isset($data['type']) && 'customeraddresses' === $data['type']) {
             $countryCode = $this->getProperty($data, 'country')['id'];
             $regionCode = $this->getProperty($data, 'region')['id'];
-
+            if (!$countryCode && !$regionCode) {
+                return null;
+            }
             $country = $this->registry
                 ->getManagerForClass(Country::class)
                 ->getRepository(Country::class)

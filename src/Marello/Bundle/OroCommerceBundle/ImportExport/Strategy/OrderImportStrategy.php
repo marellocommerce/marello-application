@@ -8,6 +8,8 @@ use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\CustomerBundle\Entity\Company;
 use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\ImportExportBundle\Strategy\Import\AbstractImportStrategy;
@@ -50,7 +52,15 @@ class OrderImportStrategy extends AbstractImportStrategy
                 $this->strategyHelper->importEntity(
                     $order,
                     $entity,
-                    ['id', 'createdAt', 'customer', 'orderNumber', 'data', 'organization']
+                    [
+                        'id',
+                        'createdAt',
+                        'customer',
+                        'orderNumber',
+                        'data',
+                        'organization',
+                        'orderStatus'
+                    ]
                 );
                 $order->setData(array_merge($entity->getData(), $order->getData()) ? : []);
                 $billingAddress = $this->processAddress($entity->getBillingAddress());
@@ -70,7 +80,7 @@ class OrderImportStrategy extends AbstractImportStrategy
 
             return $this->validateAndUpdateContext($order);
         }
-        
+
         return null;
     }
 
@@ -101,8 +111,7 @@ class OrderImportStrategy extends AbstractImportStrategy
         $entity = $order->getCustomer();
         if ($entity) {
             $criteria = [
-                'firstName' => $entity->getFirstName(),
-                'lastName' => $entity->getLastName(),
+                'orocommerce_origin_id' => $entity->getOrocommerceOriginId(),
                 'email' => $entity->getEmail()
             ];
 

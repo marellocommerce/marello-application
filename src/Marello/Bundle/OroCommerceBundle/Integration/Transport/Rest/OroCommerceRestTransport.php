@@ -110,41 +110,73 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $lastSyncStr = $lastSyncDate->format('Y-m-d H:i:s');
         $lastSyncArr = explode(' ', $lastSyncStr);
         $lastSyncStr = sprintf('%sT%s', $lastSyncArr[0], $lastSyncArr[1]);
-        $customersRequest = OroCommerceRequestFactory::createRequest(
-            OroCommerceRequestFactory::METHOD_GET,
-            $this->settings,
-            self::CUSTOMERS_ALIAS,
-            [
-                new FilterValue(
-                    'updatedAt',
-                    $lastSyncStr,
-                    OroCommerceRequestFactory::GT
-                )
-            ],
-            ['addresses', 'parent', 'paymentTerm']
-        );
+        $customersData = [];
+        $customersResponseData = [];
+        $pageNumber = 1;
+        do {
+            $result = true;
+            $customersRequest = OroCommerceRequestFactory::createRequest(
+                OroCommerceRequestFactory::METHOD_GET,
+                $this->settings,
+                self::CUSTOMERS_ALIAS,
+                [
+                    new FilterValue(
+                        'updatedAt',
+                        $lastSyncStr,
+                        OroCommerceRequestFactory::GT
+                    )
+                ],
+                ['addresses', 'parent', 'paymentTerm'],
+                [],
+                //tmp fixed pagesize
+                ['pageSize' => 100, 'pageNumber' => $pageNumber]
+            );
 
-        $customersResponse = $this->client->getJSON(
-            $customersRequest->getPath(),
-            $customersRequest->getPayload(),
-            $customersRequest->getHeaders()
-        );
-        $customersData = $customersResponse['data'];
-        usort($customersData, function ($a, $b) {
-            if ($a['relationships']['parent']['data'] === null) {
-                return -1;
-            } elseif ($b['relationships']['parent']['data'] === null) {
-                return 1;
-            } else {
-                return 0;
+            $customersResponse = $this->client->getJSON(
+                $customersRequest->getPath(),
+                $customersRequest->getPayload(),
+                $customersRequest->getHeaders()
+            );
+
+            $data = $customersResponse['data'];
+            usort($data, function ($a, $b) {
+                if ($a['relationships']['parent']['data'] === null) {
+                    return -1;
+                } elseif ($b['relationships']['parent']['data'] === null) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            });
+
+            if (!empty($data)) {
+                $customersData = array_merge($customersData, $data);
+                $pageNumber++;
             }
-        });
+
+            if (!empty($customersResponse['included'])) {
+                $customersResponseData = array_merge(
+                    $customersResponseData,
+                    $customersResponse['included']
+                );
+            }
+
+            // no more data to look for
+            if (empty($data)) {
+                $result = null;
+                break;
+            }
+
+            // loop again if result is true
+            // true means that there are entities to process or
+            // there are intervals to retrieve entities there
+        } while ($result === true);
 
         $customers = [];
         foreach ($customersData as $customer) {
             if (isset($customer['relationships'])) {
                 foreach ($customer['relationships'] as &$relationship) {
-                    foreach ($customersResponse['included'] as $included) {
+                    foreach ($customersResponseData as $included) {
                         if (!isset($relationship['data']['type'])) {
                             if (is_array($relationship['data'])) {
                                 foreach ($relationship['data'] as $key => $data) {
@@ -207,57 +239,90 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $lastSyncStr = $lastSyncDate->format('Y-m-d H:i:s');
         $lastSyncArr = explode(' ', $lastSyncStr);
         $lastSyncStr = sprintf('%sT%s', $lastSyncArr[0], $lastSyncArr[1]);
-        $ordersRequest = OroCommerceRequestFactory::createRequest(
-            OroCommerceRequestFactory::METHOD_GET,
-            $this->settings,
-            self::ORDERS_ALIAS,
-            [
-                new FilterValue(
-                    'currency',
-                    $this->settings->get(OroCommerceSettings::CURRENCY_FIELD),
-                    OroCommerceRequestFactory::EQ
-                ),
-                new FilterValue(
-                    'updatedAt',
-                    $lastSyncStr,
-                    OroCommerceRequestFactory::GT
-                )
-            ],
-            ['customer', 'customerUser', 'lineItems', 'shippingAddress', 'billingAddress']
-        );
+        $ordersData = [];
+        $ordersResponseData = [];
+        $taxValuesData = [];
+        $pageNumber = 1;
+        do {
+            $result = true;
+            $ordersRequest = OroCommerceRequestFactory::createRequest(
+                OroCommerceRequestFactory::METHOD_GET,
+                $this->settings,
+                self::ORDERS_ALIAS,
+                [
+                    new FilterValue(
+                        'currency',
+                        $this->settings->get(OroCommerceSettings::CURRENCY_FIELD),
+                        OroCommerceRequestFactory::EQ
+                    ),
+                    new FilterValue(
+                        'updatedAt',
+                        $lastSyncStr,
+                        OroCommerceRequestFactory::GT
+                    )
+                ],
+                ['customer', 'customerUser', 'lineItems', 'shippingAddress', 'billingAddress'],
+                [],
+                ['pageNumber' => $pageNumber]
+            );
 
-        $ordersResponse = $this->client->getJSON(
-            $ordersRequest->getPath(),
-            $ordersRequest->getPayload(),
-            $ordersRequest->getHeaders()
-        );
+            $ordersResponse = $this->client->getJSON(
+                $ordersRequest->getPath(),
+                $ordersRequest->getPayload(),
+                $ordersRequest->getHeaders()
+            );
 
-        $ordersTaxValuesRequest = OroCommerceRequestFactory::createRequest(
-            OroCommerceRequestFactory::METHOD_GET,
-            $this->settings,
-            self::TAXVALUES_ALIAS,
-            [
-                new FilterValue(
-                    'updatedAt',
-                    $lastSyncStr,
-                    OroCommerceRequestFactory::GT
-                ),
-                new FilterValue(
-                    'entityClass',
-                    'Oro\Bundle\OrderBundle\Entity\Order',
-                    OroCommerceRequestFactory::EQ
-                )
-            ]
-        );
+            $ordersTaxValuesRequest = OroCommerceRequestFactory::createRequest(
+                OroCommerceRequestFactory::METHOD_GET,
+                $this->settings,
+                self::TAXVALUES_ALIAS,
+                [
+                    new FilterValue(
+                        'updatedAt',
+                        $lastSyncStr,
+                        OroCommerceRequestFactory::GT
+                    ),
+                    new FilterValue(
+                        'entityClass',
+                        'Oro\Bundle\OrderBundle\Entity\Order',
+                        OroCommerceRequestFactory::EQ
+                    )
+                ],
+                [],
+                [],
+                ['pageNumber' => $pageNumber]
+            );
 
-        $ordersTaxValuesResponse = $this->client->getJSON(
-            $ordersTaxValuesRequest->getPath(),
-            $ordersTaxValuesRequest->getPayload(),
-            $ordersTaxValuesRequest->getHeaders()
-        );
+            $ordersTaxValuesResponse = $this->client->getJSON(
+                $ordersTaxValuesRequest->getPath(),
+                $ordersTaxValuesRequest->getPayload(),
+                $ordersTaxValuesRequest->getHeaders()
+            );
 
-        $ordersData = $ordersResponse['data'];
-        $taxValuesData = $ordersTaxValuesResponse['data'];
+            if (!empty($ordersResponse['data'])) {
+                $ordersData = array_merge($ordersData, $ordersResponse['data']);
+                $taxValuesData = array_merge($taxValuesData, $ordersTaxValuesResponse['data']);
+                $pageNumber++;
+            }
+
+            if (!empty($ordersResponse['included'])) {
+                $ordersResponseData = array_merge(
+                    $ordersResponseData,
+                    $ordersResponse['included']
+                );
+            }
+
+            // no more data to look for
+            if (empty($ordersResponse['data'])) {
+                $result = null;
+                break;
+            }
+
+            // loop again if result is true
+            // true means that there are entities to process or
+            // there are intervals to retrieve entities there
+        } while ($result === true);
+
         $orders = [];
         $lineItems = [];
         $orderIds = [];
@@ -268,7 +333,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                 $orderIds[] = $order['id'];
                 if (isset($order['relationships'])) {
                     foreach ($order['relationships'] as &$relationship) {
-                        foreach ($ordersResponse['included'] as $included) {
+                        foreach ($ordersResponseData as $included) {
                             if (!isset($relationship['data']['type'])) {
                                 if (is_array($relationship['data'])) {
                                     foreach ($relationship['data'] as $key => $data) {
@@ -319,7 +384,10 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                         'Oro\Bundle\OrderBundle\Entity\Order',
                         OroCommerceRequestFactory::EQ
                     )
-                ]
+                ],
+                [],
+                [],
+                ['pageSize' => count($orderIds)]
             );
 
             $paymentStatusesResponse = $this->client->getJSON(
@@ -345,7 +413,10 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                         'Oro\Bundle\OrderBundle\Entity\OrderLineItem',
                         OroCommerceRequestFactory::EQ
                     )
-                ]
+                ],
+                [],
+                [],
+                ['pageSize' => count($lineItems)]
             );
 
             $lineItemsTaxValuesResponse = $this->client->getJSON(
