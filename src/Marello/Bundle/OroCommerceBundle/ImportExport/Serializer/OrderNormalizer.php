@@ -160,6 +160,14 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
             ->setBillingAddress($this->prepareAddress($this->getProperty($data, 'billingAddress')))
             ->setShippingAddress($this->prepareAddress($this->getProperty($data, 'shippingAddress')));
 
+        if ($poNumber = $this->getProperty($data, 'poNumber')) {
+            $order->setPoNumber($poNumber);
+        }
+
+        if ($customerNote = $this->getProperty($data, 'customerNotes')) {
+            $order->setOrderNote($customerNote);
+        }
+
         // keep bc just to be sure
         if (method_exists($order, 'setShippingMethodReference')) {
             $order->setShippingMethodReference($this->getProperty($data, 'shippingMethod'));
@@ -181,19 +189,8 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
     {
         $customer = new Customer();
         $customerUser = $this->getProperty($data, 'customerUser');
-        $companyData = $this->getProperty($data, 'customer');
-        if ($companyData) {
-            $companyName = $this->getProperty($companyData, 'name');
-            /** @var Company $company */
-            $company = $this->registry
-                ->getManagerForClass(Company::class)
-                ->getRepository(Company::class)
-                ->findOneBy(['name' => $companyName]);
-            if ($company) {
-                $customer->setCompany($company);
-            }
-        }
-
+        $customer->setCompany($this->prepareCompany($data));
+        $customer->setOrocommerceOriginId($this->getProperty($customerUser, 'id'));
         if ($firstName = $this->getProperty($customerUser, 'firstName')) {
             $customer->setFirstName($firstName);
         }
@@ -216,6 +213,34 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
         $customer->setPrimaryAddress($this->prepareAddress($this->getProperty($data, 'shippingAddress')));
 
         return $customer;
+    }
+
+    /**
+     * @param array $data
+     * @return \Extend\Entity\EX_MarelloCustomerBundle_Company|Company|null
+     */
+    protected function prepareCompany(array $data)
+    {
+        $companyData = $this->getProperty($data, 'customer');
+        if ($companyData) {
+            $companyName = $this->getProperty($companyData, 'name');
+            $originId = $this->getProperty($companyData, 'id');
+            /** @var Company $company */
+            $company = $this->registry
+                ->getManagerForClass(Company::class)
+                ->getRepository(Company::class)
+                ->findOneBy(
+                    [
+                        'name' => $companyName,
+                        'orocommerce_origin_id' => $originId
+                    ]
+                );
+            if ($company) {
+                return $company;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -257,7 +282,14 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
             $price = (float)$row['excludingTax']/(float)$quantity;
         }
 
-        $item = new OrderItem();
+        $originId = $this->getProperty($lineItem, 'id');
+        // this is not something we're proud of...
+        $item = $this->findExistingOrderItem($originId);
+        $itemStatus = $this->findExistingOrderItemStatus($order, $lineItem, $item);
+
+        if (!$item) {
+            $item = new OrderItem();
+        }
         $item
             ->setPrice((float)$price)
             ->setQuantity((float)$quantity)
@@ -265,7 +297,13 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
             ->setRowTotalInclTax((float)$row['includingTax'])
             ->setRowTotalExclTax((float)$row['excludingTax'])
             ->setProduct($product)
-            ->setProductName((string)$product->getName());
+            ->setProductName((string)$product->getName())
+            ->setOrganization($order->getOrganization())
+            ->setOrocommerceOriginId($originId);
+
+        if ($itemStatus) {
+            $item->setStatus($itemStatus);
+        }
 
         $productUnitCode = $this->getProperty($lineItem, 'productUnitCode');
         if ($productUnitCode) {
@@ -277,11 +315,74 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
                     ->getRepository($productUnitClass);
                 if ($productUnit = $repo->find($productUnitCode)) {
                     $item->setProductUnit($productUnit);
+                } else {
+                    $item->setProductUnit($product->getInventoryItems()->first()->getProductUnit());
                 }
             }
         }
 
         $order->addItem($item);
+    }
+
+    /**
+     * Not the way it should be implemented, but we need to check if the OrderItem
+     * exists either based on the newly introduced orocommerce_origin_id or from the the possible
+     * existing items based on the Order Reference
+     * @param $originId
+     * @return \Extend\Entity\EX_MarelloOrderBundle_OrderItem|OrderItem|null
+     */
+    private function findExistingOrderItem($originId)
+    {
+        /** @var OrderItem $item */
+        $item = $this->registry
+            ->getManagerForClass(OrderItem::class)
+            ->getRepository(OrderItem::class)
+            ->findOneBy(
+                [
+                    'orocommerce_origin_id' => $originId
+                ]
+            );
+        if ($item) {
+            return $item;
+        }
+
+        return null;
+    }
+
+    /**
+     * @param Order $order
+     * @param $lineItem
+     * @param OrderItem|null $item
+     * @return \Extend\Entity\EV_Marello_Item_Status|null
+     */
+    private function findExistingOrderItemStatus(Order $order, $lineItem, OrderItem $item = null)
+    {
+        if ($item) {
+            return $item->getStatus();
+        }
+
+        $existingOrder = $this->registry
+            ->getManagerForClass(Order::class)
+            ->getRepository(Order::class)
+            ->findOneBy(
+                [
+                    'orderReference' => $order->getOrderReference()
+                ]
+            );
+        if ($existingOrder) {
+            // not the ideal way to find an item as there is a possibility that an order can have two items with the exact
+            // same SKU and quantity...it's a very small risk we unfortunately need to take in order to keep existing
+            // order items correct with ProductUnit and Status...
+            foreach ($existingOrder->getItems() as $orderItem) {
+                if ($orderItem->getProductSku() === $this->getProperty($lineItem, 'productSku') &&
+                    $orderItem->getQuantity() === $this->getProperty($lineItem, 'quantity')
+                ) {
+                    return $orderItem->getStatus();
+                }
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -293,7 +394,9 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
         if (isset($data['type']) && 'orderaddresses' === $data['type']) {
             $countryCode = $this->getProperty($data, 'country')['id'];
             $regionCode = $this->getProperty($data, 'region')['id'];
-
+            if (!$countryCode && !$regionCode) {
+                return null;
+            }
             $country = $this->registry
                 ->getManagerForClass(Country::class)
                 ->getRepository(Country::class)

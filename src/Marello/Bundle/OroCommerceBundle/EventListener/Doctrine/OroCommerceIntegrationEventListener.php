@@ -2,25 +2,33 @@
 
 namespace Marello\Bundle\OroCommerceBundle\EventListener\Doctrine;
 
+use Doctrine\ORM\UnitOfWork;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractProductExportWriter;
+
+use Oro\Bundle\IntegrationBundle\Entity\Channel;
+
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\OroCommerceBundle\Entity\OroCommerceSettings;
 use Marello\Bundle\OroCommerceBundle\Integration\OroCommerceChannelType;
-use Oro\Bundle\IntegrationBundle\Entity\Channel;
+use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractProductExportWriter;
 
 class OroCommerceIntegrationEventListener
 {
     const PGSQL_DRIVER = 'pdo_pgsql';
     const MYSQL_DRIVER = 'pdo_mysql';
 
-    /**
-     * @var string
-     */
+    /** @var string $databaseDriver*/
     private $databaseDriver;
+
+    /** @var EntityManager $onFlushEm */
+    private $entityManager;
+
+    /** @var UnitOfWork $onFlushEm */
+    private $unitOfWork;
 
     /**
      * @param string $databaseDriver
@@ -31,63 +39,49 @@ class OroCommerceIntegrationEventListener
     }
 
     /**
-     * @param Channel $channel
-     * @param LifecycleEventArgs $args
+     * Handle incoming event
+     * @param OnFlushEventArgs $eventArgs
      */
-    public function postPersist(Channel $channel, LifecycleEventArgs $args)
+    public function onFlush(OnFlushEventArgs $eventArgs)
     {
-        if ($channel->getType() === OroCommerceChannelType::TYPE) {
-            $em = $args->getEntityManager();
-            $existingSalesChannels = $em
-                ->getRepository(SalesChannel::class)
-                ->findBy(['integrationChannel' => $channel]);
+        $this->entityManager = $eventArgs->getEntityManager();
+        /** @var UnitOfWork $unitOfWork */
+        $this->unitOfWork = $this->entityManager->getUnitOfWork();
 
-            /** @var SalesChannel $existingSalesChannel */
-            // remove integration from the previous saleschannels
-            foreach ($existingSalesChannels as $existingSalesChannel) {
-                $existingSalesChannel->setIntegrationChannel(null);
-                $em->persist($existingSalesChannel);
-            }
-
-            /** @var OroCommerceSettings $transport */
-            $transport = $channel->getTransport();
-            $salesChannelGroup = $transport->getSalesChannelGroup();
-            if ($salesChannelGroup) {
-                foreach ($salesChannelGroup->getSalesChannels() as $salesChannel) {
-                    $salesChannel->setIntegrationChannel($channel);
-                    $em->persist($salesChannel);
-                }
-            }
-            $em->flush();
+        if (!empty($this->unitOfWork->getScheduledEntityInsertions())) {
+            $records = $this->filterRecords($this->unitOfWork->getScheduledEntityInsertions());
+            $this->applyCallBackForChangeSet('updateRelatedSalesChannelsForIntegrationChannel', $records);
+        }
+        if (!empty($this->unitOfWork->getScheduledEntityUpdates())) {
+            $records = $this->filterRecords($this->unitOfWork->getScheduledEntityUpdates());
+            $this->applyCallBackForChangeSet('updateRelatedSalesChannelsForIntegrationChannel', $records);
         }
     }
 
     /**
-     * @param Channel $channel
-     * @param LifecycleEventArgs $args
+     * @param Channel $entity
      */
-    public function postUpdate(Channel $channel, LifecycleEventArgs $args)
+    protected function updateRelatedSalesChannelsForIntegrationChannel(Channel $entity)
     {
-        if ($channel->getType() === OroCommerceChannelType::TYPE) {
-            $em = $args->getEntityManager();
-            $existingSalesChannels = $em
+        if ($entity->getType() === OroCommerceChannelType::TYPE) {
+            $existingSalesChannels = $this->entityManager
                 ->getRepository(SalesChannel::class)
-                ->findBy(['integrationChannel' => $channel]);
+                ->findBy(['integrationChannel' => $entity]);
             /** @var SalesChannel $existingSalesChannel */
             // remove integration from the previous saleschannels
             foreach ($existingSalesChannels as $existingSalesChannel) {
                 $existingSalesChannel->setIntegrationChannel(null);
-                $em->persist($existingSalesChannel);
+                $this->unitOfWork->scheduleForUpdate($existingSalesChannel);
             }
 
             /** @var OroCommerceSettings $transport */
-            $transport = $channel->getTransport();
+            $transport = $entity->getTransport();
+            /** @var SalesChannelGroup $salesChannelGroup */
             $salesChannelGroup = $transport->getSalesChannelGroup();
             foreach ($salesChannelGroup->getSalesChannels() as $salesChannel) {
-                $salesChannel->setIntegrationChannel($channel);
-                $em->persist($salesChannel);
+                $salesChannel->setIntegrationChannel($entity);
+                $this->unitOfWork->scheduleForUpdate($salesChannel);
             }
-            $em->flush();
         }
     }
 
@@ -184,5 +178,37 @@ class OroCommerceIntegrationEventListener
         }
 
         return $productData;
+    }
+
+    /**
+     * @param array $records
+     * @return array
+     */
+    protected function filterRecords(array $records)
+    {
+        return array_filter($records, [$this, 'getIsEntityInstanceOf']);
+    }
+
+    /**
+     * @param $entity
+     * @return bool
+     */
+    public function getIsEntityInstanceOf($entity)
+    {
+        return ($entity instanceof Channel);
+    }
+
+    /**
+     * @param string $callback function
+     * @param array $changeSet
+     * @throws \Exception
+     */
+    protected function applyCallBackForChangeSet($callback, array $changeSet)
+    {
+        try {
+            array_walk($changeSet, [$this, $callback]);
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
     }
 }

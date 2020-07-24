@@ -19,7 +19,9 @@ class OroCommerceRequestFactory implements OroCommerceRequestFactoryInterface
     const LTE = 'lte';
     const GT = 'gt';
     const GTE = 'gte';
-    
+
+    const DEFAULT_PAGE_SIZE = 100;
+
     /**
      * {@inheritdoc}
      */
@@ -29,7 +31,8 @@ class OroCommerceRequestFactory implements OroCommerceRequestFactoryInterface
         $resource,
         array $filters = [],
         array $include = [],
-        array $data = []
+        array $data = [],
+        array $pageParams = []
     ) {
         $path = sprintf(
             '%s/%s',
@@ -61,12 +64,29 @@ class OroCommerceRequestFactory implements OroCommerceRequestFactoryInterface
             }
         }
         if (in_array($method, [self::METHOD_GET]) && !isset($data['data']['id'])) {
-            if (count($filters) > 0 || count($include) > 0) {
-                $path .= '&page[size]=-1';
+            if (isset($pageParams['pageSize'])) {
+                $pageSize = $pageParams['pageSize'];
             } else {
-                $path .= '?page[size]=-1';
+                $pageSize = self::DEFAULT_PAGE_SIZE;
+            }
+            if (count($filters) > 0 || count($include) > 0) {
+                $path .= sprintf('&page[size]=%s', $pageSize);
+            } else {
+                $path .= sprintf('?page[size]=%s', $pageSize);
             }
         }
+
+        if (in_array($method, [self::METHOD_GET]) && !isset($data['data']['id'])) {
+            if (isset($pageParams['pageNumber'])) {
+                $pageNumber = $pageParams['pageNumber'];
+                if (count($filters) > 0 || count($include) > 0) {
+                    $path .= sprintf('&page[number]=%s', $pageNumber);
+                } else {
+                    $path .= sprintf('?page[number]=%s', $pageNumber);
+                }
+            }
+        }
+
         $payload = [];
         if (in_array($method, [self::METHOD_POST, self::METHOD_PATCH])) {
             $payload = json_encode($data);
