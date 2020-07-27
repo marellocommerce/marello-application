@@ -39,7 +39,9 @@ class SalesChannelType extends AbstractType
         $builder
             ->add('name')
             ->add('code')
-            ->add('channelType')
+            ->add('channelType', SalesChannelTypeSelectType::class, [
+                'required' => true
+            ])
             ->add('currency', CurrencyType::class)
             ->add('default', CheckboxType::class, [
                 'required' => false

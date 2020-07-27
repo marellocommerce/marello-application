@@ -46,6 +46,23 @@ services:
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: active_saleschannels, acl_resource: marello_product_view }
 
+    marello_sales.store_saleschannels.form.autocomplete.search_handler:
+        class: 'Marello\Bundle\SalesBundle\Autocomplete\StoreSalesChannelHandler'
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - 'Marello\Bundle\SalesBundle\Entity\SalesChannel'
+            - ['name', 'code', 'channelType']
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: store_saleschannels, acl_resource: marello_product_view }
+
+    marello_sales.search_handler.channel_types:
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - 'Marello\Bundle\SalesBundle\Entity\SalesChannelType'
+            - ['name', 'label']
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: marello_sales_channel_types, acl_resource: marello_sales_saleschannel_view }
+
     marello_sales.system_group_saleschannels.form.autocomplete.search_handler:
         class: 'Marello\Bundle\SalesBundle\Autocomplete\SystemGroupSalesChannelHandler'
         parent: oro_form.autocomplete.search_handler
