@@ -505,6 +505,18 @@ class Order extends ExtendOrder implements
     protected $poNumber;
 
     /**
+     * @var \Extend\Entity\EV_Marello_Order_Status
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $orderStatus;
+
+    /**
      * @param AbstractAddress|null $billingAddress
      * @param AbstractAddress|null $shippingAddress
      */
@@ -1256,6 +1268,26 @@ class Order extends ExtendOrder implements
     public function setPoNumber(string $poNumber)
     {
         $this->poNumber = $poNumber;
+
+        return $this;
+    }
+
+
+    /**
+     * @return \Extend\Entity\EV_Marello_Order_Status
+     */
+    public function getOrderStatus()
+    {
+        return $this->orderStatus;
+    }
+
+    /**
+     * @param string $orderStatus
+     * @return $this
+     */
+    public function setOrderStatus($orderStatus)
+    {
+        $this->orderStatus = $orderStatus;
 
         return $this;
     }

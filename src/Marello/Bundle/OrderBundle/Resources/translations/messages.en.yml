@@ -43,6 +43,7 @@ marello:
         estimated_shipping_cost_amount.label: Estimated Shipping Costs
         overridden_shipping_cost_amount.label: Overridden Shipping Cost Amount
         status.label:               Order Status
+        order_status.label:               Order Status
         billing_address:
             label:                  Billing Address
             name.label:             Bill to Name
@@ -83,7 +84,7 @@ marello:
                 label:              Price
                 per_unit.label:     Price Per Unit
             quantity.label:         Quantity
-            product_unit.label:     Product Unit
+            product_unit.label:     Unit
             original_price_excl_tax.label:   Original Price Excl. Tax
             original_price_incl_tax.label:   Original Price Incl. Tax
             total_price_excl_tax.label:      Total Price Excl. Tax

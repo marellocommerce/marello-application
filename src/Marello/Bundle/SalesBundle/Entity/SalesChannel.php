@@ -85,6 +85,9 @@ class SalesChannel extends ExtendSalesChannel implements
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
+     *          },
+     *          "importexport"={
+     *              "identity"=true
      *          }
      *      }
      * )

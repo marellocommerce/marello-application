@@ -71,6 +71,7 @@ define(function(require) {
             this.addedCollectionItems = [];
             this.removedCollectionItems = [];
 
+            mediator.on('po:row:total:changed', this.triggerTotalsUpdateEvent, this);
             this.render();
         },
 

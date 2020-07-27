@@ -35,7 +35,7 @@ define(function(require) {
             var currencyLabel = this.priceEl.closest('.control-group').find('label').text();
             var start_pos = currencyLabel.indexOf('(') + 1;
             var end_pos = currencyLabel.indexOf(')',start_pos);
-            this.currencySymbol = currencyLabel.substring(start_pos,end_pos)
+            this.currencySymbol = currencyLabel.substring(start_pos,end_pos);
             this.priceEl.change(_.bind(this.updateRowTotal, this));
             PurchaseOrderItemView.__super__.initialize.apply(this, arguments);
         },

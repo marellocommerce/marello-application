@@ -191,6 +191,22 @@ abstract class AbstractInvoiceItem implements
     protected $rowTotalExclTax;
 
     /**
+     * @var string
+     * @ORM\Column(name="product_unit",type="string", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $productUnit;
+
+    /**
      * @ORM\PrePersist
      */
     public function prePersist()
@@ -396,6 +412,25 @@ abstract class AbstractInvoiceItem implements
     public function setRowTotalExclTax($rowTotalExclTax)
     {
         $this->rowTotalExclTax = $rowTotalExclTax;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProductUnit()
+    {
+        return $this->productUnit;
+    }
+
+    /**
+     * @param string $productUnit
+     * @return $this
+     */
+    public function setProductUnit($productUnit)
+    {
+        $this->productUnit = $productUnit;
 
         return $this;
     }

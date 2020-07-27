@@ -134,6 +134,10 @@ datagrids:
                 label:            marello.packing.packingslipitem.product_name.label
             quantity:
                 label:            marello.packing.packingslipitem.quantity.label
+            productUnit:
+                label:            marello.inventory.inventoryitem.product_unit.label
+                frontend_type:    string
+                data_name:        productUnit
             weight:
                 label:            marello.packing.packingslipitem.weight.label
             status:
@@ -159,6 +163,8 @@ datagrids:
                     data_name: psi.productName
                 quantity:
                     data_name: psi.quantity
+                productUnit:
+                    data_name: psi.productUnit
                 weight:
                     data_name: ps.weight
                 status:
