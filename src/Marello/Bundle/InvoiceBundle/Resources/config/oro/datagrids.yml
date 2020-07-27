@@ -177,6 +177,9 @@ datagrids:
             quantity:
                 label:            marello.invoice.invoiceitem.quantity.label
                 frontend_type:    number
+            productUnit:
+                label:            marello.invoice.invoiceitem.product_unit.label
+                frontend_type:    string
             price:
                 label:            marello.invoice.invoiceitem.price.label
                 type:             localized_number
@@ -236,6 +239,9 @@ datagrids:
             quantity:
                 label:            marello.invoice.invoiceitem.quantity.label
                 frontend_type:    number
+            productUnit:
+                label:            marello.invoice.invoiceitem.product_unit.label
+                frontend_type:    string
             price:
                 label:            marello.invoice.invoiceitem.price.label
                 type:             localized_number

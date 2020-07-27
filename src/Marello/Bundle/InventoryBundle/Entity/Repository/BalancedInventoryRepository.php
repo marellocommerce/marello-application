@@ -30,7 +30,7 @@ class BalancedInventoryRepository extends EntityRepository
      *
      * @param ProductInterface $product
      * @param SalesChannelGroup $group
-     * @return BalancedInventoryLevel
+     * @return null|BalancedInventoryLevel
      */
     public function findExistingBalancedInventory(ProductInterface $product, SalesChannelGroup $group)
     {

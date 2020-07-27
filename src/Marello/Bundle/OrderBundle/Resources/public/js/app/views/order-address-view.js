@@ -151,7 +151,8 @@ define(function(require) {
                         }
                         var $field = self.fieldsByName[self.normalizeName(name)] || null;
                         if ($field) {
-                            if (self.options.selectors.subtotalsFields.length > 0 && name === 'region' && value !== null) {
+                            // if (self.options.selectors.subtotalsFields.length > 0 && name === 'region' && value !== null) {
+                            if (self.options.selectors.subtotalsFields.length > 0 && value !== null) {
                                 $field.on('change', function (e) {
                                     self.triggered = false;
                                     $( document ).ajaxComplete(function( event, request, settings ) {

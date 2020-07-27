@@ -179,6 +179,21 @@ class PackingSlipItem extends ExtendPackingSlipItem implements OrganizationAware
     protected $inventoryBatches;
 
     /**
+     * @var \Extend\Entity\EV_Marello_Product_Unit
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $productUnit;
+
+    /**
      * @ORM\PrePersist
      */
     public function prePersist()
@@ -392,6 +407,24 @@ class PackingSlipItem extends ExtendPackingSlipItem implements OrganizationAware
     public function setInventoryBatches(array $batches)
     {
         $this->inventoryBatches = $batches;
+
+        return $this;
+    }
+    /**
+     * @return \Extend\Entity\EV_Marello_Product_Unit
+     */
+    public function getProductUnit()
+    {
+        return $this->productUnit;
+    }
+
+    /**
+     * @param string $productUnit
+     * @return $this
+     */
+    public function setProductUnit($productUnit)
+    {
+        $this->productUnit = $productUnit;
 
         return $this;
     }

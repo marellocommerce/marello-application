@@ -58,6 +58,7 @@ class OnProductCreateEventListener
         $result = $this->inventoryItemManager->createInventoryItem($entity);
         if ($result) {
             $inventoryItem = $this->checkReplenishment($result);
+            $inventoryItem = $this->checkProductUnit($inventoryItem);
             $this->em->persist($inventoryItem);
             $classMeta = $this->em->getClassMetadata(get_class($inventoryItem));
             $this->unitOfWork->computeChangeSet($classMeta, $inventoryItem);
@@ -75,6 +76,23 @@ class OnProductCreateEventListener
             $replenishment = $this->inventoryItemManager->getDefaultReplenishment();
             if ($replenishment) {
                 $item->setReplenishment($replenishment);
+            }
+        }
+
+        return $item;
+    }
+
+    /**
+     * @param InventoryItem $item
+     * @return mixed
+     */
+    protected function checkProductUnit($item)
+    {
+        if (!$item->getProductUnit()) {
+            // get default product unit option
+            $productUnit = $this->inventoryItemManager->getDefaultProductUnit();
+            if ($productUnit) {
+                $item->setProductUnit($productUnit);
             }
         }
 
