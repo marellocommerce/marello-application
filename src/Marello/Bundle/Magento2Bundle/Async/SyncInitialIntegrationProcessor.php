@@ -86,11 +86,19 @@ class SyncInitialIntegrationProcessor implements
                 $wrappedMessage->getIntegrationId()
             );
 
+            $this->managerRegistry
+                ->getManager()
+                ->getConnection()
+                ->getConfiguration()
+                ->setSQLLogger(null);
+
             $this->setTemporaryIntegrationToken($integration);
             $result = $this->jobRunner->runUnique(
                 $message->getMessageId(),
                 $jobName,
                 function (JobRunner $jobRunner) use ($integration, $wrappedMessage) {
+                    $this->initialSyncProcessor->getLoggerStrategy()->setLogger($this->logger);
+
                     return $this->initialSyncProcessor->process(
                         $integration,
                         null,

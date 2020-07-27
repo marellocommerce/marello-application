@@ -7,7 +7,8 @@ use Marello\Bundle\Magento2Bundle\Model\Magento2TransportSettings;
 use Oro\Bundle\IntegrationBundle\Entity\Transport;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity()
+ * @ORM\HasLifecycleCallbacks()
  */
 class Magento2Transport extends Transport
 {
@@ -230,7 +231,7 @@ class Magento2Transport extends Transport
     /**
      * @ORM\PrePersist
      */
-    public function prePersistTimestamp()
+    public function setSyncStartDateTimestamp()
     {
         $this->syncStartDate = new \DateTime('now', new \DateTimeZone('UTC'));
     }
