@@ -80,6 +80,29 @@ datagrids:
             entityHint: sales_channel
             entity_pagination: true
 
+    marello-sales-channel-types:
+        source:
+            type: orm
+            query:
+                select:
+                    - sct.name as id
+                    - sct.label as label
+                from:
+                    - { table: MarelloSalesBundle:SalesChannelType, alias: sct }
+        columns:
+            id:
+                label:                marello.sales.saleschanneltype.name.label
+                frontend_type:        string
+            label:
+                label:                marello.sales.saleschanneltype.label.label
+                frontend_type:        string
+        sorters:
+            columns:
+                id:
+                    data_name: id
+                label:
+                    data_name: label
+
     marello-sales-channel-groups:
         source:
             type: orm
@@ -163,13 +186,7 @@ datagrids:
             type: orm
             query:
                 select:
-                    - sc.id
-                    - sc.name
-                    - sc.code
-                    - sc.channelType
-                    - sc.currency
-                    - sc.active
-                    - sc.default
+                    - sc
                     - (CASE WHEN (sc.id IN (:data_in)) AND sc.id NOT IN (:data_not_in) THEN true ELSE false END) as hasChannel
                 from:
                     - { table: MarelloSalesBundle:SalesChannel, alias: sc }
