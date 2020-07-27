@@ -160,15 +160,15 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
             ->setBillingAddress($this->prepareAddress($this->getProperty($data, 'billingAddress')))
             ->setShippingAddress($this->prepareAddress($this->getProperty($data, 'shippingAddress')));
 
-        if ($poNumber = $this->getProperty($data, 'poNumber')) {
+        // keep bc for a few methods just to be sure...
+        if ($poNumber = $this->getProperty($data, 'poNumber') && method_exists($order, 'setPoNumber')) {
             $order->setPoNumber($poNumber);
         }
 
-        if ($customerNote = $this->getProperty($data, 'customerNotes')) {
+        if ($customerNote = $this->getProperty($data, 'customerNotes') && method_exists($order, 'setOrderNote')) {
             $order->setOrderNote($customerNote);
         }
 
-        // keep bc just to be sure
         if (method_exists($order, 'setShippingMethodReference')) {
             $order->setShippingMethodReference($this->getProperty($data, 'shippingMethod'));
         }
