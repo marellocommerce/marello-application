@@ -1,13 +1,14 @@
 <?php
 
-namespace Marello\Bundle\ReturnBundle\Migrations\Data\ORM;
+namespace Marello\Bundle\InvoiceBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Oro\Bundle\EmailBundle\Migrations\Data\ORM\AbstractEmailFixture;
 use Oro\Bundle\MigrationBundle\Fixture\VersionedFixtureInterface;
 
-class UpdateEmailTemplatesProductUnit extends AbstractEmailFixture implements VersionedFixtureInterface
+class UpdateEmailTemplates extends AbstractEmailFixture implements
+    VersionedFixtureInterface
 {
     /**
      * {@inheritdoc}
@@ -21,7 +22,7 @@ class UpdateEmailTemplatesProductUnit extends AbstractEmailFixture implements Ve
 
         return $manager->getRepository('OroEmailBundle:EmailTemplate')->findOneBy([
             'name' => $template['params']['name'],
-            'entityName' => 'Marello\Bundle\ReturnBundle\Entity\ReturnEntity',
+            'entityName' => 'Marello\Bundle\InvoiceBundle\Entity\Invoice'
         ]);
     }
 
@@ -34,7 +35,7 @@ class UpdateEmailTemplatesProductUnit extends AbstractEmailFixture implements Ve
     {
         return $this->container
             ->get('kernel')
-            ->locateResource('@MarelloReturnBundle/Migrations/Data/ORM/data/emails');
+            ->locateResource('@MarelloInvoiceBundle/Migrations/Data/ORM/data/email_templates');
     }
 
     /**
@@ -42,6 +43,6 @@ class UpdateEmailTemplatesProductUnit extends AbstractEmailFixture implements Ve
      */
     public function getVersion()
     {
-        return '1.3';
+        return '1.1';
     }
 }
