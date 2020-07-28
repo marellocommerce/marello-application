@@ -128,7 +128,6 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                 ],
                 ['addresses', 'parent', 'paymentTerm'],
                 [],
-                //tmp fixed pagesize
                 ['pageSize' => 100, 'pageNumber' => $pageNumber]
             );
 
