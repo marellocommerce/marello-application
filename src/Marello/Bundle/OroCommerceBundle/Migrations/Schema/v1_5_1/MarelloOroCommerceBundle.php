@@ -36,7 +36,7 @@ class MarelloOroCommerceBundle implements Migration
                         'is_extend' => true,
                         'owner' => ExtendScope::OWNER_CUSTOM
                     ],
-                    'entity' => ['label' => 'Origin ID'],
+                    'entity' => ['label' => 'marello.orocommerce.entity.orocommerce_origin_id.label'],
                     'datagrid' => ['is_visible' => false],
                     'form' => ['is_enabled' => false],
                     'view' => ['is_displayable' => false]
@@ -61,7 +61,7 @@ class MarelloOroCommerceBundle implements Migration
                         'is_extend' => true,
                         'owner' => ExtendScope::OWNER_CUSTOM
                     ],
-                    'entity' => ['label' => 'Origin ID'],
+                    'entity' => ['label' => 'marello.orocommerce.entity.orocommerce_origin_id.label'],
                     'datagrid' => ['is_visible' => false],
                     'form' => ['is_enabled' => false],
                     'view' => ['is_displayable' => false]
@@ -87,7 +87,7 @@ class MarelloOroCommerceBundle implements Migration
                         'is_extend' => true,
                         'owner' => ExtendScope::OWNER_CUSTOM
                     ],
-                    'entity' => ['label' => 'Origin ID'],
+                    'entity' => ['label' => 'marello.orocommerce.entity.orocommerce_origin_id.label'],
                     'datagrid' => ['is_visible' => false],
                     'form' => ['is_enabled' => false],
                     'view' => ['is_displayable' => false]

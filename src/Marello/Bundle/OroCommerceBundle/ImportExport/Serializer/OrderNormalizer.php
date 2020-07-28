@@ -370,9 +370,9 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
                 ]
             );
         if ($existingOrder) {
-            // not the ideal way to find an item as there is a possibility that an order can have two items with the exact
-            // same SKU and quantity...it's a very small risk we unfortunately need to take in order to keep existing
-            // order items correct with ProductUnit and Status...
+            // not the ideal way to find an item as there is a possibility that an order can have two items with
+            // the exact same SKU and quantity...it's a very small risk we unfortunately need to take in order to keep
+            // existing order items correct with ProductUnit and Status...
             foreach ($existingOrder->getItems() as $orderItem) {
                 if ($orderItem->getProductSku() === $this->getProperty($lineItem, 'productSku') &&
                     $orderItem->getQuantity() === $this->getProperty($lineItem, 'quantity')

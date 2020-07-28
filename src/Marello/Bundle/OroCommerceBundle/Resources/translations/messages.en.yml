@@ -38,3 +38,6 @@ marello:
         connection_validation:
             button.text: 'Check OroCommerce Connection'
             success.message: 'OroCommerce Connection is valid'
+
+        entity:
+            orocommerce_origin_id.label: Origin ID

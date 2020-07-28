@@ -257,8 +257,8 @@ class ReverseSyncInventoryLevelListener extends AbstractReverseSyncListener
                                         MessagePriority::HIGH
                                     )
                                 );
-                                // send update for product too as this entity only has a relation to the inventory_status
-                                // and needs to be updated...
+                                // send update for product too as this entity only has a relation to
+                                // the inventory_status and needs to be updated...
                                 $productConnectorParams = [];
                                 $prodData = $product->getData();
                                 if (isset($prodData[AbstractProductExportWriter::PRODUCT_ID_FIELD]) &&
