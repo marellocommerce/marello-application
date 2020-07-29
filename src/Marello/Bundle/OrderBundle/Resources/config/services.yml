@@ -236,6 +236,12 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
 
+    marello_order.twig.sandbox.provider.order_entities_variables:
+        class: 'Marello\Bundle\OrderBundle\Twig\Sandbox\OrderEntitiesVariablesProvider'
+        public: false
+        tags:
+            - { name: oro_email.emailtemplate.variable_provider, scope: entity }
+
     marello_order.twig.order_extension:
         class: Marello\Bundle\OrderBundle\Twig\OrderExtension
         calls:

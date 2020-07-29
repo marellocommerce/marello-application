@@ -244,14 +244,6 @@ datagrids:
                         - o.id = :orderId
             bind_parameters:
                 - orderId
-        totals:
-            grand_total:
-                columns:
-                    status:
-                        label: marello.invoice.grand_total.label
-                    totalPaid:
-                        expr: MAX(p.currency) as currency, SUM(p.totalPaid)
-                        formatter: currency
 
     marello-invoice-payments-grid:
         extends: marello-payments-base-grid
@@ -269,11 +261,3 @@ datagrids:
                         - i.id = :invoiceId
             bind_parameters:
                 - invoiceId
-        totals:
-            grand_total:
-                columns:
-                    status:
-                        label: marello.invoice.grand_total.label
-                    totalPaid:
-                        expr: MAX(p.currency) as currency, SUM(p.totalPaid)
-                        formatter: currency
