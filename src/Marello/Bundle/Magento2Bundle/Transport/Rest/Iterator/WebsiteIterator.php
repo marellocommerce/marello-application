@@ -60,8 +60,9 @@ class WebsiteIterator extends AbstractLoadeableIterator implements LoggerAwareIn
     protected function logInvalidWebsiteDataFound(array $websiteData): void
     {
         $this->logger->warning(
-            '[Magento 2] Skipped website, because it dooesn\'t contain column "id" in data.',
+            '[Magento 2] Skipped website, because it doesn\'t contain identifier column in data.',
             [
+                'identifierColumnName' => WebsiteDataConverter::ID_COLUMN_NAME,
                 'data' => $websiteData
             ]
         );
