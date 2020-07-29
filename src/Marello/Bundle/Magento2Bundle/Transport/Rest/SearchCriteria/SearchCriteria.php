@@ -26,25 +26,25 @@ class SearchCriteria
     protected $pageSize;
 
     /** @var int */
-    protected $currentPage;
+    protected $pageNumber;
 
     /**
      * @param int $pageSize
-     * @param int $currentPage
+     * @param int $pageNumber
      */
-    public function __construct(int $pageSize = self::DEFAULT_PAGE_SIZE, int $currentPage = 1)
+    public function __construct(int $pageSize = self::DEFAULT_PAGE_SIZE, int $pageNumber = 1)
     {
         $this->pageSize = $pageSize;
-        $this->currentPage = $currentPage;
+        $this->pageNumber = $pageNumber;
     }
 
     /**
-     * @param int $currentPage
+     * @param int $pageNumber
      * @return $this
      */
-    public function setCurrentPage(int $currentPage): self
+    public function setPageNumber(int $pageNumber): self
     {
-        $this->currentPage = $currentPage;
+        $this->pageNumber = $pageNumber;
 
         return $this;
     }
@@ -52,9 +52,9 @@ class SearchCriteria
     /**
      * @return int
      */
-    public function getCurrentPage(): int
+    public function getPageNumber(): int
     {
-        return $this->currentPage;
+        return $this->pageNumber;
     }
 
     /**
@@ -62,7 +62,7 @@ class SearchCriteria
      */
     public function nextPage(): self
     {
-        ++$this->currentPage;
+        ++$this->pageNumber;
 
         return $this;
     }
@@ -145,7 +145,7 @@ class SearchCriteria
     {
         $searchCriteriaParams = [
             'pageSize' => $this->pageSize,
-            'currentPage' => $this->currentPage
+            'currentPage' => $this->pageNumber
         ];
 
         if (!empty($this->filterGroups)) {

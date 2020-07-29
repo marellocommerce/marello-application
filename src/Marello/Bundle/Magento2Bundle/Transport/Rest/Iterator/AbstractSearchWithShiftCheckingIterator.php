@@ -89,7 +89,7 @@ abstract class AbstractSearchWithShiftCheckingIterator extends AbstractSearchIte
     protected function getShiftedItems(SearchResponseDTO $searchResponseDTO): array
     {
         $countOfShiftedElements = $this->totalCount - $searchResponseDTO->getTotalCount();
-        $searchRequest = $this->shiftedItemsSearchRequestFactory->getSearchRequest(
+        $searchRequest = $this->shiftedItemsSearchRequestFactory->getSearchRequestForPreviousPage(
             $this->searchRequest,
             $countOfShiftedElements
         );

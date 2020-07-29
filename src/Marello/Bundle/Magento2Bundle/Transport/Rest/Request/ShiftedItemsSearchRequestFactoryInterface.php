@@ -12,5 +12,5 @@ interface ShiftedItemsSearchRequestFactoryInterface
      * @param int $countOfShiftedElements
      * @return SearchRequest
      */
-    public function getSearchRequest(SearchRequest $currentSearchRequest, int $countOfShiftedElements): SearchRequest;
+    public function getSearchRequestForPreviousPage(SearchRequest $currentSearchRequest, int $countOfShiftedElements): SearchRequest;
 }
