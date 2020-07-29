@@ -7,11 +7,11 @@ class ShiftedItemsSearchRequestFactory implements ShiftedItemsSearchRequestFacto
     /**
      * {@inheritDoc}
      */
-    public function getSearchRequest(SearchRequest $currentSearchRequest, int $countOfShiftedElements): SearchRequest
+    public function getSearchRequestForPreviousPage(SearchRequest $currentSearchRequest, int $countOfShiftedElements): SearchRequest
     {
         $newSearchRequest = clone $currentSearchRequest;
         $currentPageSize = $currentSearchRequest->getSearchCriteria()->getPageSize();
-        $previousPageNumber = $currentSearchRequest->getSearchCriteria()->getCurrentPage() - 1;
+        $previousPageNumber = $currentSearchRequest->getSearchCriteria()->getPageNumber() - 1;
 
         $increment = -1;
         $newPageNumber = $previousPageNumber;
@@ -27,7 +27,7 @@ class ShiftedItemsSearchRequestFactory implements ShiftedItemsSearchRequestFacto
         } while($possiblePageSize < $currentPageSize);
 
         $newSearchRequest->getSearchCriteria()->setPageSize($newPageSize);
-        $newSearchRequest->getSearchCriteria()->setCurrentPage($newPageNumber);
+        $newSearchRequest->getSearchCriteria()->setPageNumber($newPageNumber);
 
         return $newSearchRequest;
     }
