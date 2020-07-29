@@ -541,7 +541,7 @@
                                                     {{ item.quantity }}
                                                 </td>
                                                 <td class="item-info" style="border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px;">
-                                                    {{ item.productUnit }}
+                                                    {{ item.productUnit.name }}
                                                 </td>
                                                 <td class="item-info" style="border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px; text-align:right;">
                                                     {{ item.price|oro_format_currency({'currency': entity.currency}) }}
