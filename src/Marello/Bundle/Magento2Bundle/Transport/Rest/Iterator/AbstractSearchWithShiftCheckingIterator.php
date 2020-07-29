@@ -95,8 +95,10 @@ abstract class AbstractSearchWithShiftCheckingIterator extends AbstractSearchIte
         );
 
         $this->logger->info(
-            '[Magento 2] Check shifted items within previous search request.',
-            $searchRequest->getSearchCriteria()->getSearchCriteriaParams()
+            '[Magento 2] Check shifted items within previous search request. Applying next query params.',
+            [
+                'queryParams' => $searchRequest->getQueryParams()
+            ]
         );
 
         $searchResponse = $this->searchClient->search($searchRequest);
