@@ -103,7 +103,9 @@ class OrderIterator extends AbstractSearchWithShiftCheckingIterator implements U
 
         $this->logger->info(
             '[Magento 2] Applying search criteria Order search request.',
-            $searchCriteria->getSearchCriteriaParams()
+            [
+                'searchCriteriaParams' => $searchCriteria->getSearchCriteriaParams()
+            ]
         );
     }
 

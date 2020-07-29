@@ -52,7 +52,9 @@ class ProductTaxClassesIterator extends AbstractSearchIterator
 
         $this->logger->info(
             '[Magento 2] Applying search criteria ProductTaxClasses search request.',
-            $searchCriteria->getSearchCriteriaParams()
+            [
+                'searchCriteriaParams' => $searchCriteria->getSearchCriteriaParams()
+            ]
         );
     }
 }
