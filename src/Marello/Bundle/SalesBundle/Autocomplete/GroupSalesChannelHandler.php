@@ -5,9 +5,6 @@ namespace Marello\Bundle\SalesBundle\Autocomplete;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\FormBundle\Autocomplete\SearchHandler;
 
-/**
- * @todo Cover with functional test
- */
 class GroupSalesChannelHandler extends SearchHandler
 {
     /**
