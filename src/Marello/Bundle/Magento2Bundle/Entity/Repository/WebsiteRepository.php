@@ -5,7 +5,7 @@ namespace Marello\Bundle\Magento2Bundle\Entity\Repository;
 use Doctrine\ORM\EntityRepository;
 use Marello\Bundle\Magento2Bundle\Model\SalesChannelInfo;
 
-class WebsiteRepository extends EntityRepository
+class WebsiteRepository extends EntityRepository implements NotInOriginIdsInterface
 {
     /**
      * @return SalesChannelInfo[]
@@ -60,5 +60,41 @@ class WebsiteRepository extends EntityRepository
         $result = $qb->getQuery()->getArrayResult();
 
         return \array_column($result, 'id');
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEntitiesNotInOriginIdsInGivenIntegration(
+        array $existedRecordsOriginIds,
+        int $integrationId
+    ): array {
+        $qb = $this->createQueryBuilder('m2w');
+        $qb
+            ->select('m2w')
+            ->where($qb->expr()->notIn('m2w.originId', ':existedRecordsOriginIds'))
+            ->andWhere($qb->expr()->eq('m2w.channel', ':integrationId'))
+            ->setParameter('existedRecordsOriginIds', $existedRecordsOriginIds)
+            ->setParameter('integrationId', $integrationId)
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param int $integrationId
+     * @return array
+     */
+    public function getOriginIdsByIntegrationId(int $integrationId): array
+    {
+        $qb = $this->createQueryBuilder('m2w');
+        $qb
+            ->select('m2w.originId')
+            ->where($qb->expr()->eq('m2w.channel', ':integrationId'))
+            ->setParameter('integrationId', $integrationId);
+
+        $result = $qb->getQuery()->getArrayResult();
+
+        return \array_column($result, 'originId');
     }
 }

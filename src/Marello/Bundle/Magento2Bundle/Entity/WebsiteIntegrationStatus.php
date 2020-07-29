@@ -35,6 +35,7 @@ class WebsiteIntegrationStatus
 
     /**
      * @todo Rename this to innerStatus
+     * @todo Update repository after that
      *
      * @var Status
      *

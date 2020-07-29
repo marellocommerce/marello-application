@@ -84,11 +84,29 @@ class Magento2TransportSettings extends ParameterBag
         $websiteToSalesChannelMapping = $this->get(self::WEBSITE_TO_SALES_CHANNEL_MAPPING_KEY, []);
         foreach ($websiteToSalesChannelMapping as $websiteToSalesChannelMappingItem) {
             $mappingItem = new WebsiteToSalesChannelMappingItemDTO($websiteToSalesChannelMappingItem);
-            if ($mappingItem->getOriginWebsiteId() === $websiteId) {
+            if ($mappingItem->getWebsiteOriginId() === $websiteId) {
                 return $mappingItem->getSalesChannelId();
             }
         }
 
         return null;
+    }
+
+    /**
+     * @param int[] $websiteOriginIds
+     * @return array
+     */
+    public function getMappingItemArrayContainWebsiteOriginId(array $websiteOriginIds): array
+    {
+        $filteredMappingItemArray = [];
+        $websiteToSalesChannelMapping = $this->get(self::WEBSITE_TO_SALES_CHANNEL_MAPPING_KEY, []);
+        foreach ($websiteToSalesChannelMapping as $websiteToSalesChannelMappingItem) {
+            $mappingItem = new WebsiteToSalesChannelMappingItemDTO($websiteToSalesChannelMappingItem);
+            if (\in_array($mappingItem->getWebsiteOriginId(), $websiteOriginIds, true)) {
+                $filteredMappingItemArray[] = $mappingItem->getData();
+            }
+        }
+
+        return $filteredMappingItemArray;
     }
 }

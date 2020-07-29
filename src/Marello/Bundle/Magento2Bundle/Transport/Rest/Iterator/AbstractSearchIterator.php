@@ -195,11 +195,21 @@ abstract class AbstractSearchIterator implements LoggerAwareInterface, \Iterator
         }
 
         $searchResponse = $this->loadPage();
-        $this->firstLoaded = true;
-        $this->rows = $searchResponse->getItems();
-        $this->totalCount = $searchResponse->getTotalCount();
-        $this->offset = 0;
+        $this->processSearchResponseDTO($searchResponse);
 
         return count($this->rows) > 0;
+    }
+
+    /**
+     * Fill properties with information from the new page
+     *
+     * @param SearchResponseDTO $searchResponseDTO
+     */
+    protected function processSearchResponseDTO(SearchResponseDTO $searchResponseDTO): void
+    {
+        $this->firstLoaded = true;
+        $this->rows = $searchResponseDTO->getItems();
+        $this->totalCount = $searchResponseDTO->getTotalCount();
+        $this->offset = 0;
     }
 }

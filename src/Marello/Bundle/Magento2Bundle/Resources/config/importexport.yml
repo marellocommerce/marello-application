@@ -10,13 +10,19 @@ services:
     marello_magento2.import_strategy.website:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Strategy\WebsiteMagento2ImportStrategy
         parent: marello_magento2.import_strategy.default_magento2_import
+        calls:
+            - ['setEnableCollectingOriginIds', [true]]
 
     marello_magento2.import_strategy.store:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Strategy\StoreMagento2ImportStrategy
         parent: marello_magento2.import_strategy.default_magento2_import
+        calls:
+            - ['setEnableCollectingOriginIds', [true]]
 
     marello_magento2.import_strategy.product_tax_class:
         parent: marello_magento2.import_strategy.default_magento2_import
+        calls:
+            - ['setEnableCollectingOriginIds', [true]]
 
     marello_magento2.import_strategy.attributeset:
         parent: marello_magento2.import_strategy.default_magento2_import
@@ -158,17 +164,12 @@ services:
         calls:
             - ['setActionName', [!php/const Marello\Bundle\Magento2Bundle\Integration\Connector\OrderConnector::EXPORT_ACTION_UPDATE_ORDER_STATUS]]
 
-    oro_importexport.reader.entity:
-        class: Oro\Bundle\ImportExportBundle\Reader\EntityReader
+    marello_magento2.importexport.reader.origin_ids_context:
+        class:  Marello\Bundle\Magento2Bundle\ImportExport\Reader\OriginIdsContextReader
         arguments:
             - '@oro_importexport.context_registry'
-            - '@doctrine'
-            - '@oro_security.owner.ownership_metadata_provider'
         calls:
-            - [setDispatcher, ['@event_dispatcher']]
-            - [setAclHelper, ['@oro_security.acl_helper']]
-        tags:
-            - { name: oro_importexport.reader, alias: entity }
+            - ['setLogger', ['@oro_integration.logger.strategy']]
 
     # Writers
     marello_magento2.importexport.writer.export.abstract:
@@ -210,6 +211,19 @@ services:
     marello_magento2.importexport.writer.export.order.update_status_action:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Writer\OrderExportUpdateStatusWriter
         parent: marello_magento2.importexport.writer.export.abstract
+
+    # Remover
+    marello_magento2.importexport.remover.non_existed_records:
+        class: Marello\Bundle\Magento2Bundle\ImportExport\Remover\NonExistedRecordsRemover
+        arguments:
+            - '@doctrine'
+            - '@oro_importexport.context_registry'
+        calls:
+            - ['setLogger', ['@oro_integration.logger.strategy']]
+
+    marello_magento2.importexport.remover.website_mapping_records:
+        class: Marello\Bundle\Magento2Bundle\ImportExport\Remover\WebsiteMappingRecordsRemover
+        parent: marello_magento2.importexport.remover.non_existed_records
 
     # Data converters
     marello_magento2.importexport.converter.website:
@@ -341,6 +355,9 @@ services:
         class: Akeneo\Bundle\BatchBundle\Item\Support\NoopProcessor
 
     marello_magento2.importexport.processor.export.product_delete_removed_action:
+        class: Akeneo\Bundle\BatchBundle\Item\Support\NoopProcessor
+
+    marello_magento2.importexport.processor.origin_ids_context:
         class: Akeneo\Bundle\BatchBundle\Item\Support\NoopProcessor
 
     # Sync Processors

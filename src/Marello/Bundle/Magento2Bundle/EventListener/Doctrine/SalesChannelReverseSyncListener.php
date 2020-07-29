@@ -13,6 +13,7 @@ use Marello\Bundle\Magento2Bundle\Provider\TrackedSalesChannelProvider;
 use Marello\Bundle\Magento2Bundle\Stack\ProductChangesByChannelStack;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Oro\Bundle\IntegrationBundle\Manager\GenuineSyncScheduler;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Oro\Component\MessageQueue\Transport\Exception\Exception;
 
@@ -32,6 +33,9 @@ class SalesChannelReverseSyncListener
     /** @var MessageProducerInterface */
     protected $producer;
 
+    /** @var GenuineSyncScheduler */
+    protected $genuineSyncScheduler;
+
     /** @var array */
     protected $integrationChannelIdsWithProductIds = [];
 
@@ -43,17 +47,20 @@ class SalesChannelReverseSyncListener
      * @param ProductChangesByChannelStack $changesByChannelStack
      * @param ProductRepository $productRepository
      * @param MessageProducerInterface $producer
+     * @param GenuineSyncScheduler $genuineSyncScheduler
      */
     public function __construct(
         TrackedSalesChannelProvider $salesChannelInfosProvider,
         ProductChangesByChannelStack $changesByChannelStack,
         ProductRepository $productRepository,
-        MessageProducerInterface $producer
+        MessageProducerInterface $producer,
+        GenuineSyncScheduler $genuineSyncScheduler
     ) {
         $this->salesChannelProvider = $salesChannelInfosProvider;
         $this->changesByChannelStack = $changesByChannelStack;
         $this->productRepository = $productRepository;
         $this->producer = $producer;
+        $this->genuineSyncScheduler = $genuineSyncScheduler;
     }
 
     /**
@@ -112,6 +119,23 @@ class SalesChannelReverseSyncListener
     public function postFlush(PostFlushEventArgs $args)
     {
         $this->salesChannelProvider->clearCache();
+        $this->processIntegrationChannelIdsWithProductIds();
+        $this->processSalesChannelWithUpdatedActiveField();
+    }
+
+    /**
+     * Clear object storage when error was occurred during UOW#Commit
+     *
+     * @param OnClearEventArgs $args
+     */
+    public function onClear(OnClearEventArgs $args)
+    {
+        $this->salesChannelsWithUpdatedActiveField = [];
+        $this->integrationChannelIdsWithProductIds = [];
+    }
+
+    protected function processIntegrationChannelIdsWithProductIds(): void
+    {
         foreach ($this->integrationChannelIdsWithProductIds as $integrationId => $modifiedProductIds) {
             if (empty($modifiedProductIds)) {
                 continue;
@@ -142,11 +166,11 @@ class SalesChannelReverseSyncListener
         }
 
         $this->integrationChannelIdsWithProductIds = [];
+    }
 
-        /**
-         * @todo Extend this logic to call initial sync on integration
-         * that has enabled sales channels
-         */
+    protected function processSalesChannelWithUpdatedActiveField(): void
+    {
+        $integrationIdsOnSync = [];
         foreach ($this->salesChannelsWithUpdatedActiveField as $salesChannel) {
             $integrationId = $this->salesChannelProvider->getIntegrationIdBySalesChannelId(
                 $salesChannel->getId(),
@@ -158,6 +182,13 @@ class SalesChannelReverseSyncListener
              */
             if (null === $integrationId) {
                 continue;
+            }
+
+            /**
+             * In case when new sales channel enabled, we should send message on sync
+             */
+            if ($salesChannel->getActive()) {
+                $integrationIdsOnSync[] = $integrationId;
             }
 
             $modifiedProductIds = $this->productRepository->getProductIdsBySalesChannelIds([$salesChannel->getId()]);
@@ -198,18 +229,11 @@ class SalesChannelReverseSyncListener
             );
         }
 
-        $this->salesChannelsWithUpdatedActiveField = [];
-    }
+        foreach ($integrationIdsOnSync as $integrationId) {
+            $this->genuineSyncScheduler->schedule($integrationId);
+        }
 
-    /**
-     * Clear object storage when error was occurred during UOW#Commit
-     *
-     * @param OnClearEventArgs $args
-     */
-    public function onClear(OnClearEventArgs $args)
-    {
         $this->salesChannelsWithUpdatedActiveField = [];
-        $this->integrationChannelIdsWithProductIds = [];
     }
 
     /**

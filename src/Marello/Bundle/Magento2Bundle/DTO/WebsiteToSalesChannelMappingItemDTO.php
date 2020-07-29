@@ -46,7 +46,7 @@ class WebsiteToSalesChannelMappingItemDTO implements \JsonSerializable
     /**
      * @return int
      */
-    public function getOriginWebsiteId(): int
+    public function getWebsiteOriginId(): int
     {
         return $this->data['originWebsiteId'];
     }

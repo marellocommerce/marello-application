@@ -17,6 +17,9 @@ services:
     marello_magento2.transport.rest.request.request_factory:
         class: Marello\Bundle\Magento2Bundle\Transport\Rest\Request\RequestFactory
 
+    marello_magento2.transport.rest.request.shifted_items_search_request_factory:
+        class: Marello\Bundle\Magento2Bundle\Transport\Rest\Request\ShiftedItemsSearchRequestFactory
+
     marello_magento2.transport.rest.search_client_factory:
         class: Marello\Bundle\Magento2Bundle\Transport\Rest\Client\SearchClientFactory
 
@@ -58,6 +61,12 @@ services:
         arguments:
             - 'Marello\Bundle\Magento2Bundle\Entity\Store'
 
+    marello_magento2.repository.product_tax_class:
+        class: Marello\Bundle\Magento2Bundle\Entity\Repository\ProductTaxClassRepository
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'Marello\Bundle\Magento2Bundle\Entity\ProductTaxClass'
+
     # Event Listeners
     marello_magento2.event_listener.doctrine.product:
         class: Marello\Bundle\Magento2Bundle\EventListener\Doctrine\ProductListener
@@ -96,6 +105,7 @@ services:
             - '@marello_magento2.stack.product_changes_by_channel'
             - '@marello_product.repository.product'
             - '@oro_message_queue.message_producer'
+            - '@oro_integration.genuine_sync_scheduler'
         tags:
             - { name: doctrine.event_listener, event: onFlush }
             - { name: doctrine.event_listener, event: postFlush }
@@ -155,6 +165,16 @@ services:
             - { name: doctrine.event_listener, event: postFlush }
             - { name: doctrine.event_listener, event: onClear }
 
+    marello_magento2.event_listener.doctrine.magento2_transport:
+        class: Marello\Bundle\Magento2Bundle\EventListener\Doctrine\Magento2TransportListener
+        arguments:
+            - '@oro_integration.genuine_sync_scheduler'
+            - ['initialSyncStartDate', 'websiteToSalesChannelMapping']
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\Magento2Bundle\Entity\Magento2Transport', event: postUpdate }
+            - { name: doctrine.event_listener, event: postFlush }
+            - { name: doctrine.event_listener, event: onClear }
+
     # Handlers
     marello_magento2.handler.transport_entity_handler:
         class: Marello\Bundle\Magento2Bundle\Handler\TransportEntityHandler
@@ -169,6 +189,7 @@ services:
             - '@marello_magento2.transport.rest.search_client_factory'
             - '@oro_security.encoder.default'
             - '@marello_magento2.transport.rest.search_criteria.filter_factory'
+            - '@marello_magento2.transport.rest.request.shifted_items_search_request_factory'
         calls:
             - [setLogger, ["@oro_integration.logger.strategy"]]
         tags:
@@ -191,8 +212,6 @@ services:
 
     marello_magento2.provider.websites_provider:
         class: Marello\Bundle\Magento2Bundle\Provider\WebsitesProvider
-        arguments:
-            - '@translator'
 
     marello_magento2.provider.tracked_sales_channel:
         class: Marello\Bundle\Magento2Bundle\Provider\TrackedSalesChannelProvider

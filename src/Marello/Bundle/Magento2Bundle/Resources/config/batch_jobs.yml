@@ -14,8 +14,15 @@ connector:
                         writer:    oro_importexport.writer.entity
                     parameters:
                         batch_size: 25
-                # @todo Implement removing of abandoned website
-                # @todo Implement updating config WEBSITE_TO_SALES_CHANNEL_MAPPING_KEY
+                remove_non_existent_data:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_magento2.importexport.reader.origin_ids_context
+                        processor: marello_magento2.importexport.processor.origin_ids_context
+                        writer:    marello_magento2.importexport.remover.website_mapping_records
+                    parameters:
+                        batch_size: 1
 
         marello_magento2_store_rest_import:
             title: "Store import from Magento 2"
@@ -30,7 +37,15 @@ connector:
                         writer:    oro_importexport.writer.entity
                     parameters:
                         batch_size: 100
-                # @todo Implement removing of abandoned stores
+                remove_non_existent_data:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_magento2.importexport.reader.origin_ids_context
+                        processor: marello_magento2.importexport.processor.origin_ids_context
+                        writer:    marello_magento2.importexport.remover.non_existed_records
+                    parameters:
+                        batch_size: 1
 
         marello_magento2_product_tax_class_rest_import:
             title: "Product Tax Class import from Magento 2"
@@ -45,7 +60,15 @@ connector:
                         writer:    oro_importexport.writer.entity
                     parameters:
                         batch_size: 25
-                # @todo Implement removing of abandoned tax class
+                remove_non_existent_data:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_magento2.importexport.reader.origin_ids_context
+                        processor: marello_magento2.importexport.processor.origin_ids_context
+                        writer:    marello_magento2.importexport.remover.non_existed_records
+                    parameters:
+                        batch_size: 1
 
         marello_magento2_attributeset_rest_import:
             title: "Attributeset import from Magento 2"
