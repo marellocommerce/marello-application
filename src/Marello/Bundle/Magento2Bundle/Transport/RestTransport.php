@@ -13,6 +13,7 @@ use Marello\Bundle\Magento2Bundle\Transport\Rest\Iterator\ProductTaxClassesItera
 use Marello\Bundle\Magento2Bundle\Transport\Rest\Iterator\StoreIterator;
 use Marello\Bundle\Magento2Bundle\Transport\Rest\Iterator\WebsiteIterator;
 use Marello\Bundle\Magento2Bundle\Transport\Rest\Request\RequestFactory;
+use Marello\Bundle\Magento2Bundle\Transport\Rest\Request\ShiftedItemsSearchRequestFactoryInterface;
 use Marello\Bundle\Magento2Bundle\Transport\Rest\SearchCriteria\FilterFactoryInterface;
 use Oro\Bundle\IntegrationBundle\Entity\Transport;
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\FactoryInterface as RestClientFactoryInterface;
@@ -72,24 +73,32 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
     protected $filterFactory;
 
     /**
+     * @var ShiftedItemsSearchRequestFactoryInterface
+     */
+    protected $shiftedItemsSearchRequestFactory;
+
+    /**
      * @param RestClientFactoryInterface $clientFactory
      * @param RequestFactory $requestFactory
      * @param SearchClientFactory $searchClientFactory
      * @param SymmetricCrypterInterface $crypter
      * @param FilterFactoryInterface $filterFactory
+     * @param ShiftedItemsSearchRequestFactoryInterface $shiftedItemsSearchRequestFactory
      */
     public function __construct(
         RestClientFactoryInterface $clientFactory,
         RequestFactory $requestFactory,
         SearchClientFactory $searchClientFactory,
         SymmetricCrypterInterface $crypter,
-        FilterFactoryInterface $filterFactory
+        FilterFactoryInterface $filterFactory,
+        ShiftedItemsSearchRequestFactoryInterface $shiftedItemsSearchRequestFactory
     ) {
         $this->clientFactory = $clientFactory;
         $this->requestFactory = $requestFactory;
         $this->searchClientFactory = $searchClientFactory;
         $this->crypter = $crypter;
         $this->filterFactory = $filterFactory;
+        $this->shiftedItemsSearchRequestFactory = $shiftedItemsSearchRequestFactory;
     }
 
     /**
@@ -264,7 +273,12 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
 
         $searchClient = $this->searchClientFactory->createSearchClient($this->getClient());
 
-        return new OrderIterator($searchClient, $request, $this->filterFactory);
+        return new OrderIterator(
+            $searchClient,
+            $request,
+            $this->filterFactory,
+            $this->shiftedItemsSearchRequestFactory
+        );
     }
 
     /**

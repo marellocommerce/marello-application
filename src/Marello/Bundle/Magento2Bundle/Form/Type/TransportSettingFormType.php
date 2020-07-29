@@ -65,9 +65,6 @@ class TransportSettingFormType extends AbstractType
             ]
         );
 
-        /**
-         * @todo Schedule initial sync on changing this value
-         */
         $builder->add(
             'initialSyncStartDate',
             OroDateType::class,
@@ -128,9 +125,6 @@ class TransportSettingFormType extends AbstractType
             ]
         );
 
-        /**
-         * @todo Schedule initial sync on changing this value
-         */
         $builder->add(
             'websiteToSalesChannelMapping',
             WebsiteToSalesChannelMappingType::class,

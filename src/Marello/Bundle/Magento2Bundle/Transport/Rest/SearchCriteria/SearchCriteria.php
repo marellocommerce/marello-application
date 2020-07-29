@@ -50,6 +50,14 @@ class SearchCriteria
     }
 
     /**
+     * @return int
+     */
+    public function getCurrentPage(): int
+    {
+        return $this->currentPage;
+    }
+
+    /**
      * @return $this
      */
     public function nextPage(): self
@@ -68,6 +76,14 @@ class SearchCriteria
         $this->pageSize = $pageSize;
 
         return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPageSize(): int
+    {
+        return $this->pageSize;
     }
 
     /**

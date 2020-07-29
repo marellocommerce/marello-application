@@ -25,10 +25,6 @@ class WebsiteToSalesChannelMappingType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        /**
-         * @todo Implement transforming data to DTO for intermidiate validation
-         */
-//        $builder->addModelTransformer(new ArrayToJsonTransformer());
         $builder->addViewTransformer(new ArrayToJsonTransformer());
     }
 

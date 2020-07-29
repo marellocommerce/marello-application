@@ -4,7 +4,7 @@ namespace Marello\Bundle\Magento2Bundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-class StoreRepository extends EntityRepository
+class StoreRepository extends EntityRepository implements NotInOriginIdsInterface
 {
     /**
      * @param int $websiteId
@@ -21,5 +21,23 @@ class StoreRepository extends EntityRepository
         $result = $qb->getQuery()->getArrayResult();
 
         return \array_column($result, 'originId');
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEntitiesNotInOriginIdsInGivenIntegration(
+        array $existedRecordsOriginIds,
+        int $integrationId
+    ): array {
+        $qb = $this->createQueryBuilder('m2s');
+        $qb
+            ->select('m2s')
+            ->where($qb->expr()->notIn('m2s.originId', ':existedRecordsOriginIds'))
+            ->andWhere($qb->expr()->eq('m2s.channel', ':integrationId'))
+            ->setParameter('existedRecordsOriginIds', $existedRecordsOriginIds)
+            ->setParameter('integrationId', $integrationId);
+
+        return $qb->getQuery()->getResult();
     }
 }

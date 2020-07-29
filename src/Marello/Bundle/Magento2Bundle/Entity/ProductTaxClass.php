@@ -7,7 +7,7 @@ use Marello\Bundle\Magento2Bundle\Model\ExtendProductTaxClass;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Marello\Bundle\Magento2Bundle\Entity\Repository\ProductTaxClassRepository")
  * @ORM\Table(name="marello_m2_product_tax_class")
  * @Config()
  */

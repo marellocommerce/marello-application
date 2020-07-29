@@ -63,4 +63,9 @@ class SearchRequest extends Request
 
         return $this;
     }
+
+    public function __clone()
+    {
+        $this->searchCriteria = clone $this->searchCriteria;
+    }
 }

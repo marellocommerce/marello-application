@@ -11,14 +11,12 @@ use Marello\Bundle\Magento2Bundle\Transport\Rest\SearchCriteria\Filter;
 use Marello\Bundle\Magento2Bundle\Transport\Rest\SearchCriteria\SortOrder;
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Exception\RestException;
 
-class OrderIterator extends AbstractSearchIterator implements UpdatableSearchLoaderInterface
+class OrderIterator extends AbstractSearchWithShiftCheckingIterator implements UpdatableSearchLoaderInterface
 {
     /** @var int */
     public const DEFAULT_PAGE_SIZE = 10;
 
-    /**
-     * @var SearchParametersDTO
-     */
+    /** @var SearchParametersDTO */
     protected $searchParametersDTO;
 
     /**
@@ -107,6 +105,23 @@ class OrderIterator extends AbstractSearchIterator implements UpdatableSearchLoa
             '[Magento 2] Applying search criteria Order search request.',
             $searchCriteria->getSearchCriteriaParams()
         );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function getIdColumnNameToCompareReadItems(): string
+    {
+        return MagentoOrderDataConverter::ID_COLUMN_NAME;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function doNeedToCheckOnExistenceOfShiftedItems(SearchResponseDTO $searchResponseDTO): bool
+    {
+        return parent::doNeedToCheckOnExistenceOfShiftedItems($searchResponseDTO) &&
+            false === $this->searchParametersDTO->isInitialMode();
     }
 
     /**

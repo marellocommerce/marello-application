@@ -6,9 +6,6 @@ use Marello\Bundle\Magento2Bundle\Exception\InvalidConfigurationException;
 use Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelRepository;
 use Oro\Bundle\FormBundle\Autocomplete\SearchHandler;
 
-/**
- * @todo Cover with functional test
- */
 class SalesChannelInGroupHandler extends SearchHandler
 {
     private const DELIMITER = ';';

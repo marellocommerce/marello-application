@@ -84,8 +84,6 @@ class TransportHandler
     }
 
     /**
-     * @todo Replace with validator
-     *
      * @param Magento2Transport $transportEntity
      * @return bool
      */
