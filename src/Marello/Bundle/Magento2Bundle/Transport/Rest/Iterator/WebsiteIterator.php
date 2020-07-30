@@ -39,7 +39,7 @@ class WebsiteIterator extends AbstractLoadeableIterator
 
             $websiteDataItem[WebsiteDataConverter::SALES_CHANNEL_CODE_COLUMN_ID] = null;
             if (null !== $websiteId) {
-                $salesChannelId = $this->settingsBag->getSalesChannelIdByOriginWebsiteId(
+                $salesChannelId = $this->settingsBag->getSalesChannelIdByWebsiteOriginId(
                     $websiteDataItem[WebsiteDataConverter::ID_COLUMN_NAME]
                 );
                 $websiteDataItem[WebsiteDataConverter::SALES_CHANNEL_CODE_COLUMN_ID] = $salesChannelId;
