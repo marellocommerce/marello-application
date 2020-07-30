@@ -30,21 +30,24 @@ class WebsiteIterator extends AbstractLoadeableIterator
      */
     protected function getData(): array
     {
-        $data = \array_filter($this->data, function (array $websiteData) {
-            return isset($websiteData[WebsiteDataConverter::ID_COLUMN_NAME]) &&
-                self::ADMIN_WEBSITE_ID !== $websiteData[WebsiteDataConverter::ID_COLUMN_NAME];
-        });
-
-        return \array_map(function (array $websiteData) {
-            $websiteData[WebsiteDataConverter::SALES_CHANNEL_CODE_COLUMN_ID] = null;
-            if (isset($websiteData[WebsiteDataConverter::ID_COLUMN_NAME])) {
-                $salesChannelId = $this->settingsBag->getSalesChannelIdByWebsiteId(
-                    $websiteData[WebsiteDataConverter::ID_COLUMN_NAME]
-                );
-                $websiteData[WebsiteDataConverter::SALES_CHANNEL_CODE_COLUMN_ID] = $salesChannelId;
+        $websiteData = [];
+        foreach ($this->data as $websiteDataItem) {
+            $websiteId = $websiteDataItem[WebsiteDataConverter::ID_COLUMN_NAME] ?? null;
+            if (self::ADMIN_WEBSITE_ID === $websiteId) {
+                continue;
             }
 
-            return $websiteData;
-        }, $data);
+            $websiteDataItem[WebsiteDataConverter::SALES_CHANNEL_CODE_COLUMN_ID] = null;
+            if (null !== $websiteId) {
+                $salesChannelId = $this->settingsBag->getSalesChannelIdByOriginWebsiteId(
+                    $websiteDataItem[WebsiteDataConverter::ID_COLUMN_NAME]
+                );
+                $websiteDataItem[WebsiteDataConverter::SALES_CHANNEL_CODE_COLUMN_ID] = $salesChannelId;
+            }
+
+            $websiteData[] = $websiteDataItem;
+        }
+
+        return $websiteData;
     }
 }

@@ -79,7 +79,7 @@ class Magento2TransportSettings extends ParameterBag
      * @param int $websiteId
      * @return int|null
      */
-    public function getSalesChannelIdByWebsiteId(int $websiteId): ?int
+    public function getSalesChannelIdByOriginWebsiteId(int $websiteId): ?int
     {
         $websiteToSalesChannelMapping = $this->get(self::WEBSITE_TO_SALES_CHANNEL_MAPPING_KEY, []);
         foreach ($websiteToSalesChannelMapping as $websiteToSalesChannelMappingItem) {
