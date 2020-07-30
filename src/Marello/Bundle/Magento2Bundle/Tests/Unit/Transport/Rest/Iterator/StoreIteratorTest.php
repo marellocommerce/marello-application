@@ -96,7 +96,7 @@ class StoreIteratorTest extends TestCase
                 'storeConfigData' => [],
                 'expectedResult' => []
             ],
-            'Invalid store data' => [
+            'Process invalid store data, to have clear validation messages' => [
                 'storeData' => [
                     [
                         "code" => "default",
