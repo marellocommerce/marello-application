@@ -70,56 +70,44 @@ class OrderPaymentContextFactory implements PaymentContextFactoryInterface
             $order,
             (string)$order->getId()
         );
-        $orderWarehouseResults = $this->orderWarehousesProvider->getWarehousesForOrder($order);
-        if (!empty($orderWarehouseResults)) {
-            $results = [];
-            foreach ($orderWarehouseResults as $orderWarehouseResult) {
-                $whOrderItems = $orderWarehouseResult->getOrderItems();
-                $subtotal = 0.00;
-                foreach ($whOrderItems as $whOrderItem) {
-                    $subtotal += $whOrderItem->getPrice() * $whOrderItem->getQuantity();
-                }
-                $subtotal = Price::create(
-                    $subtotal,
-                    $order->getCurrency()
-                );
 
-                $paymentContextBuilder
-                    ->setSubTotal($subtotal)
-                    ->setCurrency($order->getCurrency());
+        $results = [];
+        $orderItems = $order->getItems();
+        $subtotal = 0.00;
+        foreach ($orderItems as $orderItem) {
+            $subtotal += $orderItem->getPrice() * $orderItem->getQuantity();
+        }
+        $subtotal = Price::create(
+            $subtotal,
+            $order->getCurrency()
+        );
 
-                $convertedLineItems = $this->paymentLineItemConverter->convertLineItems($whOrderItems);
-                $paymentOrigin = $orderWarehouseResult->getWarehouse()->getAddress();
+        $paymentContextBuilder
+            ->setSubTotal($subtotal)
+            ->setCurrency($order->getCurrency());
 
-                if (null !== $paymentOrigin) {
-                    $paymentContextBuilder->setShippingOrigin($paymentOrigin);
-                }
-
-                if (null !== $order->getShippingAddress()) {
-                    $paymentContextBuilder->setShippingAddress($order->getShippingAddress());
-                }
-
-                if (null !== $order->getBillingAddress()) {
-                    $paymentContextBuilder->setBillingAddress($order->getBillingAddress());
-                }
-
-                if (null !== $order->getCustomer()) {
-                    $paymentContextBuilder->setCustomer($order->getCustomer());
-                }
-
-                if (null !== $convertedLineItems) {
-                    $paymentContextBuilder->setLineItems($convertedLineItems);
-                }
-                $paymentContext = $paymentContextBuilder->getResult();
-                $event = new OrderPaymentContextBuildingEvent($paymentContext);
-                $this->eventDispatcher->dispatch(OrderPaymentContextBuildingEvent::NAME, $event);
-                $results[] = $paymentContext = $event->getPaymentContext();
-            }
-
-            return $results;
+        $convertedLineItems = $this->paymentLineItemConverter->convertLineItems($orderItems);
+        if (null !== $order->getShippingAddress()) {
+            $paymentContextBuilder->setShippingAddress($order->getShippingAddress());
         }
 
-        return [];
+        if (null !== $order->getBillingAddress()) {
+            $paymentContextBuilder->setBillingAddress($order->getBillingAddress());
+        }
+
+        if (null !== $order->getCustomer()) {
+            $paymentContextBuilder->setCustomer($order->getCustomer());
+        }
+
+        if (null !== $convertedLineItems) {
+            $paymentContextBuilder->setLineItems($convertedLineItems);
+        }
+        $paymentContext = $paymentContextBuilder->getResult();
+        $event = new OrderPaymentContextBuildingEvent($paymentContext);
+        $this->eventDispatcher->dispatch(OrderPaymentContextBuildingEvent::NAME, $event);
+        $results[] = $event->getPaymentContext();
+
+        return $results;
     }
 
     /**
