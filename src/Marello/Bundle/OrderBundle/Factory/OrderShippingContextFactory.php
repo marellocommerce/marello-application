@@ -7,6 +7,7 @@ use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
 use Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProviderInterface;
 use Marello\Bundle\OrderBundle\Converter\OrderShippingLineItemConverterInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\OrderBundle\Event\OrderShippingContextBuildingEvent;
 use Marello\Bundle\ShippingBundle\Context\Builder\Factory\ShippingContextBuilderFactoryInterface;
 use Marello\Bundle\ShippingBundle\Context\ShippingContextFactoryInterface;
@@ -73,57 +74,45 @@ class OrderShippingContextFactory implements ShippingContextFactoryInterface
             $order,
             (string)$order->getId()
         );
-        $this->orderWarehousesProvider->setEstimation($this->estimation);
-        $orderWarehouseResults = $this->orderWarehousesProvider->getWarehousesForOrder($order);
-        if (!empty($orderWarehouseResults)) {
-            $results = [];
-            foreach ($orderWarehouseResults as $orderWarehouseResult) {
-                $whOrderItems = $orderWarehouseResult->getOrderItems();
-                $subtotal = 0.00;
-                foreach ($whOrderItems as $whOrderItem) {
-                    $subtotal += $whOrderItem->getPrice() * $whOrderItem->getQuantity();
-                }
-                $subtotal = Price::create(
-                    $subtotal,
-                    $order->getCurrency()
-                );
 
-                $shippingContextBuilder
-                    ->setSubTotal($subtotal)
-                    ->setCurrency($order->getCurrency());
+        $results = [];
+        $orderItems = $order->getItems();
+        $subtotal = 0.00;
+        /** @var OrderItem $orderItem */
+        foreach ($orderItems as $orderItem) {
+            $subtotal += $orderItem->getPrice() * $orderItem->getQuantity();
+        }
+        $subtotal = Price::create(
+            $subtotal,
+            $order->getCurrency()
+        );
 
-                $convertedLineItems = $this->shippingLineItemConverter->convertLineItems($whOrderItems);
-                $shippingOrigin = $orderWarehouseResult->getWarehouse()->getAddress();
+        $shippingContextBuilder
+            ->setSubTotal($subtotal)
+            ->setCurrency($order->getCurrency());
 
-                if (null !== $shippingOrigin) {
-                    $shippingContextBuilder->setShippingOrigin($shippingOrigin);
-                }
-
-                if (null !== $order->getShippingAddress()) {
-                    $shippingContextBuilder->setShippingAddress($order->getShippingAddress());
-                }
-
-                if (null !== $order->getBillingAddress()) {
-                    $shippingContextBuilder->setBillingAddress($order->getBillingAddress());
-                }
-
-                if (null !== $order->getCustomer()) {
-                    $shippingContextBuilder->setCustomer($order->getCustomer());
-                }
-
-                if (null !== $convertedLineItems) {
-                    $shippingContextBuilder->setLineItems($convertedLineItems);
-                }
-                $shippingContext = $shippingContextBuilder->getResult();
-                $event = new OrderShippingContextBuildingEvent($shippingContext);
-                $this->eventDispatcher->dispatch(OrderShippingContextBuildingEvent::NAME, $event);
-                $results[] = $shippingContext = $event->getShippingContext();
-            }
-
-            return $results;
+        $convertedLineItems = $this->shippingLineItemConverter->convertLineItems($orderItems);
+        if (null !== $order->getShippingAddress()) {
+            $shippingContextBuilder->setShippingAddress($order->getShippingAddress());
         }
 
-        return [];
+        if (null !== $order->getBillingAddress()) {
+            $shippingContextBuilder->setBillingAddress($order->getBillingAddress());
+        }
+
+        if (null !== $order->getCustomer()) {
+            $shippingContextBuilder->setCustomer($order->getCustomer());
+        }
+
+        if (null !== $convertedLineItems) {
+            $shippingContextBuilder->setLineItems($convertedLineItems);
+        }
+        $shippingContext = $shippingContextBuilder->getResult();
+        $event = new OrderShippingContextBuildingEvent($shippingContext);
+        $this->eventDispatcher->dispatch(OrderShippingContextBuildingEvent::NAME, $event);
+        $results[] = $event->getShippingContext();
+
+        return $results;
     }
 
     /**
