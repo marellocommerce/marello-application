@@ -42,6 +42,13 @@ services:
         tags:
             - { name: twig.extension }
 
+    marello_product.twig.product_unit_extension:
+        class: Marello\Bundle\ProductBundle\Twig\ProductUnitExtension
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: twig.extension }
+
     marello_product.listener.datagrid.product_categories_column_listener:
         class: Marello\Bundle\ProductBundle\EventListener\Datagrid\ProductCategoriesColumnListener
         arguments:
