@@ -76,7 +76,6 @@ class OrderMagento2ImportStrategy extends DefaultMagento2ImportStrategy
         $this->updateOrganizationForNewRelations($entity);
         $this->processOrderItems($entity);
         $this->setCustomerToInnerOrder($entity);
-        $this->resetMagentoStoreIfEntityNotFound($entity);
         $this->copyLocalizationInfoFromStoreToOrder($entity);
         $this->fillCurrencyInInnerOrder($entity);
         $this->fixOriginIdForGuestCustomer($entity);
@@ -145,24 +144,6 @@ class OrderMagento2ImportStrategy extends DefaultMagento2ImportStrategy
         }
 
         $order->setMagentoCustomerAndFillInnerOrderWithCustomer($innerCustomer);
-    }
-
-    /**
-     * @param MagentoOrder $order
-     */
-    protected function resetMagentoStoreIfEntityNotFound(MagentoOrder $order): void
-    {
-        if (null === $order->getStore()) {
-            return;
-        }
-
-        /**
-         * We won't create new store within order,
-         * so in case if it hasn't found we reset it from
-         */
-        if (null === $order->getStore()->getId()) {
-            $order->setStore(null);
-        }
     }
 
     /**
