@@ -40,7 +40,7 @@ class StoreIterator extends AbstractLoadeableIterator
 
         $storeIdsConfig = \array_column($this->storeConfigData, 'id');
         foreach ($storeIds as $storeItemIndex => $storeId) {
-            $configItemIndex = array_search($storeId, $storeIdsConfig, true);
+            $configItemIndex = \array_search($storeId, $storeIdsConfig, true);
 
             if (self::ADMIN_STORE_ID === $storeId) {
                 continue;

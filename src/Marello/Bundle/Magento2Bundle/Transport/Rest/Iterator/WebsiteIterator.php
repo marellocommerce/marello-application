@@ -5,13 +5,9 @@ namespace Marello\Bundle\Magento2Bundle\Transport\Rest\Iterator;
 use Marello\Bundle\Magento2Bundle\Iterator\AbstractLoadeableIterator;
 use Marello\Bundle\Magento2Bundle\Model\Magento2TransportSettings;
 use Marello\Bundle\Magento2Bundle\ImportExport\Converter\WebsiteDataConverter;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 
-class WebsiteIterator extends AbstractLoadeableIterator implements LoggerAwareInterface
+class WebsiteIterator extends AbstractLoadeableIterator
 {
-    use LoggerAwareTrait;
-
     private const ADMIN_WEBSITE_ID = 0;
 
     /**
@@ -46,25 +42,9 @@ class WebsiteIterator extends AbstractLoadeableIterator implements LoggerAwareIn
                     $websiteData[WebsiteDataConverter::ID_COLUMN_NAME]
                 );
                 $websiteData[WebsiteDataConverter::SALES_CHANNEL_CODE_COLUMN_ID] = $salesChannelId;
-            } else {
-                $this->logInvalidWebsiteDataFound($websiteData);
             }
 
             return $websiteData;
         }, $data);
-    }
-
-    /**
-     * @param array $websiteData
-     */
-    protected function logInvalidWebsiteDataFound(array $websiteData): void
-    {
-        $this->logger->warning(
-            '[Magento 2] Skipped website, because it doesn\'t contain identifier column in data.',
-            [
-                'identifierColumnName' => WebsiteDataConverter::ID_COLUMN_NAME,
-                'data' => $websiteData
-            ]
-        );
     }
 }

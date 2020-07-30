@@ -4,14 +4,53 @@ Marello\Bundle\SalesBundle\Entity\SalesChannelGroup:
 
 Marello\Bundle\Magento2Bundle\Entity\Customer:
     properties:
+        channel:
+            - NotBlank: ~
         innerCustomer:
             - NotBlank: ~
             - Valid: ~
 
 Marello\Bundle\Magento2Bundle\Entity\Order:
     properties:
+        channel:
+            - NotBlank: ~
+        originId:
+            - NotBlank: ~
         innerOrder:
             - NotBlank: ~
             - Valid: ~
         magentoCustomer:
             - Valid: ~
+
+Marello\Bundle\Magento2Bundle\Entity\Website:
+    properties:
+        channel:
+            - NotBlank: ~
+        originId:
+            - NotBlank: ~
+        code:
+            - NotBlank: ~
+        name:
+            - NotBlank: ~
+
+Marello\Bundle\Magento2Bundle\Entity\Store:
+    properties:
+        channel:
+            - NotBlank: ~
+        originId:
+            - NotBlank: ~
+        code:
+            - NotBlank: ~
+        name:
+            - NotBlank: ~
+        website:
+            - NotBlank: ~
+
+Marello\Bundle\Magento2Bundle\Entity\ProductTaxClass:
+    properties:
+        channel:
+            - NotBlank: ~
+        originId:
+            - NotBlank: ~
+        className:
+            - NotBlank: ~
