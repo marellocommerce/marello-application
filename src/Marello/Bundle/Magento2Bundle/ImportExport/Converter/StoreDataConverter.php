@@ -6,13 +6,15 @@ use Oro\Bundle\IntegrationBundle\ImportExport\DataConverter\IntegrationAwareData
 
 class StoreDataConverter extends IntegrationAwareDataConverter
 {
+    public const ID_COLUMN_NAME = 'id';
+
     /**
      * {@inheritdoc}
      */
     protected function getHeaderConversionRules()
     {
         return [
-            'id' => 'originId',
+            self::ID_COLUMN_NAME => 'originId',
             'code' => 'code',
             'name' => 'name',
             'website_id' => 'website:originId',

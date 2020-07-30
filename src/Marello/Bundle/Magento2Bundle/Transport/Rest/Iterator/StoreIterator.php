@@ -2,7 +2,9 @@
 
 namespace Marello\Bundle\Magento2Bundle\Transport\Rest\Iterator;
 
+use Marello\Bundle\Magento2Bundle\ImportExport\Converter\StoreDataConverter;
 use Marello\Bundle\Magento2Bundle\Iterator\AbstractLoadeableIterator;
+use Oro\Component\PhpUtils\ArrayUtil;
 
 class StoreIterator extends AbstractLoadeableIterator
 {
@@ -33,28 +35,34 @@ class StoreIterator extends AbstractLoadeableIterator
      */
     protected function getData(): array
     {
-        $data = [];
-        $storeIds = \array_unique(
-            \array_column($this->storeData, 'id')
-        );
+        $resultStoreData = [];
+        foreach ($this->storeData as $storeDataItem) {
+            if (!\array_key_exists(StoreDataConverter::ID_COLUMN_NAME, $storeDataItem)) {
+                $resultStoreData[] = $storeDataItem;
 
-        $storeIdsConfig = \array_column($this->storeConfigData, 'id');
-        foreach ($storeIds as $storeItemIndex => $storeId) {
-            $configItemIndex = \array_search($storeId, $storeIdsConfig, true);
-
-            if (self::ADMIN_STORE_ID === $storeId) {
                 continue;
             }
 
-            $storeDataItem = $this->storeData[$storeItemIndex];
-            $storeConfigDataItem = [];
-            if (false !== $configItemIndex) {
-                $storeConfigDataItem = $this->storeConfigData[$configItemIndex];
+            $currentStoreId = $storeDataItem[StoreDataConverter::ID_COLUMN_NAME];
+            if (self::ADMIN_STORE_ID === $storeDataItem[StoreDataConverter::ID_COLUMN_NAME]) {
+                continue;
             }
 
-            $data[] = \array_merge($storeConfigDataItem, $storeDataItem);
+            $foundStoreConfigItem = ArrayUtil::find(function (array $storeConfigItem) use ($currentStoreId) {
+                $storeId = $storeConfigItem[StoreDataConverter::ID_COLUMN_NAME] ?? null;
+
+                return $currentStoreId === $storeId;
+            }, $this->storeConfigData);
+
+            if (null === $foundStoreConfigItem) {
+                $resultStoreData[] = $storeDataItem;
+
+                continue;
+            }
+
+            $resultStoreData[] = \array_merge($foundStoreConfigItem, $storeDataItem);
         }
 
-        return $data;
+        return $resultStoreData;
     }
 }
