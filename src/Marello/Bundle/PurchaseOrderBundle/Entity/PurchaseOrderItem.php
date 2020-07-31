@@ -187,7 +187,7 @@ class PurchaseOrderItem implements
      *
      * @ORM\Column(name="data", type="json_array", nullable=true)
      */
-    protected $data;
+    protected $data = [];
 
     /**
      * @var string
