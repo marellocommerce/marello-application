@@ -155,7 +155,7 @@ class TaxJurisdiction implements DatesAwareInterface
      *      }
      * )
      */
-    protected $data;
+    protected $data = [];
 
     /**
      * Constructor
