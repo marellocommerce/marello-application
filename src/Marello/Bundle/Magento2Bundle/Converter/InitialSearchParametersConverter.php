@@ -40,7 +40,7 @@ class InitialSearchParametersConverter implements SearchParametersConverterInter
         }
 
         if (!$connectorSearchSettingsDTO->isNoWebsiteSet()) {
-            $originStoreIds = $this->storeRepository->getOriginStoreIdsByWebsiteId(
+            $originStoreIds = $this->storeRepository->getStoreOriginIdsByWebsiteId(
                 $connectorSearchSettingsDTO->getWebsiteId()
             );
         }

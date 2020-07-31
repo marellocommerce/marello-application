@@ -20,7 +20,7 @@ class SimpleProductCreateNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        $originWebsiteIds = \array_values(
+        $websiteOriginIds = \array_values(
             \array_map(function (Website $website) {
                 return $website->getOriginId();
             }, $object->getWebsites())
@@ -45,7 +45,7 @@ class SimpleProductCreateNormalizer implements NormalizerInterface
                 'type_id' => $object->getTypeId(),
                 'status' => $status,
                 'extension_attributes' => [
-                    'website_ids' => $originWebsiteIds,
+                    'website_ids' => $websiteOriginIds,
                     'stock_item' => [
                         'use_config_backorders' => false,
                         'backorders' => $isBackorderAllowed,

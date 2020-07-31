@@ -33,24 +33,24 @@ class SearchParametersDTO
      *
      * @var int[]
      */
-    protected $originStoreIds;
+    protected $storeOriginIds;
 
     /**
      * @param string $mode
      * @param \DateTime $startDateTime
      * @param \DateTime $endDateTime
-     * @param array $originStoreIds
+     * @param array $storeOriginIds
      */
     public function __construct(
         string $mode,
         \DateTime $startDateTime,
         \DateTime $endDateTime,
-        array $originStoreIds = []
+        array $storeOriginIds = []
     ) {
         $this->mode = $mode;
         $this->startDateTime = clone $startDateTime;
         $this->endDateTime = clone $endDateTime;
-        $this->originStoreIds = $originStoreIds;
+        $this->storeOriginIds = $storeOriginIds;
     }
 
     /**
@@ -98,8 +98,8 @@ class SearchParametersDTO
     /**
      * @return int[]
      */
-    public function getOriginStoreIds(): array
+    public function getStoreOriginIds(): array
     {
-        return $this->originStoreIds;
+        return $this->storeOriginIds;
     }
 }

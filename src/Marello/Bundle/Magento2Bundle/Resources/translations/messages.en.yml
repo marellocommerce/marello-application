@@ -49,7 +49,7 @@ marello:
                 columns:
                     sales_channel_id: 'Sales Channel ID'
                     sales_channel_name: 'Sales Channel Name'
-                    original_website_id: 'Original Website ID'
+                    website_origin_id: 'Website Original ID'
                     website_name: 'Website Name'
                     actions: 'Actions'
                 no_data: 'Please configure at least one relation between Website and Sales Channel.'

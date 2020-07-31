@@ -8,7 +8,7 @@ define(function() {
         }
 
         getId() {
-            return this.id;
+            return Number.parseInt(this.id);
         }
 
         getName() {

@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\Magento2Bundle\Model;
 
-use Marello\Bundle\Magento2Bundle\DTO\WebsiteToSalesChannelMappingItemDTO;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class Magento2TransportSettings extends ParameterBag
@@ -11,7 +11,7 @@ class Magento2TransportSettings extends ParameterBag
     public const API_TOKEN_KEY = 'api_token';
     public const SYNC_START_DATE_KEY = 'sync_start_date';
     public const INITIAL_SYNC_START_DATE_KEY = 'initial_sync_start_date';
-    public const WEBSITE_TO_SALES_CHANNEL_MAPPING_KEY = 'website_to_sales_channel_mapping';
+    public const WEBSITE_TO_SALES_CHANNEL_MAP_ITEMS_KEY = 'website_to_sales_channel_map_items';
     public const DELETE_REMOTE_DATA_ON_DEACTIVATION_KEY = 'delete_remote_data_on_deactivation';
     public const DELETE_REMOTE_DATA_ON_DELETION_KEY = 'delete_remote_data_on_deletion';
 
@@ -76,37 +76,31 @@ class Magento2TransportSettings extends ParameterBag
     }
 
     /**
-     * @param int $websiteId
+     * @return ArrayCollection
+     */
+    public function getWebsiteToSalesChannelMapItems(): ArrayCollection
+    {
+        return $this->get(
+            self::WEBSITE_TO_SALES_CHANNEL_MAP_ITEMS_KEY,
+            new ArrayCollection()
+        );
+    }
+
+    /**
+     * @param int $websiteOriginId
      * @return int|null
      */
-    public function getSalesChannelIdByWebsiteOriginId(int $websiteId): ?int
+    public function getSalesChannelIdByWebsiteOriginId(int $websiteOriginId): ?int
     {
-        $websiteToSalesChannelMapping = $this->get(self::WEBSITE_TO_SALES_CHANNEL_MAPPING_KEY, []);
-        foreach ($websiteToSalesChannelMapping as $websiteToSalesChannelMappingItem) {
-            $mappingItem = new WebsiteToSalesChannelMappingItemDTO($websiteToSalesChannelMappingItem);
-            if ($mappingItem->getWebsiteOriginId() === $websiteId) {
-                return $mappingItem->getSalesChannelId();
+        /** @var ArrayCollection $websiteToSalesChannelMapItems */
+        $websiteToSalesChannelMapItems = $this->getWebsiteToSalesChannelMapItems();
+        /** @var WebsiteToSalesChannelMapItem $websiteToSalesChannelMappingItem */
+        foreach ($websiteToSalesChannelMapItems as $websiteToSalesChannelMappingItem) {
+            if ($websiteToSalesChannelMappingItem->getWebsiteOriginId() === $websiteOriginId) {
+                return $websiteToSalesChannelMappingItem->getSalesChannelId();
             }
         }
 
         return null;
-    }
-
-    /**
-     * @param int[] $websiteOriginIds
-     * @return array
-     */
-    public function getMappingItemArrayContainWebsiteOriginId(array $websiteOriginIds): array
-    {
-        $filteredMappingItemArray = [];
-        $websiteToSalesChannelMapping = $this->get(self::WEBSITE_TO_SALES_CHANNEL_MAPPING_KEY, []);
-        foreach ($websiteToSalesChannelMapping as $websiteToSalesChannelMappingItem) {
-            $mappingItem = new WebsiteToSalesChannelMappingItemDTO($websiteToSalesChannelMappingItem);
-            if (\in_array($mappingItem->getWebsiteOriginId(), $websiteOriginIds, true)) {
-                $filteredMappingItemArray[] = $mappingItem->getData();
-            }
-        }
-
-        return $filteredMappingItemArray;
     }
 }

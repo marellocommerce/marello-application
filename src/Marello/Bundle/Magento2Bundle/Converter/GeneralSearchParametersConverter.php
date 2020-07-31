@@ -24,7 +24,7 @@ class GeneralSearchParametersConverter implements SearchParametersConverterInter
      */
     public function convertConnectorSearchSettings(ImportConnectorSearchSettingsDTO $connectorSearchSettingsDTO): SearchParametersDTO
     {
-        $originStoreIds = [];
+        $storeOriginIds = [];
 
         $startDateTime = $connectorSearchSettingsDTO->getSyncStartDateTime(true);
         $endDateTime = (clone $startDateTime)->add(
@@ -36,7 +36,7 @@ class GeneralSearchParametersConverter implements SearchParametersConverterInter
         }
 
         if (!$connectorSearchSettingsDTO->isNoWebsiteSet()) {
-            $originStoreIds = $this->storeRepository->getOriginStoreIdsByWebsiteId(
+            $storeOriginIds = $this->storeRepository->getStoreOriginIdsByWebsiteId(
                 $connectorSearchSettingsDTO->getWebsiteId()
             );
         }
@@ -45,7 +45,7 @@ class GeneralSearchParametersConverter implements SearchParametersConverterInter
             SearchParametersDTO::IMPORT_MODE_REGULAR,
             $startDateTime,
             $endDateTime,
-            $originStoreIds
+            $storeOriginIds
         );
     }
 }

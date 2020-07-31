@@ -2,8 +2,10 @@
 
 namespace Marello\Bundle\Magento2Bundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\Magento2Bundle\Model\Magento2TransportSettings;
+use Marello\Bundle\Magento2Bundle\Model\WebsiteToSalesChannelMapItem;
 use Oro\Bundle\IntegrationBundle\Entity\Transport;
 
 /**
@@ -43,13 +45,16 @@ class Magento2Transport extends Transport
     protected $initialSyncStartDate;
 
     /**
+     * @var null|ArrayCollection
+     */
+    protected $websitesToSalesChannelMapItems;
+
+    /**
      * @var array
-     *
-     * The structure described in constant REQUIRED_KEYS of @see WebsiteToSalesChannelMappingItemDTO
      *
      * @ORM\Column(name="m2_websites_sales_channel_map", type="json", nullable=true)
      */
-    protected $websiteToSalesChannelMapping = [];
+    protected $websitesToSalesChannelMap = [];
 
     /**
      * @var bool
@@ -82,8 +87,8 @@ class Magento2Transport extends Transport
                     Magento2TransportSettings::API_TOKEN_KEY => $this->getApiToken(),
                     Magento2TransportSettings::SYNC_START_DATE_KEY => $this->getSyncStartDate(),
                     Magento2TransportSettings::INITIAL_SYNC_START_DATE_KEY => $this->getInitialSyncStartDate(),
-                    Magento2TransportSettings::WEBSITE_TO_SALES_CHANNEL_MAPPING_KEY =>
-                        $this->getWebsiteToSalesChannelMapping(),
+                    Magento2TransportSettings::WEBSITE_TO_SALES_CHANNEL_MAP_ITEMS_KEY =>
+                        $this->getWebsitesToSalesChannelMapItems(),
                     Magento2TransportSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION_KEY =>
                         $this->isDeleteRemoteDataOnDeactivation(),
                     Magento2TransportSettings::DELETE_REMOTE_DATA_ON_DELETION_KEY =>
@@ -172,20 +177,53 @@ class Magento2Transport extends Transport
     }
 
     /**
-     * @return array
+     * @return ArrayCollection
      */
-    public function getWebsiteToSalesChannelMapping(): array
+    public function getWebsitesToSalesChannelMapItems(): ArrayCollection
     {
-        return $this->websiteToSalesChannelMapping;
+        if (null === $this->websitesToSalesChannelMapItems) {
+            $mapItemsArray = \array_map(
+                WebsiteToSalesChannelMapItem::createFromCallable(),
+                $this->websitesToSalesChannelMap
+            );
+            $this->websitesToSalesChannelMapItems = new ArrayCollection($mapItemsArray);
+        }
+
+        return $this->websitesToSalesChannelMapItems;
     }
 
     /**
-     * @param array $websiteToSalesChannelMapping
+     * @param ArrayCollection $websitesToSalesChannelMapItems
      * @return $this
      */
-    public function setWebsiteToSalesChannelMapping(array $websiteToSalesChannelMapping): self
+    public function setWebsitesToSalesChannelMapItems(ArrayCollection $websitesToSalesChannelMapItems): self
     {
-        $this->websiteToSalesChannelMapping = $websiteToSalesChannelMapping;
+        $this->websitesToSalesChannelMapItems = $websitesToSalesChannelMapItems;
+        $this->updateWebsiteToSalesChannelMap();
+
+        return $this;
+    }
+
+    /**
+     * @param WebsiteToSalesChannelMapItem $websiteToSalesChannelMapItem
+     * @return $this
+     */
+    public function addWebsiteToSalesChannelMapItem(WebsiteToSalesChannelMapItem $websiteToSalesChannelMapItem): self
+    {
+        $this->getWebsitesToSalesChannelMapItems()->add($websiteToSalesChannelMapItem);
+        $this->updateWebsiteToSalesChannelMap();
+
+        return $this;
+    }
+
+    /**
+     * @param WebsiteToSalesChannelMapItem $websiteToSalesChannelMapItem
+     * @return $this
+     */
+    public function removeWebsiteToSalesChannelMapItem(WebsiteToSalesChannelMapItem $websiteToSalesChannelMapItem): self
+    {
+        $this->getWebsitesToSalesChannelMapItems()->removeElement($websiteToSalesChannelMapItem);
+        $this->updateWebsiteToSalesChannelMap();
 
         return $this;
     }
@@ -231,8 +269,26 @@ class Magento2Transport extends Transport
     /**
      * @ORM\PrePersist
      */
-    public function setSyncStartDateTimestamp()
+    public function prePersist()
     {
         $this->syncStartDate = new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->updateWebsiteToSalesChannelMap();
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function preUpdate()
+    {
+        $this->updateWebsiteToSalesChannelMap();
+    }
+
+    protected function updateWebsiteToSalesChannelMap(): void
+    {
+        $this->websitesToSalesChannelMap = $this->websitesToSalesChannelMapItems->map(
+            function (WebsiteToSalesChannelMapItem $websiteToSalesChannelMapItem) {
+                return $websiteToSalesChannelMapItem->toArray();
+            }
+        )->toArray();
     }
 }
