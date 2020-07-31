@@ -10,7 +10,7 @@ class StoreRepository extends EntityRepository implements NotInOriginIdsInterfac
      * @param int $websiteId
      * @return array
      */
-    public function getOriginStoreIdsByWebsiteId(int $websiteId): array
+    public function getStoreOriginIdsByWebsiteId(int $websiteId): array
     {
         $qb = $this->createQueryBuilder('m2s');
         $qb

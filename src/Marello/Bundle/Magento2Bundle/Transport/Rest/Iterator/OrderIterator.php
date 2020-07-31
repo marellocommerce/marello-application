@@ -85,12 +85,12 @@ class OrderIterator extends AbstractSearchWithShiftCheckingIterator implements U
             )
         );
 
-        if ($this->searchParametersDTO->getOriginStoreIds()) {
+        if ($this->searchParametersDTO->getStoreOriginIds()) {
             $searchCriteria->addFilters(
                 $this->filterFactory->createFilter(
                     MagentoOrderDataConverter::STORE_ID_COLUMN_NAME,
                     Filter::CONDITION_IN,
-                    $this->searchParametersDTO->getOriginStoreIds()
+                    $this->searchParametersDTO->getStoreOriginIds()
                 )
             );
         }

@@ -128,7 +128,7 @@ class IntegrationReverseSyncListenerListener
                     continue;
                 }
 
-                $productIdWithSkuToRemove = $this->productRepository->getOriginalProductIdsWithSKUsByIntegration(
+                $productIdWithSkuToRemove = $this->productRepository->getMarelloProductIdsWithSKUsByIntegration(
                     $entityDeletion
                 );
 
@@ -175,7 +175,7 @@ class IntegrationReverseSyncListenerListener
                     continue;
                 }
 
-                $productIdWithSkuToRemove = $this->productRepository->getOriginalProductIdsWithSKUsByIntegration(
+                $productIdWithSkuToRemove = $this->productRepository->getMarelloProductIdsWithSKUsByIntegration(
                     $updatedEntity
                 );
 

@@ -78,7 +78,7 @@ class ProductRepository extends EntityRepository
      *     ...
      * ]
      */
-    public function getOriginalProductIdsWithSKUsByIntegration(Channel $channel): array
+    public function getMarelloProductIdsWithSKUsByIntegration(Channel $channel): array
     {
         $qb = $this->createQueryBuilder('m2p');
         $qb

@@ -13,20 +13,20 @@ class WebsiteIteratorTest extends TestCase
      * @dataProvider iterationDataProvider
      *
      * @param array $websiteData
-     * @param array $salesChannelToOriginWebsiteIdsValueMap
+     * @param array $salesChannelToWebsiteOriginIdsValueMap
      * @param array $expectedResult
      */
     public function testIteration(
         array $websiteData,
-        array $salesChannelToOriginWebsiteIdsValueMap,
+        array $salesChannelToWebsiteOriginIdsValueMap,
         array $expectedResult
     ) {
         /** @var Magento2TransportSettings|MockObject $settingsBag */
         $settingsBag = self::createMock(Magento2TransportSettings::class);
         $settingsBag
-            ->expects(empty($salesChannelToOriginWebsiteIdsValueMap) ? self::never() : self::atLeastOnce())
-            ->method('getSalesChannelIdByOriginWebsiteId')
-            ->willReturnMap($salesChannelToOriginWebsiteIdsValueMap);
+            ->expects(empty($salesChannelToWebsiteOriginIdsValueMap) ? self::never() : self::atLeastOnce())
+            ->method('getSalesChannelIdByWebsiteOriginId')
+            ->willReturnMap($salesChannelToWebsiteOriginIdsValueMap);
 
         $iterator = new WebsiteIterator($websiteData, $settingsBag);
         self::assertSame($expectedResult, \iterator_to_array($iterator));
@@ -40,7 +40,7 @@ class WebsiteIteratorTest extends TestCase
         return [
             'Empty website data' => [
                 'websiteData' => [],
-                'salesChannelToOriginWebsiteIdsValueMap' => [],
+                'salesChannelToWebsiteOriginIdsValueMap' => [],
                 'expectedResult' => []
             ],
             'Process invalid website data, to have clear validation messages' => [
@@ -50,7 +50,7 @@ class WebsiteIteratorTest extends TestCase
                         'name' => 'Main Website',
                     ]
                 ],
-                'salesChannelToOriginWebsiteIdsValueMap' => [],
+                'salesChannelToWebsiteOriginIdsValueMap' => [],
                 'expectedResult' => [
                     [
                         'code' => 'MAG',
@@ -67,7 +67,7 @@ class WebsiteIteratorTest extends TestCase
                         'name' => 'Admin Website',
                     ]
                 ],
-                'salesChannelToOriginWebsiteIdsValueMap' => [],
+                'salesChannelToWebsiteOriginIdsValueMap' => [],
                 'expectedResult' => []
             ],
             'Website data' => [
@@ -93,7 +93,7 @@ class WebsiteIteratorTest extends TestCase
                         'name' => 'MAG2 Website',
                     ]
                 ],
-                'salesChannelToOriginWebsiteIdsValueMap' => [
+                'salesChannelToWebsiteOriginIdsValueMap' => [
                     [1,5],
                     [2,1],
                 ],

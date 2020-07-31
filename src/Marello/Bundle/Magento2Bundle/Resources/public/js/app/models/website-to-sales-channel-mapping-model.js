@@ -5,7 +5,7 @@ define(function(require) {
     const _ = require('underscore');
     const WebsiteToSalesChannelMappingModel = BaseModel.extend({
         defaults: {
-            originWebsiteId: null,
+            websiteOriginId: null,
             websiteName: null,
             salesChannelId: null,
             salesChannelName: null
@@ -18,8 +18,8 @@ define(function(require) {
             WebsiteToSalesChannelMappingModel.__super__.constructor.apply(this, arguments);
         },
 
-        getOriginWebsiteId: function() {
-            return this.get('originWebsiteId');
+        getWebsiteOriginId: function() {
+            return this.get('websiteOriginId');
         },
 
         getWebsiteName: function() {
@@ -35,13 +35,13 @@ define(function(require) {
         },
 
         isValid: function () {
-            return !_.isNull(this.get('originWebsiteId')) && !_.isNull(this.get('websiteName')) &&
+            return !_.isNull(this.get('websiteOriginId')) && !_.isNull(this.get('websiteName')) &&
                 !_.isNull(this.get('salesChannelId')) && !_.isNull(this.get('salesChannelName'));
         },
 
         serialize: function () {
             return {
-                originWebsiteId: this.get('originWebsiteId'),
+                websiteOriginId: this.get('websiteOriginId'),
                 websiteName: this.get('websiteName'),
                 salesChannelId: this.get('salesChannelId'),
                 salesChannelName: this.get('salesChannelName')

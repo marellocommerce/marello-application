@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\Magento2Bundle\Form\Type;
 
+use Marello\Bundle\Magento2Bundle\Form\DataTransformer\WebsiteToSalesChannelMapItemCollectionDataTransformer;
 use Oro\Bundle\FormBundle\Form\DataTransformer\ArrayToJsonTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -25,6 +26,7 @@ class WebsiteToSalesChannelMappingType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->addModelTransformer(new WebsiteToSalesChannelMapItemCollectionDataTransformer());
         $builder->addViewTransformer(new ArrayToJsonTransformer());
     }
 

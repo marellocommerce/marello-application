@@ -5,6 +5,7 @@ namespace Marello\Bundle\Magento2Bundle\ImportExport\Remover;
 use Marello\Bundle\Magento2Bundle\Entity\Magento2Transport;
 use Marello\Bundle\Magento2Bundle\Entity\Repository\WebsiteRepository;
 use Marello\Bundle\Magento2Bundle\Entity\Website;
+use Marello\Bundle\Magento2Bundle\Model\WebsiteToSalesChannelMapItem;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 
 class WebsiteMappingRecordsRemover extends NonExistedRecordsRemover
@@ -38,15 +39,18 @@ class WebsiteMappingRecordsRemover extends NonExistedRecordsRemover
      */
     protected function processSavingNewWebsiteToSchMapping(Magento2Transport $transport, array $websiteOriginIds)
     {
-        $newWebsiteToSchMapping = $transport->getSettingsBag()->getMappingItemArrayContainWebsiteOriginId(
-            $websiteOriginIds
+        $mapItemCollection = $transport->getWebsitesToSalesChannelMapItems();
+        $newMapItemCollection = $mapItemCollection->filter(
+            function (WebsiteToSalesChannelMapItem $websiteToSalesChannelMapItem) use ($websiteOriginIds) {
+                return \in_array($websiteToSalesChannelMapItem->getWebsiteOriginId(), $websiteOriginIds, true);
+            }
         );
 
-        if (count($transport->getWebsiteToSalesChannelMapping()) === count($newWebsiteToSchMapping)) {
+        if ($newMapItemCollection->count() === $transport->getWebsitesToSalesChannelMapItems()->count()) {
             return;
         }
 
-        $transport->setWebsiteToSalesChannelMapping($newWebsiteToSchMapping);
+        $transport->setWebsitesToSalesChannelMapItems($newMapItemCollection);
         $em = $this->registry->getManagerForClass(Magento2Transport::class);
         $em->flush();
         $em->clear();

@@ -126,7 +126,7 @@ class TransportSettingFormType extends AbstractType
         );
 
         $builder->add(
-            'websiteToSalesChannelMapping',
+            'websitesToSalesChannelMapItems',
             WebsiteToSalesChannelMappingType::class,
             [
                 'attr' => [

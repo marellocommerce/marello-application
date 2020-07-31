@@ -18,8 +18,8 @@ class WebsitesProvider
     {
         $websiteIdsWithNames = [];
         foreach ($transport->getWebsites() as $website) {
-            $websiteId = $website[WebsiteDataConverter::ID_COLUMN_NAME];
-            $websiteName = $website[WebsiteDataConverter::NAME_COLUMN_NAME];
+            $websiteId = (int) $website[WebsiteDataConverter::ID_COLUMN_NAME];
+            $websiteName = (string) $website[WebsiteDataConverter::NAME_COLUMN_NAME];
             $websiteIdsWithNames[$websiteId] = $websiteName;
         }
 

@@ -223,7 +223,7 @@ define(function(require) {
             let salesChannelData = this.salesChannelSelectComponent.getData();
 
             let model = new WebsiteToSalesChannelMappingModel({
-                originWebsiteId: websiteData.id,
+                websiteOriginId: websiteData.id,
                 websiteName: websiteData.name,
                 salesChannelId: salesChannelData.id,
                 salesChannelName: salesChannelData.name
@@ -275,9 +275,9 @@ define(function(require) {
             let deferredObject = $.Deferred();
             let websiteDTOsPromise = WebsiteProvider.getWebsiteDTOsPromise();
             websiteDTOsPromise.then(_.bind(function (websiteDTOs) {
-                let usedOriginWebsiteIds = this.getUsedOriginWebsiteIds();
+                let usedWebsiteOriginIds = this.getUsedWebsiteOriginIds();
                 let filteredWebsiteDTOs = _.filter(websiteDTOs, function (websiteDTO) {
-                    return -1 === _.indexOf(usedOriginWebsiteIds, websiteDTO.getId());
+                    return -1 === _.indexOf(usedWebsiteOriginIds, websiteDTO.getId());
                 });
 
                 deferredObject.resolve(filteredWebsiteDTOs);
@@ -289,9 +289,9 @@ define(function(require) {
         /**
          * @return {array}
          */
-        getUsedOriginWebsiteIds: function() {
+        getUsedWebsiteOriginIds: function() {
             return this.collection.map(function (websiteToSalesChannelMappingModel) {
-                return websiteToSalesChannelMappingModel.getOriginWebsiteId();
+                return websiteToSalesChannelMappingModel.getWebsiteOriginId();
             });
         },
 
