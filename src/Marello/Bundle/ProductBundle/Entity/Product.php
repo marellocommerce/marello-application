@@ -439,7 +439,7 @@ class Product extends ExtendProduct implements
      *      }
      * )
      */
-    protected $data;
+    protected $data = [];
 
     /**
      * @var ArrayCollection|ProductSupplierRelation[]
