@@ -51,10 +51,7 @@ class Magento2TransportSettings extends ParameterBag
      */
     public function getInitialSyncStartDate(bool $clone = true): \DateTime
     {
-        $initialSyncStartDate = $this->get(
-            self::INITIAL_SYNC_START_DATE_KEY,
-            new \DateTime('2007-01-01', new \DateTimeZone('UTC'))
-        );
+        $initialSyncStartDate = $this->get(self::INITIAL_SYNC_START_DATE_KEY);
 
         return $clone ? clone $initialSyncStartDate : $initialSyncStartDate;
     }
@@ -80,10 +77,7 @@ class Magento2TransportSettings extends ParameterBag
      */
     public function getWebsiteToSalesChannelMapItems(): ArrayCollection
     {
-        return $this->get(
-            self::WEBSITE_TO_SALES_CHANNEL_MAP_ITEMS_KEY,
-            new ArrayCollection()
-        );
+        return $this->get(self::WEBSITE_TO_SALES_CHANNEL_MAP_ITEMS_KEY);
     }
 
     /**
