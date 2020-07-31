@@ -341,6 +341,13 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: marello_magento2.sales_channel_attached_to_integration_validator }
 
+    marello_magento2.validator.valid_website_to_sales_channel_map_items:
+        class: Marello\Bundle\Magento2Bundle\Validator\ValidWebsiteToSalesChannelMapItemsValidator
+        arguments:
+            - '@validator'
+        tags:
+            - { name: validator.constraint_validator, alias: marello_magento2.valid_website_to_sales_channel_map_items }
+
     # Scheduler
     marello_magento2.scheduler.product:
         class: Marello\Bundle\Magento2Bundle\Scheduler\ProductScheduler
