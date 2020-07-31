@@ -3,6 +3,7 @@
 namespace Marello\Bundle\Magento2Bundle\Form\Type;
 
 use Marello\Bundle\Magento2Bundle\Entity\Magento2Transport;
+use Marello\Bundle\Magento2Bundle\Validator\Constraints\ValidWebsiteToSalesChannelMapItems;
 use Oro\Bundle\FormBundle\Form\Type\OroDateType;
 use Oro\Bundle\FormBundle\Form\Type\OroEncodedPlaceholderPasswordType;
 use Symfony\Component\Form\AbstractType;
@@ -135,7 +136,8 @@ class TransportSettingFormType extends AbstractType
                 'constraints' => [
                     new NotBlank([
                         'message' => 'marello.magento2.validator.not_empty_website_to_sales_channel_mapping'
-                    ])
+                    ]),
+                    new ValidWebsiteToSalesChannelMapItems()
                 ]
             ]
         );

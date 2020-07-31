@@ -55,12 +55,6 @@ Marello\Bundle\Magento2Bundle\Entity\ProductTaxClass:
         className:
             - NotBlank: ~
 
-Marello\Bundle\Magento2Bundle\Entity\Magento2Transport:
-    properties:
-        websitesToSalesChannelMapItems:
-            - Valid:
-                traverse: true
-
 Marello\Bundle\Magento2Bundle\Model\WebsiteToSalesChannelMapItem:
     properties:
         websiteOriginId:
