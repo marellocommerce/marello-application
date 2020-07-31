@@ -544,7 +544,7 @@
                                                     {{ item.quantity }}
                                                 </td>
                                                 <td class="item-info" style="border-top: 1px solid #d6d7d7; font-family: Roboto Condensed, Arial Narrow, Arial, sans-serif; padding: 10px 8px; font-size:13px; font-weight: 300;">
-                                                    {{ item.productUnit|marello_format_product_unit }}
+                                                    {{ item.productUnit.name }}
                                                 </td>
                                                 <td class="item-info" style="border-top: 1px solid #d6d7d7; font-family: Roboto Condensed, Arial Narrow, Arial, sans-serif; padding: 10px 8px; font-size:13px; text-align:right; font-weight: 300;">
                                                     {{ item.price|oro_format_currency({'currency': entity.currency}) }}
