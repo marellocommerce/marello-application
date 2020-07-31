@@ -93,7 +93,7 @@ class TaxRule
      *      }
      * )
      */
-    protected $data;
+    protected $data = [];
 
     /**
      * @return string

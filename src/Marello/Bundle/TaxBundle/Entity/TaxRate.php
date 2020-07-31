@@ -79,7 +79,7 @@ class TaxRate
      *      }
      * )
      */
-    protected $data;
+    protected $data = [];
 
     /**
      * @return string
