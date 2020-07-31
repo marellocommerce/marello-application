@@ -92,6 +92,12 @@ class OrderShippingContextFactory implements ShippingContextFactoryInterface
             ->setCurrency($order->getCurrency());
 
         $convertedLineItems = $this->shippingLineItemConverter->convertLineItems($orderItems);
+
+        $this->orderWarehousesProvider->setEstimation($this->estimation);
+        $shippingOrigin = $this->getShippingOrigin($order);
+        if (null !== $shippingOrigin) {
+            $shippingContextBuilder->setShippingOrigin($shippingOrigin);
+        }
         if (null !== $order->getShippingAddress()) {
             $shippingContextBuilder->setShippingAddress($order->getShippingAddress());
         }
