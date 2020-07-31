@@ -83,7 +83,7 @@ class TaxCode extends ExtendTaxCode
      *      }
      * )
      */
-    protected $data;
+    protected $data = [];
 
     /**
      * @return string
