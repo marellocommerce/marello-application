@@ -526,7 +526,8 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
             self::PRODUCTS_ALIAS,
             [],
             ['taxCode'],
-            $data
+            $data,
+            ['pageSize' => 1]
         );
 
         $json = $this->client->getJSON(
@@ -551,6 +552,10 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
      */
     public function createProduct(array $data)
     {
+        if (empty($data)) {
+            return [];
+        }
+
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_POST,
             $this->settings,
@@ -603,7 +608,8 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                     self::INVENTORYLEVELS_ALIAS,
                     $inventoryFilters,
                     [],
-                    []
+                    [],
+                    ['pageSize' => 10]
                 );
                 $inventoryResponse = $this->client->getJSON(
                     $request->getPath(),
@@ -630,6 +636,10 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
      */
     public function updateProduct(array $data)
     {
+        if (empty($data)) {
+            return [];
+        }
+
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_PATCH,
             $this->settings,
@@ -682,7 +692,8 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                     self::INVENTORYLEVELS_ALIAS,
                     $inventoryFilters,
                     [],
-                    []
+                    [],
+                    ['pageSize' => 10 ]
                 );
                 $inventoryResponse = $this->client->getJSON(
                     $request->getPath(),
@@ -1854,6 +1865,11 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
      */
     protected function processEntityDuplicationException(RestException $e, $data, $createMethod, $updateMethod)
     {
+        // bad request, can't let it run wild while it's continuing to throw bad requests at the api
+        if ($e->getResponse()->getStatusCode() === 400) {
+            return [];
+        }
+
         $json = $e->getResponse()->json();
         if (isset($json['errors'])) {
             $errorInIncludedEntities = false;

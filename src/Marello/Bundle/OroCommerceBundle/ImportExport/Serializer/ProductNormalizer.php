@@ -3,6 +3,7 @@
 namespace Marello\Bundle\OroCommerceBundle\ImportExport\Serializer;
 
 use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\OroCommerceBundle\Entity\OroCommerceSettings;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractProductExportWriter;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\TaxCodeExportCreateWriter;
@@ -33,6 +34,12 @@ class ProductNormalizer extends AbstractNormalizer
             $stockStatus = 'out_of_stock';
             if ($balancedInventoryLevel) {
                 $stockStatus = ($balancedInventoryLevel->getInventoryQty() > 0) ? 'in_stock' : 'out_of_stock';
+            }
+            /** @var InventoryItem $inventoryItem */
+            $inventoryItem = $object->getInventoryItems()->first();
+            $productUnit = $transport->getProductUnit();
+            if (method_exists($inventoryItem, 'getProductUnit')) {
+                $productUnit = $inventoryItem->getProductUnit();
             }
 
             $data =  [
@@ -183,7 +190,7 @@ class ProductNormalizer extends AbstractNormalizer
                         'id' => '6abcd',
                         'attributes' => [
                             'fallback' => null,
-                            'scalarValue' => $object->getInventoryItems()->first()->isBackorderAllowed() ? '1' : '0',
+                            'scalarValue' => $inventoryItem->isBackorderAllowed() ? '1' : '0',
                             'arrayValue' => null
                         ]
                     ],
@@ -213,7 +220,7 @@ class ProductNormalizer extends AbstractNormalizer
                             'unit' => [
                                 'data' => [
                                     'type' => 'productunits',
-                                    'id' => $transport->getProductUnit()
+                                    'id' => $productUnit
                                 ]
                             ]
                         ]
