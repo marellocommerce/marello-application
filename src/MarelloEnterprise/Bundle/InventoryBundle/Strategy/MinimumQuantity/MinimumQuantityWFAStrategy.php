@@ -129,8 +129,8 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
                                     )
                                 )
                             )
-                        ) &&
-                        in_array($warehouseId, $warehousesIds)) {
+                        ) && in_array($warehouseId, $warehousesIds)
+                    ) {
                         $warehouses[$warehouseId] = $warehouse;
                         $productsByWh[$warehouseId] [] = $inventoryItem->getProduct()->getSku();
                     }
