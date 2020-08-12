@@ -25,9 +25,7 @@ class CompositePaymentMethodProviderTest extends \PHPUnit\Framework\TestCase
     {
         $this->paymentMethodProvider = new CompositePaymentMethodProvider();
 
-        $this->provider = $this->getMockBuilder(PaymentMethodProviderInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->provider = $this->createMock(PaymentMethodProviderInterface::class);
     }
 
     public function testGetMethods()
@@ -58,14 +56,5 @@ class CompositePaymentMethodProviderTest extends \PHPUnit\Framework\TestCase
         $this->paymentMethodProvider->addProvider($this->provider);
         $this->assertEquals($method, $this->paymentMethodProvider->getPaymentMethod('test_name'));
         $this->assertEquals(['test_name' => $method], $this->paymentMethodProvider->getPaymentMethods());
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage There is no payment method for "wrong_name" identifier
-     */
-    public function testRegistryWrongMethod()
-    {
-        $this->paymentMethodProvider->getPaymentMethod('wrong_name');
     }
 }

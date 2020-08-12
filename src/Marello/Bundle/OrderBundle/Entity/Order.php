@@ -188,6 +188,15 @@ class Order extends ExtendOrder implements
     protected $currency;
 
     /**
+     * Represent locale in ICU format
+     *
+     * @var string
+     *
+     * @ORM\Column(name="locale_id", type="string", length=255, nullable=true)
+     */
+    protected $localeId;
+
+    /**
      * @var string
      * @ORM\Column(name="payment_method", type="string", length=255, nullable=true)
      * @Oro\ConfigField(
@@ -332,6 +341,9 @@ class Order extends ExtendOrder implements
      * @ORM\OrderBy({"id" = "ASC"})
      * @Oro\ConfigField(
      *      defaultValues={
+     *          "importexport"={
+     *              "full"=true
+     *          },
      *          "email"={
      *              "available_in_template"=true
      *          },
@@ -365,6 +377,9 @@ class Order extends ExtendOrder implements
      * @ORM\JoinColumn(name="billing_address_id", referencedColumnName="id")
      * @Oro\ConfigField(
      *      defaultValues={
+     *          "importexport"={
+     *              "full"=true
+     *          },
      *          "dataaudit"={
      *              "auditable"=true
      *          }
@@ -380,6 +395,9 @@ class Order extends ExtendOrder implements
      * @ORM\JoinColumn(name="shipping_address_id", referencedColumnName="id")
      * @Oro\ConfigField(
      *      defaultValues={
+     *          "importexport"={
+     *              "full"=true
+     *          },
      *          "dataaudit"={
      *              "auditable"=true
      *          }
@@ -409,9 +427,6 @@ class Order extends ExtendOrder implements
      * @ORM\JoinColumn(onDelete="SET NULL", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
-     *          "importexport"={
-     *              "full"=true
-     *          },
      *          "dataaudit"={
      *              "auditable"=true
      *          }
@@ -808,6 +823,26 @@ class Order extends ExtendOrder implements
         $this->currency = $currency;
 
         return $this;
+    }
+
+    /**
+     * @param string $localeId
+     *
+     * @return $this
+     */
+    public function setLocaleId($localeId)
+    {
+        $this->localeId = $localeId;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocaleId()
+    {
+        return $this->localeId;
     }
 
     /**
