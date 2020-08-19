@@ -35,17 +35,19 @@
             <div class="title">
                 <span class="widget-title">{{ 'marello.order.datablock.customer_information'|trans }}</span>
             </div>
-            {% if entity.customer.company %}
+            {% if entity.customer and entity.customer.company %}
                 {{ UI.renderHtmlProperty(
                 'marello.customer.company.entity_label'|trans,
                 UI.entityViewLink(entity.customer.company, entity.customer.company.name, 'marello_customer_company_view')
                 ) }}
             {% endif %}
-            {{ UI.renderHtmlProperty(
-            'marello.customer.entity_label'|trans,
-            UI.entityViewLink(entity.customer, entity.customer|oro_format_name, 'marello_customer_view')
-            )}}
-            {{ UI.renderProperty('marello.customer.email.label'|trans, entity.customer.email) }}
+            {% if entity.customer %}
+                {{ UI.renderHtmlProperty(
+                'marello.customer.entity_label'|trans,
+                UI.entityViewLink(entity.customer, entity.customer|oro_format_name, 'marello_customer_view')
+                )}}
+                {{ UI.renderProperty('marello.customer.email.label'|trans, entity.customer.email) }}
+            {% endif %}
         </div>
     {% endset %}
 
