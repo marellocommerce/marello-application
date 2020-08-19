@@ -12,7 +12,11 @@ class ProductExportUpdateWriter extends AbstractProductExportWriter
         $response = $this->transport->updateProduct($data);
 
         if (!isset($response['data'])) {
-            $this->context->addError(sprintf('Could not update product with data %s', print_r($data, true)));
+            if (!isset($response['data'])) {
+                $this->context->addError(
+                    sprintf('Could not create product with data %s', $data['data']['attributes']['sku'])
+                );
+            }
         }
 
         if (isset($response['data']) && isset($response['data']['type']) && $response['data']['type'] === 'products') {

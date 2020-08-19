@@ -708,7 +708,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                 return $json;
             }
         } catch (RestException $e) {
-            return $this->processEntityDuplicationException($e, $data, 'createProduct', 'updateProduct');
+            return [];
         }
 
         return [];
@@ -1865,11 +1865,6 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
      */
     protected function processEntityDuplicationException(RestException $e, $data, $createMethod, $updateMethod)
     {
-        // bad request, can't let it run wild while it's continuing to throw bad requests at the api
-        if ($e->getResponse()->getStatusCode() === 400) {
-            return [];
-        }
-
         $json = $e->getResponse()->json();
         if (isset($json['errors'])) {
             $errorInIncludedEntities = false;
