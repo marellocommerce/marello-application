@@ -8,7 +8,7 @@ datagrids:
                     - p.denormalizedDefaultName as productName
                     - p.sku as productSku
                     - i.enableBatchInventory as enableBatchInventory
-                    - productUnit.name as productUnit
+                    - pu.name as productUnit
                     - COALESCE(SUM(il.inventory), 0) AS inventoryQty
                     - COALESCE(SUM(il.allocatedInventory), 0) AS allocatedInventoryQty
                     - COALESCE(SUM(il.inventory - il.allocatedInventory), 0) AS virtualInventoryQty
@@ -18,7 +18,7 @@ datagrids:
                     left:
                         - { join: i.product, alias: p }
                         - { join: i.inventoryLevels, alias: il }
-                        - { join: i.productUnit, alias: productUnit }
+                        - { join: i.productUnit, alias: pu }
                 groupBy: i.id
         columns:
             productSku:

@@ -16,6 +16,7 @@ marello:
         sales_channel.label:        Sales Channel
         sales_channel_name.label:   Sales Channel
         order_reference.label:      Order Reference
+        locale_id.label:            Locale ID
         localization.label:         Localization
         workflow_item.label:        Workflow Item
         workflow_step.label:        Workflow Step
@@ -43,6 +44,7 @@ marello:
         estimated_shipping_cost_amount.label: Estimated Shipping Costs
         overridden_shipping_cost_amount.label: Overridden Shipping Cost Amount
         status.label:               Order Status
+        order_status.label:               Order Status
         billing_address:
             label:                  Billing Address
             name.label:             Bill to Name

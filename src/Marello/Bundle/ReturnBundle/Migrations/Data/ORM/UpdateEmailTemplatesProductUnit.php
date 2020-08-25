@@ -42,6 +42,6 @@ class UpdateEmailTemplatesProductUnit extends AbstractEmailFixture implements Ve
      */
     public function getVersion()
     {
-        return '1.2';
+        return '1.4';
     }
 }

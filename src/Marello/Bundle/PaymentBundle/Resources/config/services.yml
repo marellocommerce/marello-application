@@ -41,6 +41,8 @@ services:
     marello_payment.payment_method.composite_provider:
         class: 'Marello\Bundle\PaymentBundle\Method\Provider\CompositePaymentMethodProvider'
         public: true
+        calls:
+            - ['setLogger', ['@logger']]
 
     marello_payment.context.doctrine_line_item_collection_factory:
         class: 'Marello\Bundle\PaymentBundle\Context\LineItem\Collection\Doctrine\Factory\DoctrinePaymentLineItemCollectionFactory'

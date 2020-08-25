@@ -5,9 +5,6 @@ namespace Marello\Bundle\SalesBundle\Autocomplete;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\FormBundle\Autocomplete\SearchHandler;
 
-/**
- * @todo Cover with functional test
- */
 class GroupSalesChannelHandler extends SearchHandler
 {
     /**
@@ -22,18 +19,14 @@ class GroupSalesChannelHandler extends SearchHandler
 
     /**
      * @param string $searchTerm
-     * @param int    $firstResult
-     * @param int    $maxResults
+     * @param int $firstResult
+     * @param int $maxResults
      * @return QueryBuilder
      */
     protected function prepareQueryBuilder($searchTerm, $firstResult, $maxResults)
     {
-        $queryBuilder = $this->entityRepository->createQueryBuilder('scg');
+        $queryBuilder = $this->entityRepository->getNonSystemSalesChannelBySearchTermQB($searchTerm);
         $queryBuilder
-            ->where($queryBuilder->expr()->like('LOWER(scg.name)', ':searchTerm'))
-            ->andWhere(($queryBuilder->expr()->eq('scg.system', $queryBuilder->expr()->literal(false))))
-            ->setParameter('searchTerm', '%' . mb_strtolower($searchTerm) . '%')
-            ->orderBy('scg.name', 'ASC')
             ->setFirstResult($firstResult)
             ->setMaxResults($maxResults);
 
@@ -41,26 +34,11 @@ class GroupSalesChannelHandler extends SearchHandler
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function searchEntities($search, $firstResult, $maxResults)
     {
         $queryBuilder = $this->prepareQueryBuilder($search, $firstResult, $maxResults);
-        $query = $this->aclHelper->apply($queryBuilder, 'VIEW');
-
-        return $query->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function findById($query)
-    {
-        $parts = explode(';', $query);
-        $id = $parts[0];
-
-        $criteria = [$this->idFieldName => $id];
-
-        return [$this->entityRepository->findOneBy($criteria, null)];
+        return $this->aclHelper->apply($queryBuilder->getQuery())->getResult();
     }
 }
