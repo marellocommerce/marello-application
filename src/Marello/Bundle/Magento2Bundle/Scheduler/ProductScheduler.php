@@ -2,21 +2,25 @@
 
 namespace Marello\Bundle\Magento2Bundle\Scheduler;
 
+use Oro\Component\MessageQueue\Client\MessageProducerInterface;
+use Oro\Bundle\IntegrationBundle\Async\Topics;
+use Oro\Component\MessageQueue\Client\Message;
+use Oro\Component\MessageQueue\Client\MessagePriority;
+
 use Marello\Bundle\Magento2Bundle\Batch\Step\ActionItemStep;
 use Marello\Bundle\Magento2Bundle\Integration\Connector\ProductConnector;
-use Oro\Component\DependencyInjection\ServiceLink;
 
 class ProductScheduler implements ProductSchedulerInterface
 {
-    /** @var ServiceLink */
-    protected $syncScheduler;
+    /** @var $producer MessageProducerInterface */
+    protected $producer;
 
     /**
-     * @param ServiceLink $syncScheduler
+     * @param MessageProducerInterface $producer
      */
-    public function __construct(ServiceLink $syncScheduler)
+    public function __construct(MessageProducerInterface $producer)
     {
-        $this->syncScheduler = $syncScheduler;
+        $this->producer = $producer;
     }
 
     /**
@@ -24,7 +28,7 @@ class ProductScheduler implements ProductSchedulerInterface
      */
     public function scheduleRemovingProduct(int $integrationId, string $sku): void
     {
-        $this->syncScheduler->getService()->schedule(
+        $this->sendMessageToProducer(
             $integrationId,
             ProductConnector::TYPE,
             [
@@ -49,7 +53,7 @@ class ProductScheduler implements ProductSchedulerInterface
      */
     public function scheduleDeleteProductOnChannel(int $integrationId, int $productId): void
     {
-        $this->syncScheduler->getService()->schedule(
+        $this->sendMessageToProducer(
             $integrationId,
             ProductConnector::TYPE,
             [
@@ -74,7 +78,7 @@ class ProductScheduler implements ProductSchedulerInterface
      */
     public function scheduleCreateProductOnChannel(int $integrationId, int $productId): void
     {
-        $this->syncScheduler->getService()->schedule(
+        $this->sendMessageToProducer(
             $integrationId,
             ProductConnector::TYPE,
             [
@@ -99,7 +103,7 @@ class ProductScheduler implements ProductSchedulerInterface
      */
     public function scheduleUpdateProductOnChannel(int $integrationId, int $productId): void
     {
-        $this->syncScheduler->getService()->schedule(
+        $this->sendMessageToProducer(
             $integrationId,
             ProductConnector::TYPE,
             [
@@ -127,7 +131,7 @@ class ProductScheduler implements ProductSchedulerInterface
         int $websiteId,
         int $productId
     ): void {
-        $this->syncScheduler->getService()->schedule(
+        $this->sendMessageToProducer(
             $integrationId,
             ProductConnector::TYPE,
             [
@@ -149,5 +153,26 @@ class ProductScheduler implements ProductSchedulerInterface
         foreach ($productIds as $productId) {
             $this->scheduleUpdateWebsiteScopeDataProductOnChannel($integrationId, $websiteId, $productId);
         }
+    }
+
+    /**
+     * @param $integrationId
+     * @param $connector
+     * @param array $connectorParameters
+     */
+    protected function sendMessageToProducer($integrationId, $connector, array $connectorParameters = []): void
+    {
+        $this->producer->send(
+            sprintf('%s.magento2.product', Topics::REVERS_SYNC_INTEGRATION),
+            new Message(
+                [
+                    'integration_id'       => $integrationId,
+                    'connector_parameters' => $connectorParameters,
+                    'connector'            => $connector,
+                    'transport_batch_size' => 100,
+                ],
+                MessagePriority::VERY_HIGH
+            )
+        );
     }
 }

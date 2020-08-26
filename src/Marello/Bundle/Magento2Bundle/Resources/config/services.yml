@@ -333,6 +333,18 @@ services:
         tags:
             - { name: oro_message_queue.client.message_processor }
 
+    marello_magento2.reverse_sync_integration_processor_product:
+        class: Marello\Bundle\Magento2Bundle\Async\ProductReverseSyncIntegrationProcessor
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@oro_integration.reverse_sync.processor'
+            - '@oro_integration.manager.types_registry'
+            - '@oro_message_queue.job.runner'
+            - '@security.token_storage'
+            - '@logger'
+        tags:
+            - { name: oro_message_queue.client.message_processor }
+
     # Constraints
     marello_magento2.validator.sales_channels_attached_to_integration:
         class: Marello\Bundle\Magento2Bundle\Validator\SalesChannelsAttachedToIntegrationValidator
@@ -352,7 +364,7 @@ services:
     marello_magento2.scheduler.product:
         class: Marello\Bundle\Magento2Bundle\Scheduler\ProductScheduler
         arguments:
-            - '@oro_integration.sync_scheduler.link'
+            - '@oro_message_queue.message_producer'
 
     # Factory
     marello_magento2.transport.rest.search_criteria.filter_factory:
