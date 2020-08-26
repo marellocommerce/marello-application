@@ -4,10 +4,10 @@ namespace Marello\Bundle\Magento2Bundle\Integration\Connector;
 
 use Marello\Bundle\Magento2Bundle\Entity\AttributeSet;
 
-class AttributeSetConnector extends AbstractConnector
+class AttributeSetConnector extends AbstractConnector implements DictionaryConnectorInterface
 {
     /** @var string */
-    public const TYPE = 'magento2_attributeset';
+    public const TYPE = 'magento2_attributeset_dictionary';
 
     /**
      * {@inheritDoc}

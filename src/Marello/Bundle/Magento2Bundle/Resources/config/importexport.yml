@@ -26,6 +26,8 @@ services:
 
     marello_magento2.import_strategy.attributeset:
         parent: marello_magento2.import_strategy.default_magento2_import
+        calls:
+            - ['setEnableCollectingOriginIds', [true]]
 
     marello_magento2.import_strategy.order:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Strategy\OrderMagento2ImportStrategy
@@ -87,7 +89,7 @@ services:
         class: Marello\Bundle\Magento2Bundle\Integration\Connector\AttributeSetConnector
         parent: marello_magento2.integration.connector.abstract
         tags:
-            - { name: oro_integration.connector, type: magento2_attributeset, channel_type: magento2 }
+            - { name: oro_integration.connector, type: magento2_attributeset_dictionary, channel_type: magento2 }
 
     marello_magento2.integration.connector.order:
         class: Marello\Bundle\Magento2Bundle\Integration\Connector\OrderConnector

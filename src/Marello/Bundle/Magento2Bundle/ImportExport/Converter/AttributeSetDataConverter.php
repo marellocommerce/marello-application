@@ -21,8 +21,7 @@ class AttributeSetDataConverter extends IntegrationAwareDataConverter
     {
         return [
             self::ID_COLUMN_NAME => 'originId',
-            self::NAME_COLUMN_NAME => 'attributeSetName',
-            self::ATTRIBUTE_FAMILY_COLUMN_ID => 'attributeFamily:id'
+            self::NAME_COLUMN_NAME => 'attributeSetName'
         ];
     }
 
@@ -47,7 +46,7 @@ class AttributeSetDataConverter extends IntegrationAwareDataConverter
                 self::NAME_MAX_LENGTH
             );
         }
-
+        $importedRecord['attributeFamily:code'] = $importedRecord['attribute_set_name'];
         return parent::convertToImportFormat($importedRecord, $skipNullValues);
     }
 

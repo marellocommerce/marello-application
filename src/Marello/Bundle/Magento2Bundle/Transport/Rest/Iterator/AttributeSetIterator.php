@@ -7,7 +7,7 @@ use Marello\Bundle\Magento2Bundle\DTO\SearchResponseDTO;
 class AttributeSetIterator extends AbstractSearchIterator
 {
     /** @var int */
-    private const DEFAULT_PAGE_SIZE = 25;
+    public const DEFAULT_PAGE_SIZE = 25;
 
     /**
      * {@inheritDoc}
