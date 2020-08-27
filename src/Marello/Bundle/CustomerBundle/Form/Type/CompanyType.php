@@ -42,6 +42,10 @@ class CompanyType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, ['label' => 'marello.customer.company.name.label'])
+            ->add('companyNumber', TextType::class, [
+                'label' => 'marello.customer.company.company_number.label',
+                'required' => false
+            ])
             ->add(
                 'parent',
                 ParentCompanySelectType::class,
@@ -73,9 +77,7 @@ class CompanyType extends AbstractType
                     'mapped'   => false,
                     'multiple' => true,
                 ]
-            )
-            ->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'preSubmit'])
-            ->addEventListener(FormEvents::POST_SUBMIT, [$this, 'postSubmit']);
+            );
 
         if ($this->authorizationChecker->isGranted('marello_customer_company_address_update')) {
             $options = [
@@ -103,20 +105,6 @@ class CompanyType extends AbstractType
                     $options
                 );
         }
-    }
-
-    /**
-     * @param FormEvent $event
-     */
-    public function preSubmit(FormEvent $event)
-    {
-    }
-
-    /**
-     * @param FormEvent $event
-     */
-    public function postSubmit(FormEvent $event)
-    {
     }
 
     /**

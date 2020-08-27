@@ -3,6 +3,7 @@ marello:
         shipment:
             entity_label:                      Shipment
             entity_plural_label:               Shipments
+            entity_grid_all_view_label:        All %entity_plural_label%
             base64_encoded_label.label:        Base64 Encoded Label
             id.label:                          Id
             identification_number.label:       Identification Number
@@ -14,6 +15,7 @@ marello:
         shippingmethodsconfigsrule:
             entity_label: Shipping Rule
             entity_plural_label: Shipping Rules
+            entity_grid_all_view_label: All %entity_plural_label%
             id.label: Id
             rule.label: Rule
             destinations.label: Destinations
@@ -24,6 +26,7 @@ marello:
         shippingmethodconfig:
             entity_label: Shipping Rule Method Config
             entity_plural_label: Shipping Rule Methods Configs
+            entity_grid_all_view_label: All %entity_plural_label%
             id.label: Id
             method.label: Method
             options.label: Options
@@ -32,6 +35,7 @@ marello:
         shippingmethodtypeconfig:
             entity_label: Shipping Rule Method Type Config
             entity_plural_label: Shipping Rule Method Types Configs
+            entity_grid_all_view_label: All %entity_plural_label%
             id.label: Id
             type.label: Type
             enabled.label: Enabled

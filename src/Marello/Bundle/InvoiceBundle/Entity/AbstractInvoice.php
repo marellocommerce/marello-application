@@ -29,9 +29,8 @@ use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
  * @ORM\DiscriminatorMap({"invoice" = "Invoice", "creditmemo" = "Creditmemo"})
  * @ORM\Table(name="marello_invoice_invoice")
  * @Oro\Config(
- *      routeView="marello_invoice_view",
- *      routeName="marello_invoice_index",
- *      routeCreate="marello_invoice_create",
+ *      routeView="marello_invoice_invoice_view",
+ *      routeName="marello_invoice_invoice_index",
  *      defaultValues={
  *          "entity"={
  *              "icon"="fa-file-invoice"

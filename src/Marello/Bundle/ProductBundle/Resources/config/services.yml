@@ -42,6 +42,19 @@ services:
         tags:
             - { name: twig.extension }
 
+    marello_product.twig.product_unit_extension:
+        class: Marello\Bundle\ProductBundle\Twig\ProductUnitExtension
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: twig.extension }
+
+    marello_product.twig.provider.product_unit_variables:
+        class: Marello\Bundle\ProductBundle\Twig\Provider\ProductUnitVariablesProvider
+        public: false
+        tags:
+            - { name: oro_email.emailtemplate.variable_provider, scope: entity }
+
     marello_product.listener.datagrid.product_categories_column_listener:
         class: Marello\Bundle\ProductBundle\EventListener\Datagrid\ProductCategoriesColumnListener
         arguments:
@@ -193,3 +206,18 @@ services:
             - '@doctrine'
         tags:
             - { name: validator.constraint_validator, alias: marello_product.product_supplier_relations_dropship_validator }
+
+    marello_product.event_listener.product_update_inventory_rebalance_listener:
+        class: 'Marello\Bundle\ProductBundle\EventListener\Doctrine\ProductUpdateInventoryRebalanceListener'
+        arguments:
+            - '@oro_message_queue.client.message_producer'
+            - '@oro_entity.doctrine_helper'
+        lazy:  true
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+
+    marello_product.provider.action_group_registry:
+        public: true
+        class: Marello\Bundle\ProductBundle\Provider\ActionGroupRegistryProvider
+        arguments:
+            - '@oro_action.action_group_registry'

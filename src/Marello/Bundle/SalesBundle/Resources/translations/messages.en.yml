@@ -9,6 +9,7 @@ marello:
             header.label:                       Manage Sales Channels
             entity_label:                       Sales Channel
             entity_plural_label:                Sales Channels
+            entity_grid_all_view_label:         All %entity_plural_label%
             id.label:                           Id
             name.label:                         Name
             active.label:                       Active
@@ -44,12 +45,14 @@ marello:
         saleschannelgroup:
             entity_label: Sales Channel Group
             entity_plural_label: Sales Channels Groups
+            entity_grid_all_view_label: All %entity_plural_label%
             description.label: Description
             id.label: Id
             name.label: Name
             system.label: System
             organization.label: Organization
             sales_channels.label: Sales Channels
+            integration_channel.label: Integration Channel
 
             datablock:
                 general: General
@@ -59,3 +62,6 @@ marello:
                     saved: Sales Channel Group has been saved successfully
                 warning:
                     is_system_update_attempt: System Sales Channel Group can't be updated
+
+        form:
+            choose.sales_channel_group: 'Choose Sales Channel Group'

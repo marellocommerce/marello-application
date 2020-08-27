@@ -10,7 +10,7 @@ use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Model\InventoryItemAwareInterface;
 use Marello\Bundle\PricingBundle\Entity\AssembledChannelPriceList;
 use Marello\Bundle\PricingBundle\Entity\AssembledPriceList;
-use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
+use Marello\Bundle\PricingBundle\Entity\PriceListInterface;
 use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
 use Marello\Bundle\ProductBundle\Model\ExtendProduct;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
@@ -259,7 +259,7 @@ class Product extends ExtendProduct implements
      *
      * @var float
      */
-    protected $weight;
+    protected $weight = 0;
 
     /**
      * @var integer
@@ -439,7 +439,7 @@ class Product extends ExtendProduct implements
      *      }
      * )
      */
-    protected $data;
+    protected $data = [];
 
     /**
      * @var ArrayCollection|ProductSupplierRelation[]
@@ -1245,14 +1245,14 @@ class Product extends ExtendProduct implements
 
     /**
      * @param SalesChannel $salesChannel
-     * @return AssembledChannelPriceList|null
+     * @return PriceListInterface|null
      */
     public function getSalesChannelPrice(SalesChannel $salesChannel)
     {
-        /** @var ProductChannelPrice $productChannelPrice */
+        /** @var AssembledChannelPriceList $productChannelPrice */
         $productChannelPrice = $this->getChannelPrices()
             ->filter(function ($productChannelPrice) use ($salesChannel) {
-                /** @var ProductChannelPrice $productChannelPrice */
+                /** @var AssembledChannelPriceList $productChannelPrice */
                 return $productChannelPrice->getChannel() === $salesChannel;
             })
             ->first();

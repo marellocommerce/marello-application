@@ -16,7 +16,15 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\CustomerBundle\Entity\Repository\CompanyRepository")
- * @ORM\Table(name="marello_customer_company" )
+ * @ORM\Table(name="marello_customer_company",
+ *      uniqueConstraints={
+ *          @ORM\UniqueConstraint(
+ *              name="marello_customer_company_compnrorgidx",
+ *              columns={"company_number","organization_id"}
+ *          )
+ *      }
+ *
+ * )
  *
  * @Config(
  *      routeName="marello_customer_company_index",
@@ -82,6 +90,23 @@ class Company extends ExtendCompany implements OrganizationAwareInterface
      * )
      */
     protected $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="company_number", type="string", nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
+     *          "importexport"={
+     *              "order"=35
+     *          }
+     *      }
+     * )
+     */
+    protected $companyNumber;
 
     /**
      * @var PaymentTerm
@@ -224,6 +249,25 @@ class Company extends ExtendCompany implements OrganizationAwareInterface
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCompanyNumber(): ?string
+    {
+        return $this->companyNumber;
+    }
+
+    /**
+     * @param string|null $companyNumber
+     * @return $this
+     */
+    public function setCompanyNumber(string $companyNumber = null)
+    {
+        $this->companyNumber = $companyNumber;
+
+        return $this;
     }
 
     /**

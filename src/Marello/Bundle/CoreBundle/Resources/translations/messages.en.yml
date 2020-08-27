@@ -17,3 +17,6 @@ marello:
             groups:
                 marello:
                     title: Marello
+
+        copyright:
+            message: '© %copyright_date% Marello. All Rights Reserved'

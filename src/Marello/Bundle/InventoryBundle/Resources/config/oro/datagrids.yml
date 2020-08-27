@@ -8,6 +8,7 @@ datagrids:
                     - p.denormalizedDefaultName as productName
                     - p.sku as productSku
                     - i.enableBatchInventory as enableBatchInventory
+                    - pu.name as productUnit
                     - COALESCE(SUM(il.inventory), 0) AS inventoryQty
                     - COALESCE(SUM(il.allocatedInventory), 0) AS allocatedInventoryQty
                     - COALESCE(SUM(il.inventory - il.allocatedInventory), 0) AS virtualInventoryQty
@@ -17,6 +18,7 @@ datagrids:
                     left:
                         - { join: i.product, alias: p }
                         - { join: i.inventoryLevels, alias: il }
+                        - { join: i.productUnit, alias: pu }
                 groupBy: i.id
         columns:
             productSku:
@@ -26,9 +28,13 @@ datagrids:
                 frontend_type:      html
                 template:           MarelloProductBundle:Product/Datagrid:productSku.html.twig
             productName:
-                label:              marello.product.entity_label
+                label:              marello.product.names.label
                 frontend_type:      string
                 data_name:          productName
+            productUnit:
+                label:              marello.inventory.inventoryitem.product_unit.label
+                frontend_type:      string
+                data_name:          productUnit
             enableBatchInventory:
                 label:              marello.inventory.inventoryitem.enable_batch_inventory.label
                 frontend_type:      boolean
@@ -49,12 +55,13 @@ datagrids:
             columns:
                 productSku:             { data_name: p.sku }
                 productName:            { data_name: p.denormalizedDefaultName }
+                productUnit:            { data_name: productUnit }
                 enableBatchInventory:   { data_name: enableBatchInventory }
                 inventoryQty:           { data_name: inventoryQty }
                 allocatedInventoryQty:  { data_name: allocatedInventoryQty }
                 virtualInventoryQty:    { data_name: virtualInventoryQty }
             default:
-                productSku: 'DESC'
+                productName: 'DESC'
         filters:
             columns:
                 productSku:
@@ -63,6 +70,10 @@ datagrids:
                 productName:
                     type:             string
                     data_name:        p.denormalizedDefaultName
+                productUnit:
+                    type:             enum
+                    data_name:        productUnit
+                    enum_code:        marello_product_unit
                 enableBatchInventory:
                     type:             boolean
                     data_name:        enableBatchInventory
@@ -193,8 +204,11 @@ datagrids:
             type: orm
             query:
                 select:
-                    - il
+                    - il.id
+                    - il.pickLocation
+                    - il.updatedAt
                     - wht.label as warehouseTypeLabel
+                    - wh.label as warehouse
                     - COALESCE(il.inventory, 0) AS inventoryQty
                     - COALESCE(il.allocatedInventory, 0) AS allocatedInventoryQty
                     - COALESCE(il.inventory - il.allocatedInventory, 0) AS virtualInventoryQty
@@ -207,7 +221,7 @@ datagrids:
                 where:
                     and:
                         - IDENTITY(il.inventoryItem) = :inventoryItemId
-                groupBy: il.id
+                groupBy: il.id, wh.label, wht.label
             bind_parameters:
                 inventoryItemId: inventoryItemId
         columns:
@@ -252,17 +266,16 @@ datagrids:
                         - { join: balancedInventoryLevel.product, alias: p }
                         - { join: balancedInventoryLevel.salesChannelGroup, alias: scg }
         columns:
-            productName:
-                label:              marello.product.names.label
-                frontend_type:      string
-                data_name:          productName
-                renderable:         false
             productSku:
                 data_name:          productSku
                 label:              marello.product.sku.label
                 type:               twig
                 frontend_type:      html
                 template:           MarelloProductBundle:Product/Datagrid:productSku.html.twig
+            productName:
+                label:              marello.product.names.label
+                frontend_type:      string
+                data_name:          productName
             inventoryQty:
                 label:              marello.inventory.balancedinventorylevel.inventory.label
                 frontend_type:      number
@@ -311,4 +324,4 @@ datagrids:
                 reservedInventoryQty:
                     data_name:  balancedInventoryLevel.reservedInventory
             default:
-                createdAt:      DESC
+                productName: 'DESC'

@@ -101,15 +101,6 @@ class InventoryItemType extends AbstractType
                 ]
             )
             ->add(
-                'replenishment',
-                EnumChoiceType::class,
-                [
-                    'enum_code' => 'marello_inv_reple',
-                    'required'  => true,
-                    'label'     => 'marello.inventory.inventoryitem.replenishment.label',
-                ]
-            )
-            ->add(
                 'desiredInventory',
                 NumberType::class,
                 [
@@ -133,6 +124,15 @@ class InventoryItemType extends AbstractType
                 [
                     'required' => false,
                     'label' => 'marello.inventory.inventoryitem.enable_batch_inventory.label'
+                ]
+            )
+            ->add(
+                'productUnit',
+                EnumChoiceType::class,
+                [
+                    'enum_code' => 'marello_product_unit',
+                    'required'  => false,
+                    'label'     => 'marello.inventory.inventoryitem.product_unit.label',
                 ]
             )
             ->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'preSetDataListener']);

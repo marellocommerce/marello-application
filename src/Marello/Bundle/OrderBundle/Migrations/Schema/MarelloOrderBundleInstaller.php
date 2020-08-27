@@ -3,15 +3,18 @@
 namespace Marello\Bundle\OrderBundle\Migrations\Schema;
 
 use Doctrine\DBAL\Schema\Schema;
-use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
-use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
-use Oro\Bundle\AttachmentBundle\Migration\Extension\AttachmentExtension;
-use Oro\Bundle\AttachmentBundle\Migration\Extension\AttachmentExtensionAwareInterface;
-use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
-use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension;
-use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
-use Oro\Bundle\MigrationBundle\Migration\Installation;
+
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
+use Oro\Bundle\MigrationBundle\Migration\Installation;
+use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
+use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
+use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension;
+use Oro\Bundle\AttachmentBundle\Migration\Extension\AttachmentExtension;
+use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
+use Oro\Bundle\AttachmentBundle\Migration\Extension\AttachmentExtensionAwareInterface;
+use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
+
+use Marello\Bundle\OrderBundle\Model\OrderStatusesInterface;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
@@ -43,7 +46,7 @@ class MarelloOrderBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_10';
+        return 'v1_13_1';
     }
 
     /**
@@ -79,6 +82,7 @@ class MarelloOrderBundleInstaller implements
         $table->addColumn('subtotal', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('total_tax', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('grand_total', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+        $table->addColumn('locale_id', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('currency', 'string', ['notnull' => false, 'length' => 10]);
         $table->addColumn('payment_method', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn(
@@ -107,6 +111,7 @@ class MarelloOrderBundleInstaller implements
         );
         $table->addColumn('shipping_method', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('shipping_method_type', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('shipping_method_reference', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn(
             'estimated_shipping_cost_amount',
             'money',
@@ -144,10 +149,24 @@ class MarelloOrderBundleInstaller implements
         $table->addIndex(['billing_address_id'], 'IDX_A619DD6443656FE6', []);
         $table->addIndex(['shipping_address_id'], 'IDX_A619DD64B1835C8F', []);
         $table->addIndex(['salesChannel_id'], 'IDX_A619DD644C7A5B2E', []);
+        $table->addColumn('delivery_date', 'datetime', ['notnull' => false]);
+        $table->addColumn('order_note', 'text', ['notnull' => false]);
+        $table->addColumn('po_number', 'string', ['length' => 255, 'notnull' => false]);
         $table->addIndex(['organization_id']);
 
         $this->activityExtension->addActivityAssociation($schema, 'marello_notification', $table->getName());
         $this->activityExtension->addActivityAssociation($schema, 'oro_email', $table->getName());
+        $this->extendExtension->addEnumField(
+            $schema,
+            $table,
+            'orderStatus',
+            OrderStatusesInterface::ORDER_STATUS_ENUM_CLASS,
+            false,
+            false,
+            [
+                'extend' => ['owner' => ExtendScope::OWNER_SYSTEM],
+            ]
+        );
     }
 
     /**
@@ -217,6 +236,17 @@ class MarelloOrderBundleInstaller implements
             $table,
             'status',
             'marello_item_status',
+            false,
+            false,
+            [
+                'extend' => ['owner' => ExtendScope::OWNER_SYSTEM],
+            ]
+        );
+        $this->extendExtension->addEnumField(
+            $schema,
+            $table,
+            'productUnit',
+            'marello_product_unit',
             false,
             false,
             [

@@ -3,6 +3,7 @@ marello:
         id.label:               Id
         entity_label:           Refund
         entity_plural_label:    Refunds
+        entity_grid_all_view_label: All %entity_plural_label%
         refund_number.label:    Refund Number
         refund_status.label:    Refund Status
         refund_amount.label:    Refund Amount
@@ -20,6 +21,7 @@ marello:
         refunditem:
             entity_label:           Refund Item
             entity_plural_label:    Refund Items
+            entity_grid_all_view_label: All %entity_plural_label%
             base_amount.label:      Base Amount
             id.label:               Id
             name.label:             Name

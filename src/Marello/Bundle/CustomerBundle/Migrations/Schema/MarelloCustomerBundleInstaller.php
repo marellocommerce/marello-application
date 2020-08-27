@@ -34,7 +34,7 @@ class MarelloCustomerBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_3';
+        return 'v1_4_1';
     }
 
     /**
@@ -63,12 +63,14 @@ class MarelloCustomerBundleInstaller implements
 
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('name', 'string', ['length' => 255]);
+        $table->addColumn('company_number', 'string', ['length' => 255, 'notnull' => false]);
         $table->addColumn('payment_term_id', 'integer', ['notnull' => false]);
         $table->addColumn('parent_id', 'integer', ['notnull' => false]);
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
+        $table->addUniqueIndex(['company_number', 'organization_id'], 'marello_customer_company_compnrorgidx');
     }
 
     /**
@@ -104,8 +106,6 @@ class MarelloCustomerBundleInstaller implements
         $table->addColumn('tax_identification_number', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('company_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['primary_address_id'], 'UNIQ_75C456C9F5B7AF75');
-        $table->addUniqueIndex(['shipping_address_id'], 'UNIQ_75C456C94D4CFF2B');
         $table->addIndex(['organization_id']);
 
         $this->attachmentExtension->addAttachmentAssociation($schema, $table->getName());

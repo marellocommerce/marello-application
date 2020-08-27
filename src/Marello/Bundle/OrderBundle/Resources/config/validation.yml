@@ -1,17 +1,3 @@
-Marello\Bundle\AddressBundle\Entity\MarelloAddress:
-    properties:
-        street:
-            - NotBlank: ~
-        city:
-            - NotBlank: ~
-        postalCode:
-            - NotBlank: ~
-        country:
-            - NotBlank: ~
-        phone:
-            - Length:
-                max: 255
-
 Marello\Bundle\OrderBundle\Entity\OrderItem:
     properties:
         product:
@@ -36,16 +22,26 @@ Marello\Bundle\OrderBundle\Entity\OrderItem:
 Marello\Bundle\OrderBundle\Entity\Order:
     properties:
         customer:
-            - NotBlank: ~
+            - NotBlank: { groups: [Default] }
         salesChannel:
-            - NotBlank: ~
+            - NotBlank: { groups: [Default, commerce] }
         paymentMethod:
-            - NotBlank: ~
+            - NotBlank: { groups: [Default, commerce] }
         shippingMethod:
-            - NotBlank: ~
+            - NotBlank: { groups: [Default] }
         billingAddress:
-            - NotBlank:
-                message: 'marello.order.address.validation.billing_not_blank'
+            - NotBlank: { groups: [Default, commerce], message: 'marello.order.address.validation.billing_not_blank' }
         shippingAddress:
-            - NotBlank:
-                message: 'marello.order.address.validation.shipping_not_blank'
+            - NotBlank: { groups: [Default, commerce], message: 'marello.order.address.validation.shipping_not_blank' }
+        items:
+            - Count:
+                min: 1
+                minMessage: 'marello.order.item.count'
+            - Valid: ~
+    constraints:
+        - Marello\Bundle\CoreBundle\Validator\Constraints\GreaterThanDate:
+            field: 'deliveryDate'
+            greaterThan: 'today'
+            nullable: true
+            errorPath: deliveryDate
+            message: 'marello.order.delivery_date.messages.error.greater_than_date'
