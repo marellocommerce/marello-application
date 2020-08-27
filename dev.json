@@ -35,7 +35,8 @@
         "oro/platform": "4.1.*",
         "oro/platform-serialised-fields": "4.1.*",
         "oro/calendar-bundle": "4.1.*",
-        "marellocommerce/marello": "self.version"
+        "marellocommerce/marello": "self.version",
+        "marellocommerce/marello-magento2-bundle": "self.version"
     },
     "require-dev": {
         "behat/behat": "3.4.*",
@@ -67,6 +68,8 @@
         "marello-reset": [
             "rm -rf var/cache/*",
             "rm -rf var/logs/*",
+            "rm -rf var/attachment/*",
+            "rm -rf public/media/cache/*",
             "sed -i -e 's/installed:.*/installed: ~/g' config/parameters.yml",
             "bin/console oro:install --timeout 3600 --sample-data=y --drop-database --env=prod --user-name=admin --user-firstname=John --user-lastname=Doe --user-password=marello123 --user-email=johndoe@example.com  --organization-name=Marello --formatting-code=en_US --language=en"
         ],

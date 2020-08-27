@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f6bf086a240f372c29020d625495d858",
+    "content-hash": "69ac3c5790308a3742df3607a2f2a8bf",
     "packages": [
         {
             "name": "akeneo/batch-bundle",
@@ -4644,11 +4644,17 @@
         },
         {
             "name": "marellocommerce/marello",
-            "version": "dev-3.0-test",
+            "version": "3.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/marellocommerce/marello.git",
+                "reference": "b7ac5c464828314c3110f371255f2c7001cf6ea3"
+            },
             "dist": {
-                "type": "path",
-                "url": "../../package/marello",
-                "reference": "d140bf5c4f9eb71cb83528c449a5ae04ab0117a5"
+                "type": "zip",
+                "url": "https://api.github.com/repos/marellocommerce/marello/zipball/b7ac5c464828314c3110f371255f2c7001cf6ea3",
+                "reference": "b7ac5c464828314c3110f371255f2c7001cf6ea3",
+                "shasum": ""
             },
             "require": {
                 "mpdf/mpdf": "^7.1",
@@ -4681,51 +4687,11 @@
             ],
             "description": "Marello Unified Commerce Management",
             "homepage": "https://github.com/marellocommerce/marello.git",
-            "transport-options": {
-                "relative": true
-            }
-        },
-        {
-            "name": "marellocommerce/marello-magento2-bundle",
-            "version": "dev-develop",
-            "dist": {
-                "type": "path",
-                "url": "../../package/marello-magento2-bundle",
-                "reference": "604e608411c5cdbabbfb6f89b63d84e96164c6d8"
+            "support": {
+                "source": "https://github.com/marellocommerce/marello/tree/3.0.2",
+                "issues": "https://github.com/marellocommerce/marello/issues"
             },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "": "src/"
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Madia B.V.",
-                    "homepage": "https://www.marello.com"
-                }
-            ],
-            "description": "Marello package",
-            "keywords": [
-                "Integration",
-                "Magento2",
-                "Marello",
-                "Product"
-            ],
-            "transport-options": {
-                "relative": true
-            }
+            "time": "2020-05-19T08:52:52+00:00"
         },
         {
             "name": "michelf/php-markdown",
@@ -12708,7 +12674,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "marellocommerce/marello": 20,
         "behat/mink": 20,
         "mybuilder/phpunit-accelerator": 20
     },
