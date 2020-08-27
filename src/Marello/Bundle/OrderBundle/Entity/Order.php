@@ -188,6 +188,15 @@ class Order extends ExtendOrder implements
     protected $currency;
 
     /**
+     * Represent locale in ICU format
+     *
+     * @var string
+     *
+     * @ORM\Column(name="locale_id", type="string", length=255, nullable=true)
+     */
+    protected $localeId;
+
+    /**
      * @var string
      * @ORM\Column(name="payment_method", type="string", length=255, nullable=true)
      * @Oro\ConfigField(
@@ -291,6 +300,13 @@ class Order extends ExtendOrder implements
     protected $shippingMethodType;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="shipping_method_reference", type="string", length=255, nullable=true)
+     */
+    protected $shippingMethodReference;
+
+    /**
      * @var float
      *
      * @ORM\Column(name="estimated_shipping_cost_amount", type="money", nullable=true)
@@ -352,6 +368,9 @@ class Order extends ExtendOrder implements
      * @ORM\OrderBy({"id" = "ASC"})
      * @Oro\ConfigField(
      *      defaultValues={
+     *          "importexport"={
+     *              "full"=true
+     *          },
      *          "email"={
      *              "available_in_template"=true
      *          },
@@ -385,6 +404,9 @@ class Order extends ExtendOrder implements
      * @ORM\JoinColumn(name="billing_address_id", referencedColumnName="id")
      * @Oro\ConfigField(
      *      defaultValues={
+     *          "importexport"={
+     *              "full"=true
+     *          },
      *          "dataaudit"={
      *              "auditable"=true
      *          }
@@ -400,6 +422,9 @@ class Order extends ExtendOrder implements
      * @ORM\JoinColumn(name="shipping_address_id", referencedColumnName="id")
      * @Oro\ConfigField(
      *      defaultValues={
+     *          "importexport"={
+     *              "full"=true
+     *          },
      *          "dataaudit"={
      *              "auditable"=true
      *          }
@@ -429,9 +454,6 @@ class Order extends ExtendOrder implements
      * @ORM\JoinColumn(onDelete="SET NULL", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
-     *          "importexport"={
-     *              "full"=true
-     *          },
      *          "dataaudit"={
      *              "auditable"=true
      *          }
@@ -480,7 +502,61 @@ class Order extends ExtendOrder implements
      *      }
      * )
      */
-    protected $data;
+    protected $data = [];
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="delivery_date", type="datetime", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $deliveryDate;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="order_note",type="text", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $orderNote;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="po_number",type="string", nullable=true, length=255)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $poNumber;
+
+    /**
+     * @var \Extend\Entity\EV_Marello_Order_Status
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $orderStatus;
 
     /**
      * @param AbstractAddress|null $billingAddress
@@ -774,6 +850,26 @@ class Order extends ExtendOrder implements
         $this->currency = $currency;
 
         return $this;
+    }
+
+    /**
+     * @param string $localeId
+     *
+     * @return $this
+     */
+    public function setLocaleId($localeId)
+    {
+        $this->localeId = $localeId;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocaleId()
+    {
+        return $this->localeId;
     }
 
     /**
@@ -1075,11 +1171,30 @@ class Order extends ExtendOrder implements
 
     /**
      * @param string $shippingMethodType
-     * @return Order
+     * @return $this
      */
     public function setShippingMethodType($shippingMethodType)
     {
         $this->shippingMethodType = (string) $shippingMethodType;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShippingMethodReference(): ?string
+    {
+        return $this->shippingMethodReference;
+    }
+
+    /**
+     * @param string $shippingMethodReference
+     * @return $this
+     */
+    public function setShippingMethodReference(string $shippingMethodReference = null)
+    {
+        $this->shippingMethodReference = $shippingMethodReference;
 
         return $this;
     }
@@ -1200,5 +1315,82 @@ class Order extends ExtendOrder implements
     public function getData()
     {
         return $this->data;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDeliveryDate()
+    {
+        return $this->deliveryDate;
+    }
+
+    /**
+     * @param \DateTime $deliveryDate
+     * @return $this
+     */
+    public function setDeliveryDate(\DateTime $deliveryDate = null)
+    {
+        $this->deliveryDate = $deliveryDate;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrderNote()
+    {
+        return $this->orderNote;
+    }
+
+    /**
+     * @param string $orderNote
+     * @return $this
+     */
+    public function setOrderNote(string $orderNote)
+    {
+        $this->orderNote = $orderNote;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPoNumber()
+    {
+        return $this->poNumber;
+    }
+
+    /**
+     * @param string $poNumber
+     * @return $this
+     */
+    public function setPoNumber(string $poNumber)
+    {
+        $this->poNumber = $poNumber;
+
+        return $this;
+    }
+
+
+    /**
+     * @return \Extend\Entity\EV_Marello_Order_Status
+     */
+    public function getOrderStatus()
+    {
+        return $this->orderStatus;
+    }
+
+    /**
+     * @param string $orderStatus
+     * @return $this
+     */
+    public function setOrderStatus($orderStatus)
+    {
+        $this->orderStatus = $orderStatus;
+
+        return $this;
     }
 }

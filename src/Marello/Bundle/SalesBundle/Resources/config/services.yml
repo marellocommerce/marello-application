@@ -37,6 +37,18 @@ services:
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: saleschannels, acl_resource: marello_product_view }
 
+    marello_sales.group_saleschannels.form.autocomplete.search_handler:
+        class: 'Marello\Bundle\SalesBundle\Autocomplete\GroupSalesChannelHandler'
+        calls:
+            - [initDoctrinePropertiesByManagerRegistry, ["@doctrine"]]
+            - [setAclHelper,["@oro_security.acl_helper"]]
+            - [setLogger,["@logger"]]
+        arguments:
+            - 'Marello\Bundle\SalesBundle\Entity\SalesChannelGroup'
+            - ['name']
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: group_saleschannels, acl_resource: marello_product_view }
+
     marello_sales.active_saleschannels.form.autocomplete.search_handler:
         class: 'Marello\Bundle\SalesBundle\Autocomplete\ActiveSalesChannelHandler'
         parent: oro_form.autocomplete.search_handler
@@ -152,3 +164,12 @@ services:
     marello_sales.placeholder.filter:
         public: true
         class: 'Marello\Bundle\SalesBundle\Placeholder\PlaceholderFilter'
+
+    marello_sales.security.acl.voter.sales_channel_group:
+        class: 'Marello\Bundle\SalesBundle\Acl\Voter\SalesChannelGroupVoter'
+        arguments:
+            - "@oro_entity.doctrine_helper"
+        calls:
+            - [setClassName, ['Marello\Bundle\SalesBundle\Entity\SalesChannelGroup']]
+        tags:
+            - { name: security.voter }

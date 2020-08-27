@@ -42,13 +42,13 @@ class SalesChannelType extends AbstractType
             ->add('channelType')
             ->add('currency', CurrencyType::class)
             ->add('default', CheckboxType::class, [
-                'required' => false,
+                'required' => false
             ])
             ->add('active', CheckboxType::class, [
-                'required' => false,
+                'required' => false
             ])
             ->add('localization', LocalizationSelectType::class, [
-                'required' => true,
+                'required' => false
             ])
             ->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'preSetDataListener']);
     }

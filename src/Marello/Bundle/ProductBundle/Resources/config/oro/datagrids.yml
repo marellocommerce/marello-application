@@ -156,6 +156,7 @@ datagrids:
                     - p.sku
                     - s.label as status
                     - COALESCE(SUM(il.inventory), 0) AS inventoryQty
+                    - repl.name AS replenishment
                 from:
                     - { table: MarelloProductBundle:Product, alias: p }
                 join:
@@ -163,6 +164,7 @@ datagrids:
                         - { join: p.status, alias: s }
                         - { join: p.inventoryItems, alias: i }
                         - { join: i.inventoryLevels, alias: il }
+                        - { join: i.replenishment, alias: repl }
                 where:
                     and:
                         - p.variant = :variantId
@@ -181,6 +183,10 @@ datagrids:
                 label:              marello.inventory.inventorylevel.inventory.label
                 frontend_type:      number
                 data_name:          inventoryQty
+            replenishment:
+                label:              marello.inventory.inventoryitem.replenishment.label
+                frontend_type:      string
+                data_name:          replenishment
             status:
                 label:              marello.product.status.label
                 frontend_type:      string
@@ -218,6 +224,7 @@ datagrids:
                             false
                         END) as hasVariant
                     - p.sku
+                    - p.type
                     - s.label as status
                     - COALESCE(SUM(il.inventory), 0) AS inventoryQty
                 from:
@@ -245,17 +252,19 @@ datagrids:
                 label:              ~
                 editable:           true
                 frontend_type:      boolean
+            status:
+                label:              marello.product.status.label
+                frontend_type:      string
             sku:
                 label:              marello.product.sku.label
                 frontend_type:      string
             name:
                 label:              marello.product.names.label
-            inventoryQty:
-                label:              marello.inventory.inventorylevel.inventory.label
-                frontend_type:      number
-                data_name:          inventoryQty
-            status:
-                label:              marello.product.status.label
+            type:
+                label:              marello.product.type.label
+                frontend_type:      string
+            manufacturingCode:
+                label:              marello.product.manufacturing_code.label
                 frontend_type:      string
         filters:
             columns:
@@ -263,14 +272,25 @@ datagrids:
                     label:            marello.product.variant.selected_variants.label
                     type:             boolean
                     data_name:        hasVariant
-                name:
-                    label:            marello.product.names.label
+                status:
+                    label:            marello.product.status.label
                     type:             string
-                    data_name:        name
+                    data_name:        s.label
                 sku:
                     label:            marello.product.sku.label
                     type:             string
                     data_name:        p.sku
+                name:
+                    label:            marello.product.names.label
+                    type:             string
+                    data_name:        name
+                type:
+                    type:             string
+                    data_name:        p.type
+                manufacturingCode:
+                    data_name:          p.manufacturingCode
+                    type:               string
+                    enabled:            false
         sorters:
             columns:
                 name:           { data_name: name }
@@ -288,7 +308,6 @@ datagrids:
             rowSelection:
                 dataField: id
                 columnName: hasVariant
-                selectAll: true
                 selectors:
                     included: '#addVariants'
                     excluded: '#removeVariants'
@@ -635,7 +654,6 @@ datagrids:
             rowSelection:
                 dataField: id
                 columnName: inCategory
-                selectAll: true
                 selectors:
                     included: '#productAppendCategories'
                     excluded: '#productRemoveCategories'

@@ -210,7 +210,6 @@
             </div>
 
             <div class="customer-info">
-                {# Customer details #}
                 <p class="customer-address">
                     {% set address = entity.billingAddress %}
                     {% set name = address|oro_format_name(locale) %}
@@ -224,6 +223,9 @@
                         {{ address.organization }}<br>
                     {% else %}
                         &nbsp;<br>
+                    {% endif %}
+                    {% if address.company is not empty %}
+                        {{ address.company }}<br>
                     {% endif %}
                     {% if name is not empty %}
                         {{ name }}<br>
@@ -243,8 +245,10 @@
                         <div class="dd">{{ entity.invoicedAt|date('d-m-Y') }}</div>
                         <div class="dt">{{ 'marello.pdf.invoice.invoice_number.label'|trans({}, 'pdf', language) }}:</div>
                         <div class="dd">{% if entity.invoiceNumber is not empty %}{{ entity.invoiceNumber }}{% else %}&nbsp;{% endif %}</div>
-                        <div class="dt">{{ 'marello.pdf.invoice.debtor_number.label'|trans({}, 'pdf', language) }}:</div>
-                        <div class="dd">{{ entity.customer.id }}</div>
+                        {% if entity.customer.company and entity.customer.company.companyNumber %}
+                            <div class="dt">{{ 'marello.customer.company.pdf.company_number.label'|trans({}, 'pdf', language) }}:</div>
+                            <div class="dd">{{ entity.customer.company.companyNumber }}</div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -252,10 +256,10 @@
 
         <div class="contents clearfix">
             {# Invoice lines table #}
-    {% set total = 0.0 %}
-    {% set taxtotal = 0.0 %}
-    {% set tables = get_document_tables(entity) %}
-    {% for table in tables %}
+            {% set total = 0.0 %}
+            {% set taxtotal = 0.0 %}
+            {% set tables = get_document_tables(entity) %}
+            {% for table in tables %}
             {% set subtotal = 0.0 %}
             <table class="invoice-lines" autosize="0">
                 <thead>
@@ -263,6 +267,7 @@
                         <th>{{ 'marello.pdf.invoice_line.productSku.label'|trans({}, 'pdf', language) }}</th>
                         <th>{{ 'marello.pdf.invoice_line.productName.label'|trans({}, 'pdf', language) }}</th>
                         <th class="quantity c">{{ 'marello.pdf.invoice_line.quantity.label'|trans({}, 'pdf', language) }}</th>
+                        <th class="unit c">{{ 'marello.pdf.invoice_line.product_unit.label'|trans({}, 'pdf', language) }}</th>
                         <th class="price c">{{ 'marello.pdf.invoice_line.price.label'|trans({}, 'pdf', language) }}</th>
                         <th class="amount c">{{ 'marello.pdf.invoice_line.vat.label'|trans({}, 'pdf', language) }}</th>
                         <th class="amount r">{{ 'marello.pdf.invoice_line.total_inc_tax.label'|trans({}, 'pdf', language) }}</th>
@@ -287,6 +292,13 @@
                                 {{- line['quantity'] -}}
                             {%- else -%}
                                 &nbsp;
+                            {%- endif -%}
+                        </td>
+                        <td class="unit c">
+                            {%- if line['productUnit'] is not empty -%}
+                                {{- line['productUnit'] -}}
+                            {%- else -%}
+
                             {%- endif -%}
                         </td>
                         <td class="price c">

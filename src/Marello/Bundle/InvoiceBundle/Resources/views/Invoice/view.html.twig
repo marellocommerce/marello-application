@@ -3,7 +3,7 @@
 {% import 'MarelloAddressBundle::macros.html.twig' as Address %}
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 
-{% oro_title_set({params : {"%id%": entity.invoiceNumber }}) %}
+{% oro_title_set({params : {"%invoiceType%": entity.invoiceType|capitalize, "%id%": entity.invoiceNumber }}) %}
 
 {% block pageHeader %}
     {% set breadcrumbs = {
@@ -16,7 +16,7 @@
 {% endblock pageHeader %}
 
 {% block navButtons %}
-    <a href="{{ path('marello_pdf_download', {'entity': 'invoice', 'id': entity.id}) }}" target="_blank" class="btn operation-button action-button">
+    <a href="{{ path('marello_pdf_download', {'entity': entity.invoiceType, 'id': entity.id}) }}" target="_blank" class="btn operation-button action-button">
         <i class="fa fa-download"></i> {{ 'marello.invoice.pdf.download.label'|trans }}
     </a>
 {% endblock %}
@@ -35,6 +35,7 @@
                         {{ UI.renderProperty('marello.invoice.invoice_number.label'|trans, entity.invoiceNumber) }}
                         {{ UI.renderProperty('marello.invoice.invoiced_at.label'|trans, entity.invoicedAt|oro_format_datetime) }}
                         {{ UI.renderProperty('marello.invoice.invoice_due_date.label'|trans, entity.invoiceDueDate|oro_format_datetime) }}
+                        {{ UI.renderProperty('marello.invoice.type.label'|trans, entity.invoiceType|capitalize) }}
                         {{ UI.renderHtmlProperty(
                             'marello.invoice.sales_channel.label'|trans,
                             UI.entityViewLink(entity.order.salesChannel, entity.order.salesChannel.name, 'marello_sales_saleschannel_view')
@@ -69,6 +70,15 @@
                         <div class="title">
                             <span class="widget-title">{{ 'marello.invoice.datablock.customer_information'|trans }}</span>
                         </div>
+                        {% if entity.customer.company %}
+                            {{ UI.renderHtmlProperty(
+                            'marello.customer.company.entity_label'|trans,
+                            UI.entityViewLink(entity.customer.company, entity.customer.company.name, 'marello_customer_company_view')
+                            ) }}
+                            {% if entity.customer.company.companyNumber %}
+                                {{ UI.renderProperty('marello.customer.company.company_number.label'|trans, entity.customer.company.companyNumber) }}
+                            {% endif %}
+                        {% endif %}
                         {{ UI.renderHtmlProperty(
                             'marello.customer.entity_label'|trans,
                             UI.entityViewLink(entity.customer, entity.customer|oro_format_name, 'marello_customer_view')

@@ -76,3 +76,8 @@ services:
             - '@oro_entity.doctrine_helper'
         tags:
             - { name: twig.extension }
+
+    marello_core.event_listener.refresh_context:
+        class: Marello\Bundle\CoreBundle\EventListener\RefreshContextListener
+        decorates: oro_security.listener.refresh_context_listener
+        parent: oro_security.listener.refresh_context_listener

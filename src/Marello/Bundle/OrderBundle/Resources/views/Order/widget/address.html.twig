@@ -21,6 +21,9 @@
                 </div>
             {% endif %}
             <address>
+                {% if orderAddress.company %}
+                    {{ UI.renderProperty('marello.order.address.company.label'|trans, orderAddress.company) }}
+                {% endif %}
                 {{ UI.renderHtmlProperty(label|trans, address.renderAddress(orderAddress)) }}
                 {{ UI.renderProperty('marello.order.address.phone.label'|trans, orderAddress.phone) }}
             </address>

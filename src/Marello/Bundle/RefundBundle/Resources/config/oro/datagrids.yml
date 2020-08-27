@@ -235,13 +235,15 @@ datagrids:
             query:
                 select:
                     - i
+                    - pu.name AS productUnit
+                    - oi.productSku as productSku
+                    - oi.productName as productName
                 from:
                     - { table: MarelloRefundBundle:RefundItem, alias: i}
                 join:
                     left:
-                        orderItem:
-                            join: i.orderItem
-                            alias: oi
+                        - { join: i.orderItem, alias: oi }
+                        - { join: oi.productUnit, alias: pu }
                 where:
                     and:
                         - i.refund = :refund_id
@@ -249,18 +251,22 @@ datagrids:
             bind_parameters:
                 refund_id: refundId
         columns:
-            sku:
-                data_name:          orderItem.productSku
+            productSku:
                 label:              marello.product.sku.label
+                data_name:          productSku
                 type:               twig
                 frontend_type:      html
                 template:           MarelloProductBundle:Product/Datagrid:productSku.html.twig
-            product:
-                label: marello.product.name.label
-                data_name: orderItem.productName
+            productName:
+                label:              marello.product.name.label
+                data_name:          productName
             quantity:
-                label: marello.refund.refunditem.quantity.label
-                frontend_type: number
+                label:              marello.refund.refunditem.quantity.label
+                frontend_type:      number
+            productUnit:
+                label:              marello.order.orderitem.product_unit.label
+                frontend_type:      string
+                data_name:          productUnit
             refundAmount:
                 label:              marello.refund.refunditem.refund_amount.label
                 type:               localized_number

@@ -9,19 +9,6 @@ use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 class BankTransferSettingsRepository extends EntityRepository
 {
     /**
-     * @var AclHelper
-     */
-    private $aclHelper;
-
-    /**
-     * @param AclHelper $aclHelper
-     */
-    public function setAclHelper(AclHelper $aclHelper)
-    {
-        $this->aclHelper = $aclHelper;
-    }
-
-    /**
      * @return BankTransferSettings[]
      */
     public function findWithEnabledChannel()
@@ -33,6 +20,6 @@ class BankTransferSettingsRepository extends EntityRepository
             ->where('ch.enabled = true')
             ->orderBy('bts.id');
 
-        return $this->aclHelper->apply($qb)->getResult();
+        return $qb->getQuery()->getResult();
     }
 }
