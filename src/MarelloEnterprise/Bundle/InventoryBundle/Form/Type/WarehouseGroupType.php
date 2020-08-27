@@ -38,11 +38,17 @@ class WarehouseGroupType extends AbstractType
         $builder
             ->add(
                 'name',
-                TextType::class
+                TextType::class,
+                [
+                    'required' => true
+                ]
             )
             ->add(
                 'description',
-                TextareaType::class
+                TextareaType::class,
+                [
+                    'required' => false
+                ]
             )
             ->add(
                 'warehouses',
@@ -50,8 +56,9 @@ class WarehouseGroupType extends AbstractType
                 [
                     'attr' => [
                         'data-entity-id' => $entityId,
-                        'disabled' => $fixedType
-                    ]
+                        'readonly' => $fixedType
+                    ],
+                    'required' => true
                 ]
             );
     }

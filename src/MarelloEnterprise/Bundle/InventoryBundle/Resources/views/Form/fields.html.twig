@@ -36,7 +36,7 @@
         </div>
     </td>
     <td class="inventorylevel-managed-inventory{{ form.warehouse.vars.errors|length ? 'has-errors' : '' }}">
-        {% if ((form.vars.manageBatches is same as(false)) and (form.vars.externalWarehouse is same as(false))) %}
+        {% if (form.vars.manageBatches is same as(false)) %}
             <div class="fields-row">
                 {{ form_widget(form.managedInventory) }}
             </div>

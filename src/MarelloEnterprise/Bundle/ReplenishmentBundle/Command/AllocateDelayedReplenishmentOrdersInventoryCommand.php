@@ -5,7 +5,6 @@ namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Command;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Async\AllocateReplenishmentOrdersInventoryProcessor;
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrder;
-use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\Repository\ReplenishmentOrderRepository;
 use Oro\Bundle\CronBundle\Command\CronCommandInterface;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -36,7 +35,7 @@ class AllocateDelayedReplenishmentOrdersInventoryCommand extends Command impleme
     ) {
         $this->doctrine = $doctrine;
         $this->messageProducer = $messageProducer;
-        
+
         parent::__construct();
     }
 
