@@ -4,6 +4,7 @@ marelloenterprise:
             id.label:                   Id
             entity_label:               Replenishment Order Config
             entity_plural_label:        Replenishment Order Configs
+            entity_grid_all_view_label: All %entity_plural_label%
             origins.label:              Origin(s)
             destinations.label:         Destination(s)
             products.label:             Products
@@ -24,6 +25,7 @@ marelloenterprise:
             id.label:                   Id
             entity_label:               Replenishment Order
             entity_plural_label:        Replenishment Orders
+            entity_grid_all_view_label: All %entity_plural_label%
             repl_order_number.label:    Replenishment Order Number
             origin.label:               Origin
             destination.label:          Destination
@@ -39,6 +41,7 @@ marelloenterprise:
             id.label:                  Id
             entity_label:              Replenishment Order Item
             entity_plural_label:       Replenishment Order Items
+            entity_grid_all_view_label: All %entity_plural_label%
             order.label:               Replenishment Order
             product.label:             Product
             product_name.label:        Product Name

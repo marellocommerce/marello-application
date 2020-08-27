@@ -23,9 +23,9 @@ services:
 
     marelloenterprise.inventory.mass_action.status_handler:
         class: 'Marello\Bundle\RuleBundle\Datagrid\Extension\MassAction\StatusMassActionHandler'
+        public: true
         arguments:
             - 'marelloenterprise.inventory.wfarule.datagrid.status.success_message'
             - 'MarelloEnterpriseInventoryBundle:WFARule'
             - '@doctrine.orm.entity_manager'
             - '@translator'
-#            - '@oro_security.security_facade.link'
