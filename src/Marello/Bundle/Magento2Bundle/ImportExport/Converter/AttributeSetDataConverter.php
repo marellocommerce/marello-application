@@ -8,8 +8,9 @@ class AttributeSetDataConverter extends IntegrationAwareDataConverter
 {
     public const ID_COLUMN_NAME = 'attribute_set_id';
     public const NAME_COLUMN_NAME = 'attribute_set_name';
-    public const ATTRIBUTE_FAMILY_COLUMN_ID = 'attributeFamilyId';
 
+    private const MARELLO_DEFAULT_ATTRIBUTE_FAMILY_CODE = 'marello_default';
+    private const MAGENTO_DEFAULT_ATTRIBUTE_FAMILY_CODE = 'Default';
     private const NAME_MAX_LENGTH = 255;
     private const CODE_MAX_LENGTH = 32;
     private const ELLIPSIS = '...';
@@ -47,6 +48,12 @@ class AttributeSetDataConverter extends IntegrationAwareDataConverter
             );
         }
         $importedRecord['attributeFamily:code'] = $importedRecord['attribute_set_name'];
+
+        // set default attribute family from Magento to Marello, as 'Default' is not allowed as family code in Marello.
+        if ($importedRecord['attribute_set_name'] === self::MAGENTO_DEFAULT_ATTRIBUTE_FAMILY_CODE) {
+            $importedRecord['attributeFamily:code'] = self::MARELLO_DEFAULT_ATTRIBUTE_FAMILY_CODE;
+        }
+
         return parent::convertToImportFormat($importedRecord, $skipNullValues);
     }
 
