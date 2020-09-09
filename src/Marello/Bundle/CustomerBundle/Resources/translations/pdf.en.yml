@@ -3,3 +3,4 @@ marello:
         company:
             pdf:
                 company_number.label: "Company Number"
+                tax_identification_number.label:  'Tax Identification Number'

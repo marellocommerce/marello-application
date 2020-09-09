@@ -209,6 +209,7 @@ datagrids:
                     - il.updatedAt
                     - wht.label as warehouseTypeLabel
                     - wh.label as warehouse
+                    - wh.code as warehouseCode
                     - COALESCE(il.inventory, 0) AS inventoryQty
                     - COALESCE(il.allocatedInventory, 0) AS allocatedInventoryQty
                     - COALESCE(il.inventory - il.allocatedInventory, 0) AS virtualInventoryQty
@@ -228,12 +229,16 @@ datagrids:
             warehouse:
                 label:              marello.inventory.inventorylevel.warehouse.label
                 frontend_type:      string
+            warehouseCode:
+                label:              marello.inventory.inventorylevel.grid.warehouse_code.label
+                frontend_type:      string
             pickLocation:
                 label:              marello.inventory.inventorylevel.pick_location.label
                 frontend_type:      string
             warehouseTypeLabel:
                 label:              marello.inventory.warehousetype.entity_label
                 frontend_type:      string
+                renderable:         false
             inventoryQty:
                 label:              marello.inventory.inventorylevel.inventory.label
                 frontend_type:      number
@@ -246,9 +251,18 @@ datagrids:
                 label:              marello.inventory.inventorylevel.virtual_inventory.label
                 frontend_type:      number
                 data_name:          virtualInventoryQty
-            updatedAt:
-                label:              oro.ui.updated_at
-                frontend_type:      datetime
+        filters:
+            columns:
+                warehouse:
+                    type:             string
+                    data_name:        warehouse
+                warehouseCode:
+                    type:             string
+                    data_name:        warehouseCode
+                warehouseTypeLabel:
+                    type:             string
+                    data_name:        warehouseTypeLabel
+                    enabled:          false
 
     marello-balanced-inventory-levels-grid:
         source:
