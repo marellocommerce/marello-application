@@ -337,10 +337,6 @@ class ParentCompanySearchHandlerTest extends TestCase
         $queryBuilder->expects($this->once())
             ->method('getQuery')
             ->will($this->returnValue($query));
-        $this->aclHelper->expects($this->once())
-            ->method('apply')
-            ->with($query)
-            ->will($this->returnValue($query));
         $this->entityRepository
             ->expects($this->any())
             ->method('createQueryBuilder')

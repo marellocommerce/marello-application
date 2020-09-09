@@ -62,12 +62,24 @@ class InvoiceLogoPathProvider
      * @param SalesChannel $salesChannel
      * @return mixed
      */
+    public function getInvoiceLogoWidth(SalesChannel $salesChannel)
+    {
+        $key = sprintf('%s.%s', Configuration::CONFIG_NAME, Configuration::CONFIG_KEY_LOGO_WIDTH);
+
+        return $this->configManager->get($key, false, false, $salesChannel);
+    }
+
+    /**
+     * @param SalesChannel $salesChannel
+     * @return mixed
+     */
     protected function getInvoiceLogoId(SalesChannel $salesChannel)
     {
         $key = sprintf('%s.%s', Configuration::CONFIG_NAME, Configuration::CONFIG_KEY_LOGO);
 
         return $this->configManager->get($key, false, false, $salesChannel);
     }
+
 
     /**
      * @param $id
