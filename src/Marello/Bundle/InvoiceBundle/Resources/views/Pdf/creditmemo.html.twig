@@ -249,6 +249,10 @@
                             <div class="dt">{{ 'marello.customer.company.pdf.company_number.label'|trans({}, 'pdf', language) }}:</div>
                             <div class="dd">{{ entity.customer.company.companyNumber }}</div>
                         {% endif %}
+                        {% if entity.customer.company and entity.customer.company.taxIdentificationNumber %}
+                            <div class="dt">{{ 'marello.customer.company.pdf.tax_identification_number.label'|trans({}, 'pdf', language) }}:</div>
+                            <div class="dd">{{ entity.customer.company.taxIdentificationNumber }}</div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

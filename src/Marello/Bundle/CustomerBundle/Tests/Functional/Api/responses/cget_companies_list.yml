@@ -4,6 +4,7 @@ data:
         id: '<toString(@company1->id)>'
         attributes:
             name: company1
+            taxIdentificationNumber: null
         relationships:
             customers:
                 data:
@@ -22,6 +23,7 @@ data:
         id: '<toString(@company2->id)>'
         attributes:
             name: company2
+            taxIdentificationNumber: null
         relationships:
             paymentTerm:
                 data:
@@ -44,6 +46,7 @@ data:
         id: '<toString(@company3->id)>'
         attributes:
             name: company3
+            taxIdentificationNumber: null
         relationships:
             customers:
                 data:

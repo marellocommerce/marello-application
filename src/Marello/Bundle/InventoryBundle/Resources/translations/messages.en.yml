@@ -108,6 +108,9 @@ marello:
             pick_location.label:            Pick Location
             inventory_batches.label:        Inventory Batches
 
+            grid:
+                warehouse_code.label:       Warehouse Code
+
             form:
                 manage_batches.label:       Manage Batches
 

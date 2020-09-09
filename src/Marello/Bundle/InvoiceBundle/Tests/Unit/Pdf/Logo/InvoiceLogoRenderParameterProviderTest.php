@@ -69,7 +69,7 @@ class InvoiceLogoRenderParameterProviderTest extends TestCase
             ->willReturn($logoPath)
         ;
 
-        $this->assertEquals(['logo' => $logoPath], $this->provider->getParams($entity, $options));
+        $this->assertEquals(['logo' => $logoPath, 'logo_width' => null], $this->provider->getParams($entity, $options));
     }
 
     public function getParamsProvider()

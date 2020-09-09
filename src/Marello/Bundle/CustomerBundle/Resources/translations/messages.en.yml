@@ -7,7 +7,6 @@ marello:
         organization.label:               'Organization'
         primary_address.label:            'Primary Address'
         shipping_address.label:           'Shipping Address'
-        tax_identification_number.label:  'Tax Identification Number'
         addresses.label:                  'Addresses'
         email.label:                      'Primary Email'
         emails.label:                     'Email Addresses'
@@ -35,6 +34,7 @@ marello:
             customers.label:        'Customers'
             organization.label:     'Organization'
             payment_term.label:     'Payment Term'
+            tax_identification_number.label:  'Tax Identification Number'
 
             form:
                 choose:             'Choose a company...'
