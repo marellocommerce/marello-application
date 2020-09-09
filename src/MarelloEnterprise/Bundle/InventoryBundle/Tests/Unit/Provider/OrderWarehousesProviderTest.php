@@ -109,8 +109,8 @@ class OrderWarehousesProviderTest extends TestCase
             [
                 'firstStrategyResults' => [$result1],
                 'secondStrategyResults' => [$result2],
-                'callStrategiesTimes' => 1,
-                'expectedResult' => $result1
+                'callStrategiesTimes' => 2,
+                'expectedResult' => $result2
             ],
             [
                 'firstStrategyResults' => [],
