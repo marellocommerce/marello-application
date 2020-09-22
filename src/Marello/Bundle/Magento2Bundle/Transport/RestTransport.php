@@ -230,7 +230,8 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
      */
     public function updateProduct(string $sku, array $data, string $storeCode = null): array
     {
-        $resource = str_replace('%sku%', $sku, self::RESOURCE_PRODUCT_WITH_SKU);
+        // encode sku for url as it doesn't really have any requirements regarding it's format
+        $resource = str_replace('%sku%', urlencode($sku), self::RESOURCE_PRODUCT_WITH_SKU);
 
         $request = $this->requestFactory->createSimpleRequest(
             $resource,
@@ -251,7 +252,8 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
      */
     public function removeProduct(string $sku): bool
     {
-        $resource = str_replace('%sku%', $sku, self::RESOURCE_PRODUCT_WITH_SKU);
+        // encode sku for url as it doesn't really have any requirements regarding it's format
+        $resource = str_replace('%sku%', urlencode($sku), self::RESOURCE_PRODUCT_WITH_SKU);
 
         $request = $this->requestFactory->createSimpleRequest(
             $resource
