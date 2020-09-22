@@ -259,7 +259,7 @@ class Product extends ExtendProduct implements
      *
      * @var float
      */
-    protected $weight;
+    protected $weight = 0;
 
     /**
      * @var integer
