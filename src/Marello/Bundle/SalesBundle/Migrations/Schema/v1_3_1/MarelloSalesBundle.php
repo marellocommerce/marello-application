@@ -35,7 +35,7 @@ class MarelloSalesBundle implements Migration
             $table->addUniqueIndex(['integration_channel_id'], 'UNIQ_759DCFAB3D6A9E29');
         }
 
-        if ($table->hasForeignKey('FK_759DCFAB3D6A9E29')) {
+        if (!$table->hasForeignKey('FK_759DCFAB3D6A9E29')) {
             $table->addForeignKeyConstraint(
                 $schema->getTable('oro_integration_channel'),
                 ['integration_channel_id'],

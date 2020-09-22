@@ -28,8 +28,23 @@ class MarelloSalesBundle implements Migration
     protected function modifyMarelloSalesSalesChannelTable(Schema $schema)
     {
         $table = $schema->getTable('marello_sales_sales_channel');
+        // remove foreign key in order to remove unique index
+        if ($table->hasForeignKey('FK_37C71D13D6A9E29')) {
+            $table->removeForeignKey('FK_37C71D13D6A9E29');
+        }
+
         if ($table->hasIndex('UNIQ_75C456C9F5B7AF7511')) {
             $table->dropIndex('UNIQ_75C456C9F5B7AF7511');
+        }
+
+        // add the foreign key back as it does come in handy :D
+        if (!$table->hasForeignKey('FK_37C71D13D6A9E29')) {
+            $table->addForeignKeyConstraint(
+                $schema->getTable('oro_integration_channel'),
+                ['integration_channel_id'],
+                ['id'],
+                ['onDelete' => 'SET NULL', 'onUpdate' => null]
+            );
         }
     }
 
