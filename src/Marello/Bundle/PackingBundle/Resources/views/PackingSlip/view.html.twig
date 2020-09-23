@@ -74,6 +74,20 @@
             ]
         }
     ] %}
+    {% set additionalData %}
+        {{ entityConfig.renderDynamicFields(entity) }}
+    {% endset %}
+
+    {% set dataBlocks = dataBlocks|merge([{
+        'title' : 'marello.packing.packingslip.datablock.additional'|trans,
+        'subblocks': [{
+            'title' : null,
+            'useSpan': false,
+            'data' : [
+                additionalData
+            ]
+         }]
+    }]) %}
 
     {% set data = { 'dataBlocks': dataBlocks } %}
     {{ parent() }}
