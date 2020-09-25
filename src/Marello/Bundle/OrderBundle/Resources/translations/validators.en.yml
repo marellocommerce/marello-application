@@ -6,7 +6,7 @@ marello:
 
         item:
             count: 'Please add at least one Order Item'
-            available_inventory: 'Cannot order more inventory than available'
+            available_inventory: 'Cannot order more inventory than available for product {{ productSku }}.'
 
         address:
             validation:
