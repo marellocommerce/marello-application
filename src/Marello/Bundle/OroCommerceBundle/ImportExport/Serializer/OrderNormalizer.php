@@ -161,16 +161,23 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
             ->setShippingAddress($this->prepareAddress($this->getProperty($data, 'shippingAddress')));
 
         // keep bc for a few methods just to be sure...
-        if ($poNumber = $this->getProperty($data, 'poNumber') && method_exists($order, 'setPoNumber')) {
-            $order->setPoNumber($poNumber);
+        if ($this->getProperty($data, 'poNumber') && method_exists($order, 'setPoNumber')) {
+            $order->setPoNumber($this->getProperty($data, 'poNumber'));
         }
 
-        if ($customerNote = $this->getProperty($data, 'customerNotes') && method_exists($order, 'setOrderNote')) {
-            $order->setOrderNote($customerNote);
+        if ($this->getProperty($data, 'customerNotes') && method_exists($order, 'setOrderNote')) {
+            $order->setOrderNote($this->getProperty($data, 'customerNotes'));
         }
 
         if (method_exists($order, 'setShippingMethodReference')) {
             $order->setShippingMethodReference($this->getProperty($data, 'shippingMethod'));
+        }
+
+        if (method_exists($order, 'setDeliveryDate') && $this->getProperty($data, 'shipUntil')) {
+            $shipUntil = \DateTime::createFromFormat('Y-m-d', $this->getProperty($data, 'shipUntil'));
+            if ($shipUntil) {
+                $order->setDeliveryDate($shipUntil);
+            }
         }
 
         $this->prepareOrderItems(
@@ -210,7 +217,9 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
             $customer->setEmail($email);
         }
 
-        $customer->setPrimaryAddress($this->prepareAddress($this->getProperty($data, 'shippingAddress')));
+        if ($primaryAddress = $this->prepareAddress($this->getProperty($data, 'shippingAddress'))) {
+            $customer->setPrimaryAddress($primaryAddress);
+        }
 
         return $customer;
     }

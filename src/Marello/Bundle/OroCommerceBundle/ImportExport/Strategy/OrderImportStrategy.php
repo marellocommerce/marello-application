@@ -34,7 +34,9 @@ class OrderImportStrategy extends AbstractImportStrategy
 
             if (!$salesChannel) {
                 $this->context->incrementErrorEntriesCount();
-                $this->strategyHelper->addValidationErrors(['No SalesChannel found for Order'], $this->context);
+                $this->strategyHelper->addValidationErrors([
+                    sprintf('No SalesChannel found for Order id %s', $entity->getOrderReference())
+                ], $this->context);
                 return null;
             }
 
@@ -254,8 +256,9 @@ class OrderImportStrategy extends AbstractImportStrategy
         // validate entity
         $validationErrors = $this->strategyHelper->validateEntity($entity, null, 'commerce');
         if ($validationErrors) {
+            $errorPrefix = sprintf('Error for Order Id: %s', $entity->getOrderReference());
             $this->context->incrementErrorEntriesCount();
-            $this->strategyHelper->addValidationErrors($validationErrors, $this->context);
+            $this->strategyHelper->addValidationErrors($validationErrors, $this->context, $errorPrefix);
             return null;
         }
         // increment context counter
