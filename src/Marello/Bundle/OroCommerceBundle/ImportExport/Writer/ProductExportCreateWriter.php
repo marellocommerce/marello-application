@@ -28,6 +28,14 @@ class ProductExportCreateWriter extends AbstractProductExportWriter
     {
         $response = $this->transport->createProduct($data);
 
+        if (!isset($response['data'])) {
+            if (!isset($response['data'])) {
+                $this->context->addError(
+                    sprintf('Could not create product with data %s', $data['data']['attributes']['sku'])
+                );
+            }
+        }
+
         if (isset($response['data']) && isset($response['data']['type']) && isset($response['data']['id']) &&
             $response['data']['type'] === 'products') {
             $em = $this->registry->getManagerForClass(Product::class);

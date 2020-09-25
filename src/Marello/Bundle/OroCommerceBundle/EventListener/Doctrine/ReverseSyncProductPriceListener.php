@@ -293,15 +293,17 @@ class ReverseSyncProductPriceListener extends AbstractReverseSyncListener
     /**
      * @param Product $product
      * @param SalesChannel $salesChannel
-     * @return BasePrice
+     * @return BasePrice|null
      */
     public static function getFinalPrice(Product $product, SalesChannel $salesChannel)
     {
         if ($channelPrice = $product->getSalesChannelPrice($salesChannel)) {
             return $channelPrice->getSpecialPrice() ? : $channelPrice->getDefaultPrice();
         }
-        $defaultPrice = $product->getPrice($salesChannel->getCurrency());
 
-        return $defaultPrice->getSpecialPrice() ? : $defaultPrice->getDefaultPrice();
+        if ($defaultPrice = $product->getPrice($salesChannel->getCurrency())) {
+            return $defaultPrice->getSpecialPrice() ? : $defaultPrice->getDefaultPrice();
+        }
+        return null;
     }
 }

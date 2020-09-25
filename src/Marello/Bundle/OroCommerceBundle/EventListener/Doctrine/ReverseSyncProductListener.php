@@ -246,7 +246,7 @@ class ReverseSyncProductListener extends AbstractReverseSyncListener
      */
     protected function scheduleSync(Product $entity, $action, Channel $integrationChannel = null)
     {
-        if (!in_array($entity, $this->processedEntities)) {
+        if (!in_array($entity->getSku(), $this->processedEntities)) {
             $data = $entity->getData();
             if ($integrationChannel) {
                 $this->scheduleSingleSync($entity, $data, $action, $integrationChannel);
@@ -335,7 +335,7 @@ class ReverseSyncProductListener extends AbstractReverseSyncListener
                 $this->entityManager->flush($transport);
             }
 
-            $this->processedEntities[] = $entity;
+            $this->processedEntities[] = $entity->getSku();
         }
     }
 

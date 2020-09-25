@@ -36,8 +36,10 @@ class CustomerImportStrategy extends AbstractImportStrategy
         $channel = $this->context->getValue('channel');
         $organization = $channel->getOrganization();
         $criteria = [
-            'name' => $entity->getName()
+            'name' => $entity->getName(),
+            'orocommerce_origin_id' => $entity->getOrocommerceOriginId()
         ];
+
         $company = $this->getEntityByCriteria($criteria, $entity);
         if ($company) {
             $newAddresses = $entity->getAddresses()->toArray();
