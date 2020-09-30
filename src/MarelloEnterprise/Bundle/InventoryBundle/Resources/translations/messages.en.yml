@@ -50,6 +50,8 @@ marelloenterprise:
                 create_label:           Create new WFA Rule
 
         warehouse:
+            datablock:
+                additional:             Additional
             form:
                 select_warehouse:       Select Warehouse
                 create_own_group:       Create Warehouse Group
