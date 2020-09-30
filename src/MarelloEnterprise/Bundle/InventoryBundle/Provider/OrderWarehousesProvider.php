@@ -68,13 +68,9 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
             $strategy = $this->strategiesRegistry->getStrategy($rule->getStrategy());
             $strategy->setEstimation($this->estimation);
             $results = $strategy->getWarehouseResults($order, $results);
-
-            if (count($results) === 1) {
-                return reset($results);
-            }
         }
 
-        if (count($results) >= 1) {
+        if (count($results) >= 0) {
             return reset($results);
         }
 
