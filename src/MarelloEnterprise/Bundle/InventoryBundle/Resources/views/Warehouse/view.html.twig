@@ -1,6 +1,7 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'OroAddressBundle::macros.html.twig' as address %}
+{% import 'OroEntityConfigBundle::macros.html.twig' as entityConfig %}
 
 {% if entity.id %}
     {% oro_title_set({params : {"%warehouse.label%": entity.label|default('N/A'|trans) } }) %}
@@ -60,6 +61,21 @@
             ]
         }
     ] %}
+
+    {% set additionalData %}
+        {{ entityConfig.renderDynamicFields(entity) }}
+    {% endset %}
+
+    {% set dataBlocks = dataBlocks|merge([{
+        'title' : 'marelloenterprise.inventory.warehouse.datablock.additional'|trans,
+        'subblocks': [{
+            'title' : null,
+            'useSpan': false,
+            'data' : [
+                additionalData
+            ]
+        }]
+    }]) %}
 
     {%- set additionalInfoPlaceholders = marello_get_additional_placeholder_data('warehouse') -%}
     {% for additionalInfo in additionalInfoPlaceholders %}
