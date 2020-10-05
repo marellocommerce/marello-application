@@ -46,7 +46,7 @@ class MarelloOrderBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_13_1';
+        return 'v1_13_2';
     }
 
     /**
@@ -112,6 +112,7 @@ class MarelloOrderBundleInstaller implements
         $table->addColumn('shipping_method', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('shipping_method_type', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('shipping_method_reference', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('shipping_method_details', 'text', ['notnull' => false]);
         $table->addColumn(
             'estimated_shipping_cost_amount',
             'money',
