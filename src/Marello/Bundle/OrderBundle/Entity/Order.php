@@ -307,6 +307,20 @@ class Order extends ExtendOrder implements
     protected $shippingMethodReference;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="shipping_method_details", type="text", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=false
+     *          }
+     *      }
+     * )
+     */
+    protected $shippingMethodDetails;
+
+    /**
      * @var float
      *
      * @ORM\Column(name="estimated_shipping_cost_amount", type="money", nullable=true)
@@ -1197,6 +1211,25 @@ class Order extends ExtendOrder implements
         $this->shippingMethodReference = $shippingMethodReference;
 
         return $this;
+    }
+
+    /**
+     * @param string $shippingMethodDetails
+     * @return $this
+     */
+    public function setShippingMethodDetails($shippingMethodDetails = null)
+    {
+        $this->shippingMethodDetails = $shippingMethodDetails;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getShippingMethodDetails(): ?string
+    {
+        return $this->shippingMethodDetails;
     }
 
     /**
