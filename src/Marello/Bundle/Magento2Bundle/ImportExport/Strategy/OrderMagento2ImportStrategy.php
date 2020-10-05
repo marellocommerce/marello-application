@@ -19,6 +19,34 @@ class OrderMagento2ImportStrategy extends DefaultMagento2ImportStrategy
     protected $mainEntity;
 
     /**
+     * @param object $entity
+     * @param bool $isFullData
+     * @param bool $isPersistNew
+     * @param mixed|array|null $itemData
+     * @param array $searchContext
+     * @param bool $entityIsRelation
+     *
+     * @return null|object
+     */
+    protected function processEntity(
+        $entity,
+        $isFullData = false,
+        $isPersistNew = false,
+        $itemData = null,
+        array $searchContext = [],
+        $entityIsRelation = false
+    ) {
+        // skip items with configurable products
+        if ($entity instanceof OrderItem) {
+            if ($itemData['product_type'] !== Product::DEFAULT_PRODUCT_TYPE) {
+                return null;
+            }
+        }
+
+        return parent::processEntity($entity, $isFullData, $isPersistNew, $itemData, $searchContext, $entityIsRelation);
+    }
+
+    /**
      * {@inheritDoc}
      */
     protected function findExistingEntity($entity, array $searchContext = [])
@@ -346,5 +374,36 @@ class OrderMagento2ImportStrategy extends DefaultMagento2ImportStrategy
             ->getItems()
             ->matching($criteria)
             ->first();
+    }
+
+    /**
+     * @param object $entity
+     * @param array $validationErrors
+     */
+    protected function processValidationErrors($entity, array $validationErrors)
+    {
+        $this->context->incrementErrorEntriesCount();
+        $orderReferenceId = $entity->getOriginId();
+        if ($entity instanceof Order) {
+            $orderReferenceId = $entity->getOrderReference();
+        }
+
+        if ($entity instanceof MagentoOrder) {
+            $orderReferenceId = ($entity->getInnerOrder())
+                ? $entity->getInnerOrder()->getOrderReference() : $orderReferenceId;
+        }
+
+        $errorPrefix = sprintf('Error for Order Id: %s', $orderReferenceId);
+        $this->context->incrementErrorEntriesCount();
+        $this->strategyHelper->addValidationErrors($validationErrors, $this->context, $errorPrefix);
+
+        $this->relatedEntityStateHelper->revertRelations();
+
+        $em = $this->doctrineHelper->getEntityManager($entity);
+        if ($this->doctrineHelper->isNewEntity($entity)) {
+            $em->detach($entity);
+        } else {
+            $em->refresh($entity);
+        }
     }
 }

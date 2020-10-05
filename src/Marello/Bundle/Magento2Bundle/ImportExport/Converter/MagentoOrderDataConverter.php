@@ -51,12 +51,15 @@ class MagentoOrderDataConverter extends AbstractTreeDataConverter
             MarelloOrderDataConverter::COUPON_CODE => 'coupon_code',
             MarelloOrderDataConverter::BILLING_ADDRESS => 'billing_address',
             MarelloOrderDataConverter::PAYMENT_METHOD => 'payment.method',
+            MarelloOrderDataConverter::PAYMENT_DETAILS => 'payment.additional_information',
             MarelloOrderDataConverter::SHIPPING_ADDRESS =>
                 'extension_attributes.shipping_assignments[0].shipping.address',
             MarelloOrderDataConverter::SHIPPING_METHOD =>
                 'extension_attributes.shipping_assignments[0].shipping.method',
+            MarelloOrderDataConverter::SHIPPING_METHOD_DETAILS => 'shipping_description',
             MarelloOrderDataConverter::PURCHASE_DATE => 'created_at',
             MarelloOrderDataConverter::SHIPPING_AMOUNT_INCL_TAX => 'shipping_incl_tax',
+            MarelloOrderDataConverter::SHIPPING_AMOUNT_EXCL_TAX => 'shipping_amount',
             MarelloOrderDataConverter::TOTAL_TAX => 'tax_amount',
             MarelloOrderDataConverter::DISCOUNT_AMOUNT => 'discount_amount',
             MarelloOrderDataConverter::SUBTOTAL => 'subtotal',
@@ -104,6 +107,28 @@ class MagentoOrderDataConverter extends AbstractTreeDataConverter
 
         if (!empty($importedRecord[self::STORE_ID_COLUMN_NAME])) {
             $importedRecord['store:originId'] = $importedRecord[self::STORE_ID_COLUMN_NAME];
+        }
+
+        if (!empty($importedRecord['marello_order_data_alias'][MarelloOrderDataConverter::PAYMENT_DETAILS])) {
+            $paymentDetails = null;
+            $details = $importedRecord['marello_order_data_alias'][MarelloOrderDataConverter::PAYMENT_DETAILS];
+            foreach ($details as $detail) {
+                if (trim($detail) !== null) {
+                    $paymentDetails = $paymentDetails . "\r\n" . $detail;
+                }
+            }
+            if ($paymentDetails) {
+                $importedRecord['marello_order_data_alias'][MarelloOrderDataConverter::PAYMENT_DETAILS]
+                    = $paymentDetails;
+            }
+        }
+
+        if (!empty($importedRecord['marello_order_data_alias'][MarelloOrderDataConverter::SUBTOTAL])) {
+            // for some reason the actual subtotal of the order is only displayed in Magento backend and not
+            // being saved or available on the order itself....
+            $importedRecord['marello_order_data_alias'][MarelloOrderDataConverter::SUBTOTAL] =
+                ($importedRecord['marello_order_data_alias'][MarelloOrderDataConverter::GRAND_TOTAL] -
+                    $importedRecord['marello_order_data_alias'][MarelloOrderDataConverter::TOTAL_TAX]);
         }
 
         return parent::convertToImportFormat($importedRecord, $skipNullValues);

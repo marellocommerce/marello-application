@@ -26,8 +26,10 @@ class MarelloOrderAddressDataConverter extends IntegrationAwareDataConverter
     protected function getHeaderConversionRules()
     {
         return [
-            'firstName' => 'firstname',
-            'lastName' => 'lastname',
+            'prefix' => 'namePrefix',
+            'firstname' => 'firstName',
+            'middlename' => 'middleName',
+            'lastname' => 'lastName',
             'telephone' => 'phone',
             'postcode' => 'postalCode',
             'city' => 'city'
@@ -50,7 +52,7 @@ class MarelloOrderAddressDataConverter extends IntegrationAwareDataConverter
             }
         }
 
-        if (empty($importedRecord['region:combinedCode'])) {
+        if (empty($importedRecord['region:combinedCode']) && !empty($importedRecord['region'])) {
             $importedRecord['regionText'] = $importedRecord['region'];
         }
 
@@ -64,7 +66,9 @@ class MarelloOrderAddressDataConverter extends IntegrationAwareDataConverter
             }
         }
 
-        unset($importedRecord['region']);
+        if (array_key_exists('region', $importedRecord)) {
+            unset($importedRecord['region']);
+        }
 
         return parent::convertToImportFormat($importedRecord, $skipNullValues);
     }
