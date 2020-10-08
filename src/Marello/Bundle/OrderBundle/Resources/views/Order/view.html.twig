@@ -147,6 +147,7 @@
                 <div class="responsive-block">
                     {{ UI.renderProperty('marello.order.shipping_method.label'|trans, marello_shipping_method_with_type_label(entity.shippingMethod, entity.shippingMethodType)|trans) }}
                     {{ UI.renderProperty('marello.order.shipping_amount_incl_tax.label'|trans, entity.shippingAmountInclTax|oro_format_currency({'currency':entity.currency})) }}
+                    {{ UI.renderHtmlProperty('marello.order.shipping_method_details.label'|trans, entity.shippingMethodDetails|nl2br) }}
                 </div>
             </div>
         </div>
