@@ -12,9 +12,9 @@ marello:
         order_total.label:                              Order Total
         status.label:                                   Purchase Order Status
         purchase_order_date.label:                      Purchase Order Date
-        purchase_order_due_date.label:                  Purchase Order Due Date
+        purchase_order_due_date.label:                  Expected Delivery Date
         items.label:                                    Purchase Order Items
-        due_date.label:                                 Due date
+        expected_delivery_date.label:                   Expected Delivery Date
         select_products:                                Products to include in new PO
         select_supplier:                                Choose a supplier
         items_advice:                                   Products from Advice
@@ -23,11 +23,13 @@ marello:
         select_products_additional:                     Add additional products from this supplier
         all_items_have_been_received:                   All items have been received, please proceed to click "Fully received"
         has_item.label:                                 Has Product
-        billing_and_shipping.label:                     Billing & Shipping Info
+        billing_and_shipping.label:                     Billing & Delivery Info
         shipping_address.label:                         Shipping Address
         data.label:                                     Data
         ui:
             continue:                                   Continue
+            sections:
+                items:                                  Purchase Order Items
         form:
             add_product:                                Add Product
 
