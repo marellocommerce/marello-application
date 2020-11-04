@@ -106,7 +106,7 @@ datagrids:
                     type: string
                     data_name: o.shippingMethod
                 orderReference:
-                    type: number
+                    type: string
                     data_name: o.orderReference
                 billingAddress:
                     type: string
