@@ -3,7 +3,9 @@
 namespace Marello\Bundle\Magento2Bundle\ImportExport\Translator;
 
 use Marello\Bundle\Magento2Bundle\DTO\ProductDeleteOnChannelDTO;
+use Marello\Bundle\Magento2Bundle\Model\Magento2TransportSettings;
 use Marello\Bundle\Magento2Bundle\Entity\Product as MagentoProduct;
+use Marello\Bundle\Magento2Bundle\Provider\TrackedSalesChannelProvider;
 use Marello\Bundle\Magento2Bundle\Entity\Repository\ProductRepository as MagentoProductRepository;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Psr\Log\LoggerAwareInterface;
@@ -16,12 +18,19 @@ class ProductDeleteOnChannelTranslator implements TranslatorInterface, LoggerAwa
     /** @var MagentoProductRepository */
     protected $magentoProductRepository;
 
+    /** @var TrackedSalesChannelProvider */
+    protected $salesChannelProvider;
+
     /**
      * @param MagentoProductRepository $magentoProductRepository
+     * @param TrackedSalesChannelProvider $salesChannelProvider
      */
-    public function __construct(MagentoProductRepository $magentoProductRepository)
-    {
+    public function __construct(
+        MagentoProductRepository $magentoProductRepository,
+        TrackedSalesChannelProvider $salesChannelProvider
+    ) {
         $this->magentoProductRepository = $magentoProductRepository;
+        $this->salesChannelProvider = $salesChannelProvider;
     }
 
     /**
@@ -64,9 +73,18 @@ class ProductDeleteOnChannelTranslator implements TranslatorInterface, LoggerAwa
             return null;
         }
 
+        $originWebsiteIds = null;
+        /** @var Magento2TransportSettings $config */
+        $config = $internalMagentoProduct->getChannel()->getTransport()->getSettingsBag();
+        if ($config->isDeleteRemoteProductFromWebsiteOnly()) {
+            $originWebsiteIds = $this->salesChannelProvider
+                ->getSalesChannelIdsByIntegrationId($context['channel']);
+        }
+
         return new ProductDeleteOnChannelDTO(
             $internalMagentoProduct,
-            $entity
+            $entity,
+            $originWebsiteIds
         );
     }
 }

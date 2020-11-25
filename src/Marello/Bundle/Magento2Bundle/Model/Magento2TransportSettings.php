@@ -14,6 +14,7 @@ class Magento2TransportSettings extends ParameterBag
     public const WEBSITE_TO_SALES_CHANNEL_MAP_ITEMS_KEY = 'website_to_sales_channel_map_items';
     public const DELETE_REMOTE_DATA_ON_DEACTIVATION_KEY = 'delete_remote_data_on_deactivation';
     public const DELETE_REMOTE_DATA_ON_DELETION_KEY = 'delete_remote_data_on_deletion';
+    public const DELETE_REMOTE_PRODUCT_FROM_WEBSITE_ONLY = 'delete_remote_product_from_website_only';
 
     /**
      * @return string
@@ -70,6 +71,14 @@ class Magento2TransportSettings extends ParameterBag
     public function isDeleteRemoteDataOnDeletion(): bool
     {
         return (bool) $this->get(self::DELETE_REMOTE_DATA_ON_DELETION_KEY);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDeleteRemoteProductFromWebsiteOnly(): bool
+    {
+        return (bool) $this->get(self::DELETE_REMOTE_PRODUCT_FROM_WEBSITE_ONLY);
     }
 
     /**

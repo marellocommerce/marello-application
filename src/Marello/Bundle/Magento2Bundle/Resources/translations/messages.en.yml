@@ -38,6 +38,7 @@ marello:
                 tooltip: Magento's integration Access Token. The token can be found under the System > Extensions > Integrations > [Your integration] > Integration Details in your Magento installation.
             delete_remote_data_on_deactivation.label: Delete Remote Synchronizaed Data on Deactivation
             delete_remote_data_on_deletion.label: Delete Remote Synchronizaed Data on Deletion
+            delete_remote_product_from_website_only.label: Delete Remote Product From Website Only
             initial_sync_start_date:
                 label: Initial Sync Start Date
                 tooltip: This is the starting date for data synchronization. Only records updated after this date will be synchronized

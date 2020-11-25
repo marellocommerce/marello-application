@@ -29,7 +29,13 @@ class ProductExportDeleteOnChannelWriter extends AbstractExportWriter
             sprintf('[Magento 2] Starting removing product with SKU "%s".', $item->getProductSku())
         );
 
-        $this->getTransport()->removeProduct($item->getProductSku());
+        if ($item->getProductOriginWebsiteIds() || !empty($item->getProductOriginWebsiteIds())) {
+            foreach ($item->getProductOriginWebsiteIds() as $originWebsiteId) {
+                 $this->getTransport()->removeProductFromWebsite($item->getProductSku(), $originWebsiteId);
+            }
+        } else {
+            $this->getTransport()->removeProduct($item->getProductSku());
+        }
 
         $this->logger->info(
             sprintf('[Magento 2] Product with SKU "%s" was successfully removed.', $item->getProductSku())

@@ -99,6 +99,15 @@ class TransportSettingFormType extends AbstractType
         );
 
         $builder->add(
+            'deleteRemoteProductFromWebsiteOnly',
+            CheckboxType::class,
+            [
+                'label' => 'marello.magento2.transport_setting_form.delete_remote_product_from_website_only.label',
+                'required' => false
+            ]
+        );
+
+        $builder->add(
             'check',
             TransportCheckButtonType::class,
             [

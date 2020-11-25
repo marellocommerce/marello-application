@@ -31,7 +31,7 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
      */
     public function getMigrationVersion()
     {
-        return 'v1_8';
+        return 'v1_9';
     }
 
     /**
@@ -86,6 +86,7 @@ class MarelloMagento2BundleInstaller implements Installation, ExtendExtensionAwa
         ]);
         $table->addColumn('m2_del_remote_data_on_deact', 'boolean', ['notnull' => false]);
         $table->addColumn('m2_del_remote_data_on_del', 'boolean', ['notnull' => false]);
+        $table->addColumn('m2_del_remote_prod_webs_only', 'boolean', ['notnull' => false]);
     }
 
     /**

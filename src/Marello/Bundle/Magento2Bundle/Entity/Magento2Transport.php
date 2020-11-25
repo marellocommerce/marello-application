@@ -66,6 +66,13 @@ class Magento2Transport extends Transport
     /**
      * @var bool
      *
+     * @ORM\Column(name="m2_del_remote_prod_webs_only", type="boolean", nullable=true)
+     */
+    protected $deleteRemoteProductFromWebsiteOnly = false;
+
+    /**
+     * @var bool
+     *
      * @ORM\Column(name="m2_del_remote_data_on_del", type="boolean", nullable=true)
      */
     protected $deleteRemoteDataOnDeletion = false;
@@ -92,7 +99,9 @@ class Magento2Transport extends Transport
                     Magento2TransportSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION_KEY =>
                         $this->isDeleteRemoteDataOnDeactivation(),
                     Magento2TransportSettings::DELETE_REMOTE_DATA_ON_DELETION_KEY =>
-                        $this->isDeleteRemoteDataOnDeletion()
+                        $this->isDeleteRemoteDataOnDeletion(),
+                    Magento2TransportSettings::DELETE_REMOTE_PRODUCT_FROM_WEBSITE_ONLY =>
+                        $this->isDeleteRemoteProductFromWebsiteOnly()
                 ]
             );
         }
@@ -231,7 +240,7 @@ class Magento2Transport extends Transport
     /**
      * @return bool
      */
-    public function isDeleteRemoteDataOnDeactivation(): bool
+    public function isDeleteRemoteDataOnDeactivation(): ?bool
     {
         return $this->deleteRemoteDataOnDeactivation;
     }
@@ -250,7 +259,7 @@ class Magento2Transport extends Transport
     /**
      * @return bool
      */
-    public function isDeleteRemoteDataOnDeletion(): bool
+    public function isDeleteRemoteDataOnDeletion(): ?bool
     {
         return $this->deleteRemoteDataOnDeletion;
     }
@@ -264,6 +273,25 @@ class Magento2Transport extends Transport
         $this->deleteRemoteDataOnDeletion = $deleteRemoteDataOnDeletion;
 
         return $this;
+    }
+
+    /**
+     * @param bool $deleteRemoteProductFromWebsiteOnly
+     * @return $this
+     */
+    public function setDeleteRemoteProductFromWebsiteOnly(bool $deleteRemoteProductFromWebsiteOnly): self
+    {
+        $this->deleteRemoteProductFromWebsiteOnly = $deleteRemoteProductFromWebsiteOnly;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDeleteRemoteProductFromWebsiteOnly(): ?bool
+    {
+        return $this->deleteRemoteProductFromWebsiteOnly;
     }
 
     /**

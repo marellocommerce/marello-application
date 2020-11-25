@@ -19,7 +19,8 @@ class ProductDeleteOnChannelNormalizer implements NormalizerInterface
         return ProductDeleteOnChannelMessage::create(
             $object->getInternalMagentoProduct()->getId(),
             $object->getProduct()->getId(),
-            $object->getInternalMagentoProduct()->getSku()
+            $object->getInternalMagentoProduct()->getSku(),
+            $object->getOriginWebsiteIds()
         );
     }
 

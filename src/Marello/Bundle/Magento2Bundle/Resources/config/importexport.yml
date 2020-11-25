@@ -414,6 +414,7 @@ services:
         class: Marello\Bundle\Magento2Bundle\ImportExport\Translator\ProductDeleteOnChannelTranslator
         arguments:
             - '@marello_magento2.repository.product'
+            - '@marello_magento2.provider.tracked_sales_channel'
         calls:
             - [setLogger, ['@oro_integration.logger.strategy']]
 

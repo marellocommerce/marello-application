@@ -37,6 +37,15 @@ interface Magento2TransportInterface extends TransportInterface
     public function removeProduct(string $sku): bool;
 
     /**
+     * @param string $sku
+     * @param int $websiteId
+     * @return bool
+     *
+     * @throws RestException
+     */
+    public function removeProductFromWebsite(string $sku, int $websiteId): bool;
+
+    /**
      * @param array $data
      * @return array
      *

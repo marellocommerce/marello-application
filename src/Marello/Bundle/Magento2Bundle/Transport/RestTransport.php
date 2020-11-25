@@ -32,6 +32,7 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
     public const RESOURCE_STORE_CONFIGS = 'store/storeConfigs';
     public const RESOURCE_PRODUCTS = 'products';
     public const RESOURCE_PRODUCT_WITH_SKU = 'products/%sku%';
+    public const RESOURCE_PRODUCT_WEBSITE_WITH_SKU = 'products/%sku%/websites/%websiteId%';
     public const RESOURCE_ATTRIBUTE_SET_LIST_SEARCH = 'products/attribute-sets/sets/list';
     public const RESOURCE_TAX_CLASSES_SEARCH = 'taxClasses/search';
     public const RESOURCE_ORDERS_SEARCH = 'orders';
@@ -254,6 +255,31 @@ class RestTransport implements Magento2TransportInterface, LoggerAwareInterface
     {
         // encode sku for url as it doesn't really have any requirements regarding it's format
         $resource = str_replace('%sku%', urlencode($sku), self::RESOURCE_PRODUCT_WITH_SKU);
+
+        $request = $this->requestFactory->createSimpleRequest(
+            $resource
+        );
+
+        $this->getClient()->delete($request->getUrn());
+
+        return true;
+    }
+
+    /**
+     * @param string $sku
+     * @param int $websiteId
+     *
+     * @return bool
+     * @throws RestException
+     */
+    public function removeProductFromWebsite(string $sku, int $websiteId): bool
+    {
+        // encode sku for url as it doesn't really have any requirements regarding it's format
+        $resource = str_replace(
+            ['%sku%', '%websiteId%'],
+            [urlencode($sku), $websiteId],
+            self::RESOURCE_PRODUCT_WEBSITE_WITH_SKU
+        );
 
         $request = $this->requestFactory->createSimpleRequest(
             $resource

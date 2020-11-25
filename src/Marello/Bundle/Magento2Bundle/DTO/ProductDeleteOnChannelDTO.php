@@ -13,16 +13,22 @@ class ProductDeleteOnChannelDTO
     /** @var Product */
     protected $product;
 
+    /** @var array $originWebsiteIds */
+    protected $originWebsiteIds;
+
     /**
      * @param InternalMagentoProduct $internalMagentoProduct
      * @param Product $product
+     * @param array $originWebsiteIds
      */
     public function __construct(
         InternalMagentoProduct $internalMagentoProduct,
-        Product $product
+        Product $product,
+        array $originWebsiteIds = null
     ) {
         $this->internalMagentoProduct = $internalMagentoProduct;
         $this->product = $product;
+        $this->originWebsiteIds = $originWebsiteIds;
     }
 
     /**
@@ -39,5 +45,13 @@ class ProductDeleteOnChannelDTO
     public function getProduct(): Product
     {
         return $this->product;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getOriginWebsiteIds(): ?array
+    {
+        return $this->originWebsiteIds;
     }
 }
