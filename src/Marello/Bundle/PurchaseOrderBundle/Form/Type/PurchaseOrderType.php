@@ -39,7 +39,7 @@ class PurchaseOrderType extends AbstractType
                 OroDateType::class,
                 [
                     'required' => false,
-                    'label' => 'marello.purchaseorder.due_date.label',
+                    'label' => 'marello.purchaseorder.expected_delivery_date.label',
                 ]
             )
         ;
