@@ -63,14 +63,16 @@ datagrids:
                 select:
                     - product.id
                     - product.sku
-                    - product.name
                     - product.createdAt
                     - product.updatedAt
                 from:
                     - { table: MarelloProductBundle:Product, alias: product }
         columns:
             sku:
-                label:         marello.product.sku.label
+                label:              marello.product.sku.label
+                type:               twig
+                frontend_type:      html
+                template:           MarelloProductBundle:Product/Datagrid:productSku.html.twig
             name:
                 label:         marello.product.name.label
             createdAt:
@@ -81,12 +83,15 @@ datagrids:
                 frontend_type: datetime
         properties:
             id: ~
+            name:
+                type: localized_value
+                data_name: product.names
         sorters:
             columns:
                 sku:
                     data_name: product.sku
                 name:
-                    data_name: product.name
+                    data_name: name
                 createdAt:
                     data_name: product.createdAt
                 updatedAt:
@@ -98,7 +103,7 @@ datagrids:
                     data_name: product.sku
                 name:
                     type:      string
-                    data_name: product.name
+                    data_name: name
                 createdAt:
                     type:      datetime
                     data_name: product.createdAt
