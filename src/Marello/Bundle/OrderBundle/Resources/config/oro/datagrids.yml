@@ -1,6 +1,7 @@
 datagrids:
     marello-order:
         source:
+            extended_entity_name: Marello\Bundle\OrderBundle\Entity\Order
             type: orm
             query:
                 select:
@@ -176,6 +177,7 @@ datagrids:
         actions: ~
 
     marello-order-customer:
+        extended_entity_name: Marello\Bundle\OrderBundle\Entity\Order
         source:
             type: orm
             query:
@@ -295,6 +297,7 @@ datagrids:
 
     marello-order-items:
         source:
+            extended_entity_name: Marello\Bundle\OrderBundle\Entity\OrderItem
             type: orm
             query:
                 select:
