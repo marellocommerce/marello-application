@@ -1,7 +1,7 @@
 datagrids:
     marello-order:
+        extended_entity_name: Marello\Bundle\OrderBundle\Entity\Order
         source:
-            extended_entity_name: Marello\Bundle\OrderBundle\Entity\Order
             type: orm
             query:
                 select:
