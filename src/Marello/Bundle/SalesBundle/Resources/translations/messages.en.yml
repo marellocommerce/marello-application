@@ -41,6 +41,7 @@ marello:
 
             datablock:
                 general: General
+                additional: Additional
 
         saleschannelgroup:
             entity_label: Sales Channel Group
