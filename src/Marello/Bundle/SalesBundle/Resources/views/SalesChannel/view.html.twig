@@ -1,5 +1,6 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroEntityConfigBundle::macros.html.twig' as entityConfig %}
 
 {% oro_title_set({params : {'%name%': entity.name, '%entityName%': 'marello.sales.saleschannel.entity_label'|trans }}) %}
 
@@ -51,6 +52,21 @@
             'subblocks': generalSubblocks
         }
     ] %}
+
+    {% set additionalData %}
+        {{ entityConfig.renderDynamicFields(entity) }}
+    {% endset %}
+
+    {% set dataBlocks = dataBlocks|merge([{
+        'title' : 'marello.sales.saleschannel.datablock.additional'|trans,
+            'subblocks': [{
+            'title' : null,
+            'useSpan': false,
+            'data' : [
+                additionalData
+            ]
+        }]
+    }]) %}
 
     {%- set additionalInfoPlaceholders = marello_get_additional_placeholder_data('salesChannel') -%}
     {% for additionalInfo in additionalInfoPlaceholders %}
