@@ -259,7 +259,7 @@ class Product extends ExtendProduct implements
      *
      * @var float
      */
-    protected $weight;
+    protected $weight = 0;
 
     /**
      * @var integer
@@ -439,7 +439,7 @@ class Product extends ExtendProduct implements
      *      }
      * )
      */
-    protected $data;
+    protected $data = [];
 
     /**
      * @var ArrayCollection|ProductSupplierRelation[]

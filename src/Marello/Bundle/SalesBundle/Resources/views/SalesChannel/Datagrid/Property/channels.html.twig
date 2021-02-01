@@ -1,3 +1,7 @@
-{% for index, channel in record.getValue('channels') %}
-    {{ channel|trans }}<br>
+{% set channels = record.getValue('channels')|split(';') %}
+{% for index, channelSet in channels %}
+    {% set values = channelSet|split('|') %}
+    {% if values|length > 0 %}
+        {{ values[0] }}<br>
+    {% endif %}
 {% endfor %}

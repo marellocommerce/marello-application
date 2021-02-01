@@ -18,6 +18,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Validator\Constraints\Valid;
+use Symfony\Component\Validator\Constraints\GreaterThan;
 
 class PurchaseOrderCreateStepTwoType extends AbstractType
 {
@@ -61,7 +62,13 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
                 OroDateType::class,
                 [
                     'required' => false,
-                    'label' => 'marello.purchaseorder.due_date.label',
+                    'label' => 'marello.purchaseorder.expected_delivery_date.label',
+                    'constraints' => [ new GreaterThan(
+                        [
+                            'value' => 'today',
+                            'message' => 'marello.purchaseorder.expected_delivery_date.messages.error.greater_than_date'
+                        ])
+                    ]
                 ]
             )
             ->add(

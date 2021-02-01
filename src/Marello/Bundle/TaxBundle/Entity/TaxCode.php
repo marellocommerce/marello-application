@@ -25,7 +25,11 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  *      defaultValues={
  *          "dataaudit"={
  *              "auditable"=true
- *          }
+ *          },
+ *          "security"={
+ *             "type"="ACL",
+ *             "group_name"=""
+ *         }
  *      }
  * )
  */
@@ -83,7 +87,7 @@ class TaxCode extends ExtendTaxCode
      *      }
      * )
      */
-    protected $data;
+    protected $data = [];
 
     /**
      * @return string

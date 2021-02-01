@@ -8,7 +8,7 @@ use Oro\Bundle\SecurityBundle\Acl\BasicPermission;
 use Oro\Bundle\SecurityBundle\Acl\Voter\AbstractEntityVoter;
 
 /**
- * Disables deleting the sales channel group in case when it has attached integration
+ * Disable deletion of the sales channel group in the case when it has been attached integration
  */
 class SalesChannelGroupVoter extends AbstractEntityVoter
 {
