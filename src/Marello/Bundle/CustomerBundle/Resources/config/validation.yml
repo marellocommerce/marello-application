@@ -10,7 +10,9 @@ Marello\Bundle\CustomerBundle\Entity\Customer:
 
 Marello\Bundle\CustomerBundle\Entity\Company:
     constraints:
-        - Marello\Bundle\CustomerBundle\Validator\Constraints\CompanyNumber: ~
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: [companyNumber, organization]
+            message: 'marello.customer.company.number.message'
     properties:
         name:
             - NotBlank: ~

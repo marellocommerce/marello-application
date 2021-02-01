@@ -31,7 +31,11 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
  *      defaultValues={
  *          "dataaudit"={
  *              "auditable"=true
- *          }
+ *          },
+ *          "security"={
+ *             "type"="ACL",
+ *             "group_name"=""
+ *         }
  *      }
  * )
  */
@@ -155,7 +159,7 @@ class TaxJurisdiction implements DatesAwareInterface
      *      }
      * )
      */
-    protected $data;
+    protected $data = [];
 
     /**
      * Constructor
