@@ -158,7 +158,7 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
      *      }
      * )
      */
-    protected $data;
+    protected $data = [];
 
     /**
      * Creates order using products

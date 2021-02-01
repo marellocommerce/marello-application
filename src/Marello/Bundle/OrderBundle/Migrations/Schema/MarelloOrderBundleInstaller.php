@@ -46,7 +46,7 @@ class MarelloOrderBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v3_1_1';
+        return 'v3_1_2';
     }
 
     /**
@@ -82,6 +82,7 @@ class MarelloOrderBundleInstaller implements
         $table->addColumn('subtotal', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('total_tax', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('grand_total', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+        $table->addColumn('locale_id', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('currency', 'string', ['notnull' => false, 'length' => 10]);
         $table->addColumn('payment_method', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn(
@@ -109,6 +110,7 @@ class MarelloOrderBundleInstaller implements
         $table->addColumn('shipping_method', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('shipping_method_type', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('shipping_method_reference', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('shipping_method_details', 'text', ['notnull' => false]);
         $table->addColumn(
             'estimated_shipping_cost_amount',
             'money',

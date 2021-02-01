@@ -117,7 +117,7 @@ class OrderToPackingSlipMapper extends AbstractPackingSlipMapper
                 }
             }
         }
-        $packingSlipItemData['weight'] = $product->getWeight();
+        $packingSlipItemData['weight'] = ($product->getWeight() * $orderItem->getQuantity());
         $packingSlipItemData['orderItem'] = $orderItem;
         $this->assignData($packingSlipItem, $packingSlipItemData);
 

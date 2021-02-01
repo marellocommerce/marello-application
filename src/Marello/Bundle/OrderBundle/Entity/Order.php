@@ -188,6 +188,15 @@ class Order extends ExtendOrder implements
     protected $currency;
 
     /**
+     * Represent locale in ICU format
+     *
+     * @var string
+     *
+     * @ORM\Column(name="locale_id", type="string", length=255, nullable=true)
+     */
+    protected $localeId;
+
+    /**
      * @var string
      * @ORM\Column(name="payment_method", type="string", length=255, nullable=true)
      * @Oro\ConfigField(
@@ -271,6 +280,20 @@ class Order extends ExtendOrder implements
     protected $shippingMethodReference;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="shipping_method_details", type="text", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=false
+     *          }
+     *      }
+     * )
+     */
+    protected $shippingMethodDetails;
+
+    /**
      * @var float
      *
      * @ORM\Column(name="estimated_shipping_cost_amount", type="money", nullable=true)
@@ -332,6 +355,9 @@ class Order extends ExtendOrder implements
      * @ORM\OrderBy({"id" = "ASC"})
      * @Oro\ConfigField(
      *      defaultValues={
+     *          "importexport"={
+     *              "full"=true
+     *          },
      *          "email"={
      *              "available_in_template"=true
      *          },
@@ -365,6 +391,9 @@ class Order extends ExtendOrder implements
      * @ORM\JoinColumn(name="billing_address_id", referencedColumnName="id")
      * @Oro\ConfigField(
      *      defaultValues={
+     *          "importexport"={
+     *              "full"=true
+     *          },
      *          "dataaudit"={
      *              "auditable"=true
      *          }
@@ -380,6 +409,9 @@ class Order extends ExtendOrder implements
      * @ORM\JoinColumn(name="shipping_address_id", referencedColumnName="id")
      * @Oro\ConfigField(
      *      defaultValues={
+     *          "importexport"={
+     *              "full"=true
+     *          },
      *          "dataaudit"={
      *              "auditable"=true
      *          }
@@ -409,9 +441,6 @@ class Order extends ExtendOrder implements
      * @ORM\JoinColumn(onDelete="SET NULL", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
-     *          "importexport"={
-     *              "full"=true
-     *          },
      *          "dataaudit"={
      *              "auditable"=true
      *          }
@@ -811,6 +840,26 @@ class Order extends ExtendOrder implements
     }
 
     /**
+     * @param string $localeId
+     *
+     * @return $this
+     */
+    public function setLocaleId($localeId)
+    {
+        $this->localeId = $localeId;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocaleId()
+    {
+        return $this->localeId;
+    }
+
+    /**
      * @return string
      */
     public function getPaymentMethod()
@@ -1095,6 +1144,25 @@ class Order extends ExtendOrder implements
         $this->shippingMethodReference = $shippingMethodReference;
 
         return $this;
+    }
+
+    /**
+     * @param string $shippingMethodDetails
+     * @return $this
+     */
+    public function setShippingMethodDetails($shippingMethodDetails = null)
+    {
+        $this->shippingMethodDetails = $shippingMethodDetails;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getShippingMethodDetails(): ?string
+    {
+        return $this->shippingMethodDetails;
     }
 
     /**

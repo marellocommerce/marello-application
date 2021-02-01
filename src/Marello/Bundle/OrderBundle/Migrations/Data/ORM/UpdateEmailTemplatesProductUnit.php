@@ -43,6 +43,6 @@ class UpdateEmailTemplatesProductUnit extends AbstractEmailFixture implements
      */
     public function getVersion()
     {
-        return '1.4';
+        return '1.6';
     }
 }

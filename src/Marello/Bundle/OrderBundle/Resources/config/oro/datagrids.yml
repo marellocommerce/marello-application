@@ -1,5 +1,6 @@
 datagrids:
     marello-order:
+        extended_entity_name: Marello\Bundle\OrderBundle\Entity\Order
         source:
             type: orm
             query:
@@ -106,7 +107,7 @@ datagrids:
                     type: string
                     data_name: o.shippingMethod
                 orderReference:
-                    type: number
+                    type: string
                     data_name: o.orderReference
                 billingAddress:
                     type: string
@@ -176,6 +177,7 @@ datagrids:
         actions: ~
 
     marello-order-customer:
+        extended_entity_name: Marello\Bundle\OrderBundle\Entity\Order
         source:
             type: orm
             query:
@@ -295,6 +297,7 @@ datagrids:
 
     marello-order-items:
         source:
+            extended_entity_name: Marello\Bundle\OrderBundle\Entity\OrderItem
             type: orm
             query:
                 select:
@@ -339,13 +342,18 @@ datagrids:
                 type:             localized_number
                 method:           formatCurrency
                 context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
-            originalPriceExclTax:
-                label:            marello.order.orderitem.original_price_excl_tax.label
+            purchasePriceIncl:
+                label:            marello.order.orderitem.purchase_price_incl.label
                 type:             localized_number
                 method:           formatCurrency
                 context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
             tax:
                 label:            marello.order.orderitem.tax.label
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
+            discountAmount:
+                label:            marello.order.orderitem.discount_amount.label
                 type:             localized_number
                 method:           formatCurrency
                 context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
