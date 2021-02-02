@@ -244,6 +244,10 @@ datagrids:
                         - o.id = :orderId
             bind_parameters:
                 - orderId
+        options:
+            entityHint: marello.payment.entity_plural_label
+            gridViews:
+                allLabel: marello.payment.entity_plural_label
 
     marello-invoice-payments-grid:
         extends: marello-payments-base-grid
@@ -261,3 +265,7 @@ datagrids:
                         - i.id = :invoiceId
             bind_parameters:
                 - invoiceId
+        options:
+            entityHint: marello.payment.entity_plural_label
+            gridViews:
+                allLabel: marello.payment.entity_plural_label
