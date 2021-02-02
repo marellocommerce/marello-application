@@ -33,8 +33,9 @@ class CustomerAddressProvider
             }
 
             $primaryAddress = $customer->getPrimaryAddress();
-
-            $result[$primaryAddress->getId()] = $primaryAddress;
+            if ($primaryAddress) {
+                $result[$primaryAddress->getId()] = $primaryAddress;
+            }
 
             foreach ($customer->getAddresses() as $address) {
                 $result[$address->getId()] = $address;
