@@ -1,5 +1,6 @@
 datagrids:
     marello-inventory-item:
+        extended_entity_name: Marello\Bundle\InventoryBundle\Entity\InventoryItem
         source:
             type: orm
             query:
@@ -200,6 +201,7 @@ datagrids:
                     default_per_page: 50
 
     marello-inventory-levels:
+        extended_entity_name: Marello\Bundle\InventoryBundle\Entity\InventoryLevel
         source:
             type: orm
             query:
@@ -265,6 +267,7 @@ datagrids:
                     enabled:          false
 
     marello-balanced-inventory-levels-grid:
+        extended_entity_name: Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel
         source:
             type: orm
             query:
@@ -292,15 +295,15 @@ datagrids:
                 data_name:          productName
             inventoryQty:
                 label:              marello.inventory.balancedinventorylevel.inventory.label
-                frontend_type:      number
+                frontend_type:      integer
                 data_name:          inventoryQty
             balancedInventoryQty:
                 label:              marello.inventory.balancedinventorylevel.balanced_inventory_qty.label
-                frontend_type:      number
+                frontend_type:      integer
                 data_name:          balancedInventoryQty
             reservedInventoryQty:
                 label:              marello.inventory.balancedinventorylevel.reserved_inventory_qty.label
-                frontend_type:      number
+                frontend_type:      integer
                 data_name:          reservedInventoryQty
             salesChannelGroupName:
                 label:              marello.sales.saleschannelgroup.entity_label
@@ -309,10 +312,10 @@ datagrids:
             createdAt:
                 label:              oro.ui.created_at
                 frontend_type:      datetime
+                renderable:         false
             updatedAt:
                 label:              oro.ui.updated_at
                 frontend_type:      datetime
-                renderable:         false
         filters:
             columns:
                 productSku:
@@ -321,6 +324,24 @@ datagrids:
                 productName:
                     type:             string
                     data_name:        productName
+                inventoryQty:
+                    type:             number
+                    data_name:        balancedInventoryLevel.inventory
+                balancedInventoryQty:
+                    type:             number
+                    data_name:        balancedInventoryLevel.balancedInventory
+                reservedInventoryQty:
+                    type:             number
+                    data_name:        balancedInventoryLevel.reservedInventory
+                salesChannelGroupName:
+                    type:             string
+                    data_name:        salesChannelGroupName
+                createdAt:
+                    type:             datetime
+                    data_name:        balancedInventoryLevel.createdAt
+                updatedAt:
+                    type:             datetime
+                    data_name:        balancedInventoryLevel.updatedAt
         sorters:
             columns:
                 createdAt:

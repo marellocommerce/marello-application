@@ -13,30 +13,30 @@ Marello\Bundle\OrderBundle\Entity\OrderItem:
         rowTotalExclTax:
             - NotBlank: { groups: [api, Default] }
         quantity:
-            - GreaterThanOrEqual: 1
+            - GreaterThanOrEqual: { groups: [api, Default], value: 1 }
     constraints:
         - Marello\Bundle\OrderBundle\Validator\Constraints\AvailableInventory:
             fields: [quantity, order, product]
             errorPath: quantity
+            groups: [api, Default]
 
 Marello\Bundle\OrderBundle\Entity\Order:
     properties:
         customer:
-            - NotBlank: { groups: [Default] }
+            - NotBlank: ~
         salesChannel:
-            - NotBlank: { groups: [Default, commerce] }
+            - NotBlank: ~
         paymentMethod:
-            - NotBlank: { groups: [Default, commerce] }
+            - NotBlank: ~
         shippingMethod:
-            - NotBlank: { groups: [Default] }
+            - NotBlank: ~
         billingAddress:
-            - NotBlank: { groups: [Default, commerce], message: 'marello.order.address.validation.billing_not_blank' }
+            - NotBlank:
+                message: 'marello.order.address.validation.billing_not_blank'
         shippingAddress:
-            - NotBlank: { groups: [Default, commerce], message: 'marello.order.address.validation.shipping_not_blank' }
+            - NotBlank:
+                message: 'marello.order.address.validation.shipping_not_blank'
         items:
-            - Count:
-                min: 1
-                minMessage: 'marello.order.item.count'
             - Valid: ~
     constraints:
         - Marello\Bundle\CoreBundle\Validator\Constraints\GreaterThanDate:
