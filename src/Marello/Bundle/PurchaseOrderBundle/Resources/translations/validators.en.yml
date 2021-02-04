@@ -4,7 +4,7 @@ marello:
             messages:
                 error:
                     received_amount: Total amount received can only be as many items as ordered amount.
-        due_date:
+        expected_delivery_date:
             messages:
                 error:
-                    greater_than_date: Due date must be greater than %date%
+                    greater_than_date: Expected Delivery date must be greater than today

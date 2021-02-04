@@ -35,17 +35,19 @@
             <div class="title">
                 <span class="widget-title">{{ 'marello.order.datablock.customer_information'|trans }}</span>
             </div>
-            {% if entity.customer.company %}
+            {% if entity.customer and entity.customer.company %}
                 {{ UI.renderHtmlProperty(
                 'marello.customer.company.entity_label'|trans,
                 UI.entityViewLink(entity.customer.company, entity.customer.company.name, 'marello_customer_company_view')
                 ) }}
             {% endif %}
-            {{ UI.renderHtmlProperty(
-            'marello.customer.entity_label'|trans,
-            UI.entityViewLink(entity.customer, entity.customer|oro_format_name, 'marello_customer_view')
-            )}}
-            {{ UI.renderProperty('marello.customer.email.label'|trans, entity.customer.email) }}
+            {% if entity.customer %}
+                {{ UI.renderHtmlProperty(
+                'marello.customer.entity_label'|trans,
+                UI.entityViewLink(entity.customer, entity.customer|oro_format_name, 'marello_customer_view')
+                )}}
+                {{ UI.renderProperty('marello.customer.email.label'|trans, entity.customer.email) }}
+            {% endif %}
         </div>
     {% endset %}
 
@@ -145,6 +147,7 @@
                 <div class="responsive-block">
                     {{ UI.renderProperty('marello.order.shipping_method.label'|trans, marello_shipping_method_with_type_label(entity.shippingMethod, entity.shippingMethodType)|trans) }}
                     {{ UI.renderProperty('marello.order.shipping_amount_incl_tax.label'|trans, entity.shippingAmountInclTax|oro_format_currency({'currency':entity.currency})) }}
+                    {{ UI.renderHtmlProperty('marello.order.shipping_method_details.label'|trans, entity.shippingMethodDetails|nl2br) }}
                 </div>
             </div>
         </div>

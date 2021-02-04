@@ -259,7 +259,7 @@ class Product extends ExtendProduct implements
      *
      * @var float
      */
-    protected $weight;
+    protected $weight = 0;
 
     /**
      * @var integer
@@ -1408,7 +1408,7 @@ class Product extends ExtendProduct implements
     {
         $this->createdAt = new \DateTime('now', new \DateTimeZone('UTC'));
         if (!$this->getDefaultName()) {
-            throw new \RuntimeException('Product has to have a default name');
+            throw new \RuntimeException(sprintf('Product %s has to have a default name', $this->getSku()));
         }
         $this->denormalizedDefaultName = $this->getDefaultName()->getString();
     }
@@ -1420,7 +1420,7 @@ class Product extends ExtendProduct implements
     {
         $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
         if (!$this->getDefaultName()) {
-            throw new \RuntimeException('Product has to have a default name');
+            throw new \RuntimeException(sprintf('Product %s has to have a default name', $this->getSku()));
         }
         $this->denormalizedDefaultName = $this->getDefaultName()->getString();
     }
