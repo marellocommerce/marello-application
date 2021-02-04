@@ -23,6 +23,7 @@ marello:
                 general:            General
                 information:        Packing Slip Information
                 items:              Items
+                additional:         Additional
 
         packingslipitem:
             entity_label:           Packing Slip Item
@@ -34,7 +35,7 @@ marello:
             product_name.label:     Product Name
             product_sku.label:      Product SKU
             quantity.label:         Quantity
-            weight.label:           Weight
+            weight.label:           Total Weight
             order_item.label:       Order Item
             comment.label:          Comment
             status.label:           Status
