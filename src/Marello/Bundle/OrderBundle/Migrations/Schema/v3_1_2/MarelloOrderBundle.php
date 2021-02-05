@@ -18,8 +18,9 @@ class MarelloOrderBundle implements Migration
     public function up(Schema $schema, QueryBag $queries)
     {
         $table = $schema->getTable('marello_order_order');
-        $table->addColumn('locale_id', 'string', ['notnull' => false, 'length' => 255]);
-
+        if (!$table->hasColumn('locale_id')) {
+            $table->addColumn('locale_id', 'string', ['notnull' => false, 'length' => 255]);
+        }
         $queries->addQuery(
             new UpdateEntityConfigFieldValueQuery(
                 Order::class,
