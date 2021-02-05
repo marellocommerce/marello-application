@@ -30,8 +30,8 @@ class MarelloCustomerBundlePart1 implements Migration, OrderedMigrationInterface
         $table = $schema->getTable(MarelloCustomerBundleInstaller::MARELLO_COMPANY_TABLE);
         $table->addColumn('tax_identification_number', 'string', ['notnull' => false, 'length' => 255]);
         $sql = <<<EOF
-UPDATE marello_customer_company co INNER JOIN marello_customer_customer cu ON co.id = cu.company_id SET co.tax_identification_number = cu.tax_identification_number
-WHERE cu.tax_identification_number IS NOT NULL
+UPDATE marello_customer_company AS co SET tax_identification_number = cu.tax_identification_number FROM marello_customer_customer AS cu 
+WHERE co.id = cu.company_id AND cu.tax_identification_number IS NOT NULL
 EOF;
         $queries->addPostQuery($sql);
     }
