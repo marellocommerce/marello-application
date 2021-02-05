@@ -16,9 +16,13 @@
 {% endblock pageHeader %}
 
 {% block navButtons %}
-    <a href="{{ path('marello_pdf_download', {'entity': entity.invoiceType, 'id': entity.id}) }}" target="_blank" class="btn operation-button action-button">
-        <i class="fa fa-download"></i> {{ 'marello.invoice.pdf.download.label'|trans }}
-    </a>
+    {% if is_granted('VIEW', entity) %}
+        <div class="pull-left btn-group icons-holder">
+            <a href="{{ path('marello_pdf_download', {'entity': entity.invoiceType, 'id': entity.id}) }}" target="_blank" class="btn operation-button action-button">
+                <i class="fa fa-download"></i> {{ 'marello.invoice.pdf.download.label'|trans }}
+            </a>
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% block content_data %}
