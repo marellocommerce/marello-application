@@ -28,9 +28,15 @@ class MarelloOrderBundle implements Migration, ExtendExtensionAwareInterface
     private function updateOrderTable(Schema $schema)
     {
         $table = $schema->getTable('marello_order_order');
-        $table->addColumn('delivery_date', 'datetime', ['notnull' => false]);
-        $table->addColumn('order_note', 'text', ['notnull' => false]);
-        $table->addColumn('po_number', 'string', ['length' => 255, 'notnull' => false]);
+        if (!$table->hasColumn('delivery_date')) {
+            $table->addColumn('delivery_date', 'datetime', ['notnull' => false]);
+        }
+        if (!$table->hasColumn('order_note')) {
+            $table->addColumn('order_note', 'text', ['notnull' => false]);
+        }
+        if (!$table->hasColumn('po_number')) {
+            $table->addColumn('po_number', 'string', ['length' => 255, 'notnull' => false]);
+        }
     }
 
     private function updateOrderItemTable(Schema $schema)
