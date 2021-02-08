@@ -337,6 +337,22 @@ class OrderItem extends ExtendOrderItem implements
      */
     protected $status;
 
+
+    /**
+     * @var \Extend\Entity\EV_Marello_Product_Unit
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $productUnit;
+
     /**
      * OrderItem constructor.
      */
@@ -352,6 +368,10 @@ class OrderItem extends ExtendOrderItem implements
      */
     public function prePersist()
     {
+        if (null === $this->product) {
+            return;
+        }
+
         // prevent overriding product name if already being set
         if (is_null($this->productName)) {
             $this->setProductName((string)$this->product->getName());
@@ -740,6 +760,25 @@ class OrderItem extends ExtendOrderItem implements
     {
         $this->status = $status;
         
+        return $this;
+    }
+
+    /**
+     * @return \Extend\Entity\EV_Marello_Product_Unit
+     */
+    public function getProductUnit()
+    {
+        return $this->productUnit;
+    }
+
+    /**
+     * @param string $productUnit
+     * @return $this
+     */
+    public function setProductUnit($productUnit)
+    {
+        $this->productUnit = $productUnit;
+
         return $this;
     }
 }

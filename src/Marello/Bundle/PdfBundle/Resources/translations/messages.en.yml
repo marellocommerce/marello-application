@@ -19,6 +19,9 @@ marello:
                 logo:
                     label: "Company logo"
                     tooltip: "Upload a logo that will be displayed on top of your PDF document(image/jpeg, image/png, image/gif, image/svg)."
+                logo_width:
+                    label: "Company logo width"
+                    tooltip: "Enter logo width in pixels here."
                 company_address:
                     label: "Company address"
                     tooltip: "Enter company address information here, including the company name and country."

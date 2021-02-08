@@ -7,7 +7,6 @@ marello:
         organization.label:               'Organization'
         primary_address.label:            'Primary Address'
         shipping_address.label:           'Shipping Address'
-        tax_identification_number.label:  'Tax Identification Number'
         addresses.label:                  'Addresses'
         email.label:                      'Primary Email'
         emails.label:                     'Email Addresses'
@@ -28,12 +27,14 @@ marello:
             entity_grid_all_view_label: All %entity_plural_label%
             id.label:               'Id'
             name.label:             'Name'
+            company_number.label:   'Company Number'
             parent.label:           'Parent'
             children.label:         'Children'
             addresses.label:        'Addresses'
             customers.label:        'Customers'
             organization.label:     'Organization'
             payment_term.label:     'Payment Term'
+            tax_identification_number.label:  'Tax Identification Number'
 
             form:
                 choose:             'Choose a company...'

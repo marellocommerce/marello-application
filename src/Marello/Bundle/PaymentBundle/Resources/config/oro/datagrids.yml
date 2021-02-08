@@ -132,7 +132,7 @@ datagrids:
                 label:            marello.payment.payment_method.label
                 type:             twig
                 frontend_type:    html
-                template:         MarelloPaymentBundle:Payment/Datagrid:paymentMethodWithOptions.html.twig
+                template:         MarelloPaymentBundle:Payment/Datagrid:paymentMethodWithoutOptions.html.twig
             paymentReference:
                 label:            marello.payment.payment_reference.label
                 frontend_type:    string
@@ -172,6 +172,8 @@ datagrids:
                     data_name: p.createdAt
                 updatedAt:
                     data_name: p.updatedAt
+            default:
+                createdAt: 'DESC'
         filters:
             columns:
                 status:
@@ -242,14 +244,10 @@ datagrids:
                         - o.id = :orderId
             bind_parameters:
                 - orderId
-        totals:
-            grand_total:
-                columns:
-                    status:
-                        label: marello.invoice.grand_total.label
-                    totalPaid:
-                        expr: MAX(p.currency) as currency, SUM(p.totalPaid)
-                        formatter: currency
+        options:
+            entityHint: marello.payment.entity_plural_label
+            gridViews:
+                allLabel: marello.payment.entity_plural_label
 
     marello-invoice-payments-grid:
         extends: marello-payments-base-grid
@@ -267,11 +265,7 @@ datagrids:
                         - i.id = :invoiceId
             bind_parameters:
                 - invoiceId
-        totals:
-            grand_total:
-                columns:
-                    status:
-                        label: marello.invoice.grand_total.label
-                    totalPaid:
-                        expr: MAX(p.currency) as currency, SUM(p.totalPaid)
-                        formatter: currency
+        options:
+            entityHint: marello.payment.entity_plural_label
+            gridViews:
+                allLabel: marello.payment.entity_plural_label

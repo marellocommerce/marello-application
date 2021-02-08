@@ -6,6 +6,7 @@ use Marello\Bundle\InvoiceBundle\Entity\Invoice;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\PaymentBundle\Entity\Payment;
 use Marello\Bundle\PaymentBundle\Migrations\Data\ORM\LoadPaymentStatusData;
+use Oro\Bundle\CurrencyBundle\Entity\Price;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
@@ -44,13 +45,17 @@ class PaymentCreationListener
             ->getRepository(Invoice::class)
             ->findOneBy(['order' => $entity]);
         if ($invoice) {
+            $totalPaid = $data->get('total_paid');
+            if ($totalPaid instanceof Price) {
+                $totalPaid = $totalPaid->getValue();
+            }
             $payment = new Payment();
             $payment
                 ->setPaymentMethod($entity->getPaymentMethod())
                 ->setPaymentMethodOptions($entity->getPaymentMethodOptions())
                 ->setPaymentReference($data->get('payment_reference'))
                 ->setPaymentDetails($data->get('payment_details'))
-                ->setTotalPaid($data->get('total_paid'))
+                ->setTotalPaid($totalPaid)
                 ->setCurrency($entity->getCurrency() ? : $invoice->getCurrency())
                 ->setPaymentDate(new \DateTime('now', new \DateTimeZone('UTC')))
                 ->setOrganization($entity->getOrganization())

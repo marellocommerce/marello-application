@@ -130,6 +130,11 @@ workflows:
                         parameters_mapping:
                             order: $order
                             current_transition: pending
+                    - '@run_action_group':
+                        action_group: marello_order_status_change
+                        parameters_mapping:
+                            order: $order
+                            status: 'pending'
             cancel_definition:
                 conditions:
                     '@and':
@@ -150,6 +155,11 @@ workflows:
                         parameters_mapping:
                             order: $order
                             current_transition: cancel
+                    - '@run_action_group':
+                        action_group: marello_order_status_change
+                        parameters_mapping:
+                            order: $order
+                            status: 'cancelled'
             hold_definition:
                 actions:
                     - '@tree':
@@ -166,6 +176,11 @@ workflows:
                         parameters_mapping:
                             order: $order
                             current_transition: hold
+                    - '@run_action_group':
+                        action_group: marello_order_status_change
+                        parameters_mapping:
+                            order: $order
+                            status: 'hold'
             un_hold_definition:
                 post_actions:
                     - '@run_action_group':
@@ -173,6 +188,11 @@ workflows:
                         parameters_mapping:
                             order: $order
                             current_transition: un_hold
+                    - '@run_action_group':
+                        action_group: marello_order_status_change
+                        parameters_mapping:
+                            order: $order
+                            status: 'processing'
             invoice_definition:
                 conditions:
                     '@and':
@@ -193,6 +213,11 @@ workflows:
                         parameters_mapping:
                             order: $order
                             current_transition: invoice
+                    - '@run_action_group':
+                        action_group: marello_order_status_change
+                        parameters_mapping:
+                            order: $order
+                            status: 'invoiced'
             payment_received_definition:
                 conditions:
                     '@and':
@@ -212,6 +237,11 @@ workflows:
                         parameters_mapping:
                             order: $order
                             current_transition: payment_received
+                    - '@run_action_group':
+                        action_group: marello_order_status_change
+                        parameters_mapping:
+                            order: $order
+                            status: 'paid'
             prepare_shipping_definition:
                 conditions:
                     '@and':
@@ -242,6 +272,11 @@ workflows:
                         parameters_mapping:
                             order: $order
                             current_transition: prepare_shipping
+                    - '@run_action_group':
+                        action_group: marello_order_status_change
+                        parameters_mapping:
+                            order: $order
+                            status: 'pick_and_pack'
             ship_definition:
                 conditions:
                     '@and':
@@ -266,6 +301,11 @@ workflows:
                         parameters_mapping:
                             order: $order
                             current_transition: ship
+                    - '@run_action_group':
+                        action_group: marello_order_status_change
+                        parameters_mapping:
+                            order: $order
+                            status: 'shipped'
             payment_reminder_definition:
                 post_actions:
                     - '@marello_notification_send':
@@ -398,6 +438,11 @@ workflows:
                         parameters_mapping:
                             order: $order
                             current_transition: pending
+                    - '@run_action_group':
+                        action_group: marello_order_status_change
+                        parameters_mapping:
+                            order: $order
+                            status: 'pending'
             cancel_definition:
                 conditions:
                     '@and':
@@ -417,6 +462,11 @@ workflows:
                         parameters_mapping:
                             order: $order
                             current_transition: cancel
+                    - '@run_action_group':
+                        action_group: marello_order_status_change
+                        parameters_mapping:
+                            order: $order
+                            status: 'cancelled'
             hold_definition:
                 post_actions:
                     - '@run_action_group':
@@ -424,6 +474,11 @@ workflows:
                         parameters_mapping:
                             order: $order
                             current_transition: hold
+                    - '@run_action_group':
+                        action_group: marello_order_status_change
+                        parameters_mapping:
+                            order: $order
+                            status: 'hold'
             un_hold_definition:
                 post_actions:
                     - '@run_action_group':
@@ -431,6 +486,11 @@ workflows:
                         parameters_mapping:
                             order: $order
                             current_transition: un_hold
+                    - '@run_action_group':
+                        action_group: marello_order_status_change
+                        parameters_mapping:
+                            order: $order
+                            status: 'processing'
             invoice_definition:
                 conditions:
                     '@and':
@@ -451,6 +511,11 @@ workflows:
                         parameters_mapping:
                             order: $order
                             current_transition: invoice
+                    - '@run_action_group':
+                        action_group: marello_order_status_change
+                        parameters_mapping:
+                            order: $order
+                            status: 'invoiced'
             payment_received_definition:
                 conditions:
                     '@and':
@@ -474,6 +539,11 @@ workflows:
                         parameters_mapping:
                             order: $order
                             current_transition: payment_received
+                    - '@run_action_group':
+                        action_group: marello_order_status_change
+                        parameters_mapping:
+                            order: $order
+                            status: 'paid'
             prepare_shipping_definition:
                 conditions:
                     '@and':
@@ -504,6 +574,11 @@ workflows:
                         parameters_mapping:
                             order: $order
                             current_transition: prepare_shipping
+                    - '@run_action_group':
+                        action_group: marello_order_status_change
+                        parameters_mapping:
+                            order: $order
+                            status: 'pick_and_pack'
             ship_definition:
                 conditions:
                     '@and':
@@ -528,6 +603,11 @@ workflows:
                         parameters_mapping:
                             order: $order
                             current_transition: ship
+                    - '@run_action_group':
+                        action_group: marello_order_status_change
+                        parameters_mapping:
+                            order: $order
+                            status: 'shipped'
             payment_reminder_definition:
                 post_actions:
                     - '@marello_notification_send':
@@ -556,7 +636,9 @@ workflows:
             payment_details:
                 type: string
             total_paid:
-                type: float
+                type: object
+                options:
+                    class: Oro\Bundle\CurrencyBundle\Entity\Price
             invoiced_at:
                 type: object
                 options:
@@ -655,11 +737,10 @@ workflows:
                                 constraints:
                                     - NotBlank: ~
                         total_paid:
-                            form_type: Symfony\Component\Form\Extension\Core\Type\NumberType
+                            form_type: Marello\Bundle\OrderBundle\Form\Type\OrderTotalPaidType
                             options:
                                 required: true
-                                constraints:
-                                    - NotBlank: ~
+                                currency: $order.currency
             ship:
                 step_to:  shipped
                 transition_definition: ship_definition
@@ -681,6 +762,11 @@ workflows:
                           parameters_mapping:
                               order: $order
                               current_transition: pending
+                    - '@run_action_group':
+                        action_group: marello_order_status_change
+                        parameters_mapping:
+                            order: $order
+                            status: 'pending'
             cancel_definition:
                 conditions:
                     '@and':
@@ -701,6 +787,11 @@ workflows:
                           parameters_mapping:
                               order: $order
                               current_transition: cancel
+                    - '@run_action_group':
+                        action_group: marello_order_status_change
+                        parameters_mapping:
+                            order: $order
+                            status: 'cancelled'
             hold_definition:
                 actions:
                     - '@tree':
@@ -717,6 +808,11 @@ workflows:
                           parameters_mapping:
                               order: $order
                               current_transition: hold
+                    - '@run_action_group':
+                        action_group: marello_order_status_change
+                        parameters_mapping:
+                            order: $order
+                            status: 'hold'
             un_hold_definition:
                 post_actions:
                     - '@run_action_group':
@@ -724,6 +820,11 @@ workflows:
                           parameters_mapping:
                               order: $order
                               current_transition: un_hold
+                    - '@run_action_group':
+                        action_group: marello_order_status_change
+                        parameters_mapping:
+                            order: $order
+                            status: 'processing'
             invoice_definition:
                 conditions:
                     '@and':
@@ -744,6 +845,11 @@ workflows:
                           parameters_mapping:
                               order: $order
                               current_transition: invoice
+                    - '@run_action_group':
+                        action_group: marello_order_status_change
+                        parameters_mapping:
+                            order: $order
+                            status: 'invoiced'
             payment_received_definition:
                 conditions:
                     '@and':
@@ -757,6 +863,11 @@ workflows:
                           parameters_mapping:
                               order: $order
                               current_transition: payment_received
+                    - '@run_action_group':
+                        action_group: marello_order_status_change
+                        parameters_mapping:
+                            order: $order
+                            status: 'paid'
             prepare_shipping_definition:
                 conditions:
                     '@and':
@@ -787,6 +898,11 @@ workflows:
                           parameters_mapping:
                               order: $order
                               current_transition: prepare_shipping
+                    - '@run_action_group':
+                        action_group: marello_order_status_change
+                        parameters_mapping:
+                            order: $order
+                            status: 'pick_and_pack'
             ship_definition:
                 conditions:
                     '@and':
@@ -811,6 +927,11 @@ workflows:
                           parameters_mapping:
                               order: $order
                               current_transition: ship
+                    - '@run_action_group':
+                        action_group: marello_order_status_change
+                        parameters_mapping:
+                            order: $order
+                            status: 'shipped'
             payment_reminder_definition:
                 post_actions:
                     - '@marello_notification_send':
@@ -836,7 +957,9 @@ workflows:
             payment_details:
                 type: string
             total_paid:
-                type: float
+                type: object
+                options:
+                    class: Oro\Bundle\CurrencyBundle\Entity\Price
             invoiced_at:
                 type: object
                 options:
@@ -928,11 +1051,10 @@ workflows:
                                 constraints:
                                     - NotBlank: ~
                         total_paid:
-                            form_type: Symfony\Component\Form\Extension\Core\Type\NumberType
+                            form_type: Marello\Bundle\OrderBundle\Form\Type\OrderTotalPaidType
                             options:
                                 required: true
-                                constraints:
-                                    - NotBlank: ~
+                                currency: $order.currency
             ship:
                 step_to:  shipped
                 transition_definition: ship_definition
@@ -951,6 +1073,11 @@ workflows:
                           parameters_mapping:
                               order: $order
                               current_transition: pending
+                    - '@run_action_group':
+                        action_group: marello_order_status_change
+                        parameters_mapping:
+                            order: $order
+                            status: 'pending'
             cancel_definition:
                 conditions:
                     '@and':
@@ -970,6 +1097,11 @@ workflows:
                           parameters_mapping:
                               order: $order
                               current_transition: cancel
+                    - '@run_action_group':
+                        action_group: marello_order_status_change
+                        parameters_mapping:
+                            order: $order
+                            status: 'cancelled'
             hold_definition:
                 post_actions:
                     - '@run_action_group':
@@ -977,6 +1109,11 @@ workflows:
                           parameters_mapping:
                               order: $order
                               current_transition: hold
+                    - '@run_action_group':
+                        action_group: marello_order_status_change
+                        parameters_mapping:
+                            order: $order
+                            status: 'hold'
             un_hold_definition:
                 post_actions:
                     - '@run_action_group':
@@ -984,6 +1121,11 @@ workflows:
                           parameters_mapping:
                               order: $order
                               current_transition: un_hold
+                    - '@run_action_group':
+                        action_group: marello_order_status_change
+                        parameters_mapping:
+                            order: $order
+                            status: 'processing'
             invoice_definition:
                 conditions:
                     '@and':
@@ -1004,6 +1146,11 @@ workflows:
                           parameters_mapping:
                               order: $order
                               current_transition: invoice
+                    - '@run_action_group':
+                        action_group: marello_order_status_change
+                        parameters_mapping:
+                            order: $order
+                            status: 'invoiced'
             payment_received_definition:
                 conditions:
                     '@and':
@@ -1021,6 +1168,11 @@ workflows:
                           parameters_mapping:
                               order: $order
                               current_transition: payment_received
+                    - '@run_action_group':
+                        action_group: marello_order_status_change
+                        parameters_mapping:
+                            order: $order
+                            status: 'paid'
             prepare_shipping_definition:
                 conditions:
                     '@and':
@@ -1051,6 +1203,11 @@ workflows:
                           parameters_mapping:
                               order: $order
                               current_transition: prepare_shipping
+                    - '@run_action_group':
+                        action_group: marello_order_status_change
+                        parameters_mapping:
+                            order: $order
+                            status: 'pick_and_pack'
             ship_definition:
                 conditions:
                     '@and':
@@ -1075,6 +1232,11 @@ workflows:
                           parameters_mapping:
                               order: $order
                               current_transition: ship
+                    - '@run_action_group':
+                        action_group: marello_order_status_change
+                        parameters_mapping:
+                            order: $order
+                            status: 'shipped'
             payment_reminder_definition:
                 post_actions:
                     - '@marello_notification_send':

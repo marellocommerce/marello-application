@@ -9,12 +9,21 @@ use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\SalesBundle\Model\ExtendSalesChannelGroup;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelGroupRepository")
  * @ORM\HasLifecycleCallbacks()
- * @ORM\Table(name="marello_sales_channel_group")
+ * @ORM\Table(
+ *     name="marello_sales_channel_group",
+ *     uniqueConstraints={
+ *          @ORM\UniqueConstraint(
+ *              name="UNIQ_759DCFAB3D6A9E29",
+ *              columns={"integration_channel_id"}
+ *          )
+ *      }
+ * )
  * @Config(
  *  routeName="marello_sales_saleschannelgroup_index",
  *  routeView="marello_sales_saleschannelgroup_view",
@@ -113,6 +122,21 @@ class SalesChannelGroup extends ExtendSalesChannelGroup
      *  )
      */
     protected $salesChannels;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Oro\Bundle\IntegrationBundle\Entity\Channel")
+     * @ORM\JoinColumn(name="integration_channel_id", nullable=true, onDelete="SET NULL", unique=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var Channel
+     */
+    protected $integrationChannel;
 
     public function __construct()
     {
@@ -219,6 +243,25 @@ class SalesChannelGroup extends ExtendSalesChannelGroup
         if ($this->salesChannels->contains($salesChannel)) {
             $this->salesChannels->removeElement($salesChannel);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Channel|null
+     */
+    public function getIntegrationChannel()
+    {
+        return $this->integrationChannel;
+    }
+
+    /**
+     * @param Channel|null $integrationChannel
+     * @return $this
+     */
+    public function setIntegrationChannel(Channel $integrationChannel = null)
+    {
+        $this->integrationChannel = $integrationChannel;
 
         return $this;
     }

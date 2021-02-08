@@ -192,6 +192,7 @@ datagrids:
                     - p.sku
                     - s.label as status
                     - COALESCE(SUM(il.inventory), 0) AS inventoryQty
+                    - repl.name AS replenishment
                 from:
                     - { table: MarelloProductBundle:Product, alias: p }
                 join:
@@ -199,6 +200,7 @@ datagrids:
                         - { join: p.status, alias: s }
                         - { join: p.inventoryItems, alias: i }
                         - { join: i.inventoryLevels, alias: il }
+                        - { join: i.replenishment, alias: repl }
                 where:
                     and:
                         - p.variant = :variantId
@@ -217,6 +219,10 @@ datagrids:
                 label:              marello.inventory.inventorylevel.inventory.label
                 frontend_type:      number
                 data_name:          inventoryQty
+            replenishment:
+                label:              marello.inventory.inventoryitem.replenishment.label
+                frontend_type:      string
+                data_name:          replenishment
             status:
                 label:              marello.product.status.label
                 frontend_type:      string

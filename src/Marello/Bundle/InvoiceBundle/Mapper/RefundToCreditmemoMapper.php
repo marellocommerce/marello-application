@@ -72,7 +72,9 @@ class RefundToCreditmemoMapper extends AbstractInvoiceMapper
     protected function mapItem(RefundItem $refundItem)
     {
         $creditmemoItem = new CreditmemoItem();
-        $creditmemoItemData = $this->getData($refundItem->getOrderItem(), CreditmemoItem::class);
+        $orderItem = $refundItem->getOrderItem();
+        $creditmemoItemData = $this->getData($orderItem, CreditmemoItem::class);
+        $invoiceItemData['productUnit'] = $orderItem->getProductUnit() ? $orderItem->getProductUnit()->getId() : null;
         $quantity = $refundItem->getQuantity();
         $tax = $creditmemoItemData['tax'] / $creditmemoItemData['quantity'] * $quantity;
 

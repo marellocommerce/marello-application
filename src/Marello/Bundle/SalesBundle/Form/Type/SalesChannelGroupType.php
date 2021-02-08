@@ -32,7 +32,10 @@ class SalesChannelGroupType extends AbstractType
             )
             ->add(
                 'description',
-                TextareaType::class
+                TextareaType::class,
+                [
+                    'required' => false
+                ]
             )
             ->add(
                 'salesChannels',

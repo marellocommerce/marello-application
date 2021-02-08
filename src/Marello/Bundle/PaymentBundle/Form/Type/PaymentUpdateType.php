@@ -4,12 +4,12 @@ namespace Marello\Bundle\PaymentBundle\Form\Type;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Marello\Bundle\InvoiceBundle\Entity\AbstractInvoice;
+use Marello\Bundle\InvoiceBundle\Entity\Repository\AbstractInvoiceRepository;
 use Marello\Bundle\InvoiceBundle\Form\Type\InvoiceSelectType;
 use Marello\Bundle\PaymentBundle\Entity\Payment;
 use Marello\Bundle\PaymentBundle\Migrations\Data\ORM\LoadPaymentStatusData;
-use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
-use Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderItemCollectionType;
 use Oro\Bundle\EntityExtendBundle\Form\Type\EnumSelectType;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -56,7 +56,8 @@ class PaymentUpdateType extends AbstractType
                 [
                     'label'    => 'marello.payment.payment_source.label',
                     'required' => true,
-                    'mapped'   => false
+                    'placeholder' => 'Choose Related Entity',
+                    'empty_data'  => null
                 ]
             )
             ->add(
@@ -101,6 +102,28 @@ class PaymentUpdateType extends AbstractType
                             'required' => true,
                             'mapped'   => false,
                             'disabled' => true,
+                            'placeholder' => 'Choose Related Entity',
+                            'empty_data'  => null,
+                        ]
+                    );
+                } else {
+                    $currency = $payment->getCurrency();
+                    $form->remove('paymentSource');
+                    $form->add(
+                        'paymentSource',
+                        InvoiceSelectType::class,
+                        [
+                            'label'    => 'marello.payment.payment_source.label',
+                            'required' => true,
+                            'mapped'   => false,
+                            'placeholder' => 'Choose Related Entity',
+                            'empty_data'  => null,
+                            'query_builder' => function (AbstractInvoiceRepository $repository) use ($currency) {
+                                return $repository->createQueryBuilder('invoice')
+                                    ->where('invoice.currency = :currency')
+                                    ->andWhere('invoice.totalPaid < invoice.grandTotal')
+                                    ->setParameter('currency', $currency);
+                            },
                         ]
                     );
                 }
@@ -112,6 +135,20 @@ class PaymentUpdateType extends AbstractType
                     $form->get('paymentSource')->setData($source);
                 }
             }
+        });
+        $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
+            /** @var Payment $payment */
+            $payment = $event->getData();
+            $form = $event->getForm();
+            $source = $form->get('paymentSource')->getData();
+            if ($source instanceof AbstractInvoice) {
+                $payment->setPaymentSource($source);
+            }
+            if ($source) {
+                $payment->setStatus($this->getStatus(LoadPaymentStatusData::ASSIGNED));
+            }
+
+            $event->setData($payment);
         });
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             /** @var Payment $payment */
@@ -125,9 +162,11 @@ class PaymentUpdateType extends AbstractType
                     ->findOneByPayment($payment);
                 if ($newSource !== $oldSource) {
                     $em = $this->registry->getManagerForClass(AbstractInvoice::class);
-                    $oldSource->removePayment($payment);
-                    $em->persist($oldSource);
-                    $em->flush();
+                    if ($oldSource) {
+                        $oldSource->removePayment($payment);
+                        $em->persist($oldSource);
+                        $em->flush();
+                    }
                     $newSource->addPayment($payment);
                     $em->persist($newSource);
                     $em->flush();
@@ -153,5 +192,24 @@ class PaymentUpdateType extends AbstractType
     public function getBlockPrefix()
     {
         return self::BLOCK_PREFIX;
+    }
+
+    /**
+     * @param string $name
+     * @return null|object
+     */
+    private function getStatus($name)
+    {
+        $statusClass = ExtendHelper::buildEnumValueClassName(LoadPaymentStatusData::PAYMENT_STATUS_ENUM_CLASS);
+        $status = $this->registry
+            ->getManagerForClass($statusClass)
+            ->getRepository($statusClass)
+            ->find($name);
+
+        if ($status) {
+            return $status;
+        }
+
+        return null;
     }
 }

@@ -6,6 +6,14 @@ services:
         tags:
             - { name: form.type }
 
+    marello_order.form.type.total_paid:
+        class: Marello\Bundle\OrderBundle\Form\Type\OrderTotalPaidType
+        arguments:
+            - '@oro_locale.settings'
+            - '@oro_currency.config.currency'
+        tags:
+            - { name: form.type }
+
     marello_order.form.type.order_update:
         class: Marello\Bundle\OrderBundle\Form\Type\OrderUpdateType
         tags:

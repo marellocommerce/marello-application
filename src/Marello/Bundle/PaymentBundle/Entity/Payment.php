@@ -4,6 +4,7 @@ namespace Marello\Bundle\PaymentBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
+use Marello\Bundle\InvoiceBundle\Entity\AbstractInvoice;
 use Marello\Bundle\PaymentBundle\Model\ExtendPayment;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
@@ -46,6 +47,11 @@ class Payment extends ExtendPayment implements
      * @ORM\Column(type="integer")
      */
     protected $id;
+
+    /**
+     * @var AbstractInvoice
+     */
+    protected $paymentSource;
 
     /**
      * @var int
@@ -170,6 +176,25 @@ class Payment extends ExtendPayment implements
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return AbstractInvoice|null
+     */
+    public function getPaymentSource()
+    {
+        return $this->paymentSource;
+    }
+
+    /**
+     * @param AbstractInvoice|null $paymentSource
+     * @return $this
+     */
+    public function setPaymentSource(AbstractInvoice $paymentSource = null)
+    {
+        $this->paymentSource = $paymentSource;
+
+        return $this;
     }
 
     /**

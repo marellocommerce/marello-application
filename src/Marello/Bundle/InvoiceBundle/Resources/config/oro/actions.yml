@@ -1,88 +1,88 @@
 operations:
-  marello_payment_add:
-    label: marello.payment.button.add_payment.label
-    applications: [default]
-    acl_resource: [EDIT, $.data]
-    order: 20
-    routes:
-      - marello_invoice_invoice_view
-    attributes:
-      invoice_paid_amount:
-        label: marello.payment.total_paid.label
-        type: float
-      payment_method:
-        label: marello.payment.payment_method.label
-        type: string
-      payment_date:
-        label: marello.payment.payment_date.label
-        type: object
-        options:
-          class: \DateTime
-      payment_reference:
-        label: marello.payment.payment_reference.label
-        type: string
-      payment_details:
-        label: marello.payment.payment_details.label
-        type: string
-      total_paid:
-        label: marello.payment.total_paid.label
-        type: float
-      action_result:
-        label: 'result'
-        type: array
-    form_options:
-      attribute_fields:
-        payment_method:
-          form_type: Marello\Bundle\PaymentBundle\Form\Type\PaymentMethodSelectType
-          options:
-            required: true
-            constraints:
-              - NotBlank: ~
-        payment_date:
-          form_type: Oro\Bundle\FormBundle\Form\Type\OroDateTimeType
-          options:
-            required: true
-            constraints:
-              - NotBlank: ~
-              - DateTime: ~
-        payment_reference:
-          form_type: Symfony\Component\Form\Extension\Core\Type\TextType
-          options:
-            required: true
-            constraints:
-              - NotBlank: ~
-        payment_details:
-          form_type: Symfony\Component\Form\Extension\Core\Type\TextType
-          options:
-            required: true
-            constraints:
-              - NotBlank: ~
-        total_paid:
-          form_type: Symfony\Component\Form\Extension\Core\Type\NumberType
-          options:
-            required: true
-            constraints:
-              - NotBlank: ~
-    frontend_options:
-      #template: customDialogTemplate.html.twig
-      options:
-        width: 2000
-      show_dialog: true
-    preactions:
-      - '@call_service_method':
-          service: marello_invoice.provider.invoice_paid_amount
-          method: getPaidAmount
-          method_parameters: [$.data]
-          attribute: $.invoice_paid_amount
-    preconditions:
-      '@and':
-        - '@less': [$.invoice_paid_amount, $.data.grandTotal]
-    actions:
-      - '@call_service_method':
-          service: marello_payment.action.handler.add_payment
-          method: handleAction
-          method_parameters: [$.data, $.payment_method, $.payment_date, $.payment_reference, $.payment_details, $.total_paid]
-          attribute: $.action_result
-      - '@flash_message':
-          message: $.action_result.message
-          type: $.action_result.type
+    marello_payment_add:
+        label: marello.payment.button.add_payment.label
+        applications: [default]
+        acl_resource: [EDIT, $.data]
+        order: 20
+        routes:
+            - marello_invoice_invoice_view
+        attributes:
+            invoice_paid_amount:
+                label: marello.payment.total_paid.label
+                type: float
+            payment_method:
+                label: marello.payment.payment_method.label
+                type: string
+            payment_date:
+                label: marello.payment.payment_date.label
+                type: object
+                options:
+                    class: \DateTime
+            payment_reference:
+                label: marello.payment.payment_reference.label
+                type: string
+            payment_details:
+                label: marello.payment.payment_details.label
+                type: string
+            total_paid:
+                label: marello.payment.total_paid.label
+                type: object
+                options:
+                    class: Oro\Bundle\CurrencyBundle\Entity\Price
+            action_result:
+                label: 'result'
+                type: array
+        form_options:
+            attribute_fields:
+                payment_method:
+                    form_type: Marello\Bundle\PaymentBundle\Form\Type\PaymentMethodSelectType
+                    options:
+                        required: true
+                        constraints:
+                            - NotBlank: ~
+                payment_date:
+                    form_type: Oro\Bundle\FormBundle\Form\Type\OroDateTimeType
+                    options:
+                        required: true
+                        constraints:
+                            - NotBlank: ~
+                            - DateTime: ~
+                payment_reference:
+                    form_type: Symfony\Component\Form\Extension\Core\Type\TextType
+                    options:
+                        required: true
+                        constraints:
+                            - NotBlank: ~
+                payment_details:
+                    form_type: Symfony\Component\Form\Extension\Core\Type\TextType
+                    options:
+                        required: true
+                        constraints:
+                            - NotBlank: ~
+                total_paid:
+                    form_type: Marello\Bundle\OrderBundle\Form\Type\OrderTotalPaidType
+                    options:
+                        required: true
+                        currency: $.data.currency
+        frontend_options:
+            options:
+                width: 2000
+            show_dialog: true
+        preactions:
+            - '@call_service_method':
+                  service: marello_invoice.provider.invoice_paid_amount
+                  method: getPaidAmount
+                  method_parameters: [$.data]
+                  attribute: $.invoice_paid_amount
+        preconditions:
+            '@and':
+                - '@less': [$.invoice_paid_amount, $.data.grandTotal]
+        actions:
+            - '@call_service_method':
+                  service: marello_payment.action.handler.add_payment
+                  method: handleAction
+                  method_parameters: [$.data, $.payment_method, $.payment_date, $.payment_reference, $.payment_details, $.total_paid.value]
+                  attribute: $.action_result
+            - '@flash_message':
+                  message: $.action_result.message
+                  type: $.action_result.type

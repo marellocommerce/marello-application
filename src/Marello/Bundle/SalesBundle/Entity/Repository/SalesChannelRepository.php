@@ -25,6 +25,34 @@ class SalesChannelRepository extends EntityRepository
     }
 
     /**
+     * @param string $searchTerm
+     * @param int $groupId
+     * @param array $skippedSalesChannelIds
+     * @return QueryBuilder
+     */
+    public function getActiveSalesChannelBySearchTermLimitedWithGroupIdQB(
+        string $searchTerm,
+        int $groupId,
+        array $skippedSalesChannelIds = []
+    ): QueryBuilder {
+        $qb = $this->getActiveChannelsQuery();
+        $qb
+            ->andWhere($qb->expr()->like('LOWER(sc.name)', ':searchTerm'))
+            ->andWhere($qb->expr()->eq('sc.group', ':salesChannelGroupId'))
+            ->setParameter('searchTerm', '%' . mb_strtolower($searchTerm) . '%')
+            ->setParameter('salesChannelGroupId', $groupId)
+            ->orderBy('sc.name', 'ASC');
+
+        if (!empty($skippedSalesChannelIds)) {
+            $qb
+                ->andWhere($qb->expr()->notIn('sc.id', ':skippedSalesChannelIds'))
+                ->setParameter('skippedSalesChannelIds', $skippedSalesChannelIds);
+        }
+
+        return $qb;
+    }
+
+    /**
      * Return product prices for specified channel and productId
      *
      * @param int $salesChannel

@@ -6,9 +6,14 @@ marello:
 
         item:
             count: 'Please add at least one Order Item'
-            available_inventory: 'Cannot order more inventory than available'
+            available_inventory: 'Cannot order more inventory than available for product {{ productSku }}.'
 
         address:
             validation:
                 shipping_not_blank: 'Shipping Address should not be empty'
                 billing_not_blank: 'Billing Address should not be empty'
+
+        delivery_date:
+            messages:
+                error:
+                    greater_than_date: Delivery Date must be greater than %date%
