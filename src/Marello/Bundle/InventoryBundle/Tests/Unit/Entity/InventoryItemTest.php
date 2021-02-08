@@ -21,7 +21,8 @@ class InventoryItemTest extends TestCase
             ['id', 42],
             ['desiredInventory', 42],
             ['purchaseInventory', 42],
-            ['replenishment', 'some string']
+            ['replenishment', 'some string'],
+            ['productUnit', 'some measurement']
         ]);
 
         $this->assertPropertyCollections(new InventoryItem(new Product()), [

@@ -1,3 +1,6 @@
 dynamic-imports:
     marellopayment:
         - marellopayment/js/app/views/payment-rule-method-view
+        - marellopayment/js/app/views/payment-method-view
+        - marellopayment/js/app/views/payment-source-view
+        - marellopayment/js/app/views/total-paid-view

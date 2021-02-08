@@ -12,8 +12,6 @@ use Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -42,6 +40,10 @@ class CompanyType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, ['label' => 'marello.customer.company.name.label'])
+            ->add('companyNumber', TextType::class, [
+                'label' => 'marello.customer.company.company_number.label',
+                'required' => false
+            ])
             ->add(
                 'parent',
                 ParentCompanySelectType::class,
@@ -52,6 +54,10 @@ class CompanyType extends AbstractType
             )
             ->add('paymentTerm', PaymentTermSelectType::class, [
                 'label' => 'marello.customer.company.payment_term.label',
+                'required' => false,
+            ])
+            ->add('taxIdentificationNumber', TextType::class, [
+                'label' => 'marello.customer.company.tax_identification_number.label',
                 'required' => false,
             ])
             ->add(
@@ -73,9 +79,7 @@ class CompanyType extends AbstractType
                     'mapped'   => false,
                     'multiple' => true,
                 ]
-            )
-            ->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'preSubmit'])
-            ->addEventListener(FormEvents::POST_SUBMIT, [$this, 'postSubmit']);
+            );
 
         if ($this->authorizationChecker->isGranted('marello_customer_company_address_update')) {
             $options = [
@@ -103,20 +107,6 @@ class CompanyType extends AbstractType
                     $options
                 );
         }
-    }
-
-    /**
-     * @param FormEvent $event
-     */
-    public function preSubmit(FormEvent $event)
-    {
-    }
-
-    /**
-     * @param FormEvent $event
-     */
-    public function postSubmit(FormEvent $event)
-    {
     }
 
     /**

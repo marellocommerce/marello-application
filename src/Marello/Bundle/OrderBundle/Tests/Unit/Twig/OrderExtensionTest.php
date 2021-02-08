@@ -64,13 +64,15 @@ class OrderExtensionTest extends WebTestCase
     public function testGetFunctionsAreRegisteredInExtension()
     {
         $functions = $this->extension->getFunctions();
-        $this->assertCount(4, $functions);
+        $this->assertCount(6, $functions);
 
         $expectedFunctions = array(
             'marello_order_can_return',
             'marello_order_item_shipped',
             'marello_get_order_item_status',
-            'marello_get_order_items_for_notification'
+            'marello_get_order_items_for_notification',
+            'marello_get_order_total_paid',
+            'marello_get_order_total_due'
         );
 
         /** @var \Twig_SimpleFunction $function */

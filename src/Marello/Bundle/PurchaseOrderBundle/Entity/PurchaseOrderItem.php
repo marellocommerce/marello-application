@@ -187,7 +187,7 @@ class PurchaseOrderItem implements
      *
      * @ORM\Column(name="data", type="json_array", nullable=true)
      */
-    protected $data;
+    protected $data = [];
 
     /**
      * @var string
@@ -406,9 +406,13 @@ class PurchaseOrderItem implements
     {
         $price = new ProductPrice();
         $price
-            ->setProduct($this->product)
             ->setCurrency($this->order->getSupplier()->getCurrency())
             ->setValue($this->purchasePriceValue);
+
+        if ($this->product) {
+            $price->setProduct($this->product);
+        }
+
         $this->purchasePrice = $price;
     }
 

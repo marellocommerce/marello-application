@@ -18,7 +18,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
  *      uniqueConstraints={
  *          @ORM\UniqueConstraint(
  *              name="marello_catalog_category_codeorgidx",
- *              columns={"code, organization_id"}
+ *              columns={"code", "organization_id"}
  *          )
  *      }
  * )

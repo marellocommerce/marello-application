@@ -90,9 +90,13 @@ class AvailableInventoryValidator extends ConstraintValidator
         }
 
         $values = $this->entityGetFieldValues($entity, $fields);
-        if ((!isset($values[self::PRODUCT_FIELD]) || $values[self::PRODUCT_FIELD] === null) ||
-            (!isset($values[self::SALES_CHANNEL_FIELD]) || $values[self::SALES_CHANNEL_FIELD] === null)) {
-            throw new ConstraintDefinitionException('Cannot get inventory when not all required values are set');
+
+        /**
+         * In case when some required data is not available we skip validation because specific validators
+         * for these fields must catch them
+         */
+        if (!$this->isAllRequiredFieldsHasValue($values)) {
+            return;
         }
 
         $result = $this->availableInventoryProvider
@@ -101,10 +105,6 @@ class AvailableInventoryValidator extends ConstraintValidator
         $productSku = $this->getProductSku($values[self::PRODUCT_FIELD]);
         if (array_key_exists($productSku, $this->collection)) {
             $values[self::QUANTITY_FIELD] += $this->collection[$productSku];
-        }
-
-        if (!isset($values[self::QUANTITY_FIELD])) {
-            throw new ConstraintDefinitionException('Cannot compare values if because there nothing to compare');
         }
 
         if (!$this->compareValues($result, $values[self::QUANTITY_FIELD])) {
@@ -141,6 +141,7 @@ class AvailableInventoryValidator extends ConstraintValidator
                     $errorPath = $this->getErrorPathFromConfig($constraint, $fields);
                     $this->context->buildViolation($constraint->message)
                         ->atPath($errorPath)
+                        ->setParameter('{{ productSku }}', $productSku)
                         ->addViolation();
                 }
             }
@@ -329,6 +330,22 @@ class AvailableInventoryValidator extends ConstraintValidator
         }
 
         return $results;
+    }
+
+    /**
+     * @param array $values
+     * @return bool
+     */
+    protected function isAllRequiredFieldsHasValue(array $values): bool
+    {
+        $requiredFields = [self::PRODUCT_FIELD, self::SALES_CHANNEL_FIELD, self::SALES_CHANNEL_FIELD];
+        foreach ($requiredFields as $requiredField) {
+            if (!\array_key_exists($requiredField, $values)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**

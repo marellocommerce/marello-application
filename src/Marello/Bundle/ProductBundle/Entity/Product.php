@@ -10,7 +10,7 @@ use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Model\InventoryItemAwareInterface;
 use Marello\Bundle\PricingBundle\Entity\AssembledChannelPriceList;
 use Marello\Bundle\PricingBundle\Entity\AssembledPriceList;
-use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
+use Marello\Bundle\PricingBundle\Entity\PriceListInterface;
 use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
 use Marello\Bundle\ProductBundle\Model\ExtendProduct;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
@@ -36,7 +36,7 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
  *      uniqueConstraints={
  *          @ORM\UniqueConstraint(
  *              name="marello_product_product_skuorgidx",
- *              columns={"sku,organization_id"}
+ *              columns={"sku","organization_id"}
  *          )
  *      }
  * )
@@ -259,7 +259,7 @@ class Product extends ExtendProduct implements
      *
      * @var float
      */
-    protected $weight;
+    protected $weight = 0;
 
     /**
      * @var integer
@@ -456,7 +456,7 @@ class Product extends ExtendProduct implements
      *      }
      * )
      */
-    protected $data;
+    protected $data = [];
 
     /**
      * @var ArrayCollection|ProductSupplierRelation[]
@@ -1316,14 +1316,14 @@ class Product extends ExtendProduct implements
 
     /**
      * @param SalesChannel $salesChannel
-     * @return AssembledChannelPriceList|null
+     * @return PriceListInterface|null
      */
     public function getSalesChannelPrice(SalesChannel $salesChannel)
     {
-        /** @var ProductChannelPrice $productChannelPrice */
+        /** @var AssembledChannelPriceList $productChannelPrice */
         $productChannelPrice = $this->getChannelPrices()
             ->filter(function ($productChannelPrice) use ($salesChannel) {
-                /** @var ProductChannelPrice $productChannelPrice */
+                /** @var AssembledChannelPriceList $productChannelPrice */
                 return $productChannelPrice->getChannel() === $salesChannel;
             })
             ->first();
@@ -1519,7 +1519,7 @@ class Product extends ExtendProduct implements
     {
         $this->createdAt = new \DateTime('now', new \DateTimeZone('UTC'));
         if (!$this->getDefaultName()) {
-            throw new \RuntimeException('Product has to have a default name');
+            throw new \RuntimeException(sprintf('Product %s has to have a default name', $this->getSku()));
         }
         $this->denormalizedDefaultName = $this->getDefaultName()->getString();
     }
@@ -1531,7 +1531,7 @@ class Product extends ExtendProduct implements
     {
         $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
         if (!$this->getDefaultName()) {
-            throw new \RuntimeException('Product has to have a default name');
+            throw new \RuntimeException(sprintf('Product %s has to have a default name', $this->getSku()));
         }
         $this->denormalizedDefaultName = $this->getDefaultName()->getString();
     }

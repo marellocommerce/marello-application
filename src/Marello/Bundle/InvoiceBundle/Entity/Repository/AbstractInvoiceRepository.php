@@ -19,6 +19,6 @@ class AbstractInvoiceRepository extends EntityRepository
             )
             ->setParameter('payment', $payment->getId());
 
-        return $qb->getQuery()->getSingleResult();
+        return $qb->getQuery()->getOneOrNullResult();
     }
 }

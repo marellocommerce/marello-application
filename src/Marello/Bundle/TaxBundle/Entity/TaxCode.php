@@ -3,6 +3,7 @@
 namespace Marello\Bundle\TaxBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\TaxBundle\Model\ExtendTaxCode;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
@@ -24,11 +25,15 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  *      defaultValues={
  *          "dataaudit"={
  *              "auditable"=true
- *          }
+ *          },
+ *          "security"={
+ *             "type"="ACL",
+ *             "group_name"=""
+ *         }
  *      }
  * )
  */
-class TaxCode
+class TaxCode extends ExtendTaxCode
 {
     /**
      * @var integer
@@ -42,11 +47,14 @@ class TaxCode
     /**
      * @var string
      *
-     * @ORM\Column(name="code", type="string", length=32, unique=true, nullable=false)
+     * @ORM\Column(name="code", type="string", length=255, unique=true, nullable=false)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
+     *          },
+     *          "importexport"={
+     *              "identity"=true
      *          }
      *      }
      * )
@@ -79,7 +87,7 @@ class TaxCode
      *      }
      * )
      */
-    protected $data;
+    protected $data = [];
 
     /**
      * @return string
