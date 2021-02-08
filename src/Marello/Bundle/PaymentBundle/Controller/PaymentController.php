@@ -49,6 +49,24 @@ class PaymentController extends AbstractController
     }
 
     /**
+     * @Route(path="/create", name="marello_payment_create")
+     * @Template("MarelloPaymentBundle:Payment:create.html.twig")
+     * @Acl(
+     *     id="marello_payment_create",
+     *     type="entity",
+     *     permission="CREATE",
+     *     class="MarelloPaymentBundle:Payment"
+     * )
+     * @param Request $request
+     *
+     * @return array
+     */
+    public function createAction(Request $request)
+    {
+        return $this->update($request);
+    }
+
+    /**
      * @Route(path="/update/{id}", name="marello_payment_update", requirements={"id"="\d+"})
      * @Template("MarelloPaymentBundle:Payment:update.html.twig")
      * @Acl(
@@ -64,17 +82,22 @@ class PaymentController extends AbstractController
      */
     public function updateAction(Request $request, Payment $entity)
     {
-        return $this->update($entity, $request);
+        return $this->update($request, $entity);
     }
 
     /**
-     * @param Payment $entity
      * @param Request $request
+     * @param Payment|null $entity
      * @return array|RedirectResponse
      */
-    protected function update(Payment $entity, Request $request)
+    protected function update(Request $request, Payment $entity = null)
     {
-        $handler = $this->get('marello_payment.form.handler.payment_update');
+        if ($entity === null) {
+            $entity = new Payment();
+            $handler = $this->get('marello_payment.form.handler.payment_create');
+        } else {
+            $handler = $this->get('marello_payment.form.handler.payment_update');
+        }
 
         if ($handler->process($entity)) {
             $this->get('session')->getFlashBag()->add(

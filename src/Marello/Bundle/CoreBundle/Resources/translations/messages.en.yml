@@ -20,3 +20,8 @@ marello:
 
         copyright:
             message: '© %copyright_date% Marello. All Rights Reserved'
+
+        ui:
+            sections:
+                general:                General
+                additional:             Additional

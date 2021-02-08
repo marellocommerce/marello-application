@@ -6,7 +6,9 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
+use Oro\Bundle\WorkflowBundle\Model\WorkflowStartArguments;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Model\WorkflowNameProviderInterface;
@@ -18,8 +20,11 @@ class OrderWorkflowStartListener
     /** @var WorkflowManager $workflowManager */
     private $workflowManager;
 
-    /** @var string $orderId*/
-    private $orderId;
+    /** @var DoctrineHelper $doctrineHelper */
+    private $doctrineHelper;
+
+    /** @var array $entitiesScheduledForWorkflowStart */
+    protected $entitiesScheduledForWorkflowStart = [];
 
     /**
      * @param WorkflowManager $workflowManager
@@ -32,30 +37,30 @@ class OrderWorkflowStartListener
     /**
      * @param LifecycleEventArgs $args
      */
-    public function postPersist(LifecycleEventArgs $args): void
+    public function postPersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
         if ($entity instanceof Order) {
-            $this->orderId = $entity->getId();
+            if ($workflow = $this->getApplicableWorkflow($entity)) {
+                $this->entitiesScheduledForWorkflowStart[] = new WorkflowStartArguments(
+                    $workflow->getName(),
+                    $entity,
+                    [],
+                    self::TRANSIT_TO_STEP
+                );
+            }
         }
     }
 
     /**
      * @param PostFlushEventArgs $args
-     * @throws \Oro\Bundle\WorkflowBundle\Exception\WorkflowRecordGroupException
      */
-    public function postFlush(PostFlushEventArgs $args): void
+    public function postFlush(PostFlushEventArgs $args)
     {
-        if ($this->orderId) {
-            $entityManager = $args->getEntityManager();
-            /** @var Order $entity */
-            $entity = $entityManager
-                ->getRepository(Order::class)
-                ->find($this->orderId);
-            if ($entity && $workflow = $this->getApplicableWorkflow($entity)) {
-                $this->orderId = null;
-                $this->workflowManager->startWorkflow($workflow->getName(), $entity, self::TRANSIT_TO_STEP);
-            }
+        if (!empty($this->entitiesScheduledForWorkflowStart)) {
+            $massStartData = $this->entitiesScheduledForWorkflowStart;
+            unset($this->entitiesScheduledForWorkflowStart);
+            $this->workflowManager->massStartWorkflow($massStartData);
         }
     }
 
@@ -96,5 +101,14 @@ class OrderWorkflowStartListener
             WorkflowNameProviderInterface::ORDER_DEPRECATED_WORKFLOW_1,
             WorkflowNameProviderInterface::ORDER_DEPRECATED_WORKFLOW_2
         ];
+    }
+
+    /**
+     * @deprecated
+     * @param DoctrineHelper $doctrineHelper
+     */
+    public function setDoctrineHelper(DoctrineHelper $doctrineHelper)
+    {
+        $this->doctrineHelper = $doctrineHelper;
     }
 }

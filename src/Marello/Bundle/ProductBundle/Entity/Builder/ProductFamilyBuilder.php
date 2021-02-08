@@ -86,7 +86,10 @@ class ProductFamilyBuilder
                 sprintf('Attribute groups can only be added to an instance of %s.', AttributeFamily::class)
             );
         }
-        $attributeGroups = $this->attributeGroupManager->createGroupsWithAttributes(Product::class, self::$groups);
+        $attributeGroups = $this->attributeGroupManager->createGroupsWithAttributes(
+            Product::class,
+            self::$groups
+        );
         foreach ($attributeGroups as $attributeGroup) {
             $this->family->addAttributeGroup($attributeGroup);
         }

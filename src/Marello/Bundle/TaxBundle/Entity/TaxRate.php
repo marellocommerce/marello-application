@@ -24,6 +24,10 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  *      defaultValues={
  *          "dataaudit"={
  *              "auditable"=true
+ *          },
+ *          "security"={
+ *              "type"="ACL",
+ *              "group_name"=""
  *          }
  *      }
  * )
@@ -79,7 +83,7 @@ class TaxRate
      *      }
      * )
      */
-    protected $data;
+    protected $data = [];
 
     /**
      * @return string

@@ -3,6 +3,7 @@
 namespace Marello\Bundle\PricingBundle\Form\Type;
 
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
+use Oro\Bundle\CurrencyBundle\Form\DataTransformer\MoneyValueTransformer;
 use Oro\Bundle\FormBundle\Form\Type\OroMoneyType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -37,6 +38,8 @@ class ProductPriceType extends AbstractType
                     'label' => 'marello.pricing.productprice.value.label',
                 ]);
         }
+
+        $builder->get('value')->addModelTransformer(new MoneyValueTransformer());
     }
 
     /**

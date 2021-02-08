@@ -88,6 +88,9 @@ class SalesChannel extends ExtendSalesChannel implements
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
+     *          },
+     *          "importexport"={
+     *              "identity"=true
      *          }
      *      }
      * )
@@ -433,7 +436,7 @@ class SalesChannel extends ExtendSalesChannel implements
      * @param Channel $integrationChannel
      * @return $this
      */
-    public function setIntegrationChannel(Channel $integrationChannel)
+    public function setIntegrationChannel(Channel $integrationChannel = null)
     {
         $this->integrationChannel = $integrationChannel;
 

@@ -60,6 +60,11 @@ api:
                         allow_array: true
                         property_path: order
                         description: 'Filter by order ID'
+                    status_id:
+                        data_type: string
+                        allow_array: true
+                        property_path: status_id
+                        description: 'Filter by status'
             actions:
                 delete: false
                 delete_list: false

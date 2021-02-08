@@ -38,10 +38,21 @@ datagrids:
                 method:           formatCurrency
                 context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
                 align:            right
+            totalPaid:
+                label:            marello.invoice.total_paid.label
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
+                align:            right
+            totalDue:
+                label:            marello.invoice.total_due.label
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
+                align:            right
             invoicedAt:
                 frontend_type:    datetime
                 label:            marello.invoice.invoiced_at.label
-                renderable:       false
             createdAt:
                 label:            oro.ui.created_at
                 frontend_type:    datetime
@@ -62,6 +73,10 @@ datagrids:
                     data_name: billingName
                 grandTotal:
                     data_name: i.grandTotal
+                totalPaid:
+                    data_name: i.totalPaid
+                totalDue:
+                    data_name: i.totalDue
                 invoicedAt:
                     data_name: i.purchaseDate
                 createdAt:
@@ -162,6 +177,9 @@ datagrids:
             quantity:
                 label:            marello.invoice.invoiceitem.quantity.label
                 frontend_type:    number
+            productUnit:
+                label:            marello.invoice.invoiceitem.product_unit.label
+                frontend_type:    string
             price:
                 label:            marello.invoice.invoiceitem.price.label
                 type:             localized_number
@@ -221,6 +239,9 @@ datagrids:
             quantity:
                 label:            marello.invoice.invoiceitem.quantity.label
                 frontend_type:    number
+            productUnit:
+                label:            marello.invoice.invoiceitem.product_unit.label
+                frontend_type:    string
             price:
                 label:            marello.invoice.invoiceitem.price.label
                 type:             localized_number

@@ -3,6 +3,7 @@
 namespace Marello\Bundle\PackingBundle\Migrations\Schema;
 
 use Doctrine\DBAL\Schema\Schema;
+
 use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
 use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
 use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
@@ -38,7 +39,7 @@ class MarelloPackingBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_3';
+        return 'v1_4';
     }
 
     /**
@@ -111,7 +112,17 @@ class MarelloPackingBundleInstaller implements
                 'extend' => ['owner' => ExtendScope::OWNER_SYSTEM],
             ]
         );
-        
+        $this->extendExtension->addEnumField(
+            $schema,
+            $table,
+            'productUnit',
+            'marello_product_unit',
+            false,
+            false,
+            [
+                'extend' => ['owner' => ExtendScope::OWNER_SYSTEM],
+            ]
+        );
         $table->setPrimaryKey(['id']);
         $table->addIndex(['organization_id']);
         $table->addUniqueIndex(['order_item_id'], 'UNIQ_DBF8FC2AE415FB15', []);

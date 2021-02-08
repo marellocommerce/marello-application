@@ -1,5 +1,6 @@
 datagrids:
     marello-inventory-item:
+        extended_entity_name: Marello\Bundle\InventoryBundle\Entity\InventoryItem
         source:
             type: orm
             query:
@@ -8,6 +9,7 @@ datagrids:
                     - p.denormalizedDefaultName as productName
                     - p.sku as productSku
                     - i.enableBatchInventory as enableBatchInventory
+                    - pu.name as productUnit
                     - COALESCE(SUM(il.inventory), 0) AS inventoryQty
                     - COALESCE(SUM(il.allocatedInventory), 0) AS allocatedInventoryQty
                     - COALESCE(SUM(il.inventory - il.allocatedInventory), 0) AS virtualInventoryQty
@@ -17,6 +19,7 @@ datagrids:
                     left:
                         - { join: i.product, alias: p }
                         - { join: i.inventoryLevels, alias: il }
+                        - { join: i.productUnit, alias: pu }
                 groupBy: i.id
         columns:
             productSku:
@@ -29,6 +32,10 @@ datagrids:
                 label:              marello.product.names.label
                 frontend_type:      string
                 data_name:          productName
+            productUnit:
+                label:              marello.inventory.inventoryitem.product_unit.label
+                frontend_type:      string
+                data_name:          productUnit
             enableBatchInventory:
                 label:              marello.inventory.inventoryitem.enable_batch_inventory.label
                 frontend_type:      boolean
@@ -49,6 +56,7 @@ datagrids:
             columns:
                 productSku:             { data_name: p.sku }
                 productName:            { data_name: p.denormalizedDefaultName }
+                productUnit:            { data_name: productUnit }
                 enableBatchInventory:   { data_name: enableBatchInventory }
                 inventoryQty:           { data_name: inventoryQty }
                 allocatedInventoryQty:  { data_name: allocatedInventoryQty }
@@ -63,6 +71,10 @@ datagrids:
                 productName:
                     type:             string
                     data_name:        p.denormalizedDefaultName
+                productUnit:
+                    type:             enum
+                    data_name:        productUnit
+                    enum_code:        marello_product_unit
                 enableBatchInventory:
                     type:             boolean
                     data_name:        enableBatchInventory
@@ -189,6 +201,7 @@ datagrids:
                     default_per_page: 50
 
     marello-inventory-levels:
+        extended_entity_name: Marello\Bundle\InventoryBundle\Entity\InventoryLevel
         source:
             type: orm
             query:
@@ -198,6 +211,7 @@ datagrids:
                     - il.updatedAt
                     - wht.label as warehouseTypeLabel
                     - wh.label as warehouse
+                    - wh.code as warehouseCode
                     - COALESCE(il.inventory, 0) AS inventoryQty
                     - COALESCE(il.allocatedInventory, 0) AS allocatedInventoryQty
                     - COALESCE(il.inventory - il.allocatedInventory, 0) AS virtualInventoryQty
@@ -217,12 +231,16 @@ datagrids:
             warehouse:
                 label:              marello.inventory.inventorylevel.warehouse.label
                 frontend_type:      string
+            warehouseCode:
+                label:              marello.inventory.inventorylevel.grid.warehouse_code.label
+                frontend_type:      string
             pickLocation:
                 label:              marello.inventory.inventorylevel.pick_location.label
                 frontend_type:      string
             warehouseTypeLabel:
                 label:              marello.inventory.warehousetype.entity_label
                 frontend_type:      string
+                renderable:         false
             inventoryQty:
                 label:              marello.inventory.inventorylevel.inventory.label
                 frontend_type:      number
@@ -235,11 +253,21 @@ datagrids:
                 label:              marello.inventory.inventorylevel.virtual_inventory.label
                 frontend_type:      number
                 data_name:          virtualInventoryQty
-            updatedAt:
-                label:              oro.ui.updated_at
-                frontend_type:      datetime
+        filters:
+            columns:
+                warehouse:
+                    type:             string
+                    data_name:        warehouse
+                warehouseCode:
+                    type:             string
+                    data_name:        warehouseCode
+                warehouseTypeLabel:
+                    type:             string
+                    data_name:        warehouseTypeLabel
+                    enabled:          false
 
     marello-balanced-inventory-levels-grid:
+        extended_entity_name: Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel
         source:
             type: orm
             query:
@@ -267,15 +295,15 @@ datagrids:
                 data_name:          productName
             inventoryQty:
                 label:              marello.inventory.balancedinventorylevel.inventory.label
-                frontend_type:      number
+                frontend_type:      integer
                 data_name:          inventoryQty
             balancedInventoryQty:
                 label:              marello.inventory.balancedinventorylevel.balanced_inventory_qty.label
-                frontend_type:      number
+                frontend_type:      integer
                 data_name:          balancedInventoryQty
             reservedInventoryQty:
                 label:              marello.inventory.balancedinventorylevel.reserved_inventory_qty.label
-                frontend_type:      number
+                frontend_type:      integer
                 data_name:          reservedInventoryQty
             salesChannelGroupName:
                 label:              marello.sales.saleschannelgroup.entity_label
@@ -284,10 +312,10 @@ datagrids:
             createdAt:
                 label:              oro.ui.created_at
                 frontend_type:      datetime
+                renderable:         false
             updatedAt:
                 label:              oro.ui.updated_at
                 frontend_type:      datetime
-                renderable:         false
         filters:
             columns:
                 productSku:
@@ -296,6 +324,24 @@ datagrids:
                 productName:
                     type:             string
                     data_name:        productName
+                inventoryQty:
+                    type:             number
+                    data_name:        balancedInventoryLevel.inventory
+                balancedInventoryQty:
+                    type:             number
+                    data_name:        balancedInventoryLevel.balancedInventory
+                reservedInventoryQty:
+                    type:             number
+                    data_name:        balancedInventoryLevel.reservedInventory
+                salesChannelGroupName:
+                    type:             string
+                    data_name:        salesChannelGroupName
+                createdAt:
+                    type:             datetime
+                    data_name:        balancedInventoryLevel.createdAt
+                updatedAt:
+                    type:             datetime
+                    data_name:        balancedInventoryLevel.updatedAt
         sorters:
             columns:
                 createdAt:

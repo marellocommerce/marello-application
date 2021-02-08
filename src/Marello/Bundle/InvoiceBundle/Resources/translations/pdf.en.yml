@@ -4,6 +4,7 @@ marello:
             invoice_date.label: "Invoice date"
             invoice_number.label: "Invoice number"
             debtor_number.label: "Debtor number"
+            payment_term.label: "Payment term"
             subtotal.label: "Subtotal"
             total.label: "Total"
             page_number.label: "Page %pageNumber% of %totalPages%"
@@ -16,6 +17,7 @@ marello:
             price.label: "Unit Price"
             vat.label: "VAT"
             total_inc_tax.label: "Total Price"
+            product_unit.label: "Unit"
         creditmemo:
             creditmemo_date.label: "Creditmemo date"
             creditmemo_number.label: "Creditmemo number"
@@ -32,3 +34,4 @@ marello:
             price.label: "Unit Price"
             vat.label: "VAT"
             total_inc_tax.label: "Total Price"
+            product_unit.label: "Unit"

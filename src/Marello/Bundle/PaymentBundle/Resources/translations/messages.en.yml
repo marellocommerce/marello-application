@@ -9,7 +9,7 @@ marello:
         payment_method_options.label: Payment Method Options
         payment_reference.label: Payment Reference
         payment_details.label: Payment Details
-        payment_source.label: Payment Source
+        payment_source.label: Related Entity
         payment_date.label: Payment Date
         total_paid.label: Total Paid
         currency.label: Currency
