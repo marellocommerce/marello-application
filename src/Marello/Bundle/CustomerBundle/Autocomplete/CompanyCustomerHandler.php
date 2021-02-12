@@ -3,10 +3,10 @@
 namespace Marello\Bundle\CustomerBundle\Autocomplete;
 
 use Marello\Bundle\CustomerBundle\Entity\Company;
-use Oro\Bundle\FormBundle\Autocomplete\SearchHandler;
+use Oro\Bundle\FormBundle\Autocomplete\FullNameSearchHandler;
 use Doctrine\ORM\QueryBuilder;
 
-class CompanyCustomerHandler extends SearchHandler
+class CompanyCustomerHandler extends FullNameSearchHandler
 {
     /**
      * {@inheritdoc}
