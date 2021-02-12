@@ -44,7 +44,7 @@ services:
 
     marello_customer.form.autocomplete.company_customer.search_handler:
         class: 'Marello\Bundle\CustomerBundle\Autocomplete\CompanyCustomerHandler'
-        parent: oro_form.autocomplete.search_handler
+        parent: oro_form.autocomplete.full_name.search_handler
         arguments:
             - 'Marello\Bundle\CustomerBundle\Entity\Customer'
             - ['namePrefix', 'firstName', 'middleName', 'lastName', 'nameSuffix']
