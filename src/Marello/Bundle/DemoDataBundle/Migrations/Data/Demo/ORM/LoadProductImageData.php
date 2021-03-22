@@ -79,7 +79,7 @@ class LoadProductImageData extends AbstractFixture implements DependentFixtureIn
     }
 
     /**
-     * @param               $sku
+     * @param $sku
      * @return null
      */
     protected function getProductImage($sku)
@@ -87,13 +87,15 @@ class LoadProductImageData extends AbstractFixture implements DependentFixtureIn
         try {
             $imagePath   = $this->getImagePath($sku);
             $fileManager = $this->container->get('oro_attachment.file_manager');
-            $image       = $fileManager->createFileEntity($imagePath);
-            if ($image) {
-                $this->manager->persist($image);
-                $image->setOwner($this->adminUser);
-            }
+            if ($imagePath) {
+                $image = $fileManager->createFileEntity($imagePath);
+                if ($image) {
+                    $this->manager->persist($image);
+                    $image->setOwner($this->adminUser);
+                }
 
-            return $image;
+                return $image;
+            }
         } catch (\Exception $e) {
             //image not found
         }
