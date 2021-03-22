@@ -29,7 +29,8 @@ class ProductGridListener
             ->addSelect('i.id as image')
             ->addSelect('(CASE WHEN p.image IS NOT NULL THEN true ELSE false END) as hasImage')
             ->addSelect('IDENTITY(p.status) as status')
-            ->addLeftJoin('p.image', 'i');
+            ->addLeftJoin('p.image', 'i')
+            ->addGroupBy('i.id');
         $columns = $config->offsetGetByPath('[columns]');
         $columns = array_merge(
             [
