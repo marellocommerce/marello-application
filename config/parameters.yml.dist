@@ -56,3 +56,4 @@ parameters:
     enterprise_licence: ~
     message_queue_transport: 'dbal'
     message_queue_transport_config: ~
+    deployment_type: ~
