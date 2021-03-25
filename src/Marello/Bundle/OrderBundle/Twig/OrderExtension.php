@@ -198,12 +198,6 @@ class OrderExtension extends AbstractExtension
      */
     public function getOrderTotalDue(Order $order)
     {
-        $orderInvoices = $this->getOrderInvoices($order);
-        $totalDue = 0.0;
-        foreach ($orderInvoices as $invoice) {
-            $totalDue += $invoice->getTotalDue();
-        }
-
-        return $totalDue;
+        return ($order->getGrandTotal() - $this->getOrderTotalPaid($order));
     }
 }
