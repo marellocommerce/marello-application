@@ -224,7 +224,7 @@ datagrids:
                 where:
                     and:
                         - IDENTITY(il.inventoryItem) = :inventoryItemId
-                groupBy: il.id, wh.label, wht.label
+                groupBy: il.id, wh.code, wh.label, wht.label
             bind_parameters:
                 inventoryItemId: inventoryItemId
         columns:
