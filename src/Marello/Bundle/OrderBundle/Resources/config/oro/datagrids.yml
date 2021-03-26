@@ -471,7 +471,7 @@ datagrids:
                 from:
                     - { table: MarelloOrderBundle:OrderItem, alias: oi }
                 join:
-                    left:
+                    inner:
                         - { join: oi.order, alias: o }
         columns:
             productSku:
