@@ -96,7 +96,6 @@ datagrids:
                     select:
                         - oi.productName
                         - oi.productSku
-                        - product.createdAt as createdAt
                         - SUM(oi.quantity) AS quantitySold
                     from:
                         - { table: MarelloOrderBundle:OrderItem, alias: oi }
@@ -137,7 +136,6 @@ datagrids:
                     select:
                         - oi.productName
                         - oi.productSku
-                        - product.createdAt as createdAt
                         - SUM(oi.quantity) AS quantitySold
                     from:
                         - { table: MarelloOrderBundle:OrderItem, alias: oi }
