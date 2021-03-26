@@ -100,9 +100,6 @@ datagrids:
                         - SUM(oi.quantity) AS quantitySold
                     from:
                         - { table: MarelloOrderBundle:OrderItem, alias: oi }
-                    join:
-                        left:
-                            - { join: oi.product, alias: product }
                     groupBy: oi.productSku, oi.productName
             columns:
                 productSku:
@@ -111,9 +108,6 @@ datagrids:
                 productName:
                     label:              marello.product.name.label
                     frontend_type:      string
-                createdAt:
-                    label:              oro.ui.created_at
-                    frontend_type:      datetime
                 quantitySold:
                     label:              marello.report.datagrid.columns.quantity_sold.label
                     frontend_type:      number
@@ -122,7 +116,6 @@ datagrids:
                 columns:
                     productSku:            { data_name: oi.productSku }
                     productName:           { data_name: oi.productName }
-                    createdAt:             { data_name: createdAt }
                     quantitySold:          { data_name: quantitySold }
                 default:
                     quantitySold:  'DESC'
@@ -148,9 +141,6 @@ datagrids:
                         - SUM(oi.quantity) AS quantitySold
                     from:
                         - { table: MarelloOrderBundle:OrderItem, alias: oi }
-                    join:
-                        left:
-                            - { join: oi.product, alias: product }
                     groupBy: oi.productSku, oi.productName
             columns:
                 productSku:
@@ -159,9 +149,6 @@ datagrids:
                 productName:
                     label:              marello.product.name.label
                     frontend_type:      string
-                createdAt:
-                    label:              oro.ui.created_at
-                    frontend_type:      datetime
                 quantitySold:
                     label:              marello.report.datagrid.columns.quantity_sold.label
                     frontend_type:      number
@@ -170,7 +157,6 @@ datagrids:
                 columns:
                     productSku:            { data_name: oi.productSku }
                     productName:           { data_name: oi.productName }
-                    createdAt:             { data_name: createdAt }
                     quantitySold:          { data_name: quantitySold }
                 default:
                     quantitySold: 'ASC'
@@ -253,7 +239,7 @@ datagrids:
                     from:
                         - { table: MarelloOrderBundle:OrderItem, alias: oi }
                     join:
-                        left:
+                        inner:
                             - { join: MarelloReturnBundle:ReturnItem, alias: ri, conditionType: 'WITH', condition: 'oi.id = ri.orderItem' }
                     groupBy: oi.productSku, oi.productName
             columns:
