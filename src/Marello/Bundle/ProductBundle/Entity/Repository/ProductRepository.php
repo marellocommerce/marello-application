@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityRepository;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class ProductRepository extends EntityRepository
@@ -133,16 +134,23 @@ class ProductRepository extends EntityRepository
     }
 
     /**
-     * @param string $sku
-     *
-     * @return null|Product
+     * @param $sku
+     * @param Organization|null $organization
+     * @return int|mixed|string|null
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findOneBySku($sku)
+    public function findOneBySku($sku, Organization $organization = null)
     {
         $queryBuilder = $this->createQueryBuilder('product');
 
         $queryBuilder->andWhere('UPPER(product.sku) = :sku')
             ->setParameter('sku', strtoupper($sku));
+
+        if ($organization) {
+            $queryBuilder
+                ->andWhere('product.organization = :organization')
+                ->setParameter('organization', $organization);
+        }
 
         return $this->aclHelper->apply($queryBuilder->getQuery())->getOneOrNullResult();
     }
