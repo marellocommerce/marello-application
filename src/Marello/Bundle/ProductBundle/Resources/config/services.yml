@@ -39,6 +39,7 @@ services:
             - '@marello_catalog.provider.categories_ids'
         calls:
             - ['setOroEntityDoctrineHelper', ['@oro_entity.doctrine_helper']]
+            - ['setTokenAccessor', ['@oro_security.token_accessor']]
         tags:
             - { name: twig.extension }
 

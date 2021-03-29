@@ -7,6 +7,8 @@ use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 use Marello\Bundle\SalesBundle\Provider\ChannelProvider;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\SecurityBundle\Authentication\TokenAccessorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -14,20 +16,17 @@ class ProductExtension extends AbstractExtension
 {
     const NAME = 'marello_product';
     
-    /**
-     * @var ChannelProvider
-     */
+    /** @var ChannelProvider $channelProvider */
     protected $channelProvider;
 
-    /**
-     * @var CategoriesIdsProvider
-     */
+    /** @var CategoriesIdsProvider $categoriesIdsProvider */
     protected $categoriesIdsProvider;
 
-    /**
-     * @var DoctrineHelper
-     */
+    /** @var DoctrineHelper $doctrineHelper */
     private $doctrineHelper;
+
+    /** @var TokenAccessorInterface $tokenAccessor */
+    private $tokenAccessor;
 
     /**
      * @param ChannelProvider $channelProvider
@@ -101,9 +100,15 @@ class ProductExtension extends AbstractExtension
         if (!$this->doctrineHelper || !$sku) {
             return null;
         }
+
+        $organization = null;
+        if ($this->tokenAccessor) {
+            $organization = $this->tokenAccessor->getOrganization();
+        }
+
         /** @var ProductRepository $productRepository */
         $productRepository = $this->doctrineHelper->getEntityRepository(Product::class);
-        return $productRepository->findOneBySku($sku);
+        return $productRepository->findOneBySku($sku, $organization);
     }
 
     /**
@@ -112,5 +117,13 @@ class ProductExtension extends AbstractExtension
     public function setOroEntityDoctrineHelper(DoctrineHelper $doctrineHelper)
     {
         $this->doctrineHelper = $doctrineHelper;
+    }
+
+    /**
+     * @param TokenAccessorInterface $tokenAccessor
+     */
+    public function setTokenAccessor(TokenAccessorInterface $tokenAccessor)
+    {
+        $this->tokenAccessor = $tokenAccessor;
     }
 }
