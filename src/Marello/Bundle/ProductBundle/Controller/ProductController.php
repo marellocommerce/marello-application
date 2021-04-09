@@ -59,22 +59,25 @@ class ProductController extends AbstractController
      */
     protected function createStepOne(Request $request)
     {
-        $form = $this->createForm(ProductStepOneType::class);
+        $form = $this->createForm(ProductStepOneType::class, new Product());
         $handler = new ProductCreateStepOneHandler($form, $request);
-        $productTypesProvider = $this->get('marello_product.provider.product_types');
-        $em = $this->get('doctrine.orm.entity_manager');
-        /** @var AttributeFamily $attributeFamily */
-        $attributeFamilies = $em
-            ->getRepository(AttributeFamily::class)
-            ->findBy(['entityClass' => Product::class]);
+        $queryParams = $request->query->all();
+
         if ($handler->process()) {
-            return $this->forward('MarelloProductBundle:Product:createStepTwo');
+            return $this->forward('MarelloProductBundle:Product:createStepTwo', [], $queryParams);
         }
-        if (count($productTypesProvider->getProductTypes()) <= 1 && count($attributeFamilies) <= 1) {
+
+        $productTypesProvider = $this->get('marello_product.provider.product_types');
+        $em = $this->get('oro_entity.doctrine_helper');
+        /** @var AttributeFamily $attributeFamily */
+        $countAttributeFamilies = $em
+            ->getEntityRepositoryForClass(AttributeFamily::class)
+            ->countFamiliesByEntityClass(Product::class);
+        if (count($productTypesProvider->getProductTypes()) <= 1 && $countAttributeFamilies <= 1) {
             $request->setMethod('POST');
             $request->request->set('input_action', 'marello_product_create');
             $request->request->set('single_product_type', true);
-            return $this->forward('MarelloProductBundle:Product:createStepTwo');
+            return $this->forward('MarelloProductBundle:Product:createStepTwo', [], $queryParams);
         }
 
         return [
@@ -109,27 +112,34 @@ class ProductController extends AbstractController
     protected function createStepTwo(Request $request, Product $product)
     {
         if ($request->get('input_action') === 'marello_product_create') {
-            $formStepOne = $this->createForm(ProductStepOneType::class, $product);
-            $em = $this->get('doctrine.orm.entity_manager');
-            if ($request->get('single_product_type')) {
-                $type = Product::DEFAULT_PRODUCT_TYPE;
-                $attributeFamily = $em
-                    ->getRepository(AttributeFamily::class)
-                    ->findOneBy(['entityClass' => Product::class]);
-            } else {
-                $formStepOne->handleRequest($request);
-                $type = $formStepOne->get('type')->getData();
-                $attributeFamily = $formStepOne->get('attributeFamily')->getData();
-            }
-            $product->setType($type);
-            $product->setAttributeFamily($attributeFamily);
+            $form = $this->createForm(ProductStepOneType::class, $product);
+            $queryParams = $request->query->all();
+            $form->handleRequest($request);
+            $formData = $form->all();
 
-            $form = $this->createForm(ProductType::class, $product);
+            if ($request->get('single_product_type')) {
+                $em = $this->get('oro_entity.doctrine_helper');
+                /** @var AttributeFamily $attributeFamily */
+                $attributeFamily = $em
+                    ->getEntityRepositoryForClass(AttributeFamily::class)
+                    ->findOneBy(['entityClass' => Product::class]);
+                $product->setType(Product::DEFAULT_PRODUCT_TYPE);
+                $product->setAttributeFamily($attributeFamily);
+            }
+
+            if (!empty($formData)) {
+                $form = $this->createForm(ProductType::class, $product);
+                foreach ($formData as $key => $item) {
+                    $data = $item->getData();
+                    $form->get($key)->setData($data);
+                }
+            }
 
             return [
                 'form' => $form->createView(),
                 'entity' => $product,
-                'isWidgetContext' => (bool)$request->get('_wid', false)
+                'isWidgetContext' => (bool)$request->get('_wid', false),
+                'queryParams' => $queryParams
             ];
         }
 
