@@ -6,10 +6,15 @@
 {% set gridName = 'marello-product-saleschannel-extended-grid' %}
 
 {% set entity = form.vars.value %}
-{% set formAction = path('marello_product_create_step_two')  %}
 
 {% if entity.id %}
     {% oro_title_set({params : {"%name%": entity.name } }) %}
+{% endif %}
+
+{% if queryParams is defined %}
+    {% set formAction = path('marello_product_create_step_two', queryParams) %}
+{% else %}
+    {% set formAction = path('marello_product_create_step_two') %}
 {% endif %}
 
 {% block pageHeader %}
