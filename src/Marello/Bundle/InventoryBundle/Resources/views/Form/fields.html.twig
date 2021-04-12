@@ -118,6 +118,12 @@
             {{ form_errors(form.adjustmentQuantity) }}
         </div>
     </td>
+    <td class="inventorybatch-delivery-date" {{ form.deliveryDate.vars.errors|length ? 'has-errors' : '' }}">
+    <div class="control-group control-group-integer">
+        {{ form_widget(form.deliveryDate) }}
+    </div>
+        {{ form_errors(form.deliveryDate) }}
+    </td>
     <td class="inventorybatch-purchase-price" {{ form.purchasePrice.vars.errors|length ? 'has-errors' : '' }}">
         <div class="control-group control-group-integer">
             {{ form_widget(form.purchasePrice) }}
@@ -172,6 +178,7 @@
                         <th class="inventorybatch-line-item-batch-number"><span>{{ 'marello.inventory.inventorybatch.batch_number.label'|trans }}</span></th>
                         <th class="inventorybatch-line-item-quantity"><span>{{ 'marello.inventory.inventorybatch.quantity.label'|trans }}</span></th>
                         <th class="inventorylevel-line-item-adjustment"><span>{{ 'marello.inventory.model.warehouse.adjustment.label'|trans }}</span></th>
+                        <th class="inventorylevel-line-item-delivery-date"><span>{{ 'marello.inventory.inventorybatch.delivery_date.label'|trans }}</span></th>
                         <th class="inventorylevel-line-item-purchase-price"><span>{{ 'marello.inventory.inventorybatch.purchase_price.label'|trans }}</span></th>
                         <th class="inventorylevel-line-item-expiration-date"><span>{{ 'marello.inventory.inventorybatch.expiration_date.label'|trans }}</span></th>
                     </tr>
