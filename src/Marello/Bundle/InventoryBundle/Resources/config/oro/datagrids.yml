@@ -6,7 +6,6 @@ datagrids:
             query:
                 select:
                     - i.id
-                    - p.denormalizedDefaultName as productName
                     - p.sku as productSku
                     - i.enableBatchInventory as enableBatchInventory
                     - pu.name as productUnit
@@ -30,8 +29,6 @@ datagrids:
                 template:           MarelloProductBundle:Product/Datagrid:productSku.html.twig
             productName:
                 label:              marello.product.names.label
-                frontend_type:      string
-                data_name:          productName
             productUnit:
                 label:              marello.inventory.inventoryitem.product_unit.label
                 frontend_type:      string
@@ -55,7 +52,7 @@ datagrids:
         sorters:
             columns:
                 productSku:             { data_name: p.sku }
-                productName:            { data_name: p.denormalizedDefaultName }
+                productName:            { data_name: productName }
                 productUnit:            { data_name: productUnit }
                 enableBatchInventory:   { data_name: enableBatchInventory }
                 inventoryQty:           { data_name: inventoryQty }
@@ -70,7 +67,7 @@ datagrids:
                     data_name:        p.sku
                 productName:
                     type:             string
-                    data_name:        p.denormalizedDefaultName
+                    data_name:        productName
                 productUnit:
                     type:             enum
                     data_name:        productUnit
@@ -92,6 +89,9 @@ datagrids:
                     filter_by_having: true
         properties:
             id: ~
+            productName:
+                type: localized_value
+                data_name: p.names
             inventory_view_link:
                 type:       url
                 route:      marello_inventory_inventory_view
@@ -273,7 +273,6 @@ datagrids:
             query:
                 select:
                     - balancedInventoryLevel
-                    - p.denormalizedDefaultName as productName
                     - p.sku as productSku
                     - scg.name as salesChannelGroupName
                 from:
@@ -291,8 +290,6 @@ datagrids:
                 template:           MarelloProductBundle:Product/Datagrid:productSku.html.twig
             productName:
                 label:              marello.product.names.label
-                frontend_type:      string
-                data_name:          productName
             inventoryQty:
                 label:              marello.inventory.balancedinventorylevel.inventory.label
                 frontend_type:      integer
@@ -360,3 +357,7 @@ datagrids:
                     data_name:  balancedInventoryLevel.reservedInventory
             default:
                 productName: 'DESC'
+        properties:
+            productName:
+                type: localized_value
+                data_name: p.names
