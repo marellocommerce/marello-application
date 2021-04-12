@@ -86,6 +86,9 @@
                             {% if entity.customer.company.companyNumber %}
                                 {{ UI.renderProperty('marello.customer.company.company_number.label'|trans, entity.customer.company.companyNumber) }}
                             {% endif %}
+                            {% if entity.customer.company.taxIdentificationNumber %}
+                                {{ UI.renderProperty('marello.customer.company.tax_identification_number.label'|trans, entity.customer.company.taxIdentificationNumber) }}
+                            {% endif %}
                         {% endif %}
                         {{ UI.renderHtmlProperty(
                             'marello.customer.entity_label'|trans,
