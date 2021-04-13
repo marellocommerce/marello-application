@@ -99,3 +99,10 @@ services:
             - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\InventoryBundle\Entity\InventoryItem', event: postPersist }
             - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\InventoryBundle\Entity\InventoryItem', event: preUpdate }
             - { name: doctrine.event_listener, event: postFlush }
+
+    marello_inventory.event_listener.datagrid.inventory_level_grid:
+        class: 'Marello\Bundle\InventoryBundle\EventListener\Datagrid\InventoryLevelGridListener'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-inventory-levels, method: onBuildBefore }
