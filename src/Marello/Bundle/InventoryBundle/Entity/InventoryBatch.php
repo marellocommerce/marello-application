@@ -14,9 +14,6 @@ use Oro\Bundle\SecurityBundle\Tools\UUIDGenerator;
 /**
  * @ORM\Entity()
  * @Oro\Config(
- *      routeView="marello_inventory_batch_view",
- *      routeName="marello_inventory_batch_index",
- *      routeCreate="marello_inventory_batch_create",
  *      defaultValues={
  *          "entity"={
  *              "icon"="fa-cubes"
