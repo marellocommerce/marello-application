@@ -1,23 +1,14 @@
-{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% extends 'OroUIBundle:actions:view.html.twig' %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
-{% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
-
-{% set formAction = path('marello_inventory_inventorylevel_manage_batches', { 'id': entity.id }) %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% block navButtons %}
-    {{ UI.cancelButton(path('marello_inventory_inventory_update', { 'id': entity.inventoryItem.id })) }}
-    {% if entity.id and is_granted('marello_inventory_inventory_update') %}
-        {% set html = '' %}
-        {% set html = UI.saveAndCloseButton({
-        'route': 'marello_inventory_inventorylevel_batches_view',
-        'params': {'id': entity.id}
-        }) %}
-        {% set html = html ~ UI.saveAndStayButton({
-        'route': 'marello_inventory_inventorylevel_manage_batches',
-        'params': {'id': entity.id}
-        }) %}
-
-        {{ UI.dropdownSaveButton({'html': html}) }}
+    {{ UI.cancelButton(path('marello_inventory_inventory_view', { 'id': entity.inventoryItem.id }), 'Back'|trans) }}
+    {% if is_granted('EDIT', entity) %}
+        {{ UI.editButton({
+            'path' : path('marello_inventory_inventorylevel_manage_batches', { id: entity.id }),
+            'entity_label': 'marello.inventory.inventorybatch.entity_label'|trans
+        }) }}
     {% endif %}
 {% endblock navButtons %}
 
@@ -28,7 +19,7 @@
         'indexLabel': 'marello.inventory.label'|trans,
         'entityTitle': 'marello.inventory.inventorybatch.entity_plural_label'|trans,
         'additional': [{
-            'indexPath':   path('marello_inventory_inventory_update', {'id': entity.inventoryItem.id}),
+            'indexPath':   path('marello_inventory_inventory_view', {'id': entity.inventoryItem.id}),
             'indexLabel':  entity.inventoryItem.product.sku
         }]
     } %}
@@ -36,8 +27,9 @@
 {% endblock pageHeader %}
 
 {% block content_data %}
-    {% set id = 'marello-inventory-level-manage-batches' %}
+    {% set id = 'marello-inventory-batches-view' %}
     {% set generalSubblocks = [] %}
+
     {% set productInformationWidget %}
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
@@ -69,43 +61,25 @@
     {% endset %}
     {% set generalSubblocks = generalSubblocks|merge([{'data' : [inventoryLevelInformationWidget]}]) %}
 
-    {% set inventoryBatchesWidget %}
-        <div class="responsive-block">
-            <div class="box-type1">
-                <div class="inventoryitem"
-                     data-page-component-module="oroui/js/app/components/view-component"
-                     data-page-component-options="{{ {
-                         view: 'marellolayout/js/app/views/abstract-items-view'
-                     }|json_encode }}"
-                     data-layout="separate">
-                    {{ form_widget(form.inventoryBatches) }}
-                    {{ form_errors(form.inventoryBatches) }}
-                </div>
-            </div>
-        </div>
-    {% endset %}
-
     {% set dataBlocks = [
         {
             'title': 'General Information'|trans,
             'class': 'active',
             'subblocks': generalSubblocks
-        },
-        {
-            'title': 'marello.inventory.inventorybatch.entity_plural_label'|trans,
-            'class': 'active',
-            'subblocks': [{
-                'title': '',
-                'data': [
-                    inventoryBatchesWidget
-                ]
-            }]
         }
     ] %}
 
-    {% set data = {
-        'formErrors': form_errors(form)? form_errors(form) : null,
-        'dataBlocks': dataBlocks,
-    } %}
+    {% set dataBlocks = dataBlocks|merge([{
+            'title' : 'marello.inventory.inventorybatch.entity_plural_label'|trans,
+            'subblocks': [{
+                'title' : null,
+                'data' : [
+                    dataGrid.renderGrid('marello-inventory-batches', {'inventoryLevelId': entity.id})
+            ]
+            }]
+        }])
+    %}
+
+    {% set data = { 'dataBlocks': dataBlocks } %}
     {{ parent() }}
 {% endblock content_data %}

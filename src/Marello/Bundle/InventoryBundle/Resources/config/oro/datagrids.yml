@@ -361,3 +361,46 @@ datagrids:
             productName:
                 type: localized_value
                 data_name: p.names
+
+    marello-inventory-batches:
+        extended_entity_name: Marello\Bundle\InventoryBundle\Entity\InventoryBatch
+        source:
+            type: orm
+            query:
+                select:
+                    - ib
+                from:
+                    - { table: MarelloInventoryBundle:InventoryBatch, alias: ib }
+                where:
+                    and:
+                        - IDENTITY(ib.inventoryLevel) = :inventoryLevelId
+            bind_parameters:
+                inventoryLevelId: inventoryLevelId
+        columns:
+            batchNumber:
+                label:              marello.inventory.inventorybatch.batch_number.label
+                frontend_type:      string
+                data_name:          batchNumber
+            quantity:
+                label:              marello.inventory.inventorybatch.quantity.label
+                frontend_type:      integer
+                data_name:          quantity
+            receivedDate:
+                label:              marello.inventory.inventorybatch.date_received.label
+                frontend_type:      datetime
+                data_name:          deliveryDate
+            expirationDate:
+                label:              marello.inventory.inventorybatch.expiration_date.label
+                frontend_type:      datetime
+                data_name:          expirationDate
+            purchasePrice:
+                label:              marello.inventory.inventorybatch.purchase_price.label
+                frontend_type:      currency
+                data_name:          purchasePrice
+        options:
+            export: false
+            mass_actions: ~
+            toolbarOptions:
+                hide: true
+                pagination:
+                    hide: true

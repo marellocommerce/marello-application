@@ -39,7 +39,7 @@ class InventoryLevelGridListener
                 $columns,
                 [
                     'manageBatches' => [
-                        'label' => 'marello.inventory.inventorylevel.form.manage_batches.label',
+                        'label' => 'marello.inventory.inventorylevel.grid.batches.label',
                         'type' => 'twig',
                         'frontend_type' => 'html',
                         'template' => 'MarelloInventoryBundle:Inventory/Datagrid:manageBatches.html.twig',

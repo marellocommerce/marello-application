@@ -110,6 +110,8 @@ marello:
 
             grid:
                 warehouse_code.label:       Warehouse Code
+                batches.label:              Batches
+                view_batches.label:         View Batches
 
             form:
                 manage_batches.label:       Manage Batches
@@ -123,7 +125,7 @@ marello:
             batch_reference.label:          Batch Reference
             purchase_reference.label:       Purchase Reference
             quantity.label:                 Quantity
-            delivery_date.label:            Delivery Date
+            date_received.label:            Date Received
             expiration_date.label:          Expiration Date
             purchase_price.label:           Purchase Price
             total_price.label:              Total Price
