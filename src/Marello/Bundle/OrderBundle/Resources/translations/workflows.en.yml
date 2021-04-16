@@ -23,7 +23,7 @@ oro:
                 invoice:
                     label:  'Invoiced'
                 paid:
-                    label:  'Order Payed'
+                    label:  'Order Paid'
                 credit:
                     label:  'Closed'
                 pick_and_pack:
@@ -79,7 +79,7 @@ oro:
                 invoice:
                     label:  'Complete'
                 paid:
-                    label:  'Order Payed'
+                    label:  'Order Paid'
                 credit:
                     label:  'Closed'
                 pick_and_pack:
@@ -141,7 +141,7 @@ oro:
                 invoice:
                     label:  'Invoiced'
                 paid:
-                    label:  'Order Payed'
+                    label:  'Order Paid'
                 credit:
                     label:  'Closed'
                 pick_and_pack:
