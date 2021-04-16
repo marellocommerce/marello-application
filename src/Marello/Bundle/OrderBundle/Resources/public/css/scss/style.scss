@@ -29,46 +29,26 @@
     width: 315px;
 }
 
-.order-line-item-quantity {
+.order-line-item-tax-code,
+.order-line-item-product-unit {
     width: 243px;
 
     input[type="text"] {
         width:80px;
-        text-align:right;
+        text-align:left;
         float: left;
     }
 }
 
-.order-line-item-price {
-    line-height: 2.3;
-    width: 243px;
-
-    input[type="text"] {
-        width:80px;
-        text-align:right;
-        padding-left: 17px;
-        float: left;
-    }
-}
-
-.order-line-item-tax {
-    width: 243px;
-
-    input[type="text"] {
-        width:80px;
-        text-align:right;
-        padding-left: 17px;
-        float: left;
-    }
-}
-
+.order-line-item-tax,
+.order-line-item-price,
+.order-line-item-quantity,
 .order-line-item-total-price {
     width: 243px;
 
     input[type="text"] {
         width:80px;
         text-align:right;
-        padding-left: 17px;
         float: left;
     }
 }
