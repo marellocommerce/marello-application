@@ -47,7 +47,7 @@ class OrderItemType extends AbstractType
             ->add('product', ProductSalesChannelAwareSelectType::class, [
                 'required'       => true,
                 'label'          => 'marello.product.entity_label',
-                'create_enabled' => false,
+                'create_enabled' => false
             ])
             ->add('quantity', NumberType::class, [
                 'data' => 1,

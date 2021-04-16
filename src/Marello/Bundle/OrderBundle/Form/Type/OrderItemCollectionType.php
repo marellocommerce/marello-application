@@ -26,12 +26,12 @@ class OrderItemCollectionType extends AbstractType
     {
         $resolver->setDefaults([
             'entry_type'           => OrderItemType::class,
-            //'show_form_when_empty' => false,
-            //'error_bubbling'       => false,
-            //'constraints'          => [new Valid()],
-            //'prototype_name'       => '__nameorderitem__',
-            //'prototype'            => true,
-            //'handle_primary'       => false,
+            'show_form_when_empty' => false,
+            'error_bubbling'       => true,
+            'constraints'          => [new Valid()],
+            'prototype_name'       => '__nameorderitem__',
+            'prototype'            => true,
+            'handle_primary'       => false,
         ]);
     }
 
