@@ -50,36 +50,42 @@ class OrderItemType extends AbstractType
                 'create_enabled' => false
             ])
             ->add('quantity', NumberType::class, [
-                'data' => 1,
-            ])->add('availableInventory', NumberType::class, [
+                'data' => 1
+            ])
+            ->add('availableInventory', NumberType::class, [
                 'mapped' => false,
                 'attr' => [
-                    'readonly' => true,
+                    'readonly' => true
+                ]
+            ])
+            ->add('productUnit', TextType::class, [
+                'attr' => [
+                    'readonly' => true
                 ]
             ])
             ->add('price', TextType::class, [
                 'attr' => [
-                        'readonly' => true,
+                        'readonly' => true
                     ]
             ])
             ->add('tax', TextType::class, [
                 'attr' => [
-                    'readonly' => true,
+                    'readonly' => true
                 ]
             ])
             ->add('taxCode', TextType::class, [
                 'attr' => [
-                    'readonly' => true,
+                    'readonly' => true
                 ]
             ])
             ->add('rowTotalExclTax', TextType::class, [
                 'attr' => [
-                    'readonly' => true,
+                    'readonly' => true
                 ]
             ])
             ->add('rowTotalInclTax', TextType::class, [
                 'attr' => [
-                    'readonly' => true,
+                    'readonly' => true
                 ]
             ])
         ;
