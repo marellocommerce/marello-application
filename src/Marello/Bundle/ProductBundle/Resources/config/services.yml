@@ -108,6 +108,14 @@ services:
         tags:
             - { name: marello_order.order_item_data_provider, type: tax_code, priority: 20 }
 
+    marello_product.provider.order_item_product_unit_provider:
+        class: Marello\Bundle\ProductBundle\Provider\OrderItemProductUnitProvider
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: marello_order.order_item_data_provider, type: product_unit, priority: 25 }
+
+
     marello_product.repository.product:
         class: 'Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository'
         parent: oro_entity.abstract_repository

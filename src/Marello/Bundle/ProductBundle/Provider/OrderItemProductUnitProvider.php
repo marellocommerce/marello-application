@@ -2,26 +2,28 @@
 
 namespace Marello\Bundle\ProductBundle\Provider;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
-use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\OrderBundle\Provider\OrderItem\AbstractOrderItemFormChangesProvider;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 
-class ProductTaxCodeProvider extends AbstractOrderItemFormChangesProvider
+use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
+use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
+use Marello\Bundle\OrderBundle\Provider\OrderItem\AbstractOrderItemFormChangesProvider;
+
+class OrderItemProductUnitProvider extends AbstractOrderItemFormChangesProvider
 {
     /**
-     * @var ManagerRegistry $registry
+     * @var DoctrineHelper
      */
-    protected $registry;
+    protected $doctrineHelper;
 
     /**
-     * @param ManagerRegistry $registry
+     * @param DoctrineHelper $doctrineHelper
      */
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(DoctrineHelper $doctrineHelper)
     {
-        $this->registry = $registry;
+        $this->doctrineHelper = $doctrineHelper;
     }
 
     /**
@@ -43,19 +45,19 @@ class ProductTaxCodeProvider extends AbstractOrderItemFormChangesProvider
         $data = [];
         /** @var Product[] $products */
         $products = $this->getRepository()->findBySalesChannel($salesChannel->getId(), $productIds);
-
         foreach ($products as $product) {
-            $taxCode = $product->getSalesChannelTaxCode($salesChannel) ? : $product->getTaxCode();
-            if ($taxCode) {
+            /** @var InventoryItem $inventoryItem */
+            $inventoryItem = $product->getInventoryItems()->first();
+            $unit = $inventoryItem->getProductUnit();
+            if ($unit) {
                 $data[sprintf('%s%s', self::IDENTIFIER_PREFIX, $product->getId())] = [
-                    'id' => $taxCode->getId(),
-                    'code' => $taxCode->getCode()
+                    'unit' => $unit->getName()
                 ];
             }
         }
         if (!empty($data)) {
             $result = $context->getResult();
-            $result[self::ITEMS_FIELD]['tax_code'] = $data;
+            $result[self::ITEMS_FIELD]['product_unit'] = $data;
             $context->setResult($result);
         }
     }
@@ -65,6 +67,6 @@ class ProductTaxCodeProvider extends AbstractOrderItemFormChangesProvider
      */
     protected function getRepository()
     {
-        return $this->registry->getManagerForClass(Product::class)->getRepository(Product::class);
+        return $this->doctrineHelper->getEntityRepositoryForClass(Product::class);
     }
 }

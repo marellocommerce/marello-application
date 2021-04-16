@@ -17,6 +17,12 @@
         </div>
         {{ form_errors(form.availableInventory) }}
     </td>
+    <td class="order-line-item-product-unit">
+        <div class="fields-row">
+            {{ form_widget(form.productUnit) }}
+        </div>
+        {{ form_errors(form.productUnit) }}
+    </td>
     <td class="order-line-item-price">
         <div class="fields-row">
             {{ form_widget(form.price) }}
@@ -29,7 +35,7 @@
         </div>
         {{ form_errors(form.tax) }}
     </td>
-    <td class="order-line-item-tax order-line-item-tax-code">
+    <td class="order-line-item-tax-code">
         <div class="fields-row">
             {{ form_widget(form.taxCode) }}
         </div>
@@ -109,6 +115,7 @@
                             <th class="order-line-item-product"><span>{{ 'marello.product.entity_label'|trans }}</span></th>
                             <th class="order-line-item-quantity"><span>{{ 'marello.order.orderitem.quantity.label'|trans }}</span></th>
                             <th class="order-line-item-available-inventory"><span>{{ 'marello.order.orderitem.inventory.label'|trans }}</span></th>
+                            <th class="order-line-item-product-unit"><span>{{ 'marello.order.orderitem.product_unit.label'|trans }}</span></th>
                             <th class="order-line-item-price"><span>{{ marello_pricing_vat_aware_label('marello.order.orderitem.price.per_unit.label'|trans) }}</span></th>
                             <th class="order-line-item-tax"><span>{{ 'marello.order.orderitem.tax.label'|trans }}</span></th>
                             <th class="order-line-item-tax-code"><span>{{ 'marello.order.orderitem.tax_code.label'|trans }}</span></th>
