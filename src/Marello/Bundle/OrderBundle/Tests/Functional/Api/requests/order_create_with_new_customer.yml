@@ -19,7 +19,7 @@ data:
               data:
                   -
                       type: marelloorderitems
-                      id: '<toString(@marello_order_0->items->first()->id)>'
+                      id: '8da4d8e7-6b25-4c5c-8075-nh3fpu9sca3htc3v'
           customer:
               data:
                    type: marellocustomers
@@ -36,3 +36,26 @@ included:
             firstName: 'test'
             lastName: 'user'
             email: 'new_customer@example.com'
+    -
+        type: marelloorderitems
+        id: '8da4d8e7-6b25-4c5c-8075-nh3fpu9sca3htc3v'
+        attributes:
+            quantity: 10
+            productName: '<toString(@product1->name)>'
+            price: 0
+            originalPriceInclTax: 0
+            originalPriceExclTax: 0
+            purchasePriceIncl: 0
+            tax: 0
+            taxPercent: 0.21
+            rowTotalInclTax: 180.00
+            rowTotalExclTax: 180.00
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: '<toString(@product1->sku)>'
+            taxCode:
+                data:
+                    type: marellotaxcodes
+                    id: 'TAX_HIGH'

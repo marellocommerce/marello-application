@@ -130,6 +130,7 @@ marello:
             purchase_price.label:           Purchase Price
             total_price.label:              Total Price
             organization.label:             Organization
+            delivery_date.label:            Delivery Date
 
         inventorylevellogrecord:
             id.label:                       Id

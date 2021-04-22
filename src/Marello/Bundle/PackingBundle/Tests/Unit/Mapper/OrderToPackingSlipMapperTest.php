@@ -122,19 +122,19 @@ class OrderToPackingSlipMapperTest extends TestCase
                 'product' => $product1,
                 'inventoryBatches' => ['000001' => 5],
                 'quantity' => $orderItem1->getQuantity(),
-                'weight' => $product1->getWeight()
+                'weight' => ($orderItem1->getQuantity() * $product1->getWeight())
             ]),
             $this->getEntity(PackingSlipItem::class, [
                 'orderItem' => $orderItem2,
                 'product' => $product2,
                 'quantity' => $orderItem2->getQuantity(),
-                'weight' => $product2->getWeight()
+                'weight' => ($orderItem2->getQuantity() * $product2->getWeight())
             ]),
             $this->getEntity(PackingSlipItem::class, [
                 'orderItem' => $orderItem3,
                 'product' => $product3,
                 'quantity' => $orderItem3->getQuantity(),
-                'weight' => $product3->getWeight()
+                'weight' => ($orderItem3->getQuantity() * $product3->getWeight())
             ]),
         ];
 
