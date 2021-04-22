@@ -81,10 +81,9 @@ class ReturnController extends AbstractController
             }
 
             return [
-                'form' => $form->createView(),
+                'form' => $form->createView()
             ];
         } else {
-
             throw new AccessDeniedException(
                 $this->get('translator')->trans(
                     'marello.return.returnentity.messages.error.return.cannot_be_returned_without_shipment'

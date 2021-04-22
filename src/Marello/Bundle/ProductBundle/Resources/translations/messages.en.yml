@@ -28,6 +28,8 @@ marello:
         categories.label:           Categories
         suppliers.label:            Suppliers
         attribute_family.label:     Attribute Family
+        channels_codes.label:       Channel codes
+        categories_codes.label:     Category codes
         variant:
             label:                    Variant
             entity_label:             Variant
