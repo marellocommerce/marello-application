@@ -52,3 +52,4 @@ parameters:
     enterprise_licence:     ~
     message_queue_transport: 'null'
     message_queue_transport_config: {}
+    deployment_type: ~
