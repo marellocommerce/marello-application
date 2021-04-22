@@ -7,7 +7,6 @@ use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
 use Marello\Bundle\PurchaseOrderBundle\Validator\Constraints\PurchaseOrderConstraint;
 use Marello\Bundle\SupplierBundle\Form\Type\SupplierSelectType;
 use Oro\Bundle\CurrencyBundle\Utils\CurrencyNameHelper;
-use Oro\Bundle\FormBundle\Form\Type\MultipleEntityType;
 use Oro\Bundle\FormBundle\Form\Type\OroDateType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -63,11 +62,14 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
                 [
                     'required' => false,
                     'label' => 'marello.purchaseorder.expected_delivery_date.label',
-                    'constraints' => [ new GreaterThan(
-                        [
-                            'value' => 'today',
-                            'message' => 'marello.purchaseorder.expected_delivery_date.messages.error.greater_than_date'
-                        ])
+                    'constraints' => [
+                        new GreaterThan(
+                            [
+                                'value' => 'today',
+                                'message'
+                                    => 'marello.purchaseorder.expected_delivery_date.messages.error.greater_than_date'
+                            ]
+                        )
                     ]
                 ]
             )

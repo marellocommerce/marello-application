@@ -100,6 +100,9 @@ datagrids:
         actions: ~
 
     marello-supplier-products-grid:
+        extended_entity_name: Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation
+        inline_editing:
+            enable: true
         source:
             type: orm
             query:
@@ -133,10 +136,14 @@ datagrids:
                 data_name:        quantityOfUnit
                 label:            marello.supplier.quantity_of_unit.label
                 frontend_type:    string
+                inline_editing:
+                    enable: false
             cost:
                 data_name:        cost
                 label:            marello.supplier.cost.label
                 frontend_type:    currency
+                inline_editing:
+                    enable: true
         sorters:
             columns:
                 sku:

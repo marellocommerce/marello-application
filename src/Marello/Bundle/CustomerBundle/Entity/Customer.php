@@ -93,20 +93,6 @@ class Customer extends ExtendCustomer implements
     protected $shippingAddress;
 
     /**
-     * @ORM\Column(name="tax_identification_number", type="string", nullable=true)
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "dataaudit"={
-     *              "auditable"=true
-     *          }
-     *      }
-     * )
-     *
-     * @var string
-     */
-    protected $taxIdentificationNumber;
-
-    /**
      * @ORM\OneToMany(
      *     targetEntity="Marello\Bundle\AddressBundle\Entity\MarelloAddress",
      *     mappedBy="customer",
@@ -264,26 +250,6 @@ class Customer extends ExtendCustomer implements
     public function getShippingAddress()
     {
         return $this->shippingAddress;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTaxIdentificationNumber()
-    {
-        return $this->taxIdentificationNumber;
-    }
-
-    /**
-     * @param string $taxIdentificationNumber
-     *
-     * @return $this
-     */
-    public function setTaxIdentificationNumber($taxIdentificationNumber)
-    {
-        $this->taxIdentificationNumber = $taxIdentificationNumber;
-
-        return $this;
     }
 
     /**

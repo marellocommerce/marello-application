@@ -26,6 +26,7 @@ marello:
         billing_and_shipping.label:                     Billing & Delivery Info
         shipping_address.label:                         Shipping Address
         data.label:                                     Data
+        due_date.label:                                 Due Date
         ui:
             continue:                                   Continue
             sections:

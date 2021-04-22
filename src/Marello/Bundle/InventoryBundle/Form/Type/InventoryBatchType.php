@@ -77,6 +77,13 @@ class InventoryBatchType extends AbstractType
                 ]
             )
             ->add(
+                'deliveryDate',
+                OroDateType::class,
+                [
+                    'required' => false
+                ]
+            )
+            ->add(
                 'purchasePrice',
                 NumberType::class,
                 [

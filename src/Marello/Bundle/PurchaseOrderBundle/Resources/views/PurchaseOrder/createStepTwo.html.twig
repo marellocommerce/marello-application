@@ -3,7 +3,12 @@
 
 {% oro_title_set({params : {"%sku%": entity.sku|default('N/A'|trans) , "%name%": (entity.id ? entity.defaultName.string : '')|default('N/A'|trans) } }) %}
 
-{% set formAction = path('marello_purchaseorder_purchaseorder_create_step_two') %}
+{% if queryParams is defined %}
+    {% set formAction = path('marello_purchaseorder_purchaseorder_create_step_two', queryParams) %}
+{% else %}
+    {% set formAction = path('marello_purchaseorder_purchaseorder_create_step_two') %}
+{% endif %}
+
 
 {% block navButtons %}
     {{ parent() }}
@@ -57,7 +62,7 @@
         </div>
     {% endset %}
 
-    {% set dataBlocks = [
+    {% set dataBlocks = {
         'general': {
             'title': 'marello.core.ui.sections.general'|trans,
             'class': 'active',
@@ -107,7 +112,7 @@
                 ]
             }]
         },
-    ] %}
+    } %}
     {% set data = {
         'formErrors': form_errors(form)? form_errors(form) : null,
         'dataBlocks': dataBlocks,

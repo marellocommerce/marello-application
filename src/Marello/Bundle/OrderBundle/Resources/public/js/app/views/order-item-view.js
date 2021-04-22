@@ -92,6 +92,7 @@ define(function(require) {
 
             this.fieldsByName.price.val($priceValue);
             this.fieldsByName.taxCode.val(this.getTaxCode());
+            this.fieldsByName.productUnit.val(this.getProductUnit());
 
             this.setRowTotals();
             this.setAvailableInventory();
@@ -127,6 +128,13 @@ define(function(require) {
         /**
          * @returns {Array|Null}
          */
+        getProductUnit: function() {
+            return !_.isEmpty(this.data['product_unit']) ? this.data['product_unit'].unit : null;
+        },
+
+        /**
+         * @returns {Array|Null}
+         */
         getProductInventory: function() {
             return !_.isEmpty(this.data['inventory']) ? this.data['inventory'].value : null;
         },
@@ -152,7 +160,7 @@ define(function(require) {
 
         setAvailableInventory: function() {
             if (this.getProductInventory() === null) {
-                return
+                return;
             }
 
             this.fieldsByName.availableInventory.val(this.getProductInventory());

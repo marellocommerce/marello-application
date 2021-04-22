@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityRepository;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class ProductRepository extends EntityRepository
@@ -133,16 +134,23 @@ class ProductRepository extends EntityRepository
     }
 
     /**
-     * @param string $sku
-     *
-     * @return null|Product
+     * @param $sku
+     * @param Organization|null $organization
+     * @return int|mixed|string|null
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findOneBySku($sku)
+    public function findOneBySku($sku, Organization $organization = null)
     {
         $queryBuilder = $this->createQueryBuilder('product');
 
         $queryBuilder->andWhere('UPPER(product.sku) = :sku')
             ->setParameter('sku', strtoupper($sku));
+
+        if ($organization) {
+            $queryBuilder
+                ->andWhere('product.organization = :organization')
+                ->setParameter('organization', $organization);
+        }
 
         return $this->aclHelper->apply($queryBuilder->getQuery())->getOneOrNullResult();
     }
@@ -200,8 +208,8 @@ class ProductRepository extends EntityRepository
             ->select(
                 'sup.name AS supplier,
                 p.sku,
-                (i.desiredInventory - COALESCE(SUM(l.inventory - l.allocatedInventory), 0)) AS orderAmount,
-                i.purchaseInventory'
+                SUM(i.desiredInventory - COALESCE((l.inventory - l.allocatedInventory), 0)) AS orderAmount,
+                SUM(i.purchaseInventory) AS purchaseInventory'
             )
             ->innerJoin('p.preferredSupplier', 'sup')
             ->innerJoin('p.status', 's')
@@ -210,7 +218,7 @@ class ProductRepository extends EntityRepository
             ->where("sup.name <> ''")
             ->andWhere("s.name = 'enabled'")
             ->andWhere("i.replenishment = 'never_out_of_stock'")
-            ->groupBy('p.sku, sup.name, i.desiredInventory, i.purchaseInventory')
+            ->groupBy('sup.name, p.sku, i.desiredInventory, i.purchaseInventory')
             ->having('SUM(l.inventory - l.allocatedInventory) < i.purchaseInventory');
 
         return $this->aclHelper->apply($qb->getQuery())->getResult();

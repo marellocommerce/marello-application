@@ -35,6 +35,10 @@ class SalesExtensionTest extends TestCase
                 new TwigFunction(
                     'marello_sales_has_active_channels',
                     [$this->extension, 'checkActiveChannels']
+                ),
+                new TwigFunction(
+                    'marello_get_sales_channel_name_by_code',
+                    [$this->extension, 'getChannelNameByCode']
                 )
             ],
             $this->extension->getFunctions()
@@ -78,6 +82,43 @@ class SalesExtensionTest extends TestCase
             'without active channels' => [
                 'expectedChannels' => [],
                 'expectedResult' => false,
+            ],
+        ];
+    }
+
+    /**
+     * @param $expectedChannel
+     * @param $code
+     * @param $expectedResult
+     * @dataProvider getChannelNameByCodeDataProvider
+     */
+    public function testGetChannelNameByCode($expectedChannel, $code, $expectedResult)
+    {
+        $this->salesChannelRepository
+            ->expects(static::once())
+            ->method('findOneBy')
+            ->willReturn($expectedChannel);
+
+        static::assertEquals($expectedResult, $this->extension->getChannelNameByCode($code));
+    }
+
+    /**
+     * @return array[]
+     */
+    public function getChannelNameByCodeDataProvider()
+    {
+        $channel = new SalesChannel('channel1');
+        $channel->setCode('test');
+        return [
+            'with active channels' => [
+                'expectedChannel' => $channel,
+                'code' => 'test',
+                'expectedResult' => 'channel1',
+            ],
+            'without active channels' => [
+                'expectedChannel' => null,
+                'code' => 'MySalesChannelCode',
+                'expectedResult' => 'MySalesChannelCode'
             ],
         ];
     }

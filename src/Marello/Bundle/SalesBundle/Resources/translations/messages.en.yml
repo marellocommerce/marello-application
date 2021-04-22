@@ -19,6 +19,7 @@ marello:
             channel_type.label:                 Type
             owner.label:                        Owner
             localization.label:                 Localization
+            products.label:                     Products
             controller.message.saved:           Sales Channel saved
             form.select_saleschannels:          Select Sales Channels
             form.select_saleschannel:           Select Sales Channel
@@ -41,6 +42,7 @@ marello:
 
             datablock:
                 general: General
+                additional: Additional
 
         saleschannelgroup:
             entity_label: Sales Channel Group

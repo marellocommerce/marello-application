@@ -3,6 +3,9 @@
 namespace Marello\Bundle\CatalogBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Marello\Bundle\CatalogBundle\Entity\Category;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class CategoryRepository extends EntityRepository
@@ -32,5 +35,18 @@ class CategoryRepository extends EntityRepository
             ->setParameter('categories', $relatedCategoriesIds);
 
         return $this->aclHelper->apply($qb)->getArrayResult();
+    }
+
+    /**
+     * @param Product $product
+     * @return Category[]
+     */
+    public function findByProduct(Product $product)
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->where(':product MEMBER OF c.products')
+            ->setParameters(['product' => $product]);
+
+        return $qb->getQuery()->getResult();
     }
 }
