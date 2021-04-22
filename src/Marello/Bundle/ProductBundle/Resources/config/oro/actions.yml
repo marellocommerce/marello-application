@@ -55,7 +55,7 @@ operations:
                 method_parameters: [$.data]
                 attribute: $.inventoryitem
             - '@redirect':
-                route: marello_inventory_inventory_update
+                route: marello_inventory_inventory_view
                 route_parameters:
                     id: $.inventoryitem.id
 action_groups:

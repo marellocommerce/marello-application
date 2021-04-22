@@ -39,6 +39,7 @@ services:
             - '@marello_catalog.provider.categories_ids'
         calls:
             - ['setOroEntityDoctrineHelper', ['@oro_entity.doctrine_helper']]
+            - ['setTokenAccessor', ['@oro_security.token_accessor']]
         tags:
             - { name: twig.extension }
 
@@ -106,6 +107,14 @@ services:
             - '@doctrine'
         tags:
             - { name: marello_order.order_item_data_provider, type: tax_code, priority: 20 }
+
+    marello_product.provider.order_item_product_unit_provider:
+        class: Marello\Bundle\ProductBundle\Provider\OrderItemProductUnitProvider
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: marello_order.order_item_data_provider, type: product_unit, priority: 25 }
+
 
     marello_product.repository.product:
         class: 'Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository'
@@ -215,6 +224,13 @@ services:
         lazy:  true
         tags:
             - { name: doctrine.event_listener, event: onFlush }
+
+    marello_product.entity.builder.product_family:
+        class: Marello\Bundle\ProductBundle\Entity\Builder\ProductFamilyBuilder
+        arguments:
+            - '@translator'
+            - '@oro_entity_config.manager.attribute_group_manager'
+        public: true
 
     marello_product.provider.action_group_registry:
         public: true

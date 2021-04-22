@@ -32,6 +32,10 @@ class SalesExtension extends AbstractExtension
             new TwigFunction(
                 'marello_sales_has_active_channels',
                 [$this, 'checkActiveChannels']
+            ),
+            new TwigFunction(
+                'marello_get_sales_channel_name_by_code',
+                [$this, 'getChannelNameByCode']
             )
         ];
     }
@@ -46,6 +50,21 @@ class SalesExtension extends AbstractExtension
         }
         
         return false;
+    }
+
+    /**
+     * @param string $code
+     * @return string
+     */
+    public function getChannelNameByCode($code)
+    {
+        $channel = $this->salesChannelRepository
+            ->findOneBy(['code' => $code]);
+        if ($channel) {
+            return $channel->getName();
+        }
+
+        return $code;
     }
 
     /**

@@ -96,7 +96,7 @@ class TaxCodeDatagridListener
     {
         $config->getOrmQuery()->addSelect(
             sprintf('%s.code AS %s', $this->getJoinAlias(), $this->getDataName())
-        );
+        )->addGroupBy(sprintf('%s.code', $this->getJoinAlias()));
     }
 
     /**

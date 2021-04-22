@@ -17,7 +17,7 @@ class MarelloNotificationBundleInstaller implements Installation
      */
     public function getMigrationVersion()
     {
-        return 'v1_1';
+        return 'v1_2';
     }
 
     /**
@@ -103,7 +103,7 @@ class MarelloNotificationBundleInstaller implements Installation
             ['id']
         );
         $table->addForeignKeyConstraint(
-            $schema->getTable('oro_attachment_file'),
+            $schema->getTable('oro_attachment'),
             ['attachment_id'],
             ['id']
         );

@@ -9,8 +9,8 @@
     {% if entity.id and is_granted('marello_inventory_inventory_update') %}
         {% set html = '' %}
         {% set html = UI.saveAndCloseButton({
-        'route': 'marello_inventory_inventory_update',
-        'params': {'id': entity.inventoryItem.id}
+        'route': 'marello_inventory_inventorylevel_batches_view',
+        'params': {'id': entity.id}
         }) %}
         {% set html = html ~ UI.saveAndStayButton({
         'route': 'marello_inventory_inventorylevel_manage_batches',
@@ -26,10 +26,10 @@
         'entity':      form.vars.value,
         'indexPath':   path('marello_inventory_inventory_index'),
         'indexLabel': 'marello.inventory.label'|trans,
-        'entityTitle': 'marello.inventory.inventorybatch.entity_plural_label'|trans ~ ' - ' ~ entity.inventoryItem.product.sku,
+        'entityTitle': 'marello.inventory.inventorybatch.entity_plural_label'|trans,
         'additional': [{
             'indexPath':   path('marello_inventory_inventory_update', {'id': entity.inventoryItem.id}),
-            'indexLabel':  'marello.inventory.inventorylevel.entity_plural_label'|trans,
+            'indexLabel':  entity.inventoryItem.product.sku
         }]
     } %}
     {{ parent() }}
@@ -55,15 +55,6 @@
     {% endset %}
     {% set generalSubblocks = generalSubblocks|merge([{'data' : [productInformationWidget] }]) %}
 
-    {% set totalsWidget %}
-        <div class="responsive-block">
-            <div class="box-type1">
-                {% placeholder marello_inventory_levels_totals with {'entity' : entity.inventoryItem} %}
-            </div>
-        </div>
-    {% endset %}
-    {% set generalSubblocks = generalSubblocks|merge([{'data' : [totalsWidget] }]) %}
-
     {% set inventoryLevelInformationWidget %}
         <div class="responsive-block">
             <div class="box-type1">
@@ -72,6 +63,7 @@
                 </div>
                 {{ UI.renderProperty('marello.inventory.inventorylevel.warehouse.label'|trans, entity.warehouse.label) }}
                 {{ UI.renderProperty('marello.inventory.inventorylevel.pick_location.label'|trans, entity.picklocation) }}
+                {{ UI.renderProperty('marello.inventory.inventorylevel.inventory.label'|trans, entity.inventoryQty) }}
             </div>
         </div>
     {% endset %}

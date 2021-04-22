@@ -204,6 +204,20 @@ class Company extends ExtendCompany implements OrganizationAwareInterface
     protected $customers;
 
     /**
+     * @ORM\Column(name="tax_identification_number", type="string", nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var string
+     */
+    protected $taxIdentificationNumber;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -450,5 +464,25 @@ class Company extends ExtendCompany implements OrganizationAwareInterface
     protected function hasCustomer(Customer $customer)
     {
         return $this->customers->contains($customer);
+    }
+
+    /**
+     * @return string
+     */
+    public function getTaxIdentificationNumber()
+    {
+        return $this->taxIdentificationNumber;
+    }
+
+    /**
+     * @param string $taxIdentificationNumber
+     *
+     * @return $this
+     */
+    public function setTaxIdentificationNumber($taxIdentificationNumber)
+    {
+        $this->taxIdentificationNumber = $taxIdentificationNumber;
+
+        return $this;
     }
 }

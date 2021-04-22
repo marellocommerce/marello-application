@@ -1,0 +1,9 @@
+services:
+  marello_filter.choice_like_filter:
+    class: Marello\Bundle\FilterBundle\Filter\ChoiceLikeFilter
+    public: false
+    arguments:
+      - '@form.factory'
+      - '@oro_filter.filter_utility'
+    tags:
+      - { name: oro_filter.extension.orm_filter.filter, type: choice_like }

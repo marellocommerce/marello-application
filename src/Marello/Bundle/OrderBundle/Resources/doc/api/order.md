@@ -44,8 +44,6 @@ Example without address:
         "grandTotal": "60.5000",
         "currency": "EUR",
         "paymentMethod": null,
-        "paymentReference": null,
-        "paymentDetails": null,
         "shippingAmountInclTax": "10.0000",
         "shippingAmountExclTax": "10.0000",
         "shippingMethod": null,

@@ -55,6 +55,13 @@ system_configuration:
                 fileConstraints:
                     - Image: ~
 
+        marello_pdf.logo_width:
+            data_type: number
+            type: 'Symfony\Component\Form\Extension\Core\Type\NumberType'
+            options:
+                label: marello.pdf.config.fields.logo_width.label
+                tooltip: marello.pdf.config.fields.logo_width.tooltip
+
         marello_pdf.company_address:
             data_type: string
             type: 'Symfony\Component\Form\Extension\Core\Type\TextareaType'
@@ -98,7 +105,7 @@ system_configuration:
             options:
                 label: marello.pdf.config.fields.email_workflow_transition.label
                 tooltip: marello.pdf.config.fields.email_workflow_transition.tooltip
-                workflow: marello_order_b2c_workflow_1
+                workflow: marello_order_b2c_new_workflow_1
                 required: false
                 placeholder: marello.pdf.config.fields.email_workflow_transition.placeholder
 
@@ -144,6 +151,7 @@ system_configuration:
                                         children:
                                             - marello_pdf.localization
                                             - marello_pdf.logo
+                                            - marello_pdf.logo_width
                                             - marello_pdf.company_address
                                             - marello_pdf.company_email
                                             - marello_pdf.company_phone

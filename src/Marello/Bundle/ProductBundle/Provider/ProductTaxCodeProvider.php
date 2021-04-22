@@ -49,8 +49,7 @@ class ProductTaxCodeProvider extends AbstractOrderItemFormChangesProvider
             if ($taxCode) {
                 $data[sprintf('%s%s', self::IDENTIFIER_PREFIX, $product->getId())] = [
                     'id' => $taxCode->getId(),
-                    'code' => $taxCode->getCode(),
-
+                    'code' => $taxCode->getCode()
                 ];
             }
         }

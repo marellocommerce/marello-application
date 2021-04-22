@@ -29,10 +29,12 @@ class MarelloInvoiceBundleInstaller implements Installation
         /** Tables generation **/
         $this->createMarelloInvoiceInvoiceTable($schema);
         $this->createMarelloInvoiceInvoiceItemTable($schema);
+        $this->createMarelloInvoicePaymentsTable($schema);
 
         /** Foreign keys generation **/
         $this->addMarelloInvoiceInvoiceForeignKeys($schema);
         $this->addMarelloInvoiceInvoiceItemForeignKeys($schema);
+        $this->addMarelloInvoicePaymentsForeignKeys($schema);
     }
 
     /**
@@ -51,8 +53,6 @@ class MarelloInvoiceBundleInstaller implements Installation
         $table->addColumn('invoiced_at', 'datetime', ['notnull' => false]);
         $table->addColumn('invoice_due_date', 'datetime', ['notnull' => false]);
         $table->addColumn('payment_method', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('payment_reference', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('payment_details', 'text', ['notnull' => false]);
         $table->addColumn('shipping_method', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('shipping_method_type', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('order_id', 'integer', ['notnull' => true]);
@@ -66,6 +66,8 @@ class MarelloInvoiceBundleInstaller implements Installation
         $table->addColumn('subtotal', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('total_tax', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('grand_total', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+        $table->addColumn('total_due', 'money', ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+        $table->addColumn('total_paid', 'money', ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn(
             'shipping_amount_incl_tax',
             'money',
@@ -139,7 +141,21 @@ class MarelloInvoiceBundleInstaller implements Installation
 
         $table->setPrimaryKey(['id']);
     }
-    
+
+    /**
+     * Create marello_invoice_invoice_item table
+     *
+     * @param Schema $schema
+     */
+    protected function createMarelloInvoicePaymentsTable(Schema $schema)
+    {
+        $table = $schema->createTable('marello_invoice_payments');
+        $table->addColumn('invoice_id', 'integer', ['notnull' => true]);
+        $table->addColumn('payment_id', 'integer', ['notnull' => true]);
+        $table->addUniqueIndex(['payment_id'], null);
+        $table->setPrimaryKey(['invoice_id', 'payment_id']);
+    }
+
     /**
      * Add marello_invoice_invoice foreign keys.
      *
@@ -217,6 +233,26 @@ class MarelloInvoiceBundleInstaller implements Installation
             ['organization_id'],
             ['id'],
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    protected function addMarelloInvoicePaymentsForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('marello_invoice_payments');
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_invoice_invoice'),
+            ['invoice_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_payment_payment'),
+            ['payment_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
     }
 }

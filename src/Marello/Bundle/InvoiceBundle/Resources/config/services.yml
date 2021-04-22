@@ -60,6 +60,10 @@ services:
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-invoices-base-grid, method: onBuildBefore }
 
+    marello_invoice.provider.invoice_paid_amount:
+        class: 'Marello\Bundle\InvoiceBundle\Provider\InvoicePaidAmountProvider'
+        public: true
+
     marello_invoice.provider.invoice_type_choices:
         class: 'Marello\Bundle\InvoiceBundle\Provider\InvoiceTypeChoicesProvider'
         public: true
@@ -123,3 +127,15 @@ services:
             - '@marello_invoice.pdf.provider.table_size'
         tags:
             - { name: marello_pdf.document_table_provider }
+
+    marello_invoice.form_type.invoice_select:
+        class: 'Marello\Bundle\InvoiceBundle\Form\Type\InvoiceSelectType'
+        tags:
+            - { name: form.type }
+
+    marello_invoice.twig.invoice_extension:
+        class: 'Marello\Bundle\InvoiceBundle\Twig\InvoiceExtension'
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: twig.extension }
