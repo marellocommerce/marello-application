@@ -25,3 +25,8 @@ Marello\Bundle\PaymentBundle\Entity\PaymentMethodConfig:
     properties:
         method:
             - NotBlank: ~
+
+Marello\Bundle\PaymentBundle\Entity\Payment:
+    constraints:
+        - Marello\Bundle\PaymentBundle\Validator\Constraints\PaymentStatus: ~
+        - Marello\Bundle\PaymentBundle\Validator\Constraints\TotalPaid: ~

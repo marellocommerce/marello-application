@@ -8,8 +8,6 @@ data:
           grandTotal: 101
           currency: 'USD'
           paymentMethod: 'payment_term_1'
-          paymentReference: null
-          paymentDetails: null
           shippingAmountInclTax: null
           shippingAmountExclTax: null
           shippingMethod: 'manual_shipping_1'

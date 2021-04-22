@@ -3,6 +3,7 @@
 namespace Marello\Bundle\OrderBundle\Twig;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
+use Marello\Bundle\InvoiceBundle\Entity\AbstractInvoice;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\OrderBundle\Migrations\Data\ORM\LoadOrderItemStatusData;
@@ -15,11 +16,20 @@ class OrderExtension extends AbstractExtension
 {
     const NAME = 'marello_order';
 
-    /** @var Registry $doctrine */
+    /**
+     * @var Registry
+     */
     private $doctrine;
 
-    /** @var ShippingPreparedOrderItemsForNotificationProvider $orderItemsForNotificationProvider*/
+    /**
+     * @var ShippingPreparedOrderItemsForNotificationProvider
+     */
     private $orderItemsForNotificationProvider;
+
+    /**
+     * @var array
+     */
+    private $orderInvoices;
 
     /**
      * Returns the name of the extension.
@@ -54,6 +64,14 @@ class OrderExtension extends AbstractExtension
             new TwigFunction(
                 'marello_get_order_items_for_notification',
                 [$this->orderItemsForNotificationProvider, 'getItems']
+            ),
+            new TwigFunction(
+                'marello_get_order_total_paid',
+                [$this, 'getOrderTotalPaid']
+            ),
+            new TwigFunction(
+                'marello_get_order_total_due',
+                [$this, 'getOrderTotalDue']
             )
         ];
     }
@@ -142,5 +160,44 @@ class OrderExtension extends AbstractExtension
         $this->orderItemsForNotificationProvider = $itemsForNotificationProvider;
 
         return $this;
+    }
+
+    /**
+     * @param Order $order
+     * @return AbstractInvoice[]
+     */
+    private function getOrderInvoices(Order $order)
+    {
+        if (!isset($this->orderInvoices[$order->getId()])) {
+            $this->orderInvoices[$order->getId()] = $this->doctrine
+                ->getManagerForClass(AbstractInvoice::class)
+                ->getRepository(AbstractInvoice::class)
+                ->findBy(['order' => $order]);
+        }
+
+        return $this->orderInvoices[$order->getId()];
+    }
+
+    /**
+     * @param Order $order
+     * @return float|int
+     */
+    public function getOrderTotalPaid(Order $order)
+    {
+        $orderInvoices = $this->getOrderInvoices($order);
+        $totalPaid = 0.0;
+        foreach ($orderInvoices as $invoice) {
+            $totalPaid += $invoice->getTotalPaid();
+        }
+
+        return $totalPaid;
+    }
+    /**
+     * @param Order $order
+     * @return float|int
+     */
+    public function getOrderTotalDue(Order $order)
+    {
+        return ($order->getGrandTotal() - $this->getOrderTotalPaid($order));
     }
 }

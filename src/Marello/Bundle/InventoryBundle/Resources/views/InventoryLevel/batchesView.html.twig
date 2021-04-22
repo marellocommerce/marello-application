@@ -1,0 +1,85 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% block navButtons %}
+    {{ UI.cancelButton(path('marello_inventory_inventory_view', { 'id': entity.inventoryItem.id }), 'Back'|trans) }}
+    {% if is_granted('EDIT', entity) %}
+        {{ UI.editButton({
+            'path' : path('marello_inventory_inventorylevel_manage_batches', { id: entity.id }),
+            'entity_label': 'marello.inventory.inventorybatch.entity_label'|trans
+        }) }}
+    {% endif %}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity':      form.vars.value,
+        'indexPath':   path('marello_inventory_inventory_index'),
+        'indexLabel': 'marello.inventory.label'|trans,
+        'entityTitle': 'marello.inventory.inventorybatch.entity_plural_label'|trans,
+        'additional': [{
+            'indexPath':   path('marello_inventory_inventory_view', {'id': entity.inventoryItem.id}),
+            'indexLabel':  entity.inventoryItem.product.sku
+        }]
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set id = 'marello-inventory-batches-view' %}
+    {% set generalSubblocks = [] %}
+
+    {% set productInformationWidget %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    <div class="box-type1">
+                        {{ oro_widget_render({
+                            'widgetType': 'block',
+                            'url': path('marello_inventory_widget_info', {id: entity.inventoryItem.id}),
+                            'title': 'marello.product.product_information'|trans
+                        }) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endset %}
+    {% set generalSubblocks = generalSubblocks|merge([{'data' : [productInformationWidget] }]) %}
+
+    {% set inventoryLevelInformationWidget %}
+        <div class="responsive-block">
+            <div class="box-type1">
+                <div class="title">
+                    <span class="widget-title">{{ 'marello.inventory.information.label'|trans }}</span>
+                </div>
+                {{ UI.renderProperty('marello.inventory.inventorylevel.warehouse.label'|trans, entity.warehouse.label) }}
+                {{ UI.renderProperty('marello.inventory.inventorylevel.pick_location.label'|trans, entity.picklocation) }}
+                {{ UI.renderProperty('marello.inventory.inventorylevel.inventory.label'|trans, entity.inventoryQty) }}
+            </div>
+        </div>
+    {% endset %}
+    {% set generalSubblocks = generalSubblocks|merge([{'data' : [inventoryLevelInformationWidget]}]) %}
+
+    {% set dataBlocks = [
+        {
+            'title': 'General Information'|trans,
+            'class': 'active',
+            'subblocks': generalSubblocks
+        }
+    ] %}
+
+    {% set dataBlocks = dataBlocks|merge([{
+            'title' : 'marello.inventory.inventorybatch.entity_plural_label'|trans,
+            'subblocks': [{
+                'title' : null,
+                'data' : [
+                    dataGrid.renderGrid('marello-inventory-batches', {'inventoryLevelId': entity.id})
+            ]
+            }]
+        }])
+    %}
+
+    {% set data = { 'dataBlocks': dataBlocks } %}
+    {{ parent() }}
+{% endblock content_data %}

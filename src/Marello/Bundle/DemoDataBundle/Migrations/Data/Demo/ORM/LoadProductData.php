@@ -5,8 +5,8 @@ namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Marello\Bundle\ProductBundle\Entity\Builder\ProductFamilyBuilder;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\ProductBundle\Migrations\Data\ORM\LoadDefaultAttributeFamilyData;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
 use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
@@ -127,7 +127,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         /** @var AttributeFamily $attributeFamily */
         $attributeFamily = $this->manager
             ->getRepository(AttributeFamily::class)
-            ->findOneByCode(LoadDefaultAttributeFamilyData::DEFAULT_FAMILY_CODE);
+            ->findOneByCode(ProductFamilyBuilder::DEFAULT_FAMILY_CODE);
         $product->setAttributeFamily($attributeFamily);
 
         return $product;

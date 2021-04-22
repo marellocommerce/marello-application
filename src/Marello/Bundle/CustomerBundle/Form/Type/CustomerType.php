@@ -42,9 +42,6 @@ class CustomerType extends AbstractType
             ->add('email', EmailType::class, [
                 'required'    => true
             ])
-            ->add('taxIdentificationNumber', TextType::class, [
-                'required' => false,
-            ])
             ->add('primaryAddress', AddressType::class, [
                 'required' => false,
             ])

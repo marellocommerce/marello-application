@@ -1,5 +1,6 @@
 datagrids:
     marello-order:
+        extended_entity_name: Marello\Bundle\OrderBundle\Entity\Order
         source:
             type: orm
             query:
@@ -176,6 +177,7 @@ datagrids:
         actions: ~
 
     marello-order-customer:
+        extended_entity_name: Marello\Bundle\OrderBundle\Entity\Order
         source:
             type: orm
             query:
@@ -295,6 +297,7 @@ datagrids:
 
     marello-order-items:
         source:
+            extended_entity_name: Marello\Bundle\OrderBundle\Entity\OrderItem
             type: orm
             query:
                 select:
@@ -468,7 +471,7 @@ datagrids:
                 from:
                     - { table: MarelloOrderBundle:OrderItem, alias: oi }
                 join:
-                    left:
+                    inner:
                         - { join: oi.order, alias: o }
         columns:
             productSku:

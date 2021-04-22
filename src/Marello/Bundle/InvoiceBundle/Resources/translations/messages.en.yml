@@ -13,9 +13,10 @@ marello:
             name.label:             Ship to Name
         invoiced_at.label:          Invoiced At
         invoice_due_date.label:     Invoice Due Date
+        payments.label:             Payments
+        total_due.label:            Total Due
+        total_paid.label:           Total Paid
         payment_method.label:       Payment Method
-        payment_reference.label:    Payment Reference
-        payment_details.label:      Payment Details
         payment_term.label:         Payment Term
         shipping_method.label:      Shipping Method
         shipping_method_type.label: Shipping Method Type
@@ -52,9 +53,10 @@ marello:
                 name.label:             Ship to Name
             invoiced_at.label:          Invoiced At
             invoice_due_date.label:     Invoice Due Date
+            payments.label:             Payments
+            total_due.label:            Total Due
+            total_paid.label:           Total Paid
             payment_method.label:       Payment Method
-            payment_reference.label:    Payment Reference
-            payment_details.label:      Payment Details
             shipping_method.label:      Shipping Method
             shipping_method_type.label: Shipping Method Type
             order.label:                Order
@@ -75,7 +77,7 @@ marello:
 
         datablock:
             general:                General
-            billing_and_payment:    Billing & Payment
+            billing_address:        Billing Address
             delivery:               Delivery
             invoice_items:          Invoice Items
             creditmemo_items:       Credit Memo Items
@@ -85,6 +87,7 @@ marello:
             customer_information:   Customer Information
             invoice_totals:         Invoice Totals
             creditmemo_totals:      Credit Memo Totals
+            payments:               Payments
 
         invoiceitem:
             id.label:                 Id
@@ -106,10 +109,10 @@ marello:
 
         creditmemoitem:
             id.label:                 Id
-            entity_label:             Creditmemo Item
-            entity_plural_label:      Creditmemo Items
+            entity_label:             Credit Memo Item
+            entity_plural_label:      Credit Memo Items
             entity_grid_all_view_label: All %entity_plural_label%
-            invoice.label:            Creditmemo
+            invoice.label:            Invoice
             quantity.label:           Quantity
             price.label:              Price
             product.label:            Product
@@ -136,9 +139,10 @@ marello:
                 name.label:             Ship to Name
             invoiced_at.label:          Invoiced At
             invoice_due_date.label:     Invoice Due Date
+            payments.label:             Payments
+            total_due.label:            Total Due
+            total_paid.label:           Total Paid
             payment_method.label:       Payment Method
-            payment_reference.label:    Payment Reference
-            payment_details.label:      Payment Details
             shipping_method.label:      Shipping Method
             shipping_method_type.label: Shipping Method Type
             order.label:                Order

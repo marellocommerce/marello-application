@@ -106,3 +106,166 @@ datagrids:
                 icon:         close
                 entity_name:  'Marello\Bundle\PaymentBundle\Entity\PaymentMethodsConfigsRule'
                 data_identifier: payment_methods_configs_rule.id
+
+    marello-payments-base-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - p.id
+                    - p.paymentMethod
+                    - p.paymentMethodOptions
+                    - p.paymentReference
+                    - p.paymentDetails
+                    - p.paymentDate
+                    - p.totalPaid
+                    - p.createdAt
+                    - p.updatedAt
+                    - p.currency
+                    - s.name AS status
+        columns:
+            status:
+                label:            marello.payment.status.label
+                frontend_type:    string
+                data_name:        status
+            paymentMethod:
+                label:            marello.payment.payment_method.label
+                type:             twig
+                frontend_type:    html
+                template:         MarelloPaymentBundle:Payment/Datagrid:paymentMethodWithoutOptions.html.twig
+            paymentReference:
+                label:            marello.payment.payment_reference.label
+                frontend_type:    string
+            paymentDetails:
+                label:            marello.payment.payment_details.label
+                frontend_type:    string
+            paymentDate:
+                frontend_type:    datetime
+                label:            marello.payment.payment_date.label
+            createdAt:
+                label:            oro.ui.created_at
+                frontend_type:    datetime
+            updatedAt:
+                label:            oro.ui.updated_at
+                frontend_type:    datetime
+            totalPaid:
+                label:            marello.payment.total_paid.label
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
+                align:            right
+        sorters:
+            columns:
+                status:
+                    data_name: s.name
+                paymentMethod:
+                    data_name: p.paymentMethod
+                paymentReference:
+                    data_name: p.paymentReference
+                paymentDetails:
+                    data_name: p.paymentDetails
+                totalPaid:
+                    data_name: p.totalPaid
+                paymentDate:
+                    data_name: p.paymentDate
+                createdAt:
+                    data_name: p.createdAt
+                updatedAt:
+                    data_name: p.updatedAt
+            default:
+                createdAt: 'DESC'
+        filters:
+            columns:
+                status:
+                    type:             string
+                    data_name:        s.name
+                paymentMethod:
+                    type:             string
+                    data_name:        p.paymentMethod
+                paymentReference:
+                    type:             string
+                    data_name:        p.paymentReference
+                paymentDetails:
+                    type:             string
+                    data_name:        p.paymentDetails
+                totalPaid:
+                    type:             number
+                    data_name:        p.totalPaid
+        properties:
+            id: ~
+            view_link:
+                type:       url
+                route:      marello_payment_view
+                params:     [ id ]
+            update_link:
+                type:       url
+                route:      marello_payment_update
+                params:     [ id ]
+        actions:
+            view:
+                type:           navigate
+                label:          oro.grid.action.view
+                link:           view_link
+                icon:           eye
+                acl_recource:   marello_payment_view
+                rowAction:      true
+            update:
+                type:           navigate
+                label:          oro.grid.action.update
+                icon:           edit
+                link:           update_link
+                acl_resource:   marello_payment_update
+
+    marello-payments-grid:
+        extends: marello-payments-base-grid
+        source:
+            type: orm
+            query:
+                from:
+                    - { table: MarelloPaymentBundle:Payment, alias: p }
+                join:
+                    inner:
+                        - { join: p.status, alias: s }
+
+    marello-order-payments-grid:
+        extends: marello-payments-base-grid
+        source:
+            type: orm
+            query:
+                from:
+                    - { table: MarelloInvoiceBundle:AbstractInvoice, alias: i }
+                join:
+                    inner:
+                        - { join: i.payments, alias: p }
+                        - { join: p.status, alias: s }
+                        - { join: i.order, alias: o }
+                where:
+                    and:
+                        - o.id = :orderId
+            bind_parameters:
+                - orderId
+        options:
+            entityHint: marello.payment.entity_plural_label
+            gridViews:
+                allLabel: marello.payment.entity_plural_label
+
+    marello-invoice-payments-grid:
+        extends: marello-payments-base-grid
+        source:
+            type: orm
+            query:
+                from:
+                    - { table: MarelloInvoiceBundle:AbstractInvoice, alias: i }
+                join:
+                    inner:
+                        - { join: i.payments, alias: p }
+                        - { join: p.status, alias: s }
+                where:
+                    and:
+                        - i.id = :invoiceId
+            bind_parameters:
+                - invoiceId
+        options:
+            entityHint: marello.payment.entity_plural_label
+            gridViews:
+                allLabel: marello.payment.entity_plural_label

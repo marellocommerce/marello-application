@@ -3,6 +3,7 @@ data:
     id: '<toString(@company1->id)>'
     attributes:
         name: company1
+        taxIdentificationNumber: null
     relationships:
         customers:
             data:

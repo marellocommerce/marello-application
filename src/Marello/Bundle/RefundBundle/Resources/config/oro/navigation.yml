@@ -7,8 +7,6 @@ navigation:
                 extras:
                     routes: ['marello_refund_*']
                     position: 40
-
-
         tree:
             application_menu:
                 children:

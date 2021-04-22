@@ -55,8 +55,9 @@ class RefundControllerTest extends WebTestCase
         $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
 
         $form    = $crawler->selectButton('Save and Close')->form();
-        $form['marello_refund[items][0][quantity]']  = 1;
-        $form['marello_refund[items][0][refundAmount]'] = 100;
+        $key = array_key_first ($form->get('marello_refund[items]'));
+        $form[sprintf('marello_refund[items][%d][quantity]', $key)]  = 1;
+        $form[sprintf('marello_refund[items][%d][refundAmount]', $key)] = 100;
 
         $result  = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);

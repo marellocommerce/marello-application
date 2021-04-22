@@ -59,7 +59,7 @@ marello:
             edit_action:            Edit Address
         datablock:
             general:                General
-            billing_and_payment:    Billing & Payment
+            billing_address:        Billing Address
             delivery:               Delivery
             order_items:            Order Items
             activity:               Activity
@@ -68,6 +68,7 @@ marello:
             order_totals:           Order Totals
             packing_slips:          Packing Slips
             invoices:               Invoices
+            payments:               Payments
             source_references_information: Source References
             optional:               Optional
         # OrderItem entity

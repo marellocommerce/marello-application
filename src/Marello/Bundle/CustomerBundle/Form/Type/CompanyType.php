@@ -12,8 +12,6 @@ use Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -56,6 +54,10 @@ class CompanyType extends AbstractType
             )
             ->add('paymentTerm', PaymentTermSelectType::class, [
                 'label' => 'marello.customer.company.payment_term.label',
+                'required' => false,
+            ])
+            ->add('taxIdentificationNumber', TextType::class, [
+                'label' => 'marello.customer.company.tax_identification_number.label',
                 'required' => false,
             ])
             ->add(
