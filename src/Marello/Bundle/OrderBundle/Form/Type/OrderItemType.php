@@ -59,6 +59,7 @@ class OrderItemType extends AbstractType
                 ]
             ])
             ->add('productUnit', TextType::class, [
+                'mapped' => false,
                 'attr' => [
                     'readonly' => true
                 ]
