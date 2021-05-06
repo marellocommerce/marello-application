@@ -1,0 +1,91 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
+{% set formAction = path('marello_payment_update', { 'id': form.vars.value.id }) %}
+
+{% block navButtons %}
+    {{ parent() }}
+
+    {{ UI.cancelButton(path('marello_payment_index')) }}
+    {% if is_granted('marello_payment_update') %}
+        {% set html = '' %}
+        {% if is_granted('marello_payment_view') %}
+            {% set html = UI.saveAndCloseButton({
+                'route': 'marello_payment_view',
+                'params': {'id': '$id'}
+            }) %}
+        {% endif %}
+        {% set html = html ~ UI.saveAndStayButton({
+            'route': 'marello_payment_update',
+            'params': {'id': '$id'}
+        }) %}
+
+        {{ UI.dropdownSaveButton({'html': html}) }}
+    {% endif %}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity':      form.vars.value,
+        'indexPath':   path('marello_payment_index'),
+        'indexLabel': 'marello.payment.entity_plural_label'|trans,
+        'entityTitle': entity.id
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set id = 'marello-payment-update' %}
+    {% set paymentMethod = marello_get_payment_method_label(entity.paymentMethod)|trans %}
+    {% for name, value in entity.paymentMethodOptions %}
+        {% if name == 'term' %}
+            {% set value = 'marello.payment_term.ui.payment_term.term_days'|trans({'%days%': value }) %}
+            {% set name = 'Term' %}
+        {% elseif name == 'code' %}
+            {% set value = marello_get_payment_term_label_for_code(value) %}
+            {% set name = 'Label' %}
+        {% endif %}
+        {% set paymentMethod = paymentMethod ~ ' <br>' ~ name ~ ': ' ~ value %}
+    {% endfor %}
+    {% set dataBlocks = [{
+            'title': 'marello.payment.sections.general'|trans,
+            'class': 'active',
+            'subblocks': [{
+            'title': '',
+            'data': [
+                form_row(form.status),
+                form_row(form.paymentSource),
+                UI.renderHtmlProperty('marello.payment.payment_method.label'|trans, paymentMethod, null, null, {termClass: 'marello-payment-update-property-label'}),
+                form_row(form.paymentReference),
+                form_row(form.paymentDetails),
+                UI.renderProperty('marello.payment.total_paid.label'|trans, entity.totalPaid|oro_format_currency({'currency':entity.currency}), null, null, {termClass: 'marello-payment-update-property-label'}),
+                UI.renderProperty('marello.payment.payment_date.label'|trans, entity.paymentDate|date, null, null, {termClass: 'marello-payment-update-property-label'})
+            ]
+        }]}
+    ] %}
+
+    {% set additionalData = [] %}
+    {% for child in form.children if child.vars.extra_field is defined and child.vars.extra_field %}
+        {% set additionalData = additionalData|merge([form_row(child)]) %}
+    {% endfor %}
+
+    {% if additionalData is not empty %}
+        {% set dataBlocks = dataBlocks|merge([{
+            'title' : 'marello.payment.sections.additional'|trans,
+            'subblocks': [{
+                'title' : null,
+                'useSpan': false,
+                'data' : [
+                    additionalData
+                ]
+            }]
+        }]) %}
+    {% endif %}
+
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': dataBlocks,
+    } %}
+    {{ parent() }}
+{% endblock content_data %}

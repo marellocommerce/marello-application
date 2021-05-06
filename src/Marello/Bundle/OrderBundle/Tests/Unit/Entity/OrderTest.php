@@ -30,8 +30,6 @@ class OrderTest extends TestCase
             ['grandTotal', 42],
             ['currency', 'some string'],
             ['paymentMethod', 'some string'],
-            ['paymentReference', 'some string'],
-            ['paymentDetails', 'some string'],
             ['shippingAmountInclTax', 'some string'],
             ['shippingAmountExclTax', 'some string'],
             ['shippingMethod', 3.1415926],

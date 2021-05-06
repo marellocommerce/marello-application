@@ -200,8 +200,8 @@ class ProductRepository extends EntityRepository
             ->select(
                 'sup.name AS supplier,
                 p.sku,
-                (i.desiredInventory - COALESCE(SUM(l.inventory - l.allocatedInventory), 0)) AS orderAmount,
-                i.purchaseInventory'
+                SUM(i.desiredInventory - COALESCE((l.inventory - l.allocatedInventory), 0)) AS orderAmount,
+                SUM(i.purchaseInventory) AS purchaseInventory'
             )
             ->innerJoin('p.preferredSupplier', 'sup')
             ->innerJoin('p.status', 's')

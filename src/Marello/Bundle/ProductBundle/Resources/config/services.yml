@@ -216,6 +216,13 @@ services:
         tags:
             - { name: doctrine.event_listener, event: onFlush }
 
+    marello_product.entity.builder.product_family:
+        class: Marello\Bundle\ProductBundle\Entity\Builder\ProductFamilyBuilder
+        arguments:
+            - '@translator'
+            - '@oro_entity_config.manager.attribute_group_manager'
+        public: true
+
     marello_product.provider.action_group_registry:
         public: true
         class: Marello\Bundle\ProductBundle\Provider\ActionGroupRegistryProvider

@@ -224,33 +224,6 @@ class Order extends ExtendOrder implements
     protected $paymentMethodOptions;
 
     /**
-     * @var string
-     * @ORM\Column(name="payment_reference", type="string", length=255, nullable=true)
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "dataaudit"={
-     *              "auditable"=true
-     *          }
-     *      }
-     * )
-     */
-    protected $paymentReference;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="payment_details", type="text", nullable=true)
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "dataaudit"={
-     *              "auditable"=true
-     *          }
-     *      }
-     * )
-     */
-    protected $paymentDetails;
-
-    /**
      * @var double
      *
      * @ORM\Column(name="shipping_amount_incl_tax", type="money", nullable=true)
@@ -928,26 +901,6 @@ class Order extends ExtendOrder implements
     /**
      * @return string
      */
-    public function getPaymentDetails()
-    {
-        return $this->paymentDetails;
-    }
-
-    /**
-     * @param string $paymentDetails
-     *
-     * @return $this
-     */
-    public function setPaymentDetails($paymentDetails)
-    {
-        $this->paymentDetails = $paymentDetails;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
     public function getShippingMethod()
     {
         return $this->shippingMethod;
@@ -1037,26 +990,6 @@ class Order extends ExtendOrder implements
     public function setInvoicedAt($invoicedAt)
     {
         $this->invoicedAt = $invoicedAt;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPaymentReference()
-    {
-        return $this->paymentReference;
-    }
-
-    /**
-     * @param string $paymentReference
-     *
-     * @return $this
-     */
-    public function setPaymentReference($paymentReference)
-    {
-        $this->paymentReference = $paymentReference;
 
         return $this;
     }

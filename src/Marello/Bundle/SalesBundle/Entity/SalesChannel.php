@@ -11,7 +11,6 @@ use Marello\Bundle\SalesBundle\Model\ExtendSalesChannel;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelRepository")
@@ -152,12 +151,10 @@ class SalesChannel extends ExtendSalesChannel implements
     protected $owner;
 
     /**
-     * Channel type is by default marello. It means that api is used to push data into marello itself. No integration
-     * is used to pull data from any other source.
+     * @var SalesChannelType
      *
-     * @var string
-     *
-     * @ORM\Column(name="channel_type", type="string")
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\SalesBundle\Entity\SalesChannelType")
+     * @ORM\JoinColumn(name="channel_type", referencedColumnName="name")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -166,7 +163,7 @@ class SalesChannel extends ExtendSalesChannel implements
      *      }
      * )
      */
-    protected $channelType = self::DEFAULT_TYPE;
+    protected $channelType;
     
     /**
      * @var SalesChannelGroup
@@ -245,7 +242,7 @@ class SalesChannel extends ExtendSalesChannel implements
     }
     
     /**
-     * @return string
+     * @return SalesChannelType
      */
     public function getChannelType()
     {
@@ -253,11 +250,11 @@ class SalesChannel extends ExtendSalesChannel implements
     }
 
     /**
-     * @param string $channelType
+     * @param SalesChannelType $channelType
      *
      * @return $this
      */
-    public function setChannelType($channelType)
+    public function setChannelType(SalesChannelType $channelType)
     {
         $this->channelType = $channelType;
 
