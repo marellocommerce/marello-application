@@ -232,9 +232,6 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         }
 
         $orderEntity->setPaymentMethod($row['payment_method']);
-        if ($row['payment_details'] !== 'NULL') {
-            $orderEntity->setPaymentDetails($row['payment_details']);
-        }
 
         $orderEntity->setShippingAmountExclTax($row['shipping_amount']);
         $orderEntity->setShippingAmountInclTax($row['shipping_amount']);
@@ -254,7 +251,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         /** @var Product $product */
         $product = $this->manager
             ->getRepository('MarelloProductBundle:Product')
-            ->findOneBy(['sku' => $row['sku']]);
+            ->findOneBy(['sku' => $row['sku'], 'organization' => $organization]);
 
         $itemEntity = new OrderItem();
         $itemEntity->setProduct($product);

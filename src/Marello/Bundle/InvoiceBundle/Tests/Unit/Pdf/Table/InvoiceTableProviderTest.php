@@ -126,8 +126,6 @@ class InvoiceTableProviderTest extends TestCase
             'invoicedAt' => new \DateTime('2019-01-01 12:34:56'),
             'invoiceDueDate' => new \DateTime('2019-01-02 23:45:01'),
             'paymentMethod' => 'payment method',
-            'paymentReference' => 'payment reference',
-            'paymentDetails' => 'payment details',
             'shippingMethod' => 'shipping method',
             'shippingMethodType' => 'shipping',
             'status' => 'open',

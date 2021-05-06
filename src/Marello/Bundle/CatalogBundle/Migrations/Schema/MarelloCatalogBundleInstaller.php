@@ -20,7 +20,7 @@ class MarelloCatalogBundleInstaller implements Installation, ActivityExtensionAw
      */
     public function getMigrationVersion()
     {
-        return 'v1_1_1';
+        return 'v1_2';
     }
 
     /**
@@ -61,7 +61,7 @@ class MarelloCatalogBundleInstaller implements Installation, ActivityExtensionAw
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['code'], 'marello_catalog_category_codeidx');
+        $table->addUniqueIndex(['code', 'organization_id'], 'marello_catalog_category_codeorgidx');
 
         $this->activityExtension->addActivityAssociation($schema, 'oro_note', 'marello_catalog_category');
     }

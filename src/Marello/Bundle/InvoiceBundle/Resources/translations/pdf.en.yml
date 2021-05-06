@@ -4,6 +4,7 @@ marello:
             invoice_date.label: "Invoice date"
             invoice_number.label: "Invoice number"
             debtor_number.label: "Debtor number"
+            payment_term.label: "Payment term"
             subtotal.label: "Subtotal"
             total.label: "Total"
             page_number.label: "Page %pageNumber% of %totalPages%"

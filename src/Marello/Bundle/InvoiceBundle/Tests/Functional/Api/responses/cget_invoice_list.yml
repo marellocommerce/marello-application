@@ -7,8 +7,6 @@ data:
             invoicedAt: '@marello_invoice_0->invoicedAt->format("Y-m-d\TH:i:s\Z")'
             invoiceDueDate: null
             paymentMethod: 'Credit Card'
-            paymentReference: null
-            paymentDetails: 'American Express refnr. 371449635398431'
             shippingMethod: null
             shippingMethodType: null
             currency: USD
@@ -56,8 +54,6 @@ data:
             invoicedAt: '@marello_invoice_1->invoicedAt->format("Y-m-d\TH:i:s\Z")'
             invoiceDueDate: null
             paymentMethod: Paypal
-            paymentReference: null
-            paymentDetails: null
             shippingMethod: null
             shippingMethodType: null
             currency: GBP
@@ -114,8 +110,6 @@ data:
             invoicedAt: '@marello_invoice_2->invoicedAt->format("Y-m-d\TH:i:s\Z")'
             invoiceDueDate: null
             paymentMethod: 'Credit Card'
-            paymentReference: null
-            paymentDetails: 'American Express refnr. 371449635398431'
             shippingMethod: null
             shippingMethodType: null
             currency: USD
@@ -169,8 +163,6 @@ data:
             invoicedAt: '@marello_invoice_3->invoicedAt->format("Y-m-d\TH:i:s\Z")'
             invoiceDueDate: null
             paymentMethod: Paypal
-            paymentReference: null
-            paymentDetails: null
             shippingMethod: null
             shippingMethodType: null
             currency: GBP

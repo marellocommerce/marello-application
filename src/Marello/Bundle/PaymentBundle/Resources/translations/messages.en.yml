@@ -1,5 +1,23 @@
 marello:
     payment:
+        entity_label: Payment
+        entity_plural_label: Payments
+        entity_grid_all_view_label: All %entity_plural_label%
+        id.label: Id
+        organization.label: Organization
+        payment_method.label: Payment Method
+        payment_method_options.label: Payment Method Options
+        payment_reference.label: Payment Reference
+        payment_details.label: Payment Details
+        payment_source.label: Related Entity
+        payment_date.label: Payment Date
+        total_paid.label: Total Paid
+        currency.label: Currency
+        status.label: Status
+
+        button:
+            add_payment.label: Add Payment
+
         menu:
             payments.label: Payments
             paymentmethodsconfigsrule.description: Payment Rules
@@ -70,6 +88,10 @@ marello:
 
         message:
             error: 'General error. We were unable to process action.'
+            add_payment:
+                success: 'Payment was successfuly added'
+                error:
+                    paid_total_exceed: "Total Paid amount of all Payments can't exceed Invoice grandTotal amount"
 
         paymentmethodconfig:
             entity_label: Payment Method Config
@@ -148,7 +170,8 @@ marello:
                 pending.label: Pending
 
         sections:
-            general: 'General Information'
+            general: 'General'
+            additional: 'Additional'
             destination: 'Destinations'
             paymentrule_configurations:
                 no_methods.message: 'Please enable at least one payment integration.'
