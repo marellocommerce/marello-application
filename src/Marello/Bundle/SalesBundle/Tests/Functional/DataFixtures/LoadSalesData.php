@@ -6,6 +6,7 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
+use Marello\Bundle\SalesBundle\Entity\SalesChannelType;
 
 class LoadSalesData extends AbstractFixture
 {
@@ -99,10 +100,29 @@ class LoadSalesData extends AbstractFixture
     {
         $channel = new SalesChannel($reference);
 
-        return $channel->setChannelType($data['type'])
+        return $channel->setChannelType($this->getChannelType($data['type']))
             ->setCode($data['code'])
             ->setCurrency($data['currency'])
             ->setActive($data['active'])
             ->setDefault($data['default']);
+    }
+
+    /**
+     * @param string $name
+     * @return SalesChannelType
+     */
+    private function getChannelType($name)
+    {
+        $existingChannelType = $this->manager->getRepository(SalesChannelType::class)->find($name);
+        if ($existingChannelType) {
+            return $existingChannelType;
+        } else {
+            $channelType = new SalesChannelType($name);
+            $channelType->setLabel(ucfirst($name));
+            $this->manager->persist($channelType);
+            $this->manager->flush();
+
+            return $channelType;
+        }
     }
 }

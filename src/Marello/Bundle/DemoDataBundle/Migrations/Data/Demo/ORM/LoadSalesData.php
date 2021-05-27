@@ -5,9 +5,9 @@ namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
+use Marello\Bundle\SalesBundle\Entity\SalesChannelType;
 use Marello\Bundle\SalesBundle\Migrations\Data\ORM\LoadSalesChannelGroupData as MigrationLoadSalesChannelGroupData;
 
 class LoadSalesData extends AbstractFixture implements DependentFixtureInterface
@@ -95,6 +95,7 @@ class LoadSalesData extends AbstractFixture implements DependentFixtureInterface
     {
         return [
             MigrationLoadSalesChannelGroupData::class,
+            LoadSalesChannelTypesData::class
         ];
     }
 
@@ -118,7 +119,7 @@ class LoadSalesData extends AbstractFixture implements DependentFixtureInterface
 
         foreach ($this->data as $values) {
             $channel = (new SalesChannel($values['name']))
-                ->setChannelType($values['type'])
+                ->setChannelType($this->findTypeByName($values['type']))
                 ->setCode($values['code'])
                 ->setCurrency($values['currency'])
                 ->setOwner($organization)
@@ -130,5 +131,22 @@ class LoadSalesData extends AbstractFixture implements DependentFixtureInterface
         }
 
         $this->manager->flush();
+    }
+
+    /**
+     * @param string $name
+     * @return null|SalesChannelType
+     */
+    private function findTypeByName($name)
+    {
+        $type = $this->manager
+            ->getRepository(SalesChannelType::class)
+            ->find($name);
+
+        if ($type) {
+            return $type;
+        }
+
+        return null;
     }
 }

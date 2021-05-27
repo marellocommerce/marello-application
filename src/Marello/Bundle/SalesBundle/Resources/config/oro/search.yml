@@ -12,3 +12,17 @@ search:
                 name:                   name
                 target_type:            text
                 target_fields:          [name]
+
+    #Marello\Bundle\SalesBundle\Entity\SalesChannelType:
+    #    alias:                          marello_sales_channel_types
+    #    title_fields:                   [label]
+        #route:
+        #    name:                       marello_sales_saleschannel_index
+        #    parameters:
+        #        id:                     id
+        #search_template: MarelloSalesBundle:SalesChannelType:searchResult.html.twig
+        #fields:
+        #    -
+        #        name:                   name
+        #        target_type:            text
+        #        target_fields:          [name]

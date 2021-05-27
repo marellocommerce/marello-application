@@ -44,6 +44,15 @@ marello:
                 general: General
                 additional: Additional
 
+        saleschanneltype:
+            entity_label: Sales Channel Type
+            entity_plural_label: Sales Channels Types
+            name.label: Name
+            label.label: Label
+
+            form:
+                choose: 'Choose type'
+
         saleschannelgroup:
             entity_label: Sales Channel Group
             entity_plural_label: Sales Channels Groups
