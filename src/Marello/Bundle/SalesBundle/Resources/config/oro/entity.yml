@@ -7,3 +7,7 @@ oro_entity:
         Marello\Bundle\SalesBundle\Entity\SalesChannelGroup:
             alias: marellosaleschannelgroup
             plural_alias: marellosaleschannelgroups
+
+        Marello\Bundle\SalesBundle\Entity\SalesChannelType:
+            alias: marellosaleschanneltype
+            plural_alias: marellosaleschanneltypes
