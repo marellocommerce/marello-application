@@ -165,10 +165,14 @@ datagrids:
             query:
                 select:
                     - company.createdAt
+                    - company.companyNumber
                     - company.updatedAt
         options:
             entity_pagination: true
         columns:
+            companyNumber:
+                label:          marello.customer.company.company_number.label
+                frontend_type:  string
             createdAt:
                 label:          oro.ui.created_at
                 frontend_type:  datetime
@@ -177,6 +181,9 @@ datagrids:
                 frontend_type:  datetime
         filters:
             columns:
+                companyNumber:
+                    type:  string
+                    data_name:  company.companyNumber
                 createdAt:
                     type: datetime
                     data_name: company.createdAt
@@ -185,6 +192,8 @@ datagrids:
                     data_name: company.updatedAt
         sorters:
             columns:
+                companyNumber:
+                    data_name: company.companyNumber
                 createdAt:
                     data_name: company.createdAt
                 updatedAt:
