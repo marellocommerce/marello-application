@@ -3,8 +3,6 @@
 namespace Marello\Bundle\CustomerBundle\Controller;
 
 use Marello\Bundle\CustomerBundle\Entity\Customer;
-use Oro\Bundle\NoteBundle\Entity\Note;
-use Oro\Bundle\NoteBundle\Entity\Repository\NoteRepository;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

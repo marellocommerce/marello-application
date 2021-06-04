@@ -7,6 +7,16 @@ services:
         tags:
             - { name: form.type }
 
+    marello_sales_form_type.saleschannel_type_select:
+        class: 'Marello\Bundle\SalesBundle\Form\Type\SalesChannelTypeSelectType'
+        tags:
+            - { name: form.type }
+
+    marello_sales_form_type.saleschannel_type:
+        class: 'Marello\Bundle\SalesBundle\Form\Type\SalesChannelTypeType'
+        tags:
+            - { name: form.type }
+
     marello_sales_form_type.saleschannelgroup:
         class: 'Marello\Bundle\SalesBundle\Form\Type\SalesChannelGroupType'
         tags:

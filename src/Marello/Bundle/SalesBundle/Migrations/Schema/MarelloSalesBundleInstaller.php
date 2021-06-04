@@ -17,7 +17,7 @@ class MarelloSalesBundleInstaller implements Installation
      */
     public function getMigrationVersion()
     {
-        return 'v1_3_1';
+        return 'v1_4';
     }
 
     /**
@@ -26,12 +26,29 @@ class MarelloSalesBundleInstaller implements Installation
     public function up(Schema $schema, QueryBag $queries)
     {
         /** Tables generation **/
+        $this->createMarelloSalesChannelTypeTable($schema);
         $this->createMarelloSalesChannelGroupTable($schema);
         $this->createMarelloSalesSalesChannelTable($schema);
 
         /** Foreign keys generation **/
         $this->addMarelloSalesChannelGroupForeignKeys($schema);
         $this->addMarelloSalesSalesChannelForeignKeys($schema);
+    }
+
+    /**
+     * Create marello_inventory_wh_type table
+     *
+     * @param Schema $schema
+     */
+    protected function createMarelloSalesChannelTypeTable(Schema $schema)
+    {
+        if (!$schema->hasTable('marello_sales_channel_type')) {
+            $table = $schema->createTable('marello_sales_channel_type');
+            $table->addColumn('name', 'string', ['length' => 64]);
+            $table->addColumn('label', 'string', ['length' => 255]);
+            $table->setPrimaryKey(['name']);
+            $table->addUniqueIndex(['label'], 'UNIQ_629E2BBEA750E8123');
+        }
     }
     
     /**
@@ -130,6 +147,12 @@ class MarelloSalesBundleInstaller implements Installation
             $schema->getTable('oro_integration_channel'),
             ['integration_channel_id'],
             ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_sales_channel_type'),
+            ['channel_type'],
+            ['name'],
             ['onDelete' => null, 'onUpdate' => null]
         );
     }
