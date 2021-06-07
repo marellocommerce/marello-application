@@ -6,6 +6,7 @@ parameters:
     database_user:          root
     database_password:      ~
     database_driver_options: []
+    database_server_version: ~
 
     mailer_transport:       smtp
     mailer_host:            127.0.0.1
