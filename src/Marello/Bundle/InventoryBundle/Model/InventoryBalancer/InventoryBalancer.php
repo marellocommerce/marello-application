@@ -67,10 +67,16 @@ class InventoryBalancer
      */
     public function balanceInventory(Product $product, $isFixed = false, $flushManager = false)
     {
+        // no status, no balancing!
+        if (!$product->getStatus()) {
+            return;
+        }
+
         // check if product is enabled, if not do not (re)balance
         if (ProductStatus::DISABLED === $product->getStatus()->getName()) {
             return;
         }
+
         /** @var InventoryItem $inventoryItem */
         $inventoryItem = $this->getInventoryItemFromProduct($product);
 
