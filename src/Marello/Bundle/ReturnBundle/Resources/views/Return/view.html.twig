@@ -27,6 +27,19 @@
 
 {% block content_data %}
     {% set id = 'marello-return-view' %}
+    {% set customer %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ UI.renderHtmlProperty(
+                        'marello.return.returnentity.customer_info.label'|trans,
+                        UI.entityViewLink(entity.order.customer, entity.order.customer|oro_format_name, 'marello_customer_view')
+                    )}}
+                    {{ UI.renderProperty('marello.customer.email.label'|trans, entity.order.customer.email) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
     {% set order %}
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
@@ -89,6 +102,13 @@
             'class': 'active',
             'subblocks': [
                 { 'data' : [return] }
+            ]
+        },
+        {
+            'title': 'marello.invoice.datablock.customer_information'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data' : [customer] }
             ]
         },
         {
