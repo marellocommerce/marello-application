@@ -27,6 +27,7 @@
 
 {% block content_data %}
     {% set id = 'marello-return-view' %}
+<<<<<<< HEAD
     {% set generalSubblocks = [] %}
     {% set customerInformation %}
         <div class="box-type1">
@@ -125,6 +126,13 @@
             'title': 'marello.order.datablock.general'|trans,
             'class': 'active',
             'subblocks': generalSubblocks
+        },
+        {
+            'title': 'marello.invoice.datablock.customer_information'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data' : [customer] }
+            ]
         },
         {
             'title': 'marello.order.entity_label'|trans,
