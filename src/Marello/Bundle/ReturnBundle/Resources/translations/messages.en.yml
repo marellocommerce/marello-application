@@ -17,6 +17,7 @@ marello:
             organization.label:       Organization
             sales_channel.label:      Sales Channel
             shipment.label:           Shipment
+            customer_info.label:      Customer name
             messages:
                 success:
                     returnentity:
