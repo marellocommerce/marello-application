@@ -4,6 +4,7 @@ namespace Marello\Bundle\RefundBundle\Calculator;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Marello\Bundle\RefundBundle\Entity\Refund;
+use Marello\Bundle\RefundBundle\Entity\RefundItem;
 
 class RefundBalanceCalculator
 {
@@ -38,5 +39,18 @@ class RefundBalanceCalculator
         }
 
         return $refund->getOrder()->getGrandTotal() - $refundsAmount;
+    }
+
+    /**
+     * @param Refund $refund
+     * @return float
+     */
+    public function caclulateAmount(Refund $refund)
+    {
+        $sum = array_reduce($refund->getItems()->toArray(), function ($carry, RefundItem $item) {
+            return $carry + $item->getRefundAmount();
+        }, 0);
+
+        return $sum;
     }
 }
