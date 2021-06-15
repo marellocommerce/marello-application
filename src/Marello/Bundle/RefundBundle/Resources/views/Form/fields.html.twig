@@ -1,5 +1,5 @@
 {% block marello_order_item_refund_widget %}
-    <td class="marello-line-field">
+    <td class="refund-order-line-item-product-sku" data-id="{{ form.vars.value.id|default('') }}">
         <div class="fields-row">
             {{ form.vars.value.orderItem.product.sku|default('') }}
         </div>
@@ -20,7 +20,7 @@
         </div>
         {{ form_errors(form.quantity) }}
     </td>
-    <td class="marello-line-field">
+    <td class="marello-line-field price-field">
         <div class="fields-row">
             {{ form.vars.value.orderItem.price|default('') }}
         </div>
@@ -39,6 +39,7 @@
 {% endblock %}
 
 {% block marello_additional_refund_widget %}
+    <td></td>
     <td class="marello-line-field">
         <div class="fields-row">
             {{ form_widget(form.name) }}
@@ -73,7 +74,10 @@
     {% set page_component_options = { 'disabled': not allow_delete } %}
 
     <tr data-content="{{ name }}"
-        class="marello-line-item">
+        class="marello-line-item display-values"
+        data-page-component-module="oroui/js/app/components/view-component"
+        data-page-component-options="{{ {view: 'marellorefund/js/app/views/refund-view'}|json_encode }}"
+        data-layout="separate">
         {{ form_widget(form) }}
     </tr>
 {% endmacro %}
@@ -100,7 +104,7 @@
     <tr data-content="{{ name }}"
         class="marello-line-item"
         data-page-component-module="oroui/js/app/components/view-component"
-        data-page-component-options="{{ {view: 'marellolayout/js/app/views/abstract-item-view'}|json_encode }}"
+        data-page-component-options="{{ {view: 'marellorefund/js/app/views/refund-view'}|json_encode }}"
         data-layout="separate">
         {{ form_widget(form) }}
 
