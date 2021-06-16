@@ -44,12 +44,32 @@
         </div>
     {% endset %}
 
+    {% set generalInformation %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    <div class="box-type1">
+                        {{ form_row(form.receivedAt) }}
+                        {{ form_row(form.trackTraceCode) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
     {% set dataBlocks = [
         {
             'title': 'marello.order.entity_label'|trans,
             'class': 'active',
             'subblocks': [
                 { 'data' : [orderData] }
+            ]
+        },
+        {
+            'title': 'marello.order.sections.general'|trans,
+            'class': 'active',
+            'subblocks':  [
+                { 'data' : [generalInformation] }
             ]
         },
         {
