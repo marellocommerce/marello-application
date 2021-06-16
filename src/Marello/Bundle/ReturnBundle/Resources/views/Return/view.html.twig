@@ -97,6 +97,8 @@
                         {{ UI.renderProperty('marello.return.returnentity.return_reference.label'|trans, entity.returnReference) }}
                         {{ UI.renderProperty('oro.ui.created_at'|trans, entity.createdAt|oro_format_datetime) }}
                         {{ UI.renderProperty('oro.ui.updated_at'|trans, entity.updatedAt|oro_format_datetime) }}
+                        {{ UI.renderProperty('marello.return.returnentity.track_trace_code.label'|trans, entity.trackTraceCode) }}
+                        {{ UI.renderProperty('marello.return.returnentity.received_at.label'|trans, entity.receivedAt|oro_format_datetime) }}
 
                         {% set steps = marello_core_get_current_workflow_steps(entity) %}
                         {% for stepLabel, stepName in steps %}

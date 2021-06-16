@@ -353,7 +353,7 @@ class ReturnEntity extends ExtendReturnEntity implements
     /**
      * @return \DateTime
      */
-    public function getReceivedAt(): \DateTime
+    public function getReceivedAt(): ?\DateTime
     {
         return $this->receivedAt;
     }
@@ -362,7 +362,7 @@ class ReturnEntity extends ExtendReturnEntity implements
      * @param \DateTime $receivedAt
      * @return ReturnEntity
      */
-    public function setReceivedAt(\DateTime $receivedAt): ReturnEntity
+    public function setReceivedAt(?\DateTime $receivedAt): ReturnEntity
     {
         $this->receivedAt = $receivedAt;
 
@@ -372,7 +372,7 @@ class ReturnEntity extends ExtendReturnEntity implements
     /**
      * @return string
      */
-    public function getTrackTraceCode(): string
+    public function getTrackTraceCode(): ?string
     {
         return $this->trackTraceCode;
     }
