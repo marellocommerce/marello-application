@@ -4,7 +4,7 @@ namespace MarelloEnterprise\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductData;
 use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductInventoryData as BaseProductInventoryData;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
