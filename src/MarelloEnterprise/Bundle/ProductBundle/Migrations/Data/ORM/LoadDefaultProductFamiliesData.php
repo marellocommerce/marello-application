@@ -3,7 +3,7 @@
 namespace MarelloEnterprise\Bundle\ProductBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\ORM\Query\Expr\Join;
 use Marello\Bundle\ProductBundle\Entity\Builder\ProductFamilyBuilder;
 use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
