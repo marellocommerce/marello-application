@@ -3,7 +3,7 @@
 namespace Marello\Bundle\SalesBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelType;
 
 class LoadSalesChannelTypesData extends AbstractFixture

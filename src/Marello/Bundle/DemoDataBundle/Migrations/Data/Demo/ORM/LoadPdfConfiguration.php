@@ -3,7 +3,7 @@
 namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;

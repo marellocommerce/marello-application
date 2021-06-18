@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\OrderBundle\Migrations\Data\ORM;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 use Marello\Bundle\CustomerBundle\Entity\Customer;
 

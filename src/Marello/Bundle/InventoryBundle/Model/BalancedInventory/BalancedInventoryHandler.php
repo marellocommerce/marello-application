@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\InventoryBundle\Model\BalancedInventory;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Oro\Bundle\EntityBundle\ORM\Registry;
 use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\Repository\BalancedInventoryRepository;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
@@ -15,15 +15,15 @@ class BalancedInventoryHandler
     /** @var BalancedInventoryFactory $balancedInventoryFactory */
     protected $balancedInventoryFactory;
 
-    /** @var ManagerRegistry $doctrine */
+    /** @var Registry $doctrine */
     protected $doctrine;
 
     /**
-     * @param ManagerRegistry $doctrine
+     * @param Registry $doctrine
      * @param BalancedInventoryFactory $balancedInventoryFactory
      */
     public function __construct(
-        ManagerRegistry $doctrine,
+        Registry $doctrine,
         BalancedInventoryFactory $balancedInventoryFactory
     ) {
         $this->doctrine = $doctrine;

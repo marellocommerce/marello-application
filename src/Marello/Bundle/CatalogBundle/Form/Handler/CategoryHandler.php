@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\CatalogBundle\Form\Handler;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Marello\Bundle\CatalogBundle\Entity\Category;
 use Marello\Bundle\ProductBundle\Entity\Product;

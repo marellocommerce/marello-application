@@ -2,8 +2,8 @@
 
 namespace Marello\Bundle\PricingBundle\Provider;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Oro\Bundle\EntityBundle\ORM\Registry;
+use Doctrine\Persistence\ObjectRepository;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ProductBundle\Entity\Product;
@@ -19,14 +19,14 @@ use Marello\Bundle\OrderBundle\Provider\OrderItem\AbstractOrderItemFormChangesPr
 class ChannelPriceProvider extends AbstractOrderItemFormChangesProvider
 {
     /**
-     * @var ManagerRegistry $registry
+     * @var Registry $registry
      */
     protected $registry;
 
     /**
-     * @param ManagerRegistry $registry
+     * @param Registry $registry
      */
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(Registry $registry)
     {
         $this->registry = $registry;
     }

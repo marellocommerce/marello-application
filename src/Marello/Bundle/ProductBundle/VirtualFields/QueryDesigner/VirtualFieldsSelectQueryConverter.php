@@ -51,7 +51,7 @@ class VirtualFieldsSelectQueryConverter extends GroupingOrmQueryConverter
     /**
      * {@inheritdoc}
      */
-    protected function addFromStatement($entityClassName, $tableAlias)
+    protected function addFromStatement(string $entityClassName, string $tableAlias): void
     {
         $this->qb->from($entityClassName, $tableAlias);
     }
@@ -59,7 +59,7 @@ class VirtualFieldsSelectQueryConverter extends GroupingOrmQueryConverter
     /**
      * {@inheritdoc}
      */
-    protected function addOrderByColumn($columnAlias, $columnSorting)
+    protected function addOrderByColumn(string $columnAlias, string $columnSorting): void
     {
         // nothing to do
     }
@@ -67,7 +67,7 @@ class VirtualFieldsSelectQueryConverter extends GroupingOrmQueryConverter
     /**
      * {@inheritdoc}
      */
-    protected function addGroupByColumn($columnAlias)
+    protected function addGroupByColumn(string $columnAlias): void
     {
         // nothing to do
     }
@@ -75,7 +75,7 @@ class VirtualFieldsSelectQueryConverter extends GroupingOrmQueryConverter
     /**
      * {@inheritdoc}
      */
-    protected function saveColumnAliases($columnAliases)
+    protected function saveColumnAliases(array $columnAliases): void
     {
         // nothing to do
     }
@@ -83,7 +83,7 @@ class VirtualFieldsSelectQueryConverter extends GroupingOrmQueryConverter
     /**
      * {@inheritdoc}
      */
-    protected function saveTableAliases($tableAliases)
+    protected function saveTableAliases(array $tableAliases): void
     {
     }
 
@@ -91,24 +91,29 @@ class VirtualFieldsSelectQueryConverter extends GroupingOrmQueryConverter
      * {@inheritdoc}
      */
     protected function addSelectColumn(
-        $entityClassName,
-        $tableAlias,
-        $fieldName,
-        $columnExpr,
-        $columnAlias,
-        $columnLabel,
+        string $entityClass,
+        string $tableAlias,
+        string $fieldName,
+        string $columnExpr,
+        string $columnAlias,
+        string $columnLabel,
         $functionExpr,
-        $functionReturnType,
-        $isDistinct = false
-    ) {
+        ?string $functionReturnType,
+        bool $isDistinct = false
+    ): void {
         $this->qb->addSelect(sprintf('%s as %s', $columnExpr, $columnLabel));
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function addJoinStatement($joinType, $join, $joinAlias, $joinConditionType, $joinCondition)
-    {
+    protected function addJoinStatement(
+        ?string $joinType,
+        string $join,
+        string $joinAlias,
+        ?string $joinConditionType,
+        ?string $joinCondition
+    ): void {
         if (self::LEFT_JOIN === $joinType) {
             $this->qb->leftJoin($join, $joinAlias, $joinConditionType, $joinCondition);
         } else {

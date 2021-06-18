@@ -4,7 +4,7 @@ namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\PaymentBundle\Entity\PaymentMethodConfig;
 use Marello\Bundle\PaymentTermBundle\Integration\PaymentTermChannelType;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;

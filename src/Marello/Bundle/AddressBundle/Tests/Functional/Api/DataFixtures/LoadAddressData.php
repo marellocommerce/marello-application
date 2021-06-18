@@ -3,7 +3,7 @@
 namespace Marello\Bundle\AddressBundle\Tests\Functional\Api\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 
 class LoadAddressData extends AbstractFixture
