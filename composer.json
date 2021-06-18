@@ -20,9 +20,9 @@
         }
     },
     "require": {
-        "oro/platform": "4.1.*",
-        "oro/platform-serialised-fields": "4.1.*",
-        "oro/calendar-bundle": "4.1.*",
+        "oro/platform": "4.2.*",
+        "oro/platform-serialised-fields": "4.2.*",
+        "oro/calendar-bundle": "4.2.*",
         "mpdf/mpdf": "^8.0"
     },
     "minimum-stability": "dev",

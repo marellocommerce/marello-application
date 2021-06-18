@@ -3,7 +3,7 @@
 namespace Marello\Bundle\RefundBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 use Marello\Bundle\RefundBundle\Entity\RefundItem;
 

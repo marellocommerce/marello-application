@@ -3,7 +3,7 @@
 namespace Marello\Bundle\ShipmentBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class UpdateCurrentShipmentsWithOrganization extends AbstractFixture
 {

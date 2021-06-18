@@ -3,7 +3,7 @@
 namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\PaymentTermBundle\DependencyInjection\Configuration;
 use Marello\Bundle\PaymentTermBundle\Entity\PaymentTerm;
 use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;

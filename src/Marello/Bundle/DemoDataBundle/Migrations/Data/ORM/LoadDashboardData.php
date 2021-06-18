@@ -3,7 +3,7 @@
 namespace Marello\Bundle\DemoDataBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 use Oro\Bundle\DashboardBundle\Migrations\Data\ORM\AbstractDashboardFixture;
 

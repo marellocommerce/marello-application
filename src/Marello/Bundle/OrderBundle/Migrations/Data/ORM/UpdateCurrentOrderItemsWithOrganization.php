@@ -3,10 +3,9 @@
 namespace Marello\Bundle\OrderBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use Marello\Bundle\PackingBundle\Entity\PackingSlipItem;
 
 class UpdateCurrentOrderItemsWithOrganization extends AbstractFixture
 {

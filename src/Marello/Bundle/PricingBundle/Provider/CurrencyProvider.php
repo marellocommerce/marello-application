@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\PricingBundle\Provider;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Oro\Bundle\EntityBundle\ORM\Registry;
 use Doctrine\ORM\EntityRepository;
 
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
@@ -14,7 +14,7 @@ class CurrencyProvider
 {
     const CURRENCY_IDENTIFIER = 'currency-';
 
-    /** @var ManagerRegistry $registry  */
+    /** @var Registry $registry  */
     protected $registry;
 
     /** @var LocaleSettings */
@@ -22,11 +22,11 @@ class CurrencyProvider
 
     /**
      * CurrencyProvider constructor.
-     * @param ManagerRegistry $registry
+     * @param Registry $registry
      * @param LocaleSettings $localeSettings
      */
     public function __construct(
-        ManagerRegistry $registry,
+        Registry $registry,
         LocaleSettings $localeSettings
     ) {
         $this->registry = $registry;
