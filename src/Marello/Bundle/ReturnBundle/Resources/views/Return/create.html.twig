@@ -66,17 +66,14 @@
             ]
         },
         {
-            'title': 'marello.order.sections.general'|trans,
-            'class': 'active',
-            'subblocks':  [
-                { 'data' : [generalInformation] }
-            ]
-        },
-        {
             'title': 'General'|trans,
             'class': 'active',
             'subblocks': [
-                { 'data' : [form_row(form.salesChannel)] }
+                { 'data' : [
+                    generalInformation,
+                    form_row(form.salesChannel)
+                    ]
+                }
             ]
         },
         {
