@@ -24,7 +24,7 @@ class MarelloSupplierBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_4';
+        return 'v1_5';
     }
 
     /**
@@ -62,7 +62,7 @@ class MarelloSupplierBundleInstaller implements
         $table->setPrimaryKey(['id']);
         $table->addIndex(['organization_id']);
         $table->addUniqueIndex(['address_id'], 'UNIQ_16532C7BF5B7AF75', []);
-        $table->addUniqueIndex(['name']);
+        $table->addUniqueIndex(['organization_id', 'name']);
         $table->addUniqueIndex(['email']);
 
         $this->attachmentExtension->addAttachmentAssociation($schema, $table->getName());
