@@ -84,16 +84,6 @@ define(function(require) {
          */
         render: function(totals) {
             this.items = [];
-           /* if (totals !== undefined && totals.subtotals !== undefined && totals.total !== undefined) {
-                _.each(totals.subtotals, _.bind(this.pushItem, this));
-
-                this.pushItem(totals.total);
-            }
-            var items = _.filter(this.items);
-*/
-            this.$totals.html('sdfsdf');
-
-  /*          this.items = [];*/
         },
         /**
          * @inheritDoc
