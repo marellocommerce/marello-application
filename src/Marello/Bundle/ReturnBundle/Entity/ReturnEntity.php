@@ -167,6 +167,34 @@ class ReturnEntity extends ExtendReturnEntity implements
     protected $returnReference;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="received_at", type="datetime", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $receivedAt;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="track_trace_code", type="string", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $trackTraceCode;
+
+    /**
      * ReturnEntity constructor.
      */
     public function __construct()
@@ -318,6 +346,44 @@ class ReturnEntity extends ExtendReturnEntity implements
     public function setReturnReference($returnReference)
     {
         $this->returnReference = $returnReference;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getReceivedAt(): ?\DateTime
+    {
+        return $this->receivedAt;
+    }
+
+    /**
+     * @param \DateTime $receivedAt
+     * @return ReturnEntity
+     */
+    public function setReceivedAt(?\DateTime $receivedAt): ReturnEntity
+    {
+        $this->receivedAt = $receivedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTrackTraceCode(): ?string
+    {
+        return $this->trackTraceCode;
+    }
+
+    /**
+     * @param string $trackTraceCode
+     * @return ReturnEntity
+     */
+    public function setTrackTraceCode(string $trackTraceCode): ReturnEntity
+    {
+        $this->trackTraceCode = $trackTraceCode;
 
         return $this;
     }

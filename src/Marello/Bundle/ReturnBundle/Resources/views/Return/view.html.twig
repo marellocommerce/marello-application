@@ -27,6 +27,25 @@
 
 {% block content_data %}
     {% set id = 'marello-return-view' %}
+    {% set generalSubblocks = [] %}
+    {% set customerInformation %}
+        <div class="box-type1">
+            <div class="title">
+                <span class="widget-title">{{ 'marello.order.datablock.customer_information'|trans }}</span>
+            </div>
+            {% if entity.order.customer and entity.order.customer.company %}
+                {{ UI.renderHtmlProperty(
+                    'marello.order.customer.company.entity_label'|trans,
+                    UI.entityViewLink(entity.order.customer.company, entity.order.customer.company.name, 'marello_customer_company_view')
+                ) }}
+            {% endif %}
+                {{ UI.renderHtmlProperty(
+                    'marello.return.returnentity.customer_info.label'|trans,
+                    UI.entityViewLink(entity.order.customer, entity.order.customer|oro_format_name, 'marello_customer_view')
+                )}}
+                {{ UI.renderProperty('marello.customer.email.label'|trans, entity.order.customer.email) }}
+        </div>
+    {% endset %}
     {% set order %}
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
@@ -55,24 +74,44 @@
         </div>
     {% endset %}
 
-    {% set return %}
+    {% set sourceReferences %}
+        <div class="box-type1">
+            <div class="title">
+                <span class="widget-title">{{ 'marello.order.datablock.source_references_information'|trans }}</span>
+            </div>
+            {{ UI.renderProperty('marello.order.order_reference.label'|trans, entity.order.orderReference) }}
+            {{ UI.renderProperty('marello.order.invoice_reference.label'|trans, entity.order.invoiceReference) }}
+            {{ UI.renderProperty('marello.order.shipping_method_reference.label'|trans, entity.order.shippingMethodReference) }}
+        </div>
+    {% endset %}
+
+    {% set generalInformation %}
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
-                    {{ UI.renderProperty('marello.return.returnentity.return_number.label'|trans, entity.returnNumber) }}
-                    {{ UI.renderProperty('marello.return.returnentity.return_reference.label'|trans, entity.returnReference) }}
-                    {{ UI.renderProperty('oro.ui.created_at'|trans, entity.createdAt|oro_format_datetime) }}
-                    {{ UI.renderProperty('oro.ui.updated_at'|trans, entity.updatedAt|oro_format_datetime) }}
+                    <div class="box-type1">
+                        <div class="title">
+                            <span class="widget-title">{{ 'marello.return.returnentity.return_information.label'|trans }}</span>
+                        </div>
+                        {{ UI.renderProperty('marello.return.returnentity.return_number.label'|trans, entity.returnNumber) }}
+                        {{ UI.renderProperty('marello.return.returnentity.return_reference.label'|trans, entity.returnReference) }}
+                        {{ UI.renderProperty('oro.ui.created_at'|trans, entity.createdAt|oro_format_datetime) }}
+                        {{ UI.renderProperty('oro.ui.updated_at'|trans, entity.updatedAt|oro_format_datetime) }}
+                        {{ UI.renderProperty('marello.return.returnentity.track_trace_code.label'|trans, entity.trackTraceCode) }}
+                        {{ UI.renderProperty('marello.return.returnentity.received_at.label'|trans, entity.receivedAt|oro_format_datetime) }}
 
-                    {% set steps = marello_core_get_current_workflow_steps(entity) %}
-                    {% for stepLabel, stepName in steps %}
-                        {{ UI.renderProperty( stepLabel|trans({}, "workflows"), stepName|trans({}, "workflows") ) }}
-                    {% endfor %}
+                        {% set steps = marello_core_get_current_workflow_steps(entity) %}
+                        {% for stepLabel, stepName in steps %}
+                            {{ UI.renderProperty( stepLabel|trans({}, "workflows"), stepName|trans({}, "workflows") ) }}
+                        {% endfor %}
+                    </div>
+                    {{ customerInformation }}
+                    {{ sourceReferences }}
                 </div>
             </div>
         </div>
     {% endset %}
-
+    {% set generalSubblocks = generalSubblocks|merge([{'data' : [generalInformation] }]) %}
     {% set items %}
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
@@ -85,11 +124,9 @@
 
     {% set dataBlocks = [
         {
-            'title': 'marello.return.returnentity.entity_label'|trans,
+            'title': 'marello.order.datablock.general'|trans,
             'class': 'active',
-            'subblocks': [
-                { 'data' : [return] }
-            ]
+            'subblocks': generalSubblocks
         },
         {
             'title': 'marello.order.entity_label'|trans,

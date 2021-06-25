@@ -156,7 +156,7 @@ class SalesChannel extends ExtendSalesChannel implements
      * @var SalesChannelType
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\SalesBundle\Entity\SalesChannelType")
-     * @ORM\JoinColumn(name="channel_type", referencedColumnName="name")
+     * @ORM\JoinColumn(name="channel_type", referencedColumnName="name", nullable=false)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
