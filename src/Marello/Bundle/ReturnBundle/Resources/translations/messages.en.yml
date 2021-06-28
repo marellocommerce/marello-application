@@ -26,6 +26,7 @@ marello:
                         saved:        Return saved
                 error:
                     return:
+                        workflow.consumer: 'Item does not have a status or reason, please check if the consumers are running'
                         cannot_be_returned_without_shipment: 'An operation is forbidden. Reason: An order without shipment cannot be returned'
         returnitem:
             id.label:                   Id

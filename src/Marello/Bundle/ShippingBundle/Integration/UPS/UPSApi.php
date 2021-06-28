@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\ShippingBundle\Integration\UPS;
 
-use Guzzle\Http\Client;
+use GuzzleHttp\Client;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 class UPSApi
@@ -17,7 +17,7 @@ class UPSApi
      */
     public function __construct(ConfigManager $cm)
     {
-        $this->client = new Client($cm->get('marello_shipping.ups_api_base_url'));
+        $this->client = new Client(['base_uri' => $cm->get('marello_shipping.ups_api_base_url')]);
     }
 
     /**
