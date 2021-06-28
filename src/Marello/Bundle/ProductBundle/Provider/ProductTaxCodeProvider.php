@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\ProductBundle\Provider;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Oro\Bundle\EntityBundle\ORM\Registry;
 use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Provider\OrderItem\AbstractOrderItemFormChangesProvider;
@@ -12,14 +12,14 @@ use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 class ProductTaxCodeProvider extends AbstractOrderItemFormChangesProvider
 {
     /**
-     * @var ManagerRegistry $registry
+     * @var Registry $registry
      */
     protected $registry;
 
     /**
-     * @param ManagerRegistry $registry
+     * @param Registry $registry
      */
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(Registry $registry)
     {
         $this->registry = $registry;
     }

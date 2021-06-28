@@ -3,38 +3,16 @@
 namespace Marello\Bundle\ProductBundle\VirtualFields\QueryDesigner;
 
 use Doctrine\ORM\QueryBuilder;
-use Oro\Bundle\EntityBundle\Provider\VirtualFieldProviderInterface;
+
 use Oro\Bundle\QueryDesignerBundle\Model\AbstractQueryDesigner;
-use Oro\Bundle\QueryDesignerBundle\QueryDesigner\FunctionProviderInterface;
 use Oro\Bundle\QueryDesignerBundle\QueryDesigner\GroupingOrmQueryConverter;
-use Symfony\Bridge\Doctrine\ManagerRegistry;
 
 class VirtualFieldsSelectQueryConverter extends GroupingOrmQueryConverter
 {
     /**
-     * @var array
-     */
-    protected $tableAliasByColumn = [];
-
-    /**
      * @var QueryBuilder
      */
     protected $qb;
-
-    /**
-     * Constructor
-     *
-     * @param FunctionProviderInterface $functionProvider
-     * @param VirtualFieldProviderInterface $virtualFieldProvider
-     * @param ManagerRegistry $doctrine
-     */
-    public function __construct(
-        FunctionProviderInterface $functionProvider,
-        VirtualFieldProviderInterface $virtualFieldProvider,
-        ManagerRegistry $doctrine
-    ) {
-        parent::__construct($functionProvider, $virtualFieldProvider, $doctrine);
-    }
 
     /**
      * @param AbstractQueryDesigner $source

@@ -4,5 +4,6 @@ services:
         arguments:
             - '@oro_action.expression.context_accessor'
             - '@event_dispatcher'
+            - '@translator'
         tags:
             - { name: oro_action.action, alias: return_inspection_ok }
