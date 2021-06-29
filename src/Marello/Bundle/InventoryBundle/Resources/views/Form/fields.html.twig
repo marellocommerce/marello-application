@@ -124,17 +124,17 @@
     </div>
         {{ form_errors(form.deliveryDate) }}
     </td>
-    <td class="inventorybatch-purchase-price {{ form.purchasePrice.vars.errors|length ? 'has-errors' : '' }}">
-        <div class="fields-row">
-            {{ form_widget(form.purchasePrice) }}
-        </div>
-        {{ form_errors(form.purchasePrice) }}
-    </td>
     <td class="inventorybatch-expiration-date {{ form.expirationDate.vars.errors|length ? 'has-errors' : '' }}">
         <div class="fields-row">
             {{ form_widget(form.expirationDate) }}
         </div>
         {{ form_errors(form.expirationDate) }}
+    </td>
+    <td class="inventorybatch-purchase-price {{ form.purchasePrice.vars.errors|length ? 'has-errors' : '' }}">
+        <div class="fields-row">
+            {{ form_widget(form.purchasePrice) }}
+        </div>
+        {{ form_errors(form.purchasePrice) }}
     </td>
 {% endblock %}
 
@@ -179,8 +179,8 @@
                         <th class="inventorybatch-line-item-quantity"><span>{{ 'marello.inventory.inventorybatch.quantity.label'|trans }}</span></th>
                         <th class="inventorylevel-line-item-adjustment"><span>{{ 'marello.inventory.model.warehouse.adjustment.label'|trans }}</span></th>
                         <th class="inventorylevel-line-item-delivery-date"><span>{{ 'marello.inventory.inventorybatch.date_received.label'|trans }}</span></th>
-                        <th class="inventorylevel-line-item-purchase-price"><span>{{ 'marello.inventory.inventorybatch.purchase_price.label'|trans }}</span></th>
                         <th class="inventorylevel-line-item-expiration-date"><span>{{ 'marello.inventory.inventorybatch.expiration_date.label'|trans }}</span></th>
+                        <th class="inventorylevel-line-item-purchase-price"><span>{{ 'marello.inventory.inventorybatch.purchase_price.label'|trans }}</span></th>
                     </tr>
                     </thead>
                     <tbody data-last-index="{{ form.children|length}}" data-prototype-name="{{ prototype_name }}"{% if prototype_html is defined %} data-prototype="{{ prototype_html|escape }}"{% endif %}>
