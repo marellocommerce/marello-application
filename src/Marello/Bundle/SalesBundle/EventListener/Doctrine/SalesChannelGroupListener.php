@@ -2,12 +2,15 @@
 
 namespace Marello\Bundle\SalesBundle\EventListener\Doctrine;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
-use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
-use Oro\Bundle\SecurityBundle\Exception\ForbiddenException;
+
 use Symfony\Component\HttpFoundation\Session\Session;
+
+use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
+use Oro\Bundle\SecurityBundle\Exception\ForbiddenException;
+
+use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 
 class SalesChannelGroupListener
 {
@@ -99,10 +102,10 @@ class SalesChannelGroupListener
     }
 
     /**
-     * @param ObjectManager $entityManager
+     * @param OroEntityManager $entityManager
      * @return WarehouseChannelGroupLink|null
      */
-    private function getSystemWarehouseChannelGroupLink(ObjectManager $entityManager)
+    private function getSystemWarehouseChannelGroupLink(OroEntityManager $entityManager)
     {
         if ($this->systemWarehouseChannelGroupLink === null) {
             $this->systemWarehouseChannelGroupLink = $entityManager

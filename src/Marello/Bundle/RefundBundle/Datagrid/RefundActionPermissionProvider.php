@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\RefundBundle\Datagrid;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\DataGridBundle\Action\ActionPermissionInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 
