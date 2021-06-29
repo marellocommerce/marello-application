@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\InvoiceBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\InvoiceBundle\Entity\Creditmemo;
 use Marello\Bundle\InvoiceBundle\Mapper\MapperInterface;
 use Marello\Bundle\RefundBundle\Entity\Refund;

@@ -101,7 +101,7 @@ class BalancedInventoryHandler
     /**
      * {@inheritdoc}
      * @param $entityClass
-     * @return \Doctrine\Common\Persistence\ObjectManager|null
+     * @return \Doctrine\Persistence\ObjectManager|null
      */
     private function getManagerForClass($entityClass = BalancedInventoryLevel::class)
     {

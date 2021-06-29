@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\Processor;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\NoteBundle\Entity\Note;
 
 class NoteActivityProcessor

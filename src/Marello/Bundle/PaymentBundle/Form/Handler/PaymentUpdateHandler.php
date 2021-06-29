@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\PaymentBundle\Form\Handler;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Marello\Bundle\PaymentBundle\Entity\Payment;
 use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;

@@ -2,11 +2,9 @@
 
 namespace Marello\Bundle\InventoryBundle\ImportExport\Reader;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\EntityManager;
-use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
-use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
 use Oro\Bundle\ImportExportBundle\Reader\AbstractReader;
+
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 
 abstract class AbstractInventoryLevelReader extends AbstractReader
 {
