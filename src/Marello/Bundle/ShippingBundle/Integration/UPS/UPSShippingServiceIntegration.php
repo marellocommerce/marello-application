@@ -3,7 +3,7 @@
 namespace Marello\Bundle\ShippingBundle\Integration\UPS;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\ShippingBundle\Entity\Shipment;
 use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
 use Marello\Bundle\ShippingBundle\Integration\ShippingServiceIntegrationInterface;

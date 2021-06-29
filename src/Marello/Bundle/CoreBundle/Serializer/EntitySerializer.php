@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\CoreBundle\Serializer;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Oro\Bundle\EntityBundle\ORM\Registry;
 use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityExtendBundle\Serializer\ExtendEntityFieldFilter;
@@ -29,7 +29,7 @@ class EntitySerializer extends BaseEntitySerializer
     protected $workflowManager;
 
     /**
-     * @param ManagerRegistry              $doctrine
+     * @param Registry                     $doctrine
      * @param ConfigManager                $configManager
      * @param BaseDataAccessorInterface    $dataAccessor
      * @param BaseDataTransformerInterface $dataTransformer
@@ -37,7 +37,7 @@ class EntitySerializer extends BaseEntitySerializer
      * @param WorkflowManager              $workflowManager
      */
     public function __construct(
-        ManagerRegistry $doctrine,
+        Registry $doctrine,
         ConfigManager $configManager,
         BaseDataAccessorInterface $dataAccessor,
         BaseDataTransformerInterface $dataTransformer,
