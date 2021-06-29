@@ -2,7 +2,7 @@
 
 namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Workflow;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Oro\Bundle\EntityBundle\ORM\Registry;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -24,7 +24,7 @@ class ReplenishmentOrderAllocateOriginInventoryAction extends ReplenishmentOrder
     protected $replenishmentOrdersProvider;
 
     /**
-     * @var ManagerRegistry
+     * @var Registry
      */
     protected $registry;
 
@@ -32,13 +32,13 @@ class ReplenishmentOrderAllocateOriginInventoryAction extends ReplenishmentOrder
      * @param ContextAccessor $contextAccessor
      * @param EventDispatcherInterface $eventDispatcher
      * @param ReplenishmentOrdersFromConfigProvider $replenishmentOrdersProvider
-     * @param ManagerRegistry $registry
+     * @param Registry $registry
      */
     public function __construct(
         ContextAccessor $contextAccessor,
         EventDispatcherInterface $eventDispatcher,
         ReplenishmentOrdersFromConfigProvider $replenishmentOrdersProvider,
-        ManagerRegistry $registry
+        Registry $registry
     ) {
         parent::__construct($contextAccessor, $eventDispatcher);
 

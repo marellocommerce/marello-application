@@ -2,7 +2,7 @@
 
 namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Handler;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrder;
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderConfig;
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Provider\ReplenishmentOrdersFromConfigProvider;
