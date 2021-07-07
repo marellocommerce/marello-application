@@ -5,6 +5,9 @@ namespace Marello\Bundle\PurchaseOrderBundle\EventListener\Doctrine;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
+
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 use Marello\Bundle\InventoryBundle\Provider\AvailableInventoryProvider;
@@ -30,6 +33,9 @@ class PurchaseOrderOnOrderOnDemandCreationListener
      */
     private $availableInventoryProvider;
 
+    /** @var ConfigManager $configManager */
+    private $configManager;
+
     /**
      * @param AvailableInventoryProvider $availableInventoryProvider
      */
@@ -47,6 +53,10 @@ class PurchaseOrderOnOrderOnDemandCreationListener
         if (!$entity instanceof Order) {
             return;
         }
+        if (!$this->configManager->get('marello_inventory.inventory_on_demand')) {
+            return;
+        }
+
         $orderOnDemandItems = [];
         $salesChannel = $entity->getSalesChannel();
         foreach ($entity->getItems() as $item) {
@@ -209,5 +219,13 @@ class PurchaseOrderOnOrderOnDemandCreationListener
             ->toArray();
 
         return !empty($linkedWarehouses) ? reset($linkedWarehouses) : null;
+    }
+
+    /**
+     * @param ConfigManager $configManager
+     */
+    public function setConfigManager(ConfigManager $configManager)
+    {
+        $this->configManager = $configManager;
     }
 }
