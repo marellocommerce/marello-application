@@ -36,6 +36,9 @@ class Configuration implements ConfigurationInterface
                 ],
                 'balance_threshold_percentage' => [
                     'value' => 0.20
+                ],
+                'inventory_on_demand' => [
+                    'value' => false
                 ]
             ]
         );
