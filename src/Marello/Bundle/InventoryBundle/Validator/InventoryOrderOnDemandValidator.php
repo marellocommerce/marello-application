@@ -6,10 +6,15 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 
 class InventoryOrderOnDemandValidator extends ConstraintValidator
 {
+    /** @var ConfigManager $configManager */
+    private $configManager;
+
     /**
      * Checks if the passed entity is unique in collection.
      * @param mixed $entity
@@ -22,11 +27,13 @@ class InventoryOrderOnDemandValidator extends ConstraintValidator
             return;
         }
         $product = $entity->getProduct();
-        if ($entity->isOrderOnDemandAllowed() &&
-            (!$product->getPreferredSupplier() || $product->getSuppliers()->count() === 0)) {
-            $this->context->buildViolation($constraint->message)
-                ->atPath('orderOnDemandAllowed')
-                ->addViolation();
+        if ($this->configManager->get('marello_inventory.inventory_on_demand')) {
+            if ($entity->isOrderOnDemandAllowed() &&
+                (!$product->getPreferredSupplier() || $product->getSuppliers()->count() === 0)) {
+                $this->context->buildViolation($constraint->message)
+                    ->atPath('orderOnDemandAllowed')
+                    ->addViolation();
+            }
         }
         if ($entity->isOrderOnDemandAllowed() && $entity->isBackorderAllowed()) {
             $this->context
@@ -44,5 +51,13 @@ class InventoryOrderOnDemandValidator extends ConstraintValidator
                 ->atPath('orderOnDemandAllowed')
                 ->addViolation();
         }
+    }
+
+    /**
+     * @param ConfigManager $configManager
+     */
+    public function setConfigManager(ConfigManager $configManager)
+    {
+        $this->configManager = $configManager;
     }
 }

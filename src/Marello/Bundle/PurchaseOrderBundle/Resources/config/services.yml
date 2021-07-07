@@ -55,6 +55,8 @@ services:
         class: Marello\Bundle\PurchaseOrderBundle\EventListener\Doctrine\PurchaseOrderOnOrderOnDemandCreationListener
         arguments:
             - '@marello_inventory.provider.available_inventory_provider'
+        calls:
+            - ['setConfigManager', ['@oro_config.manager']]
         tags:
             - { name: doctrine.event_listener, event: postPersist }
             - { name: doctrine.event_listener, event: postFlush }
