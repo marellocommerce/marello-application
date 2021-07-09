@@ -42,11 +42,6 @@ class ReturnItemType extends AbstractType
                 'data' => 0,
             ]);
         }
-        $builder->add('reason', EnumChoiceType::class, [
-            'enum_code' => 'marello_return_reason',
-            'required'  => true,
-            'label'     => 'marello.return.returnitem.reason.label',
-        ]);
 
         $builder->addEventSubscriber($this->returnItemTypeSubscriber);
     }

@@ -98,7 +98,16 @@ class SalesChannelsDatagridListener
      */
     protected function addSelect(DatagridConfiguration $config)
     {
-        $config->getOrmQuery()->addSelect(
+        $config->getOrmQuery()
+            ->addSelect(
+                sprintf(
+                    'GROUP_CONCAT(
+                        DISTINCT CONCAT_WS(\'|\', %1$s.name, %1$s.code) SEPARATOR \';\'
+                    ) as channels',
+                    $this->getJoinAlias()
+                )
+            )
+            ->addSelect(
             sprintf('count(%s.code) AS channelsCount', $this->getJoinAlias())
         );
     }
@@ -124,7 +133,8 @@ class SalesChannelsDatagridListener
             'type' => 'twig',
             'frontend_type' => 'html',
             'template' => 'MarelloSalesBundle:SalesChannel/Datagrid/Property:channels.html.twig',
-            'renderable' => false
+            'renderable' => true,
+            'inline_editing' => ['enable' => false]
         ]);
     }
 

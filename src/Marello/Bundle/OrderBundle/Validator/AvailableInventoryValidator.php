@@ -141,6 +141,7 @@ class AvailableInventoryValidator extends ConstraintValidator
                     $errorPath = $this->getErrorPathFromConfig($constraint, $fields);
                     $this->context->buildViolation($constraint->message)
                         ->atPath($errorPath)
+                        ->setParameter('{{ productSku }}', $productSku)
                         ->addViolation();
                 }
             }
