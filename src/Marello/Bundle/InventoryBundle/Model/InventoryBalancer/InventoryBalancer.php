@@ -12,7 +12,7 @@ use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
-use Marello\Bundle\InventoryBundle\Manager\InventoryItemManager;
+use Marello\Bundle\InventoryBundle\Manager\InventoryItemManagerInterface;
 use Marello\Bundle\InventoryBundle\Model\BalancedInventory\BalancedInventoryHandler;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Marello\Bundle\InventoryBundle\Strategy\BalancerStrategiesRegistry;
@@ -31,7 +31,7 @@ class InventoryBalancer
     /** @var BalancedInventoryHandler $balancedInventoryHandler */
     protected $balancedInventoryHandler;
 
-    /** @var InventoryItemManager $inventoryItemManager */
+    /** @var InventoryItemManagerInterface $inventoryItemManager */
     protected $inventoryItemManager;
 
     /** @var string $balancingStrategy */
@@ -42,13 +42,13 @@ class InventoryBalancer
 
     /**
      * @param BalancerStrategiesRegistry $balancerRegistry
-     * @param InventoryItemManager $inventoryItemManager
+     * @param InventoryItemManagerInterface $inventoryItemManager
      * @param BalancedInventoryHandler $balancedInventoryHandler
      * @param ConfigManager $configManager
      */
     public function __construct(
         BalancerStrategiesRegistry $balancerRegistry,
-        InventoryItemManager $inventoryItemManager,
+        InventoryItemManagerInterface $inventoryItemManager,
         BalancedInventoryHandler $balancedInventoryHandler,
         ConfigManager $configManager
     ) {
