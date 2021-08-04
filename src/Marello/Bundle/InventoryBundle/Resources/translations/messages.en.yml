@@ -185,6 +185,7 @@ marello:
                 balancing_strategy.label:                     Strategy
                 balance_threshold_percentage.label:           Threshold Percentage
                 inventory_on_demand.label:                    Use Purchase Order with inventory on demand
+                inventory_on_demand_enabled.label:            Enable Inventory On Demand
         messages:
             success:
                 warehouse.saved:        Warehouse has been saved successfully
