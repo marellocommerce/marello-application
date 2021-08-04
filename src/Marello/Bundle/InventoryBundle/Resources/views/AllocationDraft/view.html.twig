@@ -1,0 +1,67 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity':      entity,
+        'indexPath':   path('marello_inventory_allocation_draft_index'),
+        'indexLabel': 'Allocation'|trans,
+        'entityTitle': entity.allocationDraftNumber
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set id = 'marello-inventory-allocation-draft-view' %}
+
+    {% set generalWidget %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ UI.renderProperty('marello.inventory.warehouse.entity_label'|trans, entity.warehouse.label) }}
+                    {{ oro_widget_render({
+                        'widgetType': 'block',
+                        'url': path('marello_order_order_address', {id: entity.shippingAddress.id, typeId: 2}),
+                    }) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
+    {% set allocationDraftItemsWidget %}
+        {{ dataGrid.renderGrid('marello-allocation-draft-items-grid', {'allocationDraftId': entity.id}) }}
+    {% endset %}
+
+    {% set infoWidget %}
+        {{ dataGrid.renderGrid('marello-allocation-draft-sub-allocation-grid', {'allocationDraftParentId': entity.id}) }}
+    {% endset %}
+
+    {% set dataBlocks = [
+        {
+            'title': 'General'|trans,
+            'useSpan': false,
+            'subblocks': [
+                { 'data' : [generalWidget] }
+            ]
+        },
+        {
+            'title': 'Draft Items'|trans,
+            'useSpan': false,
+            'subblocks': [
+                { 'data' : [allocationDraftItemsWidget] }
+            ]
+        },
+        {
+            'title': 'Sub Allocations'|trans,
+            'useSpan': false,
+            'subblocks': [
+                { 'data' : [infoWidget] }
+            ]
+        }
+    ]
+    %}
+
+    {% set data = { 'dataBlocks': dataBlocks } %}
+    {{ parent() }}
+{% endblock content_data %}
