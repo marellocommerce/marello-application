@@ -123,11 +123,12 @@ class PurchaseOrderController extends AbstractController
      */
     protected function createStepOne(Request $request)
     {
-        $form = $this->createForm(PurchaseOrderCreateStepOneType::class);
+        $form = $this->createForm(PurchaseOrderCreateStepOneType::class, new PurchaseOrder());
         $handler = new PurchaseOrderCreateStepOneHandler($form, $request);
+        $queryParams = $request->query->all();
 
         if ($handler->process()) {
-            return $this->forward('MarelloPurchaseOrderBundle:PurchaseOrder:createStepTwo');
+            return $this->forward('MarelloPurchaseOrderBundle:PurchaseOrder:createStepTwo', [], $queryParams);
         }
 
         return ['form' => $form->createView()];
@@ -142,6 +143,7 @@ class PurchaseOrderController extends AbstractController
     {
         if ($request->request->get('input_action') === 'marello_purchaseorder_purchaseorder_create') {
             $form = $this->createForm(PurchaseOrderCreateStepOneType::class, $purchaseOrder);
+            $queryParams = $request->query->all();
             $form->handleRequest($request);
             $formData = $form->all();
 
@@ -155,7 +157,8 @@ class PurchaseOrderController extends AbstractController
 
             return [
                 'form' => $form->createView(),
-                'entity' => $purchaseOrder
+                'entity' => $purchaseOrder,
+                'queryParams' => $queryParams
             ];
         }
 

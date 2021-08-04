@@ -97,7 +97,9 @@ class OrderWorkflowStartListener
     {
         return [
             WorkflowNameProviderInterface::ORDER_WORKFLOW_1,
-            WorkflowNameProviderInterface::ORDER_WORKFLOW_2
+            WorkflowNameProviderInterface::ORDER_WORKFLOW_2,
+            WorkflowNameProviderInterface::ORDER_DEPRECATED_WORKFLOW_1,
+            WorkflowNameProviderInterface::ORDER_DEPRECATED_WORKFLOW_2
         ];
     }
 

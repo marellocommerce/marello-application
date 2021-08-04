@@ -46,6 +46,11 @@ class InventoryLevelUpdateAfterEventListener
             $context->getUser(),
             $context->getRelatedEntity()
         );
+
+        if ($context->getValue('forceFlush')) {
+            $em = $this->doctrineHelper->getEntityManagerForClass(InventoryLevelLogRecord::class);
+            $em->flush();
+        }
     }
 
 

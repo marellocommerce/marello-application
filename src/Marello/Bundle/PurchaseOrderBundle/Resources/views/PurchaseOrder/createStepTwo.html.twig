@@ -3,7 +3,12 @@
 
 {% oro_title_set({params : {"%sku%": entity.sku|default('N/A'|trans) , "%name%": (entity.id ? entity.defaultName.string : '')|default('N/A'|trans) } }) %}
 
-{% set formAction = path('marello_purchaseorder_purchaseorder_create_step_two') %}
+{% if queryParams is defined %}
+    {% set formAction = path('marello_purchaseorder_purchaseorder_create_step_two', queryParams) %}
+{% else %}
+    {% set formAction = path('marello_purchaseorder_purchaseorder_create_step_two') %}
+{% endif %}
+
 
 {% block navButtons %}
     {{ parent() }}
@@ -57,9 +62,9 @@
         </div>
     {% endset %}
 
-    {% set dataBlocks = [
-        {
-            'title': 'marello.supplier.entity_label'|trans,
+    {% set dataBlocks = {
+        'general': {
+            'title': 'marello.core.ui.sections.general'|trans,
             'class': 'active',
             'subblocks': [{
                 'title': 'marello.purchaseorder.select_supplier'|trans,
@@ -68,17 +73,7 @@
                 ]
             }]
         },
-        {
-            'title': 'marello.purchaseorder.billing_and_shipping.label'|trans,
-            'class': '',
-            'subblocks': [{
-                'title': '',
-                'data': [
-                    form_row(form.dueDate),
-                ]
-            }]
-        },
-        {
+        'items_advice': {
             'title': 'marello.purchaseorder.items_advice'|trans,
             'class': '',
             'subblocks': [{
@@ -88,7 +83,7 @@
                 ]
             }]
         },
-        {
+        'items_additional': {
             'title': 'marello.purchaseorder.items_additional'|trans,
             'class': '',
             'subblocks': [{
@@ -98,7 +93,7 @@
                 ]
             }]
         },
-        {
+        'order_totals': {
             'title': 'marello.purchaseorder.order_total.label'|trans,
             'class': '',
             'subblocks': [{
@@ -106,8 +101,18 @@
                     totals
                 ]
             }]
-        }
-    ] %}
+        },
+        'billing_shipping': {
+            'title': 'marello.purchaseorder.billing_and_shipping.label'|trans,
+            'class': '',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    form_row(form.dueDate),
+                ]
+            }]
+        },
+    } %}
     {% set data = {
         'formErrors': form_errors(form)? form_errors(form) : null,
         'dataBlocks': dataBlocks,

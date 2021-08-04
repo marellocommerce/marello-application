@@ -178,6 +178,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addColumn('warehouse_name', 'string', ['notnull' => true, 'length' => 255]);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['inventory_item_id']);
+        $table->addIndex(['inventory_level_id']);
         $table->addIndex(['user_id'], 'IDX_32D13BA4F675F31B', []);
     }
 
@@ -373,6 +374,12 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
             ['inventory_item_id'],
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_inventory_level'),
+            ['inventory_level_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_user'),

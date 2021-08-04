@@ -10,7 +10,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Oro\Bundle\SecurityBundle\Exception\ForbiddenException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ReturnController extends AbstractController
@@ -81,10 +81,14 @@ class ReturnController extends AbstractController
             }
 
             return [
-                'form' => $form->createView(),
+                'form' => $form->createView()
             ];
         } else {
-            throw new ForbiddenException('An order without shipment cannot be returned');
+            throw new AccessDeniedException(
+                $this->get('translator')->trans(
+                    'marello.return.returnentity.messages.error.return.cannot_be_returned_without_shipment'
+                )
+            );
         }
     }
 

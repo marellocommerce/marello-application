@@ -374,7 +374,7 @@ class PurchaseOrderControllerTest extends WebTestCase
         $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
 
         $html = $crawler->html();
-        $this->assertContains('Due date must be greater than', $html);
+        $this->assertContains('Expected Delivery date must be greater than today', $html);
     }
 
     /**

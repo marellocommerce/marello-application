@@ -115,4 +115,23 @@ class InventoryLevelController extends AbstractController
             $request
         );
     }
+
+    /**
+     * @Route(
+     *     path="/manage-batches/view/{id}",
+     *     requirements={"id"="\d+"},
+     *     name="marello_inventory_inventorylevel_batches_view"
+     * )
+     * @Template("MarelloInventoryBundle:InventoryLevel:batchesView.html.twig")
+     *
+     * @param InventoryLevel $inventoryLevel
+     *
+     * @return array
+     */
+    public function viewAction(InventoryLevel $inventoryLevel)
+    {
+        return [
+            'entity' => $inventoryLevel
+        ];
+    }
 }

@@ -46,7 +46,7 @@ class MarelloOrderBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_13_1';
+        return 'v3_1_2';
     }
 
     /**
@@ -92,8 +92,6 @@ class MarelloOrderBundleInstaller implements
                 'notnull' => false, 'comment' => '(DC2Type:json_array)'
             ]
         );
-        $table->addColumn('payment_reference', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('payment_details', 'text', ['notnull' => false]);
         $table->addColumn('data', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
         $table->addColumn(
             'shipping_amount_incl_tax',
@@ -112,6 +110,7 @@ class MarelloOrderBundleInstaller implements
         $table->addColumn('shipping_method', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('shipping_method_type', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('shipping_method_reference', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('shipping_method_details', 'text', ['notnull' => false]);
         $table->addColumn(
             'estimated_shipping_cost_amount',
             'money',

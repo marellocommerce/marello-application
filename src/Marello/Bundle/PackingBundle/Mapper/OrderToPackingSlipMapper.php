@@ -108,7 +108,7 @@ class OrderToPackingSlipMapper extends AbstractPackingSlipMapper
                         if ($inventoryBatch->getQuantity() >= $quantity) {
                             $data[$inventoryBatch->getBatchNumber()] = $quantity;
                             break;
-                        } elseif ($batchQty = $inventoryBatch->getQuantity() > 0) {
+                        } elseif (($batchQty = $inventoryBatch->getQuantity()) > 0) {
                             $data[$inventoryBatch->getBatchNumber()] = $batchQty;
                             $quantity = $quantity - $batchQty;
                         }
@@ -117,7 +117,7 @@ class OrderToPackingSlipMapper extends AbstractPackingSlipMapper
                 }
             }
         }
-        $packingSlipItemData['weight'] = $product->getWeight();
+        $packingSlipItemData['weight'] = ($product->getWeight() * $orderItem->getQuantity());
         $packingSlipItemData['orderItem'] = $orderItem;
         $this->assignData($packingSlipItem, $packingSlipItemData);
 

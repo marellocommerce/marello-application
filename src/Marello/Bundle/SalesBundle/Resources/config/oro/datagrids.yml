@@ -1,5 +1,6 @@
 datagrids:
     marello-sales-channel:
+        extended_entity_name: Marello\Bundle\SalesBundle\Entity\SalesChannel
         source:
             type: orm
             query:

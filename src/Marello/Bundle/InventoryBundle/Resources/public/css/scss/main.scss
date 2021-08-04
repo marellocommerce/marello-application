@@ -16,7 +16,7 @@
 
 .inventorylevel-warehouse {
     .select2-container {
-        width: 190px;
+        width: 300px;
 
         .select2-choice {
             .select2-arrow {
@@ -30,7 +30,7 @@
     }
 }
 
-.inventorylevel-adjustment {
+.inventorylevel-adjustment, .inventorybatch-adjustment {
     .selector {
         width: 100px !important;
 
@@ -45,6 +45,12 @@
 
     input {
         width: 80px;
+    }
+}
+
+.inventorybatch-delivery-date, .inventorybatch-purchase-price, .inventorybatch-expiration-date {
+    input[type=text] {
+        width: 100px !important;
     }
 }
 

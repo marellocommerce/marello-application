@@ -16,6 +16,8 @@ use Marello\Bundle\ProductBundle\Datagrid\ORM\Query\ProductsGridSqlWalker;
 
 class ProductGridListener
 {
+    protected $excludedGroupByFields  = ['hasImage', 'status'];
+
     /**
      * @param BuildBefore $event
      */
@@ -27,7 +29,8 @@ class ProductGridListener
             ->addSelect('i.id as image')
             ->addSelect('(CASE WHEN p.image IS NOT NULL THEN true ELSE false END) as hasImage')
             ->addSelect('IDENTITY(p.status) as status')
-            ->addLeftJoin('p.image', 'i');
+            ->addLeftJoin('p.image', 'i')
+            ->addGroupBy('i.id');
         $columns = $config->offsetGetByPath('[columns]');
         $columns = array_merge(
             [
@@ -96,13 +99,7 @@ class ProductGridListener
         $groupByParts = $dataSource->getQueryBuilder()->getDQLPart('groupBy');
         $newGroupByParts = [];
         foreach ($groupByParts as $key => $groupByPart) {
-            $parts = [];
-            foreach ($groupByPart->getParts() as $k => $part) {
-                $part = str_replace('hasImage', '', $part);
-                $part = str_replace(',,', ',', $part);
-                $parts[$k] = $part;
-            }
-            $newGroupByParts[$key] = new GroupBy($parts);
+            $newGroupByParts[$key] = $this->formatGroupByParts($groupByPart->getParts());
         }
         $dataSource->getQueryBuilder()->resetDQLPart('groupBy');
         $dataSource->getQueryBuilder()->add('groupBy', $newGroupByParts);
@@ -110,6 +107,35 @@ class ProductGridListener
         $config = $grid->getConfig();
         $columnsConfig = $this->switchColumns($config, 'createdAt', 'tags');
         $config->offsetSetByPath('[columns]', $columnsConfig);
+    }
+
+    /**
+     * @param array $groupByParts
+     * @return GroupBy
+     */
+    protected function formatGroupByParts(array $groupByParts)
+    {
+        $parts = [];
+        foreach ($groupByParts as $k => $part) {
+            $parts[$k] = $this->removeFieldsFromGroupBy($this->excludedGroupByFields, $part);
+        }
+
+        return new GroupBy($parts);
+    }
+
+    /**
+     * @param array $fields
+     * @param $part
+     * @return mixed
+     */
+    protected function removeFieldsFromGroupBy(array $fields, $part)
+    {
+        foreach ($fields as $field) {
+            $part = str_replace($field, '', $part);
+            $part = str_replace(',,', ',', $part);
+        }
+
+        return $part;
     }
 
     /**

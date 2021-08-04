@@ -81,4 +81,15 @@ class PaymentTermProvider
     {
         return $this->doctrineHelper->getEntityRepositoryForClass(PaymentTerm::class)->findAll();
     }
+
+    /**
+     * @param string $code
+     * @return PaymentTerm|null
+     */
+    public function getPaymentTerm($code)
+    {
+        return $this->doctrineHelper
+            ->getEntityRepositoryForClass(PaymentTerm::class)
+            ->findOneBy(['code' => $code]);
+    }
 }
