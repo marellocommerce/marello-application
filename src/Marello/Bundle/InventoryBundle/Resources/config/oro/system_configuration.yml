@@ -34,11 +34,19 @@ system_configuration:
                 constraints:
                     - NotBlank: ~
 
+        marello_inventory.inventory_on_demand_enabled:
+            data_type: boolean
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+            options:
+                label: marello.inventory.system_configuration.fields.inventory_on_demand_enabled.label
+                required: false
+
         marello_inventory.inventory_on_demand:
             data_type: boolean
             type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
             options:
                 label: marello.inventory.system_configuration.fields.inventory_on_demand.label
+                tooltip: marello.inventory.system_configuration.fields.inventory_on_demand
                 required: false
 
     tree:
@@ -59,4 +67,5 @@ system_configuration:
                                 children:
                                     inventory_on_demand_general:
                                         children:
+                                            - marello_inventory.inventory_on_demand_enabled
                                             - marello_inventory.inventory_on_demand
