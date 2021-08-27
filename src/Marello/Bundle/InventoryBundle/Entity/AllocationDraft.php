@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 use Elasticsearch\Endpoints\Cat\Allocation;
 use Marello\Bundle\InventoryBundle\Model\ExtendAllocationDraft;
+use phpDocumentor\Reflection\Types\This;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
@@ -111,7 +112,7 @@ class AllocationDraft extends ExtendAllocationDraft implements
      * @var Warehouse
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\Warehouse")
-     * @ORM\JoinColumn(onDelete="SET NULL", nullable=true)
+     * @ORM\JoinColumn(name="warehouse_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -186,13 +187,28 @@ class AllocationDraft extends ExtendAllocationDraft implements
      */
     protected $allocationDraftNumber;
 
+    /**
+     * @var string
+     * @ORM\Column(name="type", type="string", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $type;
 
     /**
      * @var string
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
-     *              "auditable"=true
+     *              "auditable"=false
      *          },
      *          "importexport"={
      *              "excluded"=true
@@ -296,19 +312,18 @@ class AllocationDraft extends ExtendAllocationDraft implements
     }
 
     /**
-     * @return Warehouse
+     * @return Warehouse|null
      */
-    public function getWarehouse()
+    public function getWarehouse(): ?Warehouse
     {
         return $this->warehouse;
     }
 
     /**
-     * @param Warehouse $warehouse
-     *
+     * @param Warehouse|null $warehouse
      * @return $this
      */
-    public function setWarehouse($warehouse)
+    public function setWarehouse(Warehouse $warehouse = null): self
     {
         $this->warehouse = $warehouse;
         
@@ -316,8 +331,7 @@ class AllocationDraft extends ExtendAllocationDraft implements
     }
 
     /**
-     * @param AllocationDraft $parent
-     *
+     * @param AllocationDraft|null $parent
      * @return $this
      */
     public function setParent(AllocationDraft $parent = null)
@@ -330,14 +344,13 @@ class AllocationDraft extends ExtendAllocationDraft implements
     /**
      * @return AllocationDraft
      */
-    public function getParent()
+    public function getParent(): ?AllocationDraft
     {
         return $this->parent;
     }
 
     /**
      * @param AllocationDraft $child
-     *
      * @return $this
      */
     public function addChild(AllocationDraft $child)
@@ -449,6 +462,25 @@ class AllocationDraft extends ExtendAllocationDraft implements
         if (!$this->allocationDraftNumber) {
             $this->setAllocationDraftNumber(sprintf('%09d', $id));
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     * @return $this
+     */
+    public function setType(string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
     }
 
     /**

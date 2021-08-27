@@ -404,3 +404,150 @@ datagrids:
                 hide: true
                 pagination:
                     hide: true
+
+    marello-allocation-draft-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - allodraft
+                    - parent.allocationDraftNumber as parentDraft
+                    - wh.label as warehouse
+                from:
+                    - { table: MarelloInventoryBundle:AllocationDraft, alias: allodraft }
+                join:
+                    left:
+                        - { join: allodraft.parent, alias: parent }
+                        - { join: allodraft.warehouse, alias: wh}
+        columns:
+            allocationDraftNumber:
+                label:          'Allocation Draft Number'
+                frontend_type:  string
+            parentDraft:
+                label:          'Parent Allocation Draft Number'
+                frontend_type:  string
+            warehouse:
+                label:              marello.inventory.inventorylevel.warehouse.label
+                frontend_type:      string
+            type:
+                label:          'Type'
+                frontend_type:  string
+            createdAt:
+                label:          oro.ui.created_at
+                frontend_type:  datetime
+            updatedAt:
+                label:          oro.ui.updated_at
+                frontend_type:  datetime
+        filters:
+            columns:
+                allocationDraftNumber:
+                    type:  string
+                    data_name:  allodraft.allocationDraftNumber
+                parentDraft:
+                    type:      string
+                    data_name: parent.allocationDraftNumber
+                warehouse:
+                    type:             string
+                    data_name:        warehouse
+                type:
+                    type: string
+                    data_name:  allodraft.type
+                createdAt:
+                    type: datetime
+                    data_name: allodraft.createdAt
+                updatedAt:
+                    type: datetime
+                    data_name: allodraft.updatedAt
+        sorters:
+            columns:
+                allocationDraftNumber:
+                    data_name: allodraft.allocationDraftNumber
+                type:
+                    data_name: allodraft.type
+                createdAt:
+                    data_name: allodraft.createdAt
+                updatedAt:
+                    data_name: allodraft.updatedAt
+                parentDraft:
+                    data_name: parentDraft
+            default:
+                allocationDraftNumber: 'DESC'
+        properties:
+            id: ~
+            inventory_view_link:
+                type:       url
+                route:      marello_inventory_allocation_draft_view
+                params:     [ id ]
+        actions:
+            view:
+                type:           navigate
+                label:          oro.grid.action.view
+                link:           inventory_view_link
+                icon:           eye
+                acl_recource:   marello_inventory_inventory_view
+                rowAction:      true
+
+    marello-allocation-draft-sub-allocation-grid:
+        extends: marello-allocation-draft-grid
+        source:
+            query:
+                where:
+                    and:
+                        - IDENTITY(allodraft.parent) = :allocationDraftParentId
+            bind_parameters:
+                 allocationDraftParentId: allocationDraftParentId
+        filters: ~
+        sorters: ~
+        options:
+            export: false
+            toolbarOptions:
+                hide: true
+
+    marello-allocation-draft-items-grid:
+        source:
+            extended_entity_name: Marello\Bundle\InventoryBundle\Entity\AllocationDraftItem
+            type: orm
+            query:
+                select:
+                    - allodraftItem
+                    - wh.label as warehouse
+                from:
+                    - { table: MarelloInventoryBundle:AllocationDraftItem, alias: allodraftItem }
+                join:
+                    left:
+                        - { join: allodraftItem.orderItem, alias: orderItem }
+                        - { join: allodraftItem.warehouse, alias: wh }
+                where:
+                    and:
+                        - IDENTITY(allodraftItem.allocationDraft) = :allocationDraftId
+            bind_parameters:
+                allocationDraftId: allocationDraftId
+        columns:
+            productSku:
+                label:           marello.product.sku.label
+                data_name:       productSku
+                frontend_type:   string
+            productName:
+                label:            marello.product.name.label
+                frontend_type:    string
+                data_name:        productName
+            quantity:
+                label:            marello.order.orderitem.quantity.label
+                frontend_type:    number
+            warehouse:
+                label:              marello.inventory.inventorylevel.warehouse.label
+                frontend_type:      string
+            orderItem:
+                label:            'total qty allocated'
+                type:             twig
+                frontend_type:    html
+                template:         MarelloInventoryBundle:Datagrid/Property:total_allocated.html.twig
+        sorters:
+            columns:
+                productSku:
+                    data_name: allodraftItem.productSku
+            default:
+                productSku: 'ASC'
+        options:
+            toolbarOptions:
+                hide: true

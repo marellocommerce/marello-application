@@ -88,7 +88,7 @@ class OrderToPackingSlipMapper extends AbstractPackingSlipMapper
         $product = $orderItem->getProduct();
         /** @var InventoryItem $inventoryItem */
         $inventoryItem = $product->getInventoryItems()->first();
-        if ($inventoryItem) {
+        if ($inventoryItem->isEnableBatchInventory()) {
             if ($inventoryLevel = $inventoryItem->getInventoryLevel($warehouse)) {
                 $inventoryBatches = $inventoryLevel->getInventoryBatches()->toArray();
                 if (count($inventoryBatches) > 0) {

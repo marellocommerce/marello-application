@@ -137,6 +137,21 @@ class AllocationDraftItem extends ExtendAllocationDraftItem implements Organizat
     protected $comment;
 
     /**
+     * @var Warehouse
+     *
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\Warehouse")
+     * @ORM\JoinColumn(name="warehouse_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $warehouse;
+
+    /**
      * @ORM\PrePersist
      */
     public function prePersist()
@@ -292,6 +307,25 @@ class AllocationDraftItem extends ExtendAllocationDraftItem implements Organizat
     public function setComment($comment)
     {
         $this->comment = $comment;
+
+        return $this;
+    }
+
+    /**
+     * @return Warehouse|null
+     */
+    public function getWarehouse(): ?Warehouse
+    {
+        return $this->warehouse;
+    }
+
+    /**
+     * @param Warehouse|null $warehouse
+     * @return $this
+     */
+    public function setWarehouse(Warehouse $warehouse = null): self
+    {
+        $this->warehouse = $warehouse;
 
         return $this;
     }

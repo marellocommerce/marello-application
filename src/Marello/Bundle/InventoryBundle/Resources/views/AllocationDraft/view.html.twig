@@ -1,6 +1,7 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% import 'MarelloAddressBundle::macros.html.twig' as Address %}
 
 {% block pageHeader %}
     {% set breadcrumbs = {
@@ -20,10 +21,12 @@
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
                     {{ UI.renderProperty('marello.inventory.warehouse.entity_label'|trans, entity.warehouse.label) }}
-                    {{ oro_widget_render({
-                        'widgetType': 'block',
-                        'url': path('marello_order_order_address', {id: entity.shippingAddress.id, typeId: 2}),
-                    }) }}
+                    <div class="attribute-item">
+                        <div class="attribute-item__term">{{'marello.address.marelloaddress.entity_label'|trans}}</div>
+                        <div class="attribute-item__description">
+                            {{ Address.renderAddress(entity.shippingAddress) }}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

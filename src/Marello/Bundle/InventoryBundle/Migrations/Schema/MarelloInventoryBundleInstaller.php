@@ -25,7 +25,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
      */
     public function getMigrationVersion()
     {
-        return 'v2_5_1';
+        return 'v2_6_2';
     }
 
     /**
@@ -44,6 +44,8 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $this->createMarelloInventoryWarehouseChannelGroupLinkTable($schema);
         $this->createMarelloInventoryWhChLinkJoinChannelGroupTable($schema);
         $this->createMarelloInventoryBalancedInventoryLevel($schema);
+        $this->createMarelloInventoryAllocationDraft($schema);
+        $this->createMarelloInventoryAllocationDraftItem($schema);
 
         /** Foreign keys generation **/
         $this->addMarelloInventoryItemForeignKeys($schema);
@@ -55,6 +57,8 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $this->addMarelloInventoryWarehouseChannelGroupLinkForeignKeys($schema);
         $this->addMarelloInventoryWhChLinkJoinChannelGroupForeignKeys($schema);
         $this->addMarelloInventoryBalancedInventoryLevelForeignKeys($schema);
+        $this->addMarelloInventoryAllocationDraftForeignKeys($schema);
+        $this->addMarelloInventoryAllocationDraftItemForeignKeys($schema);
     }
 
     /**
@@ -290,6 +294,49 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
     }
 
     /**
+     * @param Schema $schema
+     */
+    protected function createMarelloInventoryAllocationDraft(Schema $schema)
+    {
+        $table = $schema->createTable('marello_inventory_alloc_draft');
+        $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
+        $table->addColumn('order_id', 'integer', ['notnull' => true]);
+        $table->addColumn('shipping_address_id', 'integer', ['notnull' => false]);
+        $table->addColumn('warehouse_id', 'integer', ['notnull' => false]);
+        $table->addColumn('parent_id', 'integer', ['notnull' => false]);
+        $table->addColumn('type', 'string', ['notnull' => false]);
+        $table->addColumn('comment', 'text', ['notnull' => false]);
+        $table->addColumn('allocation_draft_number', 'string', ['length' => 255, 'notnull' => false]);
+        $table->addColumn('created_at', 'datetime');
+        $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
+
+        $table->setPrimaryKey(['id']);
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    protected function createMarelloInventoryAllocationDraftItem(Schema $schema)
+    {
+        $table = $schema->createTable('marello_inventory_alloc_item');
+        $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
+        $table->addColumn('allocation_draft_id', 'integer', ['notnull' => true]);
+        $table->addColumn('product_id', 'integer', ['notnull' => true]);
+        $table->addColumn('product_name', 'string', ['length' => 255]);
+        $table->addColumn('product_sku', 'string', ['length' => 255]);
+        $table->addColumn('order_item_id', 'integer', ['notnull' => false]);
+        $table->addColumn('warehouse_id', 'integer', ['notnull' => false]);
+        $table->addColumn('quantity', 'float', ['notnull' => true]);
+        $table->addColumn('comment', 'text', ['notnull' => false]);
+        $table->addColumn('created_at', 'datetime');
+        $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
+        $table->setPrimaryKey(['id']);
+        $table->addIndex(['organization_id']);
+    }
+
+    /**
      * Add marello_inventory_item foreign keys.
      *
      * @param Schema $schema
@@ -502,6 +549,76 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
             ['product_id'],
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
+        );
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    protected function addMarelloInventoryAllocationDraftForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('marello_inventory_alloc_draft');
+        $table->addForeignKeyConstraint(
+            $table,
+            ['parent_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_organization'),
+            ['organization_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_order_order'),
+            ['order_id'],
+            ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_address'),
+            ['shipping_address_id'],
+            ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_inventory_warehouse'),
+            ['warehouse_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    protected function addMarelloInventoryAllocationDraftItemForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('marello_inventory_alloc_item');
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_product_product'),
+            ['product_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_order_order_item'),
+            ['order_item_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_inventory_alloc_draft'),
+            ['allocation_draft_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_organization'),
+            ['organization_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
     }
 
