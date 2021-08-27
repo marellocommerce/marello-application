@@ -70,8 +70,8 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
             $results = $strategy->getWarehouseResults($order, $results);
         }
 
-        if (count($results) >= 1) {
-            return reset($results);
+        if (count($results) > 0) {
+            return $results;
         }
 
         return [];

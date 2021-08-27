@@ -43,7 +43,7 @@ class MinimumDistanceWFAStrategy implements WFAStrategyInterface
      */
     public function isEnabled()
     {
-        return true;
+        return false;
     }
 
     /**
@@ -81,7 +81,9 @@ class MinimumDistanceWFAStrategy implements WFAStrategyInterface
             /** @var OrderWarehouseResult $warehouseResult */
             foreach ($warehousesSet as $warehouseResult) {
                 $originAddress = $warehouseResult->getWarehouse()->getAddress();
-                $distance += $this->distanceCalculator->calculate($originAddress, $destinationAddress);
+                if ($originAddress) {
+                    $distance += $this->distanceCalculator->calculate($originAddress, $destinationAddress);
+                }
             }
             $distances[$key] = $distance;
         }
