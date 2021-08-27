@@ -868,6 +868,11 @@ workflows:
                         parameters_mapping:
                             order: $order
                             status: 'paid'
+#                            overrideExistingStatus: false
+                    - '@call_service_method':
+                          service: marello_inventory.provider.inventory_allocation_provider
+                          method: allocateOrderToWarehouses
+                          method_parameters: [$order]
             prepare_shipping_definition:
                 conditions:
                     '@and':

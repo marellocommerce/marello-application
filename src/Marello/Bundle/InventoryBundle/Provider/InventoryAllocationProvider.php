@@ -72,7 +72,7 @@ class InventoryAllocationProvider
     public function allocateOrderToWarehouses(Order $order)
     {
         // check if order needs to be consolidated
-        $consolidation = false; //$order->isConsolidiationEnabled()
+        $consolidation = $order->isConsolidationEnabled();
         $consolidationWarehouse = null;
         if ($consolidation) {
             $consolidationWarehouse = $this->getConsolidationWarehouse($order);
@@ -81,40 +81,83 @@ class InventoryAllocationProvider
         // consolidation is not enabled, so we just run the 'normal' WFA rules (all of them)
         // the result of the WFA rules is also the input for the AllocationDraft/AllocationDraftItems
         // create all allocationDrafts/draft items
+        $allOrderItems = new ArrayCollection();
         $allItems = [];
         $subAllocations = [];
         $em = $this->doctrineHelper->getEntityManagerForClass(AllocationDraft::class);
-        foreach ($this->warehousesProvider->getWarehousesForOrder($order) as $whAllocationResult) {
-            /** @var Order $order */
-            $allocationDraft = new AllocationDraft();
-            $allocationDraft->setOrder($order);
-            $allocationDraft->setWarehouse($whAllocationResult->getWarehouse());
-            $shippingAddress = $order->getShippingAddress();
-            if ($consolidationWarehouse->getCode() !== $whAllocationResult->getWarehouse()->getCode()) {
-                $shippingAddress = $consolidationWarehouse->getAddress();
-            }
-            $allocationDraft->setShippingAddress($shippingAddress);
-            foreach ($whAllocationResult->getOrderItems() as $item) {
-                $allocationDraftItem = new AllocationDraftItem();
-                $allocationDraftItem->setOrderItem($item);
-                $allocationDraftItem->setProduct($item->getProduct());
-                $allocationDraftItem->setProductSku($item->getProductSku());
-                $allocationDraftItem->setProductName($item->getProductName());
-                $allocationDraftItem->setQuantity($item->getQuantity());
-                $allocationDraft->addItem($allocationDraftItem);
-
-                if ($consolidationWarehouse) {
-                    $allItems[] = clone $allocationDraftItem;
-                    $subAllocations[] = $allocationDraft;
+        foreach ($this->warehousesProvider->getWarehousesForOrder($order) as $orderWarehouseResults) {
+            foreach ($orderWarehouseResults as $result) {
+                /** @var Order $order */
+                $allocationDraft = new AllocationDraft();
+                $allocationDraft->setOrder($order);
+                $allocationDraft->setType('On Hand');
+                if ($result->getWarehouse()->getCode() === 'no_warehouse') {
+                    $allocationDraft->setType('Waiting for supply');
                 }
+                if ($result->getWarehouse()->getCode() === 'could_not_allocate') {
+                    $allocationDraft->setType('Could not Allocate');
+                }
+                if (!in_array($result->getWarehouse()->getCode(), ['no_warehouse', 'could_not_allocate'])) {
+                    $allocationDraft->setWarehouse($result->getWarehouse());
+                }
+                $shippingAddress = $order->getShippingAddress();
+                if ($consolidationWarehouse) {
+                    if ($consolidationWarehouse->getCode() !== $result->getWarehouse()->getCode()) {
+                        $shippingAddress = $consolidationWarehouse->getAddress();
+                    }
+                }
+
+                $allocationDraft->setShippingAddress($shippingAddress);
+                $itemWithQty = $result->getItemsWithQuantity();
+                foreach ($result->getOrderItems() as $item) {
+                    $allocationDraftItem = new AllocationDraftItem();
+                    $allocationDraftItem->setOrderItem($item);
+                    $allocationDraftItem->setProduct($item->getProduct());
+                    $allocationDraftItem->setProductSku($item->getProductSku());
+                    $allocationDraftItem->setProductName($item->getProductName());
+                    if ($allocationDraft->getWarehouse()) {
+                        $allocationDraftItem->setWarehouse($allocationDraft->getWarehouse());
+                    }
+                    $allocationDraftItem->setQuantity($itemWithQty[$item->getProductSku()]);
+                    $allocationDraft->addItem($allocationDraftItem);
+                    $allOrderItems->add($item);
+                    if ($consolidationWarehouse) {
+                        $allItems[] = clone $allocationDraftItem;
+                        $subAllocations[] = $allocationDraft;
+                    }
+                }
+                $em->persist($allocationDraft);
             }
-            $em->persist($allocationDraft);
         }
+            $diff = [];
+            foreach ($order->getItems() as $orderItem) {
+                if ($allOrderItems->contains($orderItem)) {
+                    continue;
+                }
+                $diff[] = $orderItem;
+            }
+
+            foreach ($diff as $orderItem) {
+                /** @var Order $order */
+                $draft = new AllocationDraft();
+                $draft->setOrder($order);
+                $draft->setType('Could Not Allocate');
+                $allocationDraftItem = new AllocationDraftItem();
+                $allocationDraftItem->setOrderItem($orderItem);
+                $allocationDraftItem->setProduct($orderItem->getProduct());
+                $allocationDraftItem->setProductSku($orderItem->getProductSku());
+                $allocationDraftItem->setProductName($orderItem->getProductName());
+                $allocationDraftItem->setQuantity($orderItem->getQuantity());
+                $draft->addItem($allocationDraftItem);
+                $em->persist($draft);
+            }
+
         if ($consolidationWarehouse) {
             // create parent allocation
             /** @var Order $order */
             $parentAllocationDraft = new AllocationDraft();
             $parentAllocationDraft->setOrder($order);
+            $parentAllocationDraft->setType('On Hand');
             $parentAllocationDraft->setWarehouse($consolidationWarehouse);
             $parentAllocationDraft->setShippingAddress($consolidationWarehouse->getAddress());
             foreach ($allItems as $item) {
@@ -161,8 +204,6 @@ class InventoryAllocationProvider
                 ->getFilteredRuleOwners($rule);
             foreach ($filteredRules as $filteredRule) {
                 $strategy = $this->strategiesRegistry->getStrategy($filteredRule->getStrategy());
-                // check if we need this estimation to be set to true or false :thinking:
-                $strategy->setEstimation(true);
                 $results = $strategy->getWarehouseResults($order, $results);
             }
 
@@ -196,6 +237,7 @@ class InventoryAllocationProvider
             if ($warehouse->getWarehouseType()->getName() === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
                 continue;
             }
+
             $consoWHs->add($warehouse);
         }
 
