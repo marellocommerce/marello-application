@@ -55,7 +55,7 @@ class PurchaseOrderOnOrderOnDemandCreationListener
         }
 
         if (!$this->configManager->get('marello_inventory.inventory_on_demand_enabled')
-            && !$this->configManager->get('marello_inventory.inventory_on_demand')
+            || !$this->configManager->get('marello_inventory.inventory_on_demand')
         ) {
             return;
         }
