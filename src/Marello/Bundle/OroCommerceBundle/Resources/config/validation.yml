@@ -22,3 +22,38 @@ Marello\Bundle\OroCommerceBundle\Entity\OroCommerceSettings:
             - NotBlank: ~
         salesChannelGroup:
             - NotBlank: ~
+
+Marello\Bundle\OrderBundle\Entity\OrderItem:
+    properties:
+        product:
+            - NotBlank: { groups: [commerce] }
+        price:
+            - NotBlank: { groups: [commerce] }
+        tax:
+            - NotBlank: { groups: [commerce] }
+        taxCode:
+            - NotBlank: { groups: [commerce] }
+        rowTotalInclTax:
+            - NotBlank: { groups: [commerce] }
+        rowTotalExclTax:
+            - NotBlank: { groups: [commerce] }
+        quantity:
+            - GreaterThanOrEqual: { groups: [commerce], value: 1 }
+    constraints:
+        - Marello\Bundle\OrderBundle\Validator\Constraints\AvailableInventory:
+            fields: [quantity, order, product]
+            errorPath: quantity
+            groups: [commerce]
+
+Marello\Bundle\OrderBundle\Entity\Order:
+    properties:
+        salesChannel:
+            - NotBlank: { groups: [commerce] }
+        paymentMethod:
+            - NotBlank: { groups: [commerce] }
+        billingAddress:
+            - NotBlank: { groups: [commerce], message: 'marello.order.address.validation.billing_not_blank' }
+        shippingAddress:
+            - NotBlank: { groups: [commerce], message: 'marello.order.address.validation.shipping_not_blank' }
+        items:
+            - Valid: { groups: [commerce] }
