@@ -1,0 +1,28 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
+
+{% set entity = form.vars.value %}
+
+{% set formAction = path('marello_sales_saleschanneltype_create')  %}
+
+{% block content_data %}
+    {% set id = 'marello-saleschanneltype-create' %}
+    {% set dataBlocks = [{
+        'title': 'General'|trans,
+        'class': 'active',
+        'subblocks': [{
+            'title': '',
+            'data': [
+                form_row(form.name),
+                form_row(form.label),
+            ]
+        }]
+    }] %}
+
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': dataBlocks,
+    } %}
+    {{ parent() }}
+{% endblock content_data %}
