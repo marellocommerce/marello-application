@@ -11,7 +11,7 @@ use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
  */
-class MarelloPaymentBundleInstaller implements Migration, ActivityExtensionAwareInterface
+class MarelloPaymentBundle implements Migration, ActivityExtensionAwareInterface
 {
     /**
      * @var ActivityExtension
@@ -28,10 +28,10 @@ class MarelloPaymentBundleInstaller implements Migration, ActivityExtensionAware
         $this->createMarelloPaymentMethodsConfigsRuleDestinationTable($schema);
         $this->createMarelloPaymentMethodsConfigsRuleDestinationPostalCodeTable($schema);
 
-        $this->addOroPaymentMethodConfigForeignKeys($schema);
-        $this->addOroPaymentMethodsConfigsRuleForeignKeys($schema);
-        $this->addOroPaymentMethodsConfigsRuleDestinationForeignKeys($schema);
-        $this->addOroPaymentMethodsConfigsRuleDestinationPostalCodeForeignKeys($schema);
+        $this->addMarelloPaymentMethodConfigForeignKeys($schema);
+        $this->addMarelloPaymentMethodsConfigsRuleForeignKeys($schema);
+        $this->addMarelloPaymentMethodsConfigsRuleDestinationForeignKeys($schema);
+        $this->addMarelloPaymentMethodsConfigsRuleDestinationPostalCodeForeignKeys($schema);
     }
 
     /**
@@ -105,7 +105,7 @@ class MarelloPaymentBundleInstaller implements Migration, ActivityExtensionAware
      *
      * @param Schema $schema
      */
-    protected function addOroPaymentMethodConfigForeignKeys(Schema $schema)
+    protected function addMarelloPaymentMethodConfigForeignKeys(Schema $schema)
     {
         $table = $schema->getTable('marello_payment_method_config');
         $table->addForeignKeyConstraint(
@@ -121,7 +121,7 @@ class MarelloPaymentBundleInstaller implements Migration, ActivityExtensionAware
      *
      * @param Schema $schema
      */
-    protected function addOroPaymentMethodsConfigsRuleForeignKeys(Schema $schema)
+    protected function addMarelloPaymentMethodsConfigsRuleForeignKeys(Schema $schema)
     {
         $table = $schema->getTable('marello_payment_mtds_cfgs_rl');
         $table->addForeignKeyConstraint(
@@ -144,7 +144,7 @@ class MarelloPaymentBundleInstaller implements Migration, ActivityExtensionAware
      *
      * @param Schema $schema
      */
-    protected function addOroPaymentMethodsConfigsRuleDestinationForeignKeys(Schema $schema)
+    protected function addMarelloPaymentMethodsConfigsRuleDestinationForeignKeys(Schema $schema)
     {
         $table = $schema->getTable('marello_payment_mtds_cfgs_rl_d');
         $table->addForeignKeyConstraint(
@@ -172,7 +172,7 @@ class MarelloPaymentBundleInstaller implements Migration, ActivityExtensionAware
      *
      * @param Schema $schema
      */
-    protected function addOroPaymentMethodsConfigsRuleDestinationPostalCodeForeignKeys(Schema $schema)
+    protected function addMarelloPaymentMethodsConfigsRuleDestinationPostalCodeForeignKeys(Schema $schema)
     {
         $table = $schema->getTable('marello_pmnt_mtdscfgsrl_dst_pc');
         $table->addForeignKeyConstraint(

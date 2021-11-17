@@ -38,7 +38,6 @@
                     )}}
                     {{ UI.renderProperty('marello.order.order_reference.label'|trans, entity.order.orderReference) }}
                     {{ UI.renderProperty('marello.order.payment_method.label'|trans, entity.order.paymentMethod) }}
-                    {{ UI.renderProperty('marello.order.payment_reference.label'|trans, entity.order.paymentReference) }}
                     {{ UI.renderProperty('oro.ui.created_at'|trans, entity.order.createdAt|date) }}
                     {{ UI.renderProperty('oro.ui.updated_at'|trans, entity.order.updatedAt|date) }}
                 </div>
@@ -74,7 +73,6 @@
                     {{ UI.renderProperty('oro.ui.created_at'|trans, entity.createdAt|date) }}
                     {{ UI.renderProperty('oro.ui.updated_at'|trans, entity.updatedAt|date) }}
                     {{ UI.renderProperty('marello.order.payment_method.label'|trans, entity.order.paymentMethod) }}
-                    {{ UI.renderProperty('marello.order.payment_reference.label'|trans, entity.order.paymentReference) }}
                 </div>
                 {{ totals }}
             </div>

@@ -19,6 +19,10 @@ api:
                     property_path: taxCode
                 productstatus:
                     property_path: status
+                channelsCodes:
+                    exclude: true
+                categoriesCodes:
+                    exclude: true
                 createdAt:
                     exclude: true
                 updatedAt:

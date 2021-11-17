@@ -30,6 +30,9 @@ class InvoiceLogoRenderParameterProvider implements RenderParameterProviderInter
             $salesChannel = $options[self::OPTION_KEY];
         }
 
-        return ['logo' => $this->logoProvider->getInvoiceLogo($salesChannel, true)];
+        return [
+            'logo' => $this->logoProvider->getInvoiceLogo($salesChannel, true),
+            'logo_width' => $this->logoProvider->getInvoiceLogoWidth($salesChannel),
+        ];
     }
 }

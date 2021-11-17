@@ -47,39 +47,45 @@ class OrderItemType extends AbstractType
             ->add('product', ProductSalesChannelAwareSelectType::class, [
                 'required'       => true,
                 'label'          => 'marello.product.entity_label',
-                'create_enabled' => false,
+                'create_enabled' => false
             ])
             ->add('quantity', NumberType::class, [
-                'data' => 1,
-            ])->add('availableInventory', NumberType::class, [
+                'data' => 1
+            ])
+            ->add('availableInventory', NumberType::class, [
                 'mapped' => false,
                 'attr' => [
-                    'readonly' => true,
+                    'readonly' => true
+                ]
+            ])
+            ->add('productUnit', TextType::class, [
+                'attr' => [
+                    'readonly' => true
                 ]
             ])
             ->add('price', TextType::class, [
                 'attr' => [
-                        'readonly' => true,
+                        'readonly' => true
                     ]
             ])
             ->add('tax', TextType::class, [
                 'attr' => [
-                    'readonly' => true,
+                    'readonly' => true
                 ]
             ])
             ->add('taxCode', TextType::class, [
                 'attr' => [
-                    'readonly' => true,
+                    'readonly' => true
                 ]
             ])
             ->add('rowTotalExclTax', TextType::class, [
                 'attr' => [
-                    'readonly' => true,
+                    'readonly' => true
                 ]
             ])
             ->add('rowTotalInclTax', TextType::class, [
                 'attr' => [
-                    'readonly' => true,
+                    'readonly' => true
                 ]
             ])
         ;

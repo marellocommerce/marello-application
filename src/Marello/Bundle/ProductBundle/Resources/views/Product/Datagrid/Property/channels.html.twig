@@ -1,0 +1,6 @@
+{% set codes = record.getValue('channelsCodes')|split('|') %}
+{% for index, code in codes %}
+    {% if index > 0 %}
+        {{ marello_get_sales_channel_name_by_code(code) }}<br>
+    {% endif %}
+{% endfor %}

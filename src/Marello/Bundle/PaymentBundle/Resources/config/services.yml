@@ -22,6 +22,49 @@ services:
             - '@request_stack'
             - '@doctrine.orm.entity_manager'
 
+    marello_payment.form.type.payment_create:
+        class: 'Marello\Bundle\PaymentBundle\Form\Type\PaymentCreateType'
+        arguments:
+            - '@doctrine'
+            - '@marello_payment.provider.basic_payment_methods_choices'
+        tags:
+            - { name: form.type }
+
+    marello_payment.form.payment_create:
+        class: 'Symfony\Component\Form\Form'
+        factory: ['@form.factory', 'create']
+        arguments:
+            - 'Marello\Bundle\PaymentBundle\Form\Type\PaymentCreateType'
+
+    marello_payment.form.handler.payment_create:
+        class: 'Marello\Bundle\PaymentBundle\Form\Handler\PaymentCreateHandler'
+        public: true
+        arguments:
+            - '@marello_payment.form.payment_create'
+            - '@request_stack'
+            - '@doctrine.orm.entity_manager'
+
+    marello_payment.form.type.payment_update:
+        class: 'Marello\Bundle\PaymentBundle\Form\Type\PaymentUpdateType'
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: form.type }
+
+    marello_payment.form.payment_update:
+        class: 'Symfony\Component\Form\Form'
+        factory: ['@form.factory', 'create']
+        arguments:
+            - 'Marello\Bundle\PaymentBundle\Form\Type\PaymentUpdateType'
+
+    marello_payment.form.handler.payment_update:
+        class: 'Marello\Bundle\PaymentBundle\Form\Handler\PaymentUpdateHandler'
+        public: true
+        arguments:
+            - '@marello_payment.form.payment_update'
+            - '@request_stack'
+            - '@doctrine.orm.entity_manager'
+
     marello_payment.datagrid.payment_rule_actions_visibility_provider:
         parent: marello_rule.action.visibility_provider
         public: true
@@ -93,6 +136,13 @@ services:
             - '@marello_payment.repository.payment_method_config'
         tags:
             - { name: kernel.event_listener, event: marello_payment.method_renaming, method: onMethodRename}
+
+    marello_orderpayment.event_listener.payment_creation:
+        class: 'Marello\Bundle\PaymentBundle\EventListener\PaymentCreationListener'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: kernel.event_listener, event: extendable_action.order_paid, method: onOrderPaid }
 
     marello_payment.method.event.dispatcher.method_removal:
         class: 'Marello\Bundle\PaymentBundle\Method\Event\BasicMethodRemovalEventDispatcher'
@@ -193,6 +243,13 @@ services:
             - '@marello_payment.repository.payment_methods_configs_rule'
             - '@marello_payment.payment_method.composite_provider'
 
+    marello_payment.action.handler.add_payment:
+        class: 'Marello\Bundle\PaymentBundle\Action\Handler\AddPaymentActionHandler'
+        public: true
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@marello_invoice.provider.invoice_paid_amount'
+
     marello_payment.action.handler.payment_methods_configs_rule.enable_status:
         class: 'Marello\Bundle\PaymentBundle\Action\Handler\PaymentMethodsConfigsRuleToggleStatusActionHandler'
         public: true
@@ -246,3 +303,30 @@ services:
             - '%marello_payment.rule_grid_route_name%'
             - '%marello_payment.rule_grid_name%'
             - '@oro_datagrid.helper.route'
+
+    marello_payment.provider.form_changes.available_currencies:
+        class: 'Marello\Bundle\PaymentBundle\Provider\FormChanges\AvailableCurrenciesFormChangesProvider'
+        arguments:
+            - '@oro_locale.settings'
+            - '@oro_currency.config.currency'
+        tags:
+            - { name: marello.form_changes_data_provider, class: 'Marello\Bundle\PaymentBundle\Entity\Payment', type: currencies, priority: 45 }
+
+    marello_payment.provider.form_changes.available_payment_methods:
+        class: 'Marello\Bundle\PaymentBundle\Provider\FormChanges\AvailablePaymentMethodsFormChangesProvider'
+        arguments:
+            - '@templating'
+            - '@form.factory'
+            - '@marello_payment.provider.basic_payment_methods_choices'
+        tags:
+            - { name: marello.form_changes_data_provider, class: 'Marello\Bundle\PaymentBundle\Entity\Payment', type: paymentMethods, priority: 45 }
+
+    marello_payment.validator.payment_status:
+        class: 'Marello\Bundle\PaymentBundle\Validator\PaymentStatusValidator'
+        tags:
+            - { name: validator.constraint_validator, alias: marello_payment.payment_status_validator }
+
+    marello_payment.validator.total_paid:
+        class: 'Marello\Bundle\PaymentBundle\Validator\TotalPaidValidator'
+        tags:
+            - { name: validator.constraint_validator, alias: marello_payment.total_paid_validator }

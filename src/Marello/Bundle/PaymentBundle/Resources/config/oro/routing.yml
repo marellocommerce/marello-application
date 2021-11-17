@@ -1,3 +1,13 @@
+marello_payment:
+    resource:     "@MarelloPaymentBundle/Controller/PaymentController.php"
+    type:         annotation
+    prefix:       /marello/payment
+
+marello_payment_ajax:
+    resource:     "@MarelloPaymentBundle/Controller/PaymentAjaxController.php"
+    type:         annotation
+    prefix:       /marello/payment
+
 marello_payment_methods_configs_rule:
     resource:     "@MarelloPaymentBundle/Controller/PaymentMethodsConfigsRuleController.php"
     type:         annotation

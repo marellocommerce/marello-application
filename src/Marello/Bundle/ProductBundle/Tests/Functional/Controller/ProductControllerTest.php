@@ -2,8 +2,8 @@
 
 namespace Marello\Bundle\ProductBundle\Tests\Functional\Controller;
 
+use Marello\Bundle\ProductBundle\Entity\Builder\ProductFamilyBuilder;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\ProductBundle\Migrations\Data\ORM\LoadDefaultAttributeFamilyData;
 use Marello\Bundle\ProductBundle\Provider\ProductTypesProvider;
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
@@ -57,7 +57,7 @@ class ProductControllerTest extends WebTestCase
             /** @var AttributeFamily $attributeFamily */
             $attributeFamily = $em
                 ->getRepository(AttributeFamily::class)
-                ->findOneBy(['code' => LoadDefaultAttributeFamilyData::DEFAULT_FAMILY_CODE]);
+                ->findOneBy(['code' => ProductFamilyBuilder::DEFAULT_FAMILY_CODE]);
             $form    = $crawler->selectButton('Continue')->form();
             $formValues = $form->getPhpValues();
             $formValues['input_action'] = 'marello_product_create';

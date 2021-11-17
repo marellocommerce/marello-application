@@ -34,7 +34,7 @@ class MarelloCustomerBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_4_1';
+        return 'v1_5';
     }
 
     /**
@@ -65,6 +65,7 @@ class MarelloCustomerBundleInstaller implements
         $table->addColumn('name', 'string', ['length' => 255]);
         $table->addColumn('company_number', 'string', ['length' => 255, 'notnull' => false]);
         $table->addColumn('payment_term_id', 'integer', ['notnull' => false]);
+        $table->addColumn('tax_identification_number', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('parent_id', 'integer', ['notnull' => false]);
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime');
@@ -103,7 +104,6 @@ class MarelloCustomerBundleInstaller implements
         $table->addColumn('last_name', 'string', ['length' => 255]);
         $table->addColumn('name_suffix', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('email', 'text', []);
-        $table->addColumn('tax_identification_number', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('company_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['organization_id']);

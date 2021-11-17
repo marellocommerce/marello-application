@@ -62,11 +62,14 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
                 [
                     'required' => false,
                     'label' => 'marello.purchaseorder.expected_delivery_date.label',
-                    'constraints' => [ new GreaterThan(
-                        [
-                            'value' => 'today',
-                            'message' => 'marello.purchaseorder.expected_delivery_date.messages.error.greater_than_date'
-                        ])
+                    'constraints' => [
+                        new GreaterThan(
+                            [
+                                'value' => 'today',
+                                'message'
+                                    => 'marello.purchaseorder.expected_delivery_date.messages.error.greater_than_date'
+                            ]
+                        )
                     ]
                 ]
             )

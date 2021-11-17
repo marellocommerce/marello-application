@@ -11,7 +11,10 @@ use Marello\Bundle\CoreBundle\Tests\Functional\RestJsonApiTestCase;
 use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 use Marello\Bundle\PricingBundle\Tests\Functional\DataFixtures\LoadProductChannelPricingData;
-
+/**
+ * @dbIsolationPerTest
+ * @nestTransactionsWithSavepoints
+ */
 class AssembledChannelPriceListJsonApiTest extends RestJsonApiTestCase
 {
     const TESTING_ENTITY = 'marelloassembledchannelpricelists';

@@ -6,8 +6,6 @@ data:
         invoicedAt: '@marello_creditmemo_1->invoicedAt->format("Y-m-d\TH:i:s\Z")'
         invoiceDueDate: null
         paymentMethod: Paypal
-        paymentReference: null
-        paymentDetails: null
         shippingMethod: null
         shippingMethodType: null
         currency: GBP
