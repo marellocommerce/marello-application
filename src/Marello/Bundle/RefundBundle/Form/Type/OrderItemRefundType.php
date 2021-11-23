@@ -5,6 +5,7 @@ namespace Marello\Bundle\RefundBundle\Form\Type;
 use Marello\Bundle\RefundBundle\Entity\RefundItem;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -21,7 +22,6 @@ class OrderItemRefundType extends AbstractType
     {
         $builder
             ->add('quantity');
-
         $builder
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 /** @var RefundItem $item */
