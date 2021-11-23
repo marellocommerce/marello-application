@@ -7,6 +7,11 @@ workflows:
         defaults:
             active: true
 
+        attributes:
+            received_at:
+                type: object
+                options:
+                    class: \DateTime
         steps:
             pending:
                 allowed_transitions:
@@ -39,6 +44,15 @@ workflows:
             receive:
                 step_to: received
                 transition_definition: receive_def
+                form_options:
+                    attribute_fields:
+                        received_at:
+                            form_type: Oro\Bundle\FormBundle\Form\Type\OroDateTimeType
+                            options:
+                                required: true
+                                constraints:
+                                    - NotBlank: ~
+                                    - DateTime: ~
             contents_verified:
                 step_to: inspection
                 transition_definition: contents_verified_def
@@ -71,6 +85,11 @@ workflows:
                         entity: $return
                         recipient: $return.order.customer
                         template: marello_return_received
+                    - '@tree':
+                          conditions:
+                              '@empty': [$return.receivedAt]
+                          actions:
+                              - '@assign_value': [ $return.receivedAt, $received_at ]
             contents_verified_def:
                 post_actions:
                     - '@return_inspection_ok': ~

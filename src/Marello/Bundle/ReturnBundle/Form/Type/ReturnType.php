@@ -39,11 +39,6 @@ class ReturnType extends AbstractType
         $builder
             ->add('salesChannel', SalesChannelSelectType::class)
             ->add('returnItems', ReturnItemCollectionType::class)
-            ->add('receivedAt', OroDateType::class,
-                [
-                    'label' => 'marello.return.returnentity.received_at.label',
-                    'required' => true
-            ])
             ->add('trackTraceCode', TextType::class,
                 [
                     'label' => 'marello.return.returnentity.track_trace_code.label',
