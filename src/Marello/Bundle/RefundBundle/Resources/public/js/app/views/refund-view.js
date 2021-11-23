@@ -45,6 +45,7 @@ define(function(require) {
             if (this.hasProperty('refundAmount')) {
                 this.addFieldEvents('refundAmount', this.updateRefundData);
             }
+            this.updateRefundRowTotal();
         },
 
         hasProperty: function(property) {
@@ -55,7 +56,7 @@ define(function(require) {
          * Trigger total calculation update
          */
         updateRefundRowTotal: function() {
-            let amount = this.$el.find('td.marello-line-field span').text() * this.fieldsByName.quantity.val();
+            let amount = this.$el.find('td.refund-line-item-price span').text() * this.fieldsByName.quantity.val();
             this.fieldsByName.refundAmount.val(parseFloat(amount).toFixed(2));
             mediator.trigger('refund:item-data:trigger', {updateFields: ['items', 'totals']});
             mediator.trigger('refund:form-changes:trigger', {updateFields: ['items', 'totals']});

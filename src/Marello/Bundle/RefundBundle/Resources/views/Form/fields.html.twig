@@ -9,9 +9,9 @@
             {{ form.vars.value.orderItem.product.name|default('') }}
         </div>
     </td>
-    <td class="refund-line-item-qua ntity marello-line-field">
+    <td class="refund-line-item-quantity marello-line-field">
         <div class="fields-row">
-            {{ form.vars.value.orderItem.quantity|default('') }}
+            {{ form.vars.value.orderItem.quantity|default(0) }}
         </div>
     </td>
     <td class="refund-line-item-quantity marello-line-field">
@@ -21,14 +21,26 @@
         {{ form_errors(form.quantity) }}
     </td>
     <td class="refund-line-item-price marello-line-field">
-        <span style="display:none;">{{ form.vars.value.orderItem.price }}</span>
+        <span style="display:none;">{{ form.vars.value.orderItem.purchasePriceIncl }}</span>
         <div class="fields-row">
-            {{ form.vars.value.orderItem.price|oro_format_currency({'currency': form.vars.value.orderItem.order.currency}) }}
+            {{ form.vars.value.orderItem.purchasePriceIncl|oro_format_currency({'currency': form.vars.value.orderItem.order.currency}) }}
+        </div>
+    </td>
+    <td class="refund-line-item-taxcode marello-line-field">
+        <span style="display:none;">{{ form.vars.value.orderItem.taxCode.code }}</span>
+        <div class="fields-row">
+            {{ form.vars.value.orderItem.taxCode.code }}
+        </div>
+    </td>
+    <td class="refund-line-item-tax marello-line-field">
+        <span style="display:none;">{{ form.vars.value.orderItem.tax }}</span>
+        <div class="fields-row">
+            {{ form.vars.value.orderItem.tax|oro_format_currency({'currency':form.vars.value.orderItem.order.currency}) }}
         </div>
     </td>
     <td class="refund-line-item marello-line-field">
         <div class="fields-row">
-            {{ form.vars.value.orderItem.totalPrice|default(0)|oro_format_currency({'currency':form.vars.value.orderItem.order.currency}) }}
+            {{ form.vars.value.orderItem.totalPriceInclTax|default(0)|oro_format_currency({'currency':form.vars.value.orderItem.order.currency}) }}
         </div>
     </td>
     <td class="refund-line-item-price marello-line-field">
@@ -143,6 +155,8 @@
                             <th><span>{{ 'marello.refund.refunditem.quantity_ordered.label'|trans }}</span></th>
                             <th><span>{{ 'marello.refund.refunditem.quantity.label'|trans }}</span></th>
                             <th><span>{{ 'marello.refund.form.price.label'|trans }}</span></th>
+                            <th><span>{{ 'marello.refund.form.tax_code.label'|trans }}</span></th>
+                            <th><span>{{ 'marello.refund.form.tax.label'|trans }}</span></th>
                             <th><span>{{ 'marello.refund.form.subtotal.label'|trans }}</span></th>
                             <th><span>{{ 'marello.refund.form.refund.label'|trans }}</span></th>
                         </tr>

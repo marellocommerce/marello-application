@@ -33,6 +33,8 @@ marello:
             refund_amount.label:    Refunded Amount
             organization.label:     Organization
         form:
+            tax_code.label:          Tax Code
+            tax.label:              Tax
             price.label:            Price (incl VAT)
             subtotal.label:         Subtotal (incl VAT)
             refund.label:           Refund (incl VAT)
