@@ -1,4 +1,4 @@
 dynamic-imports:
   marellorefund:
     - marellorefund/js/app/views/refund-view
-    - marellorefund/js/app/views/refund-items-view
+    - marellorefund/js/app/views/refund-totals-view

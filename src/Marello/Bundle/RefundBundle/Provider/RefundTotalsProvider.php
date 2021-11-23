@@ -6,13 +6,15 @@ use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
 use Marello\Bundle\LayoutBundle\Provider\FormChangesProviderInterface;
 use Marello\Bundle\RefundBundle\Calculator\RefundBalanceCalculator;
 use Marello\Bundle\RefundBundle\Entity\Refund;
-use Oro\Bundle\LocaleBundle\Formatter\NumberFormatter;
+use Oro\Bundle\CurrencyBundle\Rounding\RoundingServiceInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RefundTotalsProvider implements FormChangesProviderInterface
 {
     const BALANCE = 'balance';
     const TOTAL = 'total';
     const AMOUNT = 'amount';
+    const NAME = 'marello.refund';
 
     /**
      * @var RefundBalanceCalculator
@@ -20,28 +22,28 @@ class RefundTotalsProvider implements FormChangesProviderInterface
     protected $balanceCalculator;
 
     /**
-     * @var \NumberFormatter
+     * @var RoundingServiceInterface
      */
-    protected $numberFormatter;
+    protected $rounding;
+
+    /**
+     * @var TranslatorInterface
+     */
+    protected $translator;
 
     /**
      * @param RefundBalanceCalculator $balanceCalculator
+     * @param RoundingServiceInterface $rounding
+     * @param TranslatorInterface $translator
      */
-    public function __construct(RefundBalanceCalculator $balanceCalculator, NumberFormatter $numberFormatter)
-    {
+    public function __construct(
+        RefundBalanceCalculator $balanceCalculator,
+        RoundingServiceInterface $rounding,
+        TranslatorInterface $translator
+    ) {
         $this->balanceCalculator = $balanceCalculator;
-        $this->numberFormatter = $numberFormatter;
-    }
-
-    /**
-     * @param float $value
-     * @param string $currencyCode
-     *
-     * @return string
-     */
-    public function formatValue($value, $currencyCode)
-    {
-        return $this->numberFormatter->formatCurrency($value, $currencyCode);
+        $this->rounding = $rounding;
+        $this->translator = $translator;
     }
 
     /**
@@ -69,11 +71,25 @@ class RefundTotalsProvider implements FormChangesProviderInterface
         $balance = $this->balanceCalculator->caclulateBalance($refund);
         $amount = $this->balanceCalculator->caclulateAmount($refund);
         $currency = $refund->getCurrency();
-
         return [
-            self::BALANCE => $this->formatValue($balance, $currency),
-            self::TOTAL => $this->formatValue($balance + $amount, $currency),
-            self::AMOUNT => $this->formatValue($amount, $currency)
+            self::BALANCE => [
+                'amount' => $this->rounding->round($balance),
+                'currency' => $currency,
+                'visible' => true,
+                'label' => $this->translator->trans(sprintf('%s.%s.label', self::NAME, 'refund_balance'))
+            ],
+//            self::TOTAL => [
+//                'amount' => $this->rounding->round($total),
+//                'currency' => $currency,
+//                'visible' => true,
+//                'label' => $this->translator->trans(sprintf('%s.%s.label', self::NAME, 'grand_total'))
+//            ],
+            self::AMOUNT => [
+                'amount' => $this->rounding->round($amount),
+                'currency' => $currency,
+                'visible' => true,
+                'label' => $this->translator->trans(sprintf('%s.%s.label', self::NAME, 'refund_amount'))
+            ]
         ];
     }
 }
