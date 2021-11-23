@@ -8,6 +8,7 @@ marello:
         refund_status.label:    Refund Status
         refund_amount.label:    Refund Amount
         refund_balance.label:   Refund Balance
+        grand_total.label:      Refund Total
         ordered_items.label:    Ordered Items
         additional_items.label: Additional Items
         original_order.label:   Original Order

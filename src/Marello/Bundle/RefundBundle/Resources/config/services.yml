@@ -51,6 +51,7 @@ services:
         class: Marello\Bundle\RefundBundle\Provider\RefundTotalsProvider
         arguments:
             - '@marello_refund.calculator.refund_balance'
-            - '@oro_locale.formatter.number'
+            - '@oro_currency.rounding.price_rounding_service'
+            - '@translator'
         tags:
             - { name: marello.form_changes_data_provider, class: 'Marello\Bundle\RefundBundle\Entity\Refund', type: totals, priority: 40 }

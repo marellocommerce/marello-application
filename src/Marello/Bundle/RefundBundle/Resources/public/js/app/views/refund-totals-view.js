@@ -1,7 +1,7 @@
 define(function(require) {
     'use strict';
 
-    const template =  require('tpl-loader!marelloorder/templates/order/totals.html');
+    const template =  require('tpl-loader!marellorefund/templates/refund/totals.html');
     const $ = require('jquery');
     const _ = require('underscore');
     const mediator = require('oroui/js/mediator');
@@ -21,24 +21,14 @@ define(function(require) {
          */
         options: {
             selectors: {
-                amount: '[data-amount-container]',
-                balance: '[data-balance-container]',
-                total: '[data-total-container]'
+                totals: '[data-totals-container]'
             }
         },
 
         /**
          * @property {jQuery}
          */
-        $amount: null,
-        /**
-         * @property {jQuery}
-         */
-        $balance: null,
-        /**
-         * @property {jQuery}
-         */
-        $total: null,
+        $totals: null,
 
         /**
          * @property {Object}
@@ -65,9 +55,7 @@ define(function(require) {
             mediator.on('refund:form-changes:load', this.setTotals, this);
             mediator.on('refund:form-changes:load:after', this.loadingEnd, this);
 
-            this.$amount = this.$el.find(this.options.selectors.amount);
-            this.$balance = this.$el.find(this.options.selectors.balance);
-            this.$total = this.$el.find(this.options.selectors.total);
+            this.$totals = this.$el.find(this.options.selectors.totals);
 
             this.resolveTemplates();
 
@@ -80,7 +68,7 @@ define(function(require) {
          * @param {Object} data
          */
         setTotals: function(data) {
-            var totals = _.defaults(data, {totals: {amount: undefined, balance: {}, total: {}}}).totals;
+            var totals = _.defaults(data, {totals: {amount: {}, balance: {}}}).totals;
             this.render(totals);
         },
 
@@ -97,6 +85,7 @@ define(function(require) {
             if (e.updateFields !== undefined && _.contains(e.updateFields, "totals") !== true) {
                 return;
             }
+
             this.loadingMaskView.show();
         },
 
@@ -113,11 +102,42 @@ define(function(require) {
          * @param {Object} totals
          */
         render: function(totals) {
-            if(totals !== undefined && totals.amount !== undefined) {
-                this.$el.find('.grand_total div .attribute-item__description div').html(totals.total)
-                this.$el.find('.refund_amount div .attribute-item__description div').html(totals.amount)
-                this.$el.find('.refund_balance div .attribute-item__description div').html(totals.balance)
+            this.items = [];
+            if (totals !== undefined && totals.amount !== undefined && totals.balance !== undefined) {
+                this.pushItem(totals.amount, this.options.data.amountLabel);
+                this.pushItem(totals.balance, this.options.data.balanceLabel);
             }
+            var items = _.filter(this.items);
+            this.$totals.html(items.join(''));
+            this.items = [];
+        },
+
+        /**
+         * @param {Object} item
+         * @param {Object} label
+         */
+        pushItem: function(item, label) {
+            var localItem = _.defaults(
+                item,
+                {
+                    amount: 0,
+                    currency: this.options.data.currency,
+                    visible: true,
+                    template: null,
+                    label: label
+                }
+            );
+
+            item.formattedAmount = NumberFormatter.formatCurrency(item.amount, item.currency);
+            var renderedItem = null;
+
+            if (localItem.template) {
+                renderedItem = _.template(item.template)({item: item});
+            } else {
+                renderedItem = this.template({item: item});
+            }
+
+            this.items.push(renderedItem);
         },
 
         /**

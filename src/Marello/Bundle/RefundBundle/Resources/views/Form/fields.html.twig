@@ -1,36 +1,37 @@
 {% block marello_order_item_refund_widget %}
-    <td class="refund-order-line-item-product-sku" data-id="{{ form.vars.value.id|default('') }}">
+    <td class="refund-line-item marello-line-field" data-id="{{ form.vars.value.id|default('') }}">
         <div class="fields-row">
             {{ form.vars.value.orderItem.product.sku|default('') }}
         </div>
     </td>
-    <td class="marello-line-field">
+    <td class="refund-line-item marello-line-field">
         <div class="fields-row">
             {{ form.vars.value.orderItem.product.name|default('') }}
         </div>
     </td>
-    <td class="marello-line-field">
+    <td class="refund-line-item-qua ntity marello-line-field">
         <div class="fields-row">
             {{ form.vars.value.orderItem.quantity|default('') }}
         </div>
     </td>
-    <td class="order-line-item-quantity">
+    <td class="refund-line-item-quantity marello-line-field">
         <div class="fields-row">
             {{ form_widget(form.quantity) }}
         </div>
         {{ form_errors(form.quantity) }}
     </td>
-    <td class="marello-line-field price-field">
+    <td class="refund-line-item-price marello-line-field">
+        <span style="display:none;">{{ form.vars.value.orderItem.price }}</span>
         <div class="fields-row">
-            {{ form.vars.value.orderItem.price|default(0)|oro_format_currency({'currency':form.vars.value.orderItem.order.currency}) }}
+            {{ form.vars.value.orderItem.price|oro_format_currency({'currency': form.vars.value.orderItem.order.currency}) }}
         </div>
     </td>
-    <td class="marello-line-field">
+    <td class="refund-line-item marello-line-field">
         <div class="fields-row">
             {{ form.vars.value.orderItem.totalPrice|default(0)|oro_format_currency({'currency':form.vars.value.orderItem.order.currency}) }}
         </div>
     </td>
-    <td class="order-line-item-price marello-line-field">
+    <td class="refund-line-item-price marello-line-field">
         <div class="fields-row">
             {{ form_widget(form.refundAmount) }}
         </div>
@@ -39,14 +40,13 @@
 {% endblock %}
 
 {% block marello_additional_refund_widget %}
-    <td></td>
-    <td class="marello-line-field">
+    <td class="refund-line-item marello-line-field">
         <div class="fields-row">
             {{ form_widget(form.name) }}
         </div>
         {{ form_errors(form.name) }}
     </td>
-    <td class="order-line-item-price marello-line-field">
+    <td class="refund-line-item-price marello-line-field">
         <div class="fields-row">
             {{ form_widget(form.refundAmount) }}
         </div>
