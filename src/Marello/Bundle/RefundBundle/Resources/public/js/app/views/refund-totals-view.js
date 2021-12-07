@@ -11,7 +11,7 @@ define(function(require) {
     const BaseView = require('oroui/js/app/views/base/view');
 
     /**
-     * @export marelloorder/js/app/views/order-totals-view
+     * @export marelloorder/js/app/views/refunds-totals-view
      * @extends oroui.app.views.base.View
      * @class marelloorder.app.views.RefundTotalsView
      */
@@ -68,7 +68,7 @@ define(function(require) {
          * @param {Object} data
          */
         setTotals: function(data) {
-            var totals = _.defaults(data, {totals: {amount: {}, balance: {}}}).totals;
+            var totals = _.defaults(data, {totals: {refundstotal: {}, balance: {}}}).totals;
             this.render(totals);
         },
 
@@ -103,8 +103,8 @@ define(function(require) {
          */
         render: function(totals) {
             this.items = [];
-            if (totals !== undefined && totals.amount !== undefined && totals.balance !== undefined) {
-                this.pushItem(totals.amount, this.options.data.amountLabel);
+            if (totals !== undefined && totals.refundstotal !== undefined && totals.balance !== undefined) {
+                this.pushItem(totals.refundstotal, this.options.data.refundstotalLabel);
                 this.pushItem(totals.balance, this.options.data.balanceLabel);
             }
             var items = _.filter(this.items);

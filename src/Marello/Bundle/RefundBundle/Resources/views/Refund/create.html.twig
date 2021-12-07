@@ -64,13 +64,16 @@
              view: 'marellorefund/js/app/views/refund-totals-view',
              data: data|default({
                  'currency':entity.order.currency,
-                 'amountLabel': 'marello.refund.refund_amount.label'|trans,
+                 'refundstotalLabel': 'marello.refund.refunds_total.label'|trans,
                  'balanceLabel':  'marello.refund.refund_balance.label'|trans
              })
          }|json_encode }}"
          data-layout="separate">
+        <div class="title">
+            <span class="widget-title">{{ 'marello.refund.datablock.refund_totals.label'|trans }}</span>
+        </div>
         <div class="grand_total">
-            {{ UI.renderProperty('marello.refund.grand_total.label'|trans, entity.order.grandTotal|oro_format_currency({'currency':entity.order.currency})) }}
+            {{ UI.renderProperty('marello.refund.order.grand_total.label'|trans, entity.order.grandTotal|oro_format_currency({'currency':entity.order.currency})) }}
         </div>
         <div class="totals-container" data-totals-container></div>
     </div>

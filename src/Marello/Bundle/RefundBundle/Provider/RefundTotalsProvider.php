@@ -13,7 +13,7 @@ class RefundTotalsProvider implements FormChangesProviderInterface
 {
     const BALANCE = 'balance';
     const TOTAL = 'total';
-    const AMOUNT = 'amount';
+    const REFUNDS_TOTAL = 'refundstotal';
     const NAME = 'marello.refund';
 
     /**
@@ -69,7 +69,7 @@ class RefundTotalsProvider implements FormChangesProviderInterface
     protected function getTotalWithSubtotalsValues(Refund $refund)
     {
         $balance = $this->balanceCalculator->caclulateBalance($refund);
-        $amount = $this->balanceCalculator->caclulateAmount($refund);
+        $refundsTotal = $this->balanceCalculator->caclulateRefundsTotal($refund);
         $currency = $refund->getCurrency();
         return [
             self::BALANCE => [
@@ -78,17 +78,11 @@ class RefundTotalsProvider implements FormChangesProviderInterface
                 'visible' => true,
                 'label' => $this->translator->trans(sprintf('%s.%s.label', self::NAME, 'refund_balance'))
             ],
-//            self::TOTAL => [
-//                'amount' => $this->rounding->round($total),
-//                'currency' => $currency,
-//                'visible' => true,
-//                'label' => $this->translator->trans(sprintf('%s.%s.label', self::NAME, 'grand_total'))
-//            ],
-            self::AMOUNT => [
-                'amount' => $this->rounding->round($amount),
+            self::REFUNDS_TOTAL => [
+                'amount' => $this->rounding->round($refundsTotal),
                 'currency' => $currency,
                 'visible' => true,
-                'label' => $this->translator->trans(sprintf('%s.%s.label', self::NAME, 'refund_amount'))
+                'label' => $this->translator->trans(sprintf('%s.%s.label', self::NAME, 'refunds_total'))
             ]
         ];
     }
