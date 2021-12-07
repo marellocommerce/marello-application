@@ -56,12 +56,11 @@
     </div>
 {% endset %}
 
-
-{% set totals %}
+{% set balance %}
     <div class="responsive-block"
          data-page-component-module="oroui/js/app/components/view-component"
          data-page-component-options="{{ {
-             view: 'marellorefund/js/app/views/refund-totals-view',
+             view: 'marellorefund/js/app/views/refund-balance-view',
              data: data|default({
                  'currency':entity.order.currency,
                  'refundstotalLabel': 'marello.refund.refunds_total.label'|trans,
@@ -70,14 +69,15 @@
          }|json_encode }}"
          data-layout="separate">
         <div class="title">
-            <span class="widget-title">{{ 'marello.refund.datablock.refund_totals.label'|trans }}</span>
+            <span class="widget-title">{{ 'marello.refund.datablock.refund_balance.label'|trans }}</span>
         </div>
         <div class="grand_total">
             {{ UI.renderProperty('marello.refund.order.grand_total.label'|trans, entity.order.grandTotal|oro_format_currency({'currency':entity.order.currency})) }}
         </div>
-        <div class="totals-container" data-totals-container></div>
+        <div class="balance-container" data-balance-container></div>
     </div>
 {% endset %}
+
 {% set refundItems %}
 <div class="refund-line-items">
     <div class="widget-content">
@@ -90,7 +90,7 @@
                 {% endfor %}
                 {{ UI.renderProperty('marello.order.payment_method.label'|trans, entity.order.paymentMethod) }}
             </div>
-            {{ totals }}
+            {{ balance }}
         </div>
     </div>
     </div>

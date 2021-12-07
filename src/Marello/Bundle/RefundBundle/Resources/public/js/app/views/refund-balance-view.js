@@ -11,17 +11,17 @@ define(function(require) {
     const BaseView = require('oroui/js/app/views/base/view');
 
     /**
-     * @export marelloorder/js/app/views/refunds-totals-view
+     * @export marelloorder/js/app/views/refunds-balance-view
      * @extends oroui.app.views.base.View
-     * @class marelloorder.app.views.RefundTotalsView
+     * @class marelloorder.app.views.RefundBalanceView
      */
-    const RefundTotalsView = BaseView.extend({
+    const RefundBalanceView = BaseView.extend({
         /**
          * @property {Object}
          */
         options: {
             selectors: {
-                totals: '[data-totals-container]'
+                totals: '[data-balance-container]'
             }
         },
 
@@ -52,7 +52,7 @@ define(function(require) {
             this.options = _.defaults(options || {}, this.options);
 
             mediator.on('refund:form-changes:trigger', this.loadingStart, this);
-            mediator.on('refund:form-changes:load', this.setTotals, this);
+            mediator.on('refund:form-changes:load', this.setBalanceTotals, this);
             mediator.on('refund:form-changes:load:after', this.loadingEnd, this);
 
             this.$totals = this.$el.find(this.options.selectors.totals);
@@ -61,13 +61,13 @@ define(function(require) {
 
             this.loadingMaskView = new LoadingMaskView({container: this.$el});
 
-            this.setTotals(options);
+            this.setBalanceTotals(options);
         },
 
         /**
          * @param {Object} data
          */
-        setTotals: function(data) {
+        setBalanceTotals: function(data) {
             var totals = _.defaults(data, {totals: {refundstotal: {}, balance: {}}}).totals;
             this.render(totals);
         },
@@ -149,12 +149,12 @@ define(function(require) {
             }
 
             mediator.off('refund:form-changes:trigger', this.loadingStart, this);
-            mediator.off('refund:form-changes:load', this.setTotals, this);
+            mediator.off('refund:form-changes:load', this.setBalanceTotals, this);
             mediator.off('refund:form-changes:load:after', this.loadingEnd, this);
 
-            RefundTotalsView.__super__.dispose.call(this);
+            RefundBalanceView.__super__.dispose.call(this);
         }
     });
 
-    return RefundTotalsView;
+    return RefundBalanceView;
 });
