@@ -45,6 +45,26 @@ class RefundBalanceCalculator
      * @param Refund $refund
      * @return float
      */
+    public function caclulateRefundsTotal(Refund $refund)
+    {
+        $refundsForSameOrder = $this->doctrine
+            ->getManagerForClass(Refund::class)
+            ->getRepository(Refund::class)
+            ->findBy(['order' => $refund->getOrder()]);
+        $refundsAmount = $refund->getRefundAmount();
+        foreach ($refundsForSameOrder as $prevRefund) {
+            if ($refund->getId() !== $prevRefund->getId()) {
+                $refundsAmount += $prevRefund->getRefundAmount();
+            }
+        }
+
+        return $refundsAmount;
+    }
+
+    /**
+     * @param Refund $refund
+     * @return float
+     */
     public function caclulateAmount(Refund $refund)
     {
         $sum = array_reduce($refund->getItems()->toArray(), function ($carry, RefundItem $item) {
