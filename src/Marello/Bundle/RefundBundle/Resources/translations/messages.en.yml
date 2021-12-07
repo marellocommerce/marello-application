@@ -43,6 +43,7 @@ marello:
 
         datablock:
             refund_totals.label:    Refund Totals
+            refund_balance.label:   Refund Balance
 
         messages:
             success:
