@@ -93,7 +93,7 @@ class ReceivePurchaseOrderAction extends AbstractAction
                 $this->handleInventoryUpdate($item, $inventoryUpdateQty, $purchaseOrder);
                 $updatedItems[] = ['qty' => $inventoryUpdateQty, 'item' => $item];
 
-                // both cases are independant of the qty that has been received
+                // both cases are independent of the qty that has been received
                 if ($product = $item->getProduct()) {
                     /** @var InventoryItem $inventoryItem */
                     $inventoryItem = $product->getInventoryItems()->first();
