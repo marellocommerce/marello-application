@@ -3,6 +3,7 @@
 namespace Marello\Bundle\RefundBundle\Validator;
 
 use Marello\Bundle\RefundBundle\Calculator\RefundBalanceCalculator;
+use Marello\Bundle\RefundBundle\Entity\Refund;
 use Marello\Bundle\RefundBundle\Entity\RefundItem;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -30,11 +31,11 @@ class RefundBalanceValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if (!$value instanceof RefundItem) {
+        if (!$value instanceof Refund) {
             return;
         }
 
-        if ($this->refundBalanceCalculator->caclulateBalance($value->getRefund()) < 0) {
+        if ($this->refundBalanceCalculator->caclulateBalance($value) < 0) {
             $this->context->buildViolation($constraint->message)
                 ->atPath('refund')
                 ->addViolation();
