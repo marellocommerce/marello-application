@@ -32,6 +32,17 @@
     {% endif %}
 {% endblock pageHeader %}
 
+{% set pageComponent = {
+    module: 'marellolayout/js/app/components/form-changes-component',
+    options: {
+        route: 'marello_refund_form_changes',
+        prefix: 'refund',
+        routeParams: {id: entity.id|default(0)}
+    }
+} %}
+
+{% block content_data %}
+    {% set id = 'marello-refund-update' %}
 {% set additionalItems %}
     <div class="refund-line-items"
          data-page-component-module="oroui/js/app/components/view-component"
@@ -47,13 +58,28 @@
 
 
 {% set totals %}
-    <div class="responsive-block">
-        {{ UI.renderProperty('marello.order.grand_total.label'|trans, entity.order.grandTotal|oro_format_currency({'currency':entity.order.currency})) }}
-        {{ UI.renderProperty('marello.refund.refund_amount.label'|trans, entity.refundAmount|oro_format_currency({'currency':entity.order.currency})) }}
-        {{ UI.renderProperty('marello.refund.refund_balance.label'|trans, marello_refund_get_balance(entity)|oro_format_currency({'currency':entity.order.currency})) }}
+    <div class="responsive-block"
+         data-page-component-module="oroui/js/app/components/view-component"
+         data-page-component-options="{{ {
+             view: 'marellorefund/js/app/views/refund-items-view',
+             data: data|default({})
+         }|json_encode }}"
+         data-layout="separate">
+        <div class="grand_total" data-total-container>
+            {{ UI.renderProperty('marello.order.grand_total.label'|trans, entity.order.grandTotal|oro_format_currency({'currency':entity.order.currency})) }}
+        </div>
+        <div class="refund_amount" data-amount-container>
+            {{ UI.renderProperty('marello.refund.refund_amount.label'|trans, entity.refundAmount|oro_format_currency({'currency':entity.order.currency})) }}
+        </div>
+        <div class="refund_balance" data-balance-container>
+            {{ UI.renderProperty('marello.refund.refund_balance.label'|trans, marello_refund_get_balance(entity)|oro_format_currency({'currency':entity.order.currency})) }}
+        </div>
+
+        <div class="totals-container" data-totals-container></div>
     </div>
 {% endset %}
-{% set data %}
+{% set refundItems %}
+<div class="refund-line-items">
     <div class="widget-content">
         <div class="row-fluid form-horizontal">
             <div class="responsive-block">
@@ -69,11 +95,8 @@
             {{ totals }}
         </div>
     </div>
+    </div>
 {% endset %}
-
-{% block content_data %}
-    {% set id = 'marello-refund-update' %}
-
     {% set dataBlocks = [
         {
             'title': 'General'|trans,
@@ -84,6 +107,16 @@
                     data
                 ]
             }]
+        },
+        {
+            'title': 'marello.refund.items.label'|trans,
+            'class': 'active',
+            'subblocks': [{
+            'title': '',
+            'data': [
+                refundItems
+            ]
+        }]
         },
         {
             'title': 'marello.refund.ordered_items.label'|trans,
