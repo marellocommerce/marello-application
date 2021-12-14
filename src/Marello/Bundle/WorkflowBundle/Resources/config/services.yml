@@ -1,0 +1,45 @@
+services:
+    Marello\Bundle\WorkflowBundle\Datagrid\Extension\MassAction\WorkflowTransitMassAction:
+        shared: false
+        public: true
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: workflowtransit }
+
+    Marello\Bundle\WorkflowBundle\Datagrid\Extension\MassAction\WorkflowTransitMassActionHandler:
+        public: true
+        arguments:
+            - '@Marello\Bundle\WorkflowBundle\Manager\WorkflowTransitMassManager'
+            - '@oro_message_queue.client.message_producer'
+            - '@security.token_storage'
+            - '@request_stack'
+            - '@Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser'
+            - '@translator'
+
+    Marello\Bundle\WorkflowBundle\Manager\WorkflowTransitMassManager:
+        arguments:
+            - '@oro_workflow.manager'
+            - '@Oro\Bundle\WorkflowBundle\Model\WorkflowRegistry'
+            - '@doctrine'
+            - '@oro_message_queue.client.message_producer'
+            - '@Oro\Bundle\ConfigBundle\Config\ConfigManager'
+            - '@oro_notification.model.notification_settings'
+            - '@router'
+            - '@knp_gaufrette.filesystem_map'
+
+    Marello\Bundle\WorkflowBundle\Async\WorkflowTransitMassProcessor:
+        arguments:
+            - '@Oro\Bundle\DataGridBundle\Datagrid\Manager'
+            - '@oro_datagrid.mass_action.helper'
+            - '@oro_datagrid.extension.mass_action.iterable_result_factory_registry'
+            - '@Marello\Bundle\WorkflowBundle\Manager\WorkflowTransitMassManager'
+            - '@logger'
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }
+
+    Marello\Bundle\WorkflowBundle\Datagrid\Extension\MassAction\WorkflowTransitMassActionExtension:
+        parent: oro_datagrid.extension.mass_action
+        decorates: oro_datagrid.extension.mass_action
+        arguments:
+            - '@Oro\Bundle\WorkflowBundle\Model\WorkflowRegistry'
+            - '@oro_entity.orm.entity_class_resolver'
+            - '@logger'
