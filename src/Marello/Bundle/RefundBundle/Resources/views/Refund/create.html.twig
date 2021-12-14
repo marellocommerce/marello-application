@@ -56,8 +56,29 @@
     </div>
 {% endset %}
 
+{% set totals %}
+
+    <div
+         data-page-component-module="oroui/js/app/components/view-component"
+         data-page-component-options="{{ {
+             view: 'marellorefund/js/app/views/refund-totals-view',
+             data: data|default({
+                 'currency':entity.order.currency,
+                 'subtotalLabel': 'marello.refund.subtotal.label'|trans,
+                 'taxtotalLabel':  'marello.refund.tax_total.label'|trans,
+                 'grandtotalLabel':  'marello.refund.grand_total.label'|trans
+             })
+         }|json_encode }}"
+         data-layout="separate">
+        <div class="title">
+            <span class="widget-title">{{ 'marello.refund.datablock.refund_totals.label'|trans }}</span>
+        </div>
+        <div class="totals-container" data-totals-container></div>
+    </div>
+{% endset %}
+
 {% set balance %}
-    <div class="responsive-block"
+    <div
          data-page-component-module="oroui/js/app/components/view-component"
          data-page-component-options="{{ {
              view: 'marellorefund/js/app/views/refund-balance-view',
@@ -90,7 +111,10 @@
                 {% endfor %}
                 {{ UI.renderProperty('marello.order.payment_method.label'|trans, entity.order.paymentMethod) }}
             </div>
-            {{ balance }}
+            <div class="responsive-block">
+                {{ totals }}
+                {{ balance }}
+            </div>
         </div>
     </div>
     </div>
