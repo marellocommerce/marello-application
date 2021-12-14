@@ -38,7 +38,12 @@ class OrderItemRefundType extends AbstractType
                     ->add('refundAmount', MoneyType::class, [
                         'empty_data' => 0,
                         'currency' => $item->getRefund()->getCurrency()
-                    ]);
+                    ])
+                    ->add('taxCode', TextType::class, [
+                        'mapped' => false,
+                        'data' => $item->getOrderItem()->getTaxCode()->getCode(),
+                    ])
+                ;
             });
     }
 
