@@ -1,7 +1,7 @@
 define(function(require) {
     'use strict';
 
-    const template =  require('tpl-loader!marellorefund/templates/refund/balance.html');
+    const template =  require('tpl-loader!marellorefund/templates/refund/totals.html');
     const $ = require('jquery');
     const _ = require('underscore');
     const mediator = require('oroui/js/mediator');
@@ -10,17 +10,17 @@ define(function(require) {
     const BaseView = require('oroui/js/app/views/base/view');
 
     /**
-     * @export marellorefund/js/app/views/refunds-balance-view
+     * @export marellorefund/js/app/views/refunds-totals-view
      * @extends oroui.app.views.base.View
-     * @class marellorefund.app.views.RefundBalanceView
+     * @class marellorefund.app.views.RefundTotalsView
      */
-    const RefundBalanceView = BaseView.extend({
+    const RefundTotalsView = BaseView.extend({
         /**
          * @property {Object}
          */
         options: {
             selectors: {
-                totals: '[data-balance-container]'
+                totals: '[data-totals-container]'
             }
         },
 
@@ -51,7 +51,7 @@ define(function(require) {
             this.options = _.defaults(options || {}, this.options);
 
             mediator.on('refund:form-changes:trigger', this.loadingStart, this);
-            mediator.on('refund:form-changes:load', this.setBalanceTotals, this);
+            mediator.on('refund:form-changes:load', this.setTotals, this);
             mediator.on('refund:form-changes:load:after', this.loadingEnd, this);
 
             this.$totals = this.$el.find(this.options.selectors.totals);
@@ -60,14 +60,16 @@ define(function(require) {
 
             this.loadingMaskView = new LoadingMaskView({container: this.$el});
 
-            this.setBalanceTotals(options);
+            this.setTotals(options);
         },
 
         /**
          * @param {Object} data
          */
-        setBalanceTotals: function(data) {
-            var totals = _.defaults(data, {balance_totals: {refundstotal: {}, balance: {}}}).balance_totals;
+        setTotals: function(data) {
+            var totals = _.defaults(data, {totals: {subtotal: {}, tax_total: {}, grand_total: {}}}).totals;
+            console.log(totals);
+            console.log(data);
             this.render(totals);
         },
 
@@ -81,7 +83,7 @@ define(function(require) {
          * Show loading view
          */
         loadingStart: function(e) {
-            if (e.updateFields !== undefined && _.contains(e.updateFields, "balance_totals") !== true) {
+            if (e.updateFields !== undefined && _.contains(e.updateFields, "totals") !== true) {
                 return;
             }
 
@@ -102,11 +104,19 @@ define(function(require) {
          */
         render: function(totals) {
             this.items = [];
-            if (totals !== undefined && totals.refundstotal !== undefined && totals.balance !== undefined) {
-                this.pushItem(totals.refundstotal, this.options.data.refundstotalLabel);
-                this.pushItem(totals.balance, this.options.data.balanceLabel);
+            if (totals !== undefined &&
+                totals.subtotal !== undefined &&
+                totals.tax_total !== undefined &&
+                totals.grand_total !== undefined
+            ) {
+                this.pushItem(totals.subtotal, this.options.data.subtotalLabel);
+                this.pushItem(totals.tax_total, this.options.data.taxtotalLabel);
+                this.pushItem(totals.grand_total, this.options.data.grandtotalLabel);
             }
             var items = _.filter(this.items);
+            console.log(this.items);
+            console.log(items);
+
             this.$totals.html(items.join(''));
             this.items = [];
         },
@@ -148,12 +158,12 @@ define(function(require) {
             }
 
             mediator.off('refund:form-changes:trigger', this.loadingStart, this);
-            mediator.off('refund:form-changes:load', this.setBalanceTotals, this);
+            mediator.off('refund:form-changes:load', this.setTotals, this);
             mediator.off('refund:form-changes:load:after', this.loadingEnd, this);
 
-            RefundBalanceView.__super__.dispose.call(this);
+            RefundTotalsView.__super__.dispose.call(this);
         }
     });
 
-    return RefundBalanceView;
+    return RefundTotalsView;
 });

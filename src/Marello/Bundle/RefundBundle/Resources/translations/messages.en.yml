@@ -9,6 +9,9 @@ marello:
         refund_amount.label:    Refund Amount
         refunds_total.label:    Refunds Total
         refund_balance.label:   Refund Balance
+        subtotal.label:         Refund Subtotal
+        tax_total.label:        Refund Tax Total
+        grand_total.label:      Refund Grand Total
         ordered_items.label:    Ordered Items
         additional_items.label: Additional Items
         original_order.label:   Original Order
@@ -34,12 +37,13 @@ marello:
             refund_amount.label:    Refunded Amount
             organization.label:     Organization
         form:
-            tax_code.label:         Tax Code
-            tax.label:              Tax
-            price.label:            Price (incl VAT)
-            subtotal.label:         Subtotal (incl VAT)
-            refund.label:           Refund (incl VAT)
-            add_item.label:         Add Item
+            tax_code.label:             Tax Code
+            tax.label:                  Tax
+            row_total_incl_tax.label:   Row Total Incl
+            purchase_price.label:       Purchase Price
+            subtotal.label:             Subtotal
+            refund.label:               Refund
+            add_item.label:             Add Item
 
         datablock:
             refund_totals.label:    Refund Totals
