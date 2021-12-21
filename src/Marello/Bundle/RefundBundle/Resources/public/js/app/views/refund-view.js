@@ -45,6 +45,11 @@ define(function(require) {
             if (this.hasProperty('refundAmount')) {
                 this.addFieldEvents('refundAmount', this.updateRefundData);
             }
+
+            if (this.hasProperty('taxCode')) {
+                this.addFieldEvents('taxCode', this.updateRefundData);
+            }
+
             this.updateRefundRowTotal();
         },
 
@@ -56,8 +61,6 @@ define(function(require) {
          * Trigger total calculation update
          */
         updateRefundRowTotal: function() {
-            let amount = this.$el.find('td.refund-line-item-price span').text() * this.fieldsByName.quantity.val();
-            this.fieldsByName.refundAmount.val(parseFloat(amount).toFixed(2));
             mediator.trigger('refund:item-data:trigger', {updateFields: ['items', 'balance_totals', 'totals']});
             mediator.trigger('refund:form-changes:trigger', {updateFields: ['items', 'balance_totals', 'totals']});
         },

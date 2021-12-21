@@ -2,15 +2,14 @@
 
 namespace Marello\Bundle\RefundBundle\Provider;
 
-use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
-use Marello\Bundle\LayoutBundle\Provider\FormChangesProviderInterface;
-use Marello\Bundle\RefundBundle\Calculator\RefundBalanceCalculator;
-use Marello\Bundle\RefundBundle\Entity\Refund;
-use Marello\Bundle\TaxBundle\Calculator\TaxCalculatorInterface;
-use Marello\Bundle\TaxBundle\Matcher\TaxRuleMatcherInterface;
-use Marello\Bundle\TaxBundle\Model\ResultElement;
-use Oro\Bundle\CurrencyBundle\Rounding\RoundingServiceInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+
+use Oro\Bundle\CurrencyBundle\Rounding\RoundingServiceInterface;
+
+use Marello\Bundle\RefundBundle\Entity\Refund;
+use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
+use Marello\Bundle\RefundBundle\Calculator\RefundBalanceCalculator;
+use Marello\Bundle\LayoutBundle\Provider\FormChangesProviderInterface;
 
 class RefundTotalsProvider implements FormChangesProviderInterface
 {
@@ -19,6 +18,7 @@ class RefundTotalsProvider implements FormChangesProviderInterface
     const GRAND_TOTAL = 'grand_total';
     const NAME = 'marello.refund';
     const ITEMS_FIELD = 'items';
+    const ADDITIONAL_ITEMS_FIELD = 'additionalItems';
 
     /**
      * @var RefundBalanceCalculator
@@ -36,35 +36,19 @@ class RefundTotalsProvider implements FormChangesProviderInterface
     protected $translator;
 
     /**
-     * @var TaxCalculatorInterface
-     */
-    protected $taxCalculator;
-
-    /**
-     * @var TaxRuleMatcherInterface
-     */
-    protected $taxRuleMatcher;
-
-    /**
      * RefundTotalsProvider constructor.
      * @param RefundBalanceCalculator $balanceCalculator
      * @param RoundingServiceInterface $rounding
      * @param TranslatorInterface $translator
-     * @param TaxCalculatorInterface $taxCalculator
-     * @param TaxRuleMatcherInterface $taxRuleMatcher
      */
     public function __construct(
         RefundBalanceCalculator $balanceCalculator,
         RoundingServiceInterface $rounding,
-        TranslatorInterface $translator,
-        TaxCalculatorInterface $taxCalculator,
-        TaxRuleMatcherInterface $taxRuleMatcher
+        TranslatorInterface $translator
     ) {
         $this->balanceCalculator = $balanceCalculator;
         $this->rounding = $rounding;
         $this->translator = $translator;
-        $this->taxCalculator = $taxCalculator;
-        $this->taxRuleMatcher = $taxRuleMatcher;
     }
 
     /**
@@ -87,43 +71,28 @@ class RefundTotalsProvider implements FormChangesProviderInterface
      */
     protected function getTotalWithSubtotalsValues(Refund $refund, array $submittedData)
     {
-        $subtotal = 0;
-        $taxTotal = 0;
-        $grandTotal = 0;
-        foreach ($submittedData[self::ITEMS_FIELD] as $rowIdentifierKey => $item) {
-            $taxRule = $this->taxRuleMatcher->match(
-                $refund->getOrder()->getShippingAddress(),
-                [$item['taxCode']]
-            );
-            if ($taxRule) {
-                $rate = $taxRule->getTaxRate()->getRate();
-            } else {
-                $rate = 0;
-            }
-            $amount = (double)$item['refundAmount'] * (float)$item['quantity'];
-            /** @var ResultElement $taxTotals */
-            $taxTotals = $this->taxCalculator->calculate($amount, $rate);
-            $subtotal += (double)$taxTotals->getExcludingTax();
-            $taxTotal += (double)$taxTotals->getTaxAmount();
-            $grandTotal += (double)$taxTotals->getIncludingTax();
+        $items = $submittedData[self::ITEMS_FIELD];
+        if (isset($submittedData[self::ADDITIONAL_ITEMS_FIELD])) {
+            $items = array_merge($submittedData[self::ITEMS_FIELD], $submittedData[self::ADDITIONAL_ITEMS_FIELD]);
         }
+        $totals = $this->balanceCalculator->calculateTaxes($items, $refund);
 
         $currency = $refund->getCurrency();
         return [
             self::SUBTOTAL => [
-                'amount' => $this->rounding->round($subtotal),
+                'amount' => $this->rounding->round($totals['subtotal']),
                 'currency' => $currency,
                 'visible' => true,
                 'label' => $this->translator->trans(sprintf('%s.%s.label', self::NAME, 'subtotal'))
             ],
             self::TAX_TOTAL => [
-                'amount' => $this->rounding->round($taxTotal),
+                'amount' => $this->rounding->round($totals['taxTotal']),
                 'currency' => $currency,
                 'visible' => true,
                 'label' => $this->translator->trans(sprintf('%s.%s.label', self::NAME, 'tax_total'))
             ],
             self::GRAND_TOTAL => [
-                'amount' => $this->rounding->round($grandTotal),
+                'amount' => $this->rounding->round($totals['grandTotal']),
                 'currency' => $currency,
                 'visible' => true,
                 'label' => $this->translator->trans(sprintf('%s.%s.label', self::NAME, 'grand_total'))

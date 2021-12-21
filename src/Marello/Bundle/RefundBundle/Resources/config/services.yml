@@ -39,6 +39,9 @@ services:
         class: 'Marello\Bundle\RefundBundle\Calculator\RefundBalanceCalculator'
         arguments:
             - '@doctrine'
+        calls:
+            - [setTaxCalculator, ['@marello_tax.calculator']]
+            - [setTaxRuleMatcher, ['@marello_tax.tax_rule.matcher.composite']]
 
     marello_refund.validator.refund_balance:
         class: 'Marello\Bundle\RefundBundle\Validator\RefundBalanceValidator'
@@ -62,7 +65,5 @@ services:
             - '@marello_refund.calculator.refund_balance'
             - '@oro_currency.rounding.price_rounding_service'
             - '@translator'
-            - '@marello_tax.calculator'
-            - '@marello_tax.tax_rule.matcher.composite'
         tags:
             - { name: marello.form_changes_data_provider, class: 'Marello\Bundle\RefundBundle\Entity\Refund', type: totals, priority: 30 }

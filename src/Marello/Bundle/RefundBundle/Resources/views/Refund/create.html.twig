@@ -43,82 +43,82 @@
 
 {% block content_data %}
     {% set id = 'marello-refund-create' %}
-{% set additionalItems %}
-    <div class="refund-line-items"
-         data-page-component-module="oroui/js/app/components/view-component"
-         data-page-component-options="{{ {
-             view: 'marellolayout/js/app/views/abstract-items-view',
-             prices: prices|default({})
-         }|json_encode }}"
-         data-layout="separate">
-        {{ form_widget(form.additionalItems) }}
-        {{ form_errors(form.additionalItems) }}
-    </div>
-{% endset %}
-
-{% set totals %}
-
-    <div
-         data-page-component-module="oroui/js/app/components/view-component"
-         data-page-component-options="{{ {
-             view: 'marellorefund/js/app/views/refund-totals-view',
-             data: data|default({
-                 'currency':entity.order.currency,
-                 'subtotalLabel': 'marello.refund.subtotal.label'|trans,
-                 'taxtotalLabel':  'marello.refund.tax_total.label'|trans,
-                 'grandtotalLabel':  'marello.refund.grand_total.label'|trans
-             })
-         }|json_encode }}"
-         data-layout="separate">
-        <div class="title">
-            <span class="widget-title">{{ 'marello.refund.datablock.refund_totals.label'|trans }}</span>
+    {% set additionalItems %}
+        <div class="refund-line-items"
+             data-page-component-module="oroui/js/app/components/view-component"
+             data-page-component-options="{{ {
+                 view: 'marellolayout/js/app/views/abstract-items-view',
+                 prices: prices|default({})
+             }|json_encode }}"
+             data-layout="separate">
+            {{ form_widget(form.additionalItems) }}
+            {{ form_errors(form.additionalItems) }}
         </div>
-        <div class="totals-container" data-totals-container></div>
-    </div>
-{% endset %}
+    {% endset %}
 
-{% set balance %}
-    <div
-         data-page-component-module="oroui/js/app/components/view-component"
-         data-page-component-options="{{ {
-             view: 'marellorefund/js/app/views/refund-balance-view',
-             data: data|default({
-                 'currency':entity.order.currency,
-                 'refundstotalLabel': 'marello.refund.refunds_total.label'|trans,
-                 'balanceLabel':  'marello.refund.refund_balance.label'|trans
-             })
-         }|json_encode }}"
-         data-layout="separate">
-        <div class="title">
-            <span class="widget-title">{{ 'marello.refund.datablock.refund_balance.label'|trans }}</span>
-        </div>
-        <div class="grand_total">
-            {{ UI.renderProperty('marello.refund.order.grand_total.label'|trans, entity.order.grandTotal|oro_format_currency({'currency':entity.order.currency})) }}
-        </div>
-        <div class="balance-container" data-balance-container></div>
-    </div>
-{% endset %}
-
-{% set refundItems %}
-<div class="refund-line-items">
-    <div class="widget-content">
-        <div class="row-fluid form-horizontal">
-            <div class="responsive-block">
-                {{ UI.renderProperty('marello.refund.refund_number.label'|trans, entity.refundNumber) }}
-                {% set steps = marello_core_get_current_workflow_steps(entity) %}
-                {% for stepLabel, stepName in steps %}
-                    {{ UI.renderProperty( stepLabel|trans({}, "workflows"), stepName|trans({}, "workflows") ) }}
-                {% endfor %}
-                {{ UI.renderProperty('marello.order.payment_method.label'|trans, entity.order.paymentMethod) }}
+    {% set totals %}
+        <div
+             data-page-component-module="oroui/js/app/components/view-component"
+             data-page-component-options="{{ {
+                 view: 'marellorefund/js/app/views/refund-totals-view',
+                 data: data|default({
+                     'currency':entity.order.currency,
+                     'subtotalLabel': 'marello.refund.subtotal.label'|trans,
+                     'taxtotalLabel':  'marello.refund.tax_total.label'|trans,
+                     'grandtotalLabel':  'marello.refund.grand_total.label'|trans
+                 })
+             }|json_encode }}"
+             data-layout="separate">
+            <div class="title">
+                <span class="widget-title">{{ 'marello.refund.datablock.refund_totals.label'|trans }}</span>
             </div>
-            <div class="responsive-block">
-                {{ totals }}
-                {{ balance }}
+            <div class="totals-container" data-totals-container></div>
+        </div>
+    {% endset %}
+
+    {% set balance %}
+        <div
+             data-page-component-module="oroui/js/app/components/view-component"
+             data-page-component-options="{{ {
+                 view: 'marellorefund/js/app/views/refund-balance-view',
+                 data: data|default({
+                     'currency':entity.order.currency,
+                     'refundstotalLabel': 'marello.refund.refunds_total.label'|trans,
+                     'balanceLabel':  'marello.refund.refund_balance.label'|trans
+                 })
+             }|json_encode }}"
+             data-layout="separate">
+            <div class="title">
+                <span class="widget-title">{{ 'marello.refund.datablock.refund_balance.label'|trans }}</span>
+            </div>
+            <div class="grand_total">
+                {{ UI.renderProperty('marello.refund.order.grand_total.label'|trans, entity.order.grandTotal|oro_format_currency({'currency':entity.order.currency})) }}
+            </div>
+            <div class="balance-container" data-balance-container></div>
+        </div>
+    {% endset %}
+
+    {% set refundItems %}
+    <div class="refund-line-items">
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ UI.renderProperty('marello.refund.refund_number.label'|trans, entity.refundNumber) }}
+                    {% set steps = marello_core_get_current_workflow_steps(entity) %}
+                    {% for stepLabel, stepName in steps %}
+                        {{ UI.renderProperty( stepLabel|trans({}, "workflows"), stepName|trans({}, "workflows") ) }}
+                    {% endfor %}
+                    {{ UI.renderProperty('marello.order.payment_method.label'|trans, entity.order.paymentMethod) }}
+                </div>
+                <div class="responsive-block">
+                    {{ totals }}
+                    {{ balance }}
+                </div>
             </div>
         </div>
     </div>
-    </div>
-{% endset %}
+    {% endset %}
+
     {% set dataBlocks = [
         {
             'title': 'General'|trans,
