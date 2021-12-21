@@ -38,17 +38,6 @@
             {{ form.vars.value.orderItem.taxCode.code }}
         </div>
     </td>
-    <td class="refund-line-item-tax marello-line-field">
-        <span style="display:none;">{{ 0|default(0) }}</span>
-        <div class="fields-row">
-            {{ 0|default(0)|oro_format_currency({'currency':form.vars.value.orderItem.order.currency}) }}
-        </div>
-    </td>
-    <td class="refund-line-item marello-line-field">
-        <div class="fields-row">
-            {{ form.vars.value.orderItem.totalPriceInclTax|default(0)|oro_format_currency({'currency':form.vars.value.orderItem.order.currency}) }}
-        </div>
-    </td>
     <td class="refund-line-item-price marello-line-field">
         <div class="fields-row">
             {{ form_widget(form.refundAmount) }}
@@ -63,6 +52,12 @@
             {{ form_widget(form.name) }}
         </div>
         {{ form_errors(form.name) }}
+    </td>
+    <td class="refund-line-item-taxcode marello-line-field">
+        <div class="fields-row">
+            {{ form_widget(form.taxCode) }}
+        </div>
+        {{ form_errors(form.taxCode) }}
     </td>
     <td class="refund-line-item-price marello-line-field">
         <div class="fields-row">
@@ -163,8 +158,6 @@
                             <th><span>{{ 'marello.refund.form.row_total_incl_tax.label'|trans }}</span></th>
                             <th><span>{{ 'marello.refund.form.purchase_price.label'|trans }}</span></th>
                             <th><span>{{ 'marello.refund.form.tax_code.label'|trans }}</span></th>
-                            <th><span>{{ 'marello.refund.form.tax.label'|trans }}</span></th>
-                            <th><span>{{ 'marello.refund.form.subtotal.label'|trans }}</span></th>
                             <th><span>{{ 'marello.refund.form.refund.label'|trans }}</span></th>
                         </tr>
                     </thead>
@@ -201,6 +194,7 @@
                     <thead>
                     <tr>
                         <th><span>{{ 'marello.refund.refunditem.name.label'|trans }}</span></th>
+                        <th><span>{{ 'marello.refund.form.tax_code.label'|trans }}</span></th>
                         <th><span>{{ 'marello.refund.form.refund.label'|trans }}</span></th>
                         <th class="order-line-item-notifications"></th>
                         {% if form.vars.allow_delete %}
