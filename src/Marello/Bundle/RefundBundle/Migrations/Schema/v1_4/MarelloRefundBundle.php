@@ -24,5 +24,18 @@ class MarelloRefundBundle implements Migration
         if (!$table->hasColumn('refund_tax_total')) {
             $table->addColumn('refund_tax_total', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         }
+
+        $table = $schema->getTable('marello_refund_item');
+        if (!$table->hasColumn('subtotal')) {
+            $table->addColumn('subtotal', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+        }
+
+        if (!$table->hasColumn('tax_total')) {
+            $table->addColumn('tax_total', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+        }
+
+        if (!$table->hasColumn('tax_code_id')) {
+            $table->addColumn('tax_code_id', 'integer', ['notnull' => false]);
+        }
     }
 }
