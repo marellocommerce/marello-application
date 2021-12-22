@@ -1,0 +1,4 @@
+marello_workflow_workflow:
+    resource: "@MarelloWorkflowBundle/Controller/WorkflowController.php"
+    type:     annotation
+    prefix:   /marello/workflow
