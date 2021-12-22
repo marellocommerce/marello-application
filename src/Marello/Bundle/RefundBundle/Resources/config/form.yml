@@ -1,8 +1,15 @@
 services:
     marello_refund.form.type.refund:
         class: Marello\Bundle\RefundBundle\Form\Type\RefundType
+        calls:
+            - [setRefundTotalSubscriber, ['@marello_refund.form.eventlistener.refund_total_subscriber']]
         tags:
             - { name: form.type }
+
+    marello_refund.form.eventlistener.refund_total_subscriber:
+        class: Marello\Bundle\RefundBundle\Form\EventListener\RefundTotalsSubscriber
+        calls:
+            - [setRefundBalanceCalculator, ['@marello_refund.calculator.refund_balance']]
 
     marello_refund.form.type.order_item_refund_collection:
         class: Marello\Bundle\RefundBundle\Form\Type\OrderItemRefundCollectionType
@@ -11,6 +18,8 @@ services:
 
     marello_refund.form.type.order_item_refund:
         class: Marello\Bundle\RefundBundle\Form\Type\OrderItemRefundType
+        calls:
+            - [setTaxCodeTransformer, ['@marello_refund.form.data_transformer.tax_code_to_id']]
         tags:
             - { name: form.type }
 
@@ -23,3 +32,9 @@ services:
         class: Marello\Bundle\RefundBundle\Form\Type\AdditionalRefundType
         tags:
             - { name: form.type }
+
+    marello_refund.form.data_transformer.tax_code_to_id:
+        class: Marello\Bundle\RefundBundle\Form\DataTransformer\TaxCodeToIdTransformer
+        public: true
+        arguments:
+            - '@doctrine.orm.entity_manager'

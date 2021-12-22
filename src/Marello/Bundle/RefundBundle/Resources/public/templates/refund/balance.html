@@ -1,0 +1,14 @@
+<div class="attribute-item">
+    <label class="attribute-item__term"><%= item.label %></label>
+    <div class="attribute-item__description">
+        <label class="control-label"><%= item.formattedAmount %></label>
+    </div>
+    <% if (item.formattedBaseAmount) { %>
+        <div class="total-base-currency-wrapper">
+            <label class="attribute-item__term"></label>
+            <div class="attribute-item__description">
+                <label class="control-label"><%= item.formattedBaseAmount %></label>
+            </div>
+        </div>
+    <% } %>
+</div>
