@@ -1,27 +1,26 @@
 define(function(require) {
     'use strict';
 
-    const template =  require('tpl-loader!marelloorder/templates/order/totals.html');
+    const template =  require('tpl-loader!marellorefund/templates/refund/balance.html');
     const $ = require('jquery');
     const _ = require('underscore');
     const mediator = require('oroui/js/mediator');
     const LoadingMaskView = require('oroui/js/app/views/loading-mask-view');
     const NumberFormatter = require('orolocale/js/formatter/number');
-    const localeSettings = require('orolocale/js/locale-settings');
     const BaseView = require('oroui/js/app/views/base/view');
 
     /**
-     * @export marelloorder/js/app/views/order-totals-view
+     * @export marellorefund/js/app/views/refunds-balance-view
      * @extends oroui.app.views.base.View
-     * @class marelloorder.app.views.OrderTotalsView
+     * @class marellorefund.app.views.RefundBalanceView
      */
-    const OrderTotalsView = BaseView.extend({
+    const RefundBalanceView = BaseView.extend({
         /**
          * @property {Object}
          */
         options: {
             selectors: {
-                totals: '[data-totals-container]'
+                totals: '[data-balance-container]'
             }
         },
 
@@ -51,9 +50,9 @@ define(function(require) {
         initialize: function(options) {
             this.options = _.defaults(options || {}, this.options);
 
-            mediator.on('order:form-changes:trigger', this.loadingStart, this);
-            mediator.on('order:form-changes:load', this.setTotals, this);
-            mediator.on('order:form-changes:load:after', this.loadingEnd, this);
+            mediator.on('refund:form-changes:trigger', this.loadingStart, this);
+            mediator.on('refund:form-changes:load', this.setBalanceTotals, this);
+            mediator.on('refund:form-changes:load:after', this.loadingEnd, this);
 
             this.$totals = this.$el.find(this.options.selectors.totals);
 
@@ -61,15 +60,14 @@ define(function(require) {
 
             this.loadingMaskView = new LoadingMaskView({container: this.$el});
 
-            this.setTotals(options);
+            this.setBalanceTotals(options);
         },
 
         /**
          * @param {Object} data
          */
-        setTotals: function(data) {
-            var totals = _.defaults(data, {totals: {total: {}, subtotals: {}}}).totals;
-
+        setBalanceTotals: function(data) {
+            var totals = _.defaults(data, {balance_totals: {refundstotal: {}, balance: {}}}).balance_totals;
             this.render(totals);
         },
 
@@ -83,9 +81,10 @@ define(function(require) {
          * Show loading view
          */
         loadingStart: function(e) {
-            if (e.updateFields !== undefined && _.contains(e.updateFields, "totals") !== true) {
+            if (e.updateFields !== undefined && _.contains(e.updateFields, "balance_totals") !== true) {
                 return;
             }
+
             this.loadingMaskView.show();
         },
 
@@ -103,10 +102,9 @@ define(function(require) {
          */
         render: function(totals) {
             this.items = [];
-            if (totals !== undefined && totals.subtotals !== undefined && totals.total !== undefined) {
-                _.each(totals.subtotals, _.bind(this.pushItem, this));
-
-                this.pushItem(totals.total);
+            if (totals !== undefined && totals.refundstotal !== undefined && totals.balance !== undefined) {
+                this.pushItem(totals.refundstotal, this.options.data.refundstotalLabel);
+                this.pushItem(totals.balance, this.options.data.balanceLabel);
             }
             var items = _.filter(this.items);
             this.$totals.html(items.join(''));
@@ -115,24 +113,21 @@ define(function(require) {
 
         /**
          * @param {Object} item
+         * @param {Object} label
          */
-        pushItem: function(item) {
+        pushItem: function(item, label) {
             var localItem = _.defaults(
                 item,
                 {
                     amount: 0,
-                    currency: localeSettings.defaults.currency,
-                    visible: false,
-                    template: null
+                    currency: this.options.data.currency,
+                    visible: true,
+                    template: null,
+                    label: label
                 }
             );
 
-            if (localItem.visible === false) {
-                return;
-            }
-
             item.formattedAmount = NumberFormatter.formatCurrency(item.amount, item.currency);
-
             var renderedItem = null;
 
             if (localItem.template) {
@@ -152,13 +147,13 @@ define(function(require) {
                 return;
             }
 
-            mediator.off('order:form-changes:trigger', this.loadingStart, this);
-            mediator.off('order:form-changes:load', this.setTotals, this);
-            mediator.off('order:form-changes:load:after', this.loadingEnd, this);
+            mediator.off('refund:form-changes:trigger', this.loadingStart, this);
+            mediator.off('refund:form-changes:load', this.setBalanceTotals, this);
+            mediator.off('refund:form-changes:load:after', this.loadingEnd, this);
 
-            OrderTotalsView.__super__.dispose.call(this);
+            RefundBalanceView.__super__.dispose.call(this);
         }
     });
 
-    return OrderTotalsView;
+    return RefundBalanceView;
 });

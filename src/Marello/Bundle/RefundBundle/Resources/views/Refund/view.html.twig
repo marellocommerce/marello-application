@@ -69,9 +69,6 @@
                     {% for stepLabel, stepName in steps %}
                         {{ UI.renderProperty( stepLabel|trans({}, "workflows"), stepName|trans({}, "workflows") ) }}
                     {% endfor %}
-
-                    {{ UI.renderProperty('oro.ui.created_at'|trans, entity.createdAt|date) }}
-                    {{ UI.renderProperty('oro.ui.updated_at'|trans, entity.updatedAt|date) }}
                     {{ UI.renderProperty('marello.order.payment_method.label'|trans, entity.order.paymentMethod) }}
                 </div>
                 {{ totals }}
