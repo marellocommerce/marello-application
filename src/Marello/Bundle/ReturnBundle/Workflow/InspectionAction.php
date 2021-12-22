@@ -45,6 +45,9 @@ class InspectionAction extends AbstractAction
         $return = $context->getEntity();
 
         $return->getReturnItems()->map(function (ReturnItem $item) use ($return) {
+            if (!$item->getReason() || !$item->getStatus()) {
+                throw new \Exception('Return Item Status or Reason is not set or cannot be set, please check if consumers are running');
+            }
             if (($item->getReason()->getId() !== 'damaged') && ($item->getStatus()->getId() !== 'denied')) {
                 $this->handleInventoryUpdate($item->getOrderItem(), $item->getQuantity(), null, $return);
             }

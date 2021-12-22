@@ -2,17 +2,23 @@
 
 namespace Marello\Bundle\RefundBundle\Provider;
 
-use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
-use Marello\Bundle\LayoutBundle\Provider\FormChangesProviderInterface;
-use Marello\Bundle\RefundBundle\Calculator\RefundBalanceCalculator;
+use Symfony\Contracts\Translation\TranslatorInterface;
+
+use Oro\Bundle\CurrencyBundle\Rounding\RoundingServiceInterface;
+
 use Marello\Bundle\RefundBundle\Entity\Refund;
-use Oro\Bundle\LocaleBundle\Formatter\NumberFormatter;
+use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
+use Marello\Bundle\RefundBundle\Calculator\RefundBalanceCalculator;
+use Marello\Bundle\LayoutBundle\Provider\FormChangesProviderInterface;
 
 class RefundTotalsProvider implements FormChangesProviderInterface
 {
-    const BALANCE = 'balance';
-    const TOTAL = 'total';
-    const AMOUNT = 'amount';
+    const SUBTOTAL = 'subtotal';
+    const TAX_TOTAL = 'tax_total';
+    const GRAND_TOTAL = 'grand_total';
+    const NAME = 'marello.refund';
+    const ITEMS_FIELD = 'items';
+    const ADDITIONAL_ITEMS_FIELD = 'additionalItems';
 
     /**
      * @var RefundBalanceCalculator
@@ -20,28 +26,29 @@ class RefundTotalsProvider implements FormChangesProviderInterface
     protected $balanceCalculator;
 
     /**
-     * @var \NumberFormatter
+     * @var RoundingServiceInterface
      */
-    protected $numberFormatter;
+    protected $rounding;
 
     /**
+     * @var TranslatorInterface
+     */
+    protected $translator;
+
+    /**
+     * RefundTotalsProvider constructor.
      * @param RefundBalanceCalculator $balanceCalculator
+     * @param RoundingServiceInterface $rounding
+     * @param TranslatorInterface $translator
      */
-    public function __construct(RefundBalanceCalculator $balanceCalculator, NumberFormatter $numberFormatter)
-    {
+    public function __construct(
+        RefundBalanceCalculator $balanceCalculator,
+        RoundingServiceInterface $rounding,
+        TranslatorInterface $translator
+    ) {
         $this->balanceCalculator = $balanceCalculator;
-        $this->numberFormatter = $numberFormatter;
-    }
-
-    /**
-     * @param float $value
-     * @param string $currencyCode
-     *
-     * @return string
-     */
-    public function formatValue($value, $currencyCode)
-    {
-        return $this->numberFormatter->formatCurrency($value, $currencyCode);
+        $this->rounding = $rounding;
+        $this->translator = $translator;
     }
 
     /**
@@ -50,30 +57,46 @@ class RefundTotalsProvider implements FormChangesProviderInterface
     public function processFormChanges(FormChangeContextInterface $context)
     {
         $form = $context->getForm();
-        $order = $form->getData();
+        $refund = $form->getData();
         $result = $context->getResult();
-        $result['totals'] = $this->getTotalWithSubtotalsValues($order);
+        $result['totals'] = $this->getTotalWithSubtotalsValues($refund, $context->getSubmittedData());
         $context->setResult($result);
     }
 
     /**
-     * Calculate and return total with subtotals
-     * and with values in base currency converted to Array
-     * Used by Orders
-     *
      * @param Refund $refund
-     * @return array
+     * @param array $result
+     * @return array[]
+     * @throws \Oro\Bundle\CurrencyBundle\Exception\InvalidRoundingTypeException
      */
-    protected function getTotalWithSubtotalsValues(Refund $refund)
+    protected function getTotalWithSubtotalsValues(Refund $refund, array $submittedData)
     {
-        $balance = $this->balanceCalculator->caclulateBalance($refund);
-        $amount = $this->balanceCalculator->caclulateAmount($refund);
-        $currency = $refund->getCurrency();
+        $items = $submittedData[self::ITEMS_FIELD];
+        if (isset($submittedData[self::ADDITIONAL_ITEMS_FIELD])) {
+            $items = array_merge($submittedData[self::ITEMS_FIELD], $submittedData[self::ADDITIONAL_ITEMS_FIELD]);
+        }
+        $totals = $this->balanceCalculator->calculateTaxes($items, $refund);
 
+        $currency = $refund->getCurrency();
         return [
-            self::BALANCE => $this->formatValue($balance, $currency),
-            self::TOTAL => $this->formatValue($balance + $amount, $currency),
-            self::AMOUNT => $this->formatValue($amount, $currency)
+            self::SUBTOTAL => [
+                'amount' => $this->rounding->round($totals['subtotal']),
+                'currency' => $currency,
+                'visible' => true,
+                'label' => $this->translator->trans(sprintf('%s.%s.label', self::NAME, 'subtotal'))
+            ],
+            self::TAX_TOTAL => [
+                'amount' => $this->rounding->round($totals['taxTotal']),
+                'currency' => $currency,
+                'visible' => true,
+                'label' => $this->translator->trans(sprintf('%s.%s.label', self::NAME, 'tax_total'))
+            ],
+            self::GRAND_TOTAL => [
+                'amount' => $this->rounding->round($totals['grandTotal']),
+                'currency' => $currency,
+                'visible' => true,
+                'label' => $this->translator->trans(sprintf('%s.%s.label', self::NAME, 'grand_total'))
+            ]
         ];
     }
 }
