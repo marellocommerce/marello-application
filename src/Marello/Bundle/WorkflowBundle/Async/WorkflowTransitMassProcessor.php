@@ -99,7 +99,7 @@ class WorkflowTransitMassProcessor implements MessageProcessorInterface, TopicSu
             $this->workflowTransitMassManager->doTransit($resultIterator, $options, $userEmail, true);
         } catch (\Exception $e) {
             $this->logger->error(
-                'Unexpected exception occurred during Sales Channels Assignment',
+                'Unexpected exception occurred during workflow transition',
                 ['exception' => $e]
             );
 
