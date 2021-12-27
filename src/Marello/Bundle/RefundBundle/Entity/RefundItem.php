@@ -3,6 +3,7 @@
 namespace Marello\Bundle\RefundBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\TaxBundle\Entity\TaxCode;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
@@ -81,7 +82,7 @@ class RefundItem implements CurrencyAwareInterface, OrganizationAwareInterface
      *      }
      * )
      *
-     * @var int
+     * @var float
      */
     protected $baseAmount = 0;
 
@@ -95,9 +96,53 @@ class RefundItem implements CurrencyAwareInterface, OrganizationAwareInterface
      *      }
      * )
      *
-     * @var int
+     * @var float
      */
     protected $refundAmount = 0;
+
+    /**
+     * @ORM\Column(name="tax_total", type="money")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var float
+     */
+    protected $taxTotal = 0;
+
+    /**
+     * @ORM\Column(name="subtotal", type="money")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var float
+     */
+    protected $subTotal = 0;
+
+    /**
+     * @var TaxCode
+     *
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\TaxBundle\Entity\TaxCode")
+     * @ORM\JoinColumn(name="tax_code_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
+     */
+    protected $taxCode;
 
     /**
      * @ORM\ManyToOne(targetEntity="Refund", inversedBy="items")
@@ -145,10 +190,16 @@ class RefundItem implements CurrencyAwareInterface, OrganizationAwareInterface
     {
         $refund = new self();
 
+        $discount = $item->getOrder()->getDiscountAmount() ? : 0.00;
+        $baseDiscount = $discount / $item->getQuantity();
         $refund
             ->setOrderItem($item)
             ->setName($item->getProductName())
-            ->setBaseAmount($item->getPurchasePriceIncl());
+            ->setBaseAmount($item->getPurchasePriceIncl())
+            ->setSubTotal($item->getOrder()->getSubtotal())
+            ->setTaxTotal($item->getOrder()->getTotalTax())
+            ->setBaseAmount($item->getPurchasePriceIncl() - $baseDiscount)
+        ;
 
         return $refund;
     }
@@ -170,6 +221,9 @@ class RefundItem implements CurrencyAwareInterface, OrganizationAwareInterface
             ->setOrderItem($orderItem)
             ->setName($orderItem->getProductName())
             ->setBaseAmount($orderItem->getPurchasePriceIncl() - $baseDiscount)
+            ->setSubTotal($orderItem->getOrder()->getSubtotal())
+            ->setTaxTotal($orderItem->getOrder()->getTotalTax())
+            ->setTaxCode($orderItem->getTaxCode())
             ->setRefundAmount($refund->getBaseAmount() * $item->getQuantity())
             ->setQuantity($item->getQuantity());
 
@@ -260,6 +314,60 @@ class RefundItem implements CurrencyAwareInterface, OrganizationAwareInterface
     public function setRefundAmount($refundAmount)
     {
         $this->refundAmount = $refundAmount;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getTaxTotal()
+    {
+        return $this->taxTotal;
+    }
+
+    /**
+     * @param float $taxTotal
+     */
+    public function setTaxTotal($taxTotal)
+    {
+        $this->taxTotal = $taxTotal;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getSubTotal()
+    {
+        return $this->subTotal;
+    }
+
+    /**
+     * @param float $subTotal
+     */
+    public function setSubTotal($subTotal)
+    {
+        $this->subTotal = $subTotal;
+
+        return $this;
+    }
+
+    /**
+     * @return TaxCode
+     */
+    public function getTaxCode()
+    {
+        return $this->taxCode;
+    }
+
+    /**
+     * @param TaxCode $taxCode
+     */
+    public function setTaxCode(TaxCode $taxCode = null)
+    {
+        $this->taxCode = $taxCode;
 
         return $this;
     }
