@@ -25,32 +25,32 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 class WorkflowTransitMassActionExtensionTest extends TestCase
 {
     /**
-     * @var MassActionFactory|\PHPUnit_Framework_MockObject_MockObject
+     * @var MassActionFactory|\PHPUnit\Framework\MockObject\MockObject
      */
     private $actionFactory;
 
     /**
-     * @var MassActionMetadataFactory|\PHPUnit_Framework_MockObject_MockObject
+     * @var MassActionMetadataFactory|\PHPUnit\Framework\MockObject\MockObject
      */
     private $actionMetadataFactory;
 
     /**
-     * @var AuthorizationCheckerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var AuthorizationCheckerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $authorizationChecker;
 
     /**
-     * @var WorkflowRegistry|\PHPUnit_Framework_MockObject_MockObject
+     * @var WorkflowRegistry|\PHPUnit\Framework\MockObject\MockObject
      */
     private $workflowRegistry;
 
     /**
-     * @var EntityClassResolver|\PHPUnit_Framework_MockObject_MockObject
+     * @var EntityClassResolver|\PHPUnit\Framework\MockObject\MockObject
      */
     private $entityClassResolver;
 
     /**
-     * @var LoggerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var LoggerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $logger;
 
@@ -59,7 +59,7 @@ class WorkflowTransitMassActionExtensionTest extends TestCase
      */
     private $extension;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->actionFactory = $this->createMock(MassActionFactory::class);
         $this->actionMetadataFactory = $this->createMock(MassActionMetadataFactory::class);

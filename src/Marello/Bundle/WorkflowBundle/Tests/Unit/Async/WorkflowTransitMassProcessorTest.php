@@ -24,27 +24,27 @@ use Psr\Log\LoggerInterface;
 class WorkflowTransitMassProcessorTest extends TestCase
 {
     /**
-     * @var Manager|\PHPUnit_Framework_MockObject_MockObject
+     * @var Manager|\PHPUnit\Framework\MockObject\MockObject
      */
     private $datagridManager;
 
     /**
-     * @var MassActionHelper|\PHPUnit_Framework_MockObject_MockObject
+     * @var MassActionHelper|\PHPUnit\Framework\MockObject\MockObject
      */
     private $massActionHelper;
 
     /**
-     * @var IterableResultFactoryRegistry|\PHPUnit_Framework_MockObject_MockObject
+     * @var IterableResultFactoryRegistry|\PHPUnit\Framework\MockObject\MockObject
      */
     private $iterableResultFactoryRegistry;
 
     /**
-     * @var WorkflowTransitMassManager|\PHPUnit_Framework_MockObject_MockObject
+     * @var WorkflowTransitMassManager|\PHPUnit\Framework\MockObject\MockObject
      */
     private $workflowTransitMassManager;
 
     /**
-     * @var LoggerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var LoggerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $logger;
 
@@ -53,7 +53,7 @@ class WorkflowTransitMassProcessorTest extends TestCase
      */
     private $processor;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->datagridManager = $this->createMock(Manager::class);
         $this->massActionHelper = $this->createMock(MassActionHelper::class);
