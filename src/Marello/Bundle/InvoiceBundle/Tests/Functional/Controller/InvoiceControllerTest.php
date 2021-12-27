@@ -15,7 +15,7 @@ class InvoiceControllerTest extends WebTestCase
 {
     const GRID_NAME = 'marello-invoices-base-grid';
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->initClient(
             [],

@@ -16,7 +16,7 @@ use Marello\Bundle\OrderBundle\Provider\OrderItem\OrderItemFormChangesProvider;
 class OrderItemFormChangesProviderTest extends TestCase
 {
     /**
-     * @var TranslatorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var TranslatorInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $translator;
 
@@ -30,7 +30,7 @@ class OrderItemFormChangesProviderTest extends TestCase
      */
     protected $orderItemFormChangesProvider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->translator = $this->createMock(TranslatorInterface::class);
         $this->orderItemFormChangesProvider = new OrderItemFormChangesProvider($this->translator);
@@ -112,7 +112,7 @@ class OrderItemFormChangesProviderTest extends TestCase
         array $submitData,
         array $expectedData
     ) {
-        /** @var FormInterface|\PHPUnit_Framework_MockObject_MockObject $form **/
+        /** @var FormInterface|\PHPUnit\Framework\MockObject\MockObject $form **/
         $form = $this->createMock(FormInterface::class);
         $form->expects(static::once())
             ->method('has')

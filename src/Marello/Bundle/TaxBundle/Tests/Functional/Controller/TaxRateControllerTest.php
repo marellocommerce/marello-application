@@ -15,7 +15,7 @@ class TaxRateControllerTest extends WebTestCase
 
     const TAX_SAVE_MESSAGE = 'Tax Rate saved';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->initClient([], $this->generateBasicAuthHeader());
         $this->client->useHashNavigation(true);
@@ -26,7 +26,7 @@ class TaxRateControllerTest extends WebTestCase
         $crawler = $this->client->request('GET', $this->getUrl('marello_tax_taxrate_index'));
         $result = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
-        $this->assertContains('marello-taxrate-grid', $crawler->html());
+        $this->assertStringContainsString('marello-taxrate-grid', $crawler->html());
     }
 
     public function testCreate()
@@ -106,7 +106,7 @@ class TaxRateControllerTest extends WebTestCase
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
         $html = $crawler->html();
 
-        $this->assertContains(self::TAX_SAVE_MESSAGE, $html);
+        $this->assertStringContainsString(self::TAX_SAVE_MESSAGE, $html);
         $this->assertViewPage($html, $code, $rate);
     }
 
@@ -117,7 +117,7 @@ class TaxRateControllerTest extends WebTestCase
      */
     protected function assertViewPage($html, $code, $rate)
     {
-        $this->assertContains($code, $html);
-        $this->assertContains($rate . '%', $html);
+        $this->assertStringContainsString($code, $html);
+        $this->assertStringContainsString($rate . '%', $html);
     }
 }

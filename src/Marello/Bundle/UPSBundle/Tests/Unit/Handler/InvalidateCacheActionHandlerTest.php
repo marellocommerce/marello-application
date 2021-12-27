@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\UPSBundle\Tests\Unit\Handler;
 
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 
 use PHPUnit\Framework\TestCase;
 
@@ -19,17 +19,17 @@ class InvalidateCacheActionHandlerTest extends TestCase
     const TRANSPORT_ID = 1;
 
     /**
-     * @var DoctrineHelper|\PHPUnit_Framework_MockObject_MockObject
+     * @var DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject
      */
     private $doctrineHelper;
 
     /**
-     * @var UPSShippingPriceCache|\PHPUnit_Framework_MockObject_MockObject
+     * @var UPSShippingPriceCache|\PHPUnit\Framework\MockObject\MockObject
      */
     private $upsPriceCache;
 
     /**
-     * @var ShippingPriceCache|\PHPUnit_Framework_MockObject_MockObject
+     * @var ShippingPriceCache|\PHPUnit\Framework\MockObject\MockObject
      */
     private $shippingPriceCache;
 
@@ -38,7 +38,7 @@ class InvalidateCacheActionHandlerTest extends TestCase
      */
     private $handler;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->doctrineHelper = $this->createMock(DoctrineHelper::class);
         $this->upsPriceCache = $this->createMock(UPSShippingPriceCache::class);
@@ -83,7 +83,7 @@ class InvalidateCacheActionHandlerTest extends TestCase
     }
 
     /**
-     * @return UPSSettings|\PHPUnit_Framework_MockObject_MockObject
+     * @return UPSSettings|\PHPUnit\Framework\MockObject\MockObject
      */
     private function createSettingsMock()
     {

@@ -12,7 +12,7 @@ class RuleTypeTest extends FormIntegrationTestCase
     /** @var RuleType */
     protected $formType;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

@@ -3,7 +3,7 @@
 namespace Marello\Bundle\ShippingBundle\Tests\Functional\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\RuleBundle\Entity\Rule;
 use Marello\Bundle\RuleBundle\Entity\RuleInterface;
 use Marello\Bundle\ShippingBundle\Entity\ShippingMethodsConfigsRule;

@@ -16,22 +16,22 @@ use Marello\Bundle\InventoryBundle\Model\BalancedInventoryLevelInterface;
 
 class InventoryBalancerTest extends TestCase
 {
-    /** @var ConfigManager|\PHPUnit_Framework_MockObject_MockObject $configManager */
+    /** @var ConfigManager|\PHPUnit\Framework\MockObject\MockObject $configManager */
     protected $configManager;
 
-    /** @var InventoryBalancer|\PHPUnit_Framework_MockObject_MockObject $inventoryBalancer */
+    /** @var InventoryBalancer|\PHPUnit\Framework\MockObject\MockObject $inventoryBalancer */
     protected $inventoryBalancer;
 
-    /** @var InventoryItemManager|\PHPUnit_Framework_MockObject_MockObject $inventoryItemManager */
+    /** @var InventoryItemManager|\PHPUnit\Framework\MockObject\MockObject $inventoryItemManager */
     protected $inventoryItemManager;
 
-    /** @var BalancedInventoryHandler|\PHPUnit_Framework_MockObject_MockObject $balancedInventoryHandler */
+    /** @var BalancedInventoryHandler|\PHPUnit\Framework\MockObject\MockObject $balancedInventoryHandler */
     protected $balancedInventoryHandler;
 
-    /** @var BalancerStrategiesRegistry|\PHPUnit_Framework_MockObject_MockObject $balancerRegistry */
+    /** @var BalancerStrategiesRegistry|\PHPUnit\Framework\MockObject\MockObject $balancerRegistry */
     protected $balancerRegistry;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->configManager = $this->getMockBuilder(ConfigManager::class)
             ->disableOriginalConstructor()

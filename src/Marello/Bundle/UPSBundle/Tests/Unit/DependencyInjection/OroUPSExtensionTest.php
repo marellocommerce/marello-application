@@ -12,12 +12,12 @@ class MarelloUPSExtensionTest extends ExtensionTestCase
      */
     protected $extension;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->extension = new MarelloUPSExtension();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->extension);
     }

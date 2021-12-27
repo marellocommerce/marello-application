@@ -29,12 +29,12 @@ class OrderItemMapperTest extends TestCase
      */
     protected $mapper;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->mapper = new OrderItemMapper(OrderItem::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->mapper);
     }

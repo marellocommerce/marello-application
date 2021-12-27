@@ -16,7 +16,7 @@ class ShippingMethodConfigRepositoryTest extends WebTestCase
      */
     protected $repository;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->initClient([], static::generateBasicAuthHeader());
         $this->loadFixtures([
@@ -66,7 +66,7 @@ class ShippingMethodConfigRepositoryTest extends WebTestCase
 
         $expectedConfig = $this->getReference('shipping_rule.2.method_config.1');
 
-        static::assertContains($expectedConfig, $actualConfigs);
+        static::assertStringContainsString($expectedConfig, $actualConfigs);
     }
 
     public function testFindByTypes()
@@ -84,7 +84,7 @@ class ShippingMethodConfigRepositoryTest extends WebTestCase
         ];
 
         foreach ($expectedConfigs as $expectedConfig) {
-            static::assertContains($expectedConfig, $actualConfigs);
+            static::assertStringContainsString($expectedConfig, $actualConfigs);
         }
     }
 }

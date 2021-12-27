@@ -20,19 +20,19 @@ class OnProductDeleteEventListenerTest extends TestCase
     protected $listener;
 
     /**
-     * @var InventoryItemManagerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var InventoryItemManagerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $inventoryItemManager;
 
     /**
-     * @var EntityManagerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $entityManager;
 
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->entityManager = $this
             ->getMockBuilder(EntityManagerInterface::class)

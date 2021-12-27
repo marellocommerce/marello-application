@@ -10,7 +10,7 @@ use Marello\Bundle\CoreBundle\Provider\AdditionalPlaceholderProvider;
 class CoreExtensionTest extends WebTestCase
 {
     /**
-     * @var AdditionalPlaceholderProvider|\PHPUnit_Framework_MockObject_MockObject
+     * @var AdditionalPlaceholderProvider|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $additionalPlaceholderProvider;
 
@@ -22,7 +22,7 @@ class CoreExtensionTest extends WebTestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->additionalPlaceholderProvider = $this->getMockBuilder(AdditionalPlaceholderProvider::class)
             ->disableOriginalConstructor()
@@ -35,7 +35,7 @@ class CoreExtensionTest extends WebTestCase
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->extension, $this->additionalPlaceholderProvider);
     }

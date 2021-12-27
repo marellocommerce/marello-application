@@ -11,7 +11,7 @@ class CategoryCodeFormatterTest extends TestCase
     /** @var CategoryCodeFormatter $formatter */
     protected $formatter;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->formatter = new CategoryCodeFormatter();
     }

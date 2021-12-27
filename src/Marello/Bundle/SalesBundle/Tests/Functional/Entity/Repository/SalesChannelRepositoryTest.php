@@ -19,7 +19,7 @@ class SalesChannelRepositoryTest extends WebTestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->initClient([], static::generateBasicAuthHeader());
         $this->loadFixtures([
@@ -32,13 +32,13 @@ class SalesChannelRepositoryTest extends WebTestCase
     public function testGetActiveChannels()
     {
         // active and default
-        static::assertContains(
+        static::assertStringContainsString(
             $this->getReference(LoadSalesData::CHANNEL_1_REF),
             $this->repository->getActiveChannels()
         );
 
         // active and not default
-        static::assertContains(
+        static::assertStringContainsString(
             $this->getReference(LoadSalesData::CHANNEL_2_REF),
             $this->repository->getActiveChannels()
         );
@@ -53,7 +53,7 @@ class SalesChannelRepositoryTest extends WebTestCase
     public function testGetDefaultActiveChannels()
     {
         // active and default
-        static::assertContains(
+        static::assertStringContainsString(
             $this->getReference(LoadSalesData::CHANNEL_1_REF),
             $this->repository->getDefaultActiveChannels()
         );

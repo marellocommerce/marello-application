@@ -21,7 +21,7 @@ class OrderExtensionTest extends WebTestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->extension = new OrderExtension();
         /** @var Registry $registry */
@@ -44,7 +44,7 @@ class OrderExtensionTest extends WebTestCase
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->extension);
         unset($this->workflowManager);
@@ -87,7 +87,7 @@ class OrderExtensionTest extends WebTestCase
      */
     public function testIfOrderCanReturnIsTrue()
     {
-        /** @var Order|\PHPUnit_Framework_MockObject_MockObject $order */
+        /** @var Order|\PHPUnit\Framework\MockObject\MockObject $order */
         $order = $this->getMockBuilder(Order::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -116,7 +116,7 @@ class OrderExtensionTest extends WebTestCase
      */
     public function testIfOrderCanReturnIsFalse()
     {
-        /** @var Order|\PHPUnit_Framework_MockObject_MockObject $order */
+        /** @var Order|\PHPUnit\Framework\MockObject\MockObject $order */
         $order = $this->getMockBuilder(Order::class)
             ->disableOriginalConstructor()
             ->getMock();

@@ -17,7 +17,7 @@ class RenderParametersProviderTest extends TestCase
      */
     public function testGetParams($firstProviderSupported, $secondProviderSupported, $result)
     {
-        /** @var RenderParameterProviderInterface|\PHPUnit_Framework_MockObject_MockObject $firstProvider */
+        /** @var RenderParameterProviderInterface|\PHPUnit\Framework\MockObject\MockObject $firstProvider */
         $firstProvider = $this->createMock(RenderParameterProviderInterface::class);
         $firstProvider->expects($this->once())
             ->method('supports')
@@ -30,7 +30,7 @@ class RenderParametersProviderTest extends TestCase
             ;
         }
 
-        /** @var RenderParameterProviderInterface|\PHPUnit_Framework_MockObject_MockObject $secondProvider */
+        /** @var RenderParameterProviderInterface|\PHPUnit\Framework\MockObject\MockObject $secondProvider */
         $secondProvider = $this->createMock(RenderParameterProviderInterface::class);
         $secondProvider->expects($this->once())
             ->method('supports')

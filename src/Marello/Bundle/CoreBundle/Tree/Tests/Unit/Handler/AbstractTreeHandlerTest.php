@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\CoreBundle\Tree\Tests\Unit\Handler;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use Marello\Bundle\CoreBundle\Tree\Entity\Repository\NestedTreeRepository;
 use Marello\Bundle\CoreBundle\Tree\Tests\Unit\Stubs\EntityStub;
@@ -24,7 +24,7 @@ class AbstractTreeHandlerTest extends \PHPUnit\Framework\TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         /** @var EntityManager|\PHPUnit\Framework\MockObject\MockObject $em */
         $this->em = $this->getMockBuilder(EntityManager::class)->disableOriginalConstructor()->getMock();

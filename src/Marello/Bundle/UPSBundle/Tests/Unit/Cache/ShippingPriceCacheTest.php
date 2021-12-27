@@ -31,26 +31,26 @@ class ShippingPriceCacheTest extends TestCase
     private $cache;
 
     /**
-     * @var CacheProvider|\PHPUnit_Framework_MockObject_MockObject
+     * @var CacheProvider|\PHPUnit\Framework\MockObject\MockObject
      */
     private $cacheProvider;
 
     /**
-     * @var LifetimeProviderInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var LifetimeProviderInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $lifetimeProvider;
 
     /**
-     * @var UPSSettings|\PHPUnit_Framework_MockObject_MockObject
+     * @var UPSSettings|\PHPUnit\Framework\MockObject\MockObject
      */
     private $settings;
 
     /**
-     * @var ShippingPriceCacheKey|\PHPUnit_Framework_MockObject_MockObject
+     * @var ShippingPriceCacheKey|\PHPUnit\Framework\MockObject\MockObject
      */
     private $cacheKey;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->cacheProvider = $this->createMock(CacheProvider::class);
         $this->lifetimeProvider = $this->createMock(LifetimeProviderInterface::class);
@@ -144,7 +144,7 @@ class ShippingPriceCacheTest extends TestCase
      * @param UPSSettings $settings
      * @param string      $stringKey
      *
-     * @return ShippingPriceCacheKey|\PHPUnit_Framework_MockObject_MockObject
+     * @return ShippingPriceCacheKey|\PHPUnit\Framework\MockObject\MockObject
      */
     private function getCacheKeyMock(UPSSettings $settings, string $stringKey): ShippingPriceCacheKey
     {

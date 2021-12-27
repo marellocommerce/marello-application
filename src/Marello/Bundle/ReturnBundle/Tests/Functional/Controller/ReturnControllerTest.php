@@ -10,7 +10,7 @@ use Marello\Bundle\ReturnBundle\Tests\Functional\DataFixtures\LoadReturnData;
 
 class ReturnControllerTest extends WebTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->initClient(
             [],

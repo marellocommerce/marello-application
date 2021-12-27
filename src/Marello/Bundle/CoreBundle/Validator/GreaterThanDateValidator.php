@@ -79,7 +79,7 @@ class GreaterThanDateValidator extends ConstraintValidator
         $class = $em->getClassMetadata(get_class($entity));
         $fieldValue = null;
 
-        /* @var $class \Doctrine\Common\Persistence\Mapping\ClassMetadata */
+        /* @var $class \Doctrine\Persistence\Mapping\ClassMetadata */
         if (!$class->hasField($field) && !$class->hasAssociation($field)) {
             throw new ConstraintDefinitionException(
                 sprintf(

@@ -11,7 +11,7 @@ use Marello\Bundle\SupplierBundle\Provider\SupplierProvider;
 class SupplierExtensionTest extends TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $supplierProvider;
 
@@ -20,7 +20,7 @@ class SupplierExtensionTest extends TestCase
      */
     protected $extension;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->supplierProvider = $this->getMockBuilder(SupplierProvider::class)
             ->disableOriginalConstructor()
@@ -28,7 +28,7 @@ class SupplierExtensionTest extends TestCase
         $this->extension = new SupplierExtension($this->supplierProvider);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->extension);
         unset($this->supplierProvider);

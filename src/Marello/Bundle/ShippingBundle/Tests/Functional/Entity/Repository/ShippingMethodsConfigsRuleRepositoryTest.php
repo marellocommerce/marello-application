@@ -29,7 +29,7 @@ class ShippingMethodsConfigsRuleRepositoryTest extends WebTestCase
      */
     protected $em;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->initClient([], static::generateBasicAuthHeader());
         $this->client->useHashNavigation(true);
@@ -150,7 +150,7 @@ class ShippingMethodsConfigsRuleRepositoryTest extends WebTestCase
             'shipping_rule_with_disabled_type_configs',
         ];
         foreach ($expectedRuleReferences as $expectedRuleReference) {
-            static::assertContains($this->getReference($expectedRuleReference), $rulesByExistingMethod);
+            static::assertStringContainsString($this->getReference($expectedRuleReference), $rulesByExistingMethod);
         }
 
         $rulesByNotExistingMethod = $this->repository->getRulesByMethod('not_existing_method');
@@ -167,7 +167,7 @@ class ShippingMethodsConfigsRuleRepositoryTest extends WebTestCase
         $actualRules = $this->repository->getEnabledRulesByMethod($this->getManualShippingIdentifier());
 
         foreach ($expectedRuleReferences as $expectedRuleReference) {
-            static::assertContains($this->getReference($expectedRuleReference), $actualRules);
+            static::assertStringContainsString($this->getReference($expectedRuleReference), $actualRules);
         }
     }
 

@@ -12,12 +12,12 @@ use Marello\Bundle\OrderBundle\Entity\OrderItem;
 class ReturnExtensionTest extends WebTestCase
 {
     /**
-     * @var ReturnHelper|\PHPUnit_Framework_MockObject_MockObject
+     * @var ReturnHelper|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $helper;
 
     /**
-     * @var WorkflowManager|\PHPUnit_Framework_MockObject_MockObject
+     * @var WorkflowManager|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $workflowManager;
 
@@ -29,7 +29,7 @@ class ReturnExtensionTest extends WebTestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->helper = $this->getMockBuilder(ReturnHelper::class)
             ->disableOriginalConstructor()
@@ -45,7 +45,7 @@ class ReturnExtensionTest extends WebTestCase
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->extension);
         unset($this->helper);

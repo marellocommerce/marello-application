@@ -15,7 +15,7 @@ class InventoryLogLevelControllerTest extends WebTestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->initClient(
             [],
@@ -45,7 +45,7 @@ class InventoryLogLevelControllerTest extends WebTestCase
 
         $response = $this->client->getResponse();
         self::assertHtmlResponseStatusCodeEquals($response, Response::HTTP_OK);
-        $this->assertContains('marello-inventory-log-extended', $crawler->html());
+        $this->assertStringContainsString('marello-inventory-log-extended', $crawler->html());
 
         $response = $this->client->requestGrid(
             'marello-inventory-log-extended',

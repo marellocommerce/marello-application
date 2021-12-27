@@ -9,7 +9,7 @@ class LineTest extends TestCase
 {
     protected $line;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->line = new Line([
             'test-field-1',

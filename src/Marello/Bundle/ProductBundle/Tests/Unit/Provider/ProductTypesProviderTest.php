@@ -13,12 +13,12 @@ class ProductTypesProviderTest extends TestCase
      */
     protected $provider;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->provider = new ProductTypesProvider();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->registry);
     }
@@ -33,12 +33,10 @@ class ProductTypesProviderTest extends TestCase
         $this->assertSame($productType, $this->provider->getProductType($productTypeName));
     }
 
-    /**
-     * @expectedException \LogicException
-     * @expectedExceptionMessage Product Type with name "test" already registered
-     */
     public function testAddTwoProductTypesWithSameName()
     {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('Product Type with name "test" already registered');
         $productTypeName = 'test';
 
         $this->provider->addProductType($this->getProductTypeMock($productTypeName));

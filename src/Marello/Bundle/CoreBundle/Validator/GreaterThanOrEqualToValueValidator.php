@@ -108,7 +108,7 @@ class GreaterThanOrEqualToValueValidator extends ConstraintValidator
 
         $classMetaData = $em->getClassMetadata($className);
         $results = [];
-        /* @var $class \Doctrine\Common\Persistence\Mapping\ClassMetadata */
+        /* @var $class \Doctrine\Persistence\Mapping\ClassMetadata */
         foreach ($fields as $fieldName) {
             if (!$classMetaData->hasField($fieldName) && !$classMetaData->hasAssociation($fieldName)) {
                 throw new ConstraintDefinitionException(

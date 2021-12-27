@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\PdfBundle\Tests\Unit\Workflow\Action;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\PdfBundle\Workflow\Action\SendEmailTemplateAttachmentAction;
 use Oro\Bundle\EmailBundle\Mailer\Processor;
@@ -19,19 +18,19 @@ class SendEmailTemplateAttachmentActionTest extends TestCase
 {
     protected $action;
 
-    public function setUp()
+    public function setUp(): void
     {
-        /** @var Processor|\PHPUnit_Framework_MockObject_MockObject $emailProcessor */
+        /** @var Processor|\PHPUnit\Framework\MockObject\MockObject $emailProcessor */
         $emailProcessor = $this->createMock(Processor::class);
-        /** @var EntityNameResolver|\PHPUnit_Framework_MockObject_MockObject $entityNameResolver */
+        /** @var EntityNameResolver|\PHPUnit\Framework\MockObject\MockObject $entityNameResolver */
         $entityNameResolver = $this->createMock(EntityNameResolver::class);
-        /** @var EmailRenderer|\PHPUnit_Framework_MockObject_MockObject $renderer */
+        /** @var EmailRenderer|\PHPUnit\Framework\MockObject\MockObject $renderer */
         $renderer = $this->createMock(EmailRenderer::class);
-        /** @var ManagerRegistry|\PHPUnit_Framework_MockObject_MockObject $managerRegistry */
+        /** @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject $managerRegistry */
         $managerRegistry = $this->createMock(ManagerRegistry::class);
-        /** @var ValidatorInterface|\PHPUnit_Framework_MockObject_MockObject $validator */
+        /** @var ValidatorInterface|\PHPUnit\Framework\MockObject\MockObject $validator */
         $validator = $this->createMock(ValidatorInterface::class);
-        /** @var EmailOriginHelper|\PHPUnit_Framework_MockObject_MockObject $emailOriginHelper */
+        /** @var EmailOriginHelper|\PHPUnit\Framework\MockObject\MockObject $emailOriginHelper */
         $emailOriginHelper = $this->getMockBuilder(EmailOriginHelper::class)->disableOriginalConstructor()->getMock();
 
         $this->action = new SendEmailTemplateAttachmentAction(
