@@ -30,7 +30,7 @@ class MatrixBasedAddressesDistanceCalcElementTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->distanceMatrixResultsProvider = $this->createMock(GoogleApiResultsProviderInterface::class);
         /** @var LoggerInterface|MockObject $logger */

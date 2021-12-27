@@ -13,12 +13,12 @@ use MarelloEnterprise\Bundle\InventoryBundle\Provider\WFAStrategyChoicesProvider
 class WFAStrategyChoicesProviderTest extends TestCase
 {
     /**
-     * @var WFAStrategiesRegistry|\PHPUnit_Framework_MockObject_MockObject
+     * @var WFAStrategiesRegistry|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $strategiesRegistry;
 
     /**
-     * @var TranslatorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var TranslatorInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $translator;
 
@@ -27,7 +27,7 @@ class WFAStrategyChoicesProviderTest extends TestCase
      */
     protected $wFAStrategyChoicesProvider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->strategiesRegistry = $this->createMock(WFAStrategiesRegistry::class);
         $this->translator = $this->createMock(TranslatorInterface::class);
@@ -69,7 +69,7 @@ class WFAStrategyChoicesProviderTest extends TestCase
     /**
      * @param string $identifier
      * @param string $label
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit\Framework\MockObject\MockObject
      */
     private function mockStrategy($identifier, $label)
     {

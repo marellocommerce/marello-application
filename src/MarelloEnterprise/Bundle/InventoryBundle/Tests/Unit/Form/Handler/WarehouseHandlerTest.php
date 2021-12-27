@@ -3,7 +3,7 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Form\Handler;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,22 +26,22 @@ class WarehouseHandlerTest extends TestCase
     use EntityTrait;
 
     /**
-     * @var FormInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var FormInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $form;
 
     /**
-     * @var ObjectManager|\PHPUnit_Framework_MockObject_MockObject
+     * @var ObjectManager|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $manager;
 
     /**
-     * @var Request|\PHPUnit_Framework_MockObject_MockObject
+     * @var Request|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $request;
 
     /**
-     * @var Warehouse|\PHPUnit_Framework_MockObject_MockObject
+     * @var Warehouse|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $entity;
 
@@ -53,7 +53,7 @@ class WarehouseHandlerTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->form = $this->createMock(FormInterface::class);
         $this->manager = $this->createMock(ObjectManager::class);
@@ -107,7 +107,7 @@ class WarehouseHandlerTest extends TestCase
 
     public function testProcessFixedBefore()
     {
-        /** @var Warehouse|\PHPUnit_Framework_MockObject_MockObject $group */
+        /** @var Warehouse|\PHPUnit\Framework\MockObject\MockObject $group */
         $group = $this->createMock(WarehouseGroup::class);
 
         $typeBefore = $this->getEntity(
@@ -126,13 +126,9 @@ class WarehouseHandlerTest extends TestCase
         );
 
         $this->entity
-            ->expects(static::at(0))
+            ->expects(static::exactly(2))
             ->method('getWarehouseType')
-            ->willReturn($typeBefore);
-        $this->entity
-            ->expects(static::at(1))
-            ->method('getWarehouseType')
-            ->willReturn($typeAfter);
+            ->willReturnOnConsecutiveCalls($typeBefore, $typeAfter);
         $this->entity
             ->expects(static::once())
             ->method('getGroup')
@@ -168,7 +164,7 @@ class WarehouseHandlerTest extends TestCase
 
     public function testProcessFixedAfterNotSystemGroup()
     {
-        /** @var Warehouse|\PHPUnit_Framework_MockObject_MockObject $group */
+        /** @var Warehouse|\PHPUnit\Framework\MockObject\MockObject $group */
         $group = $this->createMock(WarehouseGroup::class);
         $group
             ->expects(static::any())
@@ -205,13 +201,9 @@ class WarehouseHandlerTest extends TestCase
         );
 
         $this->entity
-            ->expects(static::at(0))
+            ->expects(static::exactly(2))
             ->method('getWarehouseType')
-            ->willReturn($typeBefore);
-        $this->entity
-            ->expects(static::at(2))
-            ->method('getWarehouseType')
-            ->willReturn($typeAfter);
+            ->willReturnOnConsecutiveCalls($typeBefore, $typeAfter);
         $this->entity
             ->expects(static::once())
             ->method('getGroup')
@@ -238,7 +230,7 @@ class WarehouseHandlerTest extends TestCase
 
     public function testProcessFixedAfterSystemGroup()
     {
-        /** @var Warehouse|\PHPUnit_Framework_MockObject_MockObject $group */
+        /** @var Warehouse|\PHPUnit\Framework\MockObject\MockObject $group */
         $group = $this->createMock(WarehouseGroup::class);
         $group
             ->expects(static::once())
@@ -261,13 +253,9 @@ class WarehouseHandlerTest extends TestCase
         );
 
         $this->entity
-            ->expects(static::at(0))
+            ->expects(static::exactly(2))
             ->method('getWarehouseType')
-            ->willReturn($typeBefore);
-        $this->entity
-            ->expects(static::at(2))
-            ->method('getWarehouseType')
-            ->willReturn($typeAfter);
+            ->willReturnOnConsecutiveCalls($typeBefore, $typeAfter);
         $this->entity
             ->expects(static::once())
             ->method('getGroup')

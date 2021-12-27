@@ -15,7 +15,7 @@ class WarehouseActionPermissionProviderTest extends TestCase
      */
     protected $provider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->provider = new WarehouseActionPermissionProvider();
     }
@@ -27,7 +27,7 @@ class WarehouseActionPermissionProviderTest extends TestCase
      */
     public function testGetActionPermissions($default, array $result)
     {
-        /** @var ResultRecordInterface|\PHPUnit_Framework_MockObject_MockObject $record **/
+        /** @var ResultRecordInterface|\PHPUnit\Framework\MockObject\MockObject $record **/
         $record = $this->createMock(ResultRecordInterface::class);
         $record
             ->expects(static::once())

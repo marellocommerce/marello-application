@@ -23,14 +23,14 @@ class WarehouseChannelGroupLinkDatagridListenerTest extends TestCase
      */
     protected $warehouseChannelGroupLinkDatagridListener;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->warehouseChannelGroupLinkDatagridListener = new WarehouseChannelGroupLinkDatagridListener();
     }
 
     public function testOnResultAfter()
     {
-        /** @var OrmResultAfter|\PHPUnit_Framework_MockObject_MockObject $event **/
+        /** @var OrmResultAfter|\PHPUnit\Framework\MockObject\MockObject $event **/
         $event = $this->getMockBuilder(OrmResultAfter::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -72,21 +72,19 @@ class WarehouseChannelGroupLinkDatagridListenerTest extends TestCase
     /**
      * @param $whGroup
      * @param $scGroup
-     * @return ResultRecord|\PHPUnit_Framework_MockObject_MockObject
+     * @return ResultRecord|\PHPUnit\Framework\MockObject\MockObject
      */
     private function buildRecord($whGroup, $scGroup)
     {
         $record = $this->createMock(ResultRecord::class);
         $record
-            ->expects(static::at(0))
+            ->expects(static::exactly(2))
             ->method('getValue')
-            ->with('warehouseGroup')
-            ->willReturn($whGroup);
-        $record
-            ->expects(static::at(1))
-            ->method('getValue')
-            ->with('salesChannelGroups')
-            ->willReturn([$scGroup]);
+            ->withConsecutive(
+                ['warehouseGroup'],
+                ['salesChannelGroups']
+            )
+            ->willReturn($whGroup, [$scGroup]);
 
         return $record;
     }

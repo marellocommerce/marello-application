@@ -17,7 +17,7 @@ use MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\StraightLine\S
 class StraightLineAddressesDistanceCalcElementTest extends TestCase
 {
     /**
-     * @var AddressCoordinatesProviderInerface|\PHPUnit_Framework_MockObject_MockObject
+     * @var AddressCoordinatesProviderInerface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $coordinatesProvider;
 
@@ -29,12 +29,12 @@ class StraightLineAddressesDistanceCalcElementTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->coordinatesProvider = $this->getMockBuilder(AddressCoordinatesProviderInerface::class)
             ->disableOriginalConstructor()
             ->getMock();
-        /** @var Session|\PHPUnit_Framework_MockObject_MockObject $session */
+        /** @var Session|\PHPUnit\Framework\MockObject\MockObject $session */
         $session = $this->createMock(Session::class);
         $this->distanceCalculator =
             new StraightLineAddressesDistanceCalcElement($this->coordinatesProvider, $session);
@@ -51,7 +51,7 @@ class StraightLineAddressesDistanceCalcElementTest extends TestCase
      */
     public function testCalculate($originLat, $originLon, $destinationLat, $destinationLon, $expectedDistance)
     {
-        /** @var FeatureChecker|\PHPUnit_Framework_MockObject_MockObject $featureChecker */
+        /** @var FeatureChecker|\PHPUnit\Framework\MockObject\MockObject $featureChecker */
         $featureChecker = $this->getMockBuilder(FeatureChecker::class)->disableOriginalConstructor()->getMock();
         $featureChecker->expects(static::once())
             ->method('isFeatureEnabled')

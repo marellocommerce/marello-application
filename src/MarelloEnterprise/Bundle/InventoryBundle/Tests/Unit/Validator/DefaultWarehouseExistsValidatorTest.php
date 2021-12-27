@@ -4,6 +4,7 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Validator;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 use PHPUnit\Framework\TestCase;
@@ -19,17 +20,17 @@ class DefaultWarehouseExistsValidatorTest extends TestCase
     use EntityTrait;
 
     /**
-     * @var WarehouseRepository|\PHPUnit_Framework_MockObject_MockObject
+     * @var WarehouseRepository|\PHPUnit\Framework\MockObject\MockObject
      */
     private $warehouseRepository;
 
     /**
-     * @var Constraint|\PHPUnit_Framework_MockObject_MockObject
+     * @var Constraint|\PHPUnit\Framework\MockObject\MockObject
      */
     private $constraint;
 
     /**
-     * @var ExecutionContextInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ExecutionContextInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $context;
 
@@ -41,7 +42,7 @@ class DefaultWarehouseExistsValidatorTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->warehouseRepository = $this->getMockBuilder(WarehouseRepository::class)
             ->disableOriginalConstructor()
@@ -55,12 +56,14 @@ class DefaultWarehouseExistsValidatorTest extends TestCase
 
     /**
      * @covers validate
-     * @expectedException \Symfony\Component\Validator\Exception\UnexpectedTypeException
-     * @expectedExceptionMessage Expected argument of type "Marello\Bundle\InventoryBundle\Entity\Warehouse",
      * "NULL" given
      */
     public function testValidateForWrongObject()
     {
+        $this->expectException(UnexpectedTypeException::class);
+        $this->expectExceptionMessage(
+            'Expected argument of type "Marello\Bundle\InventoryBundle\Entity\Warehouse", "NULL" given'
+        );
         $this->validator->validate(null, $this->constraint);
     }
 
