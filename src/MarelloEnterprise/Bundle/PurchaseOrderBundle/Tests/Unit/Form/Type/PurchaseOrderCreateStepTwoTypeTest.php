@@ -67,7 +67,7 @@ class PurchaseOrderCreateStepTwoTypeTest extends FormIntegrationTestCase
             'valid' => [
                 'submittedData' => [
                     'supplier' => 'supplier_1',
-                    'dueDate' => '2018-05-16',
+                    'dueDate' => '2055-05-16',
                     'itemsAdditional' => [
                         0 => [
                             'product' => 'product_1',
@@ -87,7 +87,7 @@ class PurchaseOrderCreateStepTwoTypeTest extends FormIntegrationTestCase
             'no_submitted_warehouse' => [
                 'submittedData' => [
                     'supplier' => 'supplier_1',
-                    'dueDate' => '2018-05-16',
+                    'dueDate' => '2055-05-16',
                     'itemsAdditional' => [
                         0 => [
                             'product' => 'product_1',
@@ -106,7 +106,7 @@ class PurchaseOrderCreateStepTwoTypeTest extends FormIntegrationTestCase
             'not_existing_warehouse' => [
                 'submittedData' => [
                     'supplier' => 'supplier_1',
-                    'dueDate' => '2018-05-16',
+                    'dueDate' => '2055-05-16',
                     'itemsAdditional' => [
                         0 => [
                             'product' => 'product_1',
@@ -131,14 +131,14 @@ class PurchaseOrderCreateStepTwoTypeTest extends FormIntegrationTestCase
      */
     public function getExtensions()
     {
-        /** @var AuthorizationCheckerInterface|\PHPUnit_Framework_MockObject_MockObject $authorizationChecker */
+        /** @var AuthorizationCheckerInterface|\PHPUnit\Framework\MockObject\MockObject $authorizationChecker */
         $authorizationChecker = $this->createMock(AuthorizationCheckerInterface::class);
-        /** @var ConfigManager|\PHPUnit_Framework_MockObject_MockObject $configManager */
+        /** @var ConfigManager|\PHPUnit\Framework\MockObject\MockObject $configManager */
         $configManager = $this->getMockBuilder(ConfigManager::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        /** @var ConfigProvider|\PHPUnit_Framework_MockObject_MockObject $configProvider */
+        /** @var ConfigProvider|\PHPUnit\Framework\MockObject\MockObject $configProvider */
         $configProvider = $this->getMockBuilder(ConfigProvider::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -148,7 +148,7 @@ class PurchaseOrderCreateStepTwoTypeTest extends FormIntegrationTestCase
             ->method('getProvider')
             ->will($this->returnValue($configProvider));
 
-        /** @var ConfigInterface|\PHPUnit_Framework_MockObject_MockObject $config */
+        /** @var ConfigInterface|\PHPUnit\Framework\MockObject\MockObject $config */
         $config = $this->createMock(ConfigInterface::class);
 
         $configProvider
@@ -156,7 +156,7 @@ class PurchaseOrderCreateStepTwoTypeTest extends FormIntegrationTestCase
             ->method('getConfig')
             ->will($this->returnValue($config));
 
-        /** @var SearchRegistry|\PHPUnit_Framework_MockObject_MockObject $searchRegistry */
+        /** @var SearchRegistry|\PHPUnit\Framework\MockObject\MockObject $searchRegistry */
         $searchRegistry = $this->getMockBuilder(SearchRegistry::class)
             ->disableOriginalConstructor()
             ->setMethods(['hasSearchHandler', 'getSearchHandler'])
@@ -191,7 +191,7 @@ class PurchaseOrderCreateStepTwoTypeTest extends FormIntegrationTestCase
                     }
                 }
             );
-        /** @var EntityManager|\PHPUnit_Framework_MockObject_MockObject $entityManager */
+        /** @var EntityManager|\PHPUnit\Framework\MockObject\MockObject $entityManager */
         $entityManager = $this->getMockBuilder(EntityManager::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -209,22 +209,22 @@ class PurchaseOrderCreateStepTwoTypeTest extends FormIntegrationTestCase
             ->method('getClassMetadata')
             ->will($this->returnValue($metadata));
 
-        /** @var LocaleSettings|\PHPUnit_Framework_MockObject_MockObject $localeSettings */
+        /** @var LocaleSettings|\PHPUnit\Framework\MockObject\MockObject $localeSettings */
         $localeSettings = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Model\LocaleSettings')
             ->disableOriginalConstructor()
             ->setMethods(array('getLocale', 'getCurrency', 'getCurrencySymbolByCurrency'))
             ->getMock();
 
-        /** @var NumberFormatter|\PHPUnit_Framework_MockObject_MockObject $numberFormatter */
+        /** @var NumberFormatter|\PHPUnit\Framework\MockObject\MockObject $numberFormatter */
         $numberFormatter = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Formatter\NumberFormatter')
             ->disableOriginalConstructor()
             ->setMethods(array('isCurrencySymbolPrepend', 'getAttribute'))
             ->getMock();
 
-        /** @var DoctrineHelper|\PHPUnit_Framework_MockObject_MockObject $doctrineHelper */
+        /** @var DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject $doctrineHelper */
         $doctrineHelper = $this->createMock(DoctrineHelper::class);
 
-        /** @var Router|\PHPUnit_Framework_MockObject_MockObject $router */
+        /** @var Router|\PHPUnit\Framework\MockObject\MockObject $router */
         $router = $this->createMock(Router::class);
 
         return [

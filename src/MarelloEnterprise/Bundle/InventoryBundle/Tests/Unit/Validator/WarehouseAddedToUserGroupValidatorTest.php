@@ -7,6 +7,7 @@ use Doctrine\ORM\UnitOfWork;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 use PHPUnit\Framework\TestCase;
@@ -25,17 +26,17 @@ class WarehouseAddedToLinkedGroupValidatorTest extends TestCase
     use EntityTrait;
 
     /**
-     * @var Constraint|\PHPUnit_Framework_MockObject_MockObject
+     * @var Constraint|\PHPUnit\Framework\MockObject\MockObject
      */
     private $constraint;
 
     /**
-     * @var ExecutionContextInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ExecutionContextInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $context;
 
     /**
-     * @var EntityManager|\PHPUnit_Framework_MockObject_MockObject
+     * @var EntityManager|\PHPUnit\Framework\MockObject\MockObject
      */
     private $manager;
 
@@ -47,7 +48,7 @@ class WarehouseAddedToLinkedGroupValidatorTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->constraint = $this->createMock(Constraint::class);
         $this->context = $this->createMock(ExecutionContextInterface::class);
@@ -59,12 +60,13 @@ class WarehouseAddedToLinkedGroupValidatorTest extends TestCase
 
     /**
      * @covers validate
-     * @expectedException \Symfony\Component\Validator\Exception\UnexpectedTypeException
-     * @expectedExceptionMessage Expected argument of type "Marello\Bundle\InventoryBundle\Entity\Warehouse",
-     * "NULL" given
      */
     public function testValidateForWrongObject()
     {
+        $this->expectException(UnexpectedTypeException::class);
+        $this->expectExceptionMessage(
+            'Expected argument of type "Marello\Bundle\InventoryBundle\Entity\Warehouse", "NULL" given'
+        );
         $this->validator->validate(null, $this->constraint);
     }
 

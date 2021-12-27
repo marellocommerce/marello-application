@@ -14,7 +14,7 @@ class WFAStrategiesRegistryTest extends TestCase
      */
     protected $wFAStrategiesRegistry;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->wFAStrategiesRegistry = new WFAStrategiesRegistry();
     }
@@ -58,7 +58,7 @@ class WFAStrategiesRegistryTest extends TestCase
 
     /**
      * @param string $identifier
-     * @return WFAStrategyInterface|\PHPUnit_Framework_MockObject_MockObject $strategy
+     * @return WFAStrategyInterface|\PHPUnit\Framework\MockObject\MockObject $strategy
      */
     private function mockStrategy($identifier)
     {

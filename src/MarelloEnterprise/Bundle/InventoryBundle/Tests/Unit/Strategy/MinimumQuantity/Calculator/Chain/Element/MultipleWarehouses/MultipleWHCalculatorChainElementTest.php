@@ -20,7 +20,7 @@ class MultipleWHCalculatorChainElementTest extends AbstractWHCalculatorChainElem
      */
     protected $multipleWHCalculatorChainElement;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->multipleWHCalculatorChainElement = new MultipleWHCalculatorChainElement();
     }

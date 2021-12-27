@@ -22,7 +22,7 @@ class GeocodingApiRequestFactoryTest extends TestCase
      */
     protected $geocodingApiRequestFactory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->geocodingApiRequestFactory = new GeocodingApiRequestFactory();
     }
@@ -36,7 +36,7 @@ class GeocodingApiRequestFactoryTest extends TestCase
     public function testCreateRequest(array $addressParams, array $expectedParams)
     {
         $address = $this->getEntity(MarelloAddress::class, $addressParams);
-        /** @var GoogleApiContextInterface|\PHPUnit_Framework_MockObject_MockObject $context **/
+        /** @var GoogleApiContextInterface|\PHPUnit\Framework\MockObject\MockObject $context **/
         $context = $this->createMock(GoogleApiContextInterface::class);
         $context->expects(static::once())
             ->method('getOriginAddress')

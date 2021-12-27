@@ -18,17 +18,17 @@ use MarelloEnterprise\Bundle\GoogleApiBundle\Client\Factory\GoogleApiClientFacto
 class GoogleApiResultsProviderTest extends TestCase
 {
     /**
-     * @var GoogleApiRequestFactoryInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var GoogleApiRequestFactoryInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $requestFactory;
 
     /**
-     * @var GoogleApiResultFactoryInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var GoogleApiResultFactoryInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $resultFactory;
 
     /**
-     * @var GoogleApiClientFactoryInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var GoogleApiClientFactoryInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $clientFactory;
 
@@ -37,7 +37,7 @@ class GoogleApiResultsProviderTest extends TestCase
      */
     protected $googleApiResultsProvider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->requestFactory = $this->createMock(GoogleApiRequestFactoryInterface::class);
         $this->resultFactory = $this->createMock(GoogleApiResultFactoryInterface::class);
@@ -79,7 +79,7 @@ class GoogleApiResultsProviderTest extends TestCase
             ->expects(static::once())
             ->method('createRequest')
             ->willReturn($request);
-        /** @var GoogleApiContextInterface|\PHPUnit_Framework_MockObject_MockObject $context **/
+        /** @var GoogleApiContextInterface|\PHPUnit\Framework\MockObject\MockObject $context **/
         $context = $this->createMock(GoogleApiContextInterface::class);
         $this->resultFactory
             ->expects(static::exactly($callCreateResultTimes))

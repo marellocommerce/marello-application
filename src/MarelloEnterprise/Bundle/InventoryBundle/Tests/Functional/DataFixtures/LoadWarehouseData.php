@@ -3,7 +3,7 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Functional\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;

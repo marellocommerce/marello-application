@@ -18,7 +18,7 @@ use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\GeocodingApiResultFa
 class GeocodingApiResultFactoryTest extends TestCase
 {
     /**
-     * @var LoggerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var LoggerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $logger;
 
@@ -27,7 +27,7 @@ class GeocodingApiResultFactoryTest extends TestCase
      */
     protected $geocodingApiResultFactory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->logger = $this->createMock(LoggerInterface::class);
         $this->geocodingApiResultFactory = new GeocodingApiResultFactory($this->logger);
@@ -41,18 +41,18 @@ class GeocodingApiResultFactoryTest extends TestCase
      */
     public function testCreateResult(array $response, GoogleApiResultInterface $expectedResult)
     {
-        /** @var RestResponseInterface|\PHPUnit_Framework_MockObject_MockObject $restResponse */
+        /** @var RestResponseInterface|\PHPUnit\Framework\MockObject\MockObject $restResponse */
         $restResponse = $this->createMock(RestResponseInterface::class);
         $restResponse->expects(static::once())
             ->method('json')
             ->willReturn($response);
-        /** @var MarelloAddress|\PHPUnit_Framework_MockObject_MockObject $address */
+        /** @var MarelloAddress|\PHPUnit\Framework\MockObject\MockObject $address */
         $address = $this->createMock(MarelloAddress::class);
         $address
             ->expects(static::any())
             ->method('__toString')
             ->willReturn('address');
-        /** @var GoogleApiContextInterface|\PHPUnit_Framework_MockObject_MockObject $context */
+        /** @var GoogleApiContextInterface|\PHPUnit\Framework\MockObject\MockObject $context */
         $context = $this->createMock(GoogleApiContextInterface::class);
         $context
             ->expects(static::any())

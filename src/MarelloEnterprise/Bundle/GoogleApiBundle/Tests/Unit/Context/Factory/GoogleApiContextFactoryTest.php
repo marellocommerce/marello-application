@@ -15,17 +15,17 @@ class GoogleApiContextFactoryTest extends TestCase
      */
     protected $googleApiContextFactory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->googleApiContextFactory = new GoogleApiContextFactory();
     }
 
     public function testCreateContext()
     {
-        /** @var MarelloAddress|\PHPUnit_Framework_MockObject_MockObject $originAddress **/
+        /** @var MarelloAddress|\PHPUnit\Framework\MockObject\MockObject $originAddress **/
         $originAddress = $this->createMock(MarelloAddress::class);
 
-        /** @var MarelloAddress|\PHPUnit_Framework_MockObject_MockObject $destinationAddress **/
+        /** @var MarelloAddress|\PHPUnit\Framework\MockObject\MockObject $destinationAddress **/
         $destinationAddress = $this->createMock(MarelloAddress::class);
 
         $expectedContext = new GoogleApiContext([

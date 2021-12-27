@@ -22,7 +22,7 @@ class SingleWHCalculatorChainElementTest extends AbstractWHCalculatorChainElemen
      */
     protected $singleWHCalculatorChainElement;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->singleWHCalculatorChainElement = new SingleWHCalculatorChainElement();
     }

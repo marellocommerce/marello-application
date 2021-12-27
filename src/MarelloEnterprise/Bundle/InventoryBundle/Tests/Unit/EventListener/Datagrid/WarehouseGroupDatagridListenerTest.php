@@ -19,14 +19,14 @@ class WarehouseGroupDatagridListenerTest extends TestCase
      */
     protected $warehouseGroupDatagridListener;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->warehouseGroupDatagridListener = new WarehouseGroupDatagridListener();
     }
 
     public function testOnResultAfter()
     {
-        /** @var OrmResultAfter|\PHPUnit_Framework_MockObject_MockObject $event **/
+        /** @var OrmResultAfter|\PHPUnit\Framework\MockObject\MockObject $event **/
         $event = $this->getMockBuilder(OrmResultAfter::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -52,7 +52,7 @@ class WarehouseGroupDatagridListenerTest extends TestCase
 
     /**
      * @param ArrayCollection $warehouses
-     * @return ResultRecord|\PHPUnit_Framework_MockObject_MockObject
+     * @return ResultRecord|\PHPUnit\Framework\MockObject\MockObject
      */
     private function buildRecord($warehouses)
     {

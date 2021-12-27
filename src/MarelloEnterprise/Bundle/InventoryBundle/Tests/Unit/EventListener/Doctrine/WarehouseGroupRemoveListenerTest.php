@@ -22,24 +22,24 @@ class WarehouseGroupREmoveListenerTest extends TestCase
     private $warehouseGroupRemoveListener;
 
     /**
-     * @var IsFixedWarehouseGroupChecker|\PHPUnit_Framework_MockObject_MockObject
+     * @var IsFixedWarehouseGroupChecker|\PHPUnit\Framework\MockObject\MockObject
      */
     private $checker;
 
     /**
-     * @var TranslatorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var TranslatorInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $translator;
 
     /**
-     * @var Session|\PHPUnit_Framework_MockObject_MockObject
+     * @var Session|\PHPUnit\Framework\MockObject\MockObject
      */
     private $session;
 
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->translator = $this->createMock(TranslatorInterface::class);
         $this->session = $this->createMock(Session::class);
@@ -58,13 +58,13 @@ class WarehouseGroupREmoveListenerTest extends TestCase
      */
     public function testPreRemove($qty, MockObject $systemWarehouseGroup = null)
     {
-        /** @var Warehouse|\PHPUnit_Framework_MockObject_MockObject $warehouse **/
+        /** @var Warehouse|\PHPUnit\Framework\MockObject\MockObject $warehouse **/
         $warehouse = $this->createMock(Warehouse::class);
         $warehouse
             ->expects(static::exactly($qty))
             ->method('setGroup')
             ->with($systemWarehouseGroup);
-        /** @var WarehouseGroup|\PHPUnit_Framework_MockObject_MockObject $warehouseGroup **/
+        /** @var WarehouseGroup|\PHPUnit\Framework\MockObject\MockObject $warehouseGroup **/
         $warehouseGroup = $this->createMock(WarehouseGroup::class);
         $warehouseGroup
             ->expects(static::exactly($qty))
@@ -93,7 +93,7 @@ class WarehouseGroupREmoveListenerTest extends TestCase
         $this->checker->expects($this->once())
             ->method('check')
             ->willReturn(false);
-        /** @var LifecycleEventArgs|\PHPUnit_Framework_MockObject_MockObject $args **/
+        /** @var LifecycleEventArgs|\PHPUnit\Framework\MockObject\MockObject $args **/
         $args = $this->getMockBuilder(LifecycleEventArgs::class)
             ->disableOriginalConstructor()
             ->getMock();

@@ -22,7 +22,7 @@ class InventoryLevelLogGridListenerTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->inventoryLevelLogGridListener = new InventoryLevelLogGridListener();
     }
@@ -39,7 +39,7 @@ class InventoryLevelLogGridListenerTest extends TestCase
             ->with('lr.warehouseName as warehouseLabel')
             ->willReturnSelf();
 
-        /** @var OrmResultBeforeQuery|\PHPUnit_Framework_MockObject_MockObject $event **/
+        /** @var OrmResultBeforeQuery|\PHPUnit\Framework\MockObject\MockObject $event **/
         $event = $this->getMockBuilder(OrmResultBeforeQuery::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -73,7 +73,7 @@ class InventoryLevelLogGridListenerTest extends TestCase
             ->method('offsetSet')
             ->with('columns', array_merge($columns, $addedColumn));
 
-        /** @var BuildBefore|\PHPUnit_Framework_MockObject_MockObject $event **/
+        /** @var BuildBefore|\PHPUnit\Framework\MockObject\MockObject $event **/
         $event = $this->getMockBuilder(BuildBefore::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -99,7 +99,7 @@ class InventoryLevelLogGridListenerTest extends TestCase
         $config->expects(static::never())
             ->method('offsetSet');
 
-        /** @var BuildBefore|\PHPUnit_Framework_MockObject_MockObject $event **/
+        /** @var BuildBefore|\PHPUnit\Framework\MockObject\MockObject $event **/
         $event = $this->getMockBuilder(BuildBefore::class)
             ->disableOriginalConstructor()
             ->getMock();

@@ -27,7 +27,7 @@ class MinimumQuantityWFAStrategyTest extends TestCase
     use EntityTrait;
 
     /**
-     * @var MinQtyWHCalculatorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var MinQtyWHCalculatorInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $minQtyWHCalculator;
 
@@ -37,11 +37,11 @@ class MinimumQuantityWFAStrategyTest extends TestCase
     protected $minimumQuantityWFAStrategy;
 
     /**
-     * @var WarehouseChannelGroupLinkRepository|\PHPUnit_Framework_MockObject_MockObject
+     * @var WarehouseChannelGroupLinkRepository|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $warehouseChannelGroupLinkRepository;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->minQtyWHCalculator = $this->createMock(MinQtyWHCalculatorInterface::class);
         $this->warehouseChannelGroupLinkRepository = $this->createMock(WarehouseChannelGroupLinkRepository::class);
@@ -147,7 +147,7 @@ class MinimumQuantityWFAStrategyTest extends TestCase
         $salesChannelGroup = $this->getEntity(SalesChannelGroup::class, ['id' => 1]);
         $salesChannel = $this->getEntity(SalesChannel::class, ['id' => 1, 'group' => $salesChannelGroup]);
 
-        /** @var Order|\PHPUnit_Framework_MockObject_MockObject $order **/
+        /** @var Order|\PHPUnit\Framework\MockObject\MockObject $order **/
         $order = $this->getEntity(
             Order::class,
             [
