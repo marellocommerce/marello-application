@@ -2,8 +2,7 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle;
 
-use MarelloEnterprise\Bundle\InventoryBundle\DependencyInjection\CompilerPass\
-ImexportInventoryLevelStrategyCompilerPass;
+use MarelloEnterprise\Bundle\InventoryBundle\DependencyInjection\CompilerPass\ImexportInventoryLevelStrategyCompilerPass;
 use MarelloEnterprise\Bundle\InventoryBundle\DependencyInjection\CompilerPass\InventoryLevelFormSubscriberCompilerPass;
 use MarelloEnterprise\Bundle\InventoryBundle\DependencyInjection\CompilerPass\InventoryLevelsGridCompilerPass;
 use MarelloEnterprise\Bundle\InventoryBundle\DependencyInjection\CompilerPass\InventoryManagerCompilerPass;
