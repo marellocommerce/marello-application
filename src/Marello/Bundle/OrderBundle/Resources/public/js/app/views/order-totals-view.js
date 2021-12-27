@@ -108,11 +108,9 @@ define(function(require) {
 
                 this.pushItem(totals.total);
             }
-                var items = _.filter(this.items);
-
-                this.$totals.html(items.join(''));
-
-                this.items = [];
+            var items = _.filter(this.items);
+            this.$totals.html(items.join(''));
+            this.items = [];
         },
 
         /**
