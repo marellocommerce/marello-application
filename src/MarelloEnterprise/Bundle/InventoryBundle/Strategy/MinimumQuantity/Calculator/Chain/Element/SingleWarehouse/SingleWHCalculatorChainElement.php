@@ -4,8 +4,7 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\Calc
 
 use Doctrine\Common\Collections\Collection;
 use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
-use MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\Calculator\Chain\Element\
-AbstractWHCalculatorChainElement;
+use MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\Calculator\Chain\Element\AbstractWHCalculatorChainElement;
 
 class SingleWHCalculatorChainElement extends AbstractWHCalculatorChainElement
 {
