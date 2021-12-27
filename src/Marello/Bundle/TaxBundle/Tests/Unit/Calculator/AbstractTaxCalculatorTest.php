@@ -16,11 +16,11 @@ abstract class AbstractTaxCalculatorTest extends TestCase
     protected $calculator;
 
     /**
-     * @var RoundingServiceInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var RoundingServiceInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $rounding;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->rounding = $this
             ->getMockBuilder(RoundingServiceInterface::class)

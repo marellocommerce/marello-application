@@ -5,6 +5,7 @@ namespace Marello\Bundle\SalesBundle\Tests\Unit\Provider;
 use Marello\Bundle\LocaleBundle\Model\LocalizationAwareInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderAwareInterface;
+use Marello\Bundle\RefundBundle\Entity\Refund;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Provider\SalesChannelLocalizationProvider;
 use Oro\Component\Testing\Unit\EntityTrait;
@@ -19,7 +20,7 @@ class SalesChannelLocalizationProviderTest extends TestCase
      */
     private $provider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->provider = new SalesChannelLocalizationProvider();
     }
@@ -60,7 +61,7 @@ class SalesChannelLocalizationProviderTest extends TestCase
             ->expects(static::once())
             ->method('getSalesChannel')
             ->willReturn($salesChannel);
-        $entity = $this->createMock([OrderAwareInterface::class, LocalizationAwareInterface::class]);
+        $entity = $this->createMock(Refund::class);
         $entity
             ->expects(static::once())
             ->method('getOrder')

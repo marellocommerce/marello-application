@@ -18,7 +18,7 @@ class ShippingMethodTypeConfigRepositoryTest extends WebTestCase
      */
     protected $repository;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->initClient([], static::generateBasicAuthHeader());
         $this->loadFixtures([
@@ -36,8 +36,8 @@ class ShippingMethodTypeConfigRepositoryTest extends WebTestCase
             $this->getManualShippingPrimaryIdentifier()
         );
 
-        static::assertContains($this->getFirstTypeId('shipping_rule.1'), $ids);
-        static::assertContains($this->getFirstTypeId('shipping_rule.2'), $ids);
+        static::assertStringContainsString($this->getFirstTypeId('shipping_rule.1'), $ids);
+        static::assertStringContainsString($this->getFirstTypeId('shipping_rule.2'), $ids);
     }
 
     /**
@@ -71,8 +71,8 @@ class ShippingMethodTypeConfigRepositoryTest extends WebTestCase
 
         $actual = $this->repository->findEnabledByMethodIdentifier($method);
 
-        static::assertContains($this->getFirstType('shipping_rule.4'), $actual);
-        static::assertContains($this->getFirstType('shipping_rule.9'), $actual);
+        static::assertStringContainsString($this->getFirstType('shipping_rule.4'), $actual);
+        static::assertStringContainsString($this->getFirstType('shipping_rule.9'), $actual);
         static::assertNotContains($this->getFirstType('shipping_rule_without_type_configs'), $actual);
         static::assertNotContains($this->getFirstType('shipping_rule_with_disabled_type_configs'), $actual);
     }

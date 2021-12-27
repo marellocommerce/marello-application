@@ -17,7 +17,7 @@ class PriceVATLabelAwareGridListenerTest extends TestCase
     const FORMATTED_LABEL = 'Formatted Label';
 
     /**
-     * @var LabelVATAwareFormatter|\PHPUnit_Framework_MockObject_MockObject
+     * @var LabelVATAwareFormatter|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $vatLabelFormatter;
 
@@ -26,7 +26,7 @@ class PriceVATLabelAwareGridListenerTest extends TestCase
      */
     protected $listener;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->vatLabelFormatter = $this->getMockBuilder(LabelVATAwareFormatter::class)
             ->disableOriginalConstructor()
@@ -42,7 +42,7 @@ class PriceVATLabelAwareGridListenerTest extends TestCase
      */
     public function testOnBuildBefore($column, $expectedLabel)
     {
-        /** @var DatagridInterface|\PHPUnit_Framework_MockObject_MockObject $dataGrid */
+        /** @var DatagridInterface|\PHPUnit\Framework\MockObject\MockObject $dataGrid */
         $dataGrid = $this->createMock(DatagridInterface::class);
 
         $gridConfig = DatagridConfiguration::create(['name' => 'marello-order-items']);

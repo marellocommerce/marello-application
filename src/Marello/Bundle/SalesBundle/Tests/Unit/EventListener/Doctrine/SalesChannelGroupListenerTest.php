@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\SalesBundle\Tests\Unit\EventListener\Doctrine;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
@@ -10,6 +9,7 @@ use Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelGroupRepository;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\SalesBundle\EventListener\Doctrine\SalesChannelGroupListener;
+use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -22,14 +22,14 @@ class SalesChannelGroupListenerTest extends TestCase
     private $salesChannelGroupListener;
 
     /**
-     * @var Session|\PHPUnit_Framework_MockObject_MockObject
+     * @var Session|\PHPUnit\Framework\MockObject\MockObject
      */
     private $session;
 
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->session = $this->createMock(Session::class);
         $this->salesChannelGroupListener = new SalesChannelGroupListener(true, $this->session);
@@ -48,13 +48,13 @@ class SalesChannelGroupListenerTest extends TestCase
         MockObject $systemSalesChannelGroup = null,
         MockObject $systemLink = null
     ) {
-        /** @var SalesChannel|\PHPUnit_Framework_MockObject_MockObject $salesChannel **/
+        /** @var SalesChannel|\PHPUnit\Framework\MockObject\MockObject $salesChannel **/
         $salesChannel = $this->createMock(SalesChannel::class);
         $salesChannel
             ->expects(static::exactly($persistQty))
             ->method('setGroup')
             ->with($systemSalesChannelGroup);
-        /** @var SalesChannelGroup|\PHPUnit_Framework_MockObject_MockObject $salesChannelGroup **/
+        /** @var SalesChannelGroup|\PHPUnit\Framework\MockObject\MockObject $salesChannelGroup **/
         $salesChannelGroup = $this->createMock(SalesChannelGroup::class);
         $salesChannelGroup
             ->expects(static::exactly($persistQty))
@@ -72,7 +72,7 @@ class SalesChannelGroupListenerTest extends TestCase
             ->method('findSystemLink')
             ->willReturn($systemLink);
 
-        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager = $this->createMock(OroEntityManager::class);
         $entityManager
             ->expects(static::exactly(2))
             ->method('getRepository')
@@ -92,7 +92,7 @@ class SalesChannelGroupListenerTest extends TestCase
             ->expects(static::exactly($flushQty))
             ->method('flush');
 
-        /** @var LifecycleEventArgs|\PHPUnit_Framework_MockObject_MockObject $args **/
+        /** @var LifecycleEventArgs|\PHPUnit\Framework\MockObject\MockObject $args **/
         $args = $this->getMockBuilder(LifecycleEventArgs::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -157,7 +157,7 @@ class SalesChannelGroupListenerTest extends TestCase
             ->method('findSystemLink')
             ->willReturn($defaultLink);
 
-        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager = $this->createMock(OroEntityManager::class);
         $entityManager
             ->expects(static::once())
             ->method('getRepository')
@@ -171,7 +171,7 @@ class SalesChannelGroupListenerTest extends TestCase
             ->expects(static::exactly($qty))
             ->method('flush');
 
-        /** @var LifecycleEventArgs|\PHPUnit_Framework_MockObject_MockObject $args **/
+        /** @var LifecycleEventArgs|\PHPUnit\Framework\MockObject\MockObject $args **/
         $args = $this->getMockBuilder(LifecycleEventArgs::class)
             ->disableOriginalConstructor()
             ->getMock();

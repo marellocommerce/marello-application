@@ -53,7 +53,7 @@ class BasicPaymentContextBuilderTest extends \PHPUnit\Framework\TestCase
      */
     private $paymentLineItemCollectionFactory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->customerMock = $this->createMock(Customer::class);
         $this->lineItemsCollectionMock = $this->createMock(PaymentLineItemCollectionInterface::class);

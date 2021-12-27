@@ -10,7 +10,7 @@ use Marello\Bundle\CustomerBundle\Tests\Functional\DataFixtures\LoadCustomerData
 
 class CustomerControllerTest extends WebTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->initClient(
             [],

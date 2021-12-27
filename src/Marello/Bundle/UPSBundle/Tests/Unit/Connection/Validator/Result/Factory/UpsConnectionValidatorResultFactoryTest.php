@@ -19,7 +19,7 @@ class UpsConnectionValidatorResultFactoryTest extends TestCase
      */
     protected $connectionValidatorResultFactory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->connectionValidatorResultFactory = new UpsConnectionValidatorResultFactory();
     }
@@ -34,7 +34,7 @@ class UpsConnectionValidatorResultFactoryTest extends TestCase
         array $upsResponse,
         UpsConnectionValidatorResultInterface $expectedResult
     ) {
-        /** @var RestResponseInterface|\PHPUnit_Framework_MockObject_MockObject $response * */
+        /** @var RestResponseInterface|\PHPUnit\Framework\MockObject\MockObject $response * */
         $response = $this->createMock(RestResponseInterface::class);
         $response->expects(static::once())
             ->method('json')

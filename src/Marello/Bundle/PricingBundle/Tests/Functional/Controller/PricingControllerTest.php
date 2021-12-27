@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class PricingControllerTest extends WebTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->initClient(
             [],

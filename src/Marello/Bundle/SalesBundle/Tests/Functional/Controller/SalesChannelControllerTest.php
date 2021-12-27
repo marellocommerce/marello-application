@@ -33,7 +33,7 @@ class SalesChannelControllerTest extends WebTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->initClient(
             [],
@@ -56,7 +56,7 @@ class SalesChannelControllerTest extends WebTestCase
         );
 
         $this->assertResponseStatusCodeEquals($this->client->getResponse(), Response::HTTP_OK);
-        $this->assertContains('marello-sales-channel', $crawler->html());
+        $this->assertStringContainsString('marello-sales-channel', $crawler->html());
     }
 
     /**
@@ -235,7 +235,7 @@ class SalesChannelControllerTest extends WebTestCase
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
         $html = $crawler->html();
 
-        $this->assertContains(self::SAVE_MESSAGE, $html);
+        $this->assertStringContainsString(self::SAVE_MESSAGE, $html);
         
         $this->assertViewPage(
             $html,
@@ -276,13 +276,13 @@ class SalesChannelControllerTest extends WebTestCase
             ->getRepository(Localization::class)
             ->find($localizationId);
         
-        $this->assertContains($name, $html);
-        $this->assertContains($code, $html);
-        $this->assertContains($channelType, $html);
-        $this->assertContains($currency, $html);
-        $this->assertContains($default ? 'Yes' : 'No', $html);
-        $this->assertContains($active ? 'Yes' : 'No', $html);
-        $this->assertContains($localization->getLanguageCode(), $html);
+        $this->assertStringContainsString($name, $html);
+        $this->assertStringContainsString($code, $html);
+        $this->assertStringContainsString($channelType, $html);
+        $this->assertStringContainsString($currency, $html);
+        $this->assertStringContainsString($default ? 'Yes' : 'No', $html);
+        $this->assertStringContainsString($active ? 'Yes' : 'No', $html);
+        $this->assertStringContainsString($localization->getLanguageCode(), $html);
     }
 
     /**

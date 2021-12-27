@@ -31,7 +31,7 @@ class ProductTest extends TestCase
      */
     protected $entity;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->entity = new Product();
     }
@@ -58,7 +58,7 @@ class ProductTest extends TestCase
         $this->assertPropertyCollections(new Product(), [
             ['names', new LocalizedFallbackValue()],
             ['prices', new AssembledPriceList()],
-            ['channels', new SalesChannel()],
+            ['channels', (new SalesChannel())->setCode('code')],
             ['channelPrices', new AssembledChannelPriceList()],
             ['suppliers', new ProductSupplierRelation()],
             ['salesChannelTaxCodes', new ProductChannelTaxRelation()],

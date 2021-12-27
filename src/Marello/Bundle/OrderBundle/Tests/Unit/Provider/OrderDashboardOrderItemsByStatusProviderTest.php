@@ -49,25 +49,13 @@ class OrderDashboardOrderItemsByStatusProviderTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->registry = $this->getMockBuilder('Doctrine\Bundle\DoctrineBundle\Registry')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->aclHelper = $this->getMockBuilder('Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->widgetProviderFilter = $this
-            ->getMockBuilder('Oro\Bundle\DashboardBundle\Filter\WidgetProviderFilterManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->dateFilterProcessor = $this->getMockBuilder('Oro\Bundle\DashboardBundle\Filter\DateFilterProcessor')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->qbTransformer = $this->getMockForAbstractClass(
-            'Oro\Bundle\CurrencyBundle\Query\CurrencyQueryBuilderTransformerInterface'
-        );
-
+        $this->registry = $this->createMock(RegistryInterface::class);
+        $this->aclHelper = $this->createMock(AclHelper::class);
+        $this->widgetProviderFilter = $this->createMock(WidgetProviderFilterManager::class);
+        $this->dateFilterProcessor = $this->createMock(DateFilterProcessor::class);
+        $this->qbTransformer = $this->createMock(CurrencyQueryBuilderTransformerInterface::class);
         $this->provider = new OrderDashboardOrderItemsByStatusProvider(
             $this->registry,
             $this->aclHelper,

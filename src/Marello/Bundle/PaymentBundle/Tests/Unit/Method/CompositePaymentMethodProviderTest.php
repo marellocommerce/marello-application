@@ -21,7 +21,7 @@ class CompositePaymentMethodProviderTest extends \PHPUnit\Framework\TestCase
     /**
      * {@inheritDoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->paymentMethodProvider = new CompositePaymentMethodProvider();
 
@@ -31,7 +31,7 @@ class CompositePaymentMethodProviderTest extends \PHPUnit\Framework\TestCase
     public function testGetMethods()
     {
         $paymentMethods = $this->paymentMethodProvider->getPaymentMethods();
-        $this->assertInternalType('array', $paymentMethods);
+        $this->assertIsArray($paymentMethods);
         $this->assertEmpty($paymentMethods);
     }
 

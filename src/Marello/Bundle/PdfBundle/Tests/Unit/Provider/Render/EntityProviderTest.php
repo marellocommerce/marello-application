@@ -9,7 +9,7 @@ class EntityProviderTest extends TestCase
 {
     protected $provider;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->provider = new EntityProvider();
     }

@@ -13,7 +13,7 @@ class ReturnJsonApiTest extends RestJsonApiTestCase
 {
     const TESTING_ENTITY = 'marelloreturns';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->loadFixtures([

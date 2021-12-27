@@ -13,12 +13,12 @@ use Marello\Bundle\UPSBundle\Client\Url\Provider\UpsClientUrlProviderInterface;
 class BasicUpsClientFactoryTest extends TestCase
 {
     /**
-     * @var RestClientFactoryInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var RestClientFactoryInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $restClientFactoryMock;
 
     /**
-     * @var UpsClientUrlProviderInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var UpsClientUrlProviderInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $upsClientUrlProviderMock;
 
@@ -27,7 +27,7 @@ class BasicUpsClientFactoryTest extends TestCase
      */
     private $testedUpsClientFactory;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->restClientFactoryMock = $this->createMock(RestClientFactoryInterface::class);
         $this->upsClientUrlProviderMock = $this->createMock(UpsClientUrlProviderInterface::class);

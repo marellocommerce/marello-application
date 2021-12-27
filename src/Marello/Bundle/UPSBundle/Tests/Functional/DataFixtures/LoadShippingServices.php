@@ -4,7 +4,7 @@ namespace Marello\Bundle\UPSBundle\Tests\Functional\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\AddressBundle\Entity\Country;
 use Marello\Bundle\UPSBundle\Entity\ShippingService;
 use Symfony\Component\Yaml\Yaml;

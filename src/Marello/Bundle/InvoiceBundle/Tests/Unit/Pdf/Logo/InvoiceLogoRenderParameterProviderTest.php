@@ -24,7 +24,7 @@ class InvoiceLogoRenderParameterProviderTest extends TestCase
      */
     private $logoPathProvider;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->logoPathProvider = $this->createMock(InvoiceLogoPathProvider::class);
         $this->provider = new InvoiceLogoRenderParameterProvider($this->logoPathProvider);

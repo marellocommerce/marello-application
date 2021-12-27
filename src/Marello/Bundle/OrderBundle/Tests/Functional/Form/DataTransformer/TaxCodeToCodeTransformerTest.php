@@ -16,7 +16,7 @@ class TaxCodeToCodeTransformerTest extends WebTestCase
      */
     protected $transformer;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->initClient();
 

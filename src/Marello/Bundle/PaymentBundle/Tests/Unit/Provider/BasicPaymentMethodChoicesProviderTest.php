@@ -27,7 +27,7 @@ class BasicPaymentMethodChoicesProviderTest extends \PHPUnit\Framework\TestCase
      */
     protected $choicesProvider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->paymentMethodProvider = $this->createMock(PaymentMethodProviderInterface::class);
         $this->translator = $this->createMock(TranslatorInterface::class);

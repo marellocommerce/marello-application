@@ -12,7 +12,7 @@ class ProductPriceJsonApiTest extends RestJsonApiTestCase
 {
     const TESTING_ENTITY = 'marelloproductprices';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->loadFixtures([

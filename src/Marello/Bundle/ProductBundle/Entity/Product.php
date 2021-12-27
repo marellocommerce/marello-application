@@ -1018,7 +1018,7 @@ class Product extends ExtendProduct implements
                 $channelsCodes = substr($channelsCodes, 0, -1);
             }
             $channelsCodes = explode("|", $channelsCodes);
-            $channelsCodes = array_diff([$channelsCodes], [$channel->getCode()]);
+            $channelsCodes = array_diff($channelsCodes, [$channel->getCode()]);
             $this->channelsCodes = sprintf('|%s|', implode('|', $channelsCodes));
         }
 

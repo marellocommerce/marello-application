@@ -23,12 +23,10 @@ class DoctrinePaymentLineItemCollectionFactoryTest extends \PHPUnit\Framework\Te
         $this->assertEquals($paymentLineItems, $collection->toArray());
     }
 
-    /**
-     * @expectedException        \InvalidArgumentException
-     * @expectedExceptionMessage Expected: Marello\Bundle\PaymentBundle\Context\PaymentLineItemInterface
-     */
     public function testFactoryWithException()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Expected: Marello\Bundle\PaymentBundle\Context\PaymentLineItemInterface');
         $paymentLineItems = [
             new OrderItem(),
             new OrderItem(),

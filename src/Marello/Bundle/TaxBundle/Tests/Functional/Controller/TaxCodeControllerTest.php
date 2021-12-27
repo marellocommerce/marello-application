@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TaxCodeControllerTest extends WebTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->initClient(
             [],
@@ -26,7 +26,7 @@ class TaxCodeControllerTest extends WebTestCase
     {
         $crawler = $this->client->request('GET', $this->getUrl('marello_tax_taxcode_index'));
         $result = $this->client->getResponse();
-        $this->assertContains('marello-taxcode-grid', $crawler->html());
+        $this->assertStringContainsString('marello-taxcode-grid', $crawler->html());
         $this->assertResponseStatusCodeEquals($result, Response::HTTP_OK);
     }
 
@@ -50,8 +50,8 @@ class TaxCodeControllerTest extends WebTestCase
         $result  = $this->client->getResponse();
 
         $this->assertResponseStatusCodeEquals($result, Response::HTTP_OK);
-        $this->assertContains('Tax Code saved', $crawler->html());
-        $this->assertContains($code, $crawler->html());
+        $this->assertStringContainsString('Tax Code saved', $crawler->html());
+        $this->assertStringContainsString($code, $crawler->html());
 
         $response = $this->client->requestGrid(
             'marello-taxcode-grid',
@@ -79,7 +79,7 @@ class TaxCodeControllerTest extends WebTestCase
         );
 
         $this->assertResponseStatusCodeEquals($this->client->getResponse(), Response::HTTP_OK);
-        $this->assertContains($taxCode->getCode(), $crawler->html());
+        $this->assertStringContainsString($taxCode->getCode(), $crawler->html());
     }
 
     /**
@@ -114,8 +114,8 @@ class TaxCodeControllerTest extends WebTestCase
 
         $result = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
-        $this->assertContains("Tax Code saved", $crawler->html());
-        $this->assertContains($code, $crawler->html());
-        $this->assertContains($description, $crawler->html());
+        $this->assertStringContainsString("Tax Code saved", $crawler->html());
+        $this->assertStringContainsString($code, $crawler->html());
+        $this->assertStringContainsString($description, $crawler->html());
     }
 }

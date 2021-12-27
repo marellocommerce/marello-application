@@ -29,7 +29,7 @@ class BasicMethodsConfigsRulesByContextProviderTest extends \PHPUnit\Framework\T
      */
     private $provider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->repository = $this->createMock(PaymentMethodsConfigsRuleRepository::class);
 

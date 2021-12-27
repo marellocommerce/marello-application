@@ -2,8 +2,8 @@
 
 namespace Marello\Bundle\OrderBundle\Tests\Unit\Validator;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\Mapping\ClassMetadata;
 
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -28,28 +28,28 @@ class AvailableInventoryValidatorTest extends TestCase
     /** @var AvailableInventory $constraint */
     protected $constraint;
 
-    /** @var ExecutionContextInterface|\PHPUnit_Framework_MockObject_MockObject $context */
+    /** @var ExecutionContextInterface|\PHPUnit\Framework\MockObject\MockObject $context */
     protected $context;
 
-    /** @var DoctrineHelper|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject */
     protected $doctrineHelper;
 
-    /** @var AvailableInventoryProvider|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var AvailableInventoryProvider|\PHPUnit\Framework\MockObject\MockObject */
     protected $inventoryProvider;
 
-    /** @var ObjectManager|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var ObjectManager|\PHPUnit\Framework\MockObject\MockObject */
     protected $objectManager;
 
-    /** @var ClassMetadata|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var ClassMetadata|\PHPUnit\Framework\MockObject\MockObject */
     protected $classMetaData;
 
-    /** @var EventDispatcherInterface|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var EventDispatcherInterface|\PHPUnit\Framework\MockObject\MockObject */
     protected $eventDispatcher;
 
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->context = $this->createMock(ExecutionContextInterface::class);
         $this->doctrineHelper = $this->createMock(DoctrineHelper::class);
@@ -184,6 +184,9 @@ class AvailableInventoryValidatorTest extends TestCase
         $violationBuilderMock->expects($this->exactly(1))
             ->method('atPath')
             ->with(AvailableInventoryValidator::QUANTITY_FIELD)
+            ->willReturnSelf();
+        $violationBuilderMock->expects($this->exactly(1))
+            ->method('setParameter')
             ->willReturnSelf();
 
         $violationBuilderMock->expects($this->exactly(1))

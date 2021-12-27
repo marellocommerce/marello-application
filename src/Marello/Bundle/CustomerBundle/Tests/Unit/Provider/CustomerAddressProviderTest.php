@@ -19,7 +19,7 @@ class CustomerAddressProviderTest extends TestCase
      */
     protected $customerAddressProvider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->customerAddressProvider = new CustomerAddressProvider();
     }

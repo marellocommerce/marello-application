@@ -16,7 +16,7 @@ abstract class AbstractTaxRuleMatcherTest extends TestCase
     use EntityTrait;
     
     /**
-     * @var DoctrineHelper|\PHPUnit_Framework_MockObject_MockObject
+     * @var DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $doctrineHelper;
 
@@ -26,11 +26,11 @@ abstract class AbstractTaxRuleMatcherTest extends TestCase
     protected $matcher;
 
     /**
-     * @var TaxRuleRepository|\PHPUnit_Framework_MockObject_MockObject
+     * @var TaxRuleRepository|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $taxRuleRepository;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->taxRuleRepository = $this
             ->getMockBuilder(TaxRuleRepository::class)
@@ -49,7 +49,7 @@ abstract class AbstractTaxRuleMatcherTest extends TestCase
             ->willReturn($this->taxRuleRepository);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->matcher, $this->doctrineHelper, $this->taxRuleRepository);
     }

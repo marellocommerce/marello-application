@@ -25,12 +25,12 @@ class CountryShippingServicesValidatorTest extends TestCase
     const VIOLATION_PATH = 'applicableShippingServices';
 
     /**
-     * @var CountryShippingServicesConstraint|\PHPUnit_Framework_MockObject_MockObject
+     * @var CountryShippingServicesConstraint|\PHPUnit\Framework\MockObject\MockObject
      */
     private $constraint;
 
     /**
-     * @var ExecutionContextInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ExecutionContextInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $context;
 
@@ -39,7 +39,7 @@ class CountryShippingServicesValidatorTest extends TestCase
      */
     private $validator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->constraint = $this->createMock(CountryShippingServicesConstraint::class);
 
@@ -117,15 +117,6 @@ class CountryShippingServicesValidatorTest extends TestCase
         $builder1->expects(static::once())
             ->method('addViolation');
 
-        $this->context->expects(static::at(0))
-            ->method('buildViolation')
-            ->with('marello.ups.settings.shipping_service.wrong_country.message', [
-                '%shipping_service%' => 'service1',
-                '%settings_country%' => 'country',
-                '%shipping_service_country%' => 'wrong country',
-            ])
-            ->willReturn($builder1);
-
         $builder2 = $this->createMock(ConstraintViolationBuilderInterface::class);
 
         $builder2->expects(static::once())
@@ -136,14 +127,25 @@ class CountryShippingServicesValidatorTest extends TestCase
         $builder2->expects(static::once())
             ->method('addViolation');
 
-        $this->context->expects(static::at(1))
+        $this->context->expects(static::exactly(2))
             ->method('buildViolation')
-            ->with('marello.ups.settings.shipping_service.wrong_country.message', [
-                '%shipping_service%' => 'service2',
-                '%settings_country%' => 'country',
-                '%shipping_service_country%' => 'wrong country',
-            ])
-            ->willReturn($builder2);
+            ->withConsecutive(
+                [
+                    'marello.ups.settings.shipping_service.wrong_country.message', [
+                        '%shipping_service%' => 'service1',
+                        '%settings_country%' => 'country',
+                        '%shipping_service_country%' => 'wrong country',
+                    ]
+                ],
+                [
+                    'marello.ups.settings.shipping_service.wrong_country.message', [
+                        '%shipping_service%' => 'service2',
+                        '%settings_country%' => 'country',
+                        '%shipping_service_country%' => 'wrong country',
+                    ]
+                ]
+            )
+            ->willReturnOnConsecutiveCalls($builder1, $builder2);
 
         $this->validator->validate($settings, $this->constraint);
     }
@@ -173,7 +175,7 @@ class CountryShippingServicesValidatorTest extends TestCase
     }
 
     /**
-     * @return UPSSettings|\PHPUnit_Framework_MockObject_MockObject
+     * @return UPSSettings|\PHPUnit\Framework\MockObject\MockObject
      */
     private function createSettingsMock()
     {
@@ -181,7 +183,7 @@ class CountryShippingServicesValidatorTest extends TestCase
     }
 
     /**
-     * @return ShippingService|\PHPUnit_Framework_MockObject_MockObject
+     * @return ShippingService|\PHPUnit\Framework\MockObject\MockObject
      */
     private function createShippingServiceMock()
     {
@@ -189,7 +191,7 @@ class CountryShippingServicesValidatorTest extends TestCase
     }
 
     /**
-     * @return Transport|\PHPUnit_Framework_MockObject_MockObject
+     * @return Transport|\PHPUnit\Framework\MockObject\MockObject
      */
     private function createTransportMock()
     {

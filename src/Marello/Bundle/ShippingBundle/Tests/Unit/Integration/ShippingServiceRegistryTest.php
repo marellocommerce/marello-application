@@ -30,7 +30,7 @@ class ShippingServiceRegistryTest extends TestCase
      */
     protected $shippingServiceRegistry;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->integrations = [
             'type1' => $this->createMock(ShippingServiceIntegrationInterface::class),
@@ -67,12 +67,10 @@ class ShippingServiceRegistryTest extends TestCase
         }
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage No shipping service integration for "wrong_service" integration.
-     */
     public function testGetNotExistingIntegration()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('No shipping service integration for "wrong_service" integration.');
         $this->shippingServiceRegistry->getIntegration('wrong_service');
     }
 
@@ -88,12 +86,10 @@ class ShippingServiceRegistryTest extends TestCase
         }
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage No shipping service data factory for "wrong_service" integration.
-     */
     public function testGetNotExistingDataFactory()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('No shipping service data factory for "wrong_service" integration.');
         $this->shippingServiceRegistry->getDataFactory('wrong_service');
     }
 
@@ -109,12 +105,10 @@ class ShippingServiceRegistryTest extends TestCase
         }
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage No shipping service data provider for "wrong_entity" entity.
-     */
     public function testGetNotExistingDataProvider()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('No shipping service data provider for "wrong_entity" entity.');
         $this->shippingServiceRegistry->getDataProvider('wrong_entity');
     }
 

@@ -28,22 +28,22 @@ class OrderItemsSubtotalProviderTest extends TestCase
     protected $provider;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|TranslatorInterface
+     * @var \PHPUnit\Framework\MockObject\MockObject|TranslatorInterface
      */
     protected $translator;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|RoundingServiceInterface
+     * @var \PHPUnit\Framework\MockObject\MockObject|RoundingServiceInterface
      */
     protected $roundingService;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|DefaultCurrencyProviderInterface
+     * @var \PHPUnit\Framework\MockObject\MockObject|DefaultCurrencyProviderInterface
      */
     protected $defaultCurrencyProvider;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ChannelPriceProvider
+     * @var \PHPUnit\Framework\MockObject\MockObject|ChannelPriceProvider
      */
     protected $channelPriceProvider;
 
@@ -52,7 +52,7 @@ class OrderItemsSubtotalProviderTest extends TestCase
      */
     protected $salesChannels;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->translator = $this->createMock(TranslatorInterface::class);
@@ -131,7 +131,7 @@ class OrderItemsSubtotalProviderTest extends TestCase
         $this->assertEquals(OrderItemsSubtotalProvider::TYPE, $subtotal->getType());
         $this->assertEquals('test', $subtotal->getLabel());
         $this->assertEquals($entity->getCurrency(), $subtotal->getCurrency());
-        $this->assertInternalType('float', $subtotal->getAmount());
+        $this->assertIsFloat($subtotal->getAmount());
         $this->assertEquals($expectedAmount, $subtotal->getAmount());
     }
 

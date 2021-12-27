@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\SalesBundle\Tests\Unit\Entity;
 
+use Marello\Bundle\SalesBundle\Entity\SalesChannelType;
 use PHPUnit\Framework\TestCase;
 
 use Oro\Bundle\LocaleBundle\Entity\Localization;
@@ -24,7 +25,7 @@ class SalesChannelTest extends TestCase
             ['active', 1],
             ['default', 1],
             ['owner', new Organization()],
-            ['channelType', 'some string'],
+            ['channelType', new SalesChannelType()],
             ['createdAt', new \DateTime()],
             ['updatedAt', new \DateTime()],
             ['localization', new Localization()]

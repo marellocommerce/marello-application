@@ -25,7 +25,7 @@ class PaymentTermControllerTest extends WebTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->initClient(
             [],
@@ -48,7 +48,7 @@ class PaymentTermControllerTest extends WebTestCase
         );
 
         $this->assertResponseStatusCodeEquals($this->client->getResponse(), Response::HTTP_OK);
-        $this->assertContains('marello-paymentterm-grid', $crawler->html());
+        $this->assertStringContainsString('marello-paymentterm-grid', $crawler->html());
 
         $response = $this->client->requestGrid('marello-paymentterm-grid');
         $result = $this->getJsonResponseContent($response, Response::HTTP_OK);
@@ -172,7 +172,7 @@ class PaymentTermControllerTest extends WebTestCase
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
         $html = $crawler->html();
 
-        $this->assertContains(self::SAVE_MESSAGE, $html);
+        $this->assertStringContainsString(self::SAVE_MESSAGE, $html);
         $this->assertViewPage($html, $code, $term, $label);
     }
 
@@ -185,9 +185,9 @@ class PaymentTermControllerTest extends WebTestCase
      */
     protected function assertViewPage($html, $code, $term, $label)
     {
-        $this->assertContains($code, $html);
-        $this->assertContains($term, $html);
-        $this->assertContains($label, $html);
+        $this->assertStringContainsString($code, $html);
+        $this->assertStringContainsString($term, $html);
+        $this->assertStringContainsString($label, $html);
     }
 
     protected function getLocalizations()

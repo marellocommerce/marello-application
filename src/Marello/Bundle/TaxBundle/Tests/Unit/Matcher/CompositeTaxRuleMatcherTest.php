@@ -23,7 +23,7 @@ class CompositeTaxRuleMatcherTest extends TestCase
      */
     protected $compositeTaxRuleMatcher;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->compositeTaxRuleMatcher = new CompositeTaxRuleMatcher();
     }

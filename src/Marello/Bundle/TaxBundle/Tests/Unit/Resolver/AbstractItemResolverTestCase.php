@@ -22,16 +22,16 @@ abstract class AbstractItemResolverTestCase extends TestCase
     protected $resolver;
 
     /**
-     * @var RowTotalResolver|\PHPUnit_Framework_MockObject_MockObject
+     * @var RowTotalResolver|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $rowTotalResolver;
 
     /**
-     * @var TaxRuleMatcherInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var TaxRuleMatcherInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $matcher;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->rowTotalResolver = $this->getMockBuilder(RowTotalResolver::class)
             ->disableOriginalConstructor()

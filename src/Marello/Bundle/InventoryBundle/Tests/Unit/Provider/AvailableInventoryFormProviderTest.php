@@ -26,11 +26,11 @@ class AvailableInventoryFormProviderTest extends TestCase
     protected $context;
 
     /**
-     * @var AvailableInventoryProvider|\PHPUnit_Framework_MockObject_MockObject
+     * @var AvailableInventoryProvider|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $inventoryProvider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->inventoryProvider = $this->createMock(AvailableInventoryProvider::class);
         $this->availableInventoryFormProvider = new AvailableInventoryFormProvider($this->inventoryProvider);
@@ -61,7 +61,7 @@ class AvailableInventoryFormProviderTest extends TestCase
         array $submitData,
         array $expectedData
     ) {
-        /** @var FormInterface|\PHPUnit_Framework_MockObject_MockObject $form **/
+        /** @var FormInterface|\PHPUnit\Framework\MockObject\MockObject $form **/
         $form = $this->createMock(FormInterface::class);
         $form->expects(static::once())
             ->method('getData')
@@ -79,7 +79,7 @@ class AvailableInventoryFormProviderTest extends TestCase
                 ->method('getProducts')
                 ->willReturn($products);
 
-            /** @var \PHPUnit_Framework_MockObject_MockObject $product */
+            /** @var \PHPUnit\Framework\MockObject\MockObject $product */
             foreach ($submitData['products'] as $id => $product) {
                 if ($isValid) {
                     $this->inventoryProvider->expects(static::atLeastOnce())
@@ -102,7 +102,7 @@ class AvailableInventoryFormProviderTest extends TestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit\Framework\MockObject\MockObject
      */
     protected function getOrderMock()
     {
@@ -115,7 +115,7 @@ class AvailableInventoryFormProviderTest extends TestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit\Framework\MockObject\MockObject
      */
     protected function getSalesChannelMock()
     {

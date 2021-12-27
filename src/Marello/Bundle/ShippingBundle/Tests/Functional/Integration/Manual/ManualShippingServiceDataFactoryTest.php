@@ -15,7 +15,7 @@ class ManualShippingServiceDataFactoryTest extends WebTestCase
     /** @var ManualShippingServiceDataFactory */
     protected $factory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->initClient();
 

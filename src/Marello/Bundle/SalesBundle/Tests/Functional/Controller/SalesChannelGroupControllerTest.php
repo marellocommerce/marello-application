@@ -23,7 +23,7 @@ class SalesChannelGroupControllerTest extends WebTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->initClient(
             [],
@@ -46,7 +46,7 @@ class SalesChannelGroupControllerTest extends WebTestCase
         );
 
         $this->assertResponseStatusCodeEquals($this->client->getResponse(), Response::HTTP_OK);
-        $this->assertContains('marello-sales-channel-groups', $crawler->html());
+        $this->assertStringContainsString('marello-sales-channel-groups', $crawler->html());
     }
 
     /**
@@ -214,7 +214,7 @@ class SalesChannelGroupControllerTest extends WebTestCase
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
         $html = $crawler->html();
 
-        $this->assertContains(self::SAVE_MESSAGE, $html);
+        $this->assertStringContainsString(self::SAVE_MESSAGE, $html);
         $this->assertViewPage($html, $name, $description, $channelNames);
     }
     
@@ -227,11 +227,11 @@ class SalesChannelGroupControllerTest extends WebTestCase
      */
     protected function assertViewPage($html, $name, $description, array $channelNames)
     {
-        $this->assertContains($name, $html);
-        $this->assertContains($description ? : 'N/A', $html);
-        $this->assertContains('marello-group-sales-channels', $html);
+        $this->assertStringContainsString($name, $html);
+        $this->assertStringContainsString($description ? : 'N/A', $html);
+        $this->assertStringContainsString('marello-group-sales-channels', $html);
         foreach ($channelNames as $name) {
-            $this->assertContains($name, $html);
+            $this->assertStringContainsString($name, $html);
         }
     }
 

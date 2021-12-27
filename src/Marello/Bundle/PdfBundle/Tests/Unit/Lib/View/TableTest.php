@@ -14,7 +14,7 @@ class TableTest extends TestCase
 
     protected $table;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->table = new Table(
             self::MAX_HEIGHT,
