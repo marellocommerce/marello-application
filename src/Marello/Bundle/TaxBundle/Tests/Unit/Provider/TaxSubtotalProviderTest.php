@@ -23,21 +23,21 @@ class TaxSubtotalProviderTest extends TestCase
     protected $provider;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|TranslatorInterface
+     * @var \PHPUnit\Framework\MockObject\MockObject|TranslatorInterface
      */
     protected $translator;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|TaxEventDispatcher
+     * @var \PHPUnit\Framework\MockObject\MockObject|TaxEventDispatcher
      */
     protected $taxEventDispatcher;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|TaxFactory
+     * @var \PHPUnit\Framework\MockObject\MockObject|TaxFactory
      */
     protected $taxFactory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->translator = $this->createMock(TranslatorInterface::class);
         $this->translator->expects($this->any())->method('trans')->willReturnCallback(

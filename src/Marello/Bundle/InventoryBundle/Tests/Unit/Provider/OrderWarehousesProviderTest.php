@@ -27,7 +27,7 @@ class OrderWarehousesProviderTest extends TestCase
      */
     protected $orderWarehousesProvider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $doctrineHelper = $this->createMock(DoctrineHelper::class);
         $this->orderWarehousesProvider = new OrderWarehousesProvider($doctrineHelper);

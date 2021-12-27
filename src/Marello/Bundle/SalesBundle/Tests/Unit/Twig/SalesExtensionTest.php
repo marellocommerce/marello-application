@@ -12,7 +12,7 @@ use Twig\TwigFunction;
 class SalesExtensionTest extends TestCase
 {
     /**
-     * @var SalesChannelRepository|\PHPUnit_Framework_MockObject_MockObject
+     * @var SalesChannelRepository|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $salesChannelRepository;
 
@@ -21,7 +21,7 @@ class SalesExtensionTest extends TestCase
      */
     protected $extension;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->salesChannelRepository = $this->createMock(SalesChannelRepository::class);
 

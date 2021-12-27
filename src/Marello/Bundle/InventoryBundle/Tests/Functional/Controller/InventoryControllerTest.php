@@ -28,7 +28,7 @@ class InventoryControllerTest extends WebTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->initClient(
             [],
@@ -129,8 +129,8 @@ class InventoryControllerTest extends WebTestCase
         $result = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
 
-        $this->assertContains('Warehouse DE 1', $crawler->html());
-        $this->assertContains('never_out_of_stock', $crawler->html());
+        $this->assertStringContainsString('Warehouse DE 1', $crawler->html());
+        $this->assertStringContainsString('never_out_of_stock', $crawler->html());
     }
 
     /**
@@ -176,7 +176,7 @@ class InventoryControllerTest extends WebTestCase
         $result = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
 
-        $this->assertContains('never_out_of_stock', $crawler->html());
+        $this->assertStringContainsString('never_out_of_stock', $crawler->html());
     }
     /**
      * {@inheritdoc}

@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\PaymentBundle\Tests\Functional\Controller;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\PaymentBundle\Tests\Functional\Helper\PaymentTermIntegrationTrait;
 use Marello\Bundle\RuleBundle\Entity\RuleInterface;
 use Marello\Bundle\PaymentBundle\Entity\PaymentMethodsConfigsRule;
@@ -33,7 +33,7 @@ class PaymentMethodsConfigsRuleControllerTest extends WebTestCase
      */
     protected $translator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->initClient();
         $this->client->useHashNavigation(true);
@@ -102,8 +102,8 @@ class PaymentMethodsConfigsRuleControllerTest extends WebTestCase
 
         $html = $crawler->html();
 
-        $this->assertContains('Payment rule has been saved', $html);
-        $this->assertContains('No', $html);
+        $this->assertStringContainsString('Payment rule has been saved', $html);
+        $this->assertStringContainsString('No', $html);
 
         return $name;
     }
@@ -120,7 +120,7 @@ class PaymentMethodsConfigsRuleControllerTest extends WebTestCase
         $crawler = $this->client->request('GET', $this->getUrl('marello_payment_methods_configs_rule_index'));
         $result = $this->client->getResponse();
         static::assertHtmlResponseStatusCodeEquals($result, 200);
-        static::assertContains('marello-payment-methods-configs-rule-grid', $crawler->html());
+        static::assertStringContainsString('marello-payment-methods-configs-rule-grid', $crawler->html());
         $href = $crawler->selectLink('Create Payment Rule')->attr('href');
         static::assertEquals($this->getUrl('marello_payment_methods_configs_rule_create'), $href);
 
@@ -154,14 +154,14 @@ class PaymentMethodsConfigsRuleControllerTest extends WebTestCase
 
         $html = $crawler->html();
 
-        $this->assertContains($paymentRule->getRule()->getName(), $html);
+        $this->assertStringContainsString($paymentRule->getRule()->getName(), $html);
         $destination = $paymentRule->getDestinations();
-        $this->assertContains((string)$destination[0], $html);
+        $this->assertStringContainsString((string)$destination[0], $html);
         $methodConfigs = $paymentRule->getMethodConfigs();
         $label = $this->paymentMethodProvider
             ->getPaymentMethod($methodConfigs[0]->getMethod())
             ->getLabel();
-        $this->assertContains($this->translator->trans($label), $html);
+        $this->assertStringContainsString($this->translator->trans($label), $html);
     }
 
     /**
@@ -213,7 +213,7 @@ class PaymentMethodsConfigsRuleControllerTest extends WebTestCase
 
         static::assertHtmlResponseStatusCodeEquals($this->client->getResponse(), 200);
         $html = $crawler->html();
-        static::assertContains('Payment rule has been saved', $html);
+        static::assertStringContainsString('Payment rule has been saved', $html);
 
         $paymentRule = $this->getPaymentMethodsConfigsRuleByName($newName);
         static::assertEquals($id, $paymentRule->getId());
@@ -253,14 +253,14 @@ class PaymentMethodsConfigsRuleControllerTest extends WebTestCase
 
         $html = $response->getContent();
 
-        static::assertContains($paymentRule->getRule()->getName(), $html);
+        static::assertStringContainsString($paymentRule->getRule()->getName(), $html);
         $destination = $paymentRule->getDestinations();
-        static::assertContains((string)$destination[0], $html);
+        static::assertStringContainsString((string)$destination[0], $html);
         $methodConfigs = $paymentRule->getMethodConfigs();
         $label = $this->paymentMethodProvider
             ->getPaymentMethod($methodConfigs[0]->getMethod())
             ->getLabel();
-        static::assertContains($this->translator->trans($label), $html);
+        static::assertStringContainsString($this->translator->trans($label), $html);
     }
 
     /**
@@ -425,7 +425,7 @@ class PaymentMethodsConfigsRuleControllerTest extends WebTestCase
         $crawler = $this->client->submit($form);
 
         static::assertHtmlResponseStatusCodeEquals($this->client->getResponse(), 200);
-        static::assertContains('Payment rule has been saved', $crawler->html());
+        static::assertStringContainsString('Payment rule has been saved', $crawler->html());
     }
 
     public function testDeleteButtonNotVisible()

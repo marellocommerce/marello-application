@@ -33,12 +33,12 @@ class OrderToPackingSlipMapperTest extends TestCase
     use EntityTrait;
 
     /**
-     * @var EntityFieldProvider|\PHPUnit_Framework_MockObject_MockObject
+     * @var EntityFieldProvider|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $entityFieldProvider;
 
     /**
-     * @var OrderWarehousesProviderInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var OrderWarehousesProviderInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $warehousesProvider;
 
@@ -47,7 +47,7 @@ class OrderToPackingSlipMapperTest extends TestCase
      */
     protected $orderToPackingSlipMapper;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->entityFieldProvider = $this->getMockBuilder(EntityFieldProvider::class)
             ->disableOriginalConstructor()
@@ -66,26 +66,26 @@ class OrderToPackingSlipMapperTest extends TestCase
     {
         $warehouse = new Warehouse();
         
-        $this->entityFieldProvider->expects($this->at(0))->method('getFields')->willReturn(
-            [
-                ['name' => 'id', 'identifier' => true],
-                ['name' => 'salesChannel'],
-                ['name' => 'customer'],
-                ['name' => 'organization'],
-                ['name' => 'paymentTerm'],
-                ['name' => 'shippingAddress'],
-                ['name' => 'billingAddress'],
-                ['name' => 'items'],
-            ]
-        );
-        $this->entityFieldProvider->expects($this->at(1))->method('getFields')->willReturn(
-            [
-                ['name' => 'id', 'identifier' => true],
-                ['name' => 'product'],
-                ['name' => 'productName'],
-                ['name' => 'productSKU'],
-                ['name' => 'quantity'],
-            ]
+        $this->entityFieldProvider->expects($this->exactly(2))
+            ->method('getFields')
+            ->willReturnOnConsecutiveCalls(
+                [
+                    ['name' => 'id', 'identifier' => true],
+                    ['name' => 'salesChannel'],
+                    ['name' => 'customer'],
+                    ['name' => 'organization'],
+                    ['name' => 'paymentTerm'],
+                    ['name' => 'shippingAddress'],
+                    ['name' => 'billingAddress'],
+                    ['name' => 'items'],
+                ],
+                [
+                    ['name' => 'id', 'identifier' => true],
+                    ['name' => 'product'],
+                    ['name' => 'productName'],
+                    ['name' => 'productSKU'],
+                    ['name' => 'quantity'],
+                ]
         );
         $billingAddress = new MarelloAddress();
         $shippingAddress = new MarelloAddress();

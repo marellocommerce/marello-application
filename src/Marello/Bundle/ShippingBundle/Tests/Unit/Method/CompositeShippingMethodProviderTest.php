@@ -21,7 +21,7 @@ class CompositeShippingMethodProviderTest extends \PHPUnit\Framework\TestCase
     /**
      * {@inheritDoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->shippingMethodProvider = new CompositeShippingMethodProvider();
 
@@ -33,7 +33,7 @@ class CompositeShippingMethodProviderTest extends \PHPUnit\Framework\TestCase
     public function testGetMethods()
     {
         $shippingMethods = $this->shippingMethodProvider->getShippingMethods();
-        $this->assertInternalType('array', $shippingMethods);
+        $this->assertIsArray($shippingMethods);
         $this->assertEmpty($shippingMethods);
     }
 

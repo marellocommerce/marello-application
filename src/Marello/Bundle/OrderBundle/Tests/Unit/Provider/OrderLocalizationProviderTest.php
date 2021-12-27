@@ -6,6 +6,7 @@ use Marello\Bundle\LocaleBundle\Model\LocalizationAwareInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderAwareInterface;
 use Marello\Bundle\OrderBundle\Provider\OrderLocalizationProvider;
+use Marello\Bundle\RefundBundle\Entity\Refund;
 use Oro\Component\Testing\Unit\EntityTrait;
 use PHPUnit\Framework\TestCase;
 
@@ -18,7 +19,7 @@ class OrderLocalizationProviderTest extends TestCase
      */
     private $provider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->provider = new OrderLocalizationProvider();
     }
@@ -39,7 +40,7 @@ class OrderLocalizationProviderTest extends TestCase
         $order
             ->expects(static::once())
             ->method('getLocalization');
-        $entity = $this->createMock([OrderAwareInterface::class, LocalizationAwareInterface::class]);
+        $entity = $this->createMock(Refund::class);
         $entity
             ->expects(static::once())
             ->method('getOrder')

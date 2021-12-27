@@ -29,7 +29,7 @@ class PurchaseOrderAdviceCronTest extends WebTestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->initClient();
 
@@ -47,7 +47,7 @@ class PurchaseOrderAdviceCronTest extends WebTestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command]);
 
-        self::assertContains(
+        self::assertStringContainsString(
             'There are no advised items for PO notification. The command will not run.',
             $commandTester->getDisplay()
         );
@@ -67,7 +67,7 @@ class PurchaseOrderAdviceCronTest extends WebTestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command]);
 
-        self::assertContains(
+        self::assertStringContainsString(
             'The PO notification feature is disabled. The command will not run.',
             $commandTester->getDisplay()
         );

@@ -24,7 +24,7 @@ class InvoiceTableProviderTest extends TestCase
      */
     public function testSupports($entity, $supports)
     {
-        /** @var TableSizeProvider|\PHPUnit_Framework_MockObject_MockObject $tableSizesProvider */
+        /** @var TableSizeProvider|\PHPUnit\Framework\MockObject\MockObject $tableSizesProvider */
         $tableSizesProvider = $this->createMock(TableSizeProvider::class);
 
         $provider = new InvoiceTableProvider($tableSizesProvider);
@@ -154,7 +154,7 @@ class InvoiceTableProviderTest extends TestCase
             ->setGrandTotal($subtotal + $totalTax)
         ;
 
-        /** @var TableSizeProvider|\PHPUnit_Framework_MockObject_MockObject $tableSizeProvider */
+        /** @var TableSizeProvider|\PHPUnit\Framework\MockObject\MockObject $tableSizeProvider */
         $tableSizeProvider = $this->createMock(TableSizeProvider::class);
         $tableSizeProvider->expects($this->atLeastOnce())
             ->method('getMaxHeight')

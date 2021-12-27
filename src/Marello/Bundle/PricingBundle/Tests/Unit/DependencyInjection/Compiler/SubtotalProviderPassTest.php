@@ -18,11 +18,11 @@ class SubtotalProviderPassTest extends TestCase
     protected $compilerPass;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ContainerBuilder
+     * @var \PHPUnit\Framework\MockObject\MockObject|ContainerBuilder
      */
     protected $container;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->container = $this
             ->getMockBuilder(ContainerBuilder::class)
@@ -31,7 +31,7 @@ class SubtotalProviderPassTest extends TestCase
         $this->compilerPass = new SubtotalProviderPass();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->container, $this->compilerPass);
     }

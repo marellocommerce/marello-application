@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class OrderControllerTest extends WebTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->initClient(
             [],
@@ -119,7 +119,7 @@ class OrderControllerTest extends WebTestCase
         );
 
         $this->assertResponseStatusCodeEquals($this->client->getResponse(), Response::HTTP_OK);
-        $this->assertContains('marello-order-packingslips', $crawler->html());
+        $this->assertStringContainsString('marello-order-packingslips', $crawler->html());
     }
 
     /**

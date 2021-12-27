@@ -45,7 +45,7 @@ class ChannelPaymentMethodProviderTest extends \PHPUnit\Framework\TestCase
      */
     private $disabledMethod;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->doctrineHelper = $this->createMock(DoctrineHelper::class);
         $repository = $this->createMock(ChannelRepository::class);

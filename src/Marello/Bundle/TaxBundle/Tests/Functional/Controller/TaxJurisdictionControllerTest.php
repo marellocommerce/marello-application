@@ -44,7 +44,7 @@ class TaxJurisdictionControllerTest extends WebTestCase
 
     const SAVE_MESSAGE = 'Tax Jurisdiction saved';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->initClient([], $this->generateBasicAuthHeader());
         $this->client->useHashNavigation(true);
@@ -55,7 +55,7 @@ class TaxJurisdictionControllerTest extends WebTestCase
         $crawler = $this->client->request('GET', $this->getUrl('marello_tax_taxjurisdiction_index'));
         $result = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
-        $this->assertContains('marello-taxjurisdiction-grid', $crawler->html());
+        $this->assertStringContainsString('marello-taxjurisdiction-grid', $crawler->html());
     }
 
     public function testCreate()
@@ -181,7 +181,7 @@ class TaxJurisdictionControllerTest extends WebTestCase
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
         $html = $crawler->html();
 
-        $this->assertContains(self::SAVE_MESSAGE, $html);
+        $this->assertStringContainsString(self::SAVE_MESSAGE, $html);
         $this->assertViewPage($html, $code, $description, $countryFull, $stateFull);
     }
 
@@ -231,9 +231,9 @@ class TaxJurisdictionControllerTest extends WebTestCase
      */
     protected function assertViewPage($html, $code, $description, $country, $state)
     {
-        $this->assertContains($code, $html);
-        $this->assertContains($description, $html);
-        $this->assertContains($country, $html);
-        $this->assertContains($state, $html);
+        $this->assertStringContainsString($code, $html);
+        $this->assertStringContainsString($description, $html);
+        $this->assertStringContainsString($country, $html);
+        $this->assertStringContainsString($state, $html);
     }
 }

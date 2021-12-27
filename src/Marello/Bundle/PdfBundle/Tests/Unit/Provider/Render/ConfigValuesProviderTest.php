@@ -10,7 +10,7 @@ class ConfigValuesProviderTest extends TestCase
 {
     public function testSupports()
     {
-        /** @var ConfigManager|\PHPUnit_Framework_MockObject_MockObject $configManager */
+        /** @var ConfigManager|\PHPUnit\Framework\MockObject\MockObject $configManager */
         $configManager = $this->createMock(ConfigManager::class);
         $parameters = [];
 
@@ -26,7 +26,7 @@ class ConfigValuesProviderTest extends TestCase
             'parameter-2' => 'value 2',
         ];
 
-        /** @var ConfigManager|\PHPUnit_Framework_MockObject_MockObject $configManager */
+        /** @var ConfigManager|\PHPUnit\Framework\MockObject\MockObject $configManager */
         $configManager = $this->createMock(ConfigManager::class);
         $configManager->expects($this->exactly(count($parameters)))
             ->method('get')
@@ -53,7 +53,7 @@ class ConfigValuesProviderTest extends TestCase
             'parameter-2' => 'value 2',
         ];
 
-        /** @var ConfigManager|\PHPUnit_Framework_MockObject_MockObject $configManager */
+        /** @var ConfigManager|\PHPUnit\Framework\MockObject\MockObject $configManager */
         $configManager = $this->createMock(ConfigManager::class);
         $configManager->expects($this->exactly(count($parameters)))
             ->method('get')

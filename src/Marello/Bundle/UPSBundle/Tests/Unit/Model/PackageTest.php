@@ -30,12 +30,12 @@ class PackageTest extends TestCase
      */
     protected $resultArray;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->model = new Package();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->model);
     }

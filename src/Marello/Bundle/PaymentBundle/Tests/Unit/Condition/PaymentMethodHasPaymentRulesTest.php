@@ -27,7 +27,7 @@ class PaymentMethodHasPaymentRulesTest extends \PHPUnit\Framework\TestCase
      */
     protected $paymentMethodHasPaymentRulesCondition;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->repository = $this->getMockBuilder(PaymentMethodsConfigsRuleRepository::class)
             ->disableOriginalConstructor()
@@ -52,12 +52,10 @@ class PaymentMethodHasPaymentRulesTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Missing "method_identifier" option
-     */
     public function testInitializeInvalid()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Missing "method_identifier" option');
         $this->assertInstanceOf(
             PaymentMethodHasPaymentRules::class,
             $this->paymentMethodHasPaymentRulesCondition->initialize([])
@@ -122,7 +120,7 @@ class PaymentMethodHasPaymentRulesTest extends \PHPUnit\Framework\TestCase
     {
         $result = $this->paymentMethodHasPaymentRulesCondition->compile('$factoryAccessor');
 
-        $this->assertContains('$factoryAccessor->create(\'marello_payment_method_has_payment_rules\'', $result);
+        $this->assertStringContainsString('$factoryAccessor->create(\'marello_payment_method_has_payment_rules\'', $result);
     }
 
     public function testSetContextAccessor()

@@ -2,10 +2,10 @@
 
 namespace Marello\Bundle\CoreBundle\Tests\Unit\Validator\Constraints;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\Mapping\ClassMetadata;
 
+use Oro\Bundle\EntityBundle\ORM\Registry;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
@@ -22,25 +22,25 @@ class GreaterThanOrEqualToValueValidatorTest extends TestCase
     /** @var GreaterThanOrEqualToValue $constraint */
     protected $constraint;
 
-    /** @var ExecutionContextInterface|\PHPUnit_Framework_MockObject_MockObject $context */
+    /** @var ExecutionContextInterface|\PHPUnit\Framework\MockObject\MockObject $context */
     protected $context;
 
-    /** @var ManagerRegistry|\PHPUnit_Framework_MockObject_MockObject $managerRegistry */
+    /** @var Registry|\PHPUnit\Framework\MockObject\MockObject $managerRegistry */
     protected $managerRegistry;
 
-    /** @var ObjectManager|\PHPUnit_Framework_MockObject_MockObject $objectManager */
+    /** @var ObjectManager|\PHPUnit\Framework\MockObject\MockObject $objectManager */
     protected $objectManager;
 
-    /** @var ClassMetadata|\PHPUnit_Framework_MockObject_MockObject $classMetaData */
+    /** @var ClassMetadata|\PHPUnit\Framework\MockObject\MockObject $classMetaData */
     protected $classMetaData;
 
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->context = $this->createMock(ExecutionContextInterface::class);
-        $this->managerRegistry = $this->createMock(ManagerRegistry::class);
+        $this->managerRegistry = $this->createMock(Registry::class);
         $this->objectManager = $this->createMock(ObjectManager::class);
         $this->classMetaData = $this->createMock(ClassMetadata::class);
     }

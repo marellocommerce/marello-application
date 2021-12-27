@@ -13,7 +13,7 @@ use Marello\Bundle\TaxBundle\Provider\TaxSubtotalOperationProvider;
 class TaxSubtotalOperationProviderTest extends TestCase
 {
     /**
-     * @var ConfigManager|\PHPUnit_Framework_MockObject_MockObject
+     * @var ConfigManager|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $configManager;
 
@@ -22,7 +22,7 @@ class TaxSubtotalOperationProviderTest extends TestCase
      */
     protected $taxSubtotalOperationProvider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->configManager = $this->getMockBuilder(ConfigManager::class)
             ->disableOriginalConstructor()

@@ -3,7 +3,7 @@
 namespace Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
 
 class LoadTaxCodeData extends AbstractFixture

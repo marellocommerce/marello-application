@@ -23,7 +23,7 @@ class SalesChannelListenerTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->salesChannelListener = new SalesChannelListener(true);
     }

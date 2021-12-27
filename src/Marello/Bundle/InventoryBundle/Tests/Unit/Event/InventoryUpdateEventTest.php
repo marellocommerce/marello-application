@@ -18,7 +18,7 @@ class InventoryUpdateEventTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->inventoryUpdateContext = $this
             ->getMockBuilder(InventoryUpdateContext::class)

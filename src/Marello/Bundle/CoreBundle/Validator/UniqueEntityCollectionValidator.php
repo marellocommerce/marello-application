@@ -67,7 +67,7 @@ class UniqueEntityCollectionValidator extends ConstraintValidator
         $class = $em->getClassMetadata(get_class($entity));
         $fieldValue = null;
 
-        /* @var $class \Doctrine\Common\Persistence\Mapping\ClassMetadata */
+        /* @var $class \Doctrine\Persistence\Mapping\ClassMetadata */
         foreach ($fields as $fieldName) {
             if (!$class->hasField($fieldName) && !$class->hasAssociation($fieldName)) {
                 throw new ConstraintDefinitionException(

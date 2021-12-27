@@ -21,7 +21,7 @@ class SendProcessorTest extends WebTestCase
     /** @var SendProcessor */
     protected $sendProcessor;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->initClient($this->generateBasicAuthHeader());
 
@@ -105,8 +105,8 @@ class SendProcessorTest extends WebTestCase
         self::assertNotContains('{{ entity', $message['subject']);
         self::assertNotContains('{{ entity', $message['body']);
         self::assertEquals('text/html', $message['contentType']);
-        self::assertContains($order->getOrderNumber(), $message['subject']);
-        self::assertContains($order->getOrderNumber(), $message['body']);
+        self::assertStringContainsString($order->getOrderNumber(), $message['subject']);
+        self::assertStringContainsString($order->getOrderNumber(), $message['body']);
     }
 
 
@@ -147,7 +147,7 @@ class SendProcessorTest extends WebTestCase
         self::assertNotContains('{{ entity', $message['subject']);
         self::assertNotContains('{{ entity', $message['body']);
         self::assertEquals('text/html', $message['contentType']);
-        self::assertContains($order->getOrderNumber(), $message['subject']);
-        self::assertContains($order->getOrderNumber(), $message['body']);
+        self::assertStringContainsString($order->getOrderNumber(), $message['subject']);
+        self::assertStringContainsString($order->getOrderNumber(), $message['body']);
     }
 }

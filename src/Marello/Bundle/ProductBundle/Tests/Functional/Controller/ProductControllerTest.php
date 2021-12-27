@@ -21,7 +21,7 @@ class ProductControllerTest extends WebTestCase
 {
     const GRID_NAME = 'marello-products-grid';
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->initClient(
             [],
@@ -89,8 +89,8 @@ class ProductControllerTest extends WebTestCase
         $result  = $this->client->getResponse();
 
         self::assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
-        $this->assertContains('Product saved', $crawler->html());
-        $this->assertContains($name, $crawler->html());
+        $this->assertStringContainsString('Product saved', $crawler->html());
+        $this->assertStringContainsString($name, $crawler->html());
 
         return $name;
     }
@@ -250,7 +250,7 @@ class ProductControllerTest extends WebTestCase
 
         $result = $this->client->getResponse();
         self::assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
-        self::assertContains('Product saved', $crawler->html());
+        self::assertStringContainsString('Product saved', $crawler->html());
 
         $resultData['name'] = $name;
 
@@ -270,11 +270,11 @@ class ProductControllerTest extends WebTestCase
 
         $result = $this->client->getResponse();
         self::assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
-        self::assertContains(
+        self::assertStringContainsString(
             (string) $this->getReference(LoadSalesData::CHANNEL_2_REF)->getName(),
             $crawler->html()
         );
-        self::assertContains((string) $resultData['name'], $crawler->html());
+        self::assertStringContainsString((string) $resultData['name'], $crawler->html());
     }
 
     /**
@@ -293,6 +293,6 @@ class ProductControllerTest extends WebTestCase
 
         $result = $this->client->getResponse();
         self::assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
-        self::assertContains($resultData['name'], $crawler->html());
+        self::assertStringContainsString($resultData['name'], $crawler->html());
     }
 }

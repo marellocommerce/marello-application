@@ -3,7 +3,7 @@
 namespace Marello\Bundle\ManualShippingBundle\Tests\Functional\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\ManualShippingBundle\Entity\ManualShippingSettings;
 use Marello\Bundle\ManualShippingBundle\Integration\ManualShippingChannelType;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;

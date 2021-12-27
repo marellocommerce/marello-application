@@ -33,7 +33,7 @@ class ShippingContextToRuleValuesConverterTest extends \PHPUnit\Framework\TestCa
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->factory = new DecoratedProductLineItemFactory(
             $this->createMock(VirtualFieldsProductDecoratorFactory::class)

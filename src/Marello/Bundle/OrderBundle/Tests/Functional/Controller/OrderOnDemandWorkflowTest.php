@@ -29,7 +29,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class OrderOnDemandWorkflowTest extends WebTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->initClient(
             [],

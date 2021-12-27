@@ -9,7 +9,7 @@ use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxRuleData;
 
 class TaxRuleDeleteOperationTest extends ActionTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->initClient([], $this->generateBasicAuthHeader());
         $this->client->useHashNavigation(true);

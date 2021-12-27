@@ -25,12 +25,12 @@ class UPSTransportTest extends TestCase
     const TEST_URL = 'test.example.org';
 
     /**
-     * @var RestClientFactoryInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var RestClientFactoryInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $clientFactory;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $client;
 
@@ -40,16 +40,16 @@ class UPSTransportTest extends TestCase
     protected $transport;
 
     /**
-     * @var UpsClientUrlProviderInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var UpsClientUrlProviderInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $upsClientUrlProviderMock;
 
     /**
-     * @var LoggerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var LoggerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $logger;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->client = $this->createMock('Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestClientInterface');
 
@@ -82,7 +82,7 @@ class UPSTransportTest extends TestCase
 
     public function testGetPrices()
     {
-        /** @var PriceRequest|\PHPUnit_Framework_MockObject_MockObject $rateRequest * */
+        /** @var PriceRequest|\PHPUnit\Framework\MockObject\MockObject $rateRequest * */
         $rateRequest = $this->createMock(PriceRequest::class);
 
         $integration = new Channel();
@@ -122,7 +122,7 @@ class UPSTransportTest extends TestCase
 
     public function testGetPricesException()
     {
-        /** @var PriceRequest|\PHPUnit_Framework_MockObject_MockObject $rateRequest * */
+        /** @var PriceRequest|\PHPUnit\Framework\MockObject\MockObject $rateRequest * */
         $rateRequest = $this->createMock(PriceRequest::class);
 
         $integration = new Channel();
@@ -232,7 +232,7 @@ class UPSTransportTest extends TestCase
     }
 
     /**
-     * @return PriceRequest|\PHPUnit_Framework_MockObject_MockObject $rateRequest
+     * @return PriceRequest|\PHPUnit\Framework\MockObject\MockObject $rateRequest
      */
     private function createRateRequestMock()
     {

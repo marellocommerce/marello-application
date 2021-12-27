@@ -11,14 +11,14 @@ class DocumentTableProviderTest extends TestCase
 {
     protected $provider;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->provider = new DocumentTableProvider();
     }
 
     public function testGetTablesSupported()
     {
-        /** @var TableProviderInterface|\PHPUnit_Framework_MockObject_MockObject $workingProvider */
+        /** @var TableProviderInterface|\PHPUnit\Framework\MockObject\MockObject $workingProvider */
         $workingProvider = $this->createMock(TableProviderInterface::class);
         $workingProvider->expects($this->once())
             ->method('supports')
@@ -29,7 +29,7 @@ class DocumentTableProviderTest extends TestCase
             ->willReturn(new Table(20, 5, 4))
         ;
 
-        /** @var TableProviderInterface|\PHPUnit_Framework_MockObject_MockObject $notWorkingProvider */
+        /** @var TableProviderInterface|\PHPUnit\Framework\MockObject\MockObject $notWorkingProvider */
         $notWorkingProvider = $this->createMock(TableProviderInterface::class);
         $notWorkingProvider->expects($this->once())
             ->method('supports')
@@ -46,7 +46,7 @@ class DocumentTableProviderTest extends TestCase
 
     public function testGetTablesNotSupported()
     {
-        /** @var TableProviderInterface|\PHPUnit_Framework_MockObject_MockObject $notWorkingProvider */
+        /** @var TableProviderInterface|\PHPUnit\Framework\MockObject\MockObject $notWorkingProvider */
         $notWorkingProvider = $this->createMock(TableProviderInterface::class);
         $notWorkingProvider->expects($this->once())
             ->method('supports')

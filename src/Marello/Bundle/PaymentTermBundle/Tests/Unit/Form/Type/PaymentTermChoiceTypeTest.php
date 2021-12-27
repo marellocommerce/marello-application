@@ -128,14 +128,14 @@ class PaymentTermChoiceTypeTest extends FormIntegrationTestCase
 
     protected function getPaymentTermChoiceType()
     {
-        /** @var PaymentTermProvider|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var PaymentTermProvider|\PHPUnit\Framework\MockObject\MockObject */
         $paymentTermProvider = $this->createMock(PaymentTermProvider::class);
         $paymentTermProvider
             ->method('getPaymentTerms')
             ->willReturn($this->getPaymentTermEntities())
         ;
 
-        /** @var LocalizationHelper|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var LocalizationHelper|\PHPUnit\Framework\MockObject\MockObject */
         $localizationHelper = $this->createMock(LocalizationHelper::class);
         $localizationHelper
             ->method('getLocalizedValue')

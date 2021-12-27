@@ -13,7 +13,7 @@ use Marello\Bundle\InventoryBundle\EventListener\InventoryUpdateEventListener;
 class InventoryUpdateEventListenerTest extends TestCase
 {
     /**
-     * @var InventoryUpdateContext|\PHPUnit_Framework_MockObject_MockObject
+     * @var InventoryUpdateContext|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $inventoryUpdateContext;
 
@@ -23,19 +23,19 @@ class InventoryUpdateEventListenerTest extends TestCase
     protected $listener;
 
     /**
-     * @var InventoryManager|\PHPUnit_Framework_MockObject_MockObject
+     * @var InventoryManager|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $inventoryManager;
 
     /**
-     * @var BalancedInventoryManager|\PHPUnit_Framework_MockObject_MockObject
+     * @var BalancedInventoryManager|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $balancedInventoryManager;
 
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->inventoryUpdateContext = new InventoryUpdateContext();
         $this->inventoryManager = $this

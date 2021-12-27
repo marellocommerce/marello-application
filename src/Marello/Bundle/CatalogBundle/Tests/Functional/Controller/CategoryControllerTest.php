@@ -17,7 +17,7 @@ class CategoryControllerTest extends WebTestCase
 {
     const GRID_NAME = 'marello-categories-grid';
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->initClient(
             [],
@@ -63,11 +63,11 @@ class CategoryControllerTest extends WebTestCase
         $result  = $this->client->getResponse();
 
         $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
-        $this->assertContains('Category has been saved', $crawler->html());
+        $this->assertStringContainsString('Category has been saved', $crawler->html());
 
         $response = $this->client->requestGrid(self::GRID_NAME);
         self::assertJsonResponseStatusCodeEquals($response, Response::HTTP_OK);
-        $this->assertContains($name, $response->getContent());
+        $this->assertStringContainsString($name, $response->getContent());
 
         return $name;
     }
@@ -107,7 +107,7 @@ class CategoryControllerTest extends WebTestCase
 
         $result = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
-        $this->assertContains("Category has been saved", $crawler->html());
+        $this->assertStringContainsString("Category has been saved", $crawler->html());
 
         $resultData['name'] = $name;
 
@@ -128,6 +128,6 @@ class CategoryControllerTest extends WebTestCase
 
         $result = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
-        $this->assertContains("{$resultData['name']}", $crawler->html());
+        $this->assertStringContainsString("{$resultData['name']}", $crawler->html());
     }
 }

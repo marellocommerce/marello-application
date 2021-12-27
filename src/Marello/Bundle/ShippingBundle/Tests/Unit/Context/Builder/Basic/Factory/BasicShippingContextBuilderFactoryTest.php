@@ -25,7 +25,7 @@ class BasicShippingContextBuilderFactoryTest extends \PHPUnit\Framework\TestCase
      */
     private $sourceEntityMock;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->lineItemsCollectionMock = $this->createMock(ShippingLineItemCollectionInterface::class);
         $this->subtotalMock = $this->createMock(Price::class);
