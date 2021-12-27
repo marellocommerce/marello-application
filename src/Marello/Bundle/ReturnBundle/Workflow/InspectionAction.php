@@ -55,7 +55,7 @@ class InspectionAction extends AbstractAction
 
         $return->getReturnItems()->map(function (ReturnItem $item) use ($return) {
             if (!$item->getReason() || !$item->getStatus()) {
-                throw new \Exception($this->translator->trans('marello.return.returnentity.messages.error.workflow.consumer'));
+                throw new \Exception($this->translator->trans('marello.return.returnentity.messages.error.return.workflow.consumer'));
             }
             if (($item->getReason()->getId() !== 'damaged') && ($item->getStatus()->getId() !== 'denied')) {
                 $this->handleInventoryUpdate(
