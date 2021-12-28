@@ -15,25 +15,13 @@
         "exclude-from-classmap": ["**/Tests/"]
     },
     "repositories": {
-        "composer": {
-            "type": "composer",
-            "url": "https://packagist.orocrm.com"
-        },
-        "asset-packagist": {
-            "type": "composer",
-            "url": "https://asset-packagist.orocrm.com"
-        },
-        "platform-enterprise": {
-            "type": "vcs",
-            "url": "https://github.com/oroinc/platform-enterprise.git"
-        },
-        "platform": {
-            "type": "vcs",
-            "url": "https://github.com/oroinc/platform-er.git"
-        },
         "local-packages": {
             "type": "path",
             "url": "../../package/*"
+        },
+        "composer": {
+            "type": "composer",
+            "url": "https://packagist.orocrm.com"
         }
     },
     "require": {
@@ -72,7 +60,6 @@
         "theofidry/alice-data-fixtures": "~1.4.0"
     },
     "config": {
-        "component-dir": "public/bundles/components",
         "bin-dir": "bin",
         "fxp-asset": {
             "enabled": false
