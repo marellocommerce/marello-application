@@ -1,7 +1,11 @@
 <?xml version="1.0"?>
 <ruleset name="Marello">
     <description>PSR2 ruleset with Marello configuration</description>
-    <rule ref="PSR2"/>
+    <rule ref="PSR2">
+        <properties>
+            <property name="lineLimit" value="130"/>
+        </properties>
+    </rule>
     <exclude-pattern>*/marellocommerce/*/*/*/*/*/Tests/*</exclude-pattern>
     <exclude-pattern>*/marellocommerce/*/*/*/*/*/Migrations/Schema/*</exclude-pattern>
 
