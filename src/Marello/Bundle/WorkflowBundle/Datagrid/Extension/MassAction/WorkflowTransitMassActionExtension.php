@@ -80,7 +80,6 @@ class WorkflowTransitMassActionExtension extends MassActionExtension
         return $action;
     }
 
-
     /**
      * {@inheritdoc}
      */
