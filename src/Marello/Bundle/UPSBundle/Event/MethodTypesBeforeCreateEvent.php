@@ -3,7 +3,7 @@
 namespace Marello\Bundle\UPSBundle\Event;
 
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class MethodTypesBeforeCreateEvent extends Event
 {

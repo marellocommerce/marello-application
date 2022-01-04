@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\ShippingBundle\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class ShippingMethodConfigDataEvent extends Event
 {

@@ -47,6 +47,7 @@ marello:
         saleschanneltype:
             entity_label: Sales Channel Type
             entity_plural_label: Sales Channels Types
+            entity_grid_all_view_label: All %entity_plural_label%
             name.label: Name
             label.label: Label
 

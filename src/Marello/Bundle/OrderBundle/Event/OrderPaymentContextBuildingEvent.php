@@ -3,7 +3,7 @@
 namespace Marello\Bundle\OrderBundle\Event;
 
 use Marello\Bundle\PaymentBundle\Context\PaymentContextInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class OrderPaymentContextBuildingEvent extends Event
 {
