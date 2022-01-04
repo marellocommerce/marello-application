@@ -68,7 +68,7 @@ class OrderActionPermissionProvider implements ActionPermissionInterface
             $refundsAmount += $refund->getRefundAmount();
         }
 
-        if($order->getGrandTotal() - $refundsAmount <= 0){
+        if ($order->getGrandTotal() - $refundsAmount <= 0) {
             return false;
         }
 
