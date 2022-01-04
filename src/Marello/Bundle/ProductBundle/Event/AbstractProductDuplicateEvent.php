@@ -3,7 +3,7 @@
 namespace Marello\Bundle\ProductBundle\Event;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 abstract class AbstractProductDuplicateEvent extends Event
 {

@@ -36,6 +36,9 @@ marello:
             quantity.label:         Refunded Quantity
             refund_amount.label:    Refunded Amount
             organization.label:     Organization
+            tax_total.label:        Tax Total
+            sub_total.label:        Subtotal
+            tax_code.label:         Tax Code
         form:
             tax_code.label:             Tax Code
             tax.label:                  Tax
@@ -44,6 +47,9 @@ marello:
             subtotal.label:             Subtotal
             refund.label:               Refund
             add_item.label:             Add Item
+
+        refund_subtotal.label:      Refund Subtotal
+        refund_tax_total.label:     Refund Tax Total
 
         datablock:
             refund_totals.label:    Refund Totals

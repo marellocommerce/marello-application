@@ -14,7 +14,7 @@ class SalesChannelControllerTest extends WebTestCase
 {
     const NAME = 'name';
     const CODE = 'code';
-    const CHANNEL_TYPE = 'channelType';
+    const CHANNEL_TYPE = 'magento';
     const CURRENCY = 'USD';
     const DEFAULT = true;
     const ACTIVE = true;
@@ -22,7 +22,7 @@ class SalesChannelControllerTest extends WebTestCase
 
     const UPDATED_NAME = 'updatedName';
     const UPDATED_CODE = 'updatedCode';
-    const UPDATED_CHANNEL_TYPE = 'updatedChannelType';
+    const UPDATED_CHANNEL_TYPE = 'marello';
     const UPDATED_CURRENCY = 'USD';
     const UPDATED_DEFAULT = false;
     const UPDATED_ACTIVE = false;

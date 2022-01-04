@@ -35,7 +35,9 @@
     <td class="refund-line-item-taxcode marello-line-field">
         <span style="display:none;">{{ form_widget(form.taxCode) }}</span>
         <div class="fields-row">
-            {{ form.vars.value.orderItem.taxCode.code }}
+            {% if form.vars.value.orderItem.taxCode %}
+                {{ form.vars.value.orderItem.taxCode.code }}
+            {% endif %}
         </div>
     </td>
     <td class="refund-line-item-price marello-line-field">
