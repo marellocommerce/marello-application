@@ -13,8 +13,8 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root(MarelloEnterpriseGoogleApiExtension::ALIAS);
+        $treeBuilder = new TreeBuilder(MarelloEnterpriseGoogleApiExtension::ALIAS);
+        $rootNode = $treeBuilder->getRootNode();
 
         SettingsBuilder::append($rootNode, [
             'enable_google_address_geocoding' => [
