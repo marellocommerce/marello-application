@@ -3,7 +3,7 @@
 namespace Marello\Bundle\ProductBundle\Event;
 
 use Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class ProductDropshipEvent extends Event
 {

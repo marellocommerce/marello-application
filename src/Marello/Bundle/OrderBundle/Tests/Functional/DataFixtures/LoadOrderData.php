@@ -17,6 +17,7 @@ use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 use Marello\Bundle\InventoryBundle\Tests\Functional\DataFixtures\LoadInventoryData;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
+use Marello\Bundle\TaxBundle\Entity\TaxCode;
 use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxCodeData;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
@@ -92,6 +93,9 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         $organization = $manager
             ->getRepository(Organization::class)
             ->getFirst();
+        $taxCode = $this->manager
+            ->getRepository(TaxCode::class)
+            ->findOneBy([]);
 
         while (($itemRow = $this->popOrderItemRow()) !== false) {
             if ($order && ($itemRow['order_number'] !== $order->getOrderNumber())) {
@@ -126,7 +130,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
             }
 
             $this->setReference('marello_order_' . $createdOrders, $order);
-            $item = $this->createOrderItem($itemRow, $organization);
+            $item = $this->createOrderItem($itemRow, $organization, $taxCode);
             $order->addItem($item);
             $manager->flush();
         }
@@ -246,7 +250,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
      *
      * @return OrderItem
      */
-    protected function createOrderItem($row, Organization $organization)
+    protected function createOrderItem($row, Organization $organization, TaxCode $taxCode)
     {
         /** @var Product $product */
         $product = $this->manager
@@ -254,6 +258,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
             ->findOneBy(['sku' => $row['sku'], 'organization' => $organization]);
 
         $itemEntity = new OrderItem();
+        $itemEntity->setTaxCode($taxCode);
         $itemEntity->setProduct($product);
         $itemEntity->setQuantity($row['qty']);
         $itemEntity->setPrice($row['price']);

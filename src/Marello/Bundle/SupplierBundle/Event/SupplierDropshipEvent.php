@@ -3,7 +3,7 @@
 namespace Marello\Bundle\SupplierBundle\Event;
 
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class SupplierDropshipEvent extends Event
 {
