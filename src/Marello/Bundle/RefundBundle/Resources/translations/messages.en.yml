@@ -39,9 +39,6 @@ marello:
             sub_total.label:        Subtotal
             tax_code.label:         Tax Code
             organization.label:     Organization
-            tax_total.label:        Tax Total
-            sub_total.label:        Subtotal
-            tax_code.label:         Tax Code
         form:
             tax_code.label:             Tax Code
             tax.label:                  Tax
