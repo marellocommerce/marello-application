@@ -105,6 +105,9 @@ class Refund extends ExtendRefund implements
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
+     *          },
+     *          "entity"={
+     *              "label"="marello.refund.subtotal.label"
      *          }
      *      }
      * )
@@ -119,6 +122,9 @@ class Refund extends ExtendRefund implements
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
+     *          },
+     *          "entity"={
+     *              "label"="marello.refund.tax_total.label"
      *          }
      *      }
      * )

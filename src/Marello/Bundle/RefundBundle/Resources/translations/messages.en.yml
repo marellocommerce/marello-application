@@ -35,6 +35,9 @@ marello:
             quantity_ordered.label: Ordered Quantity
             quantity.label:         Refunded Quantity
             refund_amount.label:    Refunded Amount
+            tax_total.label:        Tax Total
+            sub_total.label:        Subtotal
+            tax_code.label:         Tax Code
             organization.label:     Organization
             tax_total.label:        Tax Total
             sub_total.label:        Subtotal

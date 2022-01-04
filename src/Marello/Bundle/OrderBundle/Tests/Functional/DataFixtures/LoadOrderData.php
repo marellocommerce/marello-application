@@ -268,6 +268,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         $itemEntity->setRowTotalInclTax($row['total_price']);
         $itemEntity->setRowTotalExclTax($row['total_price']);
         $itemEntity->setTax($row['tax']);
+        $itemEntity->setTaxCode($this->getReference($row['tax_code']));
         $itemEntity->setOrganization($organization);
         return $itemEntity;
     }
