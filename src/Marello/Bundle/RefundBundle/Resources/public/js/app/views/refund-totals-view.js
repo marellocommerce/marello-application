@@ -68,8 +68,6 @@ define(function(require) {
          */
         setTotals: function(data) {
             var totals = _.defaults(data, {totals: {subtotal: {}, tax_total: {}, grand_total: {}}}).totals;
-            console.log(totals);
-            console.log(data);
             this.render(totals);
         },
 
@@ -114,8 +112,6 @@ define(function(require) {
                 this.pushItem(totals.grand_total, this.options.data.grandtotalLabel);
             }
             var items = _.filter(this.items);
-            console.log(this.items);
-            console.log(items);
 
             this.$totals.html(items.join(''));
             this.items = [];
