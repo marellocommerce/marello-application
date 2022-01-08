@@ -1,0 +1,7 @@
+map:
+    "*":
+        marellolayout/js/app/components/form-changes-component: marelloenterpriselayout/js/app/components/form-changes-component
+    marelloenterpriselayout/js/app/components/form-changes-component:
+        marellolayout/js/app/components/form-changes-component: marellolayout/js/app/components/form-changes-component
+
+
