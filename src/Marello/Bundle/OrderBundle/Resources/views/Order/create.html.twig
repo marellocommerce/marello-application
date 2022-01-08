@@ -31,14 +31,13 @@
     {% endif %}
 {% endblock pageHeader %}
 
-{% set pageComponent = {
-    module: 'marellolayout/js/app/components/form-changes-component',
-    options: {
-        route: 'marello_order_form_changes',
-        prefix: 'order',
-        routeParams: {id: entity.id|default(0)}
-    }
-} %}
+{% set options = form.vars.options|default({})|merge({
+    'route': 'marello_order_form_changes',
+    'prefix': 'order',
+    'routeParams': {id: entity.id|default(0)},
+    'organization': form.vars.value and form.vars.value.organization is defined and form.vars.value.organization ? form.vars.value.organization.id : null,
+}) %}
+{% set pageComponent = {module: 'marellolayout/js/app/components/form-changes-component', options: options} %}
 
 {% block content_data %}
     {% set id = 'marello-order-create' %}
