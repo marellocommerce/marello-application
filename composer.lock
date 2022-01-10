@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cf25e229442476b3d0440d440efe5b7a",
+    "content-hash": "a8e656d1113853de9c81e4ad813760a3",
     "packages": [
         {
             "name": "akeneo/batch-bundle",
@@ -806,40 +806,39 @@
         },
         {
             "name": "doctrine/cache",
-            "version": "1.10.2",
+            "version": "1.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/cache.git",
-                "reference": "13e3381b25847283a91948d04640543941309727"
+                "reference": "a9c1b59eba5a08ca2770a76eddb88922f504e8e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/cache/zipball/13e3381b25847283a91948d04640543941309727",
-                "reference": "13e3381b25847283a91948d04640543941309727",
+                "url": "https://api.github.com/repos/doctrine/cache/zipball/a9c1b59eba5a08ca2770a76eddb88922f504e8e0",
+                "reference": "a9c1b59eba5a08ca2770a76eddb88922f504e8e0",
                 "shasum": ""
             },
             "require": {
                 "php": "~7.1 || ^8.0"
             },
             "conflict": {
-                "doctrine/common": ">2.2,<2.4"
+                "doctrine/common": ">2.2,<2.4",
+                "psr/cache": ">=3"
             },
             "require-dev": {
                 "alcaeus/mongo-php-adapter": "^1.1",
-                "doctrine/coding-standard": "^6.0",
+                "cache/integration-tests": "dev-master",
+                "doctrine/coding-standard": "^8.0",
                 "mongodb/mongodb": "^1.1",
-                "phpunit/phpunit": "^7.0",
-                "predis/predis": "~1.0"
+                "phpunit/phpunit": "^7.0 || ^8.0 || ^9.0",
+                "predis/predis": "~1.0",
+                "psr/cache": "^1.0 || ^2.0",
+                "symfony/cache": "^4.4 || ^5.2"
             },
             "suggest": {
                 "alcaeus/mongo-php-adapter": "Required to use legacy MongoDB driver"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.9.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Doctrine\\Common\\Cache\\": "lib/Doctrine/Common/Cache"
@@ -898,7 +897,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-07-07T18:54:01+00:00"
+            "time": "2021-04-13T14:46:17+00:00"
         },
         {
             "name": "doctrine/collections",
@@ -4728,11 +4727,17 @@
         },
         {
             "name": "marellocommerce/marello",
-            "version": "dev-develop",
+            "version": "3.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/marellocommerce/marello.git",
+                "reference": "f688b505382ea5a524914c8f7e700c78bd45e69f"
+            },
             "dist": {
-                "type": "path",
-                "url": "../../package/marello",
-                "reference": "d140bf5c4f9eb71cb83528c449a5ae04ab0117a5"
+                "type": "zip",
+                "url": "https://api.github.com/repos/marellocommerce/marello/zipball/f688b505382ea5a524914c8f7e700c78bd45e69f",
+                "reference": "f688b505382ea5a524914c8f7e700c78bd45e69f",
+                "shasum": ""
             },
             "require": {
                 "mpdf/mpdf": "^7.1",
@@ -4743,7 +4748,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.0-dev"
+                    "dev-master": "3.1-dev"
                 }
             },
             "autoload": {
@@ -4765,51 +4770,11 @@
             ],
             "description": "Marello Unified Commerce Management",
             "homepage": "https://github.com/marellocommerce/marello.git",
-            "transport-options": {
-                "relative": true
-            }
-        },
-        {
-            "name": "marellocommerce/marello-magento2-bundle",
-            "version": "dev-develop",
-            "dist": {
-                "type": "path",
-                "url": "../../package/marello-magento2-bundle",
-                "reference": "556a2326c5b9496da11d6099eeb7e9fd81480155"
+            "support": {
+                "source": "https://github.com/marellocommerce/marello/tree/3.1.0",
+                "issues": "https://github.com/marellocommerce/marello/issues"
             },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "": "src/"
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Marello B.V.",
-                    "homepage": "https://www.marello.com"
-                }
-            ],
-            "description": "Marello package",
-            "keywords": [
-                "Integration",
-                "Magento2",
-                "Marello",
-                "Product"
-            ],
-            "transport-options": {
-                "relative": true
-            }
+            "time": "2021-04-22T06:14:15+00:00"
         },
         {
             "name": "michelf/php-markdown",
@@ -13297,8 +13262,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "marellocommerce/marello": 20,
-        "marellocommerce/marello-magento2-bundle": 20,
         "behat/mink": 20,
         "mybuilder/phpunit-accelerator": 20
     },
