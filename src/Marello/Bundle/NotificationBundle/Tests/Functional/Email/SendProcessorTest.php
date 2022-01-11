@@ -102,8 +102,8 @@ class SendProcessorTest extends WebTestCase
         self::assertMessageSent(Topics::SEND_NOTIFICATION_EMAIL);
         $message = self::getSentMessage(Topics::SEND_NOTIFICATION_EMAIL);
         // check that the subject and body have been rendered
-        self::assertNotContains('{{ entity', $message['subject']);
-        self::assertNotContains('{{ entity', $message['body']);
+        self::assertStringNotContainsString('{{ entity', $message['subject']);
+        self::assertStringNotContainsString('{{ entity', $message['body']);
         self::assertEquals('text/html', $message['contentType']);
         self::assertStringContainsString($order->getOrderNumber(), $message['subject']);
         self::assertStringContainsString($order->getOrderNumber(), $message['body']);
@@ -144,8 +144,8 @@ class SendProcessorTest extends WebTestCase
         self::assertMessageSent(Topics::SEND_NOTIFICATION_EMAIL);
         $message = self::getSentMessage(Topics::SEND_NOTIFICATION_EMAIL);
         // check that the subject and body have been rendered
-        self::assertNotContains('{{ entity', $message['subject']);
-        self::assertNotContains('{{ entity', $message['body']);
+        self::assertStringNotContainsString('{{ entity', $message['subject']);
+        self::assertStringNotContainsString('{{ entity', $message['body']);
         self::assertEquals('text/html', $message['contentType']);
         self::assertStringContainsString($order->getOrderNumber(), $message['subject']);
         self::assertStringContainsString($order->getOrderNumber(), $message['body']);

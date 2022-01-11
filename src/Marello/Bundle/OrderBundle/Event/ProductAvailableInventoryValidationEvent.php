@@ -3,7 +3,7 @@
 namespace Marello\Bundle\OrderBundle\Event;
 
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class ProductAvailableInventoryValidationEvent extends Event
 {

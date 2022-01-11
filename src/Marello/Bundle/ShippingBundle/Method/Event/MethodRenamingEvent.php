@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\ShippingBundle\Method\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class MethodRenamingEvent extends Event
 {

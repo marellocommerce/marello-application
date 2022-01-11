@@ -3,7 +3,7 @@
 namespace Marello\Bundle\TaxBundle\Event;
 
 use Marello\Bundle\TaxBundle\Model\Taxable;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class ResolveTaxEvent extends Event
 {

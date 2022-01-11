@@ -46,12 +46,12 @@ class InvoiceDownloadPdfControllerTest extends WebTestCase
         $expectedFilename = sprintf('invoice_%s.pdf', $invoice->getInvoiceNumber());
 
         $matches = [];
-        preg_match($filenameRegexp, $filePart, $matches);
+        $result = preg_match($filenameRegexp, $filePart, $matches);
+        $this->assertIsInt($result);
         $filename = trim($matches[1], '"\'');
 
         $this->assertEquals('application/pdf', $response->headers->get('Content-Type'));
         $this->assertEquals($expectedDisposition, $disposition);
-        $this->assertRegExp($filenameRegexp, $filePart);
         $this->assertEquals($expectedFilename, $filename);
     }
 
