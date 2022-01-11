@@ -98,6 +98,9 @@ class OrderOnDemandWorkflowTest extends WebTestCase
 
         $this->client->followRedirects(true);
 
+        $this->getContainer()->get('oro_config.manager')->set('marello_inventory.inventory_on_demand_enabled', true);
+        $this->getContainer()->get('oro_config.manager')->set('marello_inventory.inventory_on_demand', true);
+        $this->getContainer()->get('oro_config.manager')->flush();
         $this->client->request($form->getMethod(), $form->getUri(), $submittedData);
         $result  = $this->client->getResponse();
 

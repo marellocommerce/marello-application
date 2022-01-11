@@ -150,7 +150,7 @@ class ShippingMethodsConfigsRuleRepositoryTest extends WebTestCase
             'shipping_rule_with_disabled_type_configs',
         ];
         foreach ($expectedRuleReferences as $expectedRuleReference) {
-            static::assertStringContainsString($this->getReference($expectedRuleReference), $rulesByExistingMethod);
+            static::assertContains($this->getReference($expectedRuleReference), $rulesByExistingMethod);
         }
 
         $rulesByNotExistingMethod = $this->repository->getRulesByMethod('not_existing_method');
@@ -167,7 +167,7 @@ class ShippingMethodsConfigsRuleRepositoryTest extends WebTestCase
         $actualRules = $this->repository->getEnabledRulesByMethod($this->getManualShippingIdentifier());
 
         foreach ($expectedRuleReferences as $expectedRuleReference) {
-            static::assertStringContainsString($this->getReference($expectedRuleReference), $actualRules);
+            static::assertContains($this->getReference($expectedRuleReference), $actualRules);
         }
     }
 

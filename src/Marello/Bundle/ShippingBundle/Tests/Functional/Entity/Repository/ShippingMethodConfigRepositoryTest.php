@@ -66,7 +66,7 @@ class ShippingMethodConfigRepositoryTest extends WebTestCase
 
         $expectedConfig = $this->getReference('shipping_rule.2.method_config.1');
 
-        static::assertStringContainsString($expectedConfig, $actualConfigs);
+        static::assertContains($expectedConfig, $actualConfigs);
     }
 
     public function testFindByTypes()
@@ -84,7 +84,7 @@ class ShippingMethodConfigRepositoryTest extends WebTestCase
         ];
 
         foreach ($expectedConfigs as $expectedConfig) {
-            static::assertStringContainsString($expectedConfig, $actualConfigs);
+            static::assertContains($expectedConfig, $actualConfigs);
         }
     }
 }

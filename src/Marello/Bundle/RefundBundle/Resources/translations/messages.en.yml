@@ -48,6 +48,9 @@ marello:
             refund.label:               Refund
             add_item.label:             Add Item
 
+        refund_subtotal.label:      Refund Subtotal
+        refund_tax_total.label:     Refund Tax Total
+
         datablock:
             refund_totals.label:    Refund Totals
             refund_balance.label:   Refund Balance
