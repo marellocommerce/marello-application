@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\InventoryBundle\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 

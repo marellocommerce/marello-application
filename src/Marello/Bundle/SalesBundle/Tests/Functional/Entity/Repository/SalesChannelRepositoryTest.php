@@ -32,13 +32,13 @@ class SalesChannelRepositoryTest extends WebTestCase
     public function testGetActiveChannels()
     {
         // active and default
-        static::assertStringContainsString(
+        static::assertContains(
             $this->getReference(LoadSalesData::CHANNEL_1_REF),
             $this->repository->getActiveChannels()
         );
 
         // active and not default
-        static::assertStringContainsString(
+        static::assertContains(
             $this->getReference(LoadSalesData::CHANNEL_2_REF),
             $this->repository->getActiveChannels()
         );
@@ -53,7 +53,7 @@ class SalesChannelRepositoryTest extends WebTestCase
     public function testGetDefaultActiveChannels()
     {
         // active and default
-        static::assertStringContainsString(
+        static::assertContains(
             $this->getReference(LoadSalesData::CHANNEL_1_REF),
             $this->repository->getDefaultActiveChannels()
         );

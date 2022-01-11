@@ -114,7 +114,7 @@ class Refund extends ExtendRefund implements
      *
      * @var float
      */
-    protected $refundSubtotal;
+    protected $refundSubtotal = 0.00;
 
     /**
      * @ORM\Column(name="refund_tax_total", type="money")
@@ -131,7 +131,7 @@ class Refund extends ExtendRefund implements
      *
      * @var float
      */
-    protected $refundTaxTotal;
+    protected $refundTaxTotal = 0.00;
 
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\CustomerBundle\Entity\Customer")
