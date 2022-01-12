@@ -42,6 +42,6 @@ class FormChangesExtension extends AbstractTypeExtension
      */
     public static function getExtendedTypes(): iterable
     {
-        return [OrderType::class, PaymentCreateType::class];
+        return [OrderType::class, PaymentCreateType::class, RefundType::class];
     }
 }
