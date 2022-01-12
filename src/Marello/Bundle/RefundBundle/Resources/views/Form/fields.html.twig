@@ -22,12 +22,12 @@
     </td>
     <td class="marello-line-field">
         <div class="fields-row">
-            {{ form.vars.value.orderItem.price|default('') }}
+            {{ form.vars.value.orderItem.price|default(0)|oro_format_currency({'currency':form.vars.value.orderItem.order.currency}) }}
         </div>
     </td>
     <td class="marello-line-field">
         <div class="fields-row">
-            {{ form.vars.value.orderItem.totalPrice|default('') }}
+            {{ form.vars.value.orderItem.totalPrice|default(0)|oro_format_currency({'currency':form.vars.value.orderItem.order.currency}) }}
         </div>
     </td>
     <td class="order-line-item-price marello-line-field">

@@ -8,6 +8,6 @@ marello:
 
                     inventoryitem:
                         desired_should_be_greater_than_purchase_inventory: Desired Inventory needs to be greater than or equal to the Purchase Inventory
-                        order_on_demand_not_allowed_supplier: Order On Demand can't be allowed if Product has no Supplier
-                        order_on_demand_not_allowed_backorder: Order On Demand can't be allowed if Backorder allowed
-                        order_on_demand_not_allowed_preorder: Order On Demand can't be allowed if Pre-Order allowed
+                        order_on_demand_not_allowed_supplier: Order On Demand is not allowed if Product has no Supplier configured
+                        order_on_demand_not_allowed_backorder: Order On Demand is not allowed if Backorder allowed
+                        order_on_demand_not_allowed_preorder: Order On Demand is not allowed if Pre-Order allowed

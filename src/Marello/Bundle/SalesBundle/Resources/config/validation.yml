@@ -19,3 +19,10 @@ Marello\Bundle\SalesBundle\Entity\SalesChannelGroup:
             - NotBlank: ~
         salesChannels:
             - NotBlank: ~
+
+Marello\Bundle\SalesBundle\Entity\SalesChannelType:
+    properties:
+        name:
+            - NotBlank: ~
+        label:
+            - NotBlank: ~
