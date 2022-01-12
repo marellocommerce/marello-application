@@ -213,7 +213,8 @@ class SubscriptionControllerTest extends WebTestCase
                 'shippingAddress' => $this->getAddressFormData($customer->getPrimaryAddress()),
                 'calculateShipping' => true,
                 'shippingMethod' => $shippingMethod->getIdentifier(),
-                'shippingMethodType' => $shippingMethodType->getIdentifier()
+                'shippingMethodType' => $shippingMethodType->getIdentifier(),
+                'cancelBeforeDuration' => 0
             ]
         ];
 

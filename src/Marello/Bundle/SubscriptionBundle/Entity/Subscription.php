@@ -80,7 +80,7 @@ class Subscription extends ExtendSubscription implements
      * @var MarelloAddress
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\MarelloAddress", cascade={"persist"})
-     * @ORM\JoinColumn(name="billing_address_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="billing_address_id", referencedColumnName="id", nullable=false)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -95,7 +95,7 @@ class Subscription extends ExtendSubscription implements
      * @var MarelloAddress
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\MarelloAddress", cascade={"persist"})
-     * @ORM\JoinColumn(name="shipping_address_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="shipping_address_id", referencedColumnName="id", nullable=false)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -290,7 +290,11 @@ class Subscription extends ExtendSubscription implements
     /**
      * @var SubscriptionItem
      *
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\SubscriptionBundle\Entity\SubscriptionItem", inversedBy="subscription", cascade={"persist"})
+     * @ORM\OneToOne(
+     *     targetEntity="Marello\Bundle\SubscriptionBundle\Entity\SubscriptionItem",
+     *     inversedBy="subscription",
+     *     cascade={"persist"}
+     * )
      * @ORM\JoinColumn(name="item_id", referencedColumnName="id")
      * @Oro\ConfigField(
      *      defaultValues={

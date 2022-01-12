@@ -18,7 +18,7 @@ class SubscriptionProductControllerTest extends WebTestCase
     {
         $this->initClient(
             [],
-            array_merge($this->generateBasicAuthHeader(), ['HTTP_X-CSRF-Header' => 1])
+            array_merge(self::generateBasicAuthHeader(), ['HTTP_X-CSRF-Header' => 1])
         );
 
         $this->loadFixtures([
@@ -31,16 +31,18 @@ class SubscriptionProductControllerTest extends WebTestCase
      */
     public function testCreateProduct()
     {
-
         $crawler = $this->client->request('GET', $this->getUrl('marello_product_create'));
+
+        $xPath = "//select[@name='marello_product_step_one[type]']/option[contains(text(),'Simple')]";
         $this->assertEquals(
             1,
-            $crawler->filterXPath("//select[@name='marello_product_step_one[type]']/option[contains(text(),'Simple')]")->count()
+            $crawler->filterXPath($xPath)->count()
         );
 
+        $xPath = "//select[@name='marello_product_step_one[type]']/option[contains(text(),'Subscription')]";
         $this->assertEquals(
             1,
-            $crawler->filterXPath("//select[@name='marello_product_step_one[type]']/option[contains(text(),'Subscription')]")->count()
+            $crawler->filterXPath($xPath)->count()
         );
 
         $formStepOne = $crawler->selectButton('Continue')->form();
@@ -56,8 +58,8 @@ class SubscriptionProductControllerTest extends WebTestCase
         );
 
         $result = $this->client->getResponse();
-        $this->assertHtmlResponseStatusCodeEquals($result, 200);
-        $this->assertContains('Subscription', $crawler->html());
+        self::assertHtmlResponseStatusCodeEquals($result, 200);
+        self::assertContains('Subscription', $crawler->html());
 
         $name    = 'Super duper product';
         $sku     = 'SKU-1234';
@@ -66,8 +68,10 @@ class SubscriptionProductControllerTest extends WebTestCase
         $form['marello_product_form[name]'] = $name;
         $form['marello_product_form[sku]'] = $sku;
         $form['marello_product_form[status]'] = 'enabled';
-        $form['marello_product_form[addSalesChannels]'] = $this->getReference(LoadSalesData::CHANNEL_1_REF)->getId();
-        $form['marello_product_form[taxCode]'] = $this->getReference(LoadTaxCodeData::TAXCODE_3_REF)->getId();
+        $form['marello_product_form[addSalesChannels]'] =
+            $this->getReference(LoadSalesData::CHANNEL_1_REF)->getId();
+        $form['marello_product_form[taxCode]'] =
+            $this->getReference(LoadTaxCodeData::TAXCODE_3_REF)->getId();
         $form['marello_product_form[subscriptionDuration]'] = '12';
         $form['marello_product_form[number_of_deliveries]'] = 1;
         $form['marello_product_form[paymentTerm]'] = '01';
@@ -77,16 +81,16 @@ class SubscriptionProductControllerTest extends WebTestCase
         $crawler = $this->client->submit($form);
         $result  = $this->client->getResponse();
 
-        $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
-        $this->assertContains('Product saved', $crawler->html());
-        $this->assertContains($name, $crawler->html());
-        $this->assertContains('Subscription Duration', $crawler->html());
-        $this->assertContains('12 months', $crawler->html());
-        $this->assertContains('Payment Term', $crawler->html());
-        $this->assertContains('1 month', $crawler->html());
-        $this->assertContains('Number of Deliveries', $crawler->html());
-        $this->assertContains('Special Price Duration', $crawler->html());
-        $this->assertContains('equal to subscription duration', $crawler->html());
+        self::assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
+        self::assertContains('Product saved', $crawler->html());
+        self::assertContains($name, $crawler->html());
+        self::assertContains('Subscription Duration', $crawler->html());
+        self::assertContains('12 months', $crawler->html());
+        self::assertContains('Payment Term', $crawler->html());
+        self::assertContains('1 month', $crawler->html());
+        self::assertContains('Number of Deliveries', $crawler->html());
+        self::assertContains('Special Price Duration', $crawler->html());
+        self::assertContains('equal to subscription duration', $crawler->html());
 
         return $name;
     }
@@ -114,23 +118,25 @@ class SubscriptionProductControllerTest extends WebTestCase
             $this->getUrl('marello_product_update', ['id' => $result['id']])
         );
         $result      = $this->client->getResponse();
-        $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
+        self::assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
 
         $taxCode = $this->getReference(LoadTaxCodeData::TAXCODE_3_REF)->getId();
         /** @var Form $form */
         $form                                              = $crawler->selectButton('Save and Close')->form();
         $name                                              = 'name' . $this->generateRandomString();
         $form['marello_product_form[name]']                = $name;
-        $form['marello_product_form[removeSalesChannels]'] = $this->getReference(LoadSalesData::CHANNEL_1_REF)->getId();
-        $form['marello_product_form[addSalesChannels]']    = $this->getReference(LoadSalesData::CHANNEL_2_REF)->getId();
+        $form['marello_product_form[removeSalesChannels]']
+            = $this->getReference(LoadSalesData::CHANNEL_1_REF)->getId();
+        $form['marello_product_form[addSalesChannels]']
+            = $this->getReference(LoadSalesData::CHANNEL_2_REF)->getId();
         $form['marello_product_form[taxCode]']             = $taxCode;
 
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);
 
         $result = $this->client->getResponse();
-        $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
-        $this->assertContains("Product saved", $crawler->html());
+        self::assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
+        self::assertContains("Product saved", $crawler->html());
 
         $resultData['name'] = $name;
 
@@ -149,9 +155,12 @@ class SubscriptionProductControllerTest extends WebTestCase
         );
 
         $result = $this->client->getResponse();
-        $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
-        $this->assertContains("{$this->getReference(LoadSalesData::CHANNEL_2_REF)->getName()}", $crawler->html());
-        $this->assertContains("{$resultData['name']}", $crawler->html());
+        self::assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
+        self::assertContains(
+            (string) $this->getReference(LoadSalesData::CHANNEL_2_REF)->getName(),
+            $crawler->html()
+        );
+        self::assertContains((string) $resultData['name'], $crawler->html());
     }
 
     /**
@@ -169,7 +178,7 @@ class SubscriptionProductControllerTest extends WebTestCase
         );
 
         $result = $this->client->getResponse();
-        $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
-        $this->assertContains($resultData['name'], $crawler->html());
+        self::assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
+        self::assertContains($resultData['name'], $crawler->html());
     }
 }

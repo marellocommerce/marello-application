@@ -58,6 +58,6 @@ class SubscriptionProductSubscriber implements EventSubscriberInterface
         $options['required'] = true;
         $options['constraints'] = [new NotNull()];
 
-        $form->add($childName,$type,$options);
+        $form->add($childName, $type, $options);
     }
 }

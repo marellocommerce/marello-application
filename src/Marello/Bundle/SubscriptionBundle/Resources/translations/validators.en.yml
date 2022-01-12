@@ -1,0 +1,6 @@
+marello:
+    subscription:
+        address:
+            validation:
+                shipping_not_blank: 'Shipping Address should not be empty'
+                billing_not_blank: 'Billing Address should not be empty'

@@ -33,7 +33,7 @@
                         {{ UI.renderProperty('marello.subscription.duration.label'|trans, entity.duration) }}
                         {{ UI.renderProperty('marello.subscription.termination_date.label'|trans, entity.terminationDate|oro_format_datetime) }}
                         {{ UI.renderProperty('marello.subscription.termination_notice_period.label'|trans, entity.terminationNoticePeriod) }}
-                        {{ UI.renderProperty('marello.subscription.cancel_before_duration.label'|trans, entity.cancelBeforeDuration) }}
+                        {{ UI.renderProperty('marello.subscription.cancel_before_duration.label'|trans, entity.cancelBeforeDuration ? 'marello.core.yes.label'|trans : 'marello.core.no.label'|trans) }}
                         {{ UI.renderProperty('marello.subscription.renewal_type.label'|trans, entity.renewalType) }}
                     </div>
                 </div>

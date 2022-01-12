@@ -61,7 +61,7 @@ class SubscriptionExtension extends \Twig_Extension
     }
     
     /**
-     * {@inheritdoc}
+     * {@deprecated}
      */
     public function getName()
     {
