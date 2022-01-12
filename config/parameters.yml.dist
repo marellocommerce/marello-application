@@ -43,3 +43,7 @@ parameters:
     message_queue_transport: 'dbal'
     message_queue_transport_config: ~
     deployment_type: ~
+
+    # Post processors binary
+    liip_imagine.jpegoptim.binary: null
+    liip_imagine.pngquant.binary: null
