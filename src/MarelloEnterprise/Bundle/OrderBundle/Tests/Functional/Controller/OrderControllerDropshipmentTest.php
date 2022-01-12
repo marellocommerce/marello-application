@@ -36,7 +36,7 @@ class OrderControllerDropshipmentTest extends WebTestCase
      */
     protected $doctrine;
     
-    public function setUp()
+    public function setUp(): void
     {
         $this->initClient(
             [],

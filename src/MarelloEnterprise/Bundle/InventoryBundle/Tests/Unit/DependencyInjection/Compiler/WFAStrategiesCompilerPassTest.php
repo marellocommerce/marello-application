@@ -17,11 +17,11 @@ class WFAStrategiesCompilerPassTest extends TestCase
     protected $compilerPass;
 
     /**
-     * @var ContainerBuilder|\PHPUnit_Framework_MockObject_MockObject
+     * @var ContainerBuilder|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $containerBuilder;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->containerBuilder = $this
             ->getMockBuilder('Symfony\Component\DependencyInjection\ContainerBuilder')
@@ -30,7 +30,7 @@ class WFAStrategiesCompilerPassTest extends TestCase
         $this->compilerPass = new WFAStrategiesCompilerPass();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->compilerPass, $this->containerBuilder);
     }

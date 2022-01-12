@@ -28,12 +28,12 @@ class AddressGeocodingListenerTest extends TestCase
     use EntityTrait;
 
     /**
-     * @var GoogleApiResultsProviderInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var GoogleApiResultsProviderInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $geocodingApiResultsProvider;
 
     /**
-     * @var Session|\PHPUnit_Framework_MockObject_MockObject
+     * @var Session|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $session;
 
@@ -45,7 +45,7 @@ class AddressGeocodingListenerTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->geocodingApiResultsProvider = $this->createMock(GoogleApiResultsProviderInterface::class);
         $this->session = $this->getMockBuilder(Session::class)
@@ -75,7 +75,7 @@ class AddressGeocodingListenerTest extends TestCase
         /** @var MarelloAddress $address */
         $address = $this->getEntity(MarelloAddress::class, ['id' => 1]);
 
-        /** @var LifecycleEventArgs|\PHPUnit_Framework_MockObject_MockObject $args **/
+        /** @var LifecycleEventArgs|\PHPUnit\Framework\MockObject\MockObject $args **/
         $args = $this->getMockBuilder(LifecycleEventArgs::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -93,7 +93,7 @@ class AddressGeocodingListenerTest extends TestCase
             ->method('getEntityChangeSet')
             ->with($address)
             ->willReturn($changeSet);
-        /** @var FeatureChecker|\PHPUnit_Framework_MockObject_MockObject $featureChecker */
+        /** @var FeatureChecker|\PHPUnit\Framework\MockObject\MockObject $featureChecker */
         $featureChecker = $this->getMockBuilder(FeatureChecker::class)->disableOriginalConstructor()->getMock();
         $featureChecker->expects(static::exactly($callTimes))
             ->method('isFeatureEnabled')

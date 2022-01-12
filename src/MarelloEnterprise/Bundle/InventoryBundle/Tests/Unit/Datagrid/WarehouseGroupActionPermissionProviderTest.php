@@ -13,7 +13,7 @@ use MarelloEnterprise\Bundle\InventoryBundle\Datagrid\WarehouseGroupActionPermis
 class WarehouseGroupActionPermissionProviderTest extends TestCase
 {
     /**
-     * @var IsFixedWarehouseGroupChecker|\PHPUnit_Framework_MockObject_MockObject
+     * @var IsFixedWarehouseGroupChecker|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $checker;
 
@@ -22,7 +22,7 @@ class WarehouseGroupActionPermissionProviderTest extends TestCase
      */
     protected $provider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->checker = $this->createMock(IsFixedWarehouseGroupChecker::class);
         $this->provider = new WarehouseGroupActionPermissionProvider($this->checker);
@@ -36,7 +36,7 @@ class WarehouseGroupActionPermissionProviderTest extends TestCase
      */
     public function testGetActionPermissions($system, $fixed, array $result)
     {
-        /** @var ResultRecordInterface|\PHPUnit_Framework_MockObject_MockObject $record **/
+        /** @var ResultRecordInterface|\PHPUnit\Framework\MockObject\MockObject $record **/
         $record = $this->createMock(ResultRecordInterface::class);
         $record
             ->expects(static::once())
