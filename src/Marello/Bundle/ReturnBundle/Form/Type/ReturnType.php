@@ -2,7 +2,9 @@
 
 namespace Marello\Bundle\ReturnBundle\Form\Type;
 
+use Oro\Bundle\FormBundle\Form\Type\OroDateType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -35,6 +37,14 @@ class ReturnType extends AbstractType
     {
         $builder->add('salesChannel', SalesChannelSelectType::class);
         $builder->add('returnItems', ReturnItemCollectionType::class);
+        $builder->add('receivedAt', OroDateType::class,[
+            'label' => 'marello.return.returnentity.received_at.label',
+            'required' => false
+        ])
+            ->add('trackTraceCode', TextType::class,[
+                'label' => 'marello.return.returnentity.track_trace_code.label',
+                'required' => false
+            ]);
 
         $builder->addEventSubscriber($this->returnTypeSubscriber);
     }
@@ -45,7 +55,7 @@ class ReturnType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'  => ReturnEntity::class,
+            'data_class' => ReturnEntity::class,
             'constraints' => [
                 new ReturnEntityConstraint()
             ],

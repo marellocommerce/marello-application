@@ -1,7 +1,7 @@
 Marello\Bundle\SupplierBundle\Entity\Supplier:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
-            fields: name
+            fields: [name, organization]
             message: 'marello.supplier.supplier.messages.error.unique_name'
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
             fields: email
