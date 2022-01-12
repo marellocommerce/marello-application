@@ -5,7 +5,7 @@ workflows:
         exclusive_record_groups: [order_b2c]
         priority: 10
         defaults:
-            active: true
+            active: false
 
         attributes:
             payment_reference:
