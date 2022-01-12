@@ -1,7 +1,0 @@
-services:
-    _defaults:
-        public: true
-
-    Marello\Bridge\MarelloOroCommerceApi\Controller\RestApiController:
-        arguments:
-            - '@marello_commerce_bridge.rest.request_handler'

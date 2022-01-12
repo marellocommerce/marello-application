@@ -1,11 +1,11 @@
 {
     "name": "marellocommerce/marello-orocommerce-api-bridge",
     "description": "Api Bridge for exposing additional resources from OroCommerce to integrate with Marello",
-    "homepage": "https://github.com/marellocommerce/marello-orocommerce-api-bridge.git",
+        "homepage": "https://github.com/marellocommerce/marello-orocommerce-api-bridge.git",
     "license": "OSL-3.0",
     "authors": [
         {
-            "name": "Marello B.V.",
+            "name": "Madia B.V.",
             "homepage": "https://www.marello.com"
         }
     ],
@@ -16,14 +16,14 @@
         }
     ],
     "require": {
-        "php": "~7.3.13",
-        "oro/commerce": "4.1.*"
+        "php": ">=7.0",
+        "oro/commerce": "~3.1.1"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-master": "3.0-dev"
+            "dev-master": "2.1-dev"
         }
     },
     "autoload": {

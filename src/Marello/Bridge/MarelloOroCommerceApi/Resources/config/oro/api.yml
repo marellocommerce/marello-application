@@ -9,9 +9,6 @@ api:
                 delete_list: false
                 update: false
         Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily:
-            fields:
-                entityClass:
-                    exclude: false
             filters:
                 fields:
                     entityClass:
@@ -41,17 +38,9 @@ api:
                 delete_list: false
                 update: false
         Oro\Bundle\TaxBundle\Entity\ProductTaxCode:
-            fields:
-                code:
-                    exclude: false
-            filters:
-                fields:
-                    code:
-                        data_type: string
             actions:
                 create: true
                 delete: true
-                delete_list: true
                 update: true
         Oro\Bundle\TaxBundle\Entity\TaxJurisdiction: ~
         Oro\Bundle\TaxBundle\Entity\ZipCode: ~
