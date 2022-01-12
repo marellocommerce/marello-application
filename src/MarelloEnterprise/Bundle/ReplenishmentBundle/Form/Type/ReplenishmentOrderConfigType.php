@@ -2,7 +2,7 @@
 
 namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Type;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseMultiSelectType;
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderConfig;

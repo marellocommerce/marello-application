@@ -3,17 +3,15 @@
 // @codingStandardsIgnoreStart
 namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Strategy\MinimumQuantity\Calculator\Chain\Element\SingleWarehouse;
 
-// @codingStandardsIgnoreEnd
-
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\Calculator\Chain\Element\SingleWarehouse\
-SingleWHCalculatorChainElement;
-use MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Strategy\MinimumQuantity\Calculator\Chain\Element\
-AbstractWHCalculatorChainElementTest;
+use MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\Calculator\Chain\Element\SingleWarehouse\SingleWHCalculatorChainElement;
+use MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Strategy\MinimumQuantity\Calculator\Chain\Element\AbstractWHCalculatorChainElementTest;
+
+// @codingStandardsIgnoreEnd
 
 class SingleWHCalculatorChainElementTest extends AbstractWHCalculatorChainElementTest
 {
@@ -22,7 +20,7 @@ class SingleWHCalculatorChainElementTest extends AbstractWHCalculatorChainElemen
      */
     protected $singleWHCalculatorChainElement;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->singleWHCalculatorChainElement = new SingleWHCalculatorChainElement();
     }

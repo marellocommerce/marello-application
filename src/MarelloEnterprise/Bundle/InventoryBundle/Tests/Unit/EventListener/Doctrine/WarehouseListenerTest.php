@@ -23,19 +23,19 @@ class WarehouseListenerTest extends TestCase
     private $warehouseListener;
 
     /**
-     * @var TranslatorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var TranslatorInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $translator;
 
     /**
-     * @var Session|\PHPUnit_Framework_MockObject_MockObject
+     * @var Session|\PHPUnit\Framework\MockObject\MockObject
      */
     private $session;
 
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->translator = $this->createMock(TranslatorInterface::class);
         $this->session = $this->createMock(Session::class);
@@ -65,7 +65,7 @@ class WarehouseListenerTest extends TestCase
             ->with(WarehouseGroup::class)
             ->willReturn($repository);
 
-        /** @var LifecycleEventArgs|\PHPUnit_Framework_MockObject_MockObject $args **/
+        /** @var LifecycleEventArgs|\PHPUnit\Framework\MockObject\MockObject $args **/
         $args = $this
             ->getMockBuilder(LifecycleEventArgs::class)
             ->disableOriginalConstructor()
