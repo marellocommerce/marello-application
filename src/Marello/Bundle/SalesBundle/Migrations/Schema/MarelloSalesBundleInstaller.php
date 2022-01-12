@@ -17,7 +17,7 @@ class MarelloSalesBundleInstaller implements Installation
      */
     public function getMigrationVersion()
     {
-        return 'v1_4';
+        return 'v1_4_1';
     }
 
     /**
@@ -81,7 +81,7 @@ class MarelloSalesBundleInstaller implements Installation
         $table->addColumn('owner_id', 'integer', []);
         $table->addColumn('name', 'string', ['length' => 255]);
         $table->addColumn('active', 'boolean', []);
-        $table->addColumn('channel_type', 'string', ['length' => 255]);
+        $table->addColumn('channel_type', 'string', ['length' => 64,  'notnull' => true]);
         $table->addColumn('created_at', 'datetime', []);
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->addColumn('is_default', 'boolean', []);
