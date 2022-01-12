@@ -23,7 +23,7 @@
         "oro/platform": "4.1.*",
         "oro/platform-serialised-fields": "4.1.*",
         "oro/calendar-bundle": "4.1.*",
-        "mpdf/mpdf": "^7.1"
+        "mpdf/mpdf": "^8.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

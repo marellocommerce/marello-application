@@ -7,6 +7,7 @@ use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
 use Marello\Bundle\PaymentBundle\Entity\PaymentMethodsConfigsRule;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class PaymentMethodsConfigsRuleHandler
@@ -15,8 +16,8 @@ class PaymentMethodsConfigsRuleHandler
 
     const UPDATE_FLAG = 'update_methods_flag';
 
-    /** @var RequestStack */
-    protected $requestStack;
+    /** @var Request */
+    protected $request;
 
     /** @var EntityManager */
     protected $em;
@@ -33,7 +34,7 @@ class PaymentMethodsConfigsRuleHandler
      */
     public function __construct(RequestStack $requestStack, EntityManager $em)
     {
-        $this->requestStack = $requestStack;
+        $this->request = $requestStack->getCurrentRequest();
         $this->em = $em;
     }
 
@@ -46,10 +47,9 @@ class PaymentMethodsConfigsRuleHandler
     {
         $form->setData($entity);
 
-        $request = $this->requestStack->getCurrentRequest();
-        if (in_array($request->getMethod(), ['POST', 'PUT'], true)) {
-            $this->submitPostPutRequest($form, $request);
-            if (!$request->get(self::UPDATE_FLAG, false) && $form->isValid()) {
+        if (in_array($this->request->getMethod(), ['POST', 'PUT'], true)) {
+            $this->submitPostPutRequest($form, $this->request);
+            if (!$this->request->get(self::UPDATE_FLAG, false) && $form->isValid()) {
                 $this->em->persist($entity);
                 $this->em->flush();
 

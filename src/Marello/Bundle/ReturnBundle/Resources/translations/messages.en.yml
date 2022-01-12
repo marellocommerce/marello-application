@@ -7,6 +7,7 @@ marello:
             entity_grid_all_view_label: All %entity_plural_label%
             return_number.label:      Return Number
             return_reference.label:   Return Reference
+            return_information.label: Return Information
             order.label:              Order
             return_items.label:       Returned items
             workflow_item.label:      Workflow Item
@@ -16,6 +17,9 @@ marello:
             organization.label:       Organization
             sales_channel.label:      Sales Channel
             shipment.label:           Shipment
+            customer_info.label:      Customer name
+            received_at.label:        Received At
+            track_trace_code.label:    Track&Trace code
             messages:
                 success:
                     returnentity:

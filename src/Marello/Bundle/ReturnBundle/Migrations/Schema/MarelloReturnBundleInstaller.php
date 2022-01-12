@@ -31,7 +31,7 @@ class MarelloReturnBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_4';
+        return 'v1_5';
     }
 
     /**
@@ -116,6 +116,8 @@ class MarelloReturnBundleInstaller implements
         $table->addColumn('localization_id', 'integer', ['notnull' => false]);
         $table->addColumn('shipment_id', 'integer', ['notnull' => false]);
         $table->addColumn('return_reference', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('received_at', 'datetime', []);
+        $table->addColumn('track_trace_code', 'string', ['notnull' => false, 'length' => 255]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['shipment_id'], 'UIDX_3C549D8D32C8A3DE5', []);
     }

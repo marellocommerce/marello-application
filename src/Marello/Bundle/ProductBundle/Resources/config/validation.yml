@@ -7,6 +7,8 @@ Marello\Bundle\ProductBundle\Entity\Product:
     properties:
         names:
             - Oro\Bundle\PlatformBundle\Validator\Constraints\ValidLoadedItems: ~
+        status:
+            - NotBlank: { message: 'marello.product.messages.error.status' }
         sku:
             - NotBlank: ~
         prices:
