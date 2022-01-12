@@ -13,7 +13,7 @@ use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 
 class SupplierControllerTest extends WebTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->initClient(
             [],
@@ -30,7 +30,7 @@ class SupplierControllerTest extends WebTestCase
     {
         $crawler = $this->client->request('GET', $this->getUrl('marello_supplier_supplier_index'));
         $result = $this->client->getResponse();
-        $this->assertContains('supplier-grid', $crawler->html());
+        $this->assertStringContainsString('supplier-grid', $crawler->html());
         $this->assertResponseStatusCodeEquals($result, Response::HTTP_OK);
     }
 
@@ -57,8 +57,8 @@ class SupplierControllerTest extends WebTestCase
         $result  = $this->client->getResponse();
 
         $this->assertResponseStatusCodeEquals($result, Response::HTTP_OK);
-        $this->assertContains('Supplier saved', $crawler->html());
-        $this->assertContains($name, $crawler->html());
+        $this->assertStringContainsString('Supplier saved', $crawler->html());
+        $this->assertStringContainsString($name, $crawler->html());
 
         $response = $this->client->requestGrid(
             'marello-supplier-grid',
@@ -85,7 +85,7 @@ class SupplierControllerTest extends WebTestCase
         );
 
         $this->assertResponseStatusCodeEquals($this->client->getResponse(), Response::HTTP_OK);
-        $this->assertContains($supplier->getName(), $crawler->html());
+        $this->assertStringContainsString($supplier->getName(), $crawler->html());
     }
 
     /**
@@ -101,7 +101,7 @@ class SupplierControllerTest extends WebTestCase
         );
 
         $this->assertResponseStatusCodeEquals($this->client->getResponse(), Response::HTTP_OK);
-        $this->assertContains('supplier-products-grid', $crawler->html());
+        $this->assertStringContainsString('supplier-products-grid', $crawler->html());
     }
 
     public function testLinkedProductToSupplier()
@@ -120,8 +120,8 @@ class SupplierControllerTest extends WebTestCase
         $result = $this->getJsonResponseContent($response, Response::HTTP_OK);
         $result = reset($result['data']);
 
-        $this->assertContains($product->getDenormalizedDefaultName(), $result['name']);
-        $this->assertContains($product->getSku(), $result['sku']);
+        $this->assertStringContainsString($product->getDenormalizedDefaultName(), $result['name']);
+        $this->assertStringContainsString($product->getSku(), $result['sku']);
     }
 
     /**
@@ -157,10 +157,10 @@ class SupplierControllerTest extends WebTestCase
 
         $result = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
-        $this->assertContains("Supplier saved", $crawler->html());
-        $this->assertContains($name, $crawler->html());
-        $this->assertContains($newStreet, $crawler->html());
-        $this->assertContains("{$priority}", $crawler->html());
+        $this->assertStringContainsString("Supplier saved", $crawler->html());
+        $this->assertStringContainsString($name, $crawler->html());
+        $this->assertStringContainsString($newStreet, $crawler->html());
+        $this->assertStringContainsString("{$priority}", $crawler->html());
     }
 
     public function testGetAddress()
@@ -177,8 +177,8 @@ class SupplierControllerTest extends WebTestCase
         );
         $response = $this->client->getResponse();
         $this->assertResponseStatusCodeEquals($response, Response::HTTP_OK);
-        $this->assertContains($address->getStreet(), $response->getContent());
-        $this->assertContains($address->getCountry()->getName(), $response->getContent());
+        $this->assertStringContainsString($address->getStreet(), $response->getContent());
+        $this->assertStringContainsString($address->getCountry()->getName(), $response->getContent());
     }
 
     public function testUpdateAddress()
@@ -212,9 +212,9 @@ class SupplierControllerTest extends WebTestCase
         $result = $this->client->getResponse();
         $this->assertResponseStatusCodeEquals($result, Response::HTTP_OK);
 
-        $this->assertContains($newStreet, $crawler->html());
-        $this->assertContains($countryName, $crawler->html());
-        $this->assertContains($postalCode, $crawler->html());
+        $this->assertStringContainsString($newStreet, $crawler->html());
+        $this->assertStringContainsString($countryName, $crawler->html());
+        $this->assertStringContainsString($postalCode, $crawler->html());
     }
 
     public function testGetSupplierDefaultDataById()

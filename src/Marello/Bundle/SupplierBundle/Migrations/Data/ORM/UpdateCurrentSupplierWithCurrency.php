@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\SupplierBundle\Migrations\Data\ORM;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 

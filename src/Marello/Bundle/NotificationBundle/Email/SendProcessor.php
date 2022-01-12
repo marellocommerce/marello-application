@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\NotificationBundle\Email;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\LocaleBundle\Manager\EmailTemplateManager;
 use Marello\Bundle\NotificationBundle\Entity\Notification;
 use Marello\Bundle\NotificationBundle\Exception\MarelloNotificationException;

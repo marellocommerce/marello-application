@@ -20,17 +20,17 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class CreatePackingSlipEventListenerTest extends TestCase
 {
     /**
-     * @var MapperInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var MapperInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $mapper;
 
     /**
-     * @var EntityManagerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $entityManager;
     
     /**
-     * @var EventDispatcherInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var EventDispatcherInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $eventDispatcher;
 
@@ -39,10 +39,10 @@ class CreatePackingSlipEventListenerTest extends TestCase
      */
     protected $createPackingSlipEventListener;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->mapper = $this->createMock(MapperInterface::class);
-        /** @var DoctrineHelper|\PHPUnit_Framework_MockObject_MockObject $doctrineHelper */
+        /** @var DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject $doctrineHelper */
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
         $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $doctrineHelper = $this->getMockBuilder(DoctrineHelper::class)
@@ -113,7 +113,7 @@ class CreatePackingSlipEventListenerTest extends TestCase
 
     /**
      * @param bool $hasOrder
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit\Framework\MockObject\MockObject
      */
     protected function prepareEvent($hasOrder = true)
     {

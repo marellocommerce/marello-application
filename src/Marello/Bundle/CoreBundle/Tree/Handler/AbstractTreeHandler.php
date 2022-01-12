@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\CoreBundle\Tree\Handler;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Oro\Bundle\EntityBundle\ORM\Registry;
 use Doctrine\ORM\EntityManager;
 use Oro\Bundle\UIBundle\Model\TreeItem;
 use Marello\Bundle\CoreBundle\Tree\Entity\Repository\NestedTreeRepository;
@@ -14,7 +14,7 @@ abstract class AbstractTreeHandler
     const ERROR_STATUS = false;
 
     /**
-     * @var ManagerRegistry
+     * @var Registry
      */
     protected $managerRegistry;
 
@@ -25,9 +25,9 @@ abstract class AbstractTreeHandler
 
     /**
      * @param string $entityClass
-     * @param ManagerRegistry $managerRegistry
+     * @param Registry $managerRegistry
      */
-    public function __construct($entityClass, ManagerRegistry $managerRegistry)
+    public function __construct($entityClass, Registry $managerRegistry)
     {
         $this->entityClass = $entityClass;
         $this->managerRegistry = $managerRegistry;

@@ -36,7 +36,7 @@ class RulesPaymentMethodDisableHandlerDecoratorTest extends \PHPUnit\Framework\T
     /**
      * {@inheritDoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->handler = $this->createMock(PaymentMethodDisableHandlerInterface::class);
         $this->repository = $this->createMock(PaymentMethodsConfigsRuleRepository::class);

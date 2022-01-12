@@ -16,7 +16,7 @@ class RuleActionsVisibilityProviderTest extends TestCase
      */
     protected $provider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->provider = new RuleActionsVisibilityProvider();
     }

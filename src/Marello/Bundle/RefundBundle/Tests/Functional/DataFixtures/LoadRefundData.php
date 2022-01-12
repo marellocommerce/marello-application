@@ -4,18 +4,27 @@ namespace Marello\Bundle\RefundBundle\Tests\Functional\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxCodeData;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
+use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
 use Marello\Bundle\RefundBundle\Entity\Refund;
 use Marello\Bundle\RefundBundle\Entity\RefundItem;
 
-class LoadRefundData extends AbstractFixture implements DependentFixtureInterface
+class LoadRefundData extends AbstractFixture implements DependentFixtureInterface, ContainerAwareInterface
 {
     /**
      * @var ObjectManager
      */
     protected $manager;
+
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
 
     /**
      * {@inheritdoc}
@@ -55,7 +64,8 @@ class LoadRefundData extends AbstractFixture implements DependentFixtureInterfac
                             ->setQuantity($item->getQuantity())
                             ->setRefundAmount($item->getRowTotalInclTax())
                             ->setBaseAmount($item->getPrice())
-                            ->setName($item->getProductName());
+                            ->setName($item->getProductName())
+                            ->setTaxCode($this->getReference(LoadTaxCodeData::TAXCODE_2_REF));
                     }
                 );
 
@@ -64,19 +74,55 @@ class LoadRefundData extends AbstractFixture implements DependentFixtureInterfac
                     ->setName('Shipping Costs')
                     ->setBaseAmount(10)
                     ->setRefundAmount(10)
+                    ->setTaxCode($this->getReference(LoadTaxCodeData::TAXCODE_2_REF))
             );
-
             $refundItems->map(
                 function (RefundItem $item) use ($refund) {
                     $refund->addItem($item);
-                    $refund->setRefundAmount(($refund->getRefundAmount() ?: 0) + $item->getRefundAmount());
                 }
             );
+
+            $refundGrandTotal = 0.00;
+            $refundSubTotal = 0.00;
+            $refundTaxTotal = 0.00;
+            $refund->getItems()->map(function (RefundItem $item) use (
+                &$refundSubTotal,
+                &$refundTaxTotal,
+                &$refundGrandTotal,
+                $refund
+            ) {
+                if ($item->getTaxCode()) {
+                    $taxTotals = $this->container->get('marello_refund.calculator.refund_balance')
+                        ->calculateIndividualTaxItem(
+                            [
+                                'quantity' => $item->getQuantity(),
+                                'taxCode' => $item->getTaxCode()->getId(),
+                                'refundAmount' => $item->getRefundAmount(),
+                            ],
+                            $refund
+                        );
+                    $refundSubTotal += (double)$taxTotals->getExcludingTax();
+                    $refundTaxTotal += (double)$taxTotals->getTaxAmount();
+                    $refundGrandTotal += (double)$taxTotals->getIncludingTax();
+                }
+            });
+
+            $refund->setRefundSubtotal($refundSubTotal);
+            $refund->setRefundTaxTotal($refundTaxTotal);
+            $refund->setRefundAmount($refundGrandTotal);
 
             $manager->persist($refund);
             $this->setReference(sprintf('marello_refund_%s', $refKey), $refund);
         }
 
         $manager->flush();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
     }
 }

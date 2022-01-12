@@ -16,7 +16,7 @@ class OrderAjaxControllerTest extends WebTestCase
     const ITEMS_FIELD = 'items';
     const IDENTIFIER_PREFIX = 'product-id-';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->initClient([], $this->generateBasicAuthHeader());
         $this->loadFixtures([

@@ -12,7 +12,7 @@ class CustomerJsonApiTest extends RestJsonApiTestCase
 {
     const TESTING_ENTITY = 'marellocustomers';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->loadFixtures([

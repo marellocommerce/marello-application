@@ -15,7 +15,7 @@ class ProductAttributeFamilyControllerTest extends WebTestCase
 {
     const PRODUCT_ENTITY_ALIAS = 'marelloproduct';
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->initClient(
             [],
@@ -60,9 +60,9 @@ class ProductAttributeFamilyControllerTest extends WebTestCase
         $result  = $this->client->getResponse();
 
         $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
-        $this->assertContains('Product Family was successfully saved', $crawler->html());
-        $this->assertContains($attributeFamilyCode, $crawler->html());
-        $this->assertContains($attributeFamilyLabel, $crawler->html());
+        $this->assertStringContainsString('Product Family was successfully saved', $crawler->html());
+        $this->assertStringContainsString($attributeFamilyCode, $crawler->html());
+        $this->assertStringContainsString($attributeFamilyLabel, $crawler->html());
 
         return $attributeFamilyCode;
     }
@@ -98,7 +98,7 @@ class ProductAttributeFamilyControllerTest extends WebTestCase
         $crawler = $this->client->submit($form);
         $result = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
-        $this->assertContains('Successfully updated', $crawler->html());
-        $this->assertContains('newAttributeCode', $crawler->html());
+        $this->assertStringContainsString('Successfully updated', $crawler->html());
+        $this->assertStringContainsString('newAttributeCode', $crawler->html());
     }
 }

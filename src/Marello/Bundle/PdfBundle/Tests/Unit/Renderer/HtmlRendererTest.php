@@ -12,9 +12,9 @@ class HtmlRendererTest extends TestCase
     /** @var HtmlRenderer */
     protected $renderer;
 
-    public function setUp()
+    public function setUp(): void
     {
-        /** @var PdfWriterFactory|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var PdfWriterFactory|\PHPUnit\Framework\MockObject\MockObject */
         $factory = $this->createMock(PdfWriterFactory::class);
         $factory->expects($this->once())
             ->method('create')
@@ -24,7 +24,7 @@ class HtmlRendererTest extends TestCase
         $this->renderer = new HtmlRenderer($factory);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $files = ['/tmp/pdf_single.pdf', '/tmp/pdf_multiple.pdf'];
 

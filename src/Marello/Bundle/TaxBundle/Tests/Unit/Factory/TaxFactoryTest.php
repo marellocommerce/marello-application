@@ -16,19 +16,19 @@ class TaxFactoryTest extends TestCase
      */
     protected $factory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->factory = new TaxFactory();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->factory);
     }
 
     public function testAddMapperAndCreate()
     {
-        /** @var TaxMapperInterface|\PHPUnit_Framework_MockObject_MockObject $mapper */
+        /** @var TaxMapperInterface|\PHPUnit\Framework\MockObject\MockObject $mapper */
         $mapper = $this->createMock(TaxMapperInterface::class);
         $mapper
             ->expects($this->once())
@@ -58,12 +58,10 @@ class TaxFactoryTest extends TestCase
         $this->assertNotSame($taxable, $anotherTaxable);
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Can't find Tax Mapper for object "stdClass"
-     */
     public function testCreateThrowExceptionWithoutMapper()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Can\'t find Tax Mapper for object "stdClass"');
         $this->factory->create(new \stdClass());
     }
 
@@ -71,7 +69,7 @@ class TaxFactoryTest extends TestCase
     {
         $this->assertFalse($this->factory->supports(new \stdClass()));
 
-        /** @var TaxMapperInterface|\PHPUnit_Framework_MockObject_MockObject $mapper */
+        /** @var TaxMapperInterface|\PHPUnit\Framework\MockObject\MockObject $mapper */
         $mapper = $this->createMock(TaxMapperInterface::class);
         $mapper
             ->expects($this->once())

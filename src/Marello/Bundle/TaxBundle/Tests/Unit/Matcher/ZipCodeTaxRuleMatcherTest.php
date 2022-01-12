@@ -18,7 +18,7 @@ class ZipCodeTaxRuleMatcherTest extends AbstractTaxRuleMatcherTest
      */
     protected $matcher;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

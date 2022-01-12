@@ -3,7 +3,7 @@
 namespace Marello\Bundle\ShippingBundle\Workflow;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\ShippingBundle\Context\ShippingContextInterface;
 use Marello\Bundle\ShippingBundle\Entity\Shipment;
 use Marello\Bundle\ShippingBundle\Method\ShippingMethodProviderInterface;

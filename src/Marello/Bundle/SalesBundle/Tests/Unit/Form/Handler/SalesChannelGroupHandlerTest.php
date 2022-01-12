@@ -3,7 +3,7 @@
 namespace Marello\Bundle\SalesBundle\Tests\Unit\Form\Handler;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormInterface;
@@ -20,12 +20,12 @@ use Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelGroupRepository;
 class SalesChannelGroupHandlerTest extends TestCase
 {
     /**
-     * @var FormInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var FormInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $form;
 
     /**
-     * @var ObjectManager|\PHPUnit_Framework_MockObject_MockObject
+     * @var ObjectManager|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $manager;
 
@@ -37,7 +37,7 @@ class SalesChannelGroupHandlerTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->form = $this->createMock(FormInterface::class);
         $this->manager = $this->createMock(ObjectManager::class);
@@ -46,9 +46,9 @@ class SalesChannelGroupHandlerTest extends TestCase
 
     public function testProcess()
     {
-        /** @var SalesChannelGroup|\PHPUnit_Framework_MockObject_MockObject $updatedGroup */
+        /** @var SalesChannelGroup|\PHPUnit\Framework\MockObject\MockObject $updatedGroup */
         $updatedGroup = $this->createMock(SalesChannelGroup::class);
-        /** @var SalesChannelGroup|\PHPUnit_Framework_MockObject_MockObject $systemGroup */
+        /** @var SalesChannelGroup|\PHPUnit\Framework\MockObject\MockObject $systemGroup */
         $systemGroup = $this->createMock(SalesChannelGroup::class);
 
         $channel1 = $this->mockSalesChannel($systemGroup);
@@ -59,13 +59,9 @@ class SalesChannelGroupHandlerTest extends TestCase
         $channelsAfter = [$channel2, $channel3];
 
         $updatedGroup
-            ->expects(static::at(0))
+            ->expects(static::exactly(2))
             ->method('getSalesChannels')
-            ->willReturn(new ArrayCollection($channelsBefore));
-        $updatedGroup
-            ->expects(static::at(1))
-            ->method('getSalesChannels')
-            ->willReturn(new ArrayCollection($channelsAfter));
+            ->willReturnOnConsecutiveCalls(new ArrayCollection($channelsBefore), new ArrayCollection($channelsAfter));
 
         $repository = $this->createMock(SalesChannelGroupRepository::class);
         $repository
@@ -92,7 +88,7 @@ class SalesChannelGroupHandlerTest extends TestCase
             ->expects(static::once())
             ->method('flush');
 
-        /** @var Request|\PHPUnit_Framework_MockObject_MockObject $request */
+        /** @var Request|\PHPUnit\Framework\MockObject\MockObject $request */
         $request = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
             ->getMock();

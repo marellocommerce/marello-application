@@ -19,36 +19,36 @@ use Marello\Bundle\UPSBundle\Method\Identifier\UPSMethodTypeIdentifierGeneratorI
 class UPSShippingMethodTypeFactoryTest extends TestCase
 {
     /**
-     * @var UPSMethodTypeIdentifierGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var UPSMethodTypeIdentifierGeneratorInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $typeIdentifierGenerator;
 
     /**
-     * @var IntegrationIdentifierGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var IntegrationIdentifierGeneratorInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $methodIdentifierGenerator;
 
     /**
-     * @var UPSTransport|\PHPUnit_Framework_MockObject_MockObject
+     * @var UPSTransport|\PHPUnit\Framework\MockObject\MockObject
      */
     private $transport;
 
     /**
-     * @var PriceRequestFactory|\PHPUnit_Framework_MockObject_MockObject
+     * @var PriceRequestFactory|\PHPUnit\Framework\MockObject\MockObject
      */
     private $priceRequestFactory;
 
     /**
-     * @var ShippingPriceCache|\PHPUnit_Framework_MockObject_MockObject
+     * @var ShippingPriceCache|\PHPUnit\Framework\MockObject\MockObject
      */
     private $shippingPriceCache;
 
     /**
-     * @var UPSShippingMethodTypeFactory|\PHPUnit_Framework_MockObject_MockObject
+     * @var UPSShippingMethodTypeFactory|\PHPUnit\Framework\MockObject\MockObject
      */
     private $factory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->typeIdentifierGenerator = $this->createMock(UPSMethodTypeIdentifierGeneratorInterface::class);
         $this->methodIdentifierGenerator = $this->createMock(IntegrationIdentifierGeneratorInterface::class);
@@ -70,16 +70,16 @@ class UPSShippingMethodTypeFactoryTest extends TestCase
         $identifier = 'ups_1_59';
         $methodId = 'ups_1';
 
-        /** @var UPSSettings|\PHPUnit_Framework_MockObject_MockObject $settings */
+        /** @var UPSSettings|\PHPUnit\Framework\MockObject\MockObject $settings */
         $settings = $this->createMock(UPSSettings::class);
 
-        /** @var Channel|\PHPUnit_Framework_MockObject_MockObject $channel */
+        /** @var Channel|\PHPUnit\Framework\MockObject\MockObject $channel */
         $channel = $this->createMock(Channel::class);
         $channel->expects($this->any())
             ->method('getTransport')
             ->willReturn($settings);
 
-        /** @var ShippingService|\PHPUnit_Framework_MockObject_MockObject $service */
+        /** @var ShippingService|\PHPUnit\Framework\MockObject\MockObject $service */
         $service = $this->createMock(ShippingService::class);
 
         $service->expects($this->once())

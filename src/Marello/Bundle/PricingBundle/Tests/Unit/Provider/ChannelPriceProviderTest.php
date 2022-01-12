@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\PricingBundle\Tests\Unit\Provider;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityRepository;
 use Marello\Bundle\LayoutBundle\Context\FormChangeContext;
 use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
@@ -16,6 +15,7 @@ use Marello\Bundle\PricingBundle\Provider\ChannelPriceProvider;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Oro\Bundle\EntityBundle\ORM\Registry;
 use Oro\Component\Testing\Unit\EntityTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormInterface;
@@ -25,7 +25,7 @@ class ChannelPriceProviderTest extends TestCase
     use EntityTrait;
 
     /**
-     * @var ManagerRegistry|\PHPUnit_Framework_MockObject_MockObject
+     * @var Registry|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $registry;
 
@@ -39,9 +39,9 @@ class ChannelPriceProviderTest extends TestCase
      */
     protected $channelPriceProvider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->registry = $this->createMock(ManagerRegistry::class);
+        $this->registry = $this->createMock(Registry::class);
         $this->channelPriceProvider = new ChannelPriceProvider($this->registry);
     }
 
@@ -64,7 +64,7 @@ class ChannelPriceProviderTest extends TestCase
         /** @var Product $product */
         $product = $this->getEntity(Product::class, ['id' => 1]);
 
-        /** @var FormInterface|\PHPUnit_Framework_MockObject_MockObject $form **/
+        /** @var FormInterface|\PHPUnit\Framework\MockObject\MockObject $form **/
         $form = $this->createMock(FormInterface::class);
         $form->expects(static::once())
             ->method('getData')
@@ -96,37 +96,22 @@ class ChannelPriceProviderTest extends TestCase
             ->willReturn($assembledChannelPriceList);
 
         $this->registry
-            ->expects(static::at(0))
+            ->expects(static::exactly(3))
             ->method('getManagerForClass')
-            ->with(Product::class)
             ->willReturnSelf();
         $this->registry
-            ->expects(static::at(1))
+            ->expects(static::exactly(3))
             ->method('getRepository')
-            ->with(Product::class)
-            ->willReturn($productRepository);
-
-        $this->registry
-            ->expects(static::at(2))
-            ->method('getManagerForClass')
-            ->with(AssembledPriceList::class)
-            ->willReturnSelf();
-        $this->registry
-            ->expects(static::at(3))
-            ->method('getRepository')
-            ->with(AssembledPriceList::class)
-            ->willReturn($productPriceRepository);
-
-        $this->registry
-            ->expects(static::at(4))
-            ->method('getManagerForClass')
-            ->with(AssembledChannelPriceList::class)
-            ->willReturnSelf();
-        $this->registry
-            ->expects(static::at(5))
-            ->method('getRepository')
-            ->with(AssembledChannelPriceList::class)
-            ->willReturn($productChannelPriceRepository);
+            ->withConsecutive(
+                [Product::class],
+                [AssembledPriceList::class],
+                [AssembledChannelPriceList::class]
+            )
+            ->willReturnOnConsecutiveCalls(
+                $productRepository,
+                $productPriceRepository,
+                $productChannelPriceRepository
+            );
 
         $expectedData = [
             'price' => [
@@ -317,12 +302,12 @@ class ChannelPriceProviderTest extends TestCase
             ->willReturn($assembledPriceList);
 
         $this->registry
-            ->expects(static::at(0))
+            ->expects(static::once())
             ->method('getManagerForClass')
             ->with(AssembledPriceList::class)
             ->willReturnSelf();
         $this->registry
-            ->expects(static::at(1))
+            ->expects(static::once())
             ->method('getRepository')
             ->with(AssembledPriceList::class)
             ->willReturn($productPriceRepository);

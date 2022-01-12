@@ -19,17 +19,17 @@ use Marello\Bundle\PricingBundle\Subtotal\Provider\SubtotalProviderInterface;
 class CompositeSubtotalProviderTest extends TestCase
 {
     /**
-     * @var TranslatorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var TranslatorInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $translator;
 
     /**
-     * @var RoundingServiceInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var RoundingServiceInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $rounding;
 
     /**
-     * @var DefaultCurrencyProviderInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var DefaultCurrencyProviderInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $defaultCurrencyProvider;
 
@@ -38,7 +38,7 @@ class CompositeSubtotalProviderTest extends TestCase
      */
     protected $compositeSubtotalProvider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->translator = $this->createMock(TranslatorInterface::class);
         $this->rounding = $this->createMock(RoundingServiceInterface::class);
@@ -182,11 +182,11 @@ class CompositeSubtotalProviderTest extends TestCase
      * @param string $name
      * @param array $subtotalData
      * @param boolean $isSupported
-     * @return SubtotalProviderInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @return SubtotalProviderInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected function createProviderMock($name, array $subtotalData, $isSupported)
     {
-        /** @var SubtotalProviderInterface|\PHPUnit_Framework_MockObject_MockObject $provider **/
+        /** @var SubtotalProviderInterface|\PHPUnit\Framework\MockObject\MockObject $provider **/
         $provider = $this->createMock(SubtotalProviderInterface::class);
         $provider->expects(static::any())
             ->method('getName')

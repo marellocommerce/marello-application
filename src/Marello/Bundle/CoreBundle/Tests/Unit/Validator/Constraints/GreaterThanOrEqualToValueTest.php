@@ -16,7 +16,7 @@ class GreaterThanOrEqualToValueTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->constraint = new GreaterThanOrEqualToValue(['fields' => ['somefield1', 'somefield2']]);
     }
