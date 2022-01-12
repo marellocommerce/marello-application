@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7af4524f7847d7af9fd578b2300ef3c7",
+    "content-hash": "a8e656d1113853de9c81e4ad813760a3",
     "packages": [
         {
             "name": "akeneo/batch-bundle",
@@ -4777,11 +4777,17 @@
         },
         {
             "name": "marellocommerce/marello",
-            "version": "dev-master",
+            "version": "3.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/marellocommerce/marello.git",
+                "reference": "9d91c8c69ac31b1f1a9db575af4810ffa667cf3a"
+            },
             "dist": {
-                "type": "path",
-                "url": "../../package/marello",
-                "reference": "061ddbab88a8e558a8827a6e102a0a35d84b7827"
+                "type": "zip",
+                "url": "https://api.github.com/repos/marellocommerce/marello/zipball/9d91c8c69ac31b1f1a9db575af4810ffa667cf3a",
+                "reference": "9d91c8c69ac31b1f1a9db575af4810ffa667cf3a",
+                "shasum": ""
             },
             "require": {
                 "mpdf/mpdf": "^8.0",
@@ -4814,9 +4820,11 @@
             ],
             "description": "Marello Unified Commerce Management",
             "homepage": "https://github.com/marellocommerce/marello.git",
-            "transport-options": {
-                "relative": true
-            }
+            "support": {
+                "source": "https://github.com/marellocommerce/marello/tree/3.1.1",
+                "issues": "https://github.com/marellocommerce/marello/issues"
+            },
+            "time": "2022-01-08T11:16:20+00:00"
         },
         {
             "name": "michelf/php-markdown",
@@ -13450,7 +13458,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "marellocommerce/marello": 20,
         "behat/mink": 20,
         "mybuilder/phpunit-accelerator": 20
     },
