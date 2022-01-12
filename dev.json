@@ -29,8 +29,9 @@
         "oro/platform-serialised-fields": "4.2.*",
         "oro/calendar-bundle": "4.2.*",
         "oro/health-check-bundle": "4.2.*",
-        "marellocommerce/marello": "3.1.x-dev",
-        "marellocommerce/marello-enterprise": "3.1.x-dev"
+        "oro/oauth2-server": "4.2.*",
+        "marellocommerce/marello": "3.2.x-dev",
+        "marellocommerce/marello-enterprise": "3.2.x-dev"
     },
     "require-dev": {
         "behat/behat": "~3.8.1",
@@ -63,9 +64,6 @@
         "bin-dir": "bin",
         "fxp-asset": {
             "enabled": false
-        },
-        "allow-plugins": {
-            "composer/package-versions-deprecated": false
         }
     },
     "scripts": {
@@ -102,28 +100,18 @@
         ],
         "post-install-cmd": [
             "@build-parameters",
-            "@build-bootstrap",
-            "@install-requirements-file",
             "@set-permissions",
             "@install-assets",
             "@set-assets-version"
         ],
         "post-update-cmd": [
             "@build-parameters",
-            "@build-bootstrap",
-            "@install-requirements-file",
             "@set-permissions",
-            "@install-assets",
+            "@update-assets",
             "@set-assets-version"
         ],
         "build-parameters": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
-        ],
-        "build-bootstrap": [
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap"
-        ],
-        "install-requirements-file": [
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile"
         ],
         "set-permissions": [
             "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::setPermissions"
@@ -131,8 +119,14 @@
         "install-assets": [
             "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::installAssets"
         ],
+        "update-assets": [
+            "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::updateAssets"
+        ],
         "set-assets-version": [
             "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::setAssetsVersion"
+        ],
+        "set-parameters": [
+            "Oro\\Bundle\\InstallerBundle\\Composer\\ParametersHandler::set"
         ]
     },
     "minimum-stability": "dev",
