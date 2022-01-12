@@ -3,8 +3,7 @@
 namespace Marello\Bundle\OroCommerceBundle\ImportExport\Serializer;
 
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use Marello\Bundle\CustomerBundle\Entity\Company;
-use Marello\Bundle\CustomerBundle\Entity\Customer;
+use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractExportWriter;
@@ -16,9 +15,6 @@ use Oro\Bundle\AddressBundle\Entity\Region;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityBundle\ORM\Registry;
 use Oro\Bundle\ImportExportBundle\Serializer\Normalizer\DenormalizerInterface;
-use Oro\Bundle\ImportExportBundle\Serializer\Normalizer\DateTimeNormalizer;
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
-use Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository;
 
 class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterface
 {
@@ -30,9 +26,6 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
      */
     protected $configManager;
 
-    /** @var DateTimeNormalizer $isoNormalizer */
-    protected $isoNormalizer;
-
     /**
      * @param Registry $registry
      * @param ConfigManager $configManager
@@ -40,9 +33,7 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
     public function __construct(Registry $registry, ConfigManager $configManager)
     {
         parent::__construct($registry);
-        
         $this->configManager = $configManager;
-        $this->isoNormalizer = new DateTimeNormalizer(\DateTime::ISO8601, 'Y-m-d', 'H:i:s', 'UTC');
     }
 
     /**
@@ -109,17 +100,15 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
     public function denormalize($data, $class, $format = null, array $context = array())
     {
         /** @var Order $order */
-        $order = $this->createOrder($data, $context);
-
+        $order = $this->createOrder($data);
         return $order->getItems()->count() > 0 ? $order : null;
     }
 
     /**
      * @param array $data
-     * @param array $context
      * @return Order
      */
-    public function createOrder(array $data, array $context = array())
+    public function createOrder(array $data)
     {
         $paymentStatus = $this->getProperty($data, 'paymentStatus');
         $taxValue = $this->getProperty($data, 'taxvalues');
@@ -131,24 +120,22 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
             $subtotal = $subtotal + (float)$total['taxAmount'];
         }
         $order = new Order();
-        $customer = null;
-        if ($this->getProperty($data, 'customerUser')) {
-            $customer = $this->prepareCustomer($data);
-        }
-
+        $customer = $this->prepareCustomer($data);
         if ($paymentStatus) {
             $order->setData([
                 self::PAYMENT_STATUS => $this->getProperty($paymentStatus, 'paymentStatus')
             ]);
         }
-        $integrationChannel = $this->getIntegrationChannel($context['channel']);
+
         $order
-            ->setOrganization($integrationChannel->getOrganization())
             ->setOrderReference($this->getProperty($data, 'id'))
-            ->setPaymentMethod($this->getProperty($data, 'paymentMethod') ? : 'no payment method')
-            ->setShippingMethod($this->getProperty($data, 'shippingMethod'))
-            ->setShippingMethodType($this->getProperty($data, 'shippingMethodType'))
-            ->setPurchaseDate($this->prepareDateTime($this->getProperty($data, 'createdAt'), Order::class))
+            ->setShippingMethod(
+                sprintf(
+                    '%s, %s',
+                    $this->getProperty($data, 'shippingMethod'),
+                    $this->getProperty($data, 'shippingMethodType')
+                )
+            )
             ->setShippingAmountInclTax($shipping['includingTax'])
             ->setShippingAmountExclTax($shipping['excludingTax'])
             ->setDiscountAmount((float)$this->getProperty($data, 'totalDiscountsAmount'))
@@ -156,27 +143,23 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
             ->setTotalTax((float)$total['taxAmount'])
             ->setSubtotal($subtotal)
             ->setCurrency($this->getProperty($data, 'currency'))
-            ->setCustomer($customer)
-            ->setBillingAddress($this->prepareAddress($this->getProperty($data, 'billingAddress')))
-            ->setShippingAddress($this->prepareAddress($this->getProperty($data, 'shippingAddress')));
+            ->setCustomer($customer);
 
-        // keep bc for a few methods just to be sure...
-        if ($this->getProperty($data, 'poNumber') && method_exists($order, 'setPoNumber')) {
-            $order->setPoNumber($this->getProperty($data, 'poNumber'));
+        if($billingAddress = $this->getProperty($data, 'billingAddress')) {
+            if ($billingAddress) {
+                $billingAddress = $this->prepareAddress($billingAddress);
+                if ($billingAddress) {
+                    $order->setShippingAddress($billingAddress);
+                }
+            }
         }
 
-        if ($this->getProperty($data, 'customerNotes') && method_exists($order, 'setOrderNote')) {
-            $order->setOrderNote($this->getProperty($data, 'customerNotes'));
-        }
-
-        if (method_exists($order, 'setShippingMethodReference')) {
-            $order->setShippingMethodReference($this->getProperty($data, 'shippingMethod'));
-        }
-
-        if (method_exists($order, 'setDeliveryDate') && $this->getProperty($data, 'shipUntil')) {
-            $shipUntil = \DateTime::createFromFormat('Y-m-d', $this->getProperty($data, 'shipUntil'));
-            if ($shipUntil) {
-                $order->setDeliveryDate($shipUntil);
+        if($shippingAddress = $this->getProperty($data, 'shippingAddress')) {
+            if ($shippingAddress) {
+                $shippingAddress = $this->prepareAddress($shippingAddress);
+                if ($shippingAddress) {
+                    $order->setShippingAddress($shippingAddress);
+                }
             }
         }
 
@@ -196,8 +179,7 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
     {
         $customer = new Customer();
         $customerUser = $this->getProperty($data, 'customerUser');
-        $customer->setCompany($this->prepareCompany($data));
-        $customer->setOrocommerceOriginId($this->getProperty($customerUser, 'id'));
+
         if ($firstName = $this->getProperty($customerUser, 'firstName')) {
             $customer->setFirstName($firstName);
         }
@@ -217,39 +199,17 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
             $customer->setEmail($email);
         }
 
-        if ($primaryAddress = $this->prepareAddress($this->getProperty($data, 'shippingAddress'))) {
-            $customer->setPrimaryAddress($primaryAddress);
-        }
-
-        return $customer;
-    }
-
-    /**
-     * @param array $data
-     * @return \Extend\Entity\EX_MarelloCustomerBundle_Company|Company|null
-     */
-    protected function prepareCompany(array $data)
-    {
-        $companyData = $this->getProperty($data, 'customer');
-        if ($companyData) {
-            $companyName = $this->getProperty($companyData, 'name');
-            $originId = $this->getProperty($companyData, 'id');
-            /** @var Company $company */
-            $company = $this->registry
-                ->getManagerForClass(Company::class)
-                ->getRepository(Company::class)
-                ->findOneBy(
-                    [
-                        'name' => $companyName,
-                        'orocommerce_origin_id' => $originId
-                    ]
-                );
-            if ($company) {
-                return $company;
+        if($shippingAddress = $this->getProperty($data, 'shippingAddress')) {
+            if ($shippingAddress) {
+                $shippingAddress = $this->prepareAddress($shippingAddress);
+                if ($shippingAddress) {
+                    $customer->setPrimaryAddress($shippingAddress);
+                }
             }
         }
 
-        return null;
+
+        return $customer;
     }
 
     /**
@@ -259,14 +219,10 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
     private function prepareOrderItems(array $lineItems, Order $order)
     {
         foreach ($lineItems as $lineItem) {
-            /** @var Product $product */
             $product = $this->registry
                 ->getManagerForClass(Product::class)
                 ->getRepository(Product::class)
-                ->findOneBy([
-                    'sku' => $this->getProperty($lineItem, 'productSku'),
-                    'organization' => $order->getOrganization()
-                ]);
+                ->findOneBy(['sku' => $this->getProperty($lineItem, 'productSku')]);
 
             if ($product) {
                 $this->prepareOrderItem($lineItem, $product, $order);
@@ -291,14 +247,7 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
             $price = (float)$row['excludingTax']/(float)$quantity;
         }
 
-        $originId = $this->getProperty($lineItem, 'id');
-        // this is not something we're proud of...
-        $item = $this->findExistingOrderItem($originId);
-        $itemStatus = $this->findExistingOrderItemStatus($order, $lineItem, $item);
-
-        if (!$item) {
-            $item = new OrderItem();
-        }
+        $item = new OrderItem();
         $item
             ->setPrice((float)$price)
             ->setQuantity((float)$quantity)
@@ -306,92 +255,9 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
             ->setRowTotalInclTax((float)$row['includingTax'])
             ->setRowTotalExclTax((float)$row['excludingTax'])
             ->setProduct($product)
-            ->setProductName((string)$product->getName())
-            ->setOrganization($order->getOrganization())
-            ->setOrocommerceOriginId($originId);
-
-        if ($itemStatus) {
-            $item->setStatus($itemStatus);
-        }
-
-        $productUnitCode = $this->getProperty($lineItem, 'productUnitCode');
-        if ($productUnitCode) {
-            $productUnitClass = ExtendHelper::buildEnumValueClassName('marello_product_unit');
-            if (class_exists($productUnitClass)) {
-                /** @var EnumValueRepository $repo */
-                $repo = $this->registry
-                    ->getManagerForClass($productUnitClass)
-                    ->getRepository($productUnitClass);
-                if ($productUnit = $repo->find($productUnitCode)) {
-                    $item->setProductUnit($productUnit);
-                } else {
-                    $item->setProductUnit($product->getInventoryItems()->first()->getProductUnit());
-                }
-            }
-        }
+            ->setProductName((string)$product->getName());
 
         $order->addItem($item);
-    }
-
-    /**
-     * Not the way it should be implemented, but we need to check if the OrderItem
-     * exists either based on the newly introduced orocommerce_origin_id or from the the possible
-     * existing items based on the Order Reference
-     * @param $originId
-     * @return \Extend\Entity\EX_MarelloOrderBundle_OrderItem|OrderItem|null
-     */
-    private function findExistingOrderItem($originId)
-    {
-        /** @var OrderItem $item */
-        $item = $this->registry
-            ->getManagerForClass(OrderItem::class)
-            ->getRepository(OrderItem::class)
-            ->findOneBy(
-                [
-                    'orocommerce_origin_id' => $originId
-                ]
-            );
-        if ($item) {
-            return $item;
-        }
-
-        return null;
-    }
-
-    /**
-     * @param Order $order
-     * @param $lineItem
-     * @param OrderItem|null $item
-     * @return \Extend\Entity\EV_Marello_Item_Status|null
-     */
-    private function findExistingOrderItemStatus(Order $order, $lineItem, OrderItem $item = null)
-    {
-        if ($item) {
-            return $item->getStatus();
-        }
-
-        $existingOrder = $this->registry
-            ->getManagerForClass(Order::class)
-            ->getRepository(Order::class)
-            ->findOneBy(
-                [
-                    'orderReference' => $order->getOrderReference()
-                ]
-            );
-        if ($existingOrder) {
-            // not the ideal way to find an item as there is a possibility that an order can have two items with
-            // the exact same SKU and quantity...it's a very small risk we unfortunately need to take in order to keep
-            // existing order items correct with ProductUnit and Status...
-            foreach ($existingOrder->getItems() as $orderItem) {
-                if ($orderItem->getProductSku() === $this->getProperty($lineItem, 'productSku') &&
-                    $orderItem->getQuantity() === $this->getProperty($lineItem, 'quantity')
-                ) {
-                    return $orderItem->getStatus();
-                }
-            }
-        }
-
-        return null;
     }
 
     /**
@@ -403,9 +269,7 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
         if (isset($data['type']) && 'orderaddresses' === $data['type']) {
             $countryCode = $this->getProperty($data, 'country')['id'];
             $regionCode = $this->getProperty($data, 'region')['id'];
-            if (!$countryCode && !$regionCode) {
-                return null;
-            }
+
             $country = $this->registry
                 ->getManagerForClass(Country::class)
                 ->getRepository(Country::class)
@@ -449,9 +313,6 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
                 if ($phone = $this->getProperty($data, 'phone')) {
                     $address->setPhone($phone);
                 }
-                if ($company = $this->getProperty($data, 'organization')) {
-                    $address->setCompany($company);
-                }
 
                 return $address;
             }
@@ -461,13 +322,25 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
     }
 
     /**
-     * Run a string date through the isoNormalizer in order to get the DateTime
-     * @param string $date
-     * @param string $entityClass
-     * @return \DateTime|null
+     * @param mixed $data
+     * @param $property
+     * @return mixed|null
      */
-    private function prepareDateTime(string $date, string $entityClass)
+    private function getProperty($data, $property)
     {
-        return $this->isoNormalizer->denormalize($date, $entityClass);
+        if (!is_array($data)) {
+            return null;
+        }
+        if (isset($data[$property])) {
+            return $data[$property];
+        }
+        if (isset($data['attributes'][$property])) {
+            return $data['attributes'][$property];
+        }
+        if (isset($data['relationships'][$property])) {
+            return $data['relationships'][$property]['data'];
+        }
+
+        return null;
     }
 }

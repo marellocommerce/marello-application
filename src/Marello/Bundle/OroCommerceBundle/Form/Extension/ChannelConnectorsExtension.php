@@ -2,9 +2,7 @@
 
 namespace Marello\Bundle\OroCommerceBundle\Form\Extension;
 
-use Marello\Bundle\OroCommerceBundle\Integration\Connector\OroCommerceProductImageConnector;
 use Marello\Bundle\OroCommerceBundle\Integration\OroCommerceChannelType;
-use Oro\Bundle\IntegrationBundle\Form\Type\ChannelType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -56,10 +54,6 @@ class ChannelConnectorsExtension extends AbstractTypeExtension
         }
         $options = $event->getForm()['connectors']->getConfig()->getOptions();
         $connectors = array_values($options['choices']);
-        $submittedConnectors = $data->getConnectors();
-        if (!in_array(OroCommerceProductImageConnector::TYPE, $submittedConnectors)) {
-            $connectors = array_diff($connectors, [OroCommerceProductImageConnector::TYPE]);
-        }
         $data->setConnectors($connectors);
     }
 
@@ -76,10 +70,8 @@ class ChannelConnectorsExtension extends AbstractTypeExtension
         }
 
         foreach ($view['connectors']->children as $checkbox) {
-            if ($checkbox->vars['value'] !== OroCommerceProductImageConnector::TYPE) {
-                $checkbox->vars['checked'] = true;
-                $checkbox->vars['disabled'] = true;
-            }
+            $checkbox->vars['checked'] = true;
+            $checkbox->vars['disabled'] = true;
         }
         $isTwoWaySyncEnabled = $view['synchronizationSettings']['isTwoWaySyncEnabled'];
         $isTwoWaySyncEnabled->vars['checked'] = true;
@@ -93,8 +85,8 @@ class ChannelConnectorsExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function getExtendedTypes()
+    public function getExtendedType()
     {
-        return [ChannelType::class];
+        return 'oro_integration_channel_form';
     }
 }

@@ -2,13 +2,10 @@
 
 namespace Marello\Bundle\OroCommerceBundle\ImportExport\Serializer;
 
-use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\OroCommerceBundle\Entity\OroCommerceSettings;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractProductExportWriter;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\TaxCodeExportCreateWriter;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 
 class ProductNormalizer extends AbstractNormalizer
 {
@@ -24,24 +21,11 @@ class ProductNormalizer extends AbstractNormalizer
             /** @var OroCommerceSettings $transport */
             $transport = $integrationChannel->getTransport();
             $taxCode = null;
-            $balancedInventoryLevel = null;
             if ($salesChannel) {
                 $taxCode = $object->getSalesChannelTaxCode($salesChannel);
-                /** @var BalancedInventoryLevel $balancedInventoryLevel */
-                $balancedInventoryLevel = $this->getBalancedInventoryLevel($object, $salesChannel->getGroup());
             }
             $taxCode = $taxCode ? : $object->getTaxCode();
-            $stockStatus = 'out_of_stock';
-            if ($balancedInventoryLevel) {
-                $stockStatus = ($balancedInventoryLevel->getInventoryQty() > 0) ? 'in_stock' : 'out_of_stock';
-            }
-            /** @var InventoryItem $inventoryItem */
-            $inventoryItem = $object->getInventoryItems()->first();
-            $productUnit = $transport->getProductUnit();
-            if (method_exists($inventoryItem, 'getProductUnit')) {
-                $productUnit = $inventoryItem->getProductUnit();
-            }
-
+            
             $data =  [
                 'data' => [
                     'type' => 'products',
@@ -50,14 +34,14 @@ class ProductNormalizer extends AbstractNormalizer
                         'status' => $object->getStatus()->getName(),
                         'variantFields' => [],
                         'productType' => 'simple',
-                        'featured' => false,
+                        'featured' => true,
                         'newArrival' => false
                     ],
                     'relationships' => [
                         'owner' => [
                             'data' => [
                                     'type' => 'businessunits',
-                                    'id' => $transport->getBusinessUnit() ? (string)$transport->getBusinessUnit() : '1'
+                                    'id' => '1'
                                 ]
                         ],
                         'names' => [
@@ -83,7 +67,7 @@ class ProductNormalizer extends AbstractNormalizer
                         'inventory_status' => [
                             'data' => [
                                 'type' => 'prodinventorystatuses',
-                                'id' => $stockStatus
+                                'id' => 'out_of_stock'
                             ]
                         ],
                         'manageInventory' => [
@@ -144,8 +128,8 @@ class ProductNormalizer extends AbstractNormalizer
                         'type' => 'entityfieldfallbackvalues',
                         'id' => '2abcd',
                         'attributes' => [
-                            'fallback' => 'category',
-                            'scalarValue' => null,
+                            'fallback' => null,
+                            'scalarValue' => $transport->getInventoryThreshold(),
                             'arrayValue' => null
                         ]
                     ],
@@ -162,8 +146,8 @@ class ProductNormalizer extends AbstractNormalizer
                         'type' => 'entityfieldfallbackvalues',
                         'id' => 'low2abcd',
                         'attributes' => [
-                            'fallback' => 'category',
-                            'scalarValue' => null,
+                            'fallback' => null,
+                            'scalarValue' => $transport->getLowInventoryThreshold(),
                             'arrayValue' => null
                         ]
                     ],
@@ -171,8 +155,8 @@ class ProductNormalizer extends AbstractNormalizer
                         'type' => 'entityfieldfallbackvalues',
                         'id' => 'product-is-upcoming',
                         'attributes' => [
-                            'fallback' => 'category',
-                            'scalarValue' => null,
+                            'fallback' => null,
+                            'scalarValue' => '0',
                             'arrayValue' => null
                         ]
                     ],
@@ -190,7 +174,7 @@ class ProductNormalizer extends AbstractNormalizer
                         'id' => '6abcd',
                         'attributes' => [
                             'fallback' => null,
-                            'scalarValue' => $inventoryItem->isBackorderAllowed() ? '1' : '0',
+                            'scalarValue' => $transport->isBackOrder(),
                             'arrayValue' => null
                         ]
                     ],
@@ -199,7 +183,7 @@ class ProductNormalizer extends AbstractNormalizer
                         'id' => 'names-1',
                         'attributes' => [
                             'fallback' => null,
-                            'string' => $object->getName()->getString(),
+                            'string' => $object->getName(),
                             'text' => null
                         ],
                         'relationships' => [
@@ -220,7 +204,7 @@ class ProductNormalizer extends AbstractNormalizer
                             'unit' => [
                                 'data' => [
                                     'type' => 'productunits',
-                                    'id' => $productUnit
+                                    'id' => $transport->getProductUnit()
                                 ]
                             ]
                         ]
@@ -272,21 +256,5 @@ class ProductNormalizer extends AbstractNormalizer
     {
         return ($data instanceof Product && isset($context['channel']) &&
             $this->getIntegrationChannel($context['channel']));
-    }
-
-    /**
-     * @param Product $product
-     * @param SalesChannelGroup $group
-     * @return mixed
-     */
-    protected function getBalancedInventoryLevel(Product $product, SalesChannelGroup $group)
-    {
-        $existingBalancedInventoryLevel = $this->registry
-            ->getManagerForClass(BalancedInventoryLevel::class)
-            ->getRepository(BalancedInventoryLevel::class)
-            ->findExistingBalancedInventory($product, $group);
-
-
-        return $existingBalancedInventoryLevel;
     }
 }

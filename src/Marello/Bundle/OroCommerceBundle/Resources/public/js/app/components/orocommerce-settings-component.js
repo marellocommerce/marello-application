@@ -3,14 +3,15 @@
 define(function(require) {
     'use strict';
 
-    const $ = require('jquery');
-    const _ = require('underscore');
-    const routing = require('routing');
-    const mediator = require('oroui/js/mediator');
-    const LoadingMaskView = require('oroui/js/app/views/loading-mask-view');
-    const BaseComponent = require('oroui/js/app/components/base/component');
+    var OroCommerceSettingsComponent;
+    var $ = require('jquery');
+    var _ = require('underscore');
+    var routing = require('routing');
+    var mediator = require('oroui/js/mediator');
+    var LoadingMaskView = require('oroui/js/app/views/loading-mask-view');
+    var BaseComponent = require('oroui/js/app/components/base/component');
 
-    const OroCommerceSettingsComponent = BaseComponent.extend({
+    OroCommerceSettingsComponent = BaseComponent.extend({
         /**
          * @property {Object}
          */
@@ -20,14 +21,12 @@ define(function(require) {
             keySelector: 'input[name$="[transport][key]"]',
             enterpriseSelector: 'input[name$="[transport][enterprise]"]',
             currencySelector: 'select[name$="[transport][currency]"]',
-            businessUnitSelector: 'select[name$="[transport][businessUnit]"]',
             productUnitSelector: 'select[name$="[transport][productUnit]"]',
             customerTaxCodeSelector: 'select[name$="[transport][customerTaxCode]"]',
             priceListSelector: 'select[name$="[transport][priceList]"]',
             productFamilySelector: 'select[name$="[transport][productFamily]"]',
             warehouseSelector: 'select[name$="[transport][warehouse]"]',
             container: '.control-group',
-            businessUnitUpdateRoute: '',
             productUnitUpdateRoute: '',
             customerTaxCodeUpdateRoute: '',
             priceListUpdateRoute: '',
@@ -58,39 +57,38 @@ define(function(require) {
             this.options = _.defaults(options || {}, this.options);
             this.$elem = options._sourceElement;
             this.$form = $(options.formSelector);
-            this.selectedBusinessUnit = options.selectedBusinessUnit;
             this.selectedProductUnit = options.selectedProductUnit;
             this.selectedCustomerTaxCode = options.selectedCustomerTaxCode;
             this.selectedPriceList = options.selectedPriceList;
             this.selectedProductFamily = options.selectedProductFamily;
             this.selectedWarehouse = options.selectedWarehouse;
 
-            this.businessUnitLoadingMaskView = new LoadingMaskView({container: this.$elem.find(this.options.businessUnitSelector).closest('.controls')});
             this.productUnitLoadingMaskView = new LoadingMaskView({container: this.$elem.find(this.options.productUnitSelector).closest('.controls')});
             this.customerTaxCodeLoadingMaskView = new LoadingMaskView({container: this.$elem.find(this.options.customerTaxCodeSelector).closest('.controls')});
             this.priceListLoadingMaskView = new LoadingMaskView({container: this.$elem.find(this.options.priceListSelector).closest('.controls')});
             this.productFamilyLoadingMaskView = new LoadingMaskView({container: this.$elem.find(this.options.productFamilySelector).closest('.controls')});
             this.warehouseLoadingMaskView = new LoadingMaskView({container: this.$elem.find(this.options.warehouseSelector).closest('.controls')});
-            this.toggleWarehousesVisibility();
             this.$elem.find(this.options.urlSelector)
-                .on('change', _.bind(this.makeChanges, this));
+                .on('change', _.bind(this.makeChanges, this))
+                .trigger('change');
             this.$elem.find(this.options.usernameSelector)
-                .on('change', _.bind(this.makeChanges, this));
+                .on('change', _.bind(this.makeChanges, this))
+                .trigger('change');
             this.$elem.find(this.options.keySelector)
-                .on('change', _.bind(this.makeChanges, this));
+                .on('change', _.bind(this.makeChanges, this))
+                .trigger('change');
             this.$elem.find(this.options.currencySelector)
-                .on('change', _.bind(this.updatePriceLists, this));
+                .on('change', _.bind(this.updatePriceLists, this))
+                .trigger('change');
             this.$elem.find(this.options.enterpriseSelector)
-                .on('change', _.bind(this.toggleWarehousesVisibility, this));
+                .on('change', _.bind(this.toggleWarehousesVisibility, this))
+                .trigger('change');
             
             mediator.on('marello_orocommerce:update:productunits', this.updateProductUnits, this);
             mediator.on('marello_orocommerce:update:customertaxcodes', this.updateCustomerTaxCodes, this);
             mediator.on('marello_orocommerce:update:pricelists', this.updatePriceLists, this);
             mediator.on('marello_orocommerce:update:productfamilies', this.updateProductFamilies, this);
             mediator.on('marello_orocommerce:update:warehouses', this.updateWarehouses, this);
-
-            // start 1 trigger
-            this.makeChanges();
         },
 
         makeChanges: function() {
@@ -98,6 +96,7 @@ define(function(require) {
             // other parts are updated because of the triggers
             this.updateBusinessUnits();
         },
+
         updateBusinessUnits: function() {
             var url = this.$elem.find(this.options.urlSelector).val();
             var username = this.$elem.find(this.options.usernameSelector).val();
@@ -113,6 +112,7 @@ define(function(require) {
                 );
             }
         },
+
         updateProductUnits: function() {
             var url = this.$elem.find(this.options.urlSelector).val();
             var username = this.$elem.find(this.options.usernameSelector).val();
@@ -128,6 +128,7 @@ define(function(require) {
                 );
             }
         },
+
         updateCustomerTaxCodes: function() {
             var url = this.$elem.find(this.options.urlSelector).val();
             var username = this.$elem.find(this.options.usernameSelector).val();
@@ -143,6 +144,7 @@ define(function(require) {
                 );
             }
         },
+
         updatePriceLists: function() {
             var url = this.$elem.find(this.options.urlSelector).val();
             var username = this.$elem.find(this.options.usernameSelector).val();
@@ -159,6 +161,7 @@ define(function(require) {
                 );
             }
         },
+
         updateProductFamilies: function() {
             var url = this.$elem.find(this.options.urlSelector).val();
             var username = this.$elem.find(this.options.usernameSelector).val();
@@ -174,6 +177,7 @@ define(function(require) {
                 );
             }
         },
+
         updateWarehouses: function() {
             var url = this.$elem.find(this.options.urlSelector).val();
             var username = this.$elem.find(this.options.usernameSelector).val();
@@ -189,6 +193,7 @@ define(function(require) {
                 );
             }
         },
+
         toggleWarehousesVisibility: function() {
             var isEnterprise = this.$elem.find(this.options.enterpriseSelector).is(':checked');
             var warehouseSelect = this.$elem.find(this.options.warehouseSelector);
@@ -202,6 +207,7 @@ define(function(require) {
                 warehouseContainer.hide();
             }
         },
+
         updateItem: function(route, selector, loadingMaskView, selectedItem, triggerUpdate) {
             var self = this;
             $.ajax({
@@ -236,11 +242,12 @@ define(function(require) {
                 complete: function() {
                     loadingMaskView.hide();
                    if (null !== triggerUpdate) {
-                       mediator.trigger('marello_orocommerce:update:'+ triggerUpdate);
+                       mediator.trigger('marello_orocommerce:update:' + triggerUpdate);
                    }
                 }
             });
         },
+
         dispose: function() {
             if (this.disposed) {
                 return;

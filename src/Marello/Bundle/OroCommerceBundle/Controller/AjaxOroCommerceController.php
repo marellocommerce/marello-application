@@ -8,83 +8,20 @@ use Marello\Bundle\OroCommerceBundle\Generator\CacheKeyGenerator;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Form\Type\ChannelType;
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Exception\RestException;
-use Oro\Bundle\IntegrationBundle\Provider\TransportInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Translation\Translator;
 
-class AjaxOroCommerceController extends AbstractController
+class AjaxOroCommerceController extends Controller
 {
-    /**
-     * @var Cache
-     */
-    private $cache;
 
     /**
-     * @var CacheKeyGenerator
-     */
-    private $cacheKeyGenerator;
-
-    /**
-     * @var TransportInterface
-     */
-    private $transport;
-
-    /**
-     * @var Translator
-     */
-    private $translator;
-
-    /**
-     * @param Cache $cache
-     * @param CacheKeyGenerator $cacheKeyGenerator
-     * @param TransportInterface $transport
-     * @param Translator $translator
-     */
-    public function __construct(
-        Cache $cache,
-        CacheKeyGenerator $cacheKeyGenerator,
-        TransportInterface $transport,
-        Translator $translator
-    ) {
-        $this->cache = $cache;
-        $this->cacheKeyGenerator = $cacheKeyGenerator;
-        $this->transport = $transport;
-        $this->translator = $translator;
-    }
-
-    /**
-     * @Route(
-     *     path="/get-business-units/{channelId}/",
-     *     name="marello_orocommerce_get_businessunits",
-     *     methods={"POST"}
-     * )
+     * @Route("/get-product-units/{channelId}/", name="marello_orocommerce_get_productunits")
      * @ParamConverter("channel", class="OroIntegrationBundle:Channel", options={"id" = "channelId"})
-     *
-     * @param Request $request
-     * @param Channel $channel
-     * @return JsonResponse
-     */
-    public function getBusinessUnitsAction(Request $request, Channel $channel = null)
-    {
-        return $this->getIntegrationData(
-            CacheKeyGenerator::BUSINESS_UNIT,
-            'getBusinessUnits',
-            'name',
-            $this->getTransport($request, $channel)
-        );
-    }
-
-    /**
-     * @Route(
-     *     path="/get-product-units/{channelId}/",
-     *     name="marello_orocommerce_get_productunits",
-     *     methods={"POST"}
-     * )
-     * @ParamConverter("channel", class="OroIntegrationBundle:Channel", options={"id" = "channelId"})
+     * @Method("POST")
      *
      * @param Request $request
      * @param Channel $channel
@@ -101,12 +38,9 @@ class AjaxOroCommerceController extends AbstractController
     }
 
     /**
-     * @Route(
-     *     path="/get-customer-tax-codes/{channelId}/",
-     *     name="marello_orocommerce_get_customertaxcodes",
-     *     methods={"POST"}
-     * )
+     * @Route("/get-customer-tax-codes/{channelId}/", name="marello_orocommerce_get_customertaxcodes")
      * @ParamConverter("channel", class="OroIntegrationBundle:Channel", options={"id" = "channelId"})
+     * @Method("POST")
      *
      * @param Request $request
      * @param Channel $channel
@@ -123,12 +57,9 @@ class AjaxOroCommerceController extends AbstractController
     }
 
     /**
-     * @Route(
-     *     path="/get-price-lists/{channelId}/",
-     *     name="marello_orocommerce_get_pricelists",
-     *     methods={"POST"}
-     * )
+     * @Route("/get-price-lists/{channelId}/", name="marello_orocommerce_get_pricelists")
      * @ParamConverter("channel", class="OroIntegrationBundle:Channel", options={"id" = "channelId"})
+     * @Method("POST")
      *
      * @param Request $request
      * @param Channel $channel
@@ -147,12 +78,9 @@ class AjaxOroCommerceController extends AbstractController
     }
 
     /**
-     * @Route(
-     *     path="/get-product-families/{channelId}/",
-     *     name="marello_orocommerce_get_productfamilies",
-     *     methods={"POST"}
-     * )
+     * @Route("/get-product-families/{channelId}/", name="marello_orocommerce_get_productfamilies")
      * @ParamConverter("channel", class="OroIntegrationBundle:Channel", options={"id" = "channelId"})
+     * @Method("POST")
      *
      * @param Request $request
      * @param Channel $channel
@@ -169,12 +97,9 @@ class AjaxOroCommerceController extends AbstractController
     }
 
     /**
-     * @Route(
-     *     path="/get-warehouses/{channelId}/",
-     *     name="marello_orocommerce_get_warehouses",
-     *     methods={"POST"}
-     * )
+     * @Route("/get-warehouses/{channelId}/", name="marello_orocommerce_get_warehouses")
      * @ParamConverter("channel", class="OroIntegrationBundle:Channel", options={"id" = "channelId"})
+     * @Method("POST")
      *
      * @param Request $request
      * @param Channel $channel
@@ -219,17 +144,21 @@ class AjaxOroCommerceController extends AbstractController
      */
     private function getIntegrationData($cacheKey, $method, $attribute, OroCommerceSettings $transport)
     {
+        /** @var Cache $cache */
+        $cache = $this->get('marello_orocommerce.cache');
+        $keyGenerator = $this->get('marello_orocommerce.cache_key_generator');
         $key = sprintf(
             '%s_%s',
-            $this->cacheKeyGenerator->generateKey($transport->getSettingsBag()),
+            $keyGenerator->generateKey($transport->getSettingsBag()),
             $cacheKey
         );
 
-        if ($this->cache->contains($key)) {
-            $jsonResult = $this->cache->fetch($key);
+        if ($cache->contains($key)) {
+            $jsonResult = $cache->fetch($key);
         } else {
             try {
-                $result = $this->transport
+                $result = $this
+                    ->get('marello_orocommerce.integration.transport')
                     ->init($transport)
                     ->$method();
             } catch (RestException $e) {
@@ -250,7 +179,7 @@ class AjaxOroCommerceController extends AbstractController
                 ];
             }
             if (!empty($jsonResult)) {
-                $this->cache->save(
+                $cache->save(
                     $key,
                     $jsonResult
                 );
@@ -261,12 +190,9 @@ class AjaxOroCommerceController extends AbstractController
     }
 
     /**
-     * @Route(
-     *     path="/validate-connection/{channelId}/",
-     *     name="marello_orocommerce_validate_connection",
-     *     methods={"POST"}
-     * )
+     * @Route("/validate-connection/{channelId}/", name="marello_orocommerce_validate_connection")
      * @ParamConverter("channel", class="OroIntegrationBundle:Channel", options={"id" = "channelId"})
+     * @Method("POST")
      *
      * @param Request      $request
      * @param Channel|null $channel
@@ -285,11 +211,11 @@ class AjaxOroCommerceController extends AbstractController
         );
         $form->handleRequest($request);
 
-        /** @var OroCommerceSettings $transportSettings */
-        $transportSettings = $channel->getTransport();
+        /** @var OroCommerceSettings $transport */
+        $transport = $channel->getTransport();
         $result = $this
-            ->transport
-            ->init($transportSettings)
+            ->get('marello_orocommerce.integration.transport')
+            ->init($transport)
             ->ping();
 
         if ($result['result'] === false) {
@@ -302,7 +228,7 @@ class AjaxOroCommerceController extends AbstractController
         return new JsonResponse([
             'success' => true,
             'message' => $this
-                ->translator
+                ->get('translator')
                 ->trans('marello.orocommerce.connection_validation.success.message'),
         ]);
     }

@@ -2,44 +2,12 @@
 
 namespace Marello\Bundle\OroCommerceBundle\ImportExport\Writer;
 
+use Marello\Bundle\OroCommerceBundle\Integration\Transport\Rest\OroCommerceRestTransport;
 use Marello\Bundle\TaxBundle\Entity\TaxRule;
 
 class TaxRuleExportCreateWriter extends AbstractExportWriter
 {
     const TAX_RULE_ID = 'orocommerce_tax_rule_id';
-
-    /**
-     * @param array $entities
-     * @throws \Exception
-     */
-    public function write(array $entities)
-    {
-        $this->transport->init($this->getChannel()->getTransport());
-
-        if (count($entities) > 1) {
-            $this->writeCollection($entities);
-        } else {
-            $this->writeItem(reset($entities));
-        }
-    }
-
-    /**
-     * @param array $data
-     */
-    protected function writeCollection(array $data)
-    {
-        $action = $this->context->getOption(AbstractExportWriter::ACTION_FIELD);
-        if ($action === AbstractExportWriter::CREATE_ACTION) {
-            $response = $this->transport->createTaxRulesCollection($data);
-        } elseif ($action === AbstractExportWriter::UPDATE_ACTION) {
-            $response = $this->transport->updateTaxRulesCollection($data);
-        } else {
-            return;
-        }
-        foreach ($response as $itemData) {
-            $this->processItemData($itemData);
-        }
-    }
 
     /**
      * @param array $data
@@ -54,25 +22,21 @@ class TaxRuleExportCreateWriter extends AbstractExportWriter
         } else {
             return;
         }
-        $this->processItemData($response);
-    }
 
-    private function processItemData(array $response)
-    {
         if (isset($response['data'])&& isset($response['included']) && isset($response['data']['type']) &&
-            isset($response['data']['id']) && $response['data']['type'] === 'taxrules') {
+            isset($response['data']['id']) && $response['data']['type'] === OroCommerceRestTransport::TAXRULES_ALIAS) {
             $em = $this->registry->getManagerForClass(TaxRule::class);
             $taxCode = null;
             $taxRate = null;
             $taxJurisdiction = null;
             foreach ($response['included'] as $included) {
-                if ($included['type'] === 'producttaxcodes') {
+                if ($included['type'] === OroCommerceRestTransport::PRODUCTTAXCODES_ALIAS) {
                     $taxCode = $included['attributes']['code'];
                 }
-                if ($included['type'] === 'taxes') {
+                if ($included['type'] === OroCommerceRestTransport::TAXES_ALIAS) {
                     $taxRate = $included['attributes']['code'];
                 }
-                if ($included['type'] === 'taxjurisdictions') {
+                if ($included['type'] === OroCommerceRestTransport::TAXJURISDICTIONS_ALIAS) {
                     $taxJurisdiction = $included['attributes']['code'];
                 }
             }
@@ -112,7 +76,6 @@ class TaxRuleExportCreateWriter extends AbstractExportWriter
                 $em->persist($processedTaxJurisdiction);
                 $em->flush();
             }
-            $action = $this->context->getOption(AbstractExportWriter::ACTION_FIELD);
             if ($action === AbstractExportWriter::CREATE_ACTION) {
                 $this->context->incrementAddCount();
             } elseif ($action === AbstractExportWriter::UPDATE_ACTION) {

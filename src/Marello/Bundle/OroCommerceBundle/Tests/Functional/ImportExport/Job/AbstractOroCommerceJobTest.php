@@ -11,7 +11,6 @@ use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Provider\SyncProcessor;
-use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 abstract class AbstractOroCommerceJobTest extends WebTestCase
@@ -53,16 +52,14 @@ abstract class AbstractOroCommerceJobTest extends WebTestCase
 
         $this->stubResources();
         $this->managerRegistry = $this->getContainer()->get('doctrine');
-        $this->loadFixtures([
-            LoadProductData::class,
-            LoadChannelData::class
-        ]);
+        $this->loadFixtures([LoadChannelData::class]);
         $this->channel = $this->getReference('orocommerce_channel:first_test_channel');
     }
 
     /** {@inheritdoc} */
     public function tearDown()
     {
+        $this->getContainer()->set('marello_orocommerce.rest.client_factory', $this->realRestClientFactory);
         unset(
             $this->managerRegistry,
             $this->restClient,
@@ -126,12 +123,16 @@ abstract class AbstractOroCommerceJobTest extends WebTestCase
 
     protected function stubResources()
     {
+
         $this->restClient = $this->createMock(OroCommerceRestClient::class);
         $this->restClientFactory = $this->createMock(OroCommerceRestClientFactory::class);
         $this->restClientFactory
             ->expects(static::any())
             ->method('createRestClient')
             ->willReturn($this->restClient);
+
+        $this->realRestClientFactory = $this->getContainer()->get('marello_orocommerce.rest.client_factory');
+        $this->client->getContainer()->set('marello_orocommerce.rest.client_factory', $this->restClientFactory);
         /** @var OroCommerceRestTransport $transport */
         $transport = $this->getContainer()->get('marello_orocommerce.integration.transport');
         $transport->setRestClientFactory($this->restClientFactory);

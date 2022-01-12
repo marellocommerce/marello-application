@@ -26,12 +26,7 @@ abstract class AbstractExportWriter implements
     const UPDATE_ACTION = 'update';
     const DELETE_ACTION = 'delete';
     
-    const NOT_SYNCHRONIZED = 'orocommerce_not_synchronized';
-    const SYNC_TYPE = 'orocommerce_sync_type';
-    const SINGLE_SYNC_TYPE = 'single';
-    const COLLECTION_SYNC_TYPE = 'collection';
-
-        /**
+    /**
      * @var Registry
      */
     protected $registry;
@@ -86,6 +81,24 @@ abstract class AbstractExportWriter implements
         $this->logger = $logger;
         $this->transport = $transport;
     }
+
+    /**
+     * @param array $entities
+     * @throws \Exception
+     */
+    public function write(array $entities)
+    {
+        $this->transport->init($this->getChannel()->getTransport());
+
+        foreach ($entities as $entity) {
+            $this->writeItem($entity);
+        }
+    }
+
+    /**
+     * @param array $data
+     */
+    abstract protected function writeItem(array $data);
 
     /**
      * @return Channel

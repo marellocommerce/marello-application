@@ -3,13 +3,14 @@
 define(function(require) {
     'use strict';
 
-    const $ = require('jquery');
+    var $ = require('jquery');
 
-    const BaseComponent = require('oroui/js/app/components/base/component');
-    const LoadingMaskView = require('oroui/js/app/views/loading-mask-view');
-    const messenger = require('oroui/js/messenger');
+    var OroCommerceConnectionValidatorComponent;
+    var BaseComponent = require('oroui/js/app/components/base/component');
+    var LoadingMaskView = require('oroui/js/app/views/loading-mask-view');
+    var messenger = require('oroui/js/messenger');
 
-    const OroCommerceConnectionValidatorComponent = BaseComponent.extend({
+    OroCommerceConnectionValidatorComponent = BaseComponent.extend({
 
         /**
          * @property {jquery} $button

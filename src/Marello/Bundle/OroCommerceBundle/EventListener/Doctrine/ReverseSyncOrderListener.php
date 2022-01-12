@@ -8,15 +8,12 @@ use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractExportWriter;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\OrderExportWriter;
 use Marello\Bundle\OroCommerceBundle\Integration\Connector\OroCommerceOrderConnector;
 use Marello\Bundle\OroCommerceBundle\Integration\OroCommerceChannelType;
-use Oro\Bundle\IntegrationBundle\Async\Topics;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Reader\EntityReaderById;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
 use Oro\Component\Action\Event\ExtendableActionEvent;
-use Oro\Component\MessageQueue\Client\Message;
-use Oro\Component\MessageQueue\Client\MessagePriority;
-use Oro\Component\MessageQueue\Client\MessageProducerInterface;
+use Oro\Component\DependencyInjection\ServiceLink;
 
 class ReverseSyncOrderListener
 {
@@ -26,18 +23,18 @@ class ReverseSyncOrderListener
     protected $registry;
 
     /**
-     * @var MessageProducerInterface
+     * @var ServiceLink
      */
-    protected $producer;
+    private $syncScheduler;
 
     /**
      * @param ManagerRegistry $registry
-     * @param MessageProducerInterface $producer
+     * @param ServiceLink $schedulerServiceLink
      */
-    public function __construct(ManagerRegistry $registry, MessageProducerInterface $producer)
+    public function __construct(ManagerRegistry $registry, ServiceLink $schedulerServiceLink)
     {
         $this->registry = $registry;
-        $this->producer = $producer;
+        $this->syncScheduler = $schedulerServiceLink;
     }
 
     /**
@@ -89,21 +86,17 @@ class ReverseSyncOrderListener
     protected function scheduleSync(Order $entity, $action)
     {
         $integrationChannel = $this->getIntegrationChannel($entity);
-        $this->producer->send(
-            sprintf('%s.orocommerce', Topics::REVERS_SYNC_INTEGRATION),
-            new Message(
+
+        $this->syncScheduler
+            ->getService()
+            ->schedule(
+                $integrationChannel->getId(),
+                OroCommerceOrderConnector::TYPE,
                 [
-                    'integration_id'       => $integrationChannel->getId(),
-                    'connector_parameters' => [
-                        AbstractExportWriter::ACTION_FIELD => $action,
-                        EntityReaderById::ID_FILTER => $entity->getId(),
-                    ],
-                    'connector'            => OroCommerceOrderConnector::TYPE,
-                    'transport_batch_size' => 100,
-                ],
-                MessagePriority::HIGH
-            )
-        );
+                    AbstractExportWriter::ACTION_FIELD => $action,
+                    EntityReaderById::ID_FILTER => $entity->getId(),
+                ]
+            );
     }
 
     /**
@@ -141,10 +134,7 @@ class ReverseSyncOrderListener
         $salesChannel = $entity->getSalesChannel();
         $channel = $salesChannel->getIntegrationChannel();
         if ($channel && $channel->getType() === OroCommerceChannelType::TYPE && $channel->isEnabled()) {
-            $connectors = $channel->getConnectors();
-            if (in_array(OroCommerceOrderConnector::TYPE, $connectors)) {
-                return $channel;
-            }
+            return $channel;
         }
 
         return null;

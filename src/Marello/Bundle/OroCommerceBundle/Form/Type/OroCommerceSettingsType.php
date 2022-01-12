@@ -6,7 +6,6 @@ use Doctrine\Common\Cache\CacheProvider;
 use Marello\Bundle\OroCommerceBundle\Entity\OroCommerceSettings;
 use Marello\Bundle\OroCommerceBundle\Generator\CacheKeyGenerator;
 use Marello\Bundle\OroCommerceBundle\Generator\CacheKeyGeneratorInterface;
-use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Oro\Bundle\CurrencyBundle\Form\Type\CurrencyType;
 use Oro\Bundle\FormBundle\Utils\FormUtils;
 use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
@@ -14,7 +13,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -25,7 +23,7 @@ use Symfony\Component\Validator\Constraints\Valid;
 
 class OroCommerceSettingsType extends AbstractType
 {
-    const BLOCK_PREFIX = 'marello_orocommerce_settings';
+    const NAME = 'marello_orocommerce_settings';
 
     /**
      * @var CacheProvider
@@ -73,7 +71,7 @@ class OroCommerceSettingsType extends AbstractType
                 ]
             )
             ->add(
-                'userName',
+                'username',
                 TextType::class,
                 [
                     'label' => 'marello.orocommerce.orocommercesettings.username.label',
@@ -97,12 +95,30 @@ class OroCommerceSettingsType extends AbstractType
                 ]
             )
             ->add(
-                'salesChannelGroup',
-                EntityType::class,
+                'inventoryThreshold',
+                TextType::class,
                 [
-                    'label'         => 'marello.orocommerce.orocommercesettings.saleschannelgroup.label',
-                    'class'         => SalesChannelGroup::class,
-                    'required'      => true
+                    'label' => 'marello.orocommerce.orocommercesettings.inventory_threshold.label',
+                    'tooltip' => 'marello.orocommerce.orocommercesettings.inventory_threshold.tooltip',
+                    'required' => true
+                ]
+            )
+            ->add(
+                'lowInventoryThreshold',
+                TextType::class,
+                [
+                    'label' => 'marello.orocommerce.orocommercesettings.low_inventory_threshold.label',
+                    'tooltip' => 'marello.orocommerce.orocommercesettings.low_inventory_threshold.tooltip',
+                    'required' => true
+                ]
+            )
+            ->add(
+                'backOrder',
+                CheckboxType::class,
+                [
+                    'label' => 'marello.orocommerce.orocommercesettings.back_order.label',
+                    'tooltip' => 'marello.orocommerce.orocommercesettings.back_order.tooltip',
+                    'required' => false
                 ]
             )
             ->add(
@@ -119,14 +135,6 @@ class OroCommerceSettingsType extends AbstractType
                 [
                     'label' => 'marello.orocommerce.orocommercesettings.warehouse.label',
                     'required' => false
-                ]
-            )
-            ->add(
-                'businessUnit',
-                ChoiceType::class,
-                [
-                    'label' => 'marello.orocommerce.orocommercesettings.business_unit.label',
-                    'required' => true
                 ]
             )
             ->add(
@@ -159,22 +167,6 @@ class OroCommerceSettingsType extends AbstractType
                 [
                     'label' => 'marello.orocommerce.orocommercesettings.product_family.label',
                     'required' => true
-                ]
-            )
-            ->add(
-                'deleteRemoteDataOnDeactivation',
-                CheckboxType::class,
-                [
-                    'label' => 'marello.orocommerce.orocommercesettings.delete_remote_data_on_deactivation.label',
-                    'required' => false
-                ]
-            )
-            ->add(
-                'deleteRemoteDataOnDeletion',
-                CheckboxType::class,
-                [
-                    'label' => 'marello.orocommerce.orocommercesettings.delete_remote_data_on_deletion.label',
-                    'required' => false
                 ]
             )
             ->addEventListener(
@@ -221,19 +213,17 @@ class OroCommerceSettingsType extends AbstractType
         $form = $event->getForm();
         $paramBag = new ParameterBag([
             OroCommerceSettings::URL_FIELD => $data['url'],
-            OroCommerceSettings::USERNAME_FIELD => $data['userName'],
+            OroCommerceSettings::USERNAME_FIELD => $data['username'],
             OroCommerceSettings::KEY_FIELD => $data['key']
         ]);
 
         $key = $this->cacheKeyGenerator->generateKey($paramBag);
-        $businessUnitKey = sprintf('%s_%s', $key, CacheKeyGenerator::BUSINESS_UNIT);
         $productUnitKey = sprintf('%s_%s', $key, CacheKeyGenerator::PRODUCT_UNIT);
         $customerTaxCodeKey = sprintf('%s_%s', $key, CacheKeyGenerator::CUSTOMER_TAX_CODE);
         $priceListKey = sprintf('%s_%s_%s', $key, CacheKeyGenerator::PRICE_LIST, $data['currency']);
         $productFamilyKey = sprintf('%s_%s', $key, CacheKeyGenerator::PRODUCT_FAMILY);
         $warehouseKey = sprintf('%s_%s', $key, CacheKeyGenerator::WAREHOUSE);
 
-        $this->updateFormWithCachedData($businessUnitKey, $form, 'businessUnit', 'business_unit');
         $this->updateFormWithCachedData($productUnitKey, $form, 'productUnit', 'product_unit');
         $this->updateFormWithCachedData($customerTaxCodeKey, $form, 'customerTaxCode', 'customer_tax_code');
         $this->updateFormWithCachedData($priceListKey, $form, 'priceList', 'price_list');
@@ -253,7 +243,7 @@ class OroCommerceSettingsType extends AbstractType
             $choices = [];
             $results = $this->cache->fetch($key);
             foreach ($results as $result) {
-                $choices[$result['label']] = $result['value'];
+                $choices[$result['value']] = $result['label'];
             }
             $form->remove($field);
             $form->add(
@@ -282,8 +272,16 @@ class OroCommerceSettingsType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    public function getName()
+    {
+        return self::NAME;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getBlockPrefix()
     {
-        return self::BLOCK_PREFIX;
+        return self::NAME;
     }
 }

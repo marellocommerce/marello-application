@@ -10,16 +10,21 @@ use Marello\Bundle\OroCommerceBundle\Integration\Connector\OroCommerceProductCon
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 
-
 class OroCommerceProductExportJobTest extends AbstractOroCommerceJobTest
 {
+    /** {@inheritdoc} */
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->loadFixtures([LoadProductData::class]);
+    }
+
     public function testExportProduct()
     {
-        $referenceProduct = $this->getReference(LoadProductData::PRODUCT_1_REF);
         $productBefore = $this->managerRegistry
             ->getManagerForClass(Product::class)
             ->getRepository(Product::class)
-            ->findOneBy(['sku' => $referenceProduct->getSku()]);
+            ->findOneBy(['sku' => 'p1']);
         $this->assertEmpty($productBefore->getData());
 
         $jobLog = [];
@@ -65,7 +70,7 @@ class OroCommerceProductExportJobTest extends AbstractOroCommerceJobTest
         $productAfter = $this->managerRegistry
             ->getManagerForClass(Product::class)
             ->getRepository(Product::class)
-            ->findOneBy(['sku' => $referenceProduct->getSku()]);
+            ->findOneBy(['sku' => 'p1']);
         $productAfterData = $productAfter->getData();
         $this->assertNotEmpty($productAfterData);
         $this->assertArrayHasKey(ProductExportCreateWriter::PRODUCT_ID_FIELD, $productAfterData);

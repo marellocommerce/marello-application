@@ -28,14 +28,6 @@ class ProductExportCreateWriter extends AbstractProductExportWriter
     {
         $response = $this->transport->createProduct($data);
 
-        if (!isset($response['data'])) {
-            if (!isset($response['data'])) {
-                $this->context->addError(
-                    sprintf('Could not create product with data %s', $data['data']['attributes']['sku'])
-                );
-            }
-        }
-
         if (isset($response['data']) && isset($response['data']['type']) && isset($response['data']['id']) &&
             $response['data']['type'] === 'products') {
             $em = $this->registry->getManagerForClass(Product::class);
@@ -44,10 +36,7 @@ class ProductExportCreateWriter extends AbstractProductExportWriter
             /** @var Product $processedProduct */
             $processedProduct = $em
                 ->getRepository(Product::class)
-                ->findOneBy([
-                    'sku' => $sku,
-                    'organization' => $this->channel->getOrganization()
-                ]);
+                ->findOneBy(['sku' => $sku]);
 
             $this->processTaxCode($response);
 
@@ -71,12 +60,10 @@ class ProductExportCreateWriter extends AbstractProductExportWriter
                             $salesChannel = $sChannel;
                         }
                     }
-                    if ($salesChannel) {
-                        $this->eventDispatcher->dispatch(
-                            RemoteProductCreatedEvent::NAME,
-                            new RemoteProductCreatedEvent($processedProduct, $salesChannel)
-                        );
-                    }
+                    $this->eventDispatcher->dispatch(
+                        RemoteProductCreatedEvent::NAME,
+                        new RemoteProductCreatedEvent($processedProduct, $salesChannel)
+                    );
                 }
             }
             $this->context->incrementAddCount();

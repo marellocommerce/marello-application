@@ -6,7 +6,7 @@ use Marello\Bundle\OroCommerceBundle\ImportExport\Reader\ProductExportCreateRead
 use Marello\Bundle\OroCommerceBundle\ImportExport\Reader\ProductExportUpdateReader;
 use Marello\Bundle\ProductBundle\Entity\Product;
 
-class ProductImageExportDeleteWriter extends AbstractItemExportWriter
+class ProductImageExportDeleteWriter extends AbstractExportWriter
 {
     /**
      * @param array $data
@@ -19,10 +19,7 @@ class ProductImageExportDeleteWriter extends AbstractItemExportWriter
             /** @var Product $processedProduct */
             $processedProduct = $em
                 ->getRepository(Product::class)
-                ->findOneBy([
-                    'sku' => $data[ProductExportCreateReader::SKU_FILTER],
-                    'organization' => $this->channel->getOrganization()
-                ]);
+                ->findOneBy(['sku' => $data[ProductExportCreateReader::SKU_FILTER]]);
 
             if ($processedProduct) {
                 $productData = $processedProduct->getData();

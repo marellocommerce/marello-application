@@ -20,10 +20,7 @@ class ProductPriceExportCreateWriter extends AbstractProductExportWriter
             /** @var Product $processedProduct */
             $processedProduct = $em
                 ->getRepository(Product::class)
-                ->findOneBy([
-                    'sku' => $sku,
-                    'organization' => $this->channel->getOrganization()
-                ]);
+                ->findOneBy(['sku' => $sku]);
 
             if ($processedProduct) {
                 $productData = $processedProduct->getData();

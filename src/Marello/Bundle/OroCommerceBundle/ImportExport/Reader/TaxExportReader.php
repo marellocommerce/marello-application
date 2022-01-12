@@ -16,6 +16,12 @@ class TaxExportReader extends EntityReader
 
     /**
      * @var string
+     * @deprecated will be removed in 2.0
+     */
+    protected $code;
+
+    /**
+     * @var string
      */
     protected $entityName;
 
@@ -75,5 +81,19 @@ class TaxExportReader extends EntityReader
         }
 
         return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @deprecated will be removed in 2.0 in favour of the parent action
+     */
+    protected function initializeFromContext(ContextInterface $context)
+    {
+        if ($context->getOption('entityName') === $this->entityName) {
+            if ($context->getOption(AbstractExportWriter::ACTION_FIELD) === $this->action) {
+                $this->code = $context->getOption(self::CODE_FILTER);
+            }
+        }
+        parent::initializeFromContext($context);
     }
 }

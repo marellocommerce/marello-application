@@ -4,7 +4,7 @@ namespace Marello\Bundle\OroCommerceBundle\ImportExport\Writer;
 
 use Marello\Bundle\TaxBundle\Entity\TaxJurisdiction;
 
-class TaxJurisdictionExportCreateWriter extends AbstractItemExportWriter
+class TaxJurisdictionExportCreateWriter extends AbstractExportWriter
 {
     const TAX_JURISDICTION_ID = 'orocommerce_tax_jurisdiction_id';
     /**

@@ -5,11 +5,8 @@ namespace Marello\Bundle\OroCommerceBundle\ImportExport\Strategy;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityRepository;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use Marello\Bundle\CustomerBundle\Entity\Company;
-use Marello\Bundle\CustomerBundle\Entity\Customer;
+use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\ImportExportBundle\Strategy\Import\AbstractImportStrategy;
@@ -21,25 +18,13 @@ class OrderImportStrategy extends AbstractImportStrategy
      */
     public function process($entity)
     {
+
         if ($entity instanceof Order) {
             $channel = $this->context->getValue('channel');
             $organization = $channel->getOrganization();
             /** @var SalesChannel $salesChannel */
-            $salesChannel = $this
-                ->getEntityRepository(SalesChannel::class)
-                ->findOneBy([
-                    'integrationChannel' => $channel,
-                    'channelType' => $channel->getType()
-                ]);
-
-            if (!$salesChannel) {
-                $this->context->incrementErrorEntriesCount();
-                $this->strategyHelper->addValidationErrors([
-                    sprintf('No SalesChannel found for Order id %s', $entity->getOrderReference())
-                ], $this->context);
-                return null;
-            }
-
+            $salesChannel = $this->getEntityRepository(SalesChannel::class)
+                ->findOneBy(['name' => $channel->getName()]);
             /** @var Order $entity */
             $entity
                 ->setSalesChannel($salesChannel)
@@ -54,35 +39,35 @@ class OrderImportStrategy extends AbstractImportStrategy
                 $this->strategyHelper->importEntity(
                     $order,
                     $entity,
-                    [
-                        'id',
-                        'createdAt',
-                        'customer',
-                        'orderNumber',
-                        'data',
-                        'organization',
-                        'orderStatus'
-                    ]
+                    ['id', 'createdAt', 'customer', 'orderNumber', 'data', 'organization']
                 );
                 $order->setData(array_merge($entity->getData(), $order->getData()) ? : []);
-                $billingAddress = $this->processAddress($entity->getBillingAddress());
-                $shippingAddress = $this->processAddress($entity->getShippingAddress());
             } else {
                 $order = $entity;
-                $billingAddress = $this->processAddress($entity->getBillingAddress(), true);
-                $shippingAddress = $this->processAddress($entity->getShippingAddress(), true);
             }
-
             $order->setOrganization($organization);
             $this->processItems($order, $entity);
             $this->processCustomer($order);
-            $order
-                ->setBillingAddress($billingAddress)
-                ->setShippingAddress($shippingAddress);
+            $shippingAddress = $entity->getShippingAddress();
+            $primaryAddress = $order->getCustomer()->getPrimaryAddress();
+            if ((string)$shippingAddress === (string)$primaryAddress) {
+                $order
+                    ->setBillingAddress($primaryAddress)
+                    ->setShippingAddress($primaryAddress);
+            } else {
+                foreach ($order->getCustomer()->getAddresses() as $address) {
+                    if ((string)$shippingAddress === (string)$address) {
+                        $order
+                            ->setBillingAddress($address)
+                            ->setShippingAddress($address);
+                        break;
+                    }
+                }
+            }
 
             return $this->validateAndUpdateContext($order);
         }
-
+        
         return null;
     }
 
@@ -96,12 +81,6 @@ class OrderImportStrategy extends AbstractImportStrategy
             if (!$item->getOrder()) {
                 $item->setOrder($entityToUpdate);
             }
-            $product = $item->getProduct();
-            $order = $item->getOrder();
-            $taxCode = $product->getSalesChannelTaxCode($order->getSalesChannel()) ? : $product->getTaxCode();
-            $item
-                ->setTaxCode($taxCode)
-                ->setOrganization($order->getOrganization());
         }
     }
 
@@ -113,40 +92,34 @@ class OrderImportStrategy extends AbstractImportStrategy
         $entity = $order->getCustomer();
         if ($entity) {
             $criteria = [
-                'orocommerce_origin_id' => $entity->getOrocommerceOriginId(),
+                'firstName' => $entity->getFirstName(),
+                'lastName' => $entity->getLastName(),
                 'email' => $entity->getEmail()
             ];
 
             /** @var Customer $customer */
             $customer = $this->getEntityByCriteria($criteria, Customer::class);
             $existingPrimaryAddress = null;
-            $existingCompany = null;
             if ($customer) {
                 $existingPrimaryAddress = $customer->getPrimaryAddress();
-                $existingCompany = $customer->getCompany();
                 $this->strategyHelper->importEntity(
                     $customer,
                     $entity,
-                    ['id', 'createdAt', 'primaryAddress', 'organization', 'company']
+                    ['id', 'createdAt', 'primaryAddress', 'organization']
                 );
             } else {
                 $customer = $entity;
-            }
-            $company = $entity->getCompany();
-            if ($company && $existingCompany && $company->getName() === $existingCompany->getName()) {
-                $customer->setCompany($existingCompany);
-            } elseif ($company) {
-                $customer->setCompany($company);
             }
             if (!$customer->getOrganization() && $order->getOrganization()) {
                 $customer->setOrganization($order->getOrganization());
             }
             $primaryAddress = $entity->getPrimaryAddress();
             $primaryAddress
-                ->setCustomer($customer);
+                ->setCustomer($customer)
+                ->setOrganization($customer->getOrganization());
 
             if (!$existingPrimaryAddress) {
-                $customer->setPrimaryAddress($this->processAddress($primaryAddress, true));
+                $customer->setPrimaryAddress($this->processAddress($primaryAddress));
             } else {
                 $customer->addAddress($this->processAddress($primaryAddress));
             }
@@ -161,10 +134,9 @@ class OrderImportStrategy extends AbstractImportStrategy
 
     /**
      * @param MarelloAddress $entity
-     * @param bool $createNew
      * @return MarelloAddress
      */
-    public function processAddress(MarelloAddress $entity, $createNew = false)
+    public function processAddress(MarelloAddress $entity)
     {
         $criteria = [
             'firstName' => $entity->getFirstName(),
@@ -176,7 +148,7 @@ class OrderImportStrategy extends AbstractImportStrategy
         $address = $this->getEntityByCriteria($criteria, MarelloAddress::class);
         if ($address) {
             if ($entity->getOrganization()) {
-                $address->setCompany($entity->getOrganization());
+                $address->setOrganization($entity->getOrganization());
             }
             if ($entity->getCountry()) {
                 $address->setCountry($entity->getCountry());
@@ -199,9 +171,7 @@ class OrderImportStrategy extends AbstractImportStrategy
             if ($entity->getPhone() && strlen($entity->getPhone()) > 0) {
                 $address->setPhone($entity->getPhone());
             }
-        }
-
-        if (!$address || $createNew) {
+        } else {
             $address = $entity;
         }
 
@@ -254,11 +224,10 @@ class OrderImportStrategy extends AbstractImportStrategy
     private function validateAndUpdateContext($entity)
     {
         // validate entity
-        $validationErrors = $this->strategyHelper->validateEntity($entity, null, 'commerce');
+        $validationErrors = $this->strategyHelper->validateEntity($entity);
         if ($validationErrors) {
-            $errorPrefix = sprintf('Error for Order Id: %s', $entity->getOrderReference());
             $this->context->incrementErrorEntriesCount();
-            $this->strategyHelper->addValidationErrors($validationErrors, $this->context, $errorPrefix);
+            $this->strategyHelper->addValidationErrors($validationErrors, $this->context);
             return null;
         }
         // increment context counter
@@ -267,7 +236,6 @@ class OrderImportStrategy extends AbstractImportStrategy
         } else {
             $this->context->incrementAddCount();
         }
-
         return $entity;
     }
 }

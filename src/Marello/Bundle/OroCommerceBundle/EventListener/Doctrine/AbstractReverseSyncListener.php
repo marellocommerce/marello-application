@@ -4,8 +4,7 @@ namespace Marello\Bundle\OroCommerceBundle\EventListener\Doctrine;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\UnitOfWork;
-use Oro\Bundle\SecurityBundle\Encoder\SymmetricCrypterInterface;
-use Oro\Component\MessageQueue\Client\MessageProducerInterface;
+use Oro\Component\DependencyInjection\ServiceLink;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 abstract class AbstractReverseSyncListener
@@ -16,14 +15,9 @@ abstract class AbstractReverseSyncListener
     protected $tokenStorage;
 
     /**
-     * @var MessageProducerInterface
+     * @var ServiceLink
      */
-    protected $producer;
-    
-    /**
-     * @var SymmetricCrypterInterface
-     */
-    private $crypter;
+    protected $syncScheduler;
 
     /**
      * @var EntityManager
@@ -43,17 +37,14 @@ abstract class AbstractReverseSyncListener
 
     /**
      * @param TokenStorageInterface $tokenStorage
-     * @param MessageProducerInterface $producer
-     * @param SymmetricCrypterInterface $crypter
+     * @param ServiceLink $schedulerServiceLink
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
-        MessageProducerInterface $producer,
-        SymmetricCrypterInterface $crypter
+        ServiceLink $schedulerServiceLink
     ) {
         $this->tokenStorage = $tokenStorage;
-        $this->producer = $producer;
-        $this->crypter = $crypter;
+        $this->syncScheduler = $schedulerServiceLink;
     }
 
     /**
@@ -68,23 +59,5 @@ abstract class AbstractReverseSyncListener
         if (!$this->tokenStorage->getToken() || !$this->tokenStorage->getToken()->getUser()) {
             return;
         }
-    }
-
-    /**
-     * @param array $connection_parameters
-     * @param array $excludedKeys
-     * @return string
-     */
-    protected function generateConnectionParametersKey(array $connection_parameters, array $excludedKeys = [])
-    {
-        ksort($connection_parameters);
-        $key = '';
-        foreach ($connection_parameters as $k => $v) {
-            if (!in_array($k, $excludedKeys)) {
-                $key = sprintf('%s/%s:%s', $key, $k, $v);
-            }
-        }
-
-        return hash('crc32', $key);
     }
 }

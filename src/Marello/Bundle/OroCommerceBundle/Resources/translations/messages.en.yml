@@ -7,7 +7,6 @@ marello:
             key.label: "API Key"
             enterprise.label: 'Is Enterprise Edition'
             currency.label: 'Currency'
-            business_unit.label: 'Business Unit'
             product_unit.label: 'Product Unit'
             customer_tax_code.label: 'Customer Tax Code'
             price_list.label: 'Price List'
@@ -16,17 +15,10 @@ marello:
             inventory_threshold.label: 'Inventory Threshold'
             low_inventory_threshold.label: 'Low Inventory Threshold'
             back_order.label: 'Backorder'
-            delete_remote_data_on_deactivation.label: 'Delete Remote Synchronized Data On Deactivation'
-            delete_remote_data_on_deletion.label: 'Delete Remote Synchronized Data On Deletion'
-            data.label: 'Data'
-            saleschannelgroup.label: 'Sales Channel Group'
         channel_type:
             label: 'OroCommerce'
         connector:
-            customer.label: 'Customer Connector'
-            customer_user.label: 'CustomerUser Connector'
             order.label: 'Order Connector'
-            payment_term.label: 'PaymentTerm Connector'
             product.label: 'Product Connector'
             product_price.label: 'Product Price Connector'
             product_image.label: 'Product Image Connector'
@@ -38,6 +30,3 @@ marello:
         connection_validation:
             button.text: 'Check OroCommerce Connection'
             success.message: 'OroCommerce Connection is valid'
-
-        entity:
-            orocommerce_origin_id.label: Origin ID

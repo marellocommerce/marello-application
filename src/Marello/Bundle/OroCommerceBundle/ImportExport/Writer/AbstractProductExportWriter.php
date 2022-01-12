@@ -4,9 +4,8 @@ namespace Marello\Bundle\OroCommerceBundle\ImportExport\Writer;
 
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
 
-abstract class AbstractProductExportWriter extends AbstractItemExportWriter
+abstract class AbstractProductExportWriter extends AbstractExportWriter
 {
-    const SECTION_FIELD = 'orocommerce';
     const PRODUCT_ID_FIELD = 'orocommerce_product_id';
     const UNIT_PRECISION_ID_FIELD = 'orocommerce_unit_precision_id';
     const PRICE_ID_FIELD = 'orocommerce_price_id';
@@ -20,14 +19,6 @@ abstract class AbstractProductExportWriter extends AbstractItemExportWriter
     {
         if (isset($data['data']['relationships']) && isset($data['data']['relationships']['taxCode'])) {
             $taxCode = $data['data']['relationships']['taxCode'];
-            $taxCodeType = $taxCode['data']['type'];
-            if (!isset($taxCode['data']['attributes'])) {
-                foreach ($data['included'] as $includedItem) {
-                    if (isset($includedItem['type']) && $includedItem['type'] === $taxCodeType) {
-                        $taxCode['data']['attributes'] = $includedItem['attributes'];
-                    }
-                }
-            }
             if (isset($taxCode['data']) && isset($taxCode['data']['id']) &&
                 isset($taxCode['data']['attributes']) && isset($taxCode['data']['attributes']['code'])
             ) {

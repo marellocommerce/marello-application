@@ -3,7 +3,6 @@
 namespace Marello\Bundle\OroCommerceBundle\EventListener\Doctrine;
 
 use Doctrine\ORM\Event\OnFlushEventArgs;
-use Marello\Bundle\OroCommerceBundle\Entity\OroCommerceSettings;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Reader\ProductExportUpdateReader;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Reader\TaxExportReader;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractExportWriter;
@@ -11,11 +10,7 @@ use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\TaxCodeExportCreateWrit
 use Marello\Bundle\OroCommerceBundle\Integration\Connector\OroCommerceTaxCodeConnector;
 use Marello\Bundle\OroCommerceBundle\Integration\OroCommerceChannelType;
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
-use Oro\Bundle\EntityBundle\Event\OroEventManager;
-use Oro\Bundle\IntegrationBundle\Async\Topics;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
-use Oro\Component\MessageQueue\Client\Message;
-use Oro\Component\MessageQueue\Client\MessagePriority;
 
 class ReverseSyncTaxCodeListener extends AbstractReverseSyncListener
 {
@@ -140,36 +135,11 @@ class ReverseSyncTaxCodeListener extends AbstractReverseSyncListener
                 }
 
                 if (!empty($connector_params)) {
-                    /** @var OroCommerceSettings $transport */
-                    $transport = $integrationChannel->getTransport();
-                    if ($integrationChannel->isEnabled()) {
-                        $this->producer->send(
-                            sprintf('%s.orocommerce', Topics::REVERS_SYNC_INTEGRATION),
-                            new Message(
-                                [
-                                    'integration_id'       => $integrationChannel->getId(),
-                                    'connector_parameters' => $connector_params,
-                                    'connector'            => OroCommerceTaxCodeConnector::TYPE,
-                                    'transport_batch_size' => 100,
-                                ],
-                                MessagePriority::NORMAL
-                            )
-                        );
-                    } elseif (false === $transport->isDeleteRemoteDataOnDeactivation()) {
-                        $transportData = $transport->getData();
-                        $transportData[AbstractExportWriter::NOT_SYNCHRONIZED]
-                        [OroCommerceTaxCodeConnector::TYPE]
-                        [$this->generateConnectionParametersKey($connector_params)] = $connector_params;
-                        $transport->setData($transportData);
-                        $this->entityManager->persist($transport);
-                        /** @var OroEventManager $eventManager */
-                        $eventManager = $this->entityManager->getEventManager();
-                        $eventManager->removeEventListener(
-                            'onFlush',
-                            'marello_orocommerce.event_listener.doctrine.reverse_sync_tax_code'
-                        );
-                        $this->entityManager->flush($transport);
-                    }
+                    $this->syncScheduler->getService()->schedule(
+                        $integrationChannel->getId(),
+                        OroCommerceTaxCodeConnector::TYPE,
+                        $connector_params
+                    );
 
                     $this->processedEntities[] = $entity;
                 }
@@ -186,17 +156,15 @@ class ReverseSyncTaxCodeListener extends AbstractReverseSyncListener
         $channels = $this->entityManager
             ->getRepository(Channel::class)
             ->findBy([
-                'type' => OroCommerceChannelType::TYPE
+                'type' => OroCommerceChannelType::TYPE,
+                'enabled' => true
             ]);
 
         $integrationChannels = [];
         foreach ($channels as $channel) {
             if ($channel->getSynchronizationSettings()->offsetGetOr('isTwoWaySyncEnabled', false) &&
                 in_array(OroCommerceTaxCodeConnector::TYPE, $channel->getConnectors())) {
-                $connectors = $channel->getConnectors();
-                if (in_array(OroCommerceTaxCodeConnector::TYPE, $connectors)) {
-                    $integrationChannels[] = $channel;
-                }
+                $integrationChannels[] = $channel;
             }
         }
 
