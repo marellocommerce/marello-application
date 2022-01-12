@@ -22,7 +22,6 @@
         beStrictAboutTestsThatDoNotTestAnything="false"
         beStrictAboutTodoAnnotatedTests="false"
         beStrictAboutCoversAnnotation="false"
-        checkForUnintentionallyCoveredCode="false"
         enforceTimeLimit="false"
         verbose="false">
 
@@ -38,7 +37,8 @@
             <directory>vendor/marellocommerce/*/*/*/*/*/Tests/Unit</directory>
         </testsuite>
         <testsuite name="functional">
-            <directory>vendor/oro/platform/src/Oro/Bundle/TestFrameworkBundle/Tests/Functional</directory>
+            <file>vendor/oro/platform/src/Oro/Bundle/TestFrameworkBundle/Tests/Functional/ConfigTranslationTest.php</file>
+            <file>vendor/oro/platform/src/Oro/Bundle/TestFrameworkBundle/Tests/Functional/SchemaTest.php</file>
             <directory>vendor/marellocommerce/*/*/*/*/*/Tests/Functional</directory>
         </testsuite>
         <testsuite name="selenium">
@@ -80,7 +80,7 @@
         <const name="PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PASS" value="admin"/>
     </php>
     <logging>
-        <log type="junit" target="var/logs/junit.xml" logIncompleteSkipped="true"/>
+        <log type="junit" target="var/logs/junit.xml"/>
     </logging>
     <listeners>
         <listener class="JohnKary\PHPUnit\Listener\SpeedTrapListener">
