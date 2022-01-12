@@ -5,6 +5,7 @@ parameters:
     database_name:          marello_application
     database_user:          root
     database_password:      ~
+    database_server_version: ~
     database_driver_options: []
 
     mailer_transport:       smtp
