@@ -2,8 +2,10 @@
 
 namespace Marello\Bundle\OrderBundle\Datagrid;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\DataGridBundle\Action\ActionPermissionInterface;
+use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\RefundBundle\Entity\Refund;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 
 class OrderActionPermissionProvider implements ActionPermissionInterface
@@ -50,9 +52,23 @@ class OrderActionPermissionProvider implements ActionPermissionInterface
      * @param ResultRecordInterface $record
      * @return bool
      */
-    protected function isRefundApplicable($record)
+    protected function isRefundApplicable(ResultRecordInterface $record)
     {
         if (!$this->hasWorkflowStep($record)) {
+            return false;
+        }
+
+        /** @var Order $order */
+        $order = $record->getRootEntity();
+
+        $refunds = $this->objectManager->getRepository(Refund::class)
+            ->findBy(['order' => $order]);
+        $refundsAmount = 0;
+        foreach ($refunds as $refund) {
+            $refundsAmount += $refund->getRefundAmount();
+        }
+
+        if ($order->getGrandTotal() - $refundsAmount <= 0) {
             return false;
         }
 

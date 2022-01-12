@@ -11,9 +11,9 @@ class DocumentTableExtensionTest extends TestCase
 {
     protected $extension;
 
-    public function setUp()
+    public function setUp(): void
     {
-        /** @var DocumentTableProvider|\PHPUnit_Framework_MockObject_MockObject $tableProvider */
+        /** @var DocumentTableProvider|\PHPUnit\Framework\MockObject\MockObject $tableProvider */
         $tableProvider = $this->createMock(DocumentTableProvider::class);
 
         $this->extension = new DocumentTableExtension($tableProvider);

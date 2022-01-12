@@ -32,7 +32,7 @@ class ChainEntityLocalizationProviderTest extends WebTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->initClient();
         

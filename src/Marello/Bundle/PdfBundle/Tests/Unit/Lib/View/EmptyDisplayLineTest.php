@@ -9,7 +9,7 @@ class EmptyDisplayLineTest extends TestCase
 {
     protected $line;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->line = new EmptyDisplayLine();
     }

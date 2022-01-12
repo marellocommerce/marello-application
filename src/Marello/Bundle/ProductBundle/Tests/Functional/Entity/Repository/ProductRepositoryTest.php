@@ -10,7 +10,7 @@ use Marello\Bundle\InventoryBundle\Tests\Functional\DataFixtures\LoadInventoryDa
 
 class ProductRepositoryTest extends WebTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->initClient([], self::generateBasicAuthHeader());
         $this->client->useHashNavigation(true);

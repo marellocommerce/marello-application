@@ -3,7 +3,7 @@
 namespace Marello\Bundle\PurchaseOrderBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\EmailBundle\Migrations\Data\ORM\AbstractEmailFixture;
 
 class AddPurchaseOrderAdviseEmailTemplate extends AbstractEmailFixture implements DependentFixtureInterface

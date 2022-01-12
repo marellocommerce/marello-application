@@ -13,10 +13,10 @@ class UPSMethodTypeIdentifierGeneratorTest extends TestCase
 {
     public function testGenerateIdentifier()
     {
-        /** @var Channel|\PHPUnit_Framework_MockObject_MockObject $channel */
+        /** @var Channel|\PHPUnit\Framework\MockObject\MockObject $channel */
         $channel = $this->createMock(Channel::class);
 
-        /** @var ShippingService|\PHPUnit_Framework_MockObject_MockObject $service */
+        /** @var ShippingService|\PHPUnit\Framework\MockObject\MockObject $service */
         $service = $this->createMock(ShippingService::class);
         $service->expects($this->once())
             ->method('getCode')

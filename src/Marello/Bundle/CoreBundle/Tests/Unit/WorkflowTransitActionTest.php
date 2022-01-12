@@ -4,6 +4,7 @@ namespace Marello\Bundle\CoreBundle\Tests\Unit;
 
 use Marello\Bundle\CoreBundle\Workflow\Action\WorkflowTransitAction;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
+use Oro\Component\Action\Exception\InvalidParameterException;
 use Oro\Component\ConfigExpression\ContextAccessor;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -11,10 +12,10 @@ use Symfony\Component\PropertyAccess\PropertyPath;
 
 class WorkflowTransitActionTest extends TestCase
 {
-    /** @var ContextAccessor|\PHPUnit_Framework_MockObject_MockObject $contextAccessor */
+    /** @var ContextAccessor|\PHPUnit\Framework\MockObject\MockObject $contextAccessor */
     protected $contextAccessor;
 
-    /** @var WorkflowManager|\PHPUnit_Framework_MockObject_MockObject $workflowManager */
+    /** @var WorkflowManager|\PHPUnit\Framework\MockObject\MockObject $workflowManager */
     protected $workflowManager;
 
     /**
@@ -22,8 +23,7 @@ class WorkflowTransitActionTest extends TestCase
      */
     protected $action;
 
-
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->contextAccessor = new ContextAccessor();
 
@@ -46,10 +46,6 @@ class WorkflowTransitActionTest extends TestCase
         $this->action->setDispatcher($dispatcher);
     }
 
-    /**
-     * Get Symfony PropertyPath
-     * @return \PHPUnit_Framework_MockObject_MockObject
-     */
     protected function getPropertyPath()
     {
         return $this->getMockBuilder(PropertyPath::class)
@@ -57,25 +53,21 @@ class WorkflowTransitActionTest extends TestCase
             ->getMock();
     }
 
-    /**
-     * @expectedException \Oro\Component\Action\Exception\InvalidParameterException
-     * @expectedExceptionMessage Parameter "transitionName" is required.
-     */
     public function testInitializeExceptionNoWorkflowItem()
     {
+        $this->expectException(InvalidParameterException::class);
+        $this->expectExceptionMessage('Parameter "transitionName" is required.');
         $this->action->initialize([]);
     }
 
-    /**
-     * @expectedException \Oro\Component\Action\Exception\InvalidParameterException
-     * @expectedExceptionMessage Parameter "transitionName" is required.
-     */
     public function testInitializeExceptionNoTransitionName()
     {
         $options = [
             'transitionNameInvalidArrayKey' => $this->getPropertyPath(),
         ];
 
+        $this->expectException(InvalidParameterException::class);
+        $this->expectExceptionMessage('Parameter "transitionName" is required.');
         $this->action->initialize($options);
     }
 
@@ -86,6 +78,5 @@ class WorkflowTransitActionTest extends TestCase
         ];
 
         $this->action->initialize($options);
-        $this->assertAttributeEquals($options, 'options', $this->action);
     }
 }

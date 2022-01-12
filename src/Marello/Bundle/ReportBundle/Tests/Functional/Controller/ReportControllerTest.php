@@ -24,7 +24,7 @@ class ReportControllerTest extends WebTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->initClient(
             ['debug' => false],
@@ -57,7 +57,7 @@ class ReportControllerTest extends WebTestCase
         $result = $this->client->getResponse();
 
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
-        $this->assertContains($reportName, $result->getContent());
+        $this->assertStringContainsString($reportName, $result->getContent());
     }
 
     /**

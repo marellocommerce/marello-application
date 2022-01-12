@@ -2,11 +2,12 @@
 
 namespace Marello\Bundle\ReturnBundle\Form\Type;
 
-use Oro\Bundle\FormBundle\Form\Type\OroDateType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+
+use Oro\Bundle\FormBundle\Form\Type\OroDateType;
 
 use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
 use Marello\Bundle\ReturnBundle\Form\EventListener\ReturnTypeSubscriber;
@@ -35,16 +36,17 @@ class ReturnType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('salesChannel', SalesChannelSelectType::class);
-        $builder->add('returnItems', ReturnItemCollectionType::class);
-        $builder->add('receivedAt', OroDateType::class,[
-            'label' => 'marello.return.returnentity.received_at.label',
-            'required' => false
-        ])
-            ->add('trackTraceCode', TextType::class,[
-                'label' => 'marello.return.returnentity.track_trace_code.label',
-                'required' => false
-            ]);
+        $builder
+            ->add('salesChannel', SalesChannelSelectType::class)
+            ->add('returnItems', ReturnItemCollectionType::class)
+            ->add(
+                'trackTraceCode',
+                TextType::class,
+                [
+                    'label' => 'marello.return.returnentity.track_trace_code.label',
+                    'required' => false
+                ]
+            );
 
         $builder->addEventSubscriber($this->returnTypeSubscriber);
     }
@@ -58,7 +60,7 @@ class ReturnType extends AbstractType
             'data_class' => ReturnEntity::class,
             'constraints' => [
                 new ReturnEntityConstraint()
-            ],
+            ]
         ]);
     }
 

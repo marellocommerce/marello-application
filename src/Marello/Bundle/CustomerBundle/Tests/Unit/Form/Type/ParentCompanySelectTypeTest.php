@@ -15,7 +15,7 @@ class ParentCompanySelectTypeTest extends TestCase
      */
     protected $type;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->type = new ParentCompanySelectType();
     }

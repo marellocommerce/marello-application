@@ -29,7 +29,7 @@ class CompositeFormChangesProviderTest extends TestCase
      */
     protected $context;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->providersData = [
             ['class' => 'class1', 'type' => 'type1', 'data' => 'data1'],
@@ -79,12 +79,10 @@ class CompositeFormChangesProviderTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \LogicException
-     * @expectedExceptionMessage requiredDataClass should be specified
-     */
     public function testProcessFormChangesNoRequiredClass()
     {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('requiredDataClass should be specified');
         $this->compositeFormChangesProvider->processFormChanges($this->context);
     }
 

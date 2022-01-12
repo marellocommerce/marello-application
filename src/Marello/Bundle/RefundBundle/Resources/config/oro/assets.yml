@@ -1,0 +1,3 @@
+css:
+    inputs:
+        - 'bundles/marellorefund/css/scss/main.scss'

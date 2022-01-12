@@ -15,7 +15,7 @@ class PaymentTermDeletePermissionProviderTest extends TestCase
 
     protected $provider;
 
-    public function setUp()
+    public function setUp(): void
     {
         $paymentTerm = $this->getEntity(PaymentTerm::class, [
             'id' => 1,
@@ -23,10 +23,10 @@ class PaymentTermDeletePermissionProviderTest extends TestCase
             'term' => 14
         ]);
 
-        /** @var DoctrineHelper|\PHPUnit_Framework_MockObject_MockObject $doctrineHelper */
+        /** @var DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject $doctrineHelper */
         $doctrineHelper = $this->createMock(DoctrineHelper::class);
 
-        /** @var PaymentTermProvider|\PHPUnit_Framework_MockObject_MockObject $paymentTermProvider */
+        /** @var PaymentTermProvider|\PHPUnit\Framework\MockObject\MockObject $paymentTermProvider */
         $paymentTermProvider = $this->createMock(PaymentTermProvider::class);
         $paymentTermProvider->expects(static::once())
             ->method('getDefaultPaymentTerm')

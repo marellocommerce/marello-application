@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\Tests\Unit\Processor;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 use PHPUnit\Framework\TestCase;
 
@@ -26,7 +26,7 @@ class NoteActivityProcessorTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->entityManager = $this
             ->getMockBuilder(ObjectManager::class)
@@ -40,7 +40,7 @@ class NoteActivityProcessorTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->processor);
     }
@@ -79,37 +79,37 @@ class NoteActivityProcessorTest extends TestCase
 
     /**
      * @test
-     * @expectedException \Exception
      */
     public function handleNonObjectString()
     {
+        $this->expectException(\Exception::class);
         $this->processor->addNote('string', []);
     }
 
     /**
      * @test
-     * @expectedException \Exception
      */
     public function handleNonObjectFloat()
     {
+        $this->expectException(\Exception::class);
         $this->processor->addNote(1.2000, []);
     }
 
     /**
      * @test
-     * @expectedException \Exception
      */
     public function handleNonObjectInteger()
     {
+        $this->expectException(\Exception::class);
         $this->processor->addNote(5, []);
     }
 
     /**
      * @test
-     * @expectedException \Exception
      */
     public function handleNonObjectArray()
     {
+        $this->expectException(\Exception::class);
         $this->processor->addNote(['item1', 'item2'], []);
     }
 
@@ -132,7 +132,11 @@ class NoteActivityProcessorTest extends TestCase
         $items = $this->createPurchaseItems();
 
         $result = $this->processor->getMessage($items);
-        $this->assertContains('Quantities received for: ', $result, 'Message contains "Quantities received for: "');
+        $this->assertStringContainsString(
+            'Quantities received for: ',
+            $result,
+            'Message contains "Quantities received for: "'
+        );
     }
 
     /**

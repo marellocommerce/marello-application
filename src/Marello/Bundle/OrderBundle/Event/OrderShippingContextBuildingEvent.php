@@ -3,7 +3,7 @@
 namespace Marello\Bundle\OrderBundle\Event;
 
 use Marello\Bundle\ShippingBundle\Context\ShippingContextInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class OrderShippingContextBuildingEvent extends Event
 {

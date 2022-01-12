@@ -156,10 +156,9 @@ services:
             class: 'Marello\Bundle\ProductBundle\VirtualFields\QueryDesigner\VirtualFieldsSelectQueryConverter'
             arguments:
                 - '@oro_query_designer.query_designer.manager'
-                - '@oro_entity.virtual_field_provider.chain'
-                - '@doctrine'
-            calls:
-                - [setVirtualRelationProvider, ['@oro_entity.virtual_relation_provider.chain']]
+                - '@oro_entity.virtual_field_provider'
+                - '@oro_entity.virtual_relation_provider'
+                - '@oro_entity.doctrine_helper'
 
     marello_product.mass_action.sales_channels_assign:
         class: 'Marello\Bundle\ProductBundle\Datagrid\Extension\MassAction\SalesChannelsAssignMassAction'

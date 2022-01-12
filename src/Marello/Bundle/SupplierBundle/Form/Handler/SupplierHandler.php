@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\SupplierBundle\Form\Handler;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
 use Symfony\Component\Form\FormInterface;

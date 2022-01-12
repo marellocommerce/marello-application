@@ -14,12 +14,12 @@ use Marello\Bundle\PricingBundle\DependencyInjection\Configuration;
 class LabelVATAwareFormatterTest extends TestCase
 {
     /**
-     * @var ConfigManager|\PHPUnit_Framework_MockObject_MockObject
+     * @var ConfigManager|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $configManager;
 
     /**
-     * @var TranslatorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var TranslatorInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $translator;
 
@@ -28,7 +28,7 @@ class LabelVATAwareFormatterTest extends TestCase
      */
     protected $labelVATAwareFormatter;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->configManager = $this->getMockBuilder(ConfigManager::class)
             ->disableOriginalConstructor()

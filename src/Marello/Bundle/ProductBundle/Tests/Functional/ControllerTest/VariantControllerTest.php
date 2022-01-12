@@ -11,7 +11,7 @@ use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 
 class VariantControllerTest extends WebTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->initClient(
             [],

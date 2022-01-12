@@ -3,7 +3,7 @@
 namespace Marello\Bundle\UPSBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\ShippingBundle\Entity\ShippingMethodConfig;
 use Marello\Bundle\ShippingBundle\Entity\ShippingMethodTypeConfig;
 use Marello\Bundle\ShippingBundle\Migrations\Data\ORM\AbstractMoveConfigValuesToSettings;
