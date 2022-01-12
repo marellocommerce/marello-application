@@ -34,3 +34,6 @@ oro:
                     label: 'Credit (Inspection OK)'
                 ship_back:
                     label: 'Ship back to customer'
+            attribute:
+                received_at:
+                    label: 'Received At'

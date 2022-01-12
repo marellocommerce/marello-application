@@ -15,7 +15,7 @@ class BalancedInventoryJsonApiTest extends RestJsonApiTestCase
 {
     const TESTING_ENTITY = 'marellobalancedinventorylevels';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->loadFixtures([

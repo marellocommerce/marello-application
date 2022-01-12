@@ -21,22 +21,22 @@ use Marello\Bundle\UPSBundle\Connection\Validator\Request\Factory\UpsConnectionV
 class UpsConnectionValidatorTest extends TestCase
 {
     /**
-     * @var UpsConnectionValidatorRequestFactoryInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var UpsConnectionValidatorRequestFactoryInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $requestFactory;
 
     /**
-     * @var UpsClientFactoryInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var UpsClientFactoryInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $clientFactory;
 
     /**
-     * @var UpsConnectionValidatorResultFactoryInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var UpsConnectionValidatorResultFactoryInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $resultFactory;
 
     /**
-     * @var LoggerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var LoggerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $logger;
 
@@ -45,7 +45,7 @@ class UpsConnectionValidatorTest extends TestCase
      */
     private $validator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->requestFactory = $this->createMock(UpsConnectionValidatorRequestFactoryInterface::class);
         $this->clientFactory = $this->createMock(UpsClientFactoryInterface::class);

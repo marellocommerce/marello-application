@@ -50,7 +50,7 @@ class RefundController extends AbstractController
      *     path="/create/{id}",
      *     name="marello_refund_create"
      * )
-     * @Template("MarelloRefundBundle:Refund:update.html.twig")
+     * @Template("MarelloRefundBundle:Refund:create.html.twig")
      * @AclAncestor("marello_refund_create")
      *
      * @param Request $request

@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\PackingBundle\EventListener;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\PackingBundle\Entity\PackingSlip;
 use Marello\Bundle\PackingBundle\Event\AfterPackingSlipCreationEvent;

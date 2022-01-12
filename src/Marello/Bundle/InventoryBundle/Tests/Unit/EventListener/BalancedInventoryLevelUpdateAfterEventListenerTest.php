@@ -20,7 +20,7 @@ use Marello\Bundle\InventoryBundle\Model\InventoryBalancer\InventoryBalancerTrig
 class BalancedInventoryLevelUpdateAfterEventListenerTest extends TestCase
 {
     /**
-     * @var InventoryUpdateContext|\PHPUnit_Framework_MockObject_MockObject
+     * @var InventoryUpdateContext|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $inventoryUpdateContext;
 
@@ -30,12 +30,12 @@ class BalancedInventoryLevelUpdateAfterEventListenerTest extends TestCase
     protected $listener;
 
     /**
-     * @var InventoryManager|\PHPUnit_Framework_MockObject_MockObject
+     * @var InventoryManager|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $inventoryManager;
 
     /**
-     * @var MessageProducerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var MessageProducerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $producer;
 
@@ -47,12 +47,12 @@ class BalancedInventoryLevelUpdateAfterEventListenerTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->inventoryManager = $this->createMock(InventoryManager::class);
 
         $this->producer = $this->createMock(MessageProducerInterface::class);
-        /** @var ConfigManager|\PHPUnit_Framework_MockObject_MockObject $configManager */
+        /** @var ConfigManager|\PHPUnit\Framework\MockObject\MockObject $configManager */
         $configManager =  $this->createMock(ConfigManager::class);
         $calculator = new InventoryBalancerTriggerCalculator($configManager);
 
@@ -79,12 +79,14 @@ class BalancedInventoryLevelUpdateAfterEventListenerTest extends TestCase
 
     /**
      * Test that the event is not handled because the context is for an inventory level
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage To few arguments given in the context,
-        no balancedInventoryLevel or salesChannelGroup given, please check your data
      */
     public function testThrowInvalidArgumentExceptionOnToFewDataGivenInContext()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(<<<EOF
+To few arguments given in the context, no balancedInventoryLevel or salesChannelGroup given, please check your data
+EOF
+        );
         $context = new InventoryUpdateContext();
         $context->setIsVirtual(true);
         $event = $this->prepareEvent($context);
@@ -95,7 +97,7 @@ class BalancedInventoryLevelUpdateAfterEventListenerTest extends TestCase
     public function testRebalanceThresholdHasBeenReachedAndTriggerIsBeingSend()
     {
         $context = new InventoryUpdateContext();
-        /** @var BalancedInventoryLevelInterface|\PHPUnit_Framework_MockObject_MockObject $level */
+        /** @var BalancedInventoryLevelInterface|\PHPUnit\Framework\MockObject\MockObject $level */
         $level = $this->createMock(BalancedInventoryLevelInterface::class);
 
         $context->setValue(BalancedInventoryUpdateAfterEventListener::BALANCED_LEVEL_CONTEXT_KEY, $level);
@@ -107,7 +109,7 @@ class BalancedInventoryLevelUpdateAfterEventListenerTest extends TestCase
         $context->setIsVirtual(true);
         $event = $this->prepareEvent($context);
 
-        /** @var InventoryBalancerTriggerCalculator|\PHPUnit_Framework_MockObject_MockObject $calculator */
+        /** @var InventoryBalancerTriggerCalculator|\PHPUnit\Framework\MockObject\MockObject $calculator */
         $calculator = $this->createMock(InventoryBalancerTriggerCalculator::class);
 
         $calculator

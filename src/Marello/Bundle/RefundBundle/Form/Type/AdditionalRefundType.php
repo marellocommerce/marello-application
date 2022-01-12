@@ -2,16 +2,18 @@
 
 namespace Marello\Bundle\RefundBundle\Form\Type;
 
-use Marello\Bundle\RefundBundle\Entity\RefundItem;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\GreaterThan;
-use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+
+use Marello\Bundle\RefundBundle\Entity\RefundItem;
+use Marello\Bundle\TaxBundle\Form\Type\TaxCodeSelectType;
 
 class AdditionalRefundType extends AbstractType
 {
@@ -28,7 +30,11 @@ class AdditionalRefundType extends AbstractType
                 'constraints' => [
                     new NotNull(),
                 ]
-            ]);
+            ])
+            ->add(
+                'taxCode',
+                TaxCodeSelectType::class
+            );
 
         $builder
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {

@@ -13,7 +13,7 @@ use Marello\Bundle\RuleBundle\RuleFiltration\EnabledRuleFiltrationServiceDecorat
 class EnabledRuleFiltrationServiceTest extends TestCase
 {
     /**
-     * @var RuleFiltrationServiceInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var RuleFiltrationServiceInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $service;
 
@@ -22,7 +22,7 @@ class EnabledRuleFiltrationServiceTest extends TestCase
      */
     private $serviceDecorator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->service = $this->getMockBuilder(RuleFiltrationServiceInterface::class)
             ->setMethods(['getFilteredRuleOwners'])->getMockForAbstractClass();
@@ -75,7 +75,7 @@ class EnabledRuleFiltrationServiceTest extends TestCase
     /**
      * @param RuleInterface $rule
      *
-     * @return RuleOwnerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @return RuleOwnerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private function createRuleOwner(RuleInterface $rule)
     {

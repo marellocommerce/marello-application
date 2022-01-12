@@ -221,17 +221,26 @@ datagrids:
             query:
                 select:
                     - i
+                    - taxCode.code as taxCodeCode
                 from:
                     - { table: MarelloRefundBundle:RefundItem, alias: i}
                 where:
                     and:
                         - i.refund = :refund_id
                         - i.orderItem IS NULL
+                join:
+                    left:
+                        taxCode:
+                            join: i.taxCode
+                            alias: taxCode
             bind_parameters:
                 refund_id: refundId
         columns:
             name:
-                label:      marello.refund.refunditem.name.label
+                label:              marello.refund.refunditem.name.label
+            taxCodeCode:
+                label:              marello.tax.taxcode.code.label
+                frontend_type:      string
             refundAmount:
                 label:              marello.refund.refunditem.refund_amount.label
                 type:               localized_number
@@ -248,12 +257,14 @@ datagrids:
                     - pu.name AS productUnit
                     - oi.productSku as productSku
                     - oi.productName as productName
+                    - taxCode.code as taxCodeCode
                 from:
                     - { table: MarelloRefundBundle:RefundItem, alias: i}
                 join:
                     left:
                         - { join: i.orderItem, alias: oi }
                         - { join: oi.productUnit, alias: pu }
+                        - { join: i.taxCode, alias: taxCode }
                 where:
                     and:
                         - i.refund = :refund_id
@@ -277,6 +288,9 @@ datagrids:
                 label:              marello.order.orderitem.product_unit.label
                 frontend_type:      string
                 data_name:          productUnit
+            taxCodeCode:
+                label:              marello.tax.taxcode.code.label
+                frontend_type:      string
             refundAmount:
                 label:              marello.refund.refunditem.refund_amount.label
                 type:               localized_number

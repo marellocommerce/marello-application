@@ -14,7 +14,7 @@ class OrderJsonApiTest extends RestJsonApiTestCase
 {
     const TESTING_ENTITY = 'marelloorders';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->loadFixtures([

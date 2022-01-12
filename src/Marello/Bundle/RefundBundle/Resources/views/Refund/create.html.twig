@@ -2,24 +2,36 @@
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
 
-{% set formAction = path('marello_refund_create') %}
+{% if form.vars.value.id %}
+    {% set formAction = path('marello_refund_update', { 'id': form.vars.value.id }) %}
+{% else %}
+    {% set formAction = path('marello_refund_create', { 'id': form.vars.value.order.id }) %}
+{% endif %}
 
 {% block navButtons %}
     {{ UI.cancelButton(path('marello_refund_index')) }}
     {% set html = UI.saveAndCloseButton() %}
-    {% if is_granted('inventory.vehicle_update') %}
+    {% if is_granted('marello_refund_update') %}
         {% set html = html ~ UI.saveAndStayButton() %}
     {% endif %}
     {{ UI.dropdownSaveButton({ 'html': html }) }}
 {% endblock navButtons %}
 
+{% set options = form.vars.options|default({})|merge({
+    'route': 'marello_refund_form_create',
+    'prefix': 'refund',
+    'routeParams': {id: form.vars.value.order.id|default(0)},
+    'organization': form.vars.value and form.vars.value.organization is defined and form.vars.value.organization ? form.vars.value.organization.id : null,
+}) %}
+{% set pageComponent = {module: 'marellolayout/js/app/components/form-changes-component', options: options} %}
+
 {% block pageHeader %}
     {% if form.vars.value.id %}
         {% set breadcrumbs = {
-        'entity':      form.vars.value,
-        'indexPath':   path('marello_refund_index'),
-        'indexLabel': 'marello.refund.entity_plural_label'|trans,
-        'entityTitle': form.vars.value.refundNumber
+            'entity':      form.vars.value,
+            'indexPath':   path('marello_refund_index'),
+            'indexLabel': 'marello.refund.entity_plural_label'|trans,
+            'entityTitle': form.vars.value.refundNumber
         } %}
         {{ parent() }}
     {% else %}
@@ -30,20 +42,119 @@
 
 {% block content_data %}
     {% set id = 'marello-refund-create' %}
+    {% set additionalItems %}
+        <div class="refund-line-items"
+             data-page-component-module="oroui/js/app/components/view-component"
+             data-page-component-options="{{ {
+                 view: 'marellolayout/js/app/views/abstract-items-view',
+                 prices: prices|default({})
+             }|json_encode }}"
+             data-layout="separate">
+            {{ form_widget(form.additionalItems) }}
+            {{ form_errors(form.additionalItems) }}
+        </div>
+    {% endset %}
 
-    {% set dataBlocks = [{
-        'title': 'General'|trans,
-        'class': 'active',
-        'subblocks': [{
-            'title': '',
-            'data': [
-                form_rest(form),
-            ]
-        }]
-    }] %}
+    {% set totals %}
+        <div
+             data-page-component-module="oroui/js/app/components/view-component"
+             data-page-component-options="{{ {
+                 view: 'marellorefund/js/app/views/refund-totals-view',
+                 data: data|default({
+                     'currency':entity.order.currency,
+                     'subtotalLabel': 'marello.refund.subtotal.label'|trans,
+                     'taxtotalLabel':  'marello.refund.tax_total.label'|trans,
+                     'grandtotalLabel':  'marello.refund.grand_total.label'|trans
+                 })
+             }|json_encode }}"
+             data-layout="separate">
+            <div class="title">
+                <span class="widget-title">{{ 'marello.refund.datablock.refund_totals.label'|trans }}</span>
+            </div>
+            <div class="totals-container" data-totals-container></div>
+        </div>
+    {% endset %}
+
+    {% set balance %}
+        <div
+             data-page-component-module="oroui/js/app/components/view-component"
+             data-page-component-options="{{ {
+                 view: 'marellorefund/js/app/views/refund-balance-view',
+                 data: data|default({
+                     'currency':entity.order.currency,
+                     'refundstotalLabel': 'marello.refund.refunds_total.label'|trans,
+                     'balanceLabel':  'marello.refund.refund_balance.label'|trans
+                 })
+             }|json_encode }}"
+             data-layout="separate">
+            <div class="title">
+                <span class="widget-title">{{ 'marello.refund.datablock.refund_balance.label'|trans }}</span>
+            </div>
+            <div class="grand_total">
+                {{ UI.renderProperty('marello.refund.order.grand_total.label'|trans, entity.order.grandTotal|oro_format_currency({'currency':entity.order.currency})) }}
+            </div>
+            <div class="balance-container" data-balance-container></div>
+        </div>
+    {% endset %}
+
+    {% set refundItems %}
+    <div class="refund-line-items">
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ UI.renderProperty('marello.refund.refund_number.label'|trans, entity.refundNumber) }}
+                    {% set steps = marello_core_get_current_workflow_steps(entity) %}
+                    {% for stepLabel, stepName in steps %}
+                        {{ UI.renderProperty( stepLabel|trans({}, "workflows"), stepName|trans({}, "workflows") ) }}
+                    {% endfor %}
+                    {{ UI.renderProperty('marello.order.payment_method.label'|trans, entity.order.paymentMethod) }}
+                </div>
+                <div class="responsive-block">
+                    {{ totals }}
+                    {{ balance }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endset %}
+
+    {% set dataBlocks = [
+        {
+            'title': 'General'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    refundItems
+                ]
+            }]
+        },
+        {
+            'title': 'marello.refund.ordered_items.label'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    form_widget(form.items),
+                ]
+            }]
+        },
+        {
+            'title': 'marello.refund.additional_items.label'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    additionalItems,
+                ]
+            }]
+        }
+    ] %}
+
     {% set data = {
-        'formErrors': form_errors(form)? form_errors(form) : null,
+        'formErrors': form_errors(form) ? form_errors(form) : null,
         'dataBlocks': dataBlocks,
     } %}
+
     {{ parent() }}
 {% endblock content_data %}

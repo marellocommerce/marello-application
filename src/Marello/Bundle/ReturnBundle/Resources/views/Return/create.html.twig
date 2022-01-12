@@ -49,7 +49,7 @@
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
                     <div class="box-type1">
-                        {{ form_row(form.receivedAt) }}
+                        {{ form_row(form.salesChannel) }}
                         {{ form_row(form.trackTraceCode) }}
                     </div>
                 </div>
@@ -70,8 +70,7 @@
             'class': 'active',
             'subblocks': [
                 { 'data' : [
-                    generalInformation,
-                    form_row(form.salesChannel)
+                        generalInformation
                     ]
                 }
             ]

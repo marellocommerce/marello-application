@@ -6,6 +6,7 @@ use Marello\Bundle\PaymentBundle\Condition\HasApplicablePaymentMethods;
 use Marello\Bundle\PaymentBundle\Context\PaymentContext;
 use Marello\Bundle\PaymentBundle\Method\Provider\PaymentMethodProviderInterface;
 use Marello\Bundle\PaymentBundle\Provider\PaymentMethodsViewsProviderInterface;
+use Oro\Component\ConfigExpression\Exception\InvalidArgumentException;
 use Oro\Component\Testing\Unit\EntityTrait;
 
 class HasApplicablePaymentMethodsTest extends \PHPUnit\Framework\TestCase
@@ -24,7 +25,7 @@ class HasApplicablePaymentMethodsTest extends \PHPUnit\Framework\TestCase
     protected $paymentMethodsViewsProvider;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->paymentMethodProvider = $this->createMock(PaymentMethodProviderInterface::class);
 
@@ -39,7 +40,7 @@ class HasApplicablePaymentMethodsTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->condition, $this->paymentMethodProvider);
     }
@@ -49,12 +50,10 @@ class HasApplicablePaymentMethodsTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(HasApplicablePaymentMethods::NAME, $this->condition->getName());
     }
 
-    /**
-     * @expectedException \Oro\Component\ConfigExpression\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Missing "paymentContext" option
-     */
     public function testInitializeInvalid()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Missing "paymentContext" option');
         $this->assertInstanceOf(
             'Oro\Component\ConfigExpression\Condition\AbstractCondition',
             $this->condition->initialize([])
@@ -116,11 +115,11 @@ class HasApplicablePaymentMethodsTest extends \PHPUnit\Framework\TestCase
 
         $key = '@' . HasApplicablePaymentMethods::NAME;
 
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
         $this->assertArrayHasKey($key, $result);
 
         $resultSection = $result[$key];
-        $this->assertInternalType('array', $resultSection);
+        $this->assertIsArray($resultSection);
         $this->assertArrayHasKey('parameters', $resultSection);
         $this->assertContains($stdClass, $resultSection['parameters']);
     }

@@ -11,7 +11,7 @@ class ChannelTypeTest extends TestCase
     /** @var ChannelType */
     protected $channel;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->channel = new ChannelType();
     }

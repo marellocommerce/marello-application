@@ -4,7 +4,7 @@ namespace Marello\Bundle\ManualShippingBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\ManualShippingBundle\Entity\ManualShippingSettings;
 use Marello\Bundle\ManualShippingBundle\Integration\ManualShippingChannelType;
 use Marello\Bundle\ManualShippingBundle\Method\ManualShippingMethodType;

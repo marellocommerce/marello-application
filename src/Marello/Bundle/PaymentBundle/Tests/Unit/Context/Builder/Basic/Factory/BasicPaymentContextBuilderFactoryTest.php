@@ -18,7 +18,7 @@ class BasicPaymentContextBuilderFactoryTest extends \PHPUnit\Framework\TestCase
      */
     private $sourceEntityMock;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->lineItemsCollectionFactoryMock = $this->createMock(PaymentLineItemCollectionFactoryInterface::class);
         $this->sourceEntityMock = $this->createMock(Order::class);

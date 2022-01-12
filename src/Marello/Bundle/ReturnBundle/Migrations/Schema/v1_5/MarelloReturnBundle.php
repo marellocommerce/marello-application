@@ -18,7 +18,7 @@ class MarelloReturnBundle implements Migration
     {
         $table = $schema->getTable('marello_return_return');
 
-        $table->addColumn('received_at', 'datetime', []);
-        $table->addColumn('track_trace_code', 'string', ['length' => 255]);
+        $table->addColumn('received_at', 'datetime', ['notnull' => false]);
+        $table->addColumn('track_trace_code', 'string', ['notnull' => false, 'length' => 255]);
     }
 }

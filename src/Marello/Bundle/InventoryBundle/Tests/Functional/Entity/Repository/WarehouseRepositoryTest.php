@@ -10,7 +10,7 @@ class WarehouseRepositoryTest extends WebTestCase
     /** @var WarehouseRepository */
     protected $repository;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->initClient();
 

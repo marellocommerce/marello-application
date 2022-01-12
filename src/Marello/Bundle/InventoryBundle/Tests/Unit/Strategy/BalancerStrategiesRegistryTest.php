@@ -14,7 +14,7 @@ class BalancerStrategiesRegistryTest extends TestCase
      */
     protected $balancerStrategiesRegistry;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->balancerStrategiesRegistry = new BalancerStrategiesRegistry();
     }
@@ -70,7 +70,7 @@ class BalancerStrategiesRegistryTest extends TestCase
 
     /**
      * @param string $identifier
-     * @return BalancerStrategyInterface|\PHPUnit_Framework_MockObject_MockObject $strategy
+     * @return BalancerStrategyInterface|\PHPUnit\Framework\MockObject\MockObject $strategy
      */
     private function mockStrategy($identifier)
     {

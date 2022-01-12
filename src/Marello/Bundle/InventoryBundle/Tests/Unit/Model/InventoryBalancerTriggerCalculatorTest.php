@@ -12,13 +12,13 @@ use Marello\Bundle\InventoryBundle\Model\InventoryBalancer\InventoryBalancerTrig
 
 class InventoryBalancerTriggerCalculatorTest extends TestCase
 {
-    /** @var ConfigManager|\PHPUnit_Framework_MockObject_MockObject $configManager */
+    /** @var ConfigManager|\PHPUnit\Framework\MockObject\MockObject $configManager */
     protected $configManager;
 
-    /** @var BalancedInventoryLevelInterface|\PHPUnit_Framework_MockObject_MockObject $virtualLevel */
+    /** @var BalancedInventoryLevelInterface|\PHPUnit\Framework\MockObject\MockObject $virtualLevel */
     protected $balancedInventoryLevel;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->configManager = $this->getMockBuilder(ConfigManager::class)
             ->disableOriginalConstructor()
@@ -35,7 +35,7 @@ class InventoryBalancerTriggerCalculatorTest extends TestCase
 
         $calculator = new InventoryBalancerTriggerCalculator($this->configManager);
 
-        /** @var BalancedInventoryLevelInterface|\PHPUnit_Framework_MockObject_MockObject $balancedInventoryLevel */
+        /** @var BalancedInventoryLevelInterface|\PHPUnit\Framework\MockObject\MockObject $balancedInventoryLevel */
         $this->setupBalancedInventoryLevel(20, 100);
 
         $this->assertTrue($calculator->isBalanceThresholdReached($this->balancedInventoryLevel));
@@ -50,7 +50,7 @@ class InventoryBalancerTriggerCalculatorTest extends TestCase
 
         $calculator = new InventoryBalancerTriggerCalculator($this->configManager);
 
-        /** @var BalancedInventoryLevelInterface|\PHPUnit_Framework_MockObject_MockObject $balancedInventoryLevel */
+        /** @var BalancedInventoryLevelInterface|\PHPUnit\Framework\MockObject\MockObject $balancedInventoryLevel */
         $this->setupBalancedInventoryLevel(50, 100);
 
         $this->assertFalse($calculator->isBalanceThresholdReached($this->balancedInventoryLevel));
@@ -62,7 +62,7 @@ class InventoryBalancerTriggerCalculatorTest extends TestCase
     public function testBalancerThresholdCalculation()
     {
         $calculator = new InventoryBalancerTriggerCalculator($this->configManager);
-        /** @var BalancedInventoryLevelInterface|\PHPUnit_Framework_MockObject_MockObject $balancedInventoryLevel */
+        /** @var BalancedInventoryLevelInterface|\PHPUnit\Framework\MockObject\MockObject $balancedInventoryLevel */
         $this->setupBalancedInventoryLevel(50, 100);
 
         $this->assertTrue($calculator->calculate($this->balancedInventoryLevel, 0.5));

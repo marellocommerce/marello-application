@@ -19,11 +19,11 @@ class RowTotalResolverTest extends TestCase
     protected $resolver;
 
     /**
-     * @var TaxCalculatorInterface| \PHPUnit_Framework_MockObject_MockObject
+     * @var TaxCalculatorInterface| \PHPUnit\Framework\MockObject\MockObject
      */
     protected $calculator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->calculator = $this->getMockBuilder(TaxCalculatorInterface::class)
             ->disableOriginalConstructor()
@@ -32,7 +32,7 @@ class RowTotalResolverTest extends TestCase
         $this->resolver = new RowTotalResolver($this->calculator);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->calculator, $this->resolver, $this->settingsProvider);
     }

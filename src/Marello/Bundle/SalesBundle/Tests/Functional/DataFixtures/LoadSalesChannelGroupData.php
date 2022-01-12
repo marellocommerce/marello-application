@@ -4,7 +4,7 @@ namespace Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 
 class LoadSalesChannelGroupData extends AbstractFixture implements DependentFixtureInterface

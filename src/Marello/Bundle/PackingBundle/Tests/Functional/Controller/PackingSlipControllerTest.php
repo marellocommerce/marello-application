@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PackingSlipControllerTest extends WebTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->initClient([], $this->generateBasicAuthHeader());
         $this->loadFixtures([
@@ -24,7 +24,7 @@ class PackingSlipControllerTest extends WebTestCase
         );
 
         $this->assertHtmlResponseStatusCodeEquals($this->client->getResponse(), Response::HTTP_OK);
-        $this->assertContains('marello-packingslips', $crawler->html());
+        $this->assertStringContainsString('marello-packingslips', $crawler->html());
     }
 
     public function testViewAction()
@@ -35,6 +35,6 @@ class PackingSlipControllerTest extends WebTestCase
         );
 
         $this->assertHtmlResponseStatusCodeEquals($this->client->getResponse(), Response::HTTP_OK);
-        $this->assertContains('marello-packingslip-items', $crawler->html());
+        $this->assertStringContainsString('marello-packingslip-items', $crawler->html());
     }
 }

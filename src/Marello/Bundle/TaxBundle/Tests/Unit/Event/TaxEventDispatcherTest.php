@@ -14,7 +14,7 @@ class TaxEventDispatcherTest extends TestCase
 {
     public function testDispatch()
     {
-        /** @var EventDispatcherInterface|\PHPUnit_Framework_MockObject_MockObject $eventDispatcher */
+        /** @var EventDispatcherInterface|\PHPUnit\Framework\MockObject\MockObject $eventDispatcher */
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
 
         $taxDispatcher = new TaxEventDispatcher($eventDispatcher);

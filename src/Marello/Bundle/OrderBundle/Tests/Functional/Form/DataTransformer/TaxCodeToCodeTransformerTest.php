@@ -6,6 +6,7 @@ use Marello\Bundle\OrderBundle\Form\DataTransformer\TaxCodeToCodeTransformer;
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
 use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxCodeData;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class TaxCodeToCodeTransformerTest extends WebTestCase
 {
@@ -16,7 +17,7 @@ class TaxCodeToCodeTransformerTest extends WebTestCase
      */
     protected $transformer;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->initClient();
 
@@ -50,11 +51,9 @@ class TaxCodeToCodeTransformerTest extends WebTestCase
         );
     }
 
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
-     */
     public function testReverseTransformFail()
     {
+        $this->expectException(TransformationFailedException::class);
         $wrongCode = 'this-is-wrong-code';
         $this->transformer->reverseTransform($wrongCode);
     }

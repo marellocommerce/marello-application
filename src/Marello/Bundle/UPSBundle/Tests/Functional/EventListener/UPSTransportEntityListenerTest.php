@@ -12,7 +12,7 @@ use Marello\Bundle\UPSBundle\Tests\Functional\DataFixtures\LoadShippingMethodsCo
 
 class UPSTransportEntityListenerTest extends WebTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->initClient([], static::generateBasicAuthHeader());
         $this->loadFixtures(
