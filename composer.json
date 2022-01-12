@@ -28,7 +28,7 @@
     },
     "require": {
         "oro/platform-enterprise": "4.1.*",
-        "marellocommerce/marello": "3.1.*"
+        "marellocommerce/marello": "~3.1.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
