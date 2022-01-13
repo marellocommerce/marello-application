@@ -36,7 +36,6 @@
         "oro/platform": "4.2.*",
         "oro/platform-serialised-fields": "4.2.*",
         "oro/calendar-bundle": "4.2.*",
-        "oro/health-check-bundle": "4.2.*",
         "oro/oauth2-server": "4.2.*",
         "marellocommerce/marello": "~3.2.0"
     },
