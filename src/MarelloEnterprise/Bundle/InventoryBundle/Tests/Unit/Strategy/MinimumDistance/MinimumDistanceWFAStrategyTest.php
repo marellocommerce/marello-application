@@ -14,7 +14,7 @@ use MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumDistance\MinimumDis
 class MinimumDistanceWFAStrategyTest extends TestCase
 {
     /**
-     * @var AddressesDistanceCalculatorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var AddressesDistanceCalculatorInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $distanceCalculator;
 
@@ -23,7 +23,7 @@ class MinimumDistanceWFAStrategyTest extends TestCase
      */
     protected $minimumDistanceWFAStrategy;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->distanceCalculator = $this->createMock(AddressesDistanceCalculatorInterface::class);
         $this->minimumDistanceWFAStrategy = new MinimumDistanceWFAStrategy($this->distanceCalculator);
@@ -70,7 +70,7 @@ class MinimumDistanceWFAStrategyTest extends TestCase
         $warehouse1 = $this->mockWarehouse($whAddress1);
         $warehouse2 = $this->mockWarehouse($whAddress2);
         $warehouse3 = $this->mockWarehouse($whAddress3);
-        /** @var Order|\PHPUnit_Framework_MockObject_MockObject $order **/
+        /** @var Order|\PHPUnit\Framework\MockObject\MockObject $order **/
         $order = $this->getMockBuilder(Order::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -141,8 +141,8 @@ class MinimumDistanceWFAStrategyTest extends TestCase
     }
 
     /**
-     * @param MarelloAddress|\PHPUnit_Framework_MockObject_MockObject $address
-     * @return Warehouse|\PHPUnit_Framework_MockObject_MockObject
+     * @param MarelloAddress|\PHPUnit\Framework\MockObject\MockObject $address
+     * @return Warehouse|\PHPUnit\Framework\MockObject\MockObject
      */
     private function mockWarehouse($address)
     {

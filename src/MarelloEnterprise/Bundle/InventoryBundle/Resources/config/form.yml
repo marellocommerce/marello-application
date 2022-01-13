@@ -14,7 +14,7 @@ services:
         parent: oro_form.autocomplete.search_handler
         arguments:
             - 'Marello\Bundle\InventoryBundle\Entity\Warehouse'
-            - ['label']
+            - ['code', 'label']
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: warehouses, acl_resource: marello_inventory_inventory_view }
 
@@ -23,7 +23,7 @@ services:
         parent: oro_form.autocomplete.search_handler
         arguments:
             - 'Marello\Bundle\InventoryBundle\Entity\Warehouse'
-            - ['label']
+            - ['code', 'label']
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: system_group_global_warehouses, acl_resource: marello_inventory_inventory_view }
 

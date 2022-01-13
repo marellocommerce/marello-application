@@ -16,17 +16,17 @@ use MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WFARuleRepository
 class OrderWarehousesProviderTest extends TestCase
 {
     /**
-     * @var WFAStrategiesRegistry|\PHPUnit_Framework_MockObject_MockObject
+     * @var WFAStrategiesRegistry|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $strategiesRegistry;
 
     /**
-     * @var RuleFiltrationServiceInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var RuleFiltrationServiceInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $rulesFiltrationService;
 
     /**
-     * @var WFARuleRepository|\PHPUnit_Framework_MockObject_MockObject
+     * @var WFARuleRepository|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $wfaRuleRepository;
 
@@ -35,7 +35,7 @@ class OrderWarehousesProviderTest extends TestCase
      */
     protected $orderWarehousesProvider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->strategiesRegistry = $this->createMock(WFAStrategiesRegistry::class);
         $this->rulesFiltrationService = $this->createMock(RuleFiltrationServiceInterface::class);
@@ -63,7 +63,7 @@ class OrderWarehousesProviderTest extends TestCase
         $callStrategiesTimes,
         OrderWarehouseResult $expectedResult
     ) {
-        /** @var Order|\PHPUnit_Framework_MockObject_MockObject $order **/
+        /** @var Order|\PHPUnit\Framework\MockObject\MockObject $order **/
         $order = $this->getMockBuilder(Order::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -109,8 +109,8 @@ class OrderWarehousesProviderTest extends TestCase
             [
                 'firstStrategyResults' => [$result1],
                 'secondStrategyResults' => [$result2],
-                'callStrategiesTimes' => 1,
-                'expectedResult' => $result1
+                'callStrategiesTimes' => 2,
+                'expectedResult' => $result2
             ],
             [
                 'firstStrategyResults' => [],
@@ -123,7 +123,7 @@ class OrderWarehousesProviderTest extends TestCase
 
     /**
      * @param string $strategy
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit\Framework\MockObject\MockObject
      */
     private function mockWfaRule($strategy)
     {
@@ -138,7 +138,7 @@ class OrderWarehousesProviderTest extends TestCase
 
     /**
      * @param array $results
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit\Framework\MockObject\MockObject
      */
     private function mockStrategy(array $results)
     {

@@ -13,17 +13,17 @@ use MarelloEnterprise\Bundle\GoogleApiBundle\Client\Factory\GoogleApiClientFacto
 class GoogleApiClientFactoryTest extends TestCase
 {
     /**
-     * @var RestClientFactoryInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var RestClientFactoryInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $restClientFactory;
 
     /**
-     * @var ConfigManager|\PHPUnit_Framework_MockObject_MockObject
+     * @var ConfigManager|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $configManager;
 
     /**
-     * @var |\PHPUnit_Framework_MockObject_MockObject
+     * @var |\PHPUnit\Framework\MockObject\MockObject
      */
     protected $url = 'test_url';
 
@@ -32,7 +32,7 @@ class GoogleApiClientFactoryTest extends TestCase
      */
     protected $googleApiClientFactory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->restClientFactory = $this->createMock(RestClientFactoryInterface::class);
         $this->configManager = $this->getMockBuilder(ConfigManager::class)

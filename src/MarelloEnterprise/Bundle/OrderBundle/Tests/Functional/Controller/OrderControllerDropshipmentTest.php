@@ -36,7 +36,7 @@ class OrderControllerDropshipmentTest extends WebTestCase
      */
     protected $doctrine;
     
-    public function setUp()
+    public function setUp(): void
     {
         $this->initClient(
             [],
@@ -117,9 +117,20 @@ class OrderControllerDropshipmentTest extends WebTestCase
      */
     public function testAssigningOwnWarehouse(Order $entity)
     {
-        $workflowItem = $this->workflowManager->getWorkflowItem($entity, 'marello_order_b2c_workflow_1');
-        $this->workflowManager->transit($workflowItem, 'payment_received');
+        $workflowItem = $this->workflowManager
+            ->getWorkflowItem($entity, 'marello_order_b2c_new_workflow_1');
+        if (!$workflowItem) {
+            $workflowItem = $this->workflowManager
+                ->startWorkflow('marello_order_b2c_new_workflow_1', $entity, 'pending');
+        }
         $this->workflowManager->transit($workflowItem, 'invoice');
+        $data = $workflowItem->getData();
+        $data
+            ->set('payment_reference', 'payment_reference')
+            ->set('payment_details', 'payment_details')
+            ->set('total_paid', 100);
+        $workflowItem->setData($data);
+        $this->workflowManager->transit($workflowItem, 'payment_received');
         $this->workflowManager->transit($workflowItem, 'prepare_shipping');
 
         /** @var PackingSlip $packingSlip */
@@ -221,9 +232,20 @@ class OrderControllerDropshipmentTest extends WebTestCase
      */
     public function testAssigningOwnAndExternalWarehouse(Order $entity)
     {
-        $workflowItem = $this->workflowManager->getWorkflowItem($entity, 'marello_order_b2c_workflow_1');
-        $this->workflowManager->transit($workflowItem, 'payment_received');
+        $workflowItem = $this->workflowManager
+            ->getWorkflowItem($entity, 'marello_order_b2c_new_workflow_1');
+        if (!$workflowItem) {
+            $workflowItem = $this->workflowManager
+                ->startWorkflow('marello_order_b2c_new_workflow_1', $entity, 'pending');
+        }
         $this->workflowManager->transit($workflowItem, 'invoice');
+        $data = $workflowItem->getData();
+        $data
+            ->set('payment_reference', 'payment_reference')
+            ->set('payment_details', 'payment_details')
+            ->set('total_paid', 100);
+        $workflowItem->setData($data);
+        $this->workflowManager->transit($workflowItem, 'payment_received');
         $this->workflowManager->transit($workflowItem, 'prepare_shipping');
 
         /** @var PackingSlip[] $packingSlips */

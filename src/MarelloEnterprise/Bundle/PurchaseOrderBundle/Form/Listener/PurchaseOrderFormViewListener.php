@@ -9,6 +9,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class PurchaseOrderFormViewListener
 {
     const WAREHOUSE_BLOCK_NAME = 'warehouse';
+    const BILLING_SHIPPING_BLOCK_NAME = 'billing_shipping';
 
     /**
      * @var TranslatorInterface
@@ -41,9 +42,8 @@ class PurchaseOrderFormViewListener
      */
     protected function addWarehouseBlock(ScrollData $scrollData, $html)
     {
-        $blockLabel = $this->translator->trans('marelloenterprise.purchaseorder.warehouse.delivery_location.label');
-        $scrollData->addNamedBlock(self::WAREHOUSE_BLOCK_NAME, $blockLabel, 10);
-        $subBlockId = $scrollData->addSubBlock(self::WAREHOUSE_BLOCK_NAME);
-        $scrollData->addSubBlockData(self::WAREHOUSE_BLOCK_NAME, $subBlockId, $html, 'warehouse');
+        if ($scrollData->hasBlock(self::BILLING_SHIPPING_BLOCK_NAME)) {
+            $scrollData->addSubBlockData(self::BILLING_SHIPPING_BLOCK_NAME, 0, $html, 'warehouse');
+        }
     }
 }

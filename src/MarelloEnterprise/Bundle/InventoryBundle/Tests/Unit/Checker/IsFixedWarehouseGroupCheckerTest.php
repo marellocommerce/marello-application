@@ -21,7 +21,7 @@ class IsFixedWarehouseGroupCheckerTest extends TestCase
      */
     protected $isFixedWarehouseGroupChecker;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->isFixedWarehouseGroupChecker = new IsFixedWarehouseGroupChecker();
     }
