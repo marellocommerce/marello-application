@@ -6,6 +6,7 @@ parameters:
     database_user:      root
     database_password:  ~
     database_driver_options: []
+    database_server_version: ~
 
     mailer_transport:   smtp
     mailer_host:        127.0.0.1
@@ -57,3 +58,7 @@ parameters:
     message_queue_transport: 'dbal'
     message_queue_transport_config: ~
     deployment_type: ~
+
+    # Post processors binary
+    liip_imagine.jpegoptim.binary: null
+    liip_imagine.pngquant.binary: null
