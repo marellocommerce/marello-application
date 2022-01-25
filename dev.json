@@ -86,11 +86,14 @@
             "bin/console cache:clear --env test",
             "php ./bin/phpunit --color --testsuite=\"functional\""
         ],
-        "test-extended": [
+        "test-install": [
             "rm -rf var/cache/*",
             "rm -rf var/logs/*",
             "sed -i -e 's/installed:.*/installed: ~/g' config/parameters_test.yml",
-            "bin/console oro:install --env test --organization-name Oro --user-name admin --user-email admin@example.com --user-firstname John --user-lastname Doe --user-password admin --sample-data n --application-url http://localhost --drop-database --timeout 3600 --skip-translations --skip-assets --formatting-code=en_US --language=en",
+            "bin/console oro:install --env test --organization-name Oro --user-name admin --user-email admin@example.com --user-firstname John --user-lastname Doe --user-password admin --sample-data n --application-url http://localhost --drop-database --timeout 3600 --skip-translations --skip-assets --formatting-code=en_US --language=en"
+        ],
+        "test-extended": [
+            "@test-install",
             "php ./bin/phpunit --color --testsuite=\"unit\"",
             "php ./bin/phpunit --color --testsuite=\"functional\"",
             "php ./bin/phpcs --standard=vendor/marellocommerce/marello/phpcs.xml -p vendor/marellocommerce/ --report-file=var/logs/phpcs.xml"
