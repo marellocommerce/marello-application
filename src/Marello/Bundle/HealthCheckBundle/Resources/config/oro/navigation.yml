@@ -1,0 +1,20 @@
+navigation:
+    menu_config:
+        items:
+            integration_statuses:
+                label: marello.healthcheck.menu.integration_statuses.label
+                route: marello_healthcheck_integration_statuses_index
+                extras:
+                    routes: ['marello_healthcheck_integration_status_*']
+                    position: 30
+        tree:
+            application_menu:
+                children:
+                    system_tab:
+                        children:
+                            integrations_submenu:
+                                children:
+                                    integration_statuses: ~
+
+    titles:
+        marello_healthcheck_integration_statuses_index: ~
