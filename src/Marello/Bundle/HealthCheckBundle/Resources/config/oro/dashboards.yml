@@ -1,0 +1,34 @@
+dashboards:
+    widgets:
+        integration_status_widget:
+            label:       marello.healthcheck.dashboard.last_integration_statuses.label
+            route:       oro_dashboard_itemized_data_widget
+            route_parameters: { bundle: MarelloHealthCheckBundle, name: lastIntegrationStatuses }
+            acl:         oro_integration_view
+            description: marello.healthcheck.dashboard.last_integration_statuses.description
+            icon:        bundles/orodashboard/img/no_icon.png
+            data_items:
+                code:
+                    data_provider: '@marello_health_check.provider.datagrid.last_integration_statuses_data_provider->getCodeValue($widgetOptions$)'
+                    label: false # Not used, but required parameters
+                    template: false
+                dateRange:
+                    data_provider: '@marello_health_check.provider.datagrid.last_integration_statuses_data_provider->getDateRangeValue($widgetOptions$)'
+                    label: false
+                    template: false
+            configuration:
+                code:
+                    type: Symfony\Component\Form\Extension\Core\Type\ChoiceType
+                    options:
+                        label: marello.healthcheck.integration_status.code.label
+                        placeholder: marello.healthcheck.integration_status.all.label
+                        choices:
+                            oro.integration.integration_status.failed.label: '0'
+                            oro.integration.integration_status.competed.label: '1'
+                    show_on_widget: true
+                dateRange:
+                    type: Oro\Bundle\DashboardBundle\Form\Type\WidgetDateRangeType
+                    options:
+                        label: oro.dashboard.date_range.label
+                        value_types: true
+                    show_on_widget: true

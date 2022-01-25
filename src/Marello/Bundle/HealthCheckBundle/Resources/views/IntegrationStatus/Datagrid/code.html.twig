@@ -1,0 +1,5 @@
+{% if value == constant('Oro\\Bundle\\IntegrationBundle\\Entity\\Status::STATUS_COMPLETED') %}
+    <span style="color: #519808">{{ 'oro.integration.integration_status.competed.label'|trans }}</span>
+{% else %}
+    <span style="color: #c81717">{{ 'oro.integration.integration_status.failed.label'|trans }} <i class="fa-exclamation-triangle"></i></span>
+{% endif %}
