@@ -23,7 +23,7 @@ dashboards:
                         label: marello.healthcheck.integration_status.code.label
                         placeholder: marello.healthcheck.integration_status.all.label
                         choices:
-                            oro.integration.integration_status.failed.label: '0'
+                            oro.integration.integration_status.failed.label: '2'
                             oro.integration.integration_status.competed.label: '1'
                     show_on_widget: true
                 dateRange:
