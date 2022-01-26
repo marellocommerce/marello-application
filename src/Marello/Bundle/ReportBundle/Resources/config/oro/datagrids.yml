@@ -233,7 +233,7 @@ datagrids:
                         - oi.productName
                         - SUM(COALESCE(ri.quantity, 0)) AS quantityReturned
                         - SUM(COALESCE(oi.quantity, 0)) AS quantityOrdered
-                        - SUM(COALESCE(ri.quantity, 0)) / SUM(COALESCE(oi.quantity, 0)) AS percentageReturned
+                        - CAST(SUM(COALESCE(ri.quantity, 0)) AS decimal) / SUM(COALESCE(oi.quantity, 0)) AS percentageReturned
                     from:
                         - { table: MarelloOrderBundle:OrderItem, alias: oi }
                     join:
