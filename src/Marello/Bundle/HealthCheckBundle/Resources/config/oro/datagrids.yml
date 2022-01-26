@@ -74,7 +74,7 @@ datagrids:
                     options:
                         field_options:
                             choices:
-                                oro.integration.integration_status.failed.label: '0'
+                                oro.integration.integration_status.failed.label: '2' # See Oro\Bundle\IntegrationBundle\Entity\Status::STATUS_FAILED
                                 oro.integration.integration_status.competed.label: '1'
                 message:
                     data_name: s.message
@@ -84,7 +84,7 @@ datagrids:
                     type: datetime
             default:
                 code:
-                    value: '0'
+                    value: '2'
 
     marello-last-integration-statuses-grid:
         extends: marello-base-integration-statuses-grid
