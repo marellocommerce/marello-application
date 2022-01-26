@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\InventoryBundle\Tests\Functional\Controller;
+namespace Marello\Bundle\HealthCheckBundle\Tests\Functional\Controller;
 
 use Oro\Bundle\IntegrationBundle\Tests\Functional\DataFixtures\LoadStatusData;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
