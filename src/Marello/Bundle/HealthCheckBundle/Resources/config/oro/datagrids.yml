@@ -59,7 +59,7 @@ datagrids:
                     type: string
                 enabled:
                     data_name: c.enabled
-                    type: boolean
+                    type: choice
                     options:
                         field_options:
                             choices:
@@ -70,7 +70,7 @@ datagrids:
                     type: string
                 code:
                     data_name: s.code
-                    type: boolean
+                    type: choice
                     options:
                         field_options:
                             choices:
