@@ -1,0 +1,20 @@
+marello:
+    healthcheck:
+        integration_status:
+            plural_label: Integration Statuses
+            date.label: Created At
+            code.label: Connector Status
+            all.label: All
+        menu:
+            integration_statuses:
+                label: Integration Statuses
+        dashboard:
+            last_integration_statuses:
+                label: Last Integration Statuses
+                description: Displays last 10 integration statuses
+                view_all: View All
+
+oro:
+    integration:
+        status:
+            entity_plural_label: Integrations Statuses
