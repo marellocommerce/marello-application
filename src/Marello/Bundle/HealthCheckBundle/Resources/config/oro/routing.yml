@@ -1,0 +1,4 @@
+marello_integration_status:
+    resource: "@MarelloHealthCheckBundle/Controller/IntegrationStatusController.php"
+    type:     annotation
+    prefix:   /integration
