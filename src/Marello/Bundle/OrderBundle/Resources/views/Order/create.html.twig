@@ -47,7 +47,17 @@
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
                     <div class="box-type1">
-                        {{ form_row(form.company) }}
+                        <div
+                            data-page-component-module="oroui/js/app/components/view-component"
+                            data-page-component-options="{{ {
+                                view: 'marelloorder/js/app/views/order-company-view',
+                                selectors: {
+                                    company: '.marello-customer-company-select-container'
+                                }
+                            }|json_encode }}"
+                            data-layout="separate">
+                            {{ form_row(form.company) }}
+                        </div>
                         <div data-page-component-module="marellocustomer/js/app/components/customer-selection-component">
                             {{ form_row(form.customer) }}
                         </div>

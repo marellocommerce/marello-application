@@ -133,6 +133,15 @@ services:
         tags:
             - { name: marello.form_changes_data_provider, class: 'Marello\Bundle\OrderBundle\Entity\Order', type: shippingAddress, priority: 30 }
 
+    marello_order.provider.form_changes.company_customer:
+        class: Marello\Bundle\OrderBundle\Provider\OrderCompanyCustomerFormChangesProvider
+        arguments:
+            - '@templating'
+            - '@form.factory'
+            - '@doctrine'
+        tags:
+            - { name: marello.form_changes_data_provider, class: 'Marello\Bundle\OrderBundle\Entity\Order', type: company, priority: 35 }
+
     marello_order.provider.form_changes.totals:
         class: Marello\Bundle\OrderBundle\Provider\OrderTotalsProvider
         arguments:

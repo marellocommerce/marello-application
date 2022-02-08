@@ -1,8 +1,6 @@
 services:
     marello_order.form.type.order:
         class: Marello\Bundle\OrderBundle\Form\Type\OrderType
-        arguments:
-            - '@marello_sales.repository.sales_channel'
         tags:
             - { name: form.type }
 
