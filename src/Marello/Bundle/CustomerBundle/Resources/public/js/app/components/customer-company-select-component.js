@@ -26,15 +26,14 @@ define(function(require) {
 
             this.$valueElement.on('change', _.bind(this.updateData, this));
             if (this.$valueElement.val()) {
-                this.updateData();
+                this.updateData(null, true);
             }
-            this.$valueElement.trigger('change');
         },
 
         /**
          * Handle company selection
          */
-        updateData: function() {
+        updateData: function(event, withoutTriggeringEvent) {
             var value = this.$valueElement.val();
             var changes = {};
             changes.from = this.getData() || {};
@@ -50,7 +49,7 @@ define(function(require) {
             this.saveData(storedData);
             changes.to = storedData;
 
-            if (changes.to !== changes.from) {
+            if (!withoutTriggeringEvent && changes.to !== changes.from) {
                 this.triggerChangeEvent(changes);
             }
         },
