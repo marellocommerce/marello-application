@@ -71,7 +71,7 @@
         "eslint-plugin-oro": "https://api.github.com/repos/laboro/eslint-plugin-oro/tarball/0.0.2",
         "jasmine-core": "3.10.1",
         "jasmine-jquery": "2.1.1",
-        "karma": "6.3.9",
+        "karma": "6.3.14",
         "karma-chrome-launcher": "3.1.0",
         "karma-firefox-launcher": "2.1.2",
         "karma-jasmine": "4.0.1",
