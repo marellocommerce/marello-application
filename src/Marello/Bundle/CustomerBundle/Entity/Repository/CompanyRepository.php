@@ -54,6 +54,10 @@ class CompanyRepository extends EntityRepository
         return $children;
     }
 
+    /**
+     * @param int $customerId
+     * @return int|null
+     */
     public function getCompanyIdByCustomerId(int $customerId): ?int
     {
         $qb = $this->_em->createQueryBuilder();

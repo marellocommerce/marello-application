@@ -77,12 +77,43 @@ class OrderCompanyCustomerFormChangesProviderTest extends TestCase
 
     public function testProcessFormChangesWithoutCompanyId()
     {
+        $type = $this->createMock(ResolvedFormTypeInterface::class);
+        $type->expects($this->once())->method('getInnerType')->willReturn(new CompanySelectType());
+
+        $formConfig = $this->createMock(FormConfigInterface::class);
+        $formConfig->expects($this->once())->method('getType')->willReturn($type);
+        $formConfig->expects($this->once())->method('getOptions')->willReturn([]);
+
         $oldForm = $this->createMock(Form::class);
+        $oldForm->expects($this->any())->method('getName')->willReturn('order');
         $oldForm->expects($this->once())
             ->method('has')
             ->with('company')
             ->willReturn(true);
-        $oldForm->expects($this->never())->method('get')->with('company');
+        $field = $this->createMock(FormInterface::class);
+        $oldForm->expects($this->once())->method('get')->with('company')->willReturn($field);
+
+        $field->expects($this->any())->method('getConfig')->willReturn($formConfig);
+        $field->expects($this->any())->method('getName')->willReturn('name');
+        $field->expects($this->any())->method('getData')->willReturn([]);
+
+        $fieldView = $this->createMock(FormView::class);
+        $this->twigEngine->expects($this->once())
+            ->method('render')
+            ->with('MarelloOrderBundle:Form:companySelector.html.twig', ['form' => $fieldView])
+            ->willReturn('view1');
+
+        $newField = $this->createMock(FormInterface::class);
+        $newField->expects($this->once())->method('createView')->willReturn($fieldView);
+        $newForm = $this->createMock(Form::class);
+        $builder = $this->createMock(FormBuilderInterface::class);
+        $builder->expects($this->once())->method('add')
+            ->with('company', CompanySelectType::class, $this->isType('array'))
+            ->willReturnSelf();
+        $builder->expects($this->once())->method('getForm')->willReturn($newForm);
+        $this->formFactory->expects($this->once())->method('createNamedBuilder')->willReturn($builder);
+        $newForm->expects($this->once())->method('get')->with('company')->willReturn($newField);
+        $newForm->expects($this->once())->method('submit')->with($this->isType('array'));
 
         $context = new FormChangeContext([
             FormChangeContext::FORM_FIELD => $oldForm,
@@ -101,7 +132,7 @@ class OrderCompanyCustomerFormChangesProviderTest extends TestCase
             ->willReturn($repository);
 
         $this->provider->processFormChanges($context);
-        $this->assertEquals([], $context->getResult());
+        $this->assertEquals(['company' => 'view1'], $context->getResult());
     }
 
     public function testProcessFormChanges()

@@ -34,19 +34,19 @@ class OrderType extends AbstractType
     {
         $builder
             ->add(
+                'customer',
+                CompanyAwareCustomerSelectType::class,
+                [
+                    'required' => true
+                ]
+            )
+            ->add(
                 'company',
                 CompanySelectType::class,
                 [
                     'mapped' => false,
                     'required' => false,
                     'create_enabled' => false
-                ]
-            )
-            ->add(
-                'customer',
-                CompanyAwareCustomerSelectType::class,
-                [
-                    'required' => true
                 ]
             )
             ->add(

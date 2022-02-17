@@ -48,14 +48,10 @@ class OrderCompanyCustomerFormChangesProvider implements FormChangesProviderInte
             return;
         }
 
-        $companyId = $this->registry
+        $data['company'] = (string) $this->registry
             ->getRepository(Company::class)
             ->getCompanyIdByCustomerId((int) $data['customer']);
-        if (!$companyId) {
-            return;
-        }
 
-        $data['company'] = (string) $companyId;
         $orderFormName = $form->getName();
         $field = $form->get('company');
 
