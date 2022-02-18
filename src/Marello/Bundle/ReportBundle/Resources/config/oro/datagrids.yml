@@ -186,17 +186,16 @@ datagrids:
                     data_name:          quantityReturned
                     label:              marello.report.datagrid.columns.quantity_returned.label
                     frontend_type:      number
-                    align:              center
                 quantityOrdered:
                     data_name:          quantityOrdered
                     label:              marello.report.datagrid.columns.quantity_ordered.label
                     frontend_type:      number
-                    align:              center
                 percentageReturned:
                     data_name:          percentageReturned
                     label:              marello.report.datagrid.columns.returned.label
-                    frontend_type:      percent
-                    align:              left
+                    type:               localized_number
+                    method:             formatPercent
+                    context_resolver:   Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverPercentageClosure
             sorters:
                 columns:
                     productSku:             { data_name: productSku }
@@ -233,7 +232,7 @@ datagrids:
                         - oi.productName
                         - SUM(COALESCE(ri.quantity, 0)) AS quantityReturned
                         - SUM(COALESCE(oi.quantity, 0)) AS quantityOrdered
-                        - SUM(COALESCE(ri.quantity, 0)) / SUM(COALESCE(oi.quantity, 0)) AS percentageReturned
+                        - CAST(SUM(COALESCE(ri.quantity, 0)) AS decimal) / SUM(COALESCE(oi.quantity, 0)) AS percentageReturned
                     from:
                         - { table: MarelloOrderBundle:OrderItem, alias: oi }
                     join:
@@ -251,17 +250,16 @@ datagrids:
                     data_name:          quantityReturned
                     label:              marello.report.datagrid.columns.quantity_returned.label
                     frontend_type:      number
-                    align:              center
                 quantityOrdered:
                     data_name:          quantityOrdered
                     label:              marello.report.datagrid.columns.quantity_ordered.label
                     frontend_type:      number
-                    align:              center
                 percentageReturned:
                     data_name:          percentageReturned
                     label:              marello.report.datagrid.columns.returned.label
-                    frontend_type:      percent
-                    align:              left
+                    type:               localized_number
+                    method:             formatPercent
+                    context_resolver:   Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverPercentageClosure
             sorters:
                 columns:
                     productSku:             { data_name: oi.productSku }
