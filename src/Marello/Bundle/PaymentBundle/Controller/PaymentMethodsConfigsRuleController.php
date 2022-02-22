@@ -100,6 +100,7 @@ class PaymentMethodsConfigsRuleController extends AbstractController
     protected function update(PaymentMethodsConfigsRule $entity, Request $request)
     {
         $form = $this->createForm(PaymentMethodsConfigsRuleType::class);
+        $queryParams = $request->query->all();
         if ($this->get('marello_payment.form.handler.payment_methods_configs_rule')->process($form, $entity)) {
             $this->get('session')->getFlashBag()->add(
                 'success',
@@ -117,6 +118,7 @@ class PaymentMethodsConfigsRuleController extends AbstractController
 
         return [
             'entity' => $entity,
+            'queryParams' => $queryParams,
             'form'   => $form->createView()
         ];
     }

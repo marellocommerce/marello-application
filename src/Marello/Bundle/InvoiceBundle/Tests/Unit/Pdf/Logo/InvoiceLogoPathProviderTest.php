@@ -36,7 +36,7 @@ class InvoiceLogoPathProviderTest extends TestCase
         $resizedPath,
         $returnPath
     ) {
-        /** @var ConfigManager|\PHPUnit_Framework_MockObject_MockObject $configManager */
+        /** @var ConfigManager|\PHPUnit\Framework\MockObject\MockObject $configManager */
         $configManager = $this->createMock(ConfigManager::class);
         $configManager->expects($this->once())
             ->method('get')
@@ -44,10 +44,10 @@ class InvoiceLogoPathProviderTest extends TestCase
             ->willReturn($configId)
         ;
 
-        /** @var DoctrineHelper|\PHPUnit_Framework_MockObject_MockObject $doctrineHelper */
+        /** @var DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject $doctrineHelper */
         $doctrineHelper = $this->createMock(DoctrineHelper::class);
         if ($configId !== null) {
-            /** @var EntityRepository|\PHPUnit_Framework_MockObject_MockObject $repository */
+            /** @var EntityRepository|\PHPUnit\Framework\MockObject\MockObject $repository */
             $repository = $this->createMock(EntityRepository::class);
             $repository->expects($this->once())
                 ->method('find')
@@ -62,9 +62,9 @@ class InvoiceLogoPathProviderTest extends TestCase
             ;
         }
 
-        /** @var AttachmentManager|\PHPUnit_Framework_MockObject_MockObject $attachmentManager */
+        /** @var AttachmentManager|\PHPUnit\Framework\MockObject\MockObject $attachmentManager */
         $attachmentManager = $this->createMock(AttachmentManager::class);
-        /** @var ImageResizeManagerInterface|\PHPUnit_Framework_MockObject_MockObject $imageResizer */
+        /** @var ImageResizeManagerInterface|\PHPUnit\Framework\MockObject\MockObject $imageResizer */
         $imageResizer = $this->createMock(ImageResizeManagerInterface::class);
         if ($logoEntity !== null) {
             $attachmentManager->expects($this->once())
@@ -74,7 +74,7 @@ class InvoiceLogoPathProviderTest extends TestCase
             ;
 
             if (!file_exists(__DIR__.'/data/public'.$resizedPath)) {
-                /** @var BinaryInterface|\PHPUnit_Framework_MockObject_MockObject $resizedImage */
+                /** @var BinaryInterface|\PHPUnit\Framework\MockObject\MockObject $resizedImage */
                 $resizedImage = $this->createMock(BinaryInterface::class);
 
                 $imageResizer->expects($this->once())

@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\ReturnBundle\Manager\Rules;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository;

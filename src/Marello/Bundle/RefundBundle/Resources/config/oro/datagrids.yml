@@ -1,5 +1,6 @@
 datagrids:
     marello-refund:
+        extended_entity_name: Marello\Bundle\RefundBundle\Entity\Refund
         source:
             type: orm
             query:
@@ -7,6 +8,9 @@ datagrids:
                     - r
                 from:
                     - { table: MarelloRefundBundle:Refund, alias: r }
+                join:
+                    inner:
+                        - { join: r.order, alias: o }
         columns:
             id:
                 label: marello.refund.id.label
@@ -24,8 +28,8 @@ datagrids:
                 frontend_type: html
                 template: MarelloOrderBundle:Order:Datagrid/Property/orderNumber.html.twig
             orderReference:
-                data_name: order.orderReference
-                label: marello.order.order_reference.label
+                data_name:        order.orderReference
+                label:            marello.order.order_reference.label
                 frontend_type:    string
             refundAmount:
                 label:            marello.refund.refund_amount.label
@@ -44,9 +48,9 @@ datagrids:
                 refundNumber:
                     data_name: r.refundNumber
                 orderNumber:
-                    data_name: order.orderNumber
+                    data_name: o.orderNumber
                 orderReference:
-                    data_name: order.orderReference
+                    data_name: o.orderReference
                 createdAt:
                     data_name: r.createdAt
                 updatedAt:
@@ -60,10 +64,10 @@ datagrids:
                     data_name: r.refundNumber
                 orderNumber:
                     type: string
-                    data_name: order.orderNumber
+                    data_name: o.orderNumber
                 orderReference:
-                    type: number
-                    data_name: order.orderReference
+                    type: string
+                    data_name: o.orderReference
                 createdAt:
                     type: datetime
                     data_name: r.createdAt
@@ -105,6 +109,7 @@ datagrids:
 
     marello-refund-customer:
         source:
+            extended_entity_name: Marello\Bundle\RefundBundle\Entity\Refund
             type: orm
             query:
                 select:
@@ -114,6 +119,9 @@ datagrids:
                 where:
                     and:
                         - r.customer = :customer_id
+                join:
+                    inner:
+                        - { join: r.order, alias: o }
             bind_parameters:
                 customer_id: customerId
         columns:
@@ -147,9 +155,9 @@ datagrids:
                 refundNumber:
                     data_name: r.refundNumber
                 orderNumber:
-                    data_name: order.orderNumber
+                    data_name: o.orderNumber
                 orderReference:
-                    data_name: order.orderReference
+                    data_name: o.orderReference
                 createdAt:
                     data_name: r.createdAt
                 updatedAt:
@@ -163,10 +171,10 @@ datagrids:
                     data_name: r.refundNumber
                 orderNumber:
                     type: string
-                    data_name: order.orderNumber
+                    data_name: o.orderNumber
                 orderReference:
-                    type: number
-                    data_name: order.orderReference
+                    type: string
+                    data_name: o.orderReference
                 createdAt:
                     type: datetime
                     data_name: r.createdAt
@@ -208,21 +216,31 @@ datagrids:
 
     marello-refund-additional-items:
         source:
+            extended_entity_name: Marello\Bundle\RefundBundle\Entity\RefundItem
             type: orm
             query:
                 select:
                     - i
+                    - taxCode.code as taxCodeCode
                 from:
                     - { table: MarelloRefundBundle:RefundItem, alias: i}
                 where:
                     and:
                         - i.refund = :refund_id
                         - i.orderItem IS NULL
+                join:
+                    left:
+                        taxCode:
+                            join: i.taxCode
+                            alias: taxCode
             bind_parameters:
                 refund_id: refundId
         columns:
             name:
-                label:      marello.refund.refunditem.name.label
+                label:              marello.refund.refunditem.name.label
+            taxCodeCode:
+                label:              marello.tax.taxcode.code.label
+                frontend_type:      string
             refundAmount:
                 label:              marello.refund.refunditem.refund_amount.label
                 type:               localized_number
@@ -231,6 +249,7 @@ datagrids:
 
     marello-refund-ordered-items:
         source:
+            extended_entity_name: Marello\Bundle\RefundBundle\Entity\RefundItem
             type: orm
             query:
                 select:
@@ -238,12 +257,14 @@ datagrids:
                     - pu.name AS productUnit
                     - oi.productSku as productSku
                     - oi.productName as productName
+                    - taxCode.code as taxCodeCode
                 from:
                     - { table: MarelloRefundBundle:RefundItem, alias: i}
                 join:
                     left:
                         - { join: i.orderItem, alias: oi }
                         - { join: oi.productUnit, alias: pu }
+                        - { join: i.taxCode, alias: taxCode }
                 where:
                     and:
                         - i.refund = :refund_id
@@ -267,6 +288,9 @@ datagrids:
                 label:              marello.order.orderitem.product_unit.label
                 frontend_type:      string
                 data_name:          productUnit
+            taxCodeCode:
+                label:              marello.tax.taxcode.code.label
+                frontend_type:      string
             refundAmount:
                 label:              marello.refund.refunditem.refund_amount.label
                 type:               localized_number

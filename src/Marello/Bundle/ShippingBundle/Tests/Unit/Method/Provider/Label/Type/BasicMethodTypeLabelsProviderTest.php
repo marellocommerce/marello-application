@@ -23,7 +23,7 @@ class BasicMethodTypeLabelsProviderTest extends \PHPUnit\Framework\TestCase
     /**
      * {@inheritDoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->methodProvider = $this->createMock(ShippingMethodProviderInterface::class);
 
@@ -50,15 +50,10 @@ class BasicMethodTypeLabelsProviderTest extends \PHPUnit\Framework\TestCase
             ->willReturn($label2);
 
         $method = $this->createMock(ShippingMethodInterface::class);
-        $method->expects(static::at(0))
+        $method->expects(static::exactly(2))
             ->method('getType')
-            ->with($typeId1)
-            ->willReturn($type1);
-
-        $method->expects(static::at(1))
-            ->method('getType')
-            ->with($typeId2)
-            ->willReturn($type2);
+            ->withConsecutive([$typeId1], [$typeId2])
+            ->willReturnOnConsecutiveCalls($type1, $type2);
 
         $this->methodProvider->expects(static::once())
             ->method('getShippingMethod')
@@ -68,12 +63,10 @@ class BasicMethodTypeLabelsProviderTest extends \PHPUnit\Framework\TestCase
         $this->provider->getLabels($methodId, [$typeId1, $typeId2]);
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Shipping method with identifier: method_id, does not exist.
-     */
     public function testGetLabelsNoMethod()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Shipping method with identifier: method_id, does not exist.');
         $methodId = 'method_id';
 
         $this->methodProvider->expects(static::once())

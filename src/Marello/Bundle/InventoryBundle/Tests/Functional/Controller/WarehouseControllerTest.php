@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class WarehouseControllerTest extends WebTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->initClient(
             [],
@@ -51,7 +51,7 @@ class WarehouseControllerTest extends WebTestCase
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
 
         foreach ($data as $attribute => $value) {
-            $this->assertContains($value, $crawler->html());
+            $this->assertStringContainsString($value, $crawler->html());
         }
     }
 }

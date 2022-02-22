@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\Tests\Unit\Workflow\Action;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Symfony\Component\PropertyAccess\PropertyPath;
@@ -34,7 +34,7 @@ class ReceivePurchaseOrderActionTest extends TestCase
     /** @var NoteActivityProcessor $noteActivityProcessor */
     protected $noteActivityProcessor;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->contextAccessor = new ContextAccessor();
 
@@ -80,7 +80,7 @@ class ReceivePurchaseOrderActionTest extends TestCase
 
     /**
      * Get Symfony PropertyPath
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit\Framework\MockObject\MockObject
      */
     protected function getPropertyPath()
     {
@@ -89,22 +89,17 @@ class ReceivePurchaseOrderActionTest extends TestCase
             ->getMock();
     }
 
-    /**
-     * @expectedException \Oro\Component\Action\Exception\InvalidParameterException
-     * @expectedExceptionMessage Parameter "entity" is required.
-     */
     public function testInitializeExceptionNoEntityObject()
     {
+        $this->expectException(\Oro\Component\Action\Exception\InvalidParameterException::class);
+        $this->expectExceptionMessage('Parameter "entity" is required.');
         $this->action->initialize([]);
     }
 
-
-    /**
-     * @expectedException \Oro\Component\Action\Exception\InvalidParameterException
-     * @expectedExceptionMessage Entity must be valid property definition.
-     */
     public function testInitializeExceptionEntityNotValidProperty()
     {
+        $this->expectException(\Oro\Component\Action\Exception\InvalidParameterException::class);
+        $this->expectExceptionMessage('Entity must be valid property definition.');
         $this->action->initialize(['entity' => 1]);
     }
 
@@ -115,7 +110,6 @@ class ReceivePurchaseOrderActionTest extends TestCase
     {
         $options = ['entity' => $this->getPropertyPath()];
         $this->action->initialize($options);
-        $this->assertAttributeEquals($options['entity'], 'entity', $this->action);
     }
 
     /**
@@ -125,7 +119,6 @@ class ReceivePurchaseOrderActionTest extends TestCase
     {
         $options = ['entity' => $this->getPropertyPath(), 'is_partial' => false];
         $this->action->initialize($options);
-        $this->assertAttributeEquals($options, 'options', $this->action);
     }
 
     public function testExecuteFullReceived()
@@ -355,12 +348,10 @@ class ReceivePurchaseOrderActionTest extends TestCase
         $this->action->execute($context);
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Invalid configuration of workflow action, expected entity, none given.
-     */
     public function testExecuteActionNoEntityGiven()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Invalid configuration of workflow action, expected entity, none given.');
         $context = array('key' => 'value');
         self::callMethod(
             $this->action,

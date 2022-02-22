@@ -1,0 +1,9 @@
+marello:
+    workflow:
+        mass_action:
+            workflow_transit:
+                sync:
+                    success: "Action completed successfully. Total records: %total%"
+                    failed: "None of the records from %total% were successfully processed. See the full report by email"
+                    partly: "Action has been completed. %success% from %total% records were processed successfully. See the full report by email"
+                async: "%total% records were sent to the queue for processing. See the full report by email"

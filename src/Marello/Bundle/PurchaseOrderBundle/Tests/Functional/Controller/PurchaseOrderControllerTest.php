@@ -17,7 +17,7 @@ class PurchaseOrderControllerTest extends WebTestCase
     /** @var Warehouse $defaultWarehouse */
     protected $defaultWarehouse;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->initClient([], $this->generateBasicAuthHeader());
         $this->loadFixtures([LoadPurchaseOrderData::class]);
@@ -88,7 +88,7 @@ class PurchaseOrderControllerTest extends WebTestCase
         );
 
         $result = $this->client->getResponse();
-        $this->assertContains($supplier->getName(), $crawler->html());
+        $this->assertStringContainsString($supplier->getName(), $crawler->html());
 
         $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
 
@@ -127,7 +127,7 @@ class PurchaseOrderControllerTest extends WebTestCase
         $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
         $html = $crawler->html();
 
-        $this->assertContains('Purchase Order saved succesfully', $html);
+        $this->assertStringContainsString('Purchase Order saved succesfully', $html);
     }
 
     /** @test */
@@ -148,7 +148,7 @@ class PurchaseOrderControllerTest extends WebTestCase
         );
 
         $result = $this->client->getResponse();
-        $this->assertContains("This value should not be blank", $crawler->html());
+        $this->assertStringContainsString("This value should not be blank", $crawler->html());
     }
 
 
@@ -171,7 +171,7 @@ class PurchaseOrderControllerTest extends WebTestCase
         );
 
         $result = $this->client->getResponse();
-        $this->assertContains($supplier->getName(), $crawler->html());
+        $this->assertStringContainsString($supplier->getName(), $crawler->html());
 
         $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
 
@@ -189,7 +189,7 @@ class PurchaseOrderControllerTest extends WebTestCase
         $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
 
         $html = $crawler->html();
-        $this->assertContains('At least one item should be added', $html);
+        $this->assertStringContainsString('At least one item should be added', $html);
     }
 
 
@@ -212,7 +212,7 @@ class PurchaseOrderControllerTest extends WebTestCase
         );
 
         $result = $this->client->getResponse();
-        $this->assertContains($supplier->getName(), $crawler->html());
+        $this->assertStringContainsString($supplier->getName(), $crawler->html());
 
         $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
 
@@ -252,7 +252,7 @@ class PurchaseOrderControllerTest extends WebTestCase
         $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
 
         $html = $crawler->html();
-        $this->assertContains('Product can not be null', $html);
+        $this->assertStringContainsString('Product can not be null', $html);
     }
 
     /** @test */
@@ -274,7 +274,7 @@ class PurchaseOrderControllerTest extends WebTestCase
         );
 
         $result = $this->client->getResponse();
-        $this->assertContains($supplier->getName(), $crawler->html());
+        $this->assertStringContainsString($supplier->getName(), $crawler->html());
 
         $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
 
@@ -313,7 +313,7 @@ class PurchaseOrderControllerTest extends WebTestCase
         $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
 
         $html = $crawler->html();
-        $this->assertContains('Ordered Amount must be higher than 0', $html);
+        $this->assertStringContainsString('Ordered Amount must be higher than 0', $html);
     }
 
     /** @test */
@@ -335,7 +335,7 @@ class PurchaseOrderControllerTest extends WebTestCase
         );
 
         $result = $this->client->getResponse();
-        $this->assertContains($supplier->getName(), $crawler->html());
+        $this->assertStringContainsString($supplier->getName(), $crawler->html());
 
         $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
 
@@ -374,7 +374,7 @@ class PurchaseOrderControllerTest extends WebTestCase
         $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
 
         $html = $crawler->html();
-        $this->assertContains('Expected Delivery date must be greater than today', $html);
+        $this->assertStringContainsString('Expected Delivery date must be greater than today', $html);
     }
 
     /**
@@ -392,6 +392,6 @@ class PurchaseOrderControllerTest extends WebTestCase
         );
 
         self::assertJsonResponseStatusCodeEquals($response, Response::HTTP_OK);
-        $this->assertContains($supplier->getName(), $response->getContent());
+        $this->assertStringContainsString($supplier->getName(), $response->getContent());
     }
 }

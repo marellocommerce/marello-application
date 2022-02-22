@@ -44,7 +44,7 @@ define(function(require) {
          */
         onCustomerChanged: function() {
             mediator.trigger('customer:change', {customerId: this.$customerSelect.val()});
-            mediator.trigger('order:form-changes:trigger', {updateFields: ['billingAddress', 'shippingAddress']});
+            mediator.trigger('order:form-changes:trigger', {updateFields: ['billingAddress', 'shippingAddress', 'company']});
         },
 
         dispose: function() {

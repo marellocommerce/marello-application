@@ -20,17 +20,17 @@ class DiscountSubtotalProviderTest extends TestCase
     use EntityTrait;
 
     /**
-     * @var TranslatorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var TranslatorInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $translator;
 
     /**
-     * @var RoundingServiceInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var RoundingServiceInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $rounding;
 
     /**
-     * @var DefaultCurrencyProviderInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var DefaultCurrencyProviderInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $defaultCurrencyProvider;
 
@@ -39,7 +39,7 @@ class DiscountSubtotalProviderTest extends TestCase
      */
     protected $discountSubtotalProvider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->translator = $this->createMock(TranslatorInterface::class);
         $this->translator->expects($this->any())
@@ -84,7 +84,7 @@ class DiscountSubtotalProviderTest extends TestCase
         $this->assertEquals(DiscountSubtotalProvider::TYPE, $subtotal->getType());
         $this->assertEquals('marello.order.subtotals.discount.label', $subtotal->getLabel());
         $this->assertEquals($entity->getCurrency(), $subtotal->getCurrency());
-        $this->assertInternalType('float', $subtotal->getAmount());
+        $this->assertIsFloat($subtotal->getAmount());
         $this->assertEquals(10.0, $subtotal->getAmount());
     }
 

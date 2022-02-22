@@ -13,7 +13,7 @@ use Marello\Bundle\RefundBundle\Tests\Functional\DataFixtures\LoadRefundData;
 
 class RefundControllerTest extends WebTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->initClient(
             [],
@@ -64,7 +64,7 @@ class RefundControllerTest extends WebTestCase
 
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);
-        $this->assertContains('Refund saved', $crawler->html());
+        $this->assertStringContainsString('Refund saved', $crawler->html());
     }
 
     /**
@@ -89,7 +89,7 @@ class RefundControllerTest extends WebTestCase
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);
 
-        $this->assertContains('Refund saved', $crawler->html());
+        $this->assertStringContainsString('Refund saved', $crawler->html());
 
         $response = $this->client->requestGrid('marello-refund');
         $result = $this->getJsonResponseContent($response, Response::HTTP_OK);

@@ -16,14 +16,14 @@ class CustomerAddressResolverTest extends TestCase
     protected $resolver;
 
     /**
-     * @var CustomerAddressItemResolver|\PHPUnit_Framework_MockObject_MockObject
+     * @var CustomerAddressItemResolver|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $itemResolver;
 
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->itemResolver = $this->getMockBuilder(CustomerAddressItemResolver::class)
             ->disableOriginalConstructor()

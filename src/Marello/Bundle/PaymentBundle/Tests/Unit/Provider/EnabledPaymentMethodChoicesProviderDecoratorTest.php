@@ -27,7 +27,7 @@ class EnabledPaymentMethodChoicesProviderDecoratorTest extends \PHPUnit\Framewor
      */
     protected $enabledChoicesProvider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->paymentMethodProvider = $this->createMock(PaymentMethodProviderInterface::class);
         $this->choicesProvider = $this->createMock(PaymentMethodChoicesProviderInterface::class);

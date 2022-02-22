@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\SupplierBundle\Provider;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation;
