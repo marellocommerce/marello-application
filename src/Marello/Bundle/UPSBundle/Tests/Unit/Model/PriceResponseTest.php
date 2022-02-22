@@ -16,7 +16,7 @@ class PriceResponseTest extends TestCase
      */
     protected $priceResponse;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->priceResponse = new PriceResponse();
     }
@@ -89,12 +89,10 @@ class PriceResponseTest extends TestCase
         static::assertEquals($pricesExpected['12'], $this->priceResponse->getPriceByService('12'));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage No price data in provided string
-     */
     public function testParseEmptyResponse()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('No price data in provided string');
         $restResponse = $this->createMock(RestResponseInterface::class);
         $restResponse
             ->expects(static::once())
@@ -103,12 +101,10 @@ class PriceResponseTest extends TestCase
         $this->priceResponse->parse($restResponse);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Response data not loaded
-     */
     public function testGetPriceByServicesException()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Response data not loaded');
         $this->priceResponse->getPricesByServices();
     }
 

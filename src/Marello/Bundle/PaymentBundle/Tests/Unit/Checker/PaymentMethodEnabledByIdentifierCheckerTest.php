@@ -23,7 +23,7 @@ class PaymentMethodEnabledByIdentifierCheckerTest extends \PHPUnit\Framework\Tes
      */
     protected $shippingMethodEnabledByIdentifierChecker;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->method = $this->createMock(PaymentMethodInterface::class);
 

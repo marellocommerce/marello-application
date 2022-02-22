@@ -21,6 +21,7 @@ use Marello\Bundle\PurchaseOrderBundle\EventListener\Doctrine\PurchaseOrderOnOrd
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Component\Testing\Unit\EntityTrait;
 use PHPUnit\Framework\TestCase;
@@ -35,17 +36,25 @@ class PurchaseOrderOnOrderOnDemandCreationListenerTest extends TestCase
     protected $availableInventoryProvider;
 
     /**
+     * @var ConfigManager|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected $configManager;
+
+    /**
      * @var PurchaseOrderOnOrderOnDemandCreationListener
      */
     protected $purchaseOrderOnOrderOnDemandCreationListener;
 
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->availableInventoryProvider = $this->getMockBuilder(AvailableInventoryProvider::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->availableInventoryProvider = $this->createMock(AvailableInventoryProvider::class);
+        $this->configManager = $this->createMock(ConfigManager::class);
+        $this->configManager->expects($this->any())
+            ->method('get')
+            ->willReturn(true);
         $this->purchaseOrderOnOrderOnDemandCreationListener =
             new PurchaseOrderOnOrderOnDemandCreationListener($this->availableInventoryProvider);
+        $this->purchaseOrderOnOrderOnDemandCreationListener->setConfigManager($this->configManager);
     }
 
     public function testPostFlush()

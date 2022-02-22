@@ -26,37 +26,37 @@ use Marello\Bundle\UPSBundle\Method\Factory\UPSShippingMethodTypeFactoryInterfac
 class UPSShippingMethodFactoryTest extends TestCase
 {
     /**
-     * @var UPSTransport|\PHPUnit_Framework_MockObject_MockObject
+     * @var UPSTransport|\PHPUnit\Framework\MockObject\MockObject
      */
     private $transport;
 
     /**
-     * @var PriceRequestFactory|\PHPUnit_Framework_MockObject_MockObject
+     * @var PriceRequestFactory|\PHPUnit\Framework\MockObject\MockObject
      */
     private $priceRequestFactory;
 
     /**
-     * @var LocalizationHelper|\PHPUnit_Framework_MockObject_MockObject
+     * @var LocalizationHelper|\PHPUnit\Framework\MockObject\MockObject
      */
     private $localizationHelper;
 
     /**
-     * @var ShippingPriceCache|\PHPUnit_Framework_MockObject_MockObject
+     * @var ShippingPriceCache|\PHPUnit\Framework\MockObject\MockObject
      */
     private $shippingPriceCache;
 
     /**
-     * @var IntegrationIdentifierGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var IntegrationIdentifierGeneratorInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $integrationIdentifierGenerator;
 
     /**
-     * @var UPSShippingMethodTypeFactoryInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var UPSShippingMethodTypeFactoryInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $methodTypeFactory;
 
     /**
-     * @var IntegrationIconProviderInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var IntegrationIconProviderInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $integrationIconProvider;
 
@@ -65,13 +65,13 @@ class UPSShippingMethodFactoryTest extends TestCase
      */
     private $factory;
 
-    /** @var EventDispatcherInterface|\PHPUnit_Framework_MockObject_MockObject $dispatcher */
+    /** @var EventDispatcherInterface|\PHPUnit\Framework\MockObject\MockObject $dispatcher */
     private $dispatcher;
 
     /**
      * {@inheritDoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->transport = $this->createMock(UPSTransport::class);
         $this->dispatcher = $this->createMock(EventDispatcherInterface::class);
@@ -100,14 +100,14 @@ class UPSShippingMethodFactoryTest extends TestCase
         $identifier = 'ups_1';
         $labelsCollection = $this->createMock(Collection::class);
 
-        /** @var UPSSettings|\PHPUnit_Framework_MockObject_MockObject $settings */
+        /** @var UPSSettings|\PHPUnit\Framework\MockObject\MockObject $settings */
         $settings = $this->createMock(UPSSettings::class);
 
         $settings->expects($this->once())
             ->method('getLabels')
             ->willReturn($labelsCollection);
 
-        /** @var Channel|\PHPUnit_Framework_MockObject_MockObject $channel */
+        /** @var Channel|\PHPUnit\Framework\MockObject\MockObject $channel */
         $channel = $this->createMock(Channel::class);
         $channel->expects($this->any())
             ->method('getTransport')
@@ -128,15 +128,13 @@ class UPSShippingMethodFactoryTest extends TestCase
         $service1 = $this->createMock(ShippingService::class);
         $service2 = $this->createMock(ShippingService::class);
 
-        $this->methodTypeFactory->expects($this->at(0))
+        $this->methodTypeFactory->expects($this->exactly(2))
             ->method('create')
-            ->with($channel, $service1)
-            ->willReturn($type1);
-
-        $this->methodTypeFactory->expects($this->at(1))
-            ->method('create')
-            ->with($channel, $service2)
-            ->willReturn($type2);
+            ->withConsecutive(
+                [$channel, $service1],
+                [$channel, $service2]
+            )
+            ->willReturnOnConsecutiveCalls($type1, $type2);
 
         $serviceCollection = $this->createMock(Collection::class);
         $serviceCollection->expects($this->once())

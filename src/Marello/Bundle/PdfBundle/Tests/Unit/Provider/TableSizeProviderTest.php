@@ -19,7 +19,7 @@ class TableSizeProviderTest extends TestCase
      */
     protected $salesChannel;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->salesChannel = $this->getEntity(SalesChannel::class, ['id' => 1, 'name' => 'Test Sales Channel', 'code' => 'test1']);
     }
@@ -146,7 +146,7 @@ class TableSizeProviderTest extends TestCase
         /** @var SalesChannel $salesChannel */
         $salesChannel = $this->getEntity(SalesChannel::class, ['id' => 1, 'name' => 'Test Sales Channel', 'code' => 'test1']);
 
-        /** @var ConfigManager|\PHPUnit_Framework_MockObject_MockObject $configManager */
+        /** @var ConfigManager|\PHPUnit\Framework\MockObject\MockObject $configManager */
         $configManager = $this->createMock(ConfigManager::class);
         if ($pageSize !== null) {
             $configManager->expects($this->once())

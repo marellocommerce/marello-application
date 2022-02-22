@@ -1,0 +1,26 @@
+@name =  workflow_transit_report
+@subject = Workflow transit mass action result for entity {{ entityName }}
+@isSystem = 1
+@isEditable = 1
+{% spaceless %}
+<style>
+    @media (max-width: 480pt) {
+        .wrapper{
+            width: 100% !important;
+        }
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+</style>
+<div class="wrapper">
+    <p>
+        Mass action was finished.
+        Total records: {{ totalCount }}
+        Successful records: {{ successCount }}
+        {% if errorLogUrl is defined and errorLogUrl is not empty %}
+            See error log: <a href="{{ errorLogUrl }}" target="_blank">Download</a>
+        {% endif %}
+    </p>
+</div>
+{% endspaceless %}

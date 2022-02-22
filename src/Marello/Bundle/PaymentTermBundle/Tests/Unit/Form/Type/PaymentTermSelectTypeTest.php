@@ -81,7 +81,7 @@ class PaymentTermSelectTypeTest extends FormIntegrationTestCase
 
     protected function getPaymentTermSelectType($numberOfCalls = 0)
     {
-        /** @var LocalizationHelper|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var LocalizationHelper|\PHPUnit\Framework\MockObject\MockObject */
         $localizationHelper = $this->createMock(LocalizationHelper::class);
         $localizationHelper->expects(self::exactly($numberOfCalls))
             ->method('getLocalizedValue')

@@ -3,7 +3,7 @@
 namespace Marello\Bundle\ShippingBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\ShippingBundle\Method\Event\MethodRenamingEventDispatcherInterface;
 use Oro\Bundle\ConfigBundle\Entity\ConfigValue;
 use Oro\Bundle\ConfigBundle\Entity\Repository\ConfigValueRepository;

@@ -2,6 +2,8 @@
 
 namespace Marello\Bundle\ReturnBundle\Workflow;
 
+use Symfony\Contracts\Translation\TranslatorInterface;
+
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
@@ -22,18 +24,25 @@ class InspectionAction extends AbstractAction
     protected $eventDispatcher;
 
     /**
-     * ReturnInSpectionOkAction constructor.
-     *
-     * @param ContextAccessor           $contextAccessor
-     * @param EventDispatcherInterface  $eventDispatcher
+     * @var TranslatorInterface $translator
+     */
+    protected $translator;
+
+    /**
+     * InspectionAction constructor.
+     * @param ContextAccessor $contextAccessor
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param TranslatorInterface $translator
      */
     public function __construct(
         ContextAccessor $contextAccessor,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        TranslatorInterface $translator
     ) {
         parent::__construct($contextAccessor);
 
         $this->eventDispatcher = $eventDispatcher;
+        $this->translator = $translator;
     }
 
     /**
@@ -45,8 +54,18 @@ class InspectionAction extends AbstractAction
         $return = $context->getEntity();
 
         $return->getReturnItems()->map(function (ReturnItem $item) use ($return) {
+            if (!$item->getReason() || !$item->getStatus()) {
+                throw new \Exception(
+                    $this->translator->trans('marello.return.returnentity.messages.error.return.workflow.consumer')
+                );
+            }
             if (($item->getReason()->getId() !== 'damaged') && ($item->getStatus()->getId() !== 'denied')) {
-                $this->handleInventoryUpdate($item->getOrderItem(), $item->getQuantity(), null, $return);
+                $this->handleInventoryUpdate(
+                    $item->getOrderItem(),
+                    $item->getQuantity(),
+                    null,
+                    $return
+                );
             }
         });
     }

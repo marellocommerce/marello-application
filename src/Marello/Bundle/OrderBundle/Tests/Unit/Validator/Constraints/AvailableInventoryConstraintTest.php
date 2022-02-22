@@ -16,7 +16,7 @@ class AvailableInventoryContraintTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->constraint = new AvailableInventory(['fields' => ['somefield1', 'somefield2']]);
     }

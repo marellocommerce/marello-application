@@ -32,7 +32,7 @@ class CompositeTaxRuleMatcher implements TaxRuleMatcherInterface
     public function match(AbstractAddress $address = null, array $taxCodes)
     {
         if (null === $address || null === $address->getCountry() || 0 === count($taxCodes)) {
-            return [];
+            return null;
         }
 
         $cacheKey = $this->getCacheKey($address, $taxCodes);

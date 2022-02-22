@@ -7,7 +7,6 @@ use Marello\Bundle\CustomerBundle\Form\Type\CompanySelectType;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Form\EventListener\CurrencySubscriber;
 use Marello\Bundle\OrderBundle\Form\EventListener\OrderTotalsSubscriber;
-use Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelRepository;
 use Marello\Bundle\SalesBundle\Form\Type\SalesChannelSelectType;
 use Oro\Bundle\CurrencyBundle\Entity\Price;
 use Oro\Bundle\CurrencyBundle\Form\Type\PriceType;
@@ -30,24 +29,18 @@ class OrderType extends AbstractType
     const BLOCK_PREFIX = 'marello_order_order';
 
     /**
-     * @var SalesChannelRepository
-     */
-    private $salesChannelRepository;
-
-    /**
-     * @param SalesChannelRepository $salesChannelRepository
-     */
-    public function __construct(SalesChannelRepository $salesChannelRepository)
-    {
-        $this->salesChannelRepository = $salesChannelRepository;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add(
+                'customer',
+                CompanyAwareCustomerSelectType::class,
+                [
+                    'required' => true
+                ]
+            )
             ->add(
                 'company',
                 CompanySelectType::class,
@@ -55,13 +48,6 @@ class OrderType extends AbstractType
                     'mapped' => false,
                     'required' => false,
                     'create_enabled' => false
-                ]
-            )
-            ->add(
-                'customer',
-                CompanyAwareCustomerSelectType::class,
-                [
-                    'required' => true
                 ]
             )
             ->add(

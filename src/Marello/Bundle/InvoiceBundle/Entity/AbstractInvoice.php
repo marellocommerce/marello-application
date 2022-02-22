@@ -27,7 +27,10 @@ use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
  * @ORM\Entity(repositoryClass="Marello\Bundle\InvoiceBundle\Entity\Repository\AbstractInvoiceRepository")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
- * @ORM\DiscriminatorMap({"invoice" = "Invoice", "creditmemo" = "Creditmemo"})
+ * @ORM\DiscriminatorMap({
+ *     "invoice"="Marello\Bundle\InvoiceBundle\Entity\Invoice",
+ *     "creditmemo"="Marello\Bundle\InvoiceBundle\Entity\Creditmemo"
+ * })
  * @ORM\Table(name="marello_invoice_invoice")
  * @Oro\Config(
  *      routeView="marello_invoice_invoice_view",

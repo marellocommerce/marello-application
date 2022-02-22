@@ -16,7 +16,7 @@ class AdditionalPlaceholderProviderTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $additionalPlaceholderDataMock = $this->createMock(AdditionalPlaceholderDataInterface::class);
         $additionalPlaceholderDataMock

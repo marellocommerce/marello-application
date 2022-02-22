@@ -16,7 +16,7 @@ class TaxRulesControllerTest extends WebTestCase
 {
     const TAX_RULE_SAVE_MESSAGE = 'Tax Rule saved';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->initClient([], $this->generateBasicAuthHeader());
         $this->client->useHashNavigation(true);
@@ -35,7 +35,7 @@ class TaxRulesControllerTest extends WebTestCase
         $crawler = $this->client->request('GET', $this->getUrl('marello_tax_taxrule_index'));
         $result = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
-        $this->assertContains('marello-taxrule-grid', $crawler->html());
+        $this->assertStringContainsString('marello-taxrule-grid', $crawler->html());
     }
 
     public function testCreate()
@@ -163,7 +163,7 @@ class TaxRulesControllerTest extends WebTestCase
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
         $html = $crawler->html();
 
-        $this->assertContains(self::TAX_RULE_SAVE_MESSAGE, $html);
+        $this->assertStringContainsString(self::TAX_RULE_SAVE_MESSAGE, $html);
         $this->assertViewPage($html, $taxCode, $taxRate, $taxJurisdiction);
     }
 
@@ -179,8 +179,8 @@ class TaxRulesControllerTest extends WebTestCase
         TaxRate $taxRate,
         TaxJurisdiction $taxJurisdiction
     ) {
-        $this->assertContains($taxCode->getCode(), $html);
-        $this->assertContains($taxRate->getCode(), $html);
-        $this->assertContains($taxJurisdiction->getCode(), $html);
+        $this->assertStringContainsString($taxCode->getCode(), $html);
+        $this->assertStringContainsString($taxRate->getCode(), $html);
+        $this->assertStringContainsString($taxJurisdiction->getCode(), $html);
     }
 }

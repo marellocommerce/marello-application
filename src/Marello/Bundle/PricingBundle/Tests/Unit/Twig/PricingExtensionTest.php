@@ -11,12 +11,12 @@ use Marello\Bundle\PricingBundle\Formatter\LabelVATAwareFormatter;
 class PricingExtensionTest extends TestCase
 {
     /**
-     * @var CurrencyProvider|\PHPUnit_Framework_MockObject_MockObject
+     * @var CurrencyProvider|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $currencyProvider;
 
     /**
-     * @var LabelVATAwareFormatter|\PHPUnit_Framework_MockObject_MockObject
+     * @var LabelVATAwareFormatter|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $vatLabelFormatter;
 
@@ -28,7 +28,7 @@ class PricingExtensionTest extends TestCase
         'currencySymbol' => '$'
     ];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->currencyProvider = $this->getMockBuilder(CurrencyProvider::class)
             ->disableOriginalConstructor()
@@ -39,7 +39,7 @@ class PricingExtensionTest extends TestCase
         $this->extension = new PricingExtension($this->currencyProvider, $this->vatLabelFormatter);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->extension);
         unset($this->currencyProvider);

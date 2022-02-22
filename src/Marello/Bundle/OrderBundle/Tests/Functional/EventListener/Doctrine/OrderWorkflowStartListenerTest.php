@@ -30,7 +30,7 @@ class OrderWorkflowStartListenerTest extends WebTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->initClient(
             [],
@@ -53,7 +53,7 @@ class OrderWorkflowStartListenerTest extends WebTestCase
         $workflowManager = $this->getContainer()->get('oro_workflow.manager');
         $workflowItems = $workflowManager->getWorkflowItemsByEntity($order);
 
-        self::assertCount(0, $workflowItems);
+        self::assertCount(1, $workflowItems);
     }
 
     /**
@@ -67,10 +67,10 @@ class OrderWorkflowStartListenerTest extends WebTestCase
         $workflowManager = $this->getContainer()->get('oro_workflow.manager');
         $workflowItems = $workflowManager->getWorkflowItemsByEntity($order);
 
-        self::assertCount(0, $workflowItems);
+        self::assertCount(1, $workflowItems);
         /** @var WorkflowItem $workflowItem */
-        //$workflowItem = array_shift($workflowItems);
-        //self::assertEquals(WorkflowNameProviderInterface::ORDER_WORKFLOW_1, $workflowItem->getWorkflowName());
+        $workflowItem = array_shift($workflowItems);
+        self::assertEquals(WorkflowNameProviderInterface::ORDER_WORKFLOW_1, $workflowItem->getWorkflowName());
     }
 
     /**

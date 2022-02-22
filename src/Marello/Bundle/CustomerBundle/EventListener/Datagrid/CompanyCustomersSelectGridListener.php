@@ -29,9 +29,7 @@ class CompanyCustomersSelectGridListener
         $grid = $event->getDatagrid();
         $params = $grid->getParameters();
         $qb = $event->getQueryBuilder();
-        if (!$params->has('companyId') || !$params->get('companyId')) {
-            $qb->andWhere('c.company IS NULL');
-        } else {
+        if ($params->has('companyId') && $params->get('companyId')) {
             $companyId = (int)$params->get('companyId');
             $childrenIds = $this->companyRepository->getChildrenIds($companyId);
             $childrenIds[] = $companyId;

@@ -29,7 +29,7 @@ class TransitCompleteActionTest extends TestCase
     /** @var ContextAccessor $contextAccessor */
     protected $contextAccessor;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->contextAccessor = new ContextAccessor();
 
@@ -68,7 +68,7 @@ class TransitCompleteActionTest extends TestCase
 
     /**
      * Get Symfony PropertyPath
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit\Framework\MockObject\MockObject
      */
     protected function getPropertyPath()
     {
@@ -77,21 +77,17 @@ class TransitCompleteActionTest extends TestCase
             ->getMock();
     }
 
-    /**
-     * @expectedException \Oro\Component\Action\Exception\InvalidParameterException
-     * @expectedExceptionMessage Parameter "entity" is required.
-     */
     public function testInitializeExceptionNoEntityObject()
     {
+        $this->expectException(\Oro\Component\Action\Exception\InvalidParameterException::class);
+        $this->expectExceptionMessage('Parameter "entity" is required.');
         $this->action->initialize([]);
     }
 
-    /**
-     * @expectedException \Oro\Component\Action\Exception\InvalidParameterException
-     * @expectedExceptionMessage Entity must be valid property definition.
-     */
     public function testInitializeExceptionEntityNotValidProperty()
     {
+        $this->expectException(\Oro\Component\Action\Exception\InvalidParameterException::class);
+        $this->expectExceptionMessage('Entity must be valid property definition.');
         $this->action->initialize(['entity' => 1]);
     }
 
@@ -106,7 +102,6 @@ class TransitCompleteActionTest extends TestCase
             'transitionName' => $this->getPropertyPath()
         ];
         $this->action->initialize($options);
-        $this->assertAttributeEquals($options, 'options', $this->action);
     }
 
 
@@ -172,13 +167,10 @@ class TransitCompleteActionTest extends TestCase
         $this->action->execute($context);
     }
 
-
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Invalid configuration of workflow action, expected entity, none given.
-     */
     public function testExecuteActionNoEntityGiven()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Invalid configuration of workflow action, expected entity, none given.');
         $context = array('key' => 'value');
         self::callMethod(
             $this->action,

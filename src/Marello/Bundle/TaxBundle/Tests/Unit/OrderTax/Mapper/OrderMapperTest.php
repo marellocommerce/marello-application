@@ -27,11 +27,11 @@ class OrderMapperTest extends TestCase
     protected $mapper;
 
     /**
-     * @var OrderItemMapper|\PHPUnit_Framework_MockObject_MockObject
+     * @var OrderItemMapper|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $orderItemMapper;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->orderItemMapper = $this
             ->getMockBuilder(OrderItemMapper::class)
@@ -42,7 +42,7 @@ class OrderMapperTest extends TestCase
         $this->mapper->setOrderItemMapper($this->orderItemMapper);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->mapper, $this->OrderItemMapper);
     }

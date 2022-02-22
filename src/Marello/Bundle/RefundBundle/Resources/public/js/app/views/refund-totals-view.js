@@ -10,9 +10,9 @@ define(function(require) {
     const BaseView = require('oroui/js/app/views/base/view');
 
     /**
-     * @export marelloorder/js/app/views/order-totals-view
+     * @export marellorefund/js/app/views/refunds-totals-view
      * @extends oroui.app.views.base.View
-     * @class marelloorder.app.views.RefundTotalsView
+     * @class marellorefund.app.views.RefundTotalsView
      */
     const RefundTotalsView = BaseView.extend({
         /**
@@ -67,7 +67,7 @@ define(function(require) {
          * @param {Object} data
          */
         setTotals: function(data) {
-            var totals = _.defaults(data, {totals: {amount: {}, balance: {}}}).totals;
+            var totals = _.defaults(data, {totals: {subtotal: {}, tax_total: {}, grand_total: {}}}).totals;
             this.render(totals);
         },
 
@@ -102,11 +102,17 @@ define(function(require) {
          */
         render: function(totals) {
             this.items = [];
-            if (totals !== undefined && totals.amount !== undefined && totals.balance !== undefined) {
-                this.pushItem(totals.amount, this.options.data.amountLabel, this.options.data.amount);
-                this.pushItem(totals.balance, this.options.data.balanceLabel, this.options.data.balance);
+            if (totals !== undefined &&
+                totals.subtotal !== undefined &&
+                totals.tax_total !== undefined &&
+                totals.grand_total !== undefined
+            ) {
+                this.pushItem(totals.subtotal, this.options.data.subtotalLabel);
+                this.pushItem(totals.tax_total, this.options.data.taxtotalLabel);
+                this.pushItem(totals.grand_total, this.options.data.grandtotalLabel);
             }
             var items = _.filter(this.items);
+
             this.$totals.html(items.join(''));
             this.items = [];
         },
@@ -116,11 +122,11 @@ define(function(require) {
          * @param {Object} label
          * @param {Object} amountValue
          */
-        pushItem: function(item, label, amountValue) {
+        pushItem: function(item, label) {
             var localItem = _.defaults(
                 item,
                 {
-                    amount: parseFloat(amountValue).toFixed(2),
+                    amount: 0,
                     currency: this.options.data.currency,
                     visible: true,
                     template: null,
