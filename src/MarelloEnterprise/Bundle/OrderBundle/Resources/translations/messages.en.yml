@@ -1,0 +1,16 @@
+marello:
+    order:
+        system_configuration:
+            groups:
+                order.title:          Order
+                order_general.title:  General
+
+marelloenterprise:
+    order:
+        system_configuration:
+            groups:
+                order_consolidation.label: Order Consolidation
+            fields:
+                enable_order_consolidation:
+                    label: Enable
+                    tooltip: Enable consolidation for all orders
