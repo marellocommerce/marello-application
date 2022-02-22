@@ -160,8 +160,9 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
         }
 
         $possibleOptionsToFulfill = array_map(function($item) {
-            return $this->getOptions($item['selected_wh'], $item['qtyOrdered']);
-        }, $productsByWh);
+                return $this->getOptions($item['selected_wh'], $item['qtyOrdered']);
+            }, $productsByWh
+        );
         $optimizedOptions = $this->getOptimizedOptions($possibleOptionsToFulfill);
         $productsWithInventoryData = [];
 
@@ -300,7 +301,7 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
 
             $result = $append;
         }
-        
+
         return $result;
     }
 
