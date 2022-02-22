@@ -129,28 +129,28 @@ class InventoryAllocationProvider
                 $em->persist($allocationDraft);
             }
         }
-            $diff = [];
-            foreach ($order->getItems() as $orderItem) {
-                if ($allOrderItems->contains($orderItem)) {
-                    continue;
-                }
-                $diff[] = $orderItem;
+        $diff = [];
+        foreach ($order->getItems() as $orderItem) {
+            if ($allOrderItems->contains($orderItem)) {
+                continue;
             }
+            $diff[] = $orderItem;
+        }
 
-            foreach ($diff as $orderItem) {
-                /** @var Order $order */
-                $draft = new AllocationDraft();
-                $draft->setOrder($order);
-                $draft->setType('Could Not Allocate');
-                $allocationDraftItem = new AllocationDraftItem();
-                $allocationDraftItem->setOrderItem($orderItem);
-                $allocationDraftItem->setProduct($orderItem->getProduct());
-                $allocationDraftItem->setProductSku($orderItem->getProductSku());
-                $allocationDraftItem->setProductName($orderItem->getProductName());
-                $allocationDraftItem->setQuantity($orderItem->getQuantity());
-                $draft->addItem($allocationDraftItem);
-                $em->persist($draft);
-            }
+        foreach ($diff as $orderItem) {
+            /** @var Order $order */
+            $draft = new AllocationDraft();
+            $draft->setOrder($order);
+            $draft->setType('Could Not Allocate');
+            $allocationDraftItem = new AllocationDraftItem();
+            $allocationDraftItem->setOrderItem($orderItem);
+            $allocationDraftItem->setProduct($orderItem->getProduct());
+            $allocationDraftItem->setProductSku($orderItem->getProductSku());
+            $allocationDraftItem->setProductName($orderItem->getProductName());
+            $allocationDraftItem->setQuantity($orderItem->getQuantity());
+            $draft->addItem($allocationDraftItem);
+            $em->persist($draft);
+        }
 
         if ($consolidationWarehouse) {
             // create parent allocation
