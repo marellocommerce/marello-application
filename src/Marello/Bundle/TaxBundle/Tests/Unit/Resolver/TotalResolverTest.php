@@ -17,7 +17,7 @@ class TotalResolverTest extends TestCase
     /** @var TotalResolver */
     protected $resolver;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->resolver = new TotalResolver();
     }

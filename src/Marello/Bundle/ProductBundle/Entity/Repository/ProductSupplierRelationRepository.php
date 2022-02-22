@@ -24,6 +24,6 @@ class ProductSupplierRelationRepository extends EntityRepository
             ;
 
         $query = $qb->getQuery();
-        return implode(array_map('current', $query->getArrayResult()), ',');
+        return implode(',', array_map('current', $query->getArrayResult()));
     }
 }

@@ -3,7 +3,7 @@
 namespace Marello\Bundle\PackingBundle\Event;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class BeforePackingSlipCreationEvent extends Event
 {

@@ -14,14 +14,14 @@ class IsSendEmailTransitionTest extends TestCase
 {
     use EntityTrait;
 
-    /** @var ConfigManager|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var ConfigManager|\PHPUnit\Framework\MockObject\MockObject */
     protected $configManager;
 
     protected $isSendTransition;
 
     protected $salesChannel;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->configManager = $this->createMock(ConfigManager::class);
 

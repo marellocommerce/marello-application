@@ -7,6 +7,7 @@ use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\OrderBundle\Form\DataTransformer\ProductToSkuTransformer;
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 
 /**
  * Test if transformer is properly configured.
@@ -18,7 +19,7 @@ class ProductToSkuTransformerTest extends WebTestCase
     /** @var ProductToSkuTransformer */
     protected $transformer;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->initClient();
 
@@ -61,11 +62,10 @@ class ProductToSkuTransformerTest extends WebTestCase
 
     /**
      * Tests if reverse transform from SKU properly fails and throws TransformationFailedException.
-     *
-     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
      */
     public function testReverseTransformFail()
     {
+        $this->expectException(TransformationFailedException::class);
         $wrongSKU = 'this-is-wrong-sku';
         $this->transformer->reverseTransform($wrongSKU);
     }

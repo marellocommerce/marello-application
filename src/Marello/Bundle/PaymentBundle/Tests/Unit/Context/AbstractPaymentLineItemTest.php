@@ -30,7 +30,7 @@ abstract class AbstractPaymentLineItemTest extends \PHPUnit\Framework\TestCase
      */
     protected $productMock;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->priceMock = $this->createMock(Price::class);
 

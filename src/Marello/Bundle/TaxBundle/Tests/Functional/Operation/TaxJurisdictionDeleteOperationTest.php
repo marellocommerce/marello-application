@@ -10,7 +10,7 @@ use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxJurisdictionDa
 
 class TaxJurisdictionDeleteOperationTest extends ActionTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->initClient([], $this->generateBasicAuthHeader());
         $this->client->useHashNavigation(true);

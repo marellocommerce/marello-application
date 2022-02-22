@@ -3,6 +3,7 @@ dynamic-imports:
         - marelloorder/js/app/views/order-items-view
         - marelloorder/js/app/views/order-item-view
         - marelloorder/js/app/views/order-address-view
+        - marelloorder/js/app/views/order-company-view
         - marelloorder/js/app/views/order-discount-view
         - marelloorder/js/app/views/order-totals-view
         - marelloorder/js/app/views/shipping-cost-view

@@ -3,7 +3,7 @@
 namespace Marello\Bundle\ShippingBundle\Tests\Unit\Workflow;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 use Marello\Bundle\ShippingBundle\Context\ShippingContext;
 use Symfony\Component\PropertyAccess\PropertyPath;
@@ -29,12 +29,12 @@ class ShipmentCreateActionTest extends TestCase
     protected $contextAccessor;
 
     /**
-     * @var ShippingMethodProviderInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ShippingMethodProviderInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $shippingMethodProvider;
 
     /**
-     * @var Registry|\PHPUnit_Framework_MockObject_MockObject
+     * @var Registry|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $doctrine;
 
@@ -43,14 +43,14 @@ class ShipmentCreateActionTest extends TestCase
      */
     protected $action;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->contextAccessor = new ContextAccessor();
         $this->shippingMethodProvider = $this->createMock(ShippingMethodProviderInterface::class);
         $this->doctrine = $this->getMockBuilder(Registry::class)
             ->disableOriginalConstructor()
             ->getMock();
-        /** @var EventDispatcherInterface|\PHPUnit_Framework_MockObject_MockObject $eventDispatcher */
+        /** @var EventDispatcherInterface|\PHPUnit\Framework\MockObject\MockObject $eventDispatcher */
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
 
         $this->action = new ShipmentCreateAction(
@@ -73,18 +73,12 @@ class ShipmentCreateActionTest extends TestCase
             'Oro\Component\Action\Action\ActionInterface',
             $this->action->initialize($options)
         );
-
-        $this->assertAttributeEquals($options['context'], 'shippingContext', $this->action);
-        $this->assertAttributeEquals($options['method'], 'method', $this->action);
-        $this->assertAttributeEquals($options['methodType'], 'methodType', $this->action);
     }
 
-    /**
-     * @expectedException \Oro\Component\Action\Exception\InvalidParameterException
-     * @expectedExceptionMessage context parameter is required
-     */
     public function testInitializeNoContextOption()
     {
+        $this->expectException(\Oro\Component\Action\Exception\InvalidParameterException::class);
+        $this->expectExceptionMessage('context parameter is required');
         $options = [
             'method' => new PropertyPath('method'),
             'methodType' => new PropertyPath('methodType'),
@@ -93,12 +87,10 @@ class ShipmentCreateActionTest extends TestCase
         $this->action->initialize($options);
     }
 
-    /**
-     * @expectedException \Oro\Component\Action\Exception\InvalidParameterException
-     * @expectedExceptionMessage method parameter is required
-     */
     public function testInitializeNoMethodOption()
     {
+        $this->expectException(\Oro\Component\Action\Exception\InvalidParameterException::class);
+        $this->expectExceptionMessage('method parameter is required');
         $options = [
             'context' => new PropertyPath('context'),
             'methodType' => new PropertyPath('methodType'),
@@ -107,12 +99,10 @@ class ShipmentCreateActionTest extends TestCase
         $this->action->initialize($options);
     }
 
-    /**
-     * @expectedException \Oro\Component\Action\Exception\InvalidParameterException
-     * @expectedExceptionMessage methodType parameter is required
-     */
     public function testInitializeNoMethodTypeOption()
     {
+        $this->expectException(\Oro\Component\Action\Exception\InvalidParameterException::class);
+        $this->expectExceptionMessage('methodType parameter is required');
         $options = [
             'context' => new PropertyPath('context'),
             'method' => new PropertyPath('method'),

@@ -1,0 +1,2 @@
+bundles:
+    - { name: Marello\Bundle\HealthCheckBundle\MarelloHealthCheckBundle, priority: 0 }

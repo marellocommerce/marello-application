@@ -94,9 +94,44 @@ class Refund extends ExtendRefund implements
      *      }
      * )
      *
-     * @var int
+     * @var float
+     * technically the grandtotal
      */
     protected $refundAmount;
+
+    /**
+     * @ORM\Column(name="refund_subtotal", type="money")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
+     *          "entity"={
+     *              "label"="marello.refund.subtotal.label"
+     *          }
+     *      }
+     * )
+     *
+     * @var float
+     */
+    protected $refundSubtotal = 0.00;
+
+    /**
+     * @ORM\Column(name="refund_tax_total", type="money")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
+     *          "entity"={
+     *              "label"="marello.refund.tax_total.label"
+     *          }
+     *      }
+     * )
+     *
+     * @var float
+     */
+    protected $refundTaxTotal = 0.00;
 
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\CustomerBundle\Entity\Customer")
@@ -170,6 +205,8 @@ class Refund extends ExtendRefund implements
             ->setOrganization($order->getOrganization())
             ->setCurrency($order->getCurrency())
             ->setLocalization($order->getLocalization())
+            ->setRefundSubtotal($order->getSubtotal())
+            ->setRefundTaxTotal($order->getTotalTax())
         ;
 
         $order->getItems()->map(
@@ -196,6 +233,8 @@ class Refund extends ExtendRefund implements
             ->setOrganization($return->getOrganization())
             ->setCurrency($return->getOrder()->getCurrency())
             ->setLocalization($return->getOrder()->getLocalization())
+            ->setRefundSubtotal($return->getOrder()->getSubtotal())
+            ->setRefundTaxTotal($return->getOrder()->getTotalTax())
         ;
 
         $return->getReturnItems()->map(
@@ -387,6 +426,44 @@ class Refund extends ExtendRefund implements
     public function setCurrency($currency)
     {
         $this->currency = $currency;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getRefundSubtotal()
+    {
+        return $this->refundSubtotal;
+    }
+
+    /**
+     * @param float $refundSubtotal
+     * @return $this
+     */
+    public function setRefundSubtotal($refundSubtotal)
+    {
+        $this->refundSubtotal = $refundSubtotal;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getRefundTaxTotal()
+    {
+        return $this->refundTaxTotal;
+    }
+
+    /**
+     * @param $refundTaxTotal
+     * @return $this
+     */
+    public function setRefundTaxTotal($refundTaxTotal)
+    {
+        $this->refundTaxTotal = $refundTaxTotal;
 
         return $this;
     }

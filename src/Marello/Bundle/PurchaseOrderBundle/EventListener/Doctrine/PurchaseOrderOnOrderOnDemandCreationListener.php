@@ -102,7 +102,6 @@ class PurchaseOrderOnOrderOnDemandCreationListener
                 /** @var OrderItem $onDemandItem */
                 foreach ($orderOnDemandItems as $onDemandItem) {
                     $product = $onDemandItem->getProduct();
-                    $product->getSuppliers();
                     $supplier = $product->getPreferredSupplier();
                     $supplierName = $supplier->getName();
                     $itemsBySuppliers[$supplierName][] = $onDemandItem->getId();

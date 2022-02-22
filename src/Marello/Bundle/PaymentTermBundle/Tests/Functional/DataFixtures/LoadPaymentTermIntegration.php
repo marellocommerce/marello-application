@@ -3,7 +3,7 @@
 namespace Marello\Bundle\PaymentTermBundle\Tests\Functional\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\PaymentTermBundle\Entity\MarelloPaymentTermSettings;
 use Marello\Bundle\PaymentTermBundle\Integration\PaymentTermChannelType;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;

@@ -3,7 +3,7 @@
 namespace Marello\Bundle\InvoiceBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 use Marello\Bundle\InvoiceBundle\Entity\CreditmemoItem;
 use Marello\Bundle\InvoiceBundle\Entity\InvoiceItem;

@@ -15,7 +15,7 @@ class ResultTest extends TestCase
 
         $this->assertInstanceOf(ResultElement::class, $result->getTotal());
         $this->assertInstanceOf(ResultElement::class, $result->getShipping());
-        $this->assertInternalType('array', $result->getItems());
+        $this->assertIsArray($result->getItems());
 
         $this->assertEquals($this->createTotal(), $result->getTotal());
         $this->assertEquals($this->createShipping(), $result->getShipping());
@@ -97,7 +97,7 @@ class ResultTest extends TestCase
         $result = $this->createResultModel();
 
         /** @var Result $newResult */
-        $newResult = unserialize(serialize($result));
+        $newResult = Result::jsonDeserialize($result->jsonSerialize());
         $this->assertEquals([], $newResult->getItems());
         $this->assertNotEmpty($result->getItems());
     }
@@ -107,7 +107,7 @@ class ResultTest extends TestCase
         $result = $this->createResultModel();
 
         /** @var Result $newResult */
-        $newResult = unserialize(serialize($result));
+        $newResult = Result::jsonDeserialize($result->jsonSerialize());
         $this->assertEquals([], $newResult->getItems());
     }
 

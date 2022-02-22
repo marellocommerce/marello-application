@@ -19,6 +19,9 @@ class RefundType extends AbstractType
     const BLOCK_PREFIX = 'marello_refund';
     const VALIDATION_MESSAGE = 'Refund must contain at least one refunded item, or additional custom refunded item.';
 
+    /** @var RefundTotalsSubscriber $refundTotalsSubscriber */
+    protected $refundTotalsSubscriber;
+
     /**
      * {@inheritdoc}
      */
@@ -83,7 +86,7 @@ class RefundType extends AbstractType
                 }
             )
             ->addEventSubscriber(new CurrencySubscriber())
-            ->addEventSubscriber(new RefundTotalsSubscriber())
+            ->addEventSubscriber($this->refundTotalsSubscriber)
         ;
     }
 
@@ -116,5 +119,13 @@ class RefundType extends AbstractType
     public function getBlockPrefix()
     {
         return self::BLOCK_PREFIX;
+    }
+
+    /**
+     * @param RefundTotalsSubscriber $refundTotalsSubscriber
+     */
+    public function setRefundTotalSubscriber(RefundTotalsSubscriber $refundTotalsSubscriber)
+    {
+        $this->refundTotalsSubscriber = $refundTotalsSubscriber;
     }
 }

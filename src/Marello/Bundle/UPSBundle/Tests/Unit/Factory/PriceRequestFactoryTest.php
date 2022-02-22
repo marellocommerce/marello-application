@@ -2,8 +2,8 @@
 
 namespace Marello\Bundle\UPSBundle\Tests\Unit\Method;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectRepository;
 
 use PHPUnit\Framework\TestCase;
 
@@ -29,12 +29,12 @@ class PriceRequestFactoryTest extends TestCase
     use EntityTrait;
 
     /**
-     * @var UPSSettings|\PHPUnit_Framework_MockObject_MockObject
+     * @var UPSSettings|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $transport;
 
     /**
-     * @var ShippingService|\PHPUnit_Framework_MockObject_MockObject
+     * @var ShippingService|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $shippingService;
 
@@ -44,11 +44,11 @@ class PriceRequestFactoryTest extends TestCase
     protected $priceRequestFactory;
 
     /**
-     * @var SymmetricCrypterInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var SymmetricCrypterInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $symmetricCrypter;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->shippingService = $this->createMock(ShippingService::class);
 

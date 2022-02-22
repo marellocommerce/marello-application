@@ -2,3 +2,8 @@ marello_refund_refund:
     resource: "@MarelloRefundBundle/Controller/RefundController.php"
     type:     annotation
     prefix:   /marello/refund
+
+marello_refund_ajax:
+    resource: "@MarelloRefundBundle/Controller/RefundAjaxController.php"
+    type:     annotation
+    prefix:   /marello/refund

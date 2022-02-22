@@ -23,12 +23,12 @@ class OrderItemRowTotalsProviderTest extends TestCase
     use EntityTrait;
 
     /**
-     * @var TaxCalculatorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var TaxCalculatorInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $taxCalculator;
 
     /**
-     * @var TaxRuleMatcherInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var TaxRuleMatcherInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $taxRuleMatcher;
 
@@ -37,7 +37,7 @@ class OrderItemRowTotalsProviderTest extends TestCase
      */
     protected $orderItemRowTotalsProvider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->taxCalculator = $this->createMock(TaxCalculatorInterface::class);
         $this->taxRuleMatcher = $this->createMock(TaxRuleMatcherInterface::class);
@@ -63,12 +63,12 @@ class OrderItemRowTotalsProviderTest extends TestCase
         array $calculationResult,
         array $expectedResult
     ) {
-        /** @var MarelloAddress|\PHPUnit_Framework_MockObject_MockObject $shippingAddress **/
+        /** @var MarelloAddress|\PHPUnit\Framework\MockObject\MockObject $shippingAddress **/
         $shippingAddress = $this->createMock(MarelloAddress::class);
         /** @var Order $order */
         $order = $this->getEntity(Order::class, ['id' => 1, 'shippingAddress' => $shippingAddress]);
 
-        /** @var FormInterface|\PHPUnit_Framework_MockObject_MockObject $form **/
+        /** @var FormInterface|\PHPUnit\Framework\MockObject\MockObject $form **/
         $form = $this->createMock(FormInterface::class);
         $form->expects(static::once())
             ->method('getData')

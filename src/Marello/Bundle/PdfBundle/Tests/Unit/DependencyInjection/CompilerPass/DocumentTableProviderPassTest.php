@@ -18,11 +18,11 @@ class DocumentTableProviderPassTest extends TestCase
     protected $compilerPass;
 
     /**
-     * @var ContainerBuilder|\PHPUnit_Framework_MockObject_MockObject
+     * @var ContainerBuilder|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $containerBuilder;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->containerBuilder = $this
             ->getMockBuilder(ContainerBuilder::class)

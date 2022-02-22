@@ -24,7 +24,7 @@ class LifetimeByInvalidateCacheAtFieldProviderTest extends TestCase
      */
     private $provider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->provider = new LifetimeByInvalidateCacheAtFieldProvider();
     }
@@ -101,7 +101,7 @@ class LifetimeByInvalidateCacheAtFieldProviderTest extends TestCase
     }
 
     /**
-     * @return UPSSettings|\PHPUnit_Framework_MockObject_MockObject
+     * @return UPSSettings|\PHPUnit\Framework\MockObject\MockObject
      */
     private function createSettingsMock()
     {

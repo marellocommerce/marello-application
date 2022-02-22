@@ -13,7 +13,7 @@
 
 namespace Marello\Bundle\CoreBundle\Validator;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Oro\Bundle\EntityBundle\ORM\Registry;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -25,10 +25,10 @@ use Marello\Bundle\CoreBundle\Validator\Constraints\GreaterThanOrEqualToValue;
 
 class GreaterThanOrEqualToValueValidator extends ConstraintValidator
 {
-    /** @var ManagerRegistry */
+    /** @var Registry */
     private $registry;
 
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(Registry $registry)
     {
         $this->registry = $registry;
     }
@@ -108,7 +108,7 @@ class GreaterThanOrEqualToValueValidator extends ConstraintValidator
 
         $classMetaData = $em->getClassMetadata($className);
         $results = [];
-        /* @var $class \Doctrine\Common\Persistence\Mapping\ClassMetadata */
+        /* @var $class \Doctrine\Persistence\Mapping\ClassMetadata */
         foreach ($fields as $fieldName) {
             if (!$classMetaData->hasField($fieldName) && !$classMetaData->hasAssociation($fieldName)) {
                 throw new ConstraintDefinitionException(

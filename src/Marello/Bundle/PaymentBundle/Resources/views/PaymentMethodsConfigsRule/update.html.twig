@@ -2,7 +2,7 @@
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% oro_title_set({params : {"%id%": entity.id|default('N/A'|trans)} }) %}
 
-{% set formAction = entity.id ? path('marello_payment_methods_configs_rule_update', { 'id': entity.id }) : path('marello_payment_methods_configs_rule_create')  %}
+{% set formAction = entity.id ? path('marello_payment_methods_configs_rule_update', { 'id': entity.id }) : path('marello_payment_methods_configs_rule_create', queryParams|default([]))  %}
 
 {% block pageHeader %}
     {% if entity.id %}

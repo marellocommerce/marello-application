@@ -31,7 +31,10 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
  * @ORM\Table(name="marello_invoice_invoice_item")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="invoice_item_type", type="string")
- * @ORM\DiscriminatorMap({"invoiceitem" = "InvoiceItem", "creditmemoitem" = "CreditmemoItem"})
+ * @ORM\DiscriminatorMap({
+ *     "invoiceitem"="Marello\Bundle\InvoiceBundle\Entity\InvoiceItem",
+ *     "creditmemoitem"="Marello\Bundle\InvoiceBundle\Entity\CreditmemoItem"
+ * })
  * @ORM\HasLifecycleCallbacks()
  */
 abstract class AbstractInvoiceItem implements
