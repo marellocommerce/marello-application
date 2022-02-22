@@ -5,6 +5,8 @@ marello:
                 order.title:          Order
                 order_general.title:  General
 
+        consolidation_enabled.label: Consolidation Enabled
+
 marelloenterprise:
     order:
         system_configuration:
