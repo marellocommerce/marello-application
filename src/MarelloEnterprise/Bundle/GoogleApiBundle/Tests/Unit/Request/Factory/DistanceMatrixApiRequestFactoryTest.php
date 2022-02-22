@@ -18,17 +18,17 @@ use MarelloEnterprise\Bundle\GoogleApiBundle\Request\Factory\DistanceMatrixApiRe
 class DistanceMatrixApiRequestFactoryTest extends TestCase
 {
     /**
-     * @var ConfigManager|\PHPUnit_Framework_MockObject_MockObject
+     * @var ConfigManager|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $configManager;
 
     /**
-     * @var AddressCoordinatesProviderInerface|\PHPUnit_Framework_MockObject_MockObject
+     * @var AddressCoordinatesProviderInerface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $coordinatesProvider;
 
     /**
-     * @var EntityRepository|\PHPUnit_Framework_MockObject_MockObject
+     * @var EntityRepository|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $repository;
 
@@ -37,7 +37,7 @@ class DistanceMatrixApiRequestFactoryTest extends TestCase
      */
     protected $distanceMatrixApiRequestFactory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->configManager = $this->getMockBuilder(ConfigManager::class)
             ->disableOriginalConstructor()
@@ -69,7 +69,7 @@ class DistanceMatrixApiRequestFactoryTest extends TestCase
         $travelMode,
         array $expectedParams
     ) {
-        /** @var GoogleApiContextInterface|\PHPUnit_Framework_MockObject_MockObject $context **/
+        /** @var GoogleApiContextInterface|\PHPUnit\Framework\MockObject\MockObject $context **/
         $context = $this->createMock(GoogleApiContextInterface::class);
 
         $originAddress = new MarelloAddress();

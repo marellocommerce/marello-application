@@ -3,7 +3,7 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Form\Handler;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormInterface;
@@ -20,12 +20,12 @@ use MarelloEnterprise\Bundle\InventoryBundle\Form\Handler\WarehouseGroupHandler;
 class WarehouseGroupHandlerTest extends TestCase
 {
     /**
-     * @var FormInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var FormInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $form;
 
     /**
-     * @var ObjectManager|\PHPUnit_Framework_MockObject_MockObject
+     * @var ObjectManager|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $manager;
 
@@ -37,7 +37,7 @@ class WarehouseGroupHandlerTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->form = $this->createMock(FormInterface::class);
         $this->manager = $this->createMock(ObjectManager::class);
@@ -46,9 +46,9 @@ class WarehouseGroupHandlerTest extends TestCase
 
     public function testProcess()
     {
-        /** @var WarehouseGroup|\PHPUnit_Framework_MockObject_MockObject $updatedGroup */
+        /** @var WarehouseGroup|\PHPUnit\Framework\MockObject\MockObject $updatedGroup */
         $updatedGroup = $this->createMock(WarehouseGroup::class);
-        /** @var WarehouseGroup|\PHPUnit_Framework_MockObject_MockObject $systemGroup */
+        /** @var WarehouseGroup|\PHPUnit\Framework\MockObject\MockObject $systemGroup */
         $systemGroup = $this->createMock(WarehouseGroup::class);
 
         $wh1 = $this->mockWarehouse($systemGroup);
@@ -59,13 +59,9 @@ class WarehouseGroupHandlerTest extends TestCase
         $whAfter = [$wh2, $wh3];
 
         $updatedGroup
-            ->expects(static::at(0))
+            ->expects(static::exactly(2))
             ->method('getWarehouses')
-            ->willReturn(new ArrayCollection($whBefore));
-        $updatedGroup
-            ->expects(static::at(1))
-            ->method('getWarehouses')
-            ->willReturn(new ArrayCollection($whAfter));
+            ->willReturnOnConsecutiveCalls(new ArrayCollection($whBefore), new ArrayCollection($whAfter));
 
         $repository = $this->createMock(WarehouseGroupRepository::class);
         $repository
@@ -92,7 +88,7 @@ class WarehouseGroupHandlerTest extends TestCase
             ->expects(static::once())
             ->method('flush');
 
-        /** @var Request|\PHPUnit_Framework_MockObject_MockObject $request */
+        /** @var Request|\PHPUnit\Framework\MockObject\MockObject $request */
         $request = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
             ->getMock();

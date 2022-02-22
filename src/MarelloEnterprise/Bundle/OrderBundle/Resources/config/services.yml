@@ -1,0 +1,8 @@
+services:
+    MarelloEnterprise\Bundle\OrderBundle\EventListener\Doctrine\OrderWorkflowStartListener:
+        decorates: marello_order.listener.start_workflow
+        arguments:
+            - '@oro_workflow.manager'
+            - '@MarelloEnterprise\Bundle\OrderBundle\EventListener\Doctrine\OrderWorkflowStartListener.inner'
+        calls:
+            - [setTokenAccessor, ['@oro_security.token_accessor']]
