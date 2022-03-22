@@ -27,14 +27,14 @@
         }
     },
     "require": {
-        "oro/platform-enterprise": "4.2.*",
+        "oro/platform-enterprise": "5.0.*",
         "marellocommerce/marello": "3.2.x-dev"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-master": "3.2-dev"
+            "dev-main": "3.2-dev"
         }
     }
 }
