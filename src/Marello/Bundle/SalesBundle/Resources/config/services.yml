@@ -91,6 +91,8 @@ services:
             - 'Marello\Bundle\SalesBundle\Entity\SalesChannel'
         calls:
             - [setAclHelper, ['@oro_security.acl_helper']]
+        tags:
+            - { name: doctrine.repository_service }
 
     marello_sales.repository.sales_channel_group:
         class: 'Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelGroupRepository'
@@ -99,11 +101,13 @@ services:
             - 'Marello\Bundle\SalesBundle\Entity\SalesChannelGroup'
         calls:
             - [setAclHelper, ['@oro_security.acl_helper']]
+        tags:
+            - { name: doctrine.repository_service }
 
     marello_sales.twig.sales_extension:
         class: Marello\Bundle\SalesBundle\Twig\SalesExtension
         arguments:
-            - '@marello_sales.repository.sales_channel'
+            - '@doctrine'
         tags:
             - { name: twig.extension }
 

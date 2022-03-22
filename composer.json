@@ -20,16 +20,16 @@
         }
     },
     "require": {
-        "oro/platform": "4.2.*",
-        "oro/platform-serialised-fields": "4.2.*",
-        "oro/calendar-bundle": "4.2.*",
+        "oro/platform": "5.0.*",
+        "oro/platform-serialised-fields": "5.0.*",
+        "oro/calendar-bundle": "5.0.*",
         "mpdf/mpdf": "^8.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-master": "3.2-dev"
+            "dev-main": "3.2-dev"
         }
     },
     "autoload": {

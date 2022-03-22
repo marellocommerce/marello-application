@@ -5,7 +5,7 @@ namespace Marello\Bundle\OrderBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as JMS;
+//use JMS\Serializer\Annotation as JMS; weedizp
 use Marello\Bundle\OrderBundle\Model\ExtendOrderItem;
 use Marello\Bundle\OrderBundle\Model\QuantityAwareInterface;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
@@ -36,7 +36,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
  * )
  * @ORM\Table(name="marello_order_order_item")
  * @ORM\HasLifecycleCallbacks()
- * @JMS\ExclusionPolicy("ALL")
+ * JMS\ExclusionPolicy("ALL") weedizp
  */
 class OrderItem extends ExtendOrderItem implements
     CurrencyAwareInterface,
@@ -56,7 +56,7 @@ class OrderItem extends ExtendOrderItem implements
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      *
-     * @JMS\Expose
+     * JMS\Expose
      */
     protected $id;
 
@@ -72,7 +72,7 @@ class OrderItem extends ExtendOrderItem implements
      *          }
      *      }
      * )
-     * @JMS\Expose
+     * JMS\Expose
      */
     protected $product;
 
@@ -127,7 +127,7 @@ class OrderItem extends ExtendOrderItem implements
      *      }
      * )
      *
-     * @JMS\Expose
+     * JMS\Expose
      */
     protected $quantity;
 
@@ -143,7 +143,7 @@ class OrderItem extends ExtendOrderItem implements
      *      }
      * )
      *
-     * @JMS\Expose
+     * JMS\Expose
      */
     protected $price;
 
@@ -159,7 +159,7 @@ class OrderItem extends ExtendOrderItem implements
      *      }
      * )
      *
-     * @JMS\Expose
+     * JMS\Expose
      */
     protected $originalPriceInclTax;
 
@@ -175,7 +175,7 @@ class OrderItem extends ExtendOrderItem implements
      *      }
      * )
      *
-     * @JMS\Expose
+     * JMS\Expose
      */
     protected $originalPriceExclTax;
 
@@ -191,7 +191,7 @@ class OrderItem extends ExtendOrderItem implements
      *      }
      * )
      *
-     * @JMS\Expose
+     * JMS\Expose
      */
     protected $purchasePriceIncl;
 
@@ -207,7 +207,7 @@ class OrderItem extends ExtendOrderItem implements
      *      }
      * )
      *
-     * @JMS\Expose
+     * JMS\Expose
      */
     protected $tax;
 
@@ -223,7 +223,7 @@ class OrderItem extends ExtendOrderItem implements
      *      }
      * )
      *
-     * @JMS\Expose
+     * JMS\Expose
      */
     protected $taxPercent;
 
@@ -239,7 +239,7 @@ class OrderItem extends ExtendOrderItem implements
      *      }
      * )
      *
-     * @JMS\Expose
+     * JMS\Expose
      */
     protected $discountPercent;
 
@@ -255,7 +255,7 @@ class OrderItem extends ExtendOrderItem implements
      *      }
      * )
      *
-     * @JMS\Expose
+     * JMS\Expose
      */
     protected $discountAmount;
 
@@ -271,7 +271,7 @@ class OrderItem extends ExtendOrderItem implements
      *      }
      * )
      *
-     * @JMS\Expose
+     * JMS\Expose
      */
     protected $rowTotalInclTax;
 
@@ -287,7 +287,7 @@ class OrderItem extends ExtendOrderItem implements
      *      }
      * )
      *
-     * @JMS\Expose
+     * JMS\Expose
      */
     protected $rowTotalExclTax;
     
@@ -318,7 +318,7 @@ class OrderItem extends ExtendOrderItem implements
      *      }
      * )
      *
-     * @JMS\Expose
+     * JMS\Expose
      */
     protected $taxCode;
     

@@ -48,6 +48,8 @@ services:
             - 'Marello\Bundle\CatalogBundle\Entity\Category'
         calls:
             - [setAclHelper, ['@oro_security.acl_helper']]
+        tags:
+            - { name: doctrine.repository_service }
 
     marello_catalog.twig.category_extension:
         class: 'Marello\Bundle\CatalogBundle\Twig\CategoryExtension'

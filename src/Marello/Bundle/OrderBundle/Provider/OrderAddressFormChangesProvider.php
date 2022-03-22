@@ -6,14 +6,14 @@ use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
 use Marello\Bundle\LayoutBundle\Provider\FormChangesProviderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\Templating\EngineInterface;
+use Twig\Environment;
 
 class OrderAddressFormChangesProvider implements FormChangesProviderInterface
 {
     /**
-     * @var EngineInterface
+     * @var Environment
      */
-    protected $templatingEngine;
+    protected $twig;
 
     /**
      * @var FormFactoryInterface
@@ -26,13 +26,13 @@ class OrderAddressFormChangesProvider implements FormChangesProviderInterface
     protected $fieldName;
 
     /**
-     * @param EngineInterface $templatingEngine
+     * @param Environment $twig
      * @param FormFactoryInterface $formFactory
      * @param string $addressType
      */
-    public function __construct(EngineInterface $templatingEngine, FormFactoryInterface $formFactory, $addressType)
+    public function __construct(Environment $twig, FormFactoryInterface $formFactory, $addressType)
     {
-        $this->templatingEngine = $templatingEngine;
+        $this->twig = $twig;
         $this->formFactory = $formFactory;
         $this->fieldName = sprintf('%sAddress', $addressType);
     }
@@ -71,7 +71,7 @@ class OrderAddressFormChangesProvider implements FormChangesProviderInterface
     protected function renderForm(FormView $formView)
     {
         return $this
-            ->templatingEngine
+            ->twig
             ->render('MarelloOrderBundle:Form:customerAddressSelector.html.twig', ['form' => $formView]);
     }
 }

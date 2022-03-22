@@ -4,11 +4,13 @@ services:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\CustomerBundle\Entity\Company'
+        tags:
+            - { name: doctrine.repository_service }
 
     marello_customer.twig.customer_extension:
         class: 'Marello\Bundle\CustomerBundle\Twig\CustomerExtension'
         arguments:
-            - '@marello_customer.repository.company'
+            - '@doctrine'
         tags:
             - { name: twig.extension }
 

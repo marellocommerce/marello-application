@@ -68,7 +68,6 @@ services:
         class: 'Marello\Bundle\PdfBundle\Workflow\Action\SendEmailTemplateAttachmentAction'
         arguments:
             - '@oro_action.expression.context_accessor'
-            - '@oro_email.mailer.processor'
             - '@oro_email.email.address.helper'
             - '@oro_entity.entity_name_resolver'
             - '@doctrine'
