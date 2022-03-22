@@ -2,6 +2,7 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
@@ -23,11 +24,6 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
     private $estimation = false;
 
     /**
-     * @var MinQtyWHCalculatorInterface
-     */
-    private $minQtyWHCalculator;
-
-    /**
      * @var WarehouseChannelGroupLinkRepository
      */
     private $warehouseChannelGroupLinkRepository;
@@ -37,17 +33,10 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
      */
     private $linkedWarehouses = [];
 
-    /**
-     * @param MinQtyWHCalculatorInterface $minQtyWHCalculator
-     * @param WarehouseChannelGroupLinkRepository $warehouseChannelGroupLinkRepository
-     */
     public function __construct(
-        MinQtyWHCalculatorInterface $minQtyWHCalculator,
-        WarehouseChannelGroupLinkRepository $warehouseChannelGroupLinkRepository
-    ) {
-        $this->minQtyWHCalculator = $minQtyWHCalculator;
-        $this->warehouseChannelGroupLinkRepository = $warehouseChannelGroupLinkRepository;
-    }
+        private MinQtyWHCalculatorInterface $minQtyWHCalculator,
+        private ManagerRegistry $registry
+    ) {}
 
     /**
      * {@inheritdoc}
@@ -180,7 +169,7 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
                 return [];
             }
             /** @var WarehouseChannelGroupLink $warehouseGroupLink */
-            $warehouseGroupLink = $this->warehouseChannelGroupLinkRepository
+            $warehouseGroupLink = $this->getRepository()
                 ->findLinkBySalesChannelGroup($order->getSalesChannel()->getGroup());
 
             if (!$warehouseGroupLink) {
@@ -197,5 +186,15 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
         }
 
         return $this->linkedWarehouses;
+    }
+
+    protected function getRepository(): WarehouseChannelGroupLinkRepository
+    {
+        if (!$this->warehouseChannelGroupLinkRepository) {
+            $this->warehouseChannelGroupLinkRepository = $this->registry
+                ->getRepository(WarehouseChannelGroupLink::class);
+        }
+
+        return $this->warehouseChannelGroupLinkRepository;
     }
 }

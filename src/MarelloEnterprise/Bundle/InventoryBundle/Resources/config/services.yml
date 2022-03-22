@@ -136,7 +136,7 @@ services:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\MinimumQuantityWFAStrategy'
         arguments:
             - '@marelloenterprise_inventory.wfa_strategy.min_quantity.calculator.main'
-            - '@marello_inventory.repository.warehousechannelgrouplink'
+            - '@doctrine'
         tags:
             - { name: marello_inventory_wfa_strategy }
 
@@ -160,7 +160,7 @@ services:
         arguments:
             - '@marelloenterprise_inventory.wfa_strategy.registry'
             - '@marello_rule.rule_filtration.service'
-            - '@marelloenterprise_inventory.repository.wfa_rule'
+            - '@doctrine'
 
     marelloenterprise_inventory.formatter.wfa_strategy.label:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Formatter\WFAStrategyLabelFormatter'
@@ -183,6 +183,8 @@ services:
             - 'MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule'
         calls:
             - [setAclHelper, ['@oro_security.acl_helper']]
+        tags:
+            - { name: doctrine.repository_service }
 
     marelloenterprise_inventory.wfa_strategy.min_quantity.calculator.chain_element.multiple_wh:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\Calculator\Chain\Element\MultipleWarehouses\MultipleWHCalculatorChainElement'
