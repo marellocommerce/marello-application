@@ -3,7 +3,7 @@
 namespace Marello\Bundle\InvoiceBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as JMS;
+//use JMS\Serializer\Annotation as JMS; weedizp
 use Marello\Bundle\OrderBundle\Model\QuantityAwareInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
@@ -72,7 +72,7 @@ abstract class AbstractInvoiceItem implements
      *          }
      *      }
      * )
-     * @JMS\Expose
+     * JMS\Expose
      */
     protected $product;
 
@@ -109,7 +109,7 @@ abstract class AbstractInvoiceItem implements
      *      }
      * )
      *
-     * @JMS\Expose
+     * JMS\Expose
      */
     protected $price;
 
@@ -125,7 +125,7 @@ abstract class AbstractInvoiceItem implements
      *      }
      * )
      *
-     * @JMS\Expose
+     * JMS\Expose
      */
     protected $quantity;
 
@@ -141,7 +141,7 @@ abstract class AbstractInvoiceItem implements
      *      }
      * )
      *
-     * @JMS\Expose
+     * JMS\Expose
      */
     protected $tax;
 
@@ -157,7 +157,7 @@ abstract class AbstractInvoiceItem implements
      *      }
      * )
      *
-     * @JMS\Expose
+     * JMS\Expose
      */
     protected $discountAmount = 0;
 
@@ -173,7 +173,7 @@ abstract class AbstractInvoiceItem implements
      *      }
      * )
      *
-     * @JMS\Expose
+     * JMS\Expose
      */
     protected $rowTotalInclTax;
 
@@ -189,7 +189,7 @@ abstract class AbstractInvoiceItem implements
      *      }
      * )
      *
-     * @JMS\Expose
+     * JMS\Expose
      */
     protected $rowTotalExclTax;
 

@@ -21,3 +21,5 @@ services:
             - 'Marello\Bundle\AddressBundle\Entity\MarelloAddress'
         calls:
             - [setAclHelper, ['@oro_security.acl_helper']]
+        tags:
+            - { name: doctrine.repository_service }

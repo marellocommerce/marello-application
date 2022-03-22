@@ -11,7 +11,7 @@ class EmailTwigSandboxConfigurationPass extends AbstractTwigSandboxConfiguration
     /**
      * {@inheritDoc}
      */
-    protected function getFilters()
+    protected function getFilters(): array
     {
         return [];
     }
@@ -19,7 +19,7 @@ class EmailTwigSandboxConfigurationPass extends AbstractTwigSandboxConfiguration
     /**
      * {@inheritDoc}
      */
-    protected function getFunctions()
+    protected function getFunctions(): array
     {
         return [
             'marello_get_order_item_status',
@@ -30,10 +30,15 @@ class EmailTwigSandboxConfigurationPass extends AbstractTwigSandboxConfiguration
     /**
      * {@inheritDoc}
      */
-    protected function getExtensions()
+    protected function getExtensions(): array
     {
         return [
             self::ORDER_EXTENSION
         ];
+    }
+
+    protected function getTags(): array
+    {
+        return [];
     }
 }

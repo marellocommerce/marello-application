@@ -52,7 +52,7 @@ services:
     marello_inventory.twig.warehouse_extension:
         class: 'Marello\Bundle\InventoryBundle\Twig\WarehouseExtension'
         arguments:
-            - '@marello_inventory.repository.warehouse'
+            - '@doctrine'
         tags:
             - { name: twig.extension }
 
@@ -64,8 +64,8 @@ services:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\InventoryBundle\Entity\Warehouse'
-        calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
+        tags:
+            - { name: doctrine.repository_service }
 
     marello_inventory.repository.warehousegroup:
         class: 'Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseGroupRepository'
@@ -74,6 +74,8 @@ services:
             - 'Marello\Bundle\InventoryBundle\Entity\WarehouseGroup'
         calls:
             - [setAclHelper, ['@oro_security.acl_helper']]
+        tags:
+            - { name: doctrine.repository_service }
 
     marello_inventory.repository.warehousechannelgrouplink:
         class: 'Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository'
@@ -82,6 +84,8 @@ services:
             - 'Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink'
         calls:
             - [setAclHelper, ['@oro_security.acl_helper']]
+        tags:
+            - { name: doctrine.repository_service }
 
     marello_inventory.balancer_strategy.registry:
         class: 'Marello\Bundle\InventoryBundle\Strategy\BalancerStrategiesRegistry'
@@ -173,6 +177,8 @@ services:
             - 'Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel'
         calls:
             - [setAclHelper, ['@oro_security.acl_helper']]
+        tags:
+            - { name: doctrine.repository_service }
 
     marello_inventory.repository.inventorylevellogrecord:
         class: 'Marello\Bundle\InventoryBundle\Entity\Repository\InventoryLevelLogRecordRepository'
@@ -181,6 +187,8 @@ services:
             - 'Marello\Bundle\InventoryBundle\Entity\InventoryLevelLogRecord'
         calls:
             - [setAclHelper, ['@oro_security.acl_helper']]
+        tags:
+            - { name: doctrine.repository_service }
 
     marello_inventory.repository.inventoryitem:
         class: 'Marello\Bundle\InventoryBundle\Entity\Repository\InventoryItemRepository'
@@ -189,6 +197,8 @@ services:
             - 'Marello\Bundle\InventoryBundle\Entity\InventoryItem'
         calls:
             - [setAclHelper, ['@oro_security.acl_helper']]
+        tags:
+            - { name: doctrine.repository_service }
 
     marello_inventory.repository.inventorylevel:
         class: 'Marello\Bundle\InventoryBundle\Entity\Repository\InventoryLevelRepository'
@@ -197,6 +207,8 @@ services:
             - 'Marello\Bundle\InventoryBundle\Entity\InventoryLevel'
         calls:
             - [setAclHelper, ['@oro_security.acl_helper']]
+        tags:
+            - { name: doctrine.repository_service }
 
     marello_inventory.form.inventory_order_on_demand_validator:
         class: 'Marello\Bundle\InventoryBundle\Validator\InventoryOrderOnDemandValidator'

@@ -177,3 +177,5 @@ services:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\UPSBundle\Entity\ShippingService'
+        tags:
+            - { name: doctrine.repository_service }

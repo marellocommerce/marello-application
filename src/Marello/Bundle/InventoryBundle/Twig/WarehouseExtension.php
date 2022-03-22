@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\InventoryBundle\Twig;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Twig\Extension\AbstractExtension;
@@ -16,13 +17,7 @@ class WarehouseExtension extends AbstractExtension
      */
     protected $warehouseRepository;
 
-    /**
-     * @param WarehouseRepository $warehouseRepository
-     */
-    public function __construct(WarehouseRepository $warehouseRepository)
-    {
-        $this->warehouseRepository = $warehouseRepository;
-    }
+    public function __construct(private ManagerRegistry $registry) {}
 
     /**
      * Returns the name of the extension.
@@ -61,5 +56,14 @@ class WarehouseExtension extends AbstractExtension
         }, $warehouses));
 
         return $warehousesNames;
+    }
+
+    protected function getRepository(): WarehouseRepository
+    {
+        if (!$this->warehouseRepository) {
+            $this->warehouseRepository = $this->registry->getRepository(Warehouse::class);
+        }
+
+        return $this->warehouseRepository;
     }
 }
