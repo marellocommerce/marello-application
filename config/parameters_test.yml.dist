@@ -8,12 +8,7 @@ parameters:
     database_driver_options: []
     database_server_version: ~
 
-    mailer_transport:       smtp
-    mailer_host:            127.0.0.1
-    mailer_port:            ~
-    mailer_encryption:      ~
-    mailer_user:            ~
-    mailer_password:        ~
+    mailer_dsn:             'smtp://127.0.0.1'
 
     # WebSocket server config
     websocket_bind_address:                "0.0.0.0"  # The host IP the socket server will bind to
@@ -46,13 +41,11 @@ parameters:
 
     session_handler:        ~
 
-    secret:                 ThisTokenIsNotSoSecretChangeIt
+    secret:                 'ThisTokenIsNotSoSecretChangeIt'
     installed:              ~
-    assets_version:         ~
-    assets_version_strategy: time_hash
-    enterprise_licence:     ~
     message_queue_transport: 'null'
     message_queue_transport_config: {}
+
     deployment_type: ~
 
     # Post processors binary
