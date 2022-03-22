@@ -3,7 +3,7 @@
 namespace Marello\Bundle\PackingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as JMS;
+//use JMS\Serializer\Annotation as JMS; weedizp
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\PackingBundle\Model\ExtendPackingSlipItem;

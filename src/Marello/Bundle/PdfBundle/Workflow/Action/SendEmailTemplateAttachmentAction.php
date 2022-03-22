@@ -42,49 +42,18 @@ class SendEmailTemplateAttachmentAction extends AbstractSendEmail
 
     protected $emailConstraint;
 
-    protected $renderer;
-
-    /** @var ManagerRegistry */
-    protected $registry;
-
-    /** @var ValidatorInterface */
-    protected $validator;
-
-    /** @var EmailOriginHelper */
-    protected $emailOriginHelper;
-
-    /**
-     * @param ContextAccessor $contextAccessor
-     * @param Processor $emailProcessor
-     * @param EmailAddressHelper $emailAddressHelper
-     * @param EntityNameResolver $entityNameResolver
-     * @param ManagerRegistry $registry
-     * @param ValidatorInterface $validator
-     * @param EmailOriginHelper $emailOriginHelper
-     * @param EmailRenderer $renderer
-     */
     public function __construct(
         ContextAccessor $contextAccessor,
-        Processor $emailProcessor,
         EmailAddressHelper $emailAddressHelper,
         EntityNameResolver $entityNameResolver,
-        ManagerRegistry $registry,
+        protected ManagerRegistry $registry,
         ValidatorInterface $validator,
-        EmailOriginHelper $emailOriginHelper,
-        EmailRenderer $renderer
+        protected EmailOriginHelper $emailOriginHelper,
+        protected EmailRenderer $renderer
     ) {
-        parent::__construct($contextAccessor, $emailProcessor, $emailAddressHelper, $entityNameResolver);
-
-        $this->registry = $registry;
-        $this->validator = $validator;
-        $this->renderer = $renderer;
-        $this->emailOriginHelper = $emailOriginHelper;
+        parent::__construct($contextAccessor, $validator, $emailAddressHelper, $entityNameResolver);
     }
 
-    /**
-     * @param array $options
-     * @return SendEmailTemplate
-     */
     public function initialize(array $options): self
     {
         if (isset($options[self::OPTION_BCC])) {
@@ -203,7 +172,7 @@ class SendEmailTemplateAttachmentAction extends AbstractSendEmail
                 $emailModel->getOrganization()
             );
 
-            $emailUser = $this->emailProcessor->process($emailModel, $emailOrigin);
+            $emailUser = $this->emailProcessor->process($emailModel, $emailOrigin); // weedizp
         } catch (\Swift_SwiftException $exception) {
             $this->logger->error('Workflow send email template action.', ['exception' => $exception]);
         }
@@ -350,11 +319,7 @@ class SendEmailTemplateAttachmentAction extends AbstractSendEmail
         }
     }
 
-    /**
-     * @param array $options
-     * @return array
-     */
-    protected function normalizeToOption(array $options): array
+    protected function normalizeToOption(array &$options): void
     {
         if (empty($options['to'])) {
             $options['to'] = [];
@@ -369,7 +334,5 @@ class SendEmailTemplateAttachmentAction extends AbstractSendEmail
         foreach ($options['to'] as $to) {
             $this->assertEmailAddressOption($to);
         }
-
-        return $options;
     }
 }

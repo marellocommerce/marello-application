@@ -4,6 +4,7 @@ namespace Marello\Bundle\ProductBundle\Entity\Builder;
 
 use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
 use Oro\Bundle\EntityConfigBundle\Manager\AttributeGroupManager;
+use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -69,9 +70,9 @@ class ProductFamilyBuilder
         $this->family->setCode(self::DEFAULT_FAMILY_CODE);
         $this->family->setEntityClass(Product::class);
         $this->family->setOwner($organization);
-        $this->family->setDefaultLabel(
+        $this->family->addLabel((new LocalizedFallbackValue())->setString( // weedizp
             $this->translator->trans('oro.entityconfig.attribute.entity.attributefamily.default.label')
-        );
+        ));
 
         return $this;
     }

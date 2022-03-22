@@ -118,7 +118,7 @@ services:
     marello_order.provider.form_changes.billing_address:
         class: Marello\Bundle\OrderBundle\Provider\OrderAddressFormChangesProvider
         arguments:
-            - '@templating'
+            - '@twig'
             - '@form.factory'
             - 'billing'
         tags:
@@ -127,7 +127,7 @@ services:
     marello_order.provider.form_changes.shipping_address:
         class: Marello\Bundle\OrderBundle\Provider\OrderAddressFormChangesProvider
         arguments:
-            - '@templating'
+            - '@twig'
             - '@form.factory'
             - 'shipping'
         tags:
@@ -263,6 +263,8 @@ services:
             - 'Marello\Bundle\OrderBundle\Entity\Order'
         calls:
             - [setAclHelper, ['@oro_security.acl_helper']]
+        tags:
+            - { name: doctrine.repository_service }
 
     marello_order.repository.order_item:
         class: 'Marello\Bundle\OrderBundle\Entity\Repository\OrderItemRepository'
@@ -272,6 +274,8 @@ services:
         calls:
             - [setAclHelper, ['@oro_security.acl_helper']]
             - [setDateFilterProcessor, ['@oro_dashboard.filter.date_filter_processor']]
+        tags:
+            - { name: doctrine.repository_service }
 
     marello_order.form.available_inventory_validator:
         class: 'Marello\Bundle\OrderBundle\Validator\AvailableInventoryValidator'

@@ -110,12 +110,16 @@ services:
             - 'Marello\Bundle\PaymentBundle\Entity\PaymentMethodsConfigsRule'
         calls:
             - [setAclHelper, ['@oro_security.acl_helper']]
+        tags:
+            - { name: doctrine.repository_service }
 
     marello_payment.repository.payment_method_config:
         class: 'Marello\Bundle\PaymentBundle\Entity\Repository\PaymentMethodConfigRepository'
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\PaymentBundle\Entity\PaymentMethodConfig'
+        tags:
+            - { name: doctrine.repository_service }
 
     marello_payment.expression_language.decorated_product_line_item_factory:
         class: 'Marello\Bundle\PaymentBundle\ExpressionLanguage\DecoratedProductLineItemFactory'
@@ -315,7 +319,7 @@ services:
     marello_payment.provider.form_changes.available_payment_methods:
         class: 'Marello\Bundle\PaymentBundle\Provider\FormChanges\AvailablePaymentMethodsFormChangesProvider'
         arguments:
-            - '@templating'
+            - '@twig'
             - '@form.factory'
             - '@marello_payment.provider.basic_payment_methods_choices'
         tags:

@@ -133,6 +133,8 @@ services:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\ShippingBundle\Entity\ShippingMethodConfig'
+        tags:
+            - { name: doctrine.repository_service }
 
     marello_shipping.repository.shipping_methods_configs_rule:
         class: 'Marello\Bundle\ShippingBundle\Entity\Repository\ShippingMethodsConfigsRuleRepository'
@@ -141,6 +143,8 @@ services:
             - 'Marello\Bundle\ShippingBundle\Entity\ShippingMethodsConfigsRule'
         calls:
             - [setAclHelper, ['@oro_security.acl_helper']]
+        tags:
+            - { name: doctrine.repository_service }
 
     marello_shipping.method_disable_handler.basic:
         class: 'Marello\Bundle\ShippingBundle\Method\Handler\BasicShippingMethodDisableHandler'

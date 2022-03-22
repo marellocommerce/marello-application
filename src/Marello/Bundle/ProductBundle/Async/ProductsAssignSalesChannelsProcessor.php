@@ -10,9 +10,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Component\MessageQueue\Util\JSON;
-use Oro\Bundle\EmailBundle\Mailer\Processor;
 use Oro\Bundle\EmailBundle\Form\Model\Factory;
-use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
 use Oro\Component\MessageQueue\Transport\SessionInterface;
 use Oro\Component\MessageQueue\Client\TopicSubscriberInterface;
@@ -39,11 +37,6 @@ class ProductsAssignSalesChannelsProcessor implements MessageProcessorInterface,
     private $entityManager;
 
     /**
-     * @var Manager
-     */
-    private $datagridManager;
-
-    /**
      * @var TokenStorageInterface
      */
     private $tokenStorage;
@@ -53,33 +46,17 @@ class ProductsAssignSalesChannelsProcessor implements MessageProcessorInterface,
      */
     private $emailModelFactory;
 
-    /**
-     * @var Processor
-     */
-    private $emailProcessor;
-
-    /**
-     * @param LoggerInterface $logger
-     * @param EntityManagerInterface $entityManager
-     * @param Manager $datagridManager
-     * @param TokenStorageInterface $tokenStorage,
-     * @param Factory $emailModelFactory,
-     * @param Processor $emailProcessor
-     */
     public function __construct(
         LoggerInterface $logger,
         EntityManagerInterface $entityManager,
-        Manager $datagridManager,
         TokenStorageInterface $tokenStorage,
-        Factory $emailModelFactory,
-        Processor $emailProcessor
+        Factory $emailModelFactory
     ) {
         $this->logger = $logger;
         $this->entityManager = $entityManager;
-        $this->datagridManager = $datagridManager;
         $this->tokenStorage = $tokenStorage;
         $this->emailModelFactory = $emailModelFactory;
-        $this->emailProcessor = $emailProcessor;
+        $this->emailProcessor = $emailProcessor; // weedizp
     }
 
     /**

@@ -9,6 +9,7 @@ use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeGroup;
 use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeGroupRelation;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
+use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 trait MakeProductAttributesTrait
@@ -107,7 +108,7 @@ trait MakeProductAttributesTrait
 
         foreach ($groupsWithAttributes as $groupData) {
             $attributeGroup = new AttributeGroup();
-            $attributeGroup->setDefaultLabel($groupData['groupLabel']);
+            $attributeGroup->addLabel((new LocalizedFallbackValue())->setString($groupData['groupLabel'])); // weedizp
             $attributeGroup->setIsVisible($groupData['groupVisibility']);
             $attributeGroup->setCode($groupData['groupCode']);
             foreach ($groupData['attributes'] as $attribute) {

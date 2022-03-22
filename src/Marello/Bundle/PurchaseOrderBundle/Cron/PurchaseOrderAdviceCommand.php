@@ -9,14 +9,22 @@ use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
 use Oro\Bundle\CronBundle\Command\CronCommandInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class PurchaseOrderAdviceCommand extends ContainerAwareCommand implements CronCommandInterface
+class PurchaseOrderAdviceCommand extends Command implements CronCommandInterface
 {
     const COMMAND_NAME = 'oro:cron:marello:po-advice';
     const EXIT_CODE = 0;
+
+    protected ContainerInterface $container;
+
+    public function setContainer(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
 
     /**
      * @inheritDoc
@@ -31,8 +39,8 @@ class PurchaseOrderAdviceCommand extends ContainerAwareCommand implements CronCo
      */
     public function isActive()
     {
-        $featureChecker = $this->getContainer()->get('oro_featuretoggle.checker.feature_checker');
-        $configManager = $this->getContainer()->get('oro_config.manager');
+        $featureChecker = $this->container->get('oro_featuretoggle.checker.feature_checker');
+        $configManager = $this->container->get('oro_config.manager');
 
         return $featureChecker->isResourceEnabled(self::COMMAND_NAME, 'cron_jobs') &&
         $configManager->get('marello_purchaseorder.purchaseorder_notification') === true;
@@ -53,13 +61,13 @@ class PurchaseOrderAdviceCommand extends ContainerAwareCommand implements CronCo
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $configManager = $this->getContainer()->get('oro_config.manager');
+        $configManager = $this->container->get('oro_config.manager');
         if ($configManager->get('marello_purchaseorder.purchaseorder_notification') !== true) {
             $output->writeln('The PO notification feature is disabled. The command will not run.');
             return self::EXIT_CODE;
         }
 
-        $doctrine = $this->getContainer()->get('doctrine');
+        $doctrine = $this->container->get('doctrine');
         $advisedItems = $doctrine
             ->getManagerForClass(Product::class)
             ->getRepository(Product::class)
@@ -88,7 +96,7 @@ class PurchaseOrderAdviceCommand extends ContainerAwareCommand implements CronCo
         $recipient = new Customer();
         $recipient->setEmail($configManager->get('marello_purchaseorder.purchaseorder_notification_address'));
         /** @var SendProcessor $sendProcessor */
-        $sendProcessor = $this->getContainer()->get('marello_notification.email.send_processor');
+        $sendProcessor = $this->container->get('marello_notification.email.send_processor');
         $sendProcessor->setNotifcationShouldBeSavedAsActivity(false);
         $sendProcessor->sendNotification(
             'marello_purchase_order_advise',

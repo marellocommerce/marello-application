@@ -124,6 +124,8 @@ services:
         calls:
             - [setAclHelper, ['@oro_security.acl_helper']]
             - [setDatabaseDriver, ['%database_driver%']]
+        tags:
+            - { name: doctrine.repository_service }
 
     marello_product.service.duplicator:
         class: 'Marello\Bundle\ProductBundle\Duplicator\ProductDuplicator'
@@ -177,7 +179,7 @@ services:
             - '@oro_datagrid.datagrid.manager'
             - '@security.token_storage'
             - '@oro_email.form.factory'
-            - '@oro_email.mailer.processor'
+#            - '@oro_email.mailer.processor' weedizp
         tags:
             - { name: 'oro_message_queue.client.message_processor' }
 

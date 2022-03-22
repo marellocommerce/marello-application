@@ -89,3 +89,5 @@ services:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\ReturnBundle\Entity\ReturnItem'
+        tags:
+            - { name: doctrine.repository_service }
