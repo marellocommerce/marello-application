@@ -8,6 +8,9 @@ framework:
     router:   { resource: "%kernel.project_dir%/config/routing_dev.yml" }
     profiler: { only_exceptions: false }
     ide: phpstorm
+#    mailer:
+#        envelope:
+#            recipients: ['me@example.com']
 
 web_profiler:
     toolbar: true
@@ -23,11 +26,11 @@ monolog:
             channels:  '%main_log_channels%'
 
         # collect all log records to buffer on CLI command error
-        message_queue.consumer.console_error:
-            type:      service
-            id:        oro_message_queue.log.handler.console_error
-            handler:   main
-            level:     debug
+#        message_queue.consumer.console_error: weedizp
+#            type:      service
+#            id:        oro_message_queue.log.handler.console_error
+#            handler:   main
+#            level:     debug
 
 oro_message_queue:
     client:

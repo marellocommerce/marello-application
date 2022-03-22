@@ -16,11 +16,11 @@ doctrine:
 
 monolog:
     handlers:
-        detailed_logs:
-            type:           service
-            id:             oro_logger.monolog.detailed_logs.handler
-            handler:        nested
-            channels:       '%main_log_channels%'
+#        detailed_logs: weedizp
+#            type:           service
+#            id:             oro_logger.monolog.detailed_logs.handler
+#            handler:        nested
+#            channels:       '%main_log_channels%'
         nested:
             type:           stream
             path:           "%kernel.logs_dir%/%kernel.environment%.log"
@@ -34,20 +34,19 @@ monolog:
             buffer_size:    1000
         deduplicated:
             type:           deduplication
-            handler:        swift
-            buffer_size:    1000
-        swift:
-            type:           swift_mailer
+            handler:        symfony_mailer
+            time:           10
+        symfony_mailer:
+            type:           symfony_mailer
             email_prototype:
-                id:         oro_logger.message_factory
-                method:     createMessage
-            mailer:         swiftmailer.mailer.default
+                id:         oro_logger.monolog.email_factory.error_log_notification
+                method:     createEmail
             level:          debug
             formatter:      monolog.formatter.html
 
         # collect all log records to buffer on CLI command error
-        message_queue.consumer.console_error:
-            type:           service
-            id:             oro_message_queue.log.handler.console_error
-            handler:        nested
-            level:          debug
+#        message_queue.consumer.console_error: weedizp
+#            type:           service
+#            id:             oro_message_queue.log.handler.console_error
+#            handler:        nested
+#            level:          debug

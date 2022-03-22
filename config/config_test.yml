@@ -16,6 +16,10 @@ framework:
     csrf_protection: true
     profiler:
         enabled: false
+    mailer:
+        transports:
+            main: 'null://null'
+            oro_user_email_origin: 'null://null'
 
 monolog:
     handlers:
@@ -23,15 +27,13 @@ monolog:
             type: fingers_crossed
             action_level: error
             handler: nested
+            excluded_http_codes: [ 404, 405 ]
+            channels: [ "!event" ]
         nested:
             type: stream
             path: "%kernel.logs_dir%/%kernel.environment%.log"
             level: debug
             channels: '%main_log_channels%'
-
-swiftmailer:
-    logging: true
-    disable_delivery: true
 
 services:
     oro_message_queue.test.message_collector:
