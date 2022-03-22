@@ -2,6 +2,7 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Provider;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProviderInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\RuleBundle\RuleFiltration\RuleFiltrationServiceInterface;
@@ -15,36 +16,17 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
      * @var bool
      */
     private $estimation = false;
-    
-    /**
-     * @var WFAStrategiesRegistry
-     */
-    protected $strategiesRegistry;
-
-    /**
-     * @var RuleFiltrationServiceInterface
-     */
-    protected $rulesFiltrationService;
 
     /**
      * @var WFARuleRepository
      */
     protected $wfaRuleRepository;
 
-    /**
-     * @param WFAStrategiesRegistry $strategiesRegistry
-     * @param RuleFiltrationServiceInterface $rulesFiltrationService
-     * @param WFARuleRepository $wfaRuleRepository
-     */
     public function __construct(
-        WFAStrategiesRegistry $strategiesRegistry,
-        RuleFiltrationServiceInterface $rulesFiltrationService,
-        WFARuleRepository $wfaRuleRepository
-    ) {
-        $this->strategiesRegistry = $strategiesRegistry;
-        $this->rulesFiltrationService = $rulesFiltrationService;
-        $this->wfaRuleRepository = $wfaRuleRepository;
-    }
+        protected WFAStrategiesRegistry $strategiesRegistry,
+        protected RuleFiltrationServiceInterface $rulesFiltrationService,
+        protected ManagerRegistry $registry
+    ) {}
 
     /**
      * {@inheritDoc}
@@ -61,7 +43,7 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
     {
         /** @var WFARule[] $filteredRules */
         $filteredRules = $this->rulesFiltrationService
-            ->getFilteredRuleOwners($this->wfaRuleRepository->findAllWFARules());
+            ->getFilteredRuleOwners($this->getRepository()->findAllWFARules());
         $results = [];
 
         foreach ($filteredRules as $rule) {
@@ -75,5 +57,14 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
         }
 
         return [];
+    }
+
+    protected function getRepository(): WFARuleRepository
+    {
+        if (!$this->wfaRuleRepository) {
+            $this->wfaRuleRepository = $this->registry->getRepository(WFARule::class);
+        }
+
+        return $this->wfaRuleRepository;
     }
 }

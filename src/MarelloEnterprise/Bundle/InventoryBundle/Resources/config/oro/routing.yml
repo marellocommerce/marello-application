@@ -18,11 +18,39 @@ marelloenterprise_inventory_wfarule:
     type:     annotation
     prefix:   /marello/inventory/wfa-rule
 
-marelloenterprise_inventory_bundle_api:
-    resource: "@MarelloEnterpriseInventoryBundle/Resources/config/oro/routing_api.yml"
-    type: rest
-    prefix: api/rest/{version}
-    requirements:
-        version:  latest|v1
-    defaults:
-        version:  latest
+
+#oro_api_get_activity_context:
+#    path: '/api/rest/{version}/activities/{activity}/{id}/context.{_format}'
+#    methods: [GET]
+#    defaults:
+#        _controller: 'Oro\Bundle\ActivityBundle\Controller\Api\Rest\ActivityContextController::getAction'
+#        _format: json
+#        version: latest
+#    requirements:
+#        id: \d+
+#        _format: json
+#        version: latest|v1
+#    options:
+#        group: activity_association
+#        priority: -5
+#
+#marelloenterprise_inventory_wfarule_api:
+#    resource:     "@MarelloEnterpriseInventoryBundle/Controller/Api/Rest/WFARuleController.php"
+#    type: annotation
+#
+#    prefix: api/rest/{version}
+#    requirements:
+#        version:  latest|v1
+#    defaults:
+#        version:  latest
+#
+#
+#    When using the Symfony Core route loading, route names might change as the FOSRestBundle used a different naming
+#    convention. Mind the `.{_format}` suffix if you used the `fos_rest.routing_loader.include_format` option.
+#
+#    In case you have OpenAPI/Swagger annotations, you can also use [OpenAPI-Symfony-Routing](https://github.com/Tobion/OpenAPI-Symfony-Routing)
+#    which removes the need to have routing information duplicated. It also allows to add the `.{_format}` suffix automatically as before.
+#
+#    If migration to explicit routes is not possible or feasible, consider using
+#  [ RestRoutingBundle ](https://github.com/handcraftedinthealps/RestRoutingBundle) which extracted the auto-generation of routes
+#    in a BC way.
