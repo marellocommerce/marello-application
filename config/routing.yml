@@ -10,7 +10,7 @@ _liip_imagine:
 oro_default:
     path:  '%web_backend_prefix%/'
     defaults:
-        _controller: OroDashboardBundle:Dashboard:view
+        _controller: Oro\Bundle\DashboardBundle\Controller\DashboardController::viewAction
 
 oro_auto_routing:
     resource: .
