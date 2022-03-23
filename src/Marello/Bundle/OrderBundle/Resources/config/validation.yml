@@ -41,7 +41,6 @@ Marello\Bundle\OrderBundle\Entity\Order:
                 value: 0
                 # property that is responsible for grandTotal < 0 is probably discountAmount, however this is an assumption
                 message: 'marello.order.discount_amount.validation.discount_lower_than_subtotal'
-                property_path: discountAmount
         items:
             - Valid: ~
     constraints:
