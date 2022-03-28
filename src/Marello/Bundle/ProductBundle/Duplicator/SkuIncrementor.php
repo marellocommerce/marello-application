@@ -4,6 +4,7 @@ namespace Marello\Bundle\ProductBundle\Duplicator;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class SkuIncrementor implements SkuIncrementorInterface
 {
@@ -12,29 +13,15 @@ class SkuIncrementor implements SkuIncrementorInterface
     const SKU_INCREMENT_DATABASE_PATTERN = '%s-%%';
 
     /**
-     * @var DoctrineHelper
-     */
-    protected $doctrineHelper;
-
-    /**
      * @var string[]
      */
     protected $newSku = [];
 
-    /**
-     * @var string
-     */
-    protected $productClass;
-
-    /**
-     * @param DoctrineHelper $doctrineHelper
-     * @param string $productClass
-     */
-    public function __construct(DoctrineHelper $doctrineHelper, $productClass)
-    {
-        $this->doctrineHelper = $doctrineHelper;
-        $this->productClass = $productClass;
-    }
+    public function __construct(
+        protected DoctrineHelper $doctrineHelper,
+        protected string $productClass,
+        protected AclHelper $aclHelper
+    ) {}
 
     /**
      * {@inheritdoc}
@@ -83,7 +70,7 @@ class SkuIncrementor implements SkuIncrementorInterface
         if (preg_match(self::INCREMENTED_SKU_PATTERN, $sku, $matches)) {
             $baseSku = $matches[1];
 
-            if ($this->getRepository()->findOneBySku($baseSku)) {
+            if ($this->getRepository()->findOneBySku($baseSku, $this->aclHelper)) {
                 return $baseSku;
             }
         }

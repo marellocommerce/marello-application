@@ -7,20 +7,14 @@ use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 use Marello\Bundle\SalesBundle\Provider\ChannelProvider;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\SecurityBundle\Authentication\TokenAccessorInterface;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class ProductExtension extends AbstractExtension
 {
     const NAME = 'marello_product';
-    
-    /** @var ChannelProvider $channelProvider */
-    protected $channelProvider;
-
-    /** @var CategoriesIdsProvider $categoriesIdsProvider */
-    protected $categoriesIdsProvider;
 
     /** @var DoctrineHelper $doctrineHelper */
     private $doctrineHelper;
@@ -28,15 +22,11 @@ class ProductExtension extends AbstractExtension
     /** @var TokenAccessorInterface $tokenAccessor */
     private $tokenAccessor;
 
-    /**
-     * @param ChannelProvider $channelProvider
-     * @param CategoriesIdsProvider $categoriesIdsProvider
-     */
-    public function __construct(ChannelProvider $channelProvider, CategoriesIdsProvider $categoriesIdsProvider)
-    {
-        $this->channelProvider = $channelProvider;
-        $this->categoriesIdsProvider = $categoriesIdsProvider;
-    }
+    public function __construct(
+        protected ChannelProvider $channelProvider,
+        protected CategoriesIdsProvider $categoriesIdsProvider,
+        protected AclHelper $aclHelper
+    ) {}
 
     /**
      * Returns the name of the extension.
@@ -108,7 +98,7 @@ class ProductExtension extends AbstractExtension
 
         /** @var ProductRepository $productRepository */
         $productRepository = $this->doctrineHelper->getEntityRepository(Product::class);
-        return $productRepository->findOneBySku($sku, $organization);
+        return $productRepository->findOneBySku($sku, $this->aclHelper, $organization);
     }
 
     /**

@@ -18,6 +18,7 @@ use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class PurchaseOrderOnOrderOnDemandCreationListener
 {
@@ -27,22 +28,14 @@ class PurchaseOrderOnOrderOnDemandCreationListener
      * @var int
      */
     private $orderId;
-    
-    /**
-     * @var AvailableInventoryProvider
-     */
-    private $availableInventoryProvider;
 
     /** @var ConfigManager $configManager */
     private $configManager;
 
-    /**
-     * @param AvailableInventoryProvider $availableInventoryProvider
-     */
-    public function __construct(AvailableInventoryProvider $availableInventoryProvider)
-    {
-        $this->availableInventoryProvider = $availableInventoryProvider;
-    }
+    public function __construct(
+        private AvailableInventoryProvider $availableInventoryProvider,
+        private AclHelper $aclHelper
+    ) {}
 
     /**
      * @param LifecycleEventArgs $args
@@ -208,7 +201,7 @@ class PurchaseOrderOnOrderOnDemandCreationListener
     {
         /** @var WarehouseChannelGroupLink $warehouseGroupLink */
         $warehouseGroupLink = $manager->getRepository(WarehouseChannelGroupLink::class)
-            ->findLinkBySalesChannelGroup($order->getSalesChannel()->getGroup());
+            ->findLinkBySalesChannelGroup($order->getSalesChannel()->getGroup(), $this->aclHelper);
 
         if (!$warehouseGroupLink) {
             return null;

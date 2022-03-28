@@ -37,6 +37,7 @@ services:
         arguments:
             - '@marello_sales.saleschannel.provider.channel_provider'
             - '@marello_catalog.provider.categories_ids'
+            - '@oro_security.acl_helper'
         calls:
             - ['setOroEntityDoctrineHelper', ['@oro_entity.doctrine_helper']]
             - ['setTokenAccessor', ['@oro_security.token_accessor']]
@@ -105,6 +106,7 @@ services:
         class: Marello\Bundle\ProductBundle\Provider\ProductTaxCodeProvider
         arguments:
             - '@doctrine'
+            - '@oro_security.acl_helper'
         tags:
             - { name: marello_order.order_item_data_provider, type: tax_code, priority: 20 }
 
@@ -112,6 +114,7 @@ services:
         class: Marello\Bundle\ProductBundle\Provider\OrderItemProductUnitProvider
         arguments:
             - '@oro_entity.doctrine_helper'
+            - '@oro_security.acl_helper'
         tags:
             - { name: marello_order.order_item_data_provider, type: product_unit, priority: 25 }
 
@@ -122,7 +125,6 @@ services:
         arguments:
             - 'Marello\Bundle\ProductBundle\Entity\Product'
         calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
             - [setDatabaseDriver, ['%database_driver%']]
         tags:
             - { name: doctrine.repository_service }
@@ -144,6 +146,7 @@ services:
         arguments:
             - "@oro_entity.doctrine_helper"
             - 'Marello\Bundle\ProductBundle\Entity\Product'
+            - '@oro_security.acl_helper'
 
     marello_product.virtual_fields.decorator_factory:
         class: 'Marello\Bundle\ProductBundle\VirtualFields\VirtualFieldsProductDecoratorFactory'

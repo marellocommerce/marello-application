@@ -99,8 +99,6 @@ services:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\SalesBundle\Entity\SalesChannelGroup'
-        calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
         tags:
             - { name: doctrine.repository_service }
 
@@ -115,6 +113,7 @@ services:
         class: 'Marello\Bundle\SalesBundle\EventListener\Doctrine\SalesChannelListener'
         arguments:
             - '%installed%'
+            - '@oro_security.acl_helper'
         tags:
             - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\SalesBundle\Entity\SalesChannel', event: prePersist }
 
@@ -123,6 +122,7 @@ services:
         arguments:
             - '%installed%'
             - '@session'
+            - '@oro_security.acl_helper'
         tags:
             - { name: doctrine.event_listener, event: preRemove, priority: 10 }
             - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\SalesBundle\Entity\SalesChannelGroup', event: postPersist }
@@ -131,6 +131,7 @@ services:
         class: 'Marello\Bundle\SalesBundle\EventListener\Doctrine\SalesChannelGroupInventoryRebalanceListener'
         arguments:
             - '@oro_message_queue.client.message_producer'
+            - '@oro_security.acl_helper'
         lazy:  true
         tags:
             - { name: doctrine.event_listener, event: onFlush }

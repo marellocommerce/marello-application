@@ -4,6 +4,7 @@ namespace Marello\Bundle\SalesBundle\EventListener\Doctrine;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
@@ -14,37 +15,17 @@ use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 
 class SalesChannelGroupListener
 {
-    /**
-     * Installed flag
-     *
-     * @var bool
-     */
-    protected $installed;
-
-    /**
-     * @var Session
-     */
-    protected $session;
-
-    /**
-     * @param bool $installed
-     * @param Session $session
-     */
-    public function __construct($installed, Session $session)
-    {
-        $this->installed = $installed;
-        $this->session = $session;
-    }
+    public function __construct(
+        protected $installed,
+        protected Session $session,
+        protected AclHelper $aclHelper
+    ) {}
     
     /**
      * @var WarehouseChannelGroupLink
      */
     private $systemWarehouseChannelGroupLink;
 
-    /**
-     * @param LifecycleEventArgs $args
-     * @throws ForbiddenException
-     */
     public function preRemove(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
@@ -57,12 +38,12 @@ class SalesChannelGroupListener
             $this->session
                 ->getFlashBag()
                 ->add('error', $message);
-            throw new ForbiddenException($message);
+            throw new ForbiddenException($message); // weedizp
         }
         $em = $args->getEntityManager();
         $systemGroup = $em
             ->getRepository(SalesChannelGroup::class)
-            ->findSystemChannelGroup();
+            ->findSystemChannelGroup($this->aclHelper);
         $systemWarehouseChannelGroupLink = $this->getSystemWarehouseChannelGroupLink($em);
 
         if (!$systemGroup && !$systemWarehouseChannelGroupLink) {
@@ -110,7 +91,7 @@ class SalesChannelGroupListener
         if ($this->systemWarehouseChannelGroupLink === null) {
             $this->systemWarehouseChannelGroupLink = $entityManager
                 ->getRepository(WarehouseChannelGroupLink::class)
-                ->findSystemLink();
+                ->findSystemLink($this->aclHelper);
         }
 
         return $this->systemWarehouseChannelGroupLink;

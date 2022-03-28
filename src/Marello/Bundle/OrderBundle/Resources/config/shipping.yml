@@ -4,5 +4,6 @@ services:
         public: true
         arguments:
             - '@doctrine.orm.entity_manager'
+            - '@oro_security.acl_helper'
         tags:
             - { name: marello.shipping.data_provider,  class: 'Marello\Bundle\OrderBundle\Entity\Order' }
