@@ -75,15 +75,17 @@ class MultipleWHCalculatorChainElement extends AbstractWHCalculatorChainElement
         $wh = [];
         $itemsWithQuantity = [];
         foreach ($productsByWh as $id => $whProducts) {
+            $totalAllocatedQty = 0;
             foreach ($whProducts as $product) {
-                $totalQty = 0;
-                if (isset($wh[$product['sku']])) {
-                    $totalQty = $wh[$product['sku']]['totalAllocatedQty'];
+                if (isset($wh[$product['wh']][$product['sku']])) {
+                    $totalAllocatedQty = $wh[$product['wh']][$product['sku']]['totalAllocatedQty'];
                 }
+                $totalAllocatedQty += $product['qty'];
                 $wh[$product['wh']][$product['sku']] = [
-                    'totalAllocatedQty' => $totalQty + $product['qty'],
+                    'totalAllocatedQty' => ($totalAllocatedQty <= $product['qtyOrdered'])
+                        ? $product['qty'] : ($product['qty'] - ($totalAllocatedQty - $product['qtyOrdered'])),
                     'totalQtyOrdered' => $product['qtyOrdered'],
-                    'qtyGtq' => (bool)($totalQty + $product['qty'] >= $product['qtyOrdered'])
+                    'qtyGtq' => (bool)($totalAllocatedQty >= $product['qtyOrdered'])
                 ];
             }
         }
