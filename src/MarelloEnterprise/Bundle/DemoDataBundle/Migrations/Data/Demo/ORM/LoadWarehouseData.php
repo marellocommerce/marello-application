@@ -14,9 +14,13 @@ use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Oro\Bundle\AddressBundle\Entity\Country;
 use Oro\Bundle\AddressBundle\Entity\Region;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadWarehouseData extends AbstractFixture implements DependentFixtureInterface
+class LoadWarehouseData extends AbstractFixture implements DependentFixtureInterface, ContainerAwareInterface
 {
+    use ContainerAwareTrait;
+
     /**
      * @var ObjectManager
      */
@@ -261,10 +265,11 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
      */
     private function createWarehouse(array $data)
     {
+        $aclHelper = $this->container->get('oro_security.acl_helper');
         if ($data['default'] === true) {
             $warehouse = $this->manager
-                ->getRepository('MarelloInventoryBundle:Warehouse')
-                ->getDefault();
+                ->getRepository(Warehouse::class)
+                ->getDefault($aclHelper);
         } else {
             $warehouse = new Warehouse($data['name'], false);
             $warehouse->setOwner($this->organization);

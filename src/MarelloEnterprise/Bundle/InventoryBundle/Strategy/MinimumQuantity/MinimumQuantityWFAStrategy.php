@@ -12,6 +12,7 @@ use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\Calculator\MinQtyWHCalculatorInterface;
 use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategyInterface;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class MinimumQuantityWFAStrategy implements WFAStrategyInterface
 {
@@ -35,7 +36,8 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
 
     public function __construct(
         private MinQtyWHCalculatorInterface $minQtyWHCalculator,
-        private ManagerRegistry $registry
+        private ManagerRegistry $registry,
+        private AclHelper $aclHelper
     ) {}
 
     /**
@@ -170,7 +172,7 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
             }
             /** @var WarehouseChannelGroupLink $warehouseGroupLink */
             $warehouseGroupLink = $this->getRepository()
-                ->findLinkBySalesChannelGroup($order->getSalesChannel()->getGroup());
+                ->findLinkBySalesChannelGroup($order->getSalesChannel()->getGroup(), $this->aclHelper);
 
             if (!$warehouseGroupLink) {
                 return [];

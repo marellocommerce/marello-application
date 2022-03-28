@@ -9,6 +9,7 @@ use Marello\Bundle\InventoryBundle\Async\Topics;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 
 class WarehouseGroupInventoryRebalanceListener
@@ -23,18 +24,10 @@ class WarehouseGroupInventoryRebalanceListener
      */
     protected $em;
 
-    /**
-     * @var MessageProducerInterface
-     */
-    private $messageProducer;
-
-    /**
-     * @param MessageProducerInterface $messageProducer
-     */
-    public function __construct(MessageProducerInterface $messageProducer)
-    {
-        $this->messageProducer = $messageProducer;
-    }
+    public function __construct(
+        private MessageProducerInterface $messageProducer,
+        private AclHelper $aclHelper
+    ) {}
 
     /**
      * Handle incoming event
@@ -99,7 +92,10 @@ class WarehouseGroupInventoryRebalanceListener
             $channelsGroups = $link->getSalesChannelGroups()->toArray();
             foreach ($channelsGroups as $salesChannelGroup) {
                 foreach ($salesChannelGroup->getSalesChannels() as $salesChannel) {
-                    $products = $this->em->getRepository(Product::class)->findByChannel($salesChannel);
+                    $products = $this->em->getRepository(Product::class)->findByChannel(
+                        $salesChannel,
+                        $this->aclHelper
+                    );
                     foreach ($products as $product) {
                         $productIds[$product->getId()] = $product->getId();
                     }
