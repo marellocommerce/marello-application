@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\ProductBundle\Tests\Functional\Entity\Repository;
 
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
@@ -30,7 +31,9 @@ class ProductRepositoryTest extends WebTestCase
             ->get('doctrine')
             ->getRepository(Product::class);
 
-        $results = $productRepository->getPurchaseOrderItemsCandidates();
+        /** @var AclHelper $aclHelper */
+        $aclHelper = $this->getContainer()->get('oro_security.acl_helper');
+        $results = $productRepository->getPurchaseOrderItemsCandidates($aclHelper);
         static::assertCount(1, $results);
     }
 }

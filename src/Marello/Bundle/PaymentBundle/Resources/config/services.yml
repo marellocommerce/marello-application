@@ -108,8 +108,6 @@ services:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\PaymentBundle\Entity\PaymentMethodsConfigsRule'
-        calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
         tags:
             - { name: doctrine.repository_service }
 
@@ -179,6 +177,7 @@ services:
         arguments:
             - '@marello_payment.rule_filtration.basic_service'
             - '@marello_payment.repository.payment_methods_configs_rule'
+            - '@oro_security.acl_helper'
 
     marello_payment.enabled_rule_filtration.basic_service:
         class: 'Marello\Bundle\PaymentBundle\RuleFiltration\Basic\BasicMethodsConfigsRulesFiltrationService'

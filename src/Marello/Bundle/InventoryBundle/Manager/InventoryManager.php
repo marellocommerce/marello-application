@@ -6,7 +6,7 @@ use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
 use Marello\Bundle\InventoryBundle\Factory\InventoryBatchFromInventoryLevelFactory;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
-use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrder;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
@@ -30,6 +30,9 @@ class InventoryManager implements InventoryManagerInterface
 
     /** @var EventDispatcherInterface $eventDispatcher */
     protected $eventDispatcher;
+
+    /** @var AclHelper $aclHelper */
+    protected $aclHelper;
 
     /**
      * Update inventory items based of context and calculate new inventory level
@@ -227,7 +230,7 @@ class InventoryManager implements InventoryManagerInterface
     {
         /** @var WarehouseRepository $repo */
         $repo = $this->doctrineHelper->getEntityRepositoryForClass(Warehouse::class);
-        return $repo->getDefault();
+        return $repo->getDefault($this->aclHelper);
     }
 
     /**
@@ -257,5 +260,10 @@ class InventoryManager implements InventoryManagerInterface
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
+    }
+
+    public function setAclHelper(AclHelper $aclHelper)
+    {
+        $this->aclHelper = $aclHelper;
     }
 }

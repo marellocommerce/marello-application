@@ -23,7 +23,7 @@ class CompanyRepository extends EntityRepository
      * @param AclHelper $aclHelper
      * @return array
      */
-    public function getChildrenIds($companyId, AclHelper $aclHelper = null)
+    public function getChildrenIds($companyId, AclHelper $aclHelper = null) // weedizp3
     {
         $qb = $this->createQueryBuilder('company');
         $qb->select('company.id as company_id')

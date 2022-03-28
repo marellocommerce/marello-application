@@ -14,9 +14,16 @@ use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadProductSupplierData extends AbstractFixture implements DependentFixtureInterface
+class LoadProductSupplierData extends AbstractFixture implements
+    DependentFixtureInterface,
+    ContainerAwareInterface
 {
+    use ContainerAwareTrait;
+
     const SUPPLIER_COST_PERCENTAGE = 0.40;
     const DEFAULT_SUPPLIER_COST = 0.00;
 
@@ -74,8 +81,10 @@ class LoadProductSupplierData extends AbstractFixture implements DependentFixtur
      */
     protected function addProductSuppliers(array $data)
     {
+        /** @var AclHelper $aclHelper */
+        $aclHelper = $this->container->get('oro_security.acl_helper');
         /** @var Product $product */
-        $product = $this->manager->getRepository(Product::class)->findOneBySku($data['sku']);
+        $product = $this->manager->getRepository(Product::class)->findOneBySku($data['sku'], $aclHelper);
         if (!$product) {
             return;
         }

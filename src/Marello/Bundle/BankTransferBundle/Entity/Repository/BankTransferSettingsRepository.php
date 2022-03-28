@@ -4,7 +4,6 @@ namespace Marello\Bundle\BankTransferBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Marello\Bundle\BankTransferBundle\Entity\BankTransferSettings;
-use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class BankTransferSettingsRepository extends EntityRepository
 {

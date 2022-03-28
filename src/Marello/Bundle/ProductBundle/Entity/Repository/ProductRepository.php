@@ -18,19 +18,6 @@ class ProductRepository extends EntityRepository
      * @var string
      */
     private $databaseDriver;
-    
-    /**
-     * @var AclHelper
-     */
-    private $aclHelper;
-
-    /**
-     * @param AclHelper $aclHelper
-     */
-    public function setAclHelper(AclHelper $aclHelper)
-    {
-        $this->aclHelper = $aclHelper;
-    }
 
     /**
      * @param string $databaseDriver
@@ -40,12 +27,7 @@ class ProductRepository extends EntityRepository
         $this->databaseDriver = $databaseDriver;
     }
 
-    /**
-     * @param SalesChannel $salesChannel
-     *
-     * @return Product[]
-     */
-    public function findByChannel(SalesChannel $salesChannel)
+    public function findByChannel(SalesChannel $salesChannel, AclHelper $aclHelper): array
     {
         $qb = $this->createQueryBuilder('product');
         $qb
@@ -54,7 +36,7 @@ class ProductRepository extends EntityRepository
             )
             ->setParameter('salesChannel', $salesChannel->getId());
 
-        return $this->aclHelper->apply($qb->getQuery())->getResult();
+        return $aclHelper->apply($qb->getQuery())->getResult();
     }
 
     /**
@@ -75,11 +57,7 @@ class ProductRepository extends EntityRepository
         return array_column($result, 'id');
     }
 
-    /**
-     * @param array $salesChannelIds
-     * @return int[]
-     */
-    public function getProductIdsBySalesChannelIds(array $salesChannelIds): array
+    public function getProductIdsBySalesChannelIds(array $salesChannelIds, AclHelper $aclHelper): array
     {
         if (empty($salesChannelIds)) {
             return [];
@@ -102,20 +80,15 @@ class ProductRepository extends EntityRepository
             ->where($qb->expr()->exists($subQb))
             ->setParameter('salesChannelIds', $salesChannelIds);
 
-        $result = $this->aclHelper->apply($qb->getQuery())->getResult();
+        $result = $aclHelper->apply($qb->getQuery())->getResult();
 
         return \array_column($result, 'id');
     }
 
     /**
      * Return products for specified price list and product IDs
-     *
-     * @param int $salesChannel
-     * @param array $productIds
-     *
-     * @return Product[]
      */
-    public function findBySalesChannel($salesChannel, array $productIds)
+    public function findBySalesChannel($salesChannel, array $productIds, AclHelper $aclHelper): array
     {
         if (!$productIds) {
             return [];
@@ -130,16 +103,10 @@ class ProductRepository extends EntityRepository
             ->setParameter('salesChannel', $salesChannel)
             ->setParameter('productIds', $productIds);
 
-        return $this->aclHelper->apply($qb->getQuery())->getResult();
+        return $aclHelper->apply($qb->getQuery())->getResult();
     }
 
-    /**
-     * @param $sku
-     * @param Organization|null $organization
-     * @return int|mixed|string|null
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     */
-    public function findOneBySku($sku, Organization $organization = null)
+    public function findOneBySku($sku, AclHelper $aclHelper, Organization $organization = null)
     {
         $queryBuilder = $this->createQueryBuilder('product');
 
@@ -152,7 +119,7 @@ class ProductRepository extends EntityRepository
                 ->setParameter('organization', $organization);
         }
 
-        return $this->aclHelper->apply($queryBuilder->getQuery())->getOneOrNullResult();
+        return $aclHelper->apply($queryBuilder->getQuery())->getOneOrNullResult();
     }
 
     /**
@@ -179,11 +146,7 @@ class ProductRepository extends EntityRepository
         return $matchedSku;
     }
 
-    /**
-     * @param string $key
-     * @return Product[]
-     */
-    public function findByDataKey($key)
+    public function findByDataKey(string $key, AclHelper $aclHelper): array
     {
         if ($this->databaseDriver === self::PGSQL_DRIVER) {
             $formattedDataField = 'CAST(p.data as TEXT)';
@@ -195,13 +158,10 @@ class ProductRepository extends EntityRepository
             ->where(sprintf('%s LIKE :key', $formattedDataField))
             ->setParameter('key', '%' . $key . '%');
 
-        return $this->aclHelper->apply($qb->getQuery())->getResult();
+        return $aclHelper->apply($qb->getQuery())->getResult();
     }
 
-    /**
-     * @return string[]
-     */
-    public function getPurchaseOrderItemsCandidates()
+    public function getPurchaseOrderItemsCandidates(AclHelper $aclHelper): array
     {
         $qb = $this
             ->createQueryBuilder('p')
@@ -221,6 +181,6 @@ class ProductRepository extends EntityRepository
             ->groupBy('sup.name, p.sku, i.desiredInventory, i.purchaseInventory')
             ->having('SUM(l.inventory - l.allocatedInventory) < i.purchaseInventory');
 
-        return $this->aclHelper->apply($qb->getQuery())->getResult();
+        return $aclHelper->apply($qb->getQuery())->getResult();
     }
 }
