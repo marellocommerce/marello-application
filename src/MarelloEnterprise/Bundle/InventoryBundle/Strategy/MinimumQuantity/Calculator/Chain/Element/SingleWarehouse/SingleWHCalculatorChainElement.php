@@ -27,16 +27,18 @@ class SingleWHCalculatorChainElement extends AbstractWHCalculatorChainElement
         $wh = [];
         $itemsWithQuantity = [];
         foreach ($productsByWh as $id => $whProducts) {
-            $totalQty = 0;
+            $totalAllocatedQty = 0;
              foreach ($whProducts as $product) {
                 if (isset($wh[$product['sku']])) {
-                    $totalQty = $wh[$product['sku']]['totalAllocatedQty'];
+                    $totalAllocatedQty = $wh[$product['sku']]['totalAllocatedQty'];
                 }
+                $totalAllocatedQty += $product['qty'];
                 $itemsWithQuantity[$product['sku']] = $product['qty'];
                 $wh[$product['wh']][$product['sku']] = [
-                    'totalAllocatedQty' => $totalQty + $product['qty'],
+                    'totalAllocatedQty' => ($totalAllocatedQty <= $product['qtyOrdered'])
+                        ? $product['qty'] : ($product['qty'] - ($totalAllocatedQty - $product['qtyOrdered'])),
                     'totalQtyOrdered' => $product['qtyOrdered'],
-                    'qtyGtq' => (bool)($totalQty + $product['qty'] >= $product['qtyOrdered'])
+                    'qtyGtq' => (bool)($totalAllocatedQty >= $product['qtyOrdered'])
                 ];
              }
         }
@@ -48,7 +50,7 @@ class SingleWHCalculatorChainElement extends AbstractWHCalculatorChainElement
                 // the array keys (flipped) (skus) from the order items are the same as the keys (skus) we produced..
                 // sounds promising again
                 if ((array_keys(array_flip($orderItemsProducts)) === array_keys($result))) {
-                    // no check if the total allocated (our result) is the same or more than the qty that is ordered...
+                    // now check if the total allocated (our result) is the same or more than the qty that is ordered...
                     // for this result
                     $areResultsAllCorrectlyAllocatedForSingleWarehouse = true;
                     foreach ($result as $sku => $value) {
