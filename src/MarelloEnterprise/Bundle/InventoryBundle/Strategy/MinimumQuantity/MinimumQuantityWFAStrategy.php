@@ -126,10 +126,7 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
             foreach ($inventoryLevels as $i => $inventoryLevel) {
                 $warehouse = $inventoryLevel->getWarehouse();
                 $warehouses[$warehouse->getCode()] = $warehouse;
-//                        if ($orderItemQtyToAllocateLeft > 0) {
                 $productsByWh[$inventoryItem->getProduct()->getSku()]['selected_wh'][$warehouse->getCode()] = $inventoryLevel->getVirtualInventoryQty();
-                            //$this->getAllocatedQty($inventoryLevel, $orderItem, $orderItemQtyToAllocateLeft, $i);
-//                        }
                 $quantityAvailable += $inventoryLevel->getVirtualInventoryQty();
                 if ($this->isWarehouseEligible($orderItem, $inventoryLevel, 'dropshipping')) {
                     $productsByWh[$inventoryItem->getProduct()->getSku()]['selected_wh'][$warehouse->getCode()] = $orderItemQtyToAllocateLeft;
@@ -200,8 +197,6 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
     private function getOptimizedOptions($allFoundOptions): array
     {
         $whIdsPerOption = [];
-
-
         // per product, get unique combinations of warehouses involved
         foreach ($allFoundOptions as $sku => $options) {
             foreach ($options as $optionId => $option) {
@@ -247,7 +242,7 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
         }
         $unique = array_map("unserialize", array_unique(array_map("serialize", $preResult)));
 
-        // sort the array with unique results by least total of warehouses
+        // sort the array with unique results by least total of warehouses, less warehouses means less shipping for merchant, which are less costs theoretically
         // we could, if and when necessary, apply different sorting, for example, by distance.
         // it does however, need some modification as we do not have all data present for different sorting.
         uasort($unique, function($resultA, $resultB) {
@@ -354,6 +349,10 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
         return $result;
     }
 
+    /**
+     * @param array $elements
+     * @return \Generator
+     */
     private function permutations(array $elements): \Generator
     {
         if (count($elements) <= 1) {
@@ -371,6 +370,13 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
         }
     }
 
+    /**
+     * @param $inventoryLevel
+     * @param $orderItem
+     * @param $orderItemQtyToAllocateLeft
+     * @param $i
+     * @return mixed
+     */
     protected function getAllocatedQty($inventoryLevel, $orderItem, $orderItemQtyToAllocateLeft, $i)
     {
         if (($orderItem->getQuantity() < $inventoryLevel->getVirtualInventoryQty()
@@ -390,6 +396,12 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
         return $orderItemQtyToAllocateLeft;
     }
 
+    /**
+     * @param InventoryItem $inventoryItem
+     * @param array $warehouses
+     * @return ArrayCollection
+     * @throws \Exception
+     */
     protected function getInventoryLevelCandidates(InventoryItem $inventoryItem, array $warehouses)
     {
         // filter levels that either; have an warehouse in the linked warehouses, have virtual inventory > 0 or have an external warehouse (dropshipping)
@@ -437,6 +449,12 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
         }
     }
 
+    /**
+     * @param OrderItem $orderItem
+     * @param InventoryItem $inventoryItem
+     * @param null $type
+     * @return bool
+     */
     protected function isItemAvailable(OrderItem $orderItem, InventoryItem $inventoryItem, $type = null)
     {
         switch ($type) {
