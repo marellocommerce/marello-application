@@ -4,25 +4,10 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
-
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 
 class WarehouseChannelGroupLinkRepository extends EntityRepository
 {
-    /**
-     * @var AclHelper
-     */
-    private $aclHelper;
-
-    /**
-     * @param AclHelper $aclHelper
-     */
-    public function setAclHelper(AclHelper $aclHelper)
-    {
-        $this->aclHelper = $aclHelper;
-    }
-
     /**
      * @return SalesChannelGroup[]
      */

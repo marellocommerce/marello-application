@@ -18,6 +18,7 @@ services:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseInventoryRebalanceListener'
         arguments:
             - '@oro_message_queue.client.message_producer'
+            - '@oro_security.acl_helper'
         lazy:  true
         tags:
             - { name: doctrine.event_listener, event: onFlush }
@@ -26,6 +27,7 @@ services:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseGroupInventoryRebalanceListener'
         arguments:
             - '@oro_message_queue.client.message_producer'
+            - '@oro_security.acl_helper'
         lazy:  true
         tags:
             - { name: doctrine.event_listener, event: onFlush }
@@ -122,8 +124,6 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@marelloenterprise_inventory.metadata.warehousechannelgrouplink'
-        calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
 
     marelloenterprise_inventory.datagrid.wfa_rule_actions_visibility_provider:
         public: true
@@ -137,6 +137,7 @@ services:
         arguments:
             - '@marelloenterprise_inventory.wfa_strategy.min_quantity.calculator.main'
             - '@doctrine'
+            - '@oro_security.acl_helper'
         tags:
             - { name: marello_inventory_wfa_strategy }
 

@@ -10,5 +10,6 @@ services:
         class: 'MarelloEnterprise\Bundle\SalesBundle\EventListener\Doctrine\SalesChannelGroupListener'
         arguments:
             - '@session'
+            - '@oro_security.acl_helper'
         tags:
             - { name: doctrine.event_listener, event: preRemove, priority: 20 }
