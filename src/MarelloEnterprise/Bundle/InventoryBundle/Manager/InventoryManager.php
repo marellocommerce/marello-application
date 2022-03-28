@@ -13,7 +13,6 @@ use Marello\Bundle\InventoryBundle\Manager\InventoryManager as BaseInventoryMana
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
-use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrder;
 
 class InventoryManager extends BaseInventoryManager
 {
@@ -116,7 +115,7 @@ class InventoryManager extends BaseInventoryManager
 
         /** @var WarehouseRepository $repo */
         $repo = $this->doctrineHelper->getEntityRepositoryForClass(Warehouse::class);
-        return $repo->getDefault();
+        return $repo->getDefault($this->aclHelper);
     }
 
     /**

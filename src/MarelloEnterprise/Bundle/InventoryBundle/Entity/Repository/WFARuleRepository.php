@@ -18,7 +18,7 @@ class WFARuleRepository extends EntityRepository
     /**
      * @param AclHelper $aclHelper
      */
-    public function setAclHelper(AclHelper $aclHelper)
+    public function setAclHelper(AclHelper $aclHelper) // weedizp3
     {
         $this->aclHelper = $aclHelper;
     }
