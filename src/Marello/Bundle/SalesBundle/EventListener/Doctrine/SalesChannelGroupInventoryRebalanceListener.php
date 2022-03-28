@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
 
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
@@ -25,18 +26,10 @@ class SalesChannelGroupInventoryRebalanceListener
      */
     protected $em;
 
-    /**
-     * @var MessageProducerInterface
-     */
-    private $messageProducer;
-
-    /**
-     * @param MessageProducerInterface $messageProducer
-     */
-    public function __construct(MessageProducerInterface $messageProducer)
-    {
-        $this->messageProducer = $messageProducer;
-    }
+    public function __construct(
+        private MessageProducerInterface $messageProducer,
+        private AclHelper $aclHelper
+    ) {}
 
     /**
      * {@inheritdoc}
@@ -102,7 +95,10 @@ class SalesChannelGroupInventoryRebalanceListener
     protected function rebalanceForSalesChannelGroup(SalesChannelGroup $entity)
     {
         foreach ($entity->getSalesChannels() as $salesChannel) {
-            $products = $this->em->getRepository(Product::class)->findByChannel($salesChannel);
+            $products = $this->em->getRepository(Product::class)->findByChannel(
+                $salesChannel,
+                $this->aclHelper
+            );
             /** @var Product $product */
             foreach ($products as $product) {
                 $this->messageProducer->send(

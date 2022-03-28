@@ -60,6 +60,7 @@ services:
         class: 'Marello\Bundle\SalesBundle\Form\Handler\SalesChannelGroupHandler'
         arguments:
             - '@doctrine.orm.entity_manager'
+            - '@oro_security.acl_helper'
         tags:
             - { name: oro_form.form.handler, alias: marello_sales.saleschannelgroup_form.handler }
 

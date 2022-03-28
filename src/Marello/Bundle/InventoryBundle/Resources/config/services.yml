@@ -23,6 +23,7 @@ services:
             - [setContextValidator, ['@marello_inventory.validator.inventory_update_context']]
             - [setDoctrineHelper, ['@oro_entity.doctrine_helper']]
             - [setEventDispatcher, ['@event_dispatcher']]
+            - [setAclHelper, ['@oro_security.acl_helper']]
         lazy: true
 
     marello_inventory.validator.inventory_update_context:
@@ -118,6 +119,7 @@ services:
         class: 'Marello\Bundle\InventoryBundle\Provider\AvailableInventoryProvider'
         arguments:
             - '@oro_entity.doctrine_helper'
+            - '@oro_security.acl_helper'
 
     marello_inventory.provider.available_inventory_form_provider:
         class: 'Marello\Bundle\InventoryBundle\Provider\AvailableInventoryFormProvider'
@@ -131,6 +133,7 @@ services:
         arguments:
             - '@doctrine'
             - '@marello_inventory.model.balancedinventory.balanced_inventory_factory'
+            - '@oro_security.acl_helper'
 
     marello_inventory.model.balancedinventory.balanced_inventory_factory:
         class: 'Marello\Bundle\InventoryBundle\Model\BalancedInventory\BalancedInventoryFactory'
@@ -175,8 +178,6 @@ services:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel'
-        calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
         tags:
             - { name: doctrine.repository_service }
 

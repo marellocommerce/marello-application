@@ -30,6 +30,7 @@ services:
             - '@oro_message_queue.client.message_producer'
             - '@marello_inventory.model.balancer.inventorybalancer_trigger_calculator'
             - '@marello_inventory.repository.balancedinventory'
+            - '@oro_security.acl_helper'
         tags:
             - { name: kernel.event_listener, event: marello_inventory.balancedinventory.update_after, method: handleInventoryUpdateAfterEvent }
 
@@ -81,6 +82,7 @@ services:
         class: 'Marello\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseGroupLinkRebalanceListener'
         arguments:
             - '@oro_message_queue.client.message_producer'
+            - '@oro_security.acl_helper'
         lazy:  true
         tags:
             - { name: doctrine.event_listener, event: onFlush }

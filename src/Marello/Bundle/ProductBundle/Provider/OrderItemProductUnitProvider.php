@@ -10,21 +10,14 @@ use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 use Marello\Bundle\OrderBundle\Provider\OrderItem\AbstractOrderItemFormChangesProvider;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class OrderItemProductUnitProvider extends AbstractOrderItemFormChangesProvider
 {
-    /**
-     * @var DoctrineHelper
-     */
-    protected $doctrineHelper;
-
-    /**
-     * @param DoctrineHelper $doctrineHelper
-     */
-    public function __construct(DoctrineHelper $doctrineHelper)
-    {
-        $this->doctrineHelper = $doctrineHelper;
-    }
+    public function __construct(
+        protected DoctrineHelper $doctrineHelper,
+        protected AclHelper $aclHelper
+    ) {}
 
     /**
      * {@inheritdoc}
@@ -44,7 +37,7 @@ class OrderItemProductUnitProvider extends AbstractOrderItemFormChangesProvider
         }
         $data = [];
         /** @var Product[] $products */
-        $products = $this->getRepository()->findBySalesChannel($salesChannel->getId(), $productIds);
+        $products = $this->getRepository()->findBySalesChannel($salesChannel->getId(), $productIds, $this->aclHelper);
         foreach ($products as $product) {
             /** @var InventoryItem $inventoryItem */
             $inventoryItem = $product->getInventoryItems()->first();

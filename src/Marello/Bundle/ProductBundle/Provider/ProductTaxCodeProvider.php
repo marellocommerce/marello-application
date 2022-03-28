@@ -8,21 +8,14 @@ use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Provider\OrderItem\AbstractOrderItemFormChangesProvider;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class ProductTaxCodeProvider extends AbstractOrderItemFormChangesProvider
 {
-    /**
-     * @var Registry $registry
-     */
-    protected $registry;
-
-    /**
-     * @param Registry $registry
-     */
-    public function __construct(Registry $registry)
-    {
-        $this->registry = $registry;
-    }
+    public function __construct(
+        protected Registry $registry,
+        protected AclHelper $aclHelper
+    ) {}
 
     /**
      * {@inheritdoc}
@@ -42,7 +35,7 @@ class ProductTaxCodeProvider extends AbstractOrderItemFormChangesProvider
         }
         $data = [];
         /** @var Product[] $products */
-        $products = $this->getRepository()->findBySalesChannel($salesChannel->getId(), $productIds);
+        $products = $this->getRepository()->findBySalesChannel($salesChannel->getId(), $productIds, $this->aclHelper);
 
         foreach ($products as $product) {
             $taxCode = $product->getSalesChannelTaxCode($salesChannel) ? : $product->getTaxCode();

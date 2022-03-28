@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\InventoryBundle\Controller;
 
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Form\Type\WarehouseType;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -28,9 +29,10 @@ class WarehouseController extends AbstractController
      */
     public function updateDefaultAction(Request $request)
     {
-        $entity = $this->getDoctrine()
-            ->getRepository('MarelloInventoryBundle:Warehouse')
-            ->getDefault();
+        $aclHelper = $this->container->get('oro_security.acl_helper');
+        $entity = $this->container->get('doctrine')
+            ->getRepository(Warehouse::class)
+            ->getDefault($aclHelper);
 
         $form = $this->createForm(WarehouseType::class, $entity);
         $form->handleRequest($request);
