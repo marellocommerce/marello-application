@@ -4,12 +4,6 @@ imports:
 parameters:
     main_log_channels: []
 
-#doctrine:
-#    orm:
-#        metadata_cache_driver: apc
-#        result_cache_driver: apc
-#        query_cache_driver: apc
-
 doctrine:
     dbal:
         logging:            true
@@ -21,17 +15,24 @@ monolog:
 #            id:             oro_logger.monolog.detailed_logs.handler
 #            handler:        nested
 #            channels:       '%main_log_channels%'
-        nested:
+        filtered:
+            type: filter
+            min_level: info
+            handler: main
+            channels: '%main_log_channels%' # The channels configuration only works for top-level handlers
+        main:
+            type: fingers_crossed
+            action_level: error
+            handler: grouped
+            buffer_size:    100
+            excluded_http_codes: [ 404, 405 ]
+        grouped:
+            type: group
+            members: [deduplicated, streamed]
+        streamed:
             type:           stream
             path:           "%kernel.logs_dir%/%kernel.environment%.log"
             level:          debug
-            channels:       '%main_log_channels%'
-
-        fingers_crossed:
-            type:           fingers_crossed
-            action_level:   critical
-            handler:        deduplicated
-            buffer_size:    1000
         deduplicated:
             type:           deduplication
             handler:        symfony_mailer
@@ -43,10 +44,3 @@ monolog:
                 method:     createEmail
             level:          debug
             formatter:      monolog.formatter.html
-
-        # collect all log records to buffer on CLI command error
-#        message_queue.consumer.console_error: weedizp
-#            type:           service
-#            id:             oro_message_queue.log.handler.console_error
-#            handler:        nested
-#            level:          debug
