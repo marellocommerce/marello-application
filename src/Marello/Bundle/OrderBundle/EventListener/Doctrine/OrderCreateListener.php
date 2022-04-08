@@ -63,23 +63,7 @@ class OrderCreateListener
 
                 // this will get the 'normal' result for allocation
                 $result = $this->warehousesProvider->getWarehousesForOrder($entity);
-                file_put_contents(
-                    '/app/var/logs/result.log',
-                    __METHOD__ . " " . __LINE__ . " " . print_r(count($result), true) . "\r\n",
-                    FILE_APPEND
-                );
                 foreach ($result as $k => $warehouseResult) {
-                    file_put_contents(
-                        '/app/var/logs/result.log',
-                        __METHOD__ . " " . __LINE__ . " " . print_r($warehouseResult->getWarehouse()->getCode(), true) . "\r\n",
-                        FILE_APPEND
-                    );
-
-                    file_put_contents(
-                        '/app/var/logs/result.log',
-                        __METHOD__ . " " . __LINE__ . " " . print_r(($consoWH === $warehouseResult->getWarehouse()), true) . "\r\n",
-                        FILE_APPEND
-                    );
                     if ($consoWH === $warehouseResult->getWarehouse() ||
                         $warehouseResult->getWarehouse()->getWarehouseType()->getName() === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL)
                     {
@@ -106,11 +90,6 @@ class OrderCreateListener
 //                        $replOrder->setDescription('it should be shipped somewhere else...');
 //                        $replOrder->setReplOrderConfig($replOrderConfig);
 //                        $replOrder->setPercentage(100);
-                        file_put_contents(
-                            '/app/var/logs/result.log',
-                            __METHOD__ . " " . __LINE__ . " " . print_r(count($items), true) . "\r\n",
-                            FILE_APPEND
-                        );
                         $items->map(function (OrderItem $item) use ($entity, $consoWH, $warehouse, $replOrder) {
                             // set warehouse on order item
                             $item->setWarehouse($consoWH);
@@ -129,7 +108,7 @@ class OrderCreateListener
                     }
                 }
             } else {
-                $result = $this->warehousesProvider->getWarehousesForOrder($entity);
+                //$result = $this->warehousesProvider->getWarehousesForOrder($entity);
             }
         }
     }

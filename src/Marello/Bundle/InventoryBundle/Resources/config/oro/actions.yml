@@ -25,31 +25,3 @@ operations:
                 dblclick: maximize
                 maximizedHeightDecreaseBy: minimize-bar
                 width: 500
-
-    marello_retry_allocate_order:
-        label: marello.order.action.order.allocate
-        enabled: true
-        entities:
-            - Marello\Bundle\OrderBundle\Entity\Order
-        applications: [ default ]
-        for_all_datagrids: false
-        exclude_datagrids: [ 'marello-order' ]
-        routes:
-            - marello_order_create
-        button_options:
-            icon: fa-refresh
-            class: btn btn-primary
-        actions:
-            - '@flash_message':
-                    message: 'success!'
-                    type: 'info'
-                    message_parameters:
-                        id: $identifier
-            - '@redirect':
-                  route: marello_order_order_view
-                  route_parameters:
-                      id: $id
-            - '@call_service_method':
-                  service: marello_inventory.provider.inventory_allocation_provider
-                  method: allocateOrderToWarehouses
-                  method_parameters: [$.data]

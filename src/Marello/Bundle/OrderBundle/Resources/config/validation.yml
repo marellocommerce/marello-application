@@ -15,7 +15,7 @@ Marello\Bundle\OrderBundle\Entity\OrderItem:
         quantity:
             - GreaterThanOrEqual: { groups: [api, Default], value: 1 }
 #    constraints:
-#        - Marello\Bundle\OrderBundle\Validator\Constraints\AvailableInventory:
+#        - Marello\Bundle\OrderBundle\Validator\Constraints\AvailableInventoryConstraint:
 #            fields: [quantity, order, product]
 #            errorPath: quantity
 #            groups: [api, Default]

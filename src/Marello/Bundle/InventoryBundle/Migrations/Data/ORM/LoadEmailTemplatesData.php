@@ -1,14 +1,13 @@
 <?php
 
-namespace Marello\Bundle\OrderBundle\Migrations\Data\ORM;
+namespace Marello\Bundle\InventoryBundle\Migrations\Data\ORM;
 
 use Doctrine\Persistence\ObjectManager;
 
 use Oro\Bundle\EmailBundle\Migrations\Data\ORM\AbstractEmailFixture;
 use Oro\Bundle\MigrationBundle\Fixture\VersionedFixtureInterface;
 
-class LoadEmailTemplatesData extends AbstractEmailFixture implements
-    VersionedFixtureInterface
+class LoadEmailTemplatesData extends AbstractEmailFixture implements VersionedFixtureInterface
 {
     /**
      * Return path to email templates
@@ -19,7 +18,7 @@ class LoadEmailTemplatesData extends AbstractEmailFixture implements
     {
         return $this->container
             ->get('kernel')
-            ->locateResource('@MarelloOrderBundle/Migrations/Data/ORM/data/emails');
+            ->locateResource('@MarelloInventoryBundle/Migrations/Data/ORM/data/emails');
     }
 
     /**
@@ -34,7 +33,7 @@ class LoadEmailTemplatesData extends AbstractEmailFixture implements
 
         return $manager->getRepository('OroEmailBundle:EmailTemplate')->findOneBy([
             'name' => $template['params']['name'],
-            'entityName' => 'Marello\Bundle\OrderBundle\Entity\Order',
+            'entityName' => 'Marello\Bundle\InventoryBundle\Entity\Allocation',
         ]);
     }
 

@@ -5,8 +5,8 @@ namespace Marello\Bundle\InventoryBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
-use Marello\Bundle\InventoryBundle\Entity\AllocationDraft;
-use Marello\Bundle\InventoryBundle\Model\ExtendAllocationDraftItem;
+use Marello\Bundle\InventoryBundle\Entity\Allocation;
+use Marello\Bundle\InventoryBundle\Model\ExtendAllocationItem;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
@@ -30,7 +30,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
  * @ORM\Table(name="marello_inventory_alloc_item")
  * @ORM\HasLifecycleCallbacks()
  */
-class AllocationDraftItem extends ExtendAllocationDraftItem implements OrganizationAwareInterface
+class AllocationItem extends ExtendAllocationItem implements OrganizationAwareInterface
 {
     use EntityCreatedUpdatedAtTrait;
     use AuditableOrganizationAwareTrait;
@@ -45,10 +45,10 @@ class AllocationDraftItem extends ExtendAllocationDraftItem implements Organizat
     protected $id;
 
     /**
-     * @var AllocationDraft
+     * @var Allocation
      *
-     * @ORM\ManyToOne(targetEntity="AllocationDraft", inversedBy="items")
-     * @ORM\JoinColumn(name="allocation_draft_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\Allocation", inversedBy="items")
+     * @ORM\JoinColumn(name="allocation_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -57,7 +57,7 @@ class AllocationDraftItem extends ExtendAllocationDraftItem implements Organizat
      *      }
      * )
      */
-    protected $allocationDraft;
+    protected $allocation;
 
     /**
      * @var Product
@@ -123,6 +123,34 @@ class AllocationDraftItem extends ExtendAllocationDraftItem implements Organizat
     protected $quantity;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(name="quantity_confirmed",type="float",nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $quantityConfirmed;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="quantity_rejected",type="float",nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $quantityRejected;
+
+    /**
      * @ORM\Column(name="comment", type="text", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
@@ -172,21 +200,21 @@ class AllocationDraftItem extends ExtendAllocationDraftItem implements Organizat
     }
 
     /**
-     * @return AllocationDraft
+     * @return Allocation
      */
-    public function getAllocationDraft()
+    public function getAllocation()
     {
-        return $this->allocationDraft;
+        return $this->allocation;
     }
 
     /**
-     * @param AllocationDraft $allocationDraft
+     * @param Allocation $allocation
      *
      * @return $this
      */
-    public function setAllocationDraft(AllocationDraft $allocationDraft)
+    public function setAllocation(Allocation $allocation)
     {
-        $this->allocationDraft = $allocationDraft;
+        $this->allocation = $allocation;
         
         return $this;
     }
@@ -287,6 +315,46 @@ class AllocationDraftItem extends ExtendAllocationDraftItem implements Organizat
     public function setQuantity($quantity)
     {
         $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getQuantityConfirmed()
+    {
+        return $this->quantityConfirmed;
+    }
+
+    /**
+     * @param float $quantityConfirmed
+     *
+     * @return $this
+     */
+    public function setQuantityConfirmed($quantityConfirmed)
+    {
+        $this->quantityConfirmed = $quantityConfirmed;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getQuantityRejected()
+    {
+        return $this->quantityRejected;
+    }
+
+    /**
+     * @param float $quantityRejected
+     *
+     * @return $this
+     */
+    public function setQuantityRejected($quantityRejected)
+    {
+        $this->quantityRejected = $quantityRejected;
 
         return $this;
     }

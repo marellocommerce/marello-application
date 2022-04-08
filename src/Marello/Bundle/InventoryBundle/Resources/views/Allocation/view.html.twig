@@ -6,9 +6,9 @@
 {% block pageHeader %}
     {% set breadcrumbs = {
         'entity':      entity,
-        'indexPath':   path('marello_inventory_allocation_draft_index'),
+        'indexPath':   path('marello_inventory_allocation_index'),
         'indexLabel': 'Allocation'|trans,
-        'entityTitle': entity.allocationDraftNumber
+        'entityTitle': entity.allocationNumber
     } %}
     {{ parent() }}
 {% endblock pageHeader %}
@@ -32,12 +32,12 @@
         </div>
     {% endset %}
 
-    {% set allocationDraftItemsWidget %}
-        {{ dataGrid.renderGrid('marello-allocation-draft-items-grid', {'allocationDraftId': entity.id}) }}
+    {% set allocationItemsWidget %}
+        {{ dataGrid.renderGrid('marello-allocation-items-grid', {'allocationId': entity.id}) }}
     {% endset %}
 
     {% set infoWidget %}
-        {{ dataGrid.renderGrid('marello-allocation-draft-sub-allocation-grid', {'allocationDraftParentId': entity.id}) }}
+        {{ dataGrid.renderGrid('marello-allocation-sub-allocation-grid', {'allocationParentId': entity.id}) }}
     {% endset %}
 
     {% set dataBlocks = [
@@ -52,7 +52,7 @@
             'title': 'Draft Items'|trans,
             'useSpan': false,
             'subblocks': [
-                { 'data' : [allocationDraftItemsWidget] }
+                { 'data' : [allocationItemsWidget] }
             ]
         },
         {
