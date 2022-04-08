@@ -3,44 +3,45 @@
 namespace Marello\Bundle\InventoryBundle\Provider;
 
 use Doctrine\Common\Collections\ArrayCollection;
+
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\InventoryBundle\Entity\AllocationDraft;
-use Marello\Bundle\InventoryBundle\Entity\AllocationDraftItem;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
-use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
-use Marello\Bundle\RuleBundle\RuleFiltration\RuleFiltrationServiceInterface;
-use MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WFARuleRepository;
-use MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule;
-use MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumDistance\MinimumDistanceWFAStrategy;
-use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategiesRegistry;
+use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Entity\Allocation;
+use MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule;
+use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
+use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
+use Marello\Bundle\RuleBundle\RuleFiltration\RuleFiltrationServiceInterface;
+use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategiesRegistry;
+use MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WFARuleRepository;
+use MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumDistance\MinimumDistanceWFAStrategy;
 
 class InventoryAllocationProvider
 {
-    /**
-     * @var DoctrineHelper
-     */
+    /** @var DoctrineHelper $doctrineHelper */
     protected $doctrineHelper;
 
     /** @var OrderWarehousesProviderInterface $warehousesProvider */
     protected $warehousesProvider;
 
-    /**
-     * @var WFAStrategiesRegistry
-     */
+    /** @var WFAStrategiesRegistry $strategiesRegistry */
     protected $strategiesRegistry;
 
-    /**
-     * @var RuleFiltrationServiceInterface
-     */
+    /** @var RuleFiltrationServiceInterface $rulesFiltrationService */
     protected $rulesFiltrationService;
 
-    /**
-     * @var WFARuleRepository
-     */
+    /** @var WFARuleRepository $wfaRuleRepository */
     protected $wfaRuleRepository;
+
+    /** @var EventDispatcherInterface $eventDispatcher */
+    protected $eventDispatcher;
 
     /**
      * InventoryAllocationProvider constructor.
@@ -49,27 +50,31 @@ class InventoryAllocationProvider
      * @param WFAStrategiesRegistry $strategiesRegistry
      * @param RuleFiltrationServiceInterface $rulesFiltrationService
      * @param WFARuleRepository $wfaRuleRepository
+     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         DoctrineHelper $doctrineHelper,
         OrderWarehousesProviderInterface $warehousesProvider,
         WFAStrategiesRegistry $strategiesRegistry,
         RuleFiltrationServiceInterface $rulesFiltrationService,
-        WFARuleRepository $wfaRuleRepository
+        WFARuleRepository $wfaRuleRepository,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->doctrineHelper = $doctrineHelper;
         $this->warehousesProvider = $warehousesProvider;
         $this->strategiesRegistry = $strategiesRegistry;
         $this->rulesFiltrationService = $rulesFiltrationService;
         $this->wfaRuleRepository = $wfaRuleRepository;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
      * @param Order $order
+     * @param Allocation|null $allocation
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function allocateOrderToWarehouses(Order $order)
+    public function allocateOrderToWarehouses(Order $order, Allocation $allocation = null)
     {
         // check if order needs to be consolidated
         $consolidation = $order->isConsolidationEnabled();
@@ -79,26 +84,40 @@ class InventoryAllocationProvider
         }
 
         // consolidation is not enabled, so we just run the 'normal' WFA rules (all of them)
-        // the result of the WFA rules is also the input for the AllocationDraft/AllocationDraftItems
-        // create all allocationDrafts/draft items
+        // the result of the WFA rules is also the input for the Allocation/AllocationItems
+        // create all allocation/allocation items
         $allOrderItems = new ArrayCollection();
         $allItems = [];
         $subAllocations = [];
-        $em = $this->doctrineHelper->getEntityManagerForClass(AllocationDraft::class);
-        foreach ($this->warehousesProvider->getWarehousesForOrder($order) as $orderWarehouseResults) {
+        $em = $this->doctrineHelper->getEntityManagerForClass(Allocation::class);
+        foreach ($this->warehousesProvider->getWarehousesForOrder($order, $allocation) as $orderWarehouseResults) {
+            if ($allocation && $allocation->getWarehouse()) {
+                // release current allocated inventory if there is a warehouse
+                $allocation->getItems()->map(function (AllocationItem $item) use ($allocation, $order) {
+                    $this->handleInventoryUpdate(
+                        $item->getOrderItem(),
+                        null,
+                        -$item->getQuantity(),
+                        'inventory_allocation.released',
+                        $allocation->getWarehouse()
+                    );
+                });
+            }
             foreach ($orderWarehouseResults as $result) {
                 /** @var Order $order */
-                $allocationDraft = new AllocationDraft();
-                $allocationDraft->setOrder($order);
-                $allocationDraft->setType('On Hand');
+                $allocation = new Allocation();
+                $allocation->setOrder($order);
+                $allocation->setType('on_hand');
+
+                // find allocation by warehouse
                 if ($result->getWarehouse()->getCode() === 'no_warehouse') {
-                    $allocationDraft->setType('Waiting for supply');
+                    $allocation->setType('waiting_for_supply');
                 }
                 if ($result->getWarehouse()->getCode() === 'could_not_allocate') {
-                    $allocationDraft->setType('Could not Allocate');
+                    $allocation->setType('could_not_allocate');
                 }
                 if (!in_array($result->getWarehouse()->getCode(), ['no_warehouse', 'could_not_allocate'])) {
-                    $allocationDraft->setWarehouse($result->getWarehouse());
+                    $allocation->setWarehouse($result->getWarehouse());
                 }
                 $shippingAddress = $order->getShippingAddress();
                 if ($consolidationWarehouse) {
@@ -107,71 +126,120 @@ class InventoryAllocationProvider
                     }
                 }
 
-                $allocationDraft->setShippingAddress($shippingAddress);
+                $allocation->setShippingAddress($shippingAddress);
                 $itemWithQty = $result->getItemsWithQuantity();
                 foreach ($result->getOrderItems() as $item) {
-                    $allocationDraftItem = new AllocationDraftItem();
-                    $allocationDraftItem->setOrderItem($item);
-                    $allocationDraftItem->setProduct($item->getProduct());
-                    $allocationDraftItem->setProductSku($item->getProductSku());
-                    $allocationDraftItem->setProductName($item->getProductName());
-                    if ($allocationDraft->getWarehouse()) {
-                        $allocationDraftItem->setWarehouse($allocationDraft->getWarehouse());
+                    $allocationItem = new AllocationItem();
+                    $orderItem = $item;
+                    if ($item instanceof AllocationItem) {
+                        $orderItem = $item->getOrderItem();
                     }
-                    $allocationDraftItem->setQuantity($itemWithQty[$item->getProductSku()]);
-                    $allocationDraft->addItem($allocationDraftItem);
+                    $allocationItem->setOrderItem($orderItem);
+                    $allocationItem->setProduct($item->getProduct());
+                    $allocationItem->setProductSku($item->getProductSku());
+                    $allocationItem->setProductName($item->getProductName());
+                    if ($allocation->getWarehouse()) {
+                        $allocationItem->setWarehouse($allocation->getWarehouse());
+                    }
+                    $allocationItem->setQuantity($itemWithQty[$item->getProductSku()]);
+                    $allocation->addItem($allocationItem);
                     $allOrderItems->add($item);
                     if ($consolidationWarehouse) {
-                        $allItems[] = clone $allocationDraftItem;
-                        $subAllocations[] = $allocationDraft;
+                        $allItems[] = clone $allocationItem;
+                        $subAllocations[] = $allocation;
                     }
                 }
-                $em->persist($allocationDraft);
+
+                $em->persist($allocation);
+                if ($allocation->getWarehouse()) {
+                    $allocation->getItems()->map(function (AllocationItem $item) use ($allocation) {
+                        $this->handleInventoryUpdate(
+                            $item->getOrderItem(),
+                            null,
+                            $item->getQuantity(),
+                            'inventory_allocation.allocated',
+                            $allocation->getWarehouse()
+                        );
+                    });
+                }
             }
-        }
-        $diff = [];
-        foreach ($order->getItems() as $orderItem) {
-            if ($allOrderItems->contains($orderItem)) {
-                continue;
-            }
-            $diff[] = $orderItem;
         }
 
-        foreach ($diff as $orderItem) {
-            /** @var Order $order */
-            $draft = new AllocationDraft();
-            $draft->setOrder($order);
-            $draft->setType('Could Not Allocate');
-            $allocationDraftItem = new AllocationDraftItem();
-            $allocationDraftItem->setOrderItem($orderItem);
-            $allocationDraftItem->setProduct($orderItem->getProduct());
-            $allocationDraftItem->setProductSku($orderItem->getProductSku());
-            $allocationDraftItem->setProductName($orderItem->getProductName());
-            $allocationDraftItem->setQuantity($orderItem->getQuantity());
-            $draft->addItem($allocationDraftItem);
-            $em->persist($draft);
+        if (!$allocation) {
+            $diff = [];
+            foreach ($order->getItems() as $orderItem) {
+                if ($allOrderItems->contains($orderItem)) {
+                    continue;
+                }
+                $diff[] = $orderItem;
+            }
+
+            foreach ($diff as $orderItem) {
+                /** @var Order $order */
+                $diffAllocation = new Allocation();
+                $diffAllocation->setOrder($order);
+                $diffAllocation->setType('could_not_allocate');
+                $allocationItem = new AllocationItem();
+                $allocationItem->setOrderItem($orderItem);
+                $allocationItem->setProduct($orderItem->getProduct());
+                $allocationItem->setProductSku($orderItem->getProductSku());
+                $allocationItem->setProductName($orderItem->getProductName());
+                $allocationItem->setQuantity($orderItem->getQuantity());
+                $diffAllocation->addItem($allocationItem);
+                $em->persist($diffAllocation);
+            }
         }
 
         if ($consolidationWarehouse) {
             // create parent allocation
             /** @var Order $order */
-            $parentAllocationDraft = new AllocationDraft();
-            $parentAllocationDraft->setOrder($order);
-            $parentAllocationDraft->setType('On Hand');
-            $parentAllocationDraft->setWarehouse($consolidationWarehouse);
-            $parentAllocationDraft->setShippingAddress($consolidationWarehouse->getAddress());
+            $parentAllocation = new Allocation();
+            $parentAllocation->setOrder($order);
+            $parentAllocation->setType('on_hand');
+            $parentAllocation->setWarehouse($consolidationWarehouse);
+            $parentAllocation->setShippingAddress($consolidationWarehouse->getAddress());
             foreach ($allItems as $item) {
-                $parentAllocationDraft->addItem($item);
+                $parentAllocation->addItem($item);
             }
 
             foreach ($subAllocations as $subAllocation) {
-                $parentAllocationDraft->addChild($subAllocation);
+                $parentAllocation->addChild($subAllocation);
             }
 
-            $em->persist($parentAllocationDraft);
+            $em->persist($parentAllocation);
         }
 
         $em->flush();
+    }
+
+    /**
+     * handle the inventory update for items which have been picked and packed
+     * @param OrderItem $item
+     * @param $inventoryUpdateQty
+     * @param $allocatedInventoryQty
+     * @param Warehouse $warehouse
+     */
+    protected function handleInventoryUpdate(
+        $item,
+        $inventoryUpdateQty,
+        $allocatedInventoryQty,
+        $message,
+        $warehouse
+    ) {
+        $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
+            $item,
+            null,
+            $inventoryUpdateQty,
+            $allocatedInventoryQty,
+            $message
+        );
+
+        $context->setValue('warehouse', $warehouse);
+        $context->setValue('forceFlush', true);
+        $this->eventDispatcher->dispatch(
+            InventoryUpdateEvent::NAME,
+            new InventoryUpdateEvent($context)
+        );
     }
 
     /**

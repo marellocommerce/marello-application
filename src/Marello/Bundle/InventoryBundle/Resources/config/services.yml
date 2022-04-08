@@ -223,3 +223,4 @@ services:
             - '@marelloenterprise_inventory.wfa_strategy.registry'
             - '@marello_rule.rule_filtration.service'
             - '@marelloenterprise_inventory.repository.wfa_rule'
+            - '@event_dispatcher'
