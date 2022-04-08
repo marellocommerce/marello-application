@@ -2,6 +2,7 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Strategy;
 
+use Marello\Bundle\InventoryBundle\Entity\Allocation;
 use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
 use Marello\Bundle\OrderBundle\Entity\Order;
 
@@ -27,8 +28,9 @@ interface WFAStrategyInterface
 
     /**
      * @param Order $order
+     * @param Allocation|null $allocation
      * @param OrderWarehouseResult[] $initialResults
      * @return OrderWarehouseResult[]|null
      */
-    public function getWarehouseResults(Order $order, array $initialResults = []);
+    public function getWarehouseResults(Order $order, Allocation $allocation = null, array $initialResults = []);
 }
