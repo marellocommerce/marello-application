@@ -38,7 +38,7 @@ class SingleWHCalculatorChainElement extends AbstractWHCalculatorChainElement
                     'totalAllocatedQty' => ($totalAllocatedQty <= $product['qtyOrdered'])
                         ? $product['qty'] : ($product['qty'] - ($totalAllocatedQty - $product['qtyOrdered'])),
                     'totalQtyOrdered' => $product['qtyOrdered'],
-                    'qtyGtq' => (bool)($totalAllocatedQty >= $product['qtyOrdered'])
+                    'qtyGtq' => (bool)($product['qty'] >= $product['qtyOrdered'])
                 ];
              }
         }
