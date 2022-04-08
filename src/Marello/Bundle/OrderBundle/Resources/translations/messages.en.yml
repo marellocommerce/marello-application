@@ -46,6 +46,8 @@ marello:
         overridden_shipping_cost_amount.label: Overridden Shipping Cost Amount
         status.label:               Order Status
         order_status.label:               Order Status
+        consolidation_enabled.label: Consolidate Order
+        action.order.allocate:        Allocate Order
         billing_address:
             label:                  Billing Address
             name.label:             Bill to Name

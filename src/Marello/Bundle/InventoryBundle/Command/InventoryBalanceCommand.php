@@ -9,36 +9,37 @@ use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class InventoryBalanceCommand extends Command
 {
-    const NAME = 'marello:inventory:rebalance';
+    const NAME = 'marello:inventory:balance';
     const ALL = 'all';
     const PRODUCT = 'product';
     const EXECUTION_TYPE = 'execution-type';
     const BACKGROUND = 'background';
-    const IMMEDIATELY = 'immediately';
+    const DIRECT = 'direct';
 
-    /**
-     * @var Registry
-     */
+    /** @var Registry $registry */
     private $registry;
 
-    /**
-     * @var InventoryBalancer
-     */
+    /** @var InventoryBalancer $inventoryBalancer */
     private $inventoryBalancer;
 
-    /**
-     * @var MessageProducerInterface
-     */
+    /** @var MessageProducerInterface $messageProducer*/
     private $messageProducer;
     
+    /** @var string */
     private $executionType;
-    
+
+    /**
+     * @param Registry $registry
+     * @param InventoryBalancer $inventoryBalancer
+     * @param MessageProducerInterface $messageProducer
+     */
     public function __construct(
         Registry $registry,
         InventoryBalancer $inventoryBalancer,
@@ -63,9 +64,9 @@ class InventoryBalanceCommand extends Command
                 null,
                 InputOption::VALUE_REQUIRED,
                 sprintf(
-                    'for selecting execution type (possible values: %s, %s)',
+                    'Process balancing either in the background or directly (possible values: %s, %s)',
                     self::BACKGROUND,
-                    self::IMMEDIATELY
+                    self::DIRECT
                 ),
                 self::BACKGROUND
             )
@@ -73,16 +74,14 @@ class InventoryBalanceCommand extends Command
                 self::ALL,
                 null,
                 null,
-                'for all products inventory rebalancing'
+                'Balance all Products'
             )
-            ->addOption(
+            ->addArgument(
                 self::PRODUCT,
-                null,
-                InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-                'product ids for rebalancing inventory',
-                []
+                InputArgument::IS_ARRAY | InputArgument::OPTIONAL,
+                'Product sku(s) for balancing inventory'
             )
-            ->setDescription('Rebalance inventory for Product(s)');
+            ->setDescription('Balance inventory for Product(s)');
     }
 
     /**
@@ -95,7 +94,7 @@ class InventoryBalanceCommand extends Command
         
         if ($optionAll) {
             $this->processAllProducts($output);
-        } elseif ($input->getOption(self::PRODUCT)) {
+        } elseif (!empty($input->getArgument(self::PRODUCT))) {
             $this->processProducts($input, $output);
         } else {
             $output->writeln(
@@ -106,12 +105,12 @@ class InventoryBalanceCommand extends Command
     }
 
     /**
-     * Process all products for rebalancing
+     * Process all products for balancing
      * @param OutputInterface $output
      */
     protected function processAllProducts(OutputInterface $output)
     {
-        $output->writeln('<info>Start processing of all Products for rebalancing</info>');
+        $output->writeln('<info>Start processing all Products for balancing</info>');
 
         /** @var Product[] $products */
         $products = $this->registry
@@ -135,7 +134,7 @@ class InventoryBalanceCommand extends Command
      */
     protected function processProducts(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('<info>Start processing of Products for rebalancing</info>');
+        $output->writeln('<info>Start processing Products for balancing</info>');
         $products = $this->getProducts($input);
         $output->writeln(sprintf('<info>count of products %s</info>', count($products)));
         $this->triggerInventoryBalancer($products, $output);
@@ -148,15 +147,14 @@ class InventoryBalanceCommand extends Command
      */
     protected function getProducts(InputInterface $input)
     {
-        $productIds = $input->getOption(self::PRODUCT);
+        $products = $input->getArgument(self::PRODUCT);
         /** @var ProductRepository $productRepository */
         $productRepository = $this->registry
             ->getManagerForClass(Product::class)
             ->getRepository(Product::class);
 
-        $products = [];
-        if (count($productIds)) {
-            $products = $productRepository->findBy(['id' => $productIds]);
+        if (count($products) > 0) {
+            $products = $productRepository->findBy(['sku' => $products]);
         }
 
         /** @var Product[] $products */
@@ -172,7 +170,7 @@ class InventoryBalanceCommand extends Command
     {
         /** @var Product $product */
         foreach ($products as $product) {
-            if ($this->executionType === self::IMMEDIATELY) {
+            if ($this->executionType === self::DIRECT) {
                 $output->writeln(sprintf('<info>processing product with sku %s</info>', $product->getSku()));
                 // balance 'Global' && 'Virtual' Warehouses
                 $this->inventoryBalancer->balanceInventory($product, false, true);

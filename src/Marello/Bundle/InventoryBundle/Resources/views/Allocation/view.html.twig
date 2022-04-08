@@ -1,0 +1,70 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% import 'MarelloAddressBundle::macros.html.twig' as Address %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity':      entity,
+        'indexPath':   path('marello_inventory_allocation_index'),
+        'indexLabel': 'Allocation'|trans,
+        'entityTitle': entity.allocationNumber
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set id = 'marello-inventory-allocation-draft-view' %}
+
+    {% set generalWidget %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ UI.renderProperty('marello.inventory.warehouse.entity_label'|trans, entity.warehouse.label) }}
+                    <div class="attribute-item">
+                        <div class="attribute-item__term">{{'marello.address.marelloaddress.entity_label'|trans}}</div>
+                        <div class="attribute-item__description">
+                            {{ Address.renderAddress(entity.shippingAddress) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
+    {% set allocationItemsWidget %}
+        {{ dataGrid.renderGrid('marello-allocation-items-grid', {'allocationId': entity.id}) }}
+    {% endset %}
+
+    {% set infoWidget %}
+        {{ dataGrid.renderGrid('marello-allocation-sub-allocation-grid', {'allocationParentId': entity.id}) }}
+    {% endset %}
+
+    {% set dataBlocks = [
+        {
+            'title': 'General'|trans,
+            'useSpan': false,
+            'subblocks': [
+                { 'data' : [generalWidget] }
+            ]
+        },
+        {
+            'title': 'Draft Items'|trans,
+            'useSpan': false,
+            'subblocks': [
+                { 'data' : [allocationItemsWidget] }
+            ]
+        },
+        {
+            'title': 'Sub Allocations'|trans,
+            'useSpan': false,
+            'subblocks': [
+                { 'data' : [infoWidget] }
+            ]
+        }
+    ]
+    %}
+
+    {% set data = { 'dataBlocks': dataBlocks } %}
+    {{ parent() }}
+{% endblock content_data %}

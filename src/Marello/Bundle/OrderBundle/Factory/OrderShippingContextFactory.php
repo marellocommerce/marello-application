@@ -142,13 +142,13 @@ class OrderShippingContextFactory implements ShippingContextFactoryInterface
      */
     protected function getShippingOrigin(Order $order)
     {
-        $orderWarehouseResults = $this->orderWarehousesProvider->getWarehousesForOrder($order);
-        if (!empty($orderWarehouseResults)) {
-            /** @var OrderWarehouseResult $orderWarehouseResult */
-            $orderWarehouseResult = reset($orderWarehouseResults);
-
-            return $orderWarehouseResult->getWarehouse()->getAddress();
-        }
+//        $orderWarehouseResults = $this->orderWarehousesProvider->getWarehousesForOrder($order);
+//        if (!empty($orderWarehouseResults)) {
+//            /** @var OrderWarehouseResult $orderWarehouseResult */
+//            $orderWarehouseResult = reset($orderWarehouseResults);
+//
+//            return $orderWarehouseResult->getWarehouse()->getAddress();
+//        }
 
         return null;
     }

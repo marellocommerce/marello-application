@@ -106,3 +106,19 @@ services:
             - '@oro_entity.doctrine_helper'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-inventory-levels, method: onBuildBefore }
+
+    marello_inventory.event_listener.workflow.pending_transition_listener:
+        class: 'Marello\Bundle\InventoryBundle\EventListener\Workflow\TransitionEventListener'
+        arguments:
+            - '@oro_workflow.manager'
+            - '@oro_message_queue.client.message_producer'
+        tags:
+            - { name: kernel.event_listener, event: extendable_action.pending_transition_after, method: onPendingTransitionAfter, priority: 10 }
+
+    marello_inventory.event_listener.doctrine.start_workflow_listener:
+        class: 'Marello\Bundle\InventoryBundle\EventListener\Doctrine\AllocationWorkflowStartListener'
+        arguments:
+            - '@oro_workflow.manager'
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: postFlush }
