@@ -2,12 +2,18 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Marello\Bundle\InventoryBundle\Entity\Allocation;
+use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\Calculator\MinQtyWHCalculatorInterface;
 use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategyInterface;
@@ -84,18 +90,23 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
     /**
      * {@inheritdoc}
      */
-    public function getWarehouseResults(Order $order, array $initialResults = [])
+    public function getWarehouseResults(Order $order, Allocation $allocation = null, array $initialResults = [])
     {
         $productsByWh = [];
         $warehouses = [];
-        $orderItems = $order->getItems();
+        $orderItems = ($allocation) ? $allocation->getItems() : $order->getItems();
         $orderItemsByProducts = [];
+        $emptyWarehouse = new Warehouse();
+        $emptyWarehouse->setWarehouseType(new WarehouseType('virtual'));
+        $emptyWarehouse->setCode('no_warehouse');
 
+        // the SalesChannel that the order is placed in is linked to a SalesChannelGroup
+        // linked warehouses are warehouses connected to the WarehouseGroup that is linked to the SalesChannelGroup
         $linkedWarehouses = $this->getLinkedWarehouses($order);
-
         if (empty($linkedWarehouses)) {
             return [];
         }
+
         $warehousesIds = array_map(function (Warehouse $warehouse) {
             return $warehouse->getId();
         }, $linkedWarehouses);
@@ -106,67 +117,360 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
                 $orderItem->getProduct()->getSku(),
                 $orderItem->getId() ? : $key
             )] = $orderItem;
-            $inventoryItems = $orderItem->getInventoryItems();
-            foreach ($inventoryItems as $inventoryItem) {
-                /** @var InventoryLevel $inventoryLevel */
-                foreach ($inventoryItem->getInventoryLevels() as $inventoryLevel) {
-                    $warehouse = $inventoryLevel->getWarehouse();
-                    $warehouseType = $warehouse->getWarehouseType()->getName();
-                    $warehouseId = $warehouse->getId();
-                    if ((
-                            $inventoryLevel->getInventoryQty() >= $orderItem->getQuantity() ||
-                            $warehouseType === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL ||
-                            ( $this->estimation === true &&
-                                (
-                                    $inventoryItem->isOrderOnDemandAllowed() ||
-                                    (
-                                        $inventoryItem->isCanPreorder() &&
-                                        $inventoryItem->getMaxQtyToPreorder() >= $orderItem->getQuantity()
-                                    ) ||
-                                    (
-                                        $inventoryItem->isBackorderAllowed() &&
-                                        $inventoryItem->getMaxQtyToBackorder() >= $orderItem->getQuantity()
-                                    )
-                                )
-                            )
-                        ) && in_array($warehouseId, $warehousesIds)
-                    ) {
-                        $warehouses[$warehouseId] = $warehouse;
-                        $productsByWh[$warehouseId] [] = $inventoryItem->getProduct()->getSku();
+
+            /** @var ArrayCollection $inventoryItems */
+            if ($orderItem instanceof AllocationItem) {
+                $inventoryItems = $orderItem->getProduct()->getInventoryItems();
+            } else {
+                $inventoryItems = $orderItem->getInventoryItems();
+            }
+            /** @var InventoryItem $inventoryItem */
+            $inventoryItem = $inventoryItems->first();
+            $orderItemQtyToAllocateLeft = $orderItem->getQuantity();
+            $inventoryLevels = $this->getInventoryLevelCandidates($inventoryItem, $warehousesIds);
+            $quantityAvailable = 0;
+            /** @var InventoryLevel $inventoryLevel */
+            foreach ($inventoryLevels as $i => $inventoryLevel) {
+                $warehouse = $inventoryLevel->getWarehouse();
+                $virtualInventoryQuantity = $inventoryLevel->getVirtualInventoryQty();
+                if ($allocation && $allocation->getWarehouse()) {
+                    if ($allocation->getWarehouse()->getId() === $warehouse->getId()) {
+                        $virtualInventoryQuantity = $inventoryLevel->getVirtualInventoryQty() - $orderItem->getQuantityRejected();
                     }
                 }
+                $warehouses[$warehouse->getCode()] = $warehouse;
+                $productsByWh[$inventoryItem->getProduct()->getSku()]['selected_wh'][$warehouse->getCode()] = $virtualInventoryQuantity;
+                $quantityAvailable += $virtualInventoryQuantity;
+
+                if ($this->isWarehouseEligible($orderItem, $inventoryLevel, 'dropshipping')) {
+                    $productsByWh[$inventoryItem->getProduct()->getSku()]['selected_wh'][$warehouse->getCode()] = $orderItemQtyToAllocateLeft;
+                    $quantityAvailable += ($inventoryLevel->isManagedInventory()) ? $virtualInventoryQuantity : $orderItemQtyToAllocateLeft;
+                }
+                $orderItemQtyToAllocateLeft -= $virtualInventoryQuantity;
+            }
+
+            if ($this->isItemAvailable($orderItem, $inventoryItem, 'ondemand')) {
+                $warehouses[$emptyWarehouse->getCode()] = $emptyWarehouse;
+                $productsByWh[$inventoryItem->getProduct()->getSku()]['selected_wh'][$emptyWarehouse->getCode()] = $orderItemQtyToAllocateLeft;
+                $quantityAvailable += $orderItem->getQuantity();
+            }
+
+            if ($this->isItemAvailable($orderItem, $inventoryItem, 'preorder')) {
+                $warehouses[$emptyWarehouse->getCode()] = $emptyWarehouse;
+                $productsByWh[$inventoryItem->getProduct()->getSku()]['selected_wh'][$emptyWarehouse->getCode()] = $orderItemQtyToAllocateLeft;
+                $quantityAvailable += $orderItem->getQuantity();
+            }
+
+            if ($this->isItemAvailable($orderItem, $inventoryItem, 'backorder')) {
+                $warehouses[$emptyWarehouse->getCode()] = $emptyWarehouse;
+                $productsByWh[$inventoryItem->getProduct()->getSku()]['selected_wh'][$emptyWarehouse->getCode()] = $orderItemQtyToAllocateLeft;
+                $quantityAvailable += $orderItem->getQuantity();
+            }
+            $productsByWh[$inventoryItem->getProduct()->getSku()]['qtyOrdered'] = $orderItem->getQuantity();
+            $productsByWh[$inventoryItem->getProduct()->getSku()]['qtyAvailable'] = $quantityAvailable;
+        }
+
+        $possibleOptionsToFulfill = array_map(function($item) {
+                return $this->getOptions($item['selected_wh'], $item['qtyOrdered']);
+            }, $productsByWh
+        );
+
+        $optimizedOptions = $this->getOptimizedOptions($possibleOptionsToFulfill);
+        $productsWithInventoryData = [];
+
+        $noAllocationWarehouse = new Warehouse();
+        $noAllocationWarehouse->setWarehouseType(new WarehouseType('virtual'));
+        $noAllocationWarehouse->setCode('could_not_allocate');
+        $warehouses[$noAllocationWarehouse->getCode()] = $noAllocationWarehouse;
+        // format the data
+        foreach ($optimizedOptions as $sku => $whs) {
+            $data = $productsByWh[$sku];
+            foreach ($whs as $wh) {
+                $productsWithInventoryData[$sku][] = [
+                    'sku' => $sku,
+                    'wh' => $wh,
+                    // if the quantity from the selected warehouse (that is available), we might not need all the inventory
+                    // from this warehouse, but instead just the ordered quantity
+                    'qty' => ($data['selected_wh'][$wh] > $data['qtyOrdered']) ? $data['qtyOrdered']: $data['selected_wh'][$wh],
+                    'qtyOrdered' => $data['qtyOrdered']
+                ];
+            }
+
+            if ($data['qtyOrdered'] > $data['qtyAvailable']) {
+                $productsWithInventoryData[$sku][] = [
+                    'sku' => $sku,
+                    'wh' => $noAllocationWarehouse->getCode(),
+                    'qty' => $data['qtyOrdered'] - $data['qtyAvailable'],
+                    'qtyOrdered' => $data['qtyOrdered']
+                ];
             }
         }
 
-        uasort($productsByWh, function ($a, $b) {
-            return count($b) > count($a) ? 1 : -1 ;
-        });
-
-        return $this->minQtyWHCalculator->calculate($productsByWh, $orderItemsByProducts, $warehouses, $orderItems);
+        return $this->minQtyWHCalculator->calculate($productsWithInventoryData, $orderItemsByProducts, $warehouses, $orderItems);
     }
 
     /**
-     * @param Product $product
-     * @return Warehouse|null
+     * @param $allFoundOptions
+     * @return array
      */
-    protected function getPreferredExternalWarehouse(Product $product)
+    private function getOptimizedOptions($allFoundOptions): array
     {
-        $preferredSupplier = null;
-        $preferredPriority = 0;
-        foreach ($product->getSuppliers() as $productSupplierRelation) {
-            if (null == $preferredSupplier && $productSupplierRelation->getCanDropship() === true) {
-                $preferredSupplier = $productSupplierRelation->getSupplier();
-                $preferredPriority = $productSupplierRelation->getPriority();
-                continue;
+        $whIdsPerOption = [];
+        // per product, get unique combinations of warehouses involved
+        foreach ($allFoundOptions as $sku => $options) {
+            foreach ($options as $optionId => $option) {
+                $whIdsPerOption[$sku][$optionId] = implode(',',array_keys($option));
             }
-            if ($productSupplierRelation->getPriority() < $preferredPriority  &&
-                $productSupplierRelation->getCanDropship() === true) {
-                $preferredSupplier = $productSupplierRelation->getSupplier();
-                $preferredPriority = $productSupplierRelation->getPriority();
+
+            // remove duplicates
+            $whIdsPerOption[$sku] = array_map("unserialize", array_unique(array_map("serialize", $whIdsPerOption[$sku])));
+
+            // sort the options within (lowest to the highest nr of warehouses)
+            $optionsOrder = [];
+            foreach ($whIdsPerOption[$sku] as $optionId => $warehouses) {
+                $optionsOrder[$optionId] = count(explode(',', $warehouses));
             }
+            asort($optionsOrder); // start with options with the least amount of warehouses
+
+            // sort the warehouses array accordingly
+            $whIdsPerOption[$sku] = array_merge(array_flip(array_keys($optionsOrder)), $whIdsPerOption[$sku]);
         }
 
-        return $preferredSupplier;
+        // sort the products within the order (lowest to the highest nr of options)
+        $productOrder = [];
+        foreach ($whIdsPerOption as $sku => $options) {
+            $productOrder[$sku] = count($options);
+        }
+        asort($productOrder); // start with orders with the least amount of options
+
+        // sort the options array accordingly
+        $whIdsPerOption = array_merge(array_flip(array_keys($productOrder)), $whIdsPerOption);
+        // get all possible combinations of warehouses
+        $cartesianResult = $this->cartesian($whIdsPerOption);
+
+        $preResult = [];
+        foreach ($cartesianResult as $optionId => $products) {
+            $whInvolved = [];
+            foreach ($products as $whs) {
+                foreach (explode(',',$whs) as $wh) {
+                    $whInvolved[$wh] = $wh;
+                }
+            }
+            sort($whInvolved);
+            $preResult[$optionId] = $whInvolved;
+        }
+        $unique = array_map("unserialize", array_unique(array_map("serialize", $preResult)));
+
+        // sort the array with unique results by least total of warehouses, less warehouses means less shipping for merchant, which are less costs theoretically
+        // we could, if and when necessary, apply different sorting, for example, by distance.
+        // it does however, need some modification as we do not have all data present for different sorting.
+        uasort($unique, function($resultA, $resultB) {
+           return count($resultA) <=> count($resultB);
+        });
+
+        // first item in the array is option with the least total of warehouses.
+        $firstResult = array_shift($unique);
+
+        // find the correct warehouse per product after the ideal result for warehouses have been found,
+        // this necessary as we need the warehouses per product in order to generate the OrderWarehouseResult.
+        return array_map(function($item) use ($firstResult) {
+            if (count($item) === 1) {
+                // we just need the first result
+                return explode(',', array_shift($item));
+            }
+            // filter the options whether the warehouse from 'all options' are in the result of the optimized option
+            // if not, we can't use that option.
+            $filterOptions = array_filter($item, function($option) use ($firstResult, $item) {
+                $explodedWhs = explode(',', $option);
+                $isValidOption = true;
+                foreach ($explodedWhs as $wh) {
+                    if (!in_array($wh, $firstResult)) {
+                        $isValidOption = false;
+                    }
+                }
+                return $isValidOption;
+            });
+            // could be that there is more than one result and we just need the first result
+            return explode(',', array_shift($filterOptions));
+        }, $whIdsPerOption);
+    }
+
+    /**
+     * see: https://stackoverflow.com/questions/6311779/finding-cartesian-product-with-php-associative-arrays
+     * @param $input
+     * @return array
+     */
+    private function cartesian($input): array
+    {
+        $result = array(array());
+        foreach ($input as $key => $values) {
+            $append = array();
+
+            foreach($result as $product) {
+                foreach($values as $item) {
+                    $product[$key] = $item;
+                    $append[] = $product;
+                }
+            }
+
+            $result = $append;
+        }
+
+        return $result;
+    }
+
+    /**
+     * getOptions
+     * @param $selectedWhs
+     * @param $qtyOrdered
+     * @return array
+     */
+    private function getOptions($selectedWhs, $qtyOrdered): array
+    {
+        $options = [];
+
+        // get all permutations of ids of warehouse (with available stock)
+        $id = 0;
+        foreach ($this->permutations(array_keys($selectedWhs)) as $permutation) {
+            $processedPermutation = $this->processPermutation($permutation, $selectedWhs, $qtyOrdered);
+            ksort($processedPermutation); // sort them
+            $options["OP$id"] = $processedPermutation;
+            $id++;
+        }
+
+        // remove duplicates
+        $options = array_map("unserialize", array_unique(array_map("serialize", $options)));
+
+        return $options;
+    }
+
+    /**
+     * @param $permutation // combination of warehouse ids
+     * @param $selectedWhs
+     * @param $qtyOrdered
+     * @return array
+     */
+    private function processPermutation($permutation, $selectedWhs, $qtyOrdered): array
+    {
+        $result = [];
+        $qtyRemain = $qtyOrdered;
+        foreach ($permutation as $whId) {
+            $stock = $selectedWhs[$whId];
+            if ($stock > 0) {
+                $result[$whId] = min($qtyRemain, $stock);
+                $qtyRemain -= $stock;
+            }
+            // if all ordered qty is fulfilled, stop
+            if ($qtyRemain <= 0) {
+                break;
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * @param array $elements
+     * @return \Generator
+     */
+    private function permutations(array $elements): \Generator
+    {
+        if (count($elements) <= 1) {
+            yield $elements;
+        } else {
+            foreach ($this->permutations(array_slice($elements, 1)) as $permutation) {
+                foreach (range(0, count($elements) - 1) as $i) {
+                    yield array_merge(
+                        array_slice($permutation, 0, $i),
+                        [$elements[0]],
+                        array_slice($permutation, $i)
+                    );
+                }
+            }
+        }
+    }
+
+    /**
+     * @param InventoryItem $inventoryItem
+     * @param array $warehouses
+     * @return ArrayCollection
+     * @throws \Exception
+     */
+    protected function getInventoryLevelCandidates(InventoryItem $inventoryItem, array $warehouses)
+    {
+        // filter levels that either; have an warehouse in the linked warehouses, have virtual inventory > 0 or have an external warehouse (dropshipping)
+        $filteredLevels = $inventoryItem
+            ->getInventoryLevels()
+            ->filter(function(InventoryLevel $inventoryLevel) use ($warehouses) {
+                if (in_array($inventoryLevel->getWarehouse()->getId(), $warehouses)) {
+                    if ($inventoryLevel->getVirtualInventoryQty() > 0) {
+                        return true;
+                    }
+                    if ($inventoryLevel->getWarehouse()->getWarehouseType()->getName() === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
+                        if (($inventoryLevel->isManagedInventory() && $inventoryLevel->getVirtualInventoryQty() > 0)
+                            || !$inventoryLevel->isManagedInventory()
+                        ) {
+                            return true;
+                        }
+                    }
+                }
+
+                return false;
+            });
+
+        $inventoryLevelIterator = $filteredLevels->getIterator();
+        // sorting the inventorylevels that have the most stock on hand (virtual inventory) in a certain warehouse
+        $inventoryLevelIterator->uasort(function(InventoryLevel $a, InventoryLevel $b) {
+            return $b->getVirtualInventoryQty() <=> $a->getVirtualInventoryQty();
+        });
+
+        return new ArrayCollection(iterator_to_array($inventoryLevelIterator, false));
+    }
+
+    /**
+     * @param OrderItem|AllocationItem $orderItem
+     * @param InventoryLevel $inventoryLevel
+     * @param $type string
+     * @return bool
+     */
+    protected function isWarehouseEligible($orderItem, InventoryLevel $inventoryLevel, $type = 'full')
+    {
+        // these are basically rules, we might need to convert this into some rule based system
+        // in order to have some more control over the priority of the conditions of the item
+        $warehouse = $inventoryLevel->getWarehouse();
+        $warehouseType = $warehouse->getWarehouseType()->getName();
+        switch ($type){
+            case 'full':
+                return ($inventoryLevel->getVirtualInventoryQty() >= $orderItem->getQuantity());
+                break;
+            case 'dropshipping':
+                return ($warehouseType === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL);
+                break;
+            default:
+                return false;
+                break;
+        }
+    }
+
+    /**
+     * @param OrderItem|AllocationItem $orderItem
+     * @param InventoryItem $inventoryItem
+     * @param null $type
+     * @return bool
+     */
+    protected function isItemAvailable($orderItem, InventoryItem $inventoryItem, $type = null)
+    {
+        switch ($type) {
+            case 'ondemand':
+                return ($inventoryItem->isOrderOnDemandAllowed());
+            case 'preorder':
+                return ($inventoryItem->isCanPreorder() &&
+                    ($inventoryItem->getMaxQtyToPreorder() === null || $inventoryItem->getMaxQtyToPreorder() >= $orderItem->getQuantity()));
+            case 'backorder':
+                return ($inventoryItem->isBackorderAllowed() &&
+                    ($inventoryItem->getMaxQtyToBackorder() === null || $inventoryItem->getMaxQtyToBackorder() >= $orderItem->getQuantity()));
+            default:
+                return false;
+        }
     }
 
     /**

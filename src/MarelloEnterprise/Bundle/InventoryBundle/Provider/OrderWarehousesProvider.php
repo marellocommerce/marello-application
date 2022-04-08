@@ -2,6 +2,7 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Provider;
 
+use Marello\Bundle\InventoryBundle\Entity\Allocation;
 use Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProviderInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\RuleBundle\RuleFiltration\RuleFiltrationServiceInterface;
@@ -57,7 +58,7 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getWarehousesForOrder(Order $order)
+    public function getWarehousesForOrder(Order $order, Allocation $allocation = null): array
     {
         /** @var WFARule[] $filteredRules */
         $filteredRules = $this->rulesFiltrationService
@@ -67,11 +68,11 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
         foreach ($filteredRules as $rule) {
             $strategy = $this->strategiesRegistry->getStrategy($rule->getStrategy());
             $strategy->setEstimation($this->estimation);
-            $results = $strategy->getWarehouseResults($order, $results);
+            $results = $strategy->getWarehouseResults($order, $allocation, $results);
         }
 
-        if (count($results) >= 1) {
-            return reset($results);
+        if (count($results) > 0) {
+            return $results;
         }
 
         return [];

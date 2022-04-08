@@ -60,7 +60,8 @@ abstract class AbstractWHCalculatorChainElement implements MinQtyWHCalculatorInt
         $count = 0;
         foreach ($results as $result) {
             if ($result->getWarehouse()->getWarehouseType()->getName() !==
-                WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
+                WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL
+            ) {
                 $count += count($result->getOrderItems()->toArray());
             }
         }
@@ -75,7 +76,8 @@ abstract class AbstractWHCalculatorChainElement implements MinQtyWHCalculatorInt
     {
         foreach ($results as $result) {
             if ($result->getWarehouse()->getWarehouseType()->getName() ===
-                WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
+                WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL
+            ) {
                 return true;
             }
         }

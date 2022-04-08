@@ -5,6 +5,7 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\Calc
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\Calculator\Chain\Element\AbstractWHCalculatorChainElement;
 
 class MultipleWHCalculatorChainElement extends AbstractWHCalculatorChainElement
@@ -60,8 +61,8 @@ class MultipleWHCalculatorChainElement extends AbstractWHCalculatorChainElement
     /**
      * @param array $productsByWh
      * @param array $orderItemsByProducts
-     * @param array $warehouses
-     * @param array $products
+     * @param array $warehouses array of warehouses
+     * @param array $products array of products extracted from the order items
      * @param int|null $idx
      */
     protected function getMultipleWarehouseResults(
@@ -71,38 +72,50 @@ class MultipleWHCalculatorChainElement extends AbstractWHCalculatorChainElement
         $products,
         $idx = null
     ) {
+        $wh = [];
+        $itemsWithQuantity = [];
         foreach ($productsByWh as $id => $whProducts) {
+            $totalAllocatedQty = 0;
+            foreach ($whProducts as $product) {
+                if (isset($wh[$product['wh']][$product['sku']])) {
+                    $totalAllocatedQty = $wh[$product['wh']][$product['sku']]['totalAllocatedQty'];
+                }
+                $totalAllocatedQty += $product['qty'];
+                $wh[$product['wh']][$product['sku']] = [
+                    'totalAllocatedQty' => ($totalAllocatedQty <= $product['qtyOrdered'])
+                        ? $product['qty'] : ($product['qty'] - ($totalAllocatedQty - $product['qtyOrdered'])),
+                    'totalQtyOrdered' => $product['qtyOrdered'],
+                    'qtyGtq' => (bool)($totalAllocatedQty >= $product['qtyOrdered'])
+                ];
+            }
+        }
+
+        foreach ($wh as $warehouseCode => $product) {
             $index = $idx !== null ? $idx : count($this->results);
-            $matchedProducts = array_intersect($products, $whProducts);
-            if (count($matchedProducts) > 0) {
-                $matchedOrderItems = new ArrayCollection();
-                foreach ($matchedProducts as $productId) {
-                    foreach ($orderItemsByProducts as $combinedSku => $orderItem) {
-                        $sku = strstr($combinedSku, '_|_', true);
-                        if ($productId === $sku && !$matchedOrderItems->contains($orderItem)) {
-                            $matchedOrderItems->add($orderItem);
-                        }
+            $matchedOrderItems = new ArrayCollection();
+            foreach ($product as $productSku => $inventoryData) {
+                /**
+                 * @var  $combinedSku string
+                 * @var  $orderItem OrderItem
+                 */
+                foreach ($orderItemsByProducts as $combinedSku => $orderItem) {
+                    $sku = strstr($combinedSku, '_|_', true);
+                    if ($productSku === $sku && !$matchedOrderItems->contains($orderItem)) {
+                        $matchedOrderItems->add($orderItem);
+                        $itemsWithQuantity[$productSku] = $inventoryData['totalAllocatedQty'];
                     }
                 }
-                $this->results[$index][implode('|', $matchedProducts)] = new OrderWarehouseResult(
+            }
+
+            if (count($matchedOrderItems) > 0) {
+                // add the products to the warehouse results
+                $this->results[$index][implode('|', array_keys($product))] = new OrderWarehouseResult(
                     [
-                        OrderWarehouseResult::WAREHOUSE_FIELD => $warehouses[$id],
-                        OrderWarehouseResult::ORDER_ITEMS_FIELD => $matchedOrderItems
+                        OrderWarehouseResult::WAREHOUSE_FIELD => $warehouses[$warehouseCode],
+                        OrderWarehouseResult::ORDER_ITEMS_FIELD => $matchedOrderItems,
+                        OrderWarehouseResult::ITEMS_WITH_QUANTITY_FIELD => $itemsWithQuantity
                     ]
                 );
-                $products_diff = array_diff($products, $whProducts);
-                if (count($products_diff) > 0) {
-                    $this->getMultipleWarehouseResults(
-                        $productsByWh,
-                        $orderItemsByProducts,
-                        $warehouses,
-                        $products_diff,
-                        $index
-                    );
-                } else {
-                    $idx = null;
-                    break;
-                }
             }
         }
     }
