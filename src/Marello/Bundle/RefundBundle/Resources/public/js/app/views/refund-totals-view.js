@@ -120,6 +120,7 @@ define(function(require) {
         /**
          * @param {Object} item
          * @param {Object} label
+         * @param {Object} amountValue
          */
         pushItem: function(item, label) {
             var localItem = _.defaults(

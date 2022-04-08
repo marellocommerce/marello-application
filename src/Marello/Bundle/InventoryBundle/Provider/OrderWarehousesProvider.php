@@ -3,10 +3,12 @@
 namespace Marello\Bundle\InventoryBundle\Provider;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Marello\Bundle\InventoryBundle\Entity\Allocation;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
 use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
@@ -29,7 +31,7 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getWarehousesForOrder(Order $order)
+    public function getWarehousesForOrder(Order $order, Allocation $allocation = null): array
     {
         $productsBySku = [];
         $productsByWh = [];
@@ -41,38 +43,24 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
             $productsBySku[$sku] = $product;
             $key = sprintf('%s_|_%s', $sku, $index);
             $orderItemsByProducts[$key] = $orderItem;
-            $inventoryItems = $product->getInventoryItems();
+            /** @var ArrayCollection $inventoryItems */
+            $inventoryItems = $orderItem->getInventoryItems();
+            $inventoryItem = $inventoryItems->first();
             $invLevToWh = [];
             $invLevelQtyKey = null;
-            foreach ($inventoryItems as $inventoryItem) {
-                /** @var InventoryLevel $inventoryLevel */
-                foreach ($inventoryItem->getInventoryLevels() as $inventoryLevel) {
-                    $invLevelQtyKey = sprintf('%s_|_%s', $sku, $inventoryLevel->getId());
-                    $invLevelQty = $inventoryLevel->getVirtualInventoryQty();
-                    if (isset($productsQty[$invLevelQtyKey])) {
-                        $invLevelQty = $invLevelQty - $productsQty[$invLevelQtyKey];
-                    }
-                    $warehouse = $inventoryLevel->getWarehouse();
-                    $invLevToWh[$warehouse->getId()] = $inventoryLevel;
-                    $warehouseType = $warehouse->getWarehouseType()->getName();
-                    if ($invLevelQty >= $orderItem->getQuantity() ||
-                        $warehouseType === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL ||
-                        ( $this->estimation === true &&
-                            (
-                                $inventoryItem->isOrderOnDemandAllowed() ||
-                                (
-                                    $inventoryItem->isCanPreorder() &&
-                                    $inventoryItem->getMaxQtyToPreorder() >= $orderItem->getQuantity()
-                                ) ||
-                                (
-                                    $inventoryItem->isBackorderAllowed() &&
-                                    $inventoryItem->getMaxQtyToBackorder() >= $orderItem->getQuantity()
-                                )
-                            )
-                        )
-                    ) {
-                        $productsByWh[$key][] = $warehouse;
-                    }
+            /** @var InventoryLevel $inventoryLevel */
+            foreach ($inventoryItem->getInventoryLevels() as $inventoryLevel) {
+                $invLevelQtyKey = sprintf('%s_|_%s', $sku, $inventoryLevel->getId());
+                $invLevelQty = $inventoryLevel->getVirtualInventoryQty();
+                if (isset($productsQty[$invLevelQtyKey])) {
+                    $invLevelQty = $invLevelQty - $productsQty[$invLevelQtyKey];
+                }
+                $warehouse = $inventoryLevel->getWarehouse();
+                $invLevToWh[$warehouse->getId()] = $inventoryLevel;
+                if ($invLevelQty >= $orderItem->getQuantity() ||
+                    $this->isWarehouseEligible($orderItem, $inventoryLevel)
+                ) {
+                    $productsByWh[$key][] = $warehouse;
                 }
             }
             if (array_key_exists($key, $productsByWh) && is_array($productsByWh[$key])) {
@@ -138,7 +126,42 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
         }
         return $result;
     }
-    
+
+    /**
+     * @param OrderItem $orderItem
+     * @param InventoryLevel $inventoryLevel
+     * @return bool
+     */
+    protected function isWarehouseEligible(OrderItem $orderItem, InventoryLevel $inventoryLevel)
+    {
+        // these are basically rules, we might need to convert this into some rule based system
+        // in order to have some more control over the priority of the conditions of the item
+        $warehouse = $inventoryLevel->getWarehouse();
+        $warehouseType = $warehouse->getWarehouseType()->getName();
+        $inventoryItem = $inventoryLevel->getInventoryItem();
+        if ($warehouseType === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
+            return true;
+        }
+
+        if ($this->estimation === true && $inventoryItem->isOrderOnDemandAllowed()) {
+            return true;
+        }
+
+        if ($this->estimation === true && $inventoryItem->isCanPreorder() &&
+            $inventoryItem->getMaxQtyToPreorder() >= $orderItem->getQuantity()
+        ){
+            return true;
+        }
+
+        if ($this->estimation === true && $inventoryItem->isBackorderAllowed() &&
+            $inventoryItem->getMaxQtyToBackorder() >= $orderItem->getQuantity()
+        ){
+            return true;
+        }
+
+        return false;
+    }
+
     /**
      * @param Product $product
      * @return Supplier|null

@@ -14,11 +14,11 @@ Marello\Bundle\OrderBundle\Entity\OrderItem:
             - NotBlank: { groups: [api, Default] }
         quantity:
             - GreaterThanOrEqual: { groups: [api, Default], value: 1 }
-    constraints:
-        - Marello\Bundle\OrderBundle\Validator\Constraints\AvailableInventory:
-            fields: [quantity, order, product]
-            errorPath: quantity
-            groups: [api, Default]
+#    constraints:
+#        - Marello\Bundle\OrderBundle\Validator\Constraints\AvailableInventoryConstraint:
+#            fields: [quantity, order, product]
+#            errorPath: quantity
+#            groups: [api, Default]
 
 Marello\Bundle\OrderBundle\Entity\Order:
     properties:

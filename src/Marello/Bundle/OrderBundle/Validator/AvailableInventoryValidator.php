@@ -13,8 +13,15 @@
 
 namespace Marello\Bundle\OrderBundle\Validator;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Marello\Bundle\OrderBundle\Event\ProductAvailableInventoryValidationEvent;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -27,7 +34,7 @@ use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 use Marello\Bundle\InventoryBundle\Provider\AvailableInventoryProvider;
-use Marello\Bundle\OrderBundle\Validator\Constraints\AvailableInventory;
+use Marello\Bundle\OrderBundle\Validator\Constraints\AvailableInventoryConstraint;
 
 class AvailableInventoryValidator extends ConstraintValidator
 {
@@ -71,8 +78,8 @@ class AvailableInventoryValidator extends ConstraintValidator
      */
     public function validate($entity, Constraint $constraint)
     {
-        if (!$constraint instanceof AvailableInventory) {
-            throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\AvailableInventory');
+        if (!$constraint instanceof AvailableInventoryConstraint) {
+            throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\AvailableInventoryConstraint');
         }
 
         if (!is_array($constraint->fields)) {
@@ -110,7 +117,11 @@ class AvailableInventoryValidator extends ConstraintValidator
         if (!$this->compareValues($result, $values[self::QUANTITY_FIELD])) {
             if (isset($values[self::PRODUCT_FIELD])) {
                 $violation = true;
-                if ($this->isProductCanDropship($values[self::PRODUCT_FIELD])) {
+                if ($this->isProductCanDropship(
+                    $values[self::PRODUCT_FIELD],
+                    $values[self::SALES_CHANNEL_FIELD],
+                    $values[self::QUANTITY_FIELD])
+                ) {
                     $violation = false;
                 } elseif ($this->isProductCanBackorder($values[self::PRODUCT_FIELD]) &&
                     $this->compareValues(
@@ -164,19 +175,98 @@ class AvailableInventoryValidator extends ConstraintValidator
     }
 
     /**
-     * @param ProductInterface|Product $product
+     * @param ProductInterface $product
+     * @param SalesChannel $salesChannel
+     * @param integer $qty
      * @return bool
      */
-    private function isProductCanDropship(ProductInterface $product)
+    private function isProductCanDropship(ProductInterface $product, SalesChannel $salesChannel, $qty)
     {
-        foreach ($product->getSuppliers() as $productSupplierRelation) {
-            if ($productSupplierRelation->getSupplier()->getCanDropship() &&
-                $productSupplierRelation->getCanDropship()) {
-                return true;
-            }
+        $filteredSupplierRelations = $product
+            ->getSuppliers()
+            ->filter(function(ProductSupplierRelation $productSupplierRelation) {
+                return $productSupplierRelation->getSupplier()->getCanDropship() &&
+                    $productSupplierRelation->getCanDropship();
+            });
+
+        if ($filteredSupplierRelations->isEmpty()) {
+            return false;
         }
 
-        return false;
+        // check if supplier(s) are in linked saleschannel
+        if (!$salesChannel || !$salesChannel->getGroup()) {
+            return false;
+        }
+
+        /** @var WarehouseChannelGroupLink $warehouseGroupLink */
+        $warehouseGroupLink = $this->doctrineHelper
+            ->getEntityManagerForClass(WarehouseChannelGroupLink::class)
+            ->getRepository(WarehouseChannelGroupLink::class)
+            ->findLinkBySalesChannelGroup($salesChannel->getGroup());
+
+        if (!$warehouseGroupLink) {
+            return false;
+        }
+
+        /** @var Warehouse[] $linkedWarehouses */
+        $linkedWarehouses = $warehouseGroupLink
+            ->getWarehouseGroup()
+            ->getWarehouses()
+            ->toArray();
+
+        $warehousesIds = array_map(function (Warehouse $warehouse) {
+            return $warehouse->getId();
+        }, $linkedWarehouses);
+
+        $warehouseType = $this->doctrineHelper
+            ->getEntityManagerForClass(WarehouseType::class)
+            ->getRepository(WarehouseType::class)
+            ->find(WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL);
+
+        $inventoryItem = $product->getInventoryItems()->first();
+        $availableWarehouses = [];
+        foreach ($filteredSupplierRelations as $supplierRelation) {
+
+            if (!$supplierRelation) {
+                continue;
+            }
+            // find supplier warehouse
+            /** @var Warehouse $warehouse */
+            $warehouse = $this->doctrineHelper
+                ->getEntityManagerForClass(Warehouse::class)
+                ->getRepository(Warehouse::class)
+                ->findOneBy([
+                    'code' => sprintf('%s_external_warehouse', str_replace(' ', '_', strtolower($supplierRelation->getSupplier()->getName()))),
+                    'warehouseType' => $warehouseType
+                ]);
+
+            if (!$warehouse) {
+                continue;
+            }
+
+            // check if the supplier warehouse is:
+            // 1. is managed and has virtual inventory qty > 0
+            // 2. is not managed -> inventory is available for this supplier and eligible for the order to be ordered
+            /** @var InventoryLevel $inventoryLevel */
+            foreach ($inventoryItem->getInventoryLevels() as $inventoryLevel) {
+                if ($inventoryLevel->getWarehouse()->getCode() === $warehouse->getCode()) {
+                    if (($inventoryLevel->isManagedInventory() && $this->compareValues($inventoryLevel->getVirtualInventoryQty(), $qty))
+                        || !$inventoryLevel->isManagedInventory()
+                    ) {
+                        if (in_array($inventoryLevel->getWarehouse()->getId(), $warehousesIds)) {
+                            $availableWarehouses[] = $warehouse->getId();
+                        }
+                    }
+                }
+            }
+        }
+        // none of the warehouses from the suppliers are in the linked warehouses,
+        // are not managed or are managed with inventory > 0.
+        if (empty($availableWarehouses)) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -338,7 +428,7 @@ class AvailableInventoryValidator extends ConstraintValidator
      */
     protected function isAllRequiredFieldsHasValue(array $values): bool
     {
-        $requiredFields = [self::PRODUCT_FIELD, self::SALES_CHANNEL_FIELD, self::SALES_CHANNEL_FIELD];
+        $requiredFields = [self::PRODUCT_FIELD, self::SALES_CHANNEL_FIELD, self::QUANTITY_FIELD];
         foreach ($requiredFields as $requiredField) {
             if (!\array_key_exists($requiredField, $values)) {
                 return false;

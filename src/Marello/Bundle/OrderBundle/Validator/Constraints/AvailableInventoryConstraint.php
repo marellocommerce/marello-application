@@ -14,7 +14,7 @@ namespace Marello\Bundle\OrderBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-class AvailableInventory extends Constraint
+class AvailableInventoryConstraint extends Constraint
 {
     /** @var string */
     public $message = 'marello.order.item.available_inventory';

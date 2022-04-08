@@ -1,0 +1,30 @@
+oro:
+    workflow:
+        marello_allocate_workflow:
+            label: 'Allocations Workflow'
+            step:
+                pending:
+                    label:  'Pending'
+                warehouse_notified:
+                    label:  'Warehouse Notified'
+                could_not_allocate:
+                    label: 'Could not allocate'
+                rejected_by_warehouse:
+                    label:  'Rejected By Warehouse'
+                pick_and_pack:
+                    label:  'Pick and Pack'
+                complete:
+                    label:  'Complete'
+            transition:
+                pending:
+                    label:     'Pending'
+                could_not_allocate:
+                    label: 'Could not allocate'
+                sent_to_warehouse:
+                    label:     'Sent to warehouse'
+                pick_and_pack:
+                    label:    'Pick and Pack'
+                rejected:
+                    label:    'Reject'
+                complete:
+                    label:    'Complete'

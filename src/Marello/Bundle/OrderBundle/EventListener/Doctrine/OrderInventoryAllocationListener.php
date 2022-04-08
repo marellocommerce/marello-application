@@ -27,7 +27,7 @@ class OrderInventoryAllocationListener
             return;
         }
 
-        $entity->getItems()->map(function (OrderItem $item) use ($entity, $args) {
+        $entity->getItems()->map(function (OrderItem $item) use ($entity) {
             $this->handleInventoryUpdate($item, $item->getQuantity(), $entity);
         });
     }
