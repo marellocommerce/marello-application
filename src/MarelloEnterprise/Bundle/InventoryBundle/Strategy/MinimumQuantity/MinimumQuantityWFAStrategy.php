@@ -3,6 +3,8 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Marello\Bundle\InventoryBundle\Entity\Allocation;
+use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository;
@@ -88,11 +90,11 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
     /**
      * {@inheritdoc}
      */
-    public function getWarehouseResults(Order $order, array $initialResults = [])
+    public function getWarehouseResults(Order $order, Allocation $allocation = null, array $initialResults = [])
     {
         $productsByWh = [];
         $warehouses = [];
-        $orderItems = $order->getItems();
+        $orderItems = ($allocation) ? $allocation->getItems() : $order->getItems();
         $orderItemsByProducts = [];
         $emptyWarehouse = new Warehouse();
         $emptyWarehouse->setWarehouseType(new WarehouseType('virtual'));
@@ -104,6 +106,7 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
         if (empty($linkedWarehouses)) {
             return [];
         }
+
         $warehousesIds = array_map(function (Warehouse $warehouse) {
             return $warehouse->getId();
         }, $linkedWarehouses);
@@ -116,7 +119,11 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
             )] = $orderItem;
 
             /** @var ArrayCollection $inventoryItems */
-            $inventoryItems = $orderItem->getInventoryItems();
+            if ($orderItem instanceof AllocationItem) {
+                $inventoryItems = $orderItem->getProduct()->getInventoryItems();
+            } else {
+                $inventoryItems = $orderItem->getInventoryItems();
+            }
             /** @var InventoryItem $inventoryItem */
             $inventoryItem = $inventoryItems->first();
             $orderItemQtyToAllocateLeft = $orderItem->getQuantity();
@@ -125,14 +132,21 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
             /** @var InventoryLevel $inventoryLevel */
             foreach ($inventoryLevels as $i => $inventoryLevel) {
                 $warehouse = $inventoryLevel->getWarehouse();
+                $virtualInventoryQuantity = $inventoryLevel->getVirtualInventoryQty();
+                if ($allocation && $allocation->getWarehouse()) {
+                    if ($allocation->getWarehouse()->getId() === $warehouse->getId()) {
+                        $virtualInventoryQuantity = $inventoryLevel->getVirtualInventoryQty() - $orderItem->getQuantityRejected();
+                    }
+                }
                 $warehouses[$warehouse->getCode()] = $warehouse;
-                $productsByWh[$inventoryItem->getProduct()->getSku()]['selected_wh'][$warehouse->getCode()] = $inventoryLevel->getVirtualInventoryQty();
-                $quantityAvailable += $inventoryLevel->getVirtualInventoryQty();
+                $productsByWh[$inventoryItem->getProduct()->getSku()]['selected_wh'][$warehouse->getCode()] = $virtualInventoryQuantity;
+                $quantityAvailable += $virtualInventoryQuantity;
+
                 if ($this->isWarehouseEligible($orderItem, $inventoryLevel, 'dropshipping')) {
                     $productsByWh[$inventoryItem->getProduct()->getSku()]['selected_wh'][$warehouse->getCode()] = $orderItemQtyToAllocateLeft;
-                    $quantityAvailable += $inventoryLevel->getVirtualInventoryQty();
+                    $quantityAvailable += ($inventoryLevel->isManagedInventory()) ? $virtualInventoryQuantity : $orderItemQtyToAllocateLeft;
                 }
-                $orderItemQtyToAllocateLeft -= $inventoryLevel->getVirtualInventoryQty();
+                $orderItemQtyToAllocateLeft -= $virtualInventoryQuantity;
             }
 
             if ($this->isItemAvailable($orderItem, $inventoryItem, 'ondemand')) {
@@ -160,6 +174,7 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
                 return $this->getOptions($item['selected_wh'], $item['qtyOrdered']);
             }, $productsByWh
         );
+
         $optimizedOptions = $this->getOptimizedOptions($possibleOptionsToFulfill);
         $productsWithInventoryData = [];
 
@@ -194,6 +209,10 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
         return $this->minQtyWHCalculator->calculate($productsWithInventoryData, $orderItemsByProducts, $warehouses, $orderItems);
     }
 
+    /**
+     * @param $allFoundOptions
+     * @return array
+     */
     private function getOptimizedOptions($allFoundOptions): array
     {
         $whIdsPerOption = [];
@@ -371,32 +390,6 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
     }
 
     /**
-     * @param $inventoryLevel
-     * @param $orderItem
-     * @param $orderItemQtyToAllocateLeft
-     * @param $i
-     * @return mixed
-     */
-    protected function getAllocatedQty($inventoryLevel, $orderItem, $orderItemQtyToAllocateLeft, $i)
-    {
-        if (($orderItem->getQuantity() < $inventoryLevel->getVirtualInventoryQty()
-            || $orderItem->getQuantity() < $orderItemQtyToAllocateLeft)
-        ) {
-            return $orderItem->getQuantity();
-        }
-
-        if ($i === 0) {
-            return $inventoryLevel->getVirtualInventoryQty();
-        }
-
-        if ($orderItemQtyToAllocateLeft > $inventoryLevel->getVirtualInventoryQty()) {
-            return $inventoryLevel->getVirtualInventoryQty();
-        }
-
-        return $orderItemQtyToAllocateLeft;
-    }
-
-    /**
      * @param InventoryItem $inventoryItem
      * @param array $warehouses
      * @return ArrayCollection
@@ -409,7 +402,16 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
             ->getInventoryLevels()
             ->filter(function(InventoryLevel $inventoryLevel) use ($warehouses) {
                 if (in_array($inventoryLevel->getWarehouse()->getId(), $warehouses)) {
-                    return ($inventoryLevel->getVirtualInventoryQty() > 0 || $inventoryLevel->getWarehouse()->getWarehouseType()->getName() === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL);
+                    if ($inventoryLevel->getVirtualInventoryQty() > 0) {
+                        return true;
+                    }
+                    if ($inventoryLevel->getWarehouse()->getWarehouseType()->getName() === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
+                        if (($inventoryLevel->isManagedInventory() && $inventoryLevel->getVirtualInventoryQty() > 0)
+                            || !$inventoryLevel->isManagedInventory()
+                        ) {
+                            return true;
+                        }
+                    }
                 }
 
                 return false;
@@ -425,12 +427,12 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
     }
 
     /**
-     * @param OrderItem $orderItem
+     * @param OrderItem|AllocationItem $orderItem
      * @param InventoryLevel $inventoryLevel
      * @param $type string
      * @return bool
      */
-    protected function isWarehouseEligible(OrderItem $orderItem, InventoryLevel $inventoryLevel, $type = 'full')
+    protected function isWarehouseEligible($orderItem, InventoryLevel $inventoryLevel, $type = 'full')
     {
         // these are basically rules, we might need to convert this into some rule based system
         // in order to have some more control over the priority of the conditions of the item
@@ -450,12 +452,12 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
     }
 
     /**
-     * @param OrderItem $orderItem
+     * @param OrderItem|AllocationItem $orderItem
      * @param InventoryItem $inventoryItem
      * @param null $type
      * @return bool
      */
-    protected function isItemAvailable(OrderItem $orderItem, InventoryItem $inventoryItem, $type = null)
+    protected function isItemAvailable($orderItem, InventoryItem $inventoryItem, $type = null)
     {
         switch ($type) {
             case 'ondemand':
@@ -469,30 +471,6 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
             default:
                 return false;
         }
-    }
-
-    /**
-     * @param Product $product
-     * @return Warehouse|null
-     */
-    protected function getPreferredExternalWarehouse(Product $product)
-    {
-        $preferredSupplier = null;
-        $preferredPriority = 0;
-        foreach ($product->getSuppliers() as $productSupplierRelation) {
-            if (null == $preferredSupplier && $productSupplierRelation->getCanDropship() === true) {
-                $preferredSupplier = $productSupplierRelation->getSupplier();
-                $preferredPriority = $productSupplierRelation->getPriority();
-                continue;
-            }
-            if ($productSupplierRelation->getPriority() < $preferredPriority  &&
-                $productSupplierRelation->getCanDropship() === true) {
-                $preferredSupplier = $productSupplierRelation->getSupplier();
-                $preferredPriority = $productSupplierRelation->getPriority();
-            }
-        }
-
-        return $preferredSupplier;
     }
 
     /**

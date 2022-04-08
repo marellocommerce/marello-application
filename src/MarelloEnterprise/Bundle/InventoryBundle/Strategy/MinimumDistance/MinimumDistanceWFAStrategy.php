@@ -2,6 +2,7 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumDistance;
 
+use Marello\Bundle\InventoryBundle\Entity\Allocation;
 use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use MarelloEnterprise\Bundle\AddressBundle\Distance\AddressesDistanceCalculatorInterface;
@@ -65,7 +66,7 @@ class MinimumDistanceWFAStrategy implements WFAStrategyInterface
     /**
      * {@inheritdoc}
      */
-    public function getWarehouseResults(Order $order, array $initialResults = [])
+    public function getWarehouseResults(Order $order, Allocation $allocation = null, array $initialResults = [])
     {
         if (!$this->isEnabled() || empty($initialResults)) {
             return $initialResults;
