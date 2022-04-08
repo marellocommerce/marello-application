@@ -160,6 +160,44 @@ marello:
             reserved_inventory_qty.label:   Reserved Inventory Qty
             organization.label:             Organization
 
+        allocation:
+            id.label:                       Id
+            entity_label:                   Allocation
+            entity_plural_label:            Allocations
+            entity_grid_all_view_label:     All %entity_plural_label%
+            allocation_number.label:        Allocation Number
+            children.label:                 Sub Allocations
+            parent:
+                label:                      Parent Allocation
+                allocation_number.label:    Parent Allocation Number
+            comment.label:                  Comment
+            items.label:                    Items
+            order.label:                    Order
+            organization.label:             Organization
+            shipping_address.label:         Shipping Address
+            type.label:                     Type
+            warehouse.label:                Warehouse
+
+            total_quantity_allocated.label: '%allocatedQty% of %totalQty% allocated'
+            page_title.view:                '%entity_label% #%id%'
+        allocationitem:
+            id.label:                       Id
+            entity_label:                   Allocation Item
+            entity_plural_label:            Allocation Items
+            entity_grid_all_view_label:     All %entity_plural_label%
+            allocation.label:               Allocation
+            comment.label:                  Comment
+            order.label:                    Order
+            order_item.label:               Order Item
+            product.label:                  Product
+            product_sku.label:              Product Sku
+            product_name.label:             Product Name
+            quantity.label:                 Quantity
+            quantity_confirmed.label:       Quantity Confirmed
+            quantity_rejected.label:        Quantity Rejected
+            organization.label:             Organization
+            warehouse.label:                Warehouse
+
         information.label:                  Inventory Information
         movements.label:                    Inventory Movements
         balancing:
