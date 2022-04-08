@@ -421,16 +421,16 @@ datagrids:
                         - { join: allocation.warehouse, alias: wh}
         columns:
             allocationNumber:
-                label:          'Allocation Number'
+                label:          marello.inventory.allocation.allocation_number.label
                 frontend_type:  string
             parentAllocation:
-                label:          'Parent Allocation Number'
-                frontend_type:   string
+                label:          marello.inventory.allocation.parent.allocation_number.label
+                frontend_type:  string
             warehouse:
-                label:              marello.inventory.inventorylevel.warehouse.label
-                frontend_type:      string
+                label:          marello.inventory.allocation.warehouse.label
+                frontend_type:  string
             type:
-                label:          'Type'
+                label:          marello.inventory.allocation.type.label
                 frontend_type:  string
             createdAt:
                 label:          oro.ui.created_at
@@ -441,35 +441,35 @@ datagrids:
         filters:
             columns:
                 allocationNumber:
-                    type:  string
+                    type:       string
                     data_name:  allocation.allocationNumber
                 parentAllocation:
-                    type:      string
-                    data_name: parent.allocationNumber
+                    type:       string
+                    data_name:  parent.allocationNumber
                 warehouse:
-                    type:             string
-                    data_name:        warehouse
+                    type:       string
+                    data_name:  warehouse
                 type:
-                    type: string
+                    type:       string
                     data_name:  allocation.type
                 createdAt:
-                    type: datetime
-                    data_name: allocation.createdAt
+                    type:       datetime
+                    data_name:  allocation.createdAt
                 updatedAt:
-                    type: datetime
-                    data_name: allocation.updatedAt
+                    type:       datetime
+                    data_name:  allocation.updatedAt
         sorters:
             columns:
                 allocationNumber:
-                    data_name: allocation.allocationNumber
+                    data_name:  allocation.allocationNumber
                 type:
-                    data_name: allocation.type
+                    data_name:  allocation.type
                 createdAt:
-                    data_name: allocation.createdAt
+                    data_name:  allocation.createdAt
                 updatedAt:
-                    data_name: allocation.updatedAt
+                    data_name:  allocation.updatedAt
                 parentAllocation:
-                    data_name: parentAllocation
+                    data_name:  parentAllocation
             default:
                 allocationNumber: 'DESC'
         properties:
@@ -524,34 +524,34 @@ datagrids:
                 allocationId: allocationId
         columns:
             productSku:
-                label:           marello.product.sku.label
-                data_name:       productSku
-                frontend_type:   string
+                label:          marello.product.sku.label
+                data_name:      productSku
+                frontend_type:  string
             productName:
-                label:            marello.product.name.label
-                frontend_type:    string
-                data_name:        productName
+                label:          marello.product.name.label
+                frontend_type:  string
+                data_name:      productName
             quantity:
-                label:            marello.order.orderitem.quantity.label
-                frontend_type:    number
+                label:          marello.inventory.allocationitem.quantity.label
+                frontend_type:  number
             quantityConfirmed:
-                label:            'quantity confirmed'
-                frontend_type:    number
+                label:          marello.inventory.allocationitem.quantity_confirmed.label
+                frontend_type:  number
             quantityRejected:
-                label:            'quantity rejected'
-                frontend_type:    number
+                label:          marello.inventory.allocationitem.quantity_rejected.label
+                frontend_type:  number
             warehouse:
-                label:              marello.inventory.inventorylevel.warehouse.label
-                frontend_type:      string
+                label:          marello.inventory.allocation.warehouse.label
+                frontend_type:  string
             orderItem:
-                label:            'total qty allocated'
-                type:             twig
-                frontend_type:    html
-                template:         MarelloInventoryBundle:Datagrid/Property:total_allocated.html.twig
+                label:          'total qty allocated'
+                type:           twig
+                frontend_type:  html
+                template:       MarelloInventoryBundle:Datagrid/Property:total_allocated.html.twig
         sorters:
             columns:
                 productSku:
-                    data_name: allocationItem.productSku
+                    data_name:  allocationItem.productSku
             default:
                 productSku: 'ASC'
         options:
