@@ -3,11 +3,13 @@
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 {% import 'MarelloAddressBundle::macros.html.twig' as Address %}
 
+{% oro_title_set({params : {"%entity_label%": 'marello.inventory.allocation.entity_label'|trans,"%id%": entity.allocationNumber }}) %}
+
 {% block pageHeader %}
     {% set breadcrumbs = {
         'entity':      entity,
         'indexPath':   path('marello_inventory_allocation_index'),
-        'indexLabel': 'Allocation'|trans,
+        'indexLabel':  'marello.inventory.allocation.entity_label'|trans,
         'entityTitle': entity.allocationNumber
     } %}
     {{ parent() }}
@@ -42,21 +44,21 @@
 
     {% set dataBlocks = [
         {
-            'title': 'General'|trans,
+            'title': 'marello.core.ui.sections.general'|trans,
             'useSpan': false,
             'subblocks': [
                 { 'data' : [generalWidget] }
             ]
         },
         {
-            'title': 'Draft Items'|trans,
+            'title': 'marello.inventory.allocationitem.entity_plural_label'|trans,
             'useSpan': false,
             'subblocks': [
                 { 'data' : [allocationItemsWidget] }
             ]
         },
         {
-            'title': 'Sub Allocations'|trans,
+            'title': 'marello.inventory.allocation.children.label'|trans,
             'useSpan': false,
             'subblocks': [
                 { 'data' : [infoWidget] }
