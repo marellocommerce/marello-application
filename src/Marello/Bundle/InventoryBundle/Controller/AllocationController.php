@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\InventoryBundle\Controller;
 
-use Marello\Bundle\InventoryBundle\Entity\AllocationDraft;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -10,20 +9,22 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AllocationDraftController extends AbstractController
+use Marello\Bundle\InventoryBundle\Entity\Allocation;
+
+class AllocationController extends AbstractController
 {
     /**
      * @Route(
      *     path="/",
-     *     name="marello_inventory_allocation_draft_index"
+     *     name="marello_inventory_allocation_index"
      * )
-     * @Template("MarelloInventoryBundle:AllocationDraft:index.html.twig")
+     * @Template("MarelloInventoryBundle:Allocation:index.html.twig")
      * @AclAncestor("marello_inventory_inventory_view")
      */
     public function indexAction()
     {
         return [
-            'entity_class' => AllocationDraft::class
+            'entity_class' => Allocation::class
         ];
     }
 
@@ -31,17 +32,17 @@ class AllocationDraftController extends AbstractController
      * @Route(
      *     path="/view/{id}",
      *     requirements={"id"="\d+"},
-     *     name="marello_inventory_allocation_draft_view"
+     *     name="marello_inventory_allocation_view"
      * )
-     * @Template("MarelloInventoryBundle:AllocationDraft:view.html.twig")
+     * @Template("MarelloInventoryBundle:Allocation:view.html.twig")
      * @AclAncestor("marello_inventory_inventory_view")
      *
-     * @param AllocationDraft $allocationDraft
+     * @param Allocation $allocation
      *
      * @return array
      */
-    public function viewAction(AllocationDraft $allocationDraft)
+    public function viewAction(Allocation $allocation)
     {
-        return ['entity' => $allocationDraft];
+        return ['entity' => $allocation];
     }
 }

@@ -3,6 +3,7 @@
 namespace Marello\Bundle\InventoryBundle\Provider;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Marello\Bundle\InventoryBundle\Entity\Allocation;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
@@ -30,7 +31,7 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getWarehousesForOrder(Order $order)
+    public function getWarehousesForOrder(Order $order, Allocation $allocation = null): array
     {
         $productsBySku = [];
         $productsByWh = [];

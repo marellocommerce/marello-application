@@ -6,9 +6,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Elasticsearch\Endpoints\Cat\Allocation;
-use Marello\Bundle\InventoryBundle\Model\ExtendAllocationDraft;
-use phpDocumentor\Reflection\Types\This;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
@@ -19,6 +16,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use Marello\Bundle\InventoryBundle\Model\ExtendAllocation;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 
@@ -43,10 +41,10 @@ use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
  *          }
  *      }
  * )
- * @ORM\Table(name="marello_inventory_alloc_draft")
+ * @ORM\Table(name="marello_inventory_allocation")
  * @ORM\HasLifecycleCallbacks()
  */
-class AllocationDraft extends ExtendAllocationDraft implements
+class Allocation extends ExtendAllocation implements
     DerivedPropertyAwareInterface,
     OrganizationAwareInterface
 {
@@ -63,12 +61,15 @@ class AllocationDraft extends ExtendAllocationDraft implements
     protected $id;
 
     /**
-     * @var Collection|AllocationDraftItem[]
+     * @var Collection|AllocationItem[]
      *
-     * @ORM\OneToMany(targetEntity="Marello\Bundle\InventoryBundle\Entity\AllocationDraftItem", mappedBy="allocationDraft", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="Marello\Bundle\InventoryBundle\Entity\AllocationItem", mappedBy="allocation", cascade={"persist"}, orphanRemoval=true)
      * @ORM\OrderBy({"id" = "ASC"})
      * @Oro\ConfigField(
      *      defaultValues={
+     *          "email"={
+     *              "available_in_template"=true
+     *          },
      *          "dataaudit"={
      *              "auditable"=true
      *          }
@@ -124,9 +125,9 @@ class AllocationDraft extends ExtendAllocationDraft implements
     protected $warehouse;
 
     /**
-     * @var AllocationDraft
+     * @var Allocation
      *
-     * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\AllocationDraft", inversedBy="children")
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\Allocation", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="SET NULL")
      * @Oro\ConfigField(
      *      defaultValues={
@@ -143,9 +144,9 @@ class AllocationDraft extends ExtendAllocationDraft implements
     protected $parent;
 
     /**
-     * @var Collection|AllocationDraft[]
+     * @var Collection|Allocation[]
      *
-     * @ORM\OneToMany(targetEntity="Marello\Bundle\InventoryBundle\Entity\AllocationDraft", mappedBy="parent")
+     * @ORM\OneToMany(targetEntity="Marello\Bundle\InventoryBundle\Entity\Allocation", mappedBy="parent")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -174,7 +175,7 @@ class AllocationDraft extends ExtendAllocationDraft implements
     protected $comment;
 
     /**
-     * @ORM\Column(name="allocation_draft_number", type="string", nullable=true)
+     * @ORM\Column(name="allocation_number", type="string", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -185,7 +186,7 @@ class AllocationDraft extends ExtendAllocationDraft implements
      *
      * @var string
      */
-    protected $allocationDraftNumber;
+    protected $allocationNumber;
 
     /**
      * @var string
@@ -235,7 +236,7 @@ class AllocationDraft extends ExtendAllocationDraft implements
     }
 
     /**
-     * @return Collection|AllocationDraftItem[]
+     * @return Collection|AllocationItem[]
      */
     public function getItems()
     {
@@ -243,26 +244,26 @@ class AllocationDraft extends ExtendAllocationDraft implements
     }
 
     /**
-     * @param AllocationDraftItem $item
+     * @param AllocationItem $item
      *
      * @return $this
      */
-    public function addItem(AllocationDraftItem $item)
+    public function addItem(AllocationItem $item)
     {
         if (!$this->items->contains($item)) {
             $this->items->add($item);
-            $item->setAllocationDraft($this);
+            $item->setAllocation($this);
         }
 
         return $this;
     }
 
     /**
-     * @param AllocationDraftItem $item
+     * @param AllocationItem $item
      *
      * @return $this
      */
-    public function removeItem(AllocationDraftItem $item)
+    public function removeItem(AllocationItem $item)
     {
         if ($this->items->contains($item)) {
             $this->items->removeElement($item);
@@ -331,10 +332,10 @@ class AllocationDraft extends ExtendAllocationDraft implements
     }
 
     /**
-     * @param AllocationDraft|null $parent
+     * @param Allocation|null $parent
      * @return $this
      */
-    public function setParent(AllocationDraft $parent = null)
+    public function setParent(Allocation $parent = null)
     {
         $this->parent = $parent;
 
@@ -342,18 +343,18 @@ class AllocationDraft extends ExtendAllocationDraft implements
     }
 
     /**
-     * @return AllocationDraft
+     * @return Allocation
      */
-    public function getParent(): ?AllocationDraft
+    public function getParent(): ?Allocation
     {
         return $this->parent;
     }
 
     /**
-     * @param AllocationDraft $child
+     * @param Allocation $child
      * @return $this
      */
-    public function addChild(AllocationDraft $child)
+    public function addChild(Allocation $child)
     {
         if (!$this->hasChild($child)) {
             $child->setParent($this);
@@ -364,11 +365,11 @@ class AllocationDraft extends ExtendAllocationDraft implements
     }
 
     /**
-     * @param AllocationDraft $child
+     * @param Allocation $child
      *
      * @return $this
      */
-    public function removeChild(AllocationDraft $child)
+    public function removeChild(Allocation $child)
     {
         if ($this->hasChild($child)) {
             $child->setParent(null);
@@ -379,7 +380,7 @@ class AllocationDraft extends ExtendAllocationDraft implements
     }
 
     /**
-     * @return Collection|AllocationDraft[]
+     * @return Collection|Allocation[]
      */
     public function getChildren()
     {
@@ -387,11 +388,11 @@ class AllocationDraft extends ExtendAllocationDraft implements
     }
 
     /**
-     * @param AllocationDraft $child
+     * @param Allocation $child
      *
      * @return bool
      */
-    protected function hasChild(AllocationDraft $child)
+    protected function hasChild(Allocation $child)
     {
         return $this->children->contains($child);
     }
@@ -438,18 +439,18 @@ class AllocationDraft extends ExtendAllocationDraft implements
     /**
      * @return mixed
      */
-    public function getAllocationDraftNumber()
+    public function getAllocationNumber()
     {
-        return $this->allocationDraftNumber;
+        return $this->allocationNumber;
     }
 
     /**
-     * @param $allocationDraftNumber
+     * @param $allocationNumber
      * @return $this
      */
-    public function setAllocationDraftNumber($allocationDraftNumber)
+    public function setAllocationNumber($allocationNumber)
     {
-        $this->allocationDraftNumber = $allocationDraftNumber;
+        $this->allocationNumber = $allocationNumber;
 
         return $this;
     }
@@ -459,8 +460,8 @@ class AllocationDraft extends ExtendAllocationDraft implements
      */
     public function setDerivedProperty($id)
     {
-        if (!$this->allocationDraftNumber) {
-            $this->setAllocationDraftNumber(sprintf('%09d', $id));
+        if (!$this->allocationNumber) {
+            $this->setAllocationNumber(sprintf('%09d', $id));
         }
     }
 
@@ -488,6 +489,6 @@ class AllocationDraft extends ExtendAllocationDraft implements
      */
     public function __toString()
     {
-        return sprintf('#%s', $this->allocationDraftNumber);
+        return sprintf('#%s', $this->allocationNumber);
     }
 }

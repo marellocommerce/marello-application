@@ -18,7 +18,7 @@ marello_inventory_warehouse:
     type:     annotation
     prefix:   /marello/inventory/warehouse
 
-marello_inventory_allocation_draft:
-    resource: "@MarelloInventoryBundle/Controller/AllocationDraftController.php"
+marello_inventory_allocation:
+    resource: "@MarelloInventoryBundle/Controller/AllocationController.php"
     type:     annotation
     prefix:   /marello/inventory/allocation

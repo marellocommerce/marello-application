@@ -3,10 +3,10 @@
 namespace Marello\Bundle\InventoryBundle\Model;
 
 /**
- * Class ExtendAllocationDraftItem
+ * Class ExtendAllocation
  * @package Marello\Bundle\InventoryBundle\Model
  */
-class ExtendAllocationDraftItem
+class ExtendAllocation
 {
     /**
      * Constructor
