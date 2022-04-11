@@ -36,6 +36,11 @@ Marello\Bundle\OrderBundle\Entity\Order:
         shippingAddress:
             - NotBlank:
                 message: 'marello.order.address.validation.shipping_not_blank'
+        grandTotal:
+            - GreaterThanOrEqual:
+                value: 0
+                # property that is responsible for grandTotal < 0 is probably discountAmount, however this is an assumption
+                message: 'marello.order.discount_amount.validation.discount_lower_than_subtotal'
         items:
             - Valid: ~
     constraints:
