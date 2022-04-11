@@ -121,9 +121,8 @@ class InventoryAllocationProvider
                 }
                 $shippingAddress = $order->getShippingAddress();
                 if ($consolidationWarehouse) {
-                    if ($consolidationWarehouse->getCode() !== $result->getWarehouse()->getCode()) {
-                        $shippingAddress = $consolidationWarehouse->getAddress();
-                    }
+                    // this is a question mark...
+                    $shippingAddress = $consolidationWarehouse->getAddress();
                 }
 
                 $allocation->setShippingAddress($shippingAddress);
@@ -197,7 +196,7 @@ class InventoryAllocationProvider
             $parentAllocation->setOrder($order);
             $parentAllocation->setType('on_hand');
             $parentAllocation->setWarehouse($consolidationWarehouse);
-            $parentAllocation->setShippingAddress($consolidationWarehouse->getAddress());
+            $parentAllocation->setShippingAddress($order->getShippingAddress());
             foreach ($allItems as $item) {
                 $parentAllocation->addItem($item);
             }
@@ -272,7 +271,7 @@ class InventoryAllocationProvider
                 ->getFilteredRuleOwners($rule);
             foreach ($filteredRules as $filteredRule) {
                 $strategy = $this->strategiesRegistry->getStrategy($filteredRule->getStrategy());
-                $results = $strategy->getWarehouseResults($order, $results);
+                $results = $strategy->getWarehouseResults($order, null, $results);
             }
 
             // the result CANNOT BE empty as the eligible warehouses are just being sorted by distance!
