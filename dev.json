@@ -73,7 +73,7 @@
             "rm -rf var/attachment/*",
             "rm -rf public/media/cache/*",
             "sed -i -e 's/installed:.*/installed: ~/g' config/parameters.yml",
-            "bin/console oro:install --timeout 3600 --sample-data=n --drop-database --env=prod --user-name=admin --user-firstname=John --user-lastname=Doe --user-password=marello123 --user-email=johndoe@example.com  --organization-name=Marello --formatting-code=en_US --language=en"
+            "bin/console oro:install --timeout 3600 --sample-data=y --drop-database --env=prod --user-name=admin --user-firstname=John --user-lastname=Doe --user-password=marello123 --user-email=johndoe@example.com  --organization-name=Marello --formatting-code=en_US --language=en"
         ],
         "test": [
             "rm -rf var/cache/*",
