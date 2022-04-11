@@ -69,6 +69,8 @@ workflows:
                           entity: $allocation
                           recipient: $allocation.warehouse
                           template: marello_warehouse_allocation
+                    -  '@extendable':
+                           events: [ extendable_action.send_transition_after ]
             could_not_allocate_definition: ~
             pick_pack_definition:
                 post_actions:
