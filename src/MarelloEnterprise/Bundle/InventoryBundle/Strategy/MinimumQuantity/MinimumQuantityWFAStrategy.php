@@ -244,7 +244,7 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
         asort($productOrder); // start with orders with the least amount of options
 
         // sort the options array accordingly
-        $whIdsPerOption = array_merge(array_flip(array_keys($productOrder)), $whIdsPerOption);
+        $whIdsPerOption = array_replace(array_flip(array_keys($productOrder)), $whIdsPerOption);
         // get all possible combinations of warehouses
         $cartesianResult = $this->cartesian($whIdsPerOption);
 
