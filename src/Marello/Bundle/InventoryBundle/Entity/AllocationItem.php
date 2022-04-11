@@ -125,7 +125,7 @@ class AllocationItem extends ExtendAllocationItem implements OrganizationAwareIn
     /**
      * @var float
      *
-     * @ORM\Column(name="quantity_confirmed",type="float",nullable=false)
+     * @ORM\Column(name="quantity_confirmed",type="float",nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -139,7 +139,7 @@ class AllocationItem extends ExtendAllocationItem implements OrganizationAwareIn
     /**
      * @var float
      *
-     * @ORM\Column(name="quantity_rejected",type="float",nullable=false)
+     * @ORM\Column(name="quantity_rejected",type="float",nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
