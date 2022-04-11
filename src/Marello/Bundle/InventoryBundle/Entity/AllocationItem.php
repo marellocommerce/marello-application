@@ -96,7 +96,7 @@ class AllocationItem extends ExtendAllocationItem implements OrganizationAwareIn
     protected $productName;
 
     /**
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\OrderItem")
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\OrderItem")
      * @ORM\JoinColumn(name="order_item_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      * @Oro\ConfigField(
      *      defaultValues={
