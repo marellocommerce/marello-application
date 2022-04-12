@@ -45,7 +45,7 @@ define(function(require) {
             PossibleShippingMethodsView.__super__.initialize.apply(this, arguments);
 
             this.options = $.extend(true, {}, this.options, options || {});
-            this.orderHasChanged = false;
+            this.orderHasForShippingChanged = false;
 
             this.$form = this.$el.closest('form');
             this.$document = $(document);
@@ -71,7 +71,7 @@ define(function(require) {
 
             var $form = this.getElement('$form');
             $form.validate();
-            if ($form.valid() && this.orderHasChanged && !this.getElement('overriddenShippingCostAmount').val()) {
+            if ($form.valid() && this.orderHasForShippingChanged && !this.getElement('overriddenShippingCostAmount').val()) {
                 this.showConfirmation($form);
                 return false;
             }
@@ -90,14 +90,14 @@ define(function(require) {
 
             this.subview('confirmation')
                 .off('ok').on('ok', _.bind(function() {
-                    this.orderHasChanged = false;
+                    this.orderHasForShippingChanged = false;
                     this.getElement('$form').trigger('submit');
                 }, this))
                 .open();
         },
 
         showLoadingMask: function() {
-            this.orderHasChanged = true;
+            this.orderHasForShippingChanged = true;
             if (this.getElement('calculateShipping').val()) {
                 this.removeSubview('loadingMask');
                 this.subview('loadingMask', new LoadingMaskView({
@@ -113,7 +113,7 @@ define(function(require) {
 
         onOrderChange: function(e) {
             if (e.totals && _.size(e) === 1) {
-                this.orderHasChanged = false;
+                this.orderHasForShippingChanged = false;
                 return;
             }
 
@@ -122,14 +122,14 @@ define(function(require) {
                 this.getElement('toggleBtn').parent('div').hide();
                 this.updatePossibleShippingMethods(e.possibleShippingMethods);
                 this.getElement('possibleShippingMethodForm').show();
-                this.orderHasChanged = false;
+                this.orderHasForShippingChanged = false;
             } else if (this.recalculationIsNotRequired === true) {
-                this.orderHasChanged = false;
+                this.orderHasForShippingChanged = false;
                 this.recalculationIsNotRequired = false;
             } else {
                 this.getElement('possibleShippingMethodForm').hide();
                 this.getElement('toggleBtn').parent('div').show();
-                this.orderHasChanged = true;
+                this.orderHasForShippingChanged = true;
             }
         },
 
