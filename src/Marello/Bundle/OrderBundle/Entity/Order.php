@@ -1109,20 +1109,6 @@ class Order extends ExtendOrder implements
     }
 
     /**
-     * @Assert\Callback
-     *
-     * @param ExecutionContextInterface $context
-     */
-    public function checkDiscountLowerThanSubTotal(ExecutionContextInterface $context)
-    {
-        if ($this->getDiscountAmount() > $this->getSubtotal()) {
-            $context->buildViolation('marello.order.discount_amount.validation.discount_lower_than_subtotal')
-                ->atPath('discountAmount')
-                ->addViolation();
-        }
-    }
-    
-    /**
      * {@inheritDoc}
      */
     public function getShippingMethodType()

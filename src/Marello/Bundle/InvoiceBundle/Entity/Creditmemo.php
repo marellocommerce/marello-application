@@ -7,12 +7,12 @@ use Doctrine\Common\Collections\Collection;
 
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
-use Marello\Bundle\InvoiceBundle\Model\ExtendInvoice;
+use Marello\Bundle\InvoiceBundle\Model\ExtendCreditmemo;
 
 /**
  * @ORM\Entity
  */
-class Creditmemo extends ExtendInvoice
+class Creditmemo extends ExtendCreditmemo
 {
     const CREDITMEMO_TYPE = 'creditmemo';
 
