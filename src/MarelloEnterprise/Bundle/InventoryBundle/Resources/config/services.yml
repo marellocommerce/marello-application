@@ -151,3 +151,10 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - false
+
+    MarelloEnterprise\Bundle\InventoryBundle\Provider\InventoryAllocationProvider:
+        decorates: Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider
+        arguments:
+            - '@MarelloEnterprise\Bundle\InventoryBundle\Provider\InventoryAllocationProvider.inner'
+            - '@marelloenterprise_inventory.wfa_strategy.registry'
+            - '@marello_rule.rule_filtration.service'
