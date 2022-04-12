@@ -214,13 +214,9 @@ services:
         tags:
             - { name: console.command }
 
-    marello_inventory.provider.inventory_allocation_provider:
-        class: 'Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider'
+    Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider:
         public: true
         arguments:
             - '@oro_entity.doctrine_helper'
             - '@marello_inventory.provider.order_warehouse'
-            - '@marelloenterprise_inventory.wfa_strategy.registry'
-            - '@marello_rule.rule_filtration.service'
-            - '@marelloenterprise_inventory.repository.wfa_rule'
             - '@event_dispatcher'
