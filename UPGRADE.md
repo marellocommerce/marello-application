@@ -4,6 +4,22 @@ UPGRADE NOTES
 This upgrade sequence has been derived from the Oro(CRM/Commerce). More information can be found at https://oroinc.com/orocrm/doc/current/install-upgrade/upgrade[1]
 for more details.
 
+### Patch for 3.2.0
+Trouble shooting entity extend issue when platform update runs, specifically in Marello version 3.2.0
+
+If this error occurs:
+The application update is not possible:
+```
+- The entities configuration has not applied schema changes for the following entities: Marello\Bundle\InvoiceBundle\Entity\Creditmemo, Marello\Bundle\InvoiceBundle\Entity\CreditmemoItem. Please update schema using "oro:entity-extend:update" CLI command (--dry-run option is available). Please note, that schema depends on source code and you may need to rollback to previous version of the source code.
+```
+Get patch version of Marello 3.2.1 to include a fix for the issue. To apply the fix,
+Please:
+- Stop the consumers
+- Run bin/console oro:migration:load --force
+- bin/console oro:entity-extend:update -vvv
+- And lastly run bin/console oro:platform:update --force and bin/console c:c --env=prod
+
+
 ### Recommended upgrade sequence to Marello 3.0
 To retrieve source code of a new version and upgrade your Marello instance, please execute the following steps:
 
