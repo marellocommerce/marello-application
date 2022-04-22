@@ -72,19 +72,8 @@ services:
         public: true
         parent: marello_rule.action.visibility_provider
 
-    marelloenterprise_inventory.wfa_strategy.registry:
-        class: 'MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategiesRegistry'
-
-    marelloenterprise_inventory.wfa_strategy.min_quantity:
-        class: 'MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\MinimumQuantityWFAStrategy'
-        arguments:
-            - '@marelloenterprise_inventory.wfa_strategy.min_quantity.calculator.main'
-            - '@marello_inventory.repository.warehousechannelgrouplink'
-        tags:
-            - { name: marello_inventory_wfa_strategy }
-
     marelloenterprise_inventory.wfa_strategy.min_distance:
-        class: 'MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumDistance\MinimumDistanceWFAStrategy'
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFA\MinimumDistance\MinimumDistanceWFAStrategy'
         arguments:
             - '@marelloenterprise_address.distance_calculator.main'
         tags:
@@ -94,21 +83,21 @@ services:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Provider\WFAStrategyChoicesProvider'
         public: true
         arguments:
-            - '@marelloenterprise_inventory.wfa_strategy.registry'
+            - '@Marello\Bundle\InventoryBundle\Strategy\WFA\WFAStrategiesRegistry'
             - '@translator'
 
     marelloenterprise_inventory.provider.order_warehouse:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Provider\OrderWarehousesProvider'
-        decorates: marello_inventory.provider.order_warehouse
+        decorates: Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProvider
         arguments:
-            - '@marelloenterprise_inventory.wfa_strategy.registry'
+            - '@Marello\Bundle\InventoryBundle\Strategy\WFA\WFAStrategiesRegistry'
             - '@marello_rule.rule_filtration.service'
             - '@marelloenterprise_inventory.repository.wfa_rule'
 
     marelloenterprise_inventory.formatter.wfa_strategy.label:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Formatter\WFAStrategyLabelFormatter'
         arguments:
-        - '@marelloenterprise_inventory.wfa_strategy.registry'
+        - '@Marello\Bundle\InventoryBundle\Strategy\WFA\WFAStrategiesRegistry'
         - '@translator'
 
     marelloenterprise_inventory.twig.wfa_strategy_extension:
@@ -127,16 +116,11 @@ services:
         calls:
             - [setAclHelper, ['@oro_security.acl_helper']]
 
-    marelloenterprise_inventory.wfa_strategy.min_quantity.calculator.chain_element.multiple_wh:
-        class: 'MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\Calculator\Chain\Element\MultipleWarehouses\MultipleWHCalculatorChainElement'
-
-    marelloenterprise_inventory.wfa_strategy.min_quantity.calculator.chain_element.single_wh:
-        class: 'MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\Calculator\Chain\Element\SingleWarehouse\SingleWHCalculatorChainElement'
+    Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\Calculator\SingleWHCalculator:
         calls:
-            - ['setSuccessor', ['@marelloenterprise_inventory.wfa_strategy.min_quantity.calculator.chain_element.multiple_wh']]
+            - ['setSuccessor', ['@MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFA\Quantity\Calculator\MultiWHCalculator']]
 
-    marelloenterprise_inventory.wfa_strategy.min_quantity.calculator.main:
-        parent: marelloenterprise_inventory.wfa_strategy.min_quantity.calculator.chain_element.single_wh
+    MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFA\Quantity\Calculator\MultiWHCalculator: ~
 
     marelloenterprise_inventory.action.handler.wfa_rule.enable_status:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Action\Handler\WfaRuleToggleStatusActionHandler'
@@ -156,5 +140,8 @@ services:
         decorates: Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider
         arguments:
             - '@MarelloEnterprise\Bundle\InventoryBundle\Provider\InventoryAllocationProvider.inner'
-            - '@marelloenterprise_inventory.wfa_strategy.registry'
+            - '@Marello\Bundle\InventoryBundle\Strategy\WFA\WFAStrategiesRegistry'
             - '@marello_rule.rule_filtration.service'
+            - '@oro_entity.doctrine_helper'
+            - '@Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProvider'
+            - '@event_dispatcher'

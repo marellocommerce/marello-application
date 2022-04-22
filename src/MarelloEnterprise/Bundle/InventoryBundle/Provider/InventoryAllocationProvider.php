@@ -4,6 +4,10 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Provider;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\Allocation;
@@ -14,12 +18,13 @@ use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Marello\Bundle\RuleBundle\RuleFiltration\RuleFiltrationServiceInterface;
-use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategiesRegistry;
+use Marello\Bundle\InventoryBundle\Strategy\WFA\WFAStrategiesRegistry;
+use Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProviderInterface;
 use MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WFARuleRepository;
-use MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumDistance\MinimumDistanceWFAStrategy;
+use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFA\MinimumDistance\MinimumDistanceWFAStrategy;
 use Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider as BaseAllocationProvider;
 
-class InventoryAllocationProvider
+class InventoryAllocationProvider extends BaseAllocationProvider
 {
     /** @var WFAStrategiesRegistry $strategiesRegistry */
     protected $strategiesRegistry;
@@ -49,10 +54,14 @@ class InventoryAllocationProvider
      * @param RuleFiltrationServiceInterface $rulesFiltrationService
      */
     public function __construct(
-        InventoryAllocationProvider $allocationProvider,
+        BaseAllocationProvider $allocationProvider,
         WFAStrategiesRegistry $strategiesRegistry,
         RuleFiltrationServiceInterface $rulesFiltrationService,
+        DoctrineHelper $doctrineHelper,
+        OrderWarehousesProviderInterface $warehousesProvider,
+        EventDispatcherInterface $eventDispatcher
     ) {
+        parent::__construct($doctrineHelper, $warehousesProvider, $eventDispatcher);
         $this->baseAllocationProvider = $allocationProvider;
         $this->strategiesRegistry = $strategiesRegistry;
         $this->rulesFiltrationService = $rulesFiltrationService;
@@ -88,7 +97,8 @@ class InventoryAllocationProvider
             /** @var Order $order */
             $parentAllocation = new Allocation();
             $parentAllocation->setOrder($order);
-            $parentAllocation->setType('on_hand');
+            $parentAllocation->setState($this->getEnumValue('marello_allocation_state', 'available'));
+            $parentAllocation->setStatus($this->getEnumValue('marello_allocation_status', 'on_hand'));
             $parentAllocation->setWarehouse($this->consolidationWarehouse);
             $parentAllocation->setShippingAddress($order->getShippingAddress());
             foreach ($this->allItems as $item) {

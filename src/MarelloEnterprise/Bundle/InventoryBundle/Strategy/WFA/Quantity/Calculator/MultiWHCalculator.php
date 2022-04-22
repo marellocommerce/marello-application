@@ -1,14 +1,15 @@
 <?php
 
-namespace MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\Calculator\Chain\Element\MultipleWarehouses;
+namespace MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFA\Quantity\Calculator;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
-use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\Calculator\Chain\Element\AbstractWHCalculatorChainElement;
 
-class MultipleWHCalculatorChainElement extends AbstractWHCalculatorChainElement
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
+use Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\Calculator\AbstractWHCalculator;
+
+class MultiWHCalculator extends AbstractWHCalculator
 {
     /**
      * @var array
