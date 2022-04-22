@@ -5,10 +5,10 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Provider;
 use Marello\Bundle\InventoryBundle\Entity\Allocation;
 use Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProviderInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\InventoryBundle\Strategy\WFA\WFAStrategiesRegistry;
 use Marello\Bundle\RuleBundle\RuleFiltration\RuleFiltrationServiceInterface;
 use MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WFARuleRepository;
 use MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule;
-use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategiesRegistry;
 
 class OrderWarehousesProvider implements OrderWarehousesProviderInterface
 {
