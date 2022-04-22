@@ -56,9 +56,6 @@ services:
         tags:
             - { name: twig.extension }
 
-    marello_inventory.provider.order_warehouse:
-        class: 'Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProvider'
-
     marello_inventory.repository.warehouse:
         class: 'Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository'
         parent: oro_entity.abstract_repository
@@ -190,14 +187,6 @@ services:
         calls:
             - [setAclHelper, ['@oro_security.acl_helper']]
 
-    marello_inventory.repository.inventorylevel:
-        class: 'Marello\Bundle\InventoryBundle\Entity\Repository\InventoryLevelRepository'
-        parent: oro_entity.abstract_repository
-        arguments:
-            - 'Marello\Bundle\InventoryBundle\Entity\InventoryLevel'
-        calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
-
     marello_inventory.form.inventory_order_on_demand_validator:
         class: 'Marello\Bundle\InventoryBundle\Validator\InventoryOrderOnDemandValidator'
         calls:
@@ -205,8 +194,7 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: marello_inventory.order_on_demand_validator }
 
-    marello_inventory.command.inventory_rebalance:
-        class: 'Marello\Bundle\InventoryBundle\Command\InventoryBalanceCommand'
+    Marello\Bundle\InventoryBundle\Command\InventoryBalanceCommand:
         arguments:
             - '@doctrine'
             - '@marello_inventory.model.balancer.inventory_balancer'
@@ -214,9 +202,26 @@ services:
         tags:
             - { name: console.command }
 
+    Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProvider:
+        arguments:
+            - '@Marello\Bundle\InventoryBundle\Strategy\WFA\WFAStrategiesRegistry'
+
     Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider:
         public: true
         arguments:
             - '@oro_entity.doctrine_helper'
-            - '@marello_inventory.provider.order_warehouse'
+            - '@Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProvider'
             - '@event_dispatcher'
+
+    Marello\Bundle\InventoryBundle\Strategy\WFA\WFAStrategiesRegistry: ~
+
+    Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\QuantityWFAStrategy:
+        arguments:
+            - '@Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\Calculator\SingleWHCalculator'
+            ## check if we actually need to include the whgrouplink repository as a service.., maybe use oro_entity.doctrine_helper instead
+            - '@marello_inventory.repository.warehousechannelgrouplink'
+            - '@oro_config.manager'
+        tags:
+            - { name: marello_inventory_wfa_strategy }
+
+    Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\Calculator\SingleWHCalculator: ~

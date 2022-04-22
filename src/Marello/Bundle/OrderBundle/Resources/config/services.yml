@@ -112,7 +112,7 @@ services:
     marello_order.provider.shipping_order_items_for_notifications:
         class: Marello\Bundle\OrderBundle\Provider\OrderItem\ShippingPreparedOrderItemsForNotificationProvider
         arguments:
-            - '@marello_inventory.provider.order_warehouse'
+            - '@Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProvider'
             - '@event_dispatcher'
 
     marello_order.provider.form_changes.billing_address:
@@ -171,7 +171,7 @@ services:
         class: 'Marello\Bundle\OrderBundle\Factory\OrderPaymentContextFactory'
         public: true
         arguments:
-            - '@marello_inventory.provider.order_warehouse'
+            - '@Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProvider'
             - '@marello_order.payment_line_item.converter_basic'
             - '@event_dispatcher'
             - '@marello_payment.context.builder_factory_basic'
@@ -186,7 +186,7 @@ services:
         class: 'Marello\Bundle\OrderBundle\Factory\OrderShippingContextFactory'
         public: true
         arguments:
-            - '@marello_inventory.provider.order_warehouse'
+            - '@Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProvider'
             - '@marello_order.shipping_line_item.converter_basic'
             - '@marello_shipping.context.builder_factory_basic'
         calls:

@@ -413,6 +413,8 @@ datagrids:
                     - allocation
                     - parent.allocationNumber as parentAllocation
                     - wh.label as warehouse
+                    - IDENTITY(allocation.state) as allocationStateId
+                    - IDENTITY(allocation.status) as allocationStatusId
                 from:
                     - { table: MarelloInventoryBundle:Allocation, alias: allocation }
                 join:
@@ -429,9 +431,14 @@ datagrids:
             warehouse:
                 label:          marello.inventory.allocation.warehouse.label
                 frontend_type:  string
-            type:
-                label:          marello.inventory.allocation.type.label
-                frontend_type:  string
+            allocationStateId:
+                label:          marello.inventory.allocation.state.label
+                choices:        "@oro_entity_extend.enum_value_provider->getEnumChoicesByCode('marello_allocation_state')"
+                frontend_type:  select
+            allocationStatusId:
+                label:          marello.inventory.allocation.status.label
+                choices:        "@oro_entity_extend.enum_value_provider->getEnumChoicesByCode('marello_allocation_status')"
+                frontend_type:  select
             createdAt:
                 label:          oro.ui.created_at
                 frontend_type:  datetime
@@ -449,9 +456,17 @@ datagrids:
                 warehouse:
                     type:       string
                     data_name:  warehouse
-                type:
-                    type:       string
-                    data_name:  allocation.type
+#                type:
+#                    type:       string
+#                    data_name:  allocation.type
+                allocationStateId:
+                    type:      enum
+                    data_name: allocationStateId
+                    enum_code: marello_allocation_state
+                allocationStatusId:
+                    type:      enum
+                    data_name: allocationStatusId
+                    enum_code: marello_allocation_status
                 createdAt:
                     type:       datetime
                     data_name:  allocation.createdAt
@@ -462,8 +477,10 @@ datagrids:
             columns:
                 allocationNumber:
                     data_name:  allocation.allocationNumber
-                type:
-                    data_name:  allocation.type
+                allocationStateId:
+                    data_name:  allocationStateId
+                allocationStatusId:
+                    data_name:  allocationStatusId
                 createdAt:
                     data_name:  allocation.createdAt
                 updatedAt:
@@ -544,7 +561,7 @@ datagrids:
                 label:          marello.inventory.allocation.warehouse.label
                 frontend_type:  string
             orderItem:
-                label:          'total qty allocated'
+                label:          marello.inventory.allocation.total_quantity_allocated.label
                 type:           twig
                 frontend_type:  html
                 template:       MarelloInventoryBundle:Datagrid/Property:total_allocated.html.twig
