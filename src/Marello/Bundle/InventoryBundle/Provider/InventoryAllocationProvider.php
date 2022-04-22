@@ -4,6 +4,9 @@ namespace Marello\Bundle\InventoryBundle\Provider;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Marello\Bundle\OrderBundle\Model\OrderStatusesInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
@@ -58,7 +61,9 @@ class InventoryAllocationProvider
     {
         $this->allOrderItems = new ArrayCollection();
 
-        $em = $this->getAllocationEntityManager();
+        $em = $this
+            ->getDoctrineHelper()
+            ->getEntityManagerForClass(Allocation::class);
         foreach ($this->warehousesProvider->getWarehousesForOrder($order, $allocation) as $orderWarehouseResults) {
             if ($allocation && $allocation->getWarehouse()) {
                 $this->handleAllocationInventory($allocation, $order, true);
@@ -67,29 +72,32 @@ class InventoryAllocationProvider
             /** @var OrderWarehouseResult $result */
             foreach ($orderWarehouseResults as $result) {
                 /** @var Order $order */
-                $allocation = new Allocation();
-                $allocation->setOrder($order);
-                $allocation->setType('on_hand');
+                $newAllocation = new Allocation();
+                $newAllocation->setOrder($order);
+                $newAllocation->setState($this->getEnumValue('marello_allocation_state', 'available'));
+                $newAllocation->setStatus($this->getEnumValue('marello_allocation_status', 'on_hand'));
 
                 // find allocation by warehouse
                 if ($result->getWarehouse()->getCode() === 'no_warehouse') {
-                    $allocation->setType('waiting_for_supply');
+                    $newAllocation->setState($this->getEnumValue('marello_allocation_state', 'waiting'));
+                    $newAllocation->setStatus($this->getEnumValue('marello_allocation_status', 'could_not_allocate'));
                 }
                 if ($result->getWarehouse()->getCode() === 'could_not_allocate') {
-                    $allocation->setType('could_not_allocate');
+                    $newAllocation->setState($this->getEnumValue('marello_allocation_state', 'alert'));
+                    $newAllocation->setStatus($this->getEnumValue('marello_allocation_status', 'could_not_allocate'));
                 }
                 if (!in_array($result->getWarehouse()->getCode(), ['no_warehouse', 'could_not_allocate'])) {
-                    $allocation->setWarehouse($result->getWarehouse());
+                    $newAllocation->setWarehouse($result->getWarehouse());
                 }
 
                 $shippingAddress = $this->getShippingAddress($order);
-                $allocation->setShippingAddress($shippingAddress);
+                $newAllocation->setShippingAddress($shippingAddress);
 
-                $this->createAllocationItems($result, $allocation);
-                $em->persist($allocation);
+                $this->createAllocationItems($result, $newAllocation);
+                $em->persist($newAllocation);
 
-                if ($allocation->getWarehouse()) {
-                    $this->handleAllocationInventory($allocation);
+                if ($newAllocation->getWarehouse()) {
+                    $this->handleAllocationInventory($newAllocation);
                 }
             }
         }
@@ -107,7 +115,9 @@ class InventoryAllocationProvider
                 /** @var Order $order */
                 $diffAllocation = new Allocation();
                 $diffAllocation->setOrder($order);
-                $diffAllocation->setType('could_not_allocate');
+                $diffAllocation->setStatus('could_not_allocate');
+                $diffAllocation->setState($this->getEnumValue('marello_allocation_state', 'alert'));
+                $diffAllocation->setStatus($this->getEnumValue('marello_allocation_status', 'could_not_allocate'));
                 $allocationItem = new AllocationItem();
                 $allocationItem->setOrderItem($orderItem);
                 $allocationItem->setProduct($orderItem->getProduct());
@@ -166,6 +176,22 @@ class InventoryAllocationProvider
     }
 
     /**
+     * @param $enumClass
+     * @param $value
+     * @return object|null
+     */
+    protected function getEnumValue($enumClass, $value)
+    {
+        $className = ExtendHelper::buildEnumValueClassName($enumClass);
+        /** @var EnumValueRepository $enumRepo */
+        $enumRepo = $this->doctrineHelper
+            ->getEntityManagerForClass($className)
+            ->getRepository($className);
+
+        return $enumRepo->findOneBy(['id' => $value]);
+    }
+
+    /**
      * @param Allocation $allocation
      * @param Order|null $order
      * @param false $release
@@ -183,7 +209,9 @@ class InventoryAllocationProvider
                     $allocation->getWarehouse()
                 );
             });
-        } else {
+        }
+
+        if (!$release) {
             // allocate inventory for allocation
             $allocation->getItems()->map(function (AllocationItem $item) use ($allocation) {
                 $this->handleInventoryUpdate(
