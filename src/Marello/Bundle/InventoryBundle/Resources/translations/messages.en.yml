@@ -175,7 +175,8 @@ marello:
             order.label:                    Order
             organization.label:             Organization
             shipping_address.label:         Shipping Address
-            type.label:                     Type
+            state.label:                    State
+            status.label:                   Status
             warehouse.label:                Warehouse
 
             total_quantity_allocated.label: '%allocatedQty% of %totalQty% allocated'
@@ -225,11 +226,19 @@ marello:
                     on_demand:
                         title:              Inventory On Demand
                         general.label:      General
+                    allocation:
+                        title:              Allocations
+                        general.label:      General
             fields:
                 balancing_strategy.label:                     Strategy
                 balance_threshold_percentage.label:           Threshold Percentage
                 inventory_on_demand.label:                    Use Purchase Order with inventory on demand
                 inventory_on_demand_enabled.label:            Enable Inventory On Demand
+                inventory_allocation_priority:
+                    label:          Inventory Allocation Priority
+                    mixed:          Mixed
+                    internal:       Internal First
+                    external:       External First
         messages:
             success:
                 warehouse.saved:        Warehouse has been saved successfully

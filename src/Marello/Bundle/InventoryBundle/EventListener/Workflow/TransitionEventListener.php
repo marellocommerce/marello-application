@@ -51,7 +51,7 @@ class TransitionEventListener
         $entity = $event->getContext()->getData()->get(self::CONTEXT_KEY);
 
         if ($this->getApplicableWorkflow($entity)) {
-            if ($entity->getType() === 'could_not_allocate') {
+            if ($entity->getStatus()->getName() === 'could_not_allocate') {
                 if ($event->getContext()->getCurrentStep()->getName() === self::WORKFLOW_STEP_FROM) {
                     $this->messageProducer->send(
                         Topics::WORKFLOW_TRANSIT_TOPIC,

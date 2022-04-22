@@ -322,6 +322,28 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
 
         $this->activityExtension->addActivityAssociation($schema, 'marello_notification', $table->getName());
         $this->activityExtension->addActivityAssociation($schema, 'oro_email', $table->getName());
+        $this->extendExtension->addEnumField(
+            $schema,
+            $table,
+            'status',
+            'marello_allocation_status',
+            false,
+            false,
+            [
+                'extend' => ['owner' => ExtendScope::OWNER_SYSTEM],
+            ]
+        );
+        $this->extendExtension->addEnumField(
+            $schema,
+            $table,
+            'state',
+            'marello_allocation_state',
+            false,
+            false,
+            [
+                'extend' => ['owner' => ExtendScope::OWNER_SYSTEM],
+            ]
+        );
     }
 
     /**

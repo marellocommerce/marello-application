@@ -189,36 +189,32 @@ class Allocation extends ExtendAllocation implements
     protected $allocationNumber;
 
     /**
-     * @var string
-     * @ORM\Column(name="type", type="string", nullable=true)
+     * @var \Extend\Entity\EV_Marello_Allocation_State
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
-     *          },
-     *          "importexport"={
-     *              "excluded"=true
      *          }
      *      }
      * )
      */
-    protected $type;
+    protected $state;
 
     /**
-     * @var string
+     * @var \Extend\Entity\EV_Marello_Allocation_Status
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
-     *              "auditable"=false
-     *          },
-     *          "importexport"={
-     *              "excluded"=true
+     *              "auditable"=true
      *          }
      *      }
      * )
      */
     protected $status;
 
+    /**
+     * Allocation constructor.
+     */
     public function __construct()
     {
         parent::__construct();
@@ -418,18 +414,37 @@ class Allocation extends ExtendAllocation implements
     }
 
     /**
-     * @return mixed
+     * @return \Extend\Entity\EV_Marello_Allocation_State
      */
-    public function getStatus()
+    public function getState(): \Extend\Entity\EV_Marello_Allocation_State
+    {
+        return $this->state;
+    }
+
+    /**
+     * @param \Extend\Entity\EV_Marello_Allocation_State $state
+     * @return $this
+     */
+    public function setState($state): self
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    /**
+     * @return \Extend\Entity\EV_Marello_Allocation_Status
+     */
+    public function getStatus(): \Extend\Entity\EV_Marello_Allocation_Status
     {
         return $this->status;
     }
 
     /**
-     * @param string $status
+     * @param \Extend\Entity\EV_Marello_Allocation_Status $status
      * @return $this
      */
-    public function setStatus($status)
+    public function setStatus($status): self
     {
         $this->status = $status;
 
@@ -463,25 +478,6 @@ class Allocation extends ExtendAllocation implements
         if (!$this->allocationNumber) {
             $this->setAllocationNumber(sprintf('%09d', $id));
         }
-    }
-
-    /**
-     * @return string
-     */
-    public function getType(): string
-    {
-        return $this->type;
-    }
-
-    /**
-     * @param string $type
-     * @return $this
-     */
-    public function setType(string $type): self
-    {
-        $this->type = $type;
-
-        return $this;
     }
 
     /**

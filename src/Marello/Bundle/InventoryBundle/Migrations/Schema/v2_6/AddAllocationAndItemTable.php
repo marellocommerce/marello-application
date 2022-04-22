@@ -12,12 +12,17 @@ use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterf
 use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
 use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
 
-class AddAllocationAndItemTable implements Migration, ActivityExtensionAwareInterface
+class AddAllocationAndItemTable implements Migration, ActivityExtensionAwareInterface, ExtendExtensionAwareInterface
 {
     /**
      * @var ActivityExtension
      */
     protected $activityExtension;
+
+    /**
+     * @var ExtendExtension
+     */
+    protected $extendExtension;
 
     /**
      * {@inheritdoc}
@@ -50,6 +55,42 @@ class AddAllocationAndItemTable implements Migration, ActivityExtensionAwareInte
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
 
         $table->setPrimaryKey(['id']);
+
+        $tableName = $this->extendExtension->getNameGenerator()->generateEnumTableName('marello_allocation_status');
+        // enum table is already available and created...
+        if ($schema->hasTable($tableName)) {
+            return;
+        }
+
+        $this->extendExtension->addEnumField(
+            $schema,
+            $table,
+            'status',
+            'marello_allocation_status',
+            false,
+            false,
+            [
+                'extend' => ['owner' => ExtendScope::OWNER_SYSTEM],
+            ]
+        );
+
+        $tableName = $this->extendExtension->getNameGenerator()->generateEnumTableName('marello_allocation_state');
+        // enum table is already available and created...
+        if ($schema->hasTable($tableName)) {
+            return;
+        }
+
+        $this->extendExtension->addEnumField(
+            $schema,
+            $table,
+            'state',
+            'marello_allocation_state',
+            false,
+            false,
+            [
+                'extend' => ['owner' => ExtendScope::OWNER_SYSTEM],
+            ]
+        );
     }
 
     /**
@@ -160,6 +201,16 @@ class AddAllocationAndItemTable implements Migration, ActivityExtensionAwareInte
     public function setActivityExtension(ActivityExtension $activityExtension)
     {
         $this->activityExtension = $activityExtension;
+    }
+
+    /**
+     * Sets the ExtendExtension
+     *
+     * @param ExtendExtension $extendExtension
+     */
+    public function setExtendExtension(ExtendExtension $extendExtension)
+    {
+        $this->extendExtension = $extendExtension;
     }
 
     /**
