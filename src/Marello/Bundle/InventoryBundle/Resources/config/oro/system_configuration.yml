@@ -59,6 +59,7 @@ system_configuration:
             type: Marello\Bundle\InventoryBundle\Form\Type\InventoryAllocationPriorityChoiceType
             options:
                 label: marello.inventory.system_configuration.fields.inventory_allocation_priority.label
+                tooltip: marello.inventory.system_configuration.fields.inventory_allocation_priority
                 required: true
                 constraints:
                     - NotBlank: ~
