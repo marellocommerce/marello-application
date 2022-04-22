@@ -29,7 +29,7 @@ navigation:
                 route: marello_inventory_allocation_index
                 extras:
                     routes: ['marello_inventory_allocation_index*']
-                    position: 40
+                    position: 25
         tree:
             application_menu:
                 children:
@@ -42,7 +42,9 @@ navigation:
                                 children:
                                     inventory: ~
                                     balanced_inventory: ~
-                                    allocations: ~
+                    sales_tab:
+                        children:
+                            allocations: ~
 
     titles:
         marello_inventory_warehouse_updatedefault: 'Default Warehouse - Update'
