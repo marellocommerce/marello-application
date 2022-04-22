@@ -70,3 +70,7 @@ services:
             - '@marello_inventory.provider.balancer.balancing_strategy_choices_provider'
         tags:
             - { name: form.type }
+
+    Marello\Bundle\InventoryBundle\Form\Type\InventoryAllocationPriorityChoiceType:
+        tags:
+            - { name: form.type }
