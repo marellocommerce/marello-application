@@ -122,6 +122,6 @@ workflows:
                               - '@assign_value': [$.result.value.quantityRejected, $.result.value.quantity]
                 post_actions:
                     - '@call_service_method':
-                            service: marello_inventory.provider.inventory_allocation_provider
+                            service: Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider
                             method: allocateOrderToWarehouses
                             method_parameters: [ $allocation.order, $allocation ]

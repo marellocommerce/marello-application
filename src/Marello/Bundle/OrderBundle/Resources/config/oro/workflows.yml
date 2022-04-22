@@ -264,11 +264,11 @@ workflows:
                           method: $order.shippingMethod
                           methodType: $order.shippingMethodType
                     - '@call_service_method':
-                          service: marello_inventory.provider.inventory_allocation_provider
+                          service: Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider
                           method: allocateOrderToWarehouses
                           method_parameters: [ $order ]
-                    - '@extendable':
-                          events: [extendable_action.create_packingslip]
+#                    - '@extendable':
+#                          events: [extendable_action.create_packingslip]
                     - '@marello_notification_send':
                           entity: $order
                           recipient: $order.customer
@@ -572,7 +572,7 @@ workflows:
                           method: $order.shippingMethod
                           methodType: $order.shippingMethodType
                     - '@call_service_method':
-                          service: marello_inventory.provider.inventory_allocation_provider
+                          service: Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider
                           method: allocateOrderToWarehouses
                           method_parameters: [ $order ]
                     - '@extendable':
