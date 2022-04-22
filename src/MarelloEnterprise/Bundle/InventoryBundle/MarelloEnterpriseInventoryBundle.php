@@ -20,7 +20,6 @@ class MarelloEnterpriseInventoryBundle extends Bundle
         $container->addCompilerPass(new InventoryManagerCompilerPass());
         $container->addCompilerPass(new InventoryLevelFormSubscriberCompilerPass());
         $container->addCompilerPass(new ImexportInventoryLevelStrategyCompilerPass());
-        $container->addCompilerPass(new WFAStrategiesCompilerPass());
         $container->addCompilerPass(new InventoryLevelsGridCompilerPass());
         parent::build($container);
     }

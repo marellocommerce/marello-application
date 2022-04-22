@@ -2,8 +2,8 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Provider;
 
-use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategiesRegistry;
-use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategyInterface;
+use Marello\Bundle\InventoryBundle\Strategy\WFA\WFAStrategiesRegistry;
+use Marello\Bundle\InventoryBundle\Strategy\WFA\WFAStrategyInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class WFAStrategyChoicesProvider
