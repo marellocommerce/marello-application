@@ -144,7 +144,11 @@ class QuantityWFAStrategy implements WFAStrategyInterface
                 $virtualInventoryQuantity = $inventoryLevel->getVirtualInventoryQty();
                 if ($allocation && $allocation->getWarehouse()) {
                     if ($allocation->getWarehouse()->getId() === $warehouse->getId()) {
-                        $virtualInventoryQuantity = $inventoryLevel->getVirtualInventoryQty() - $orderItem->getQuantityRejected();
+                        if (($orderItem->getQuantity() - $orderItem->getQuantityRejected()) <= 0) {
+                            $virtualInventoryQuantity = 0;
+                        } else {
+                            $virtualInventoryQuantity = $inventoryLevel->getVirtualInventoryQty() - $orderItem->getQuantityRejected();
+                        }
                     }
                 }
                 $warehouses[$warehouse->getCode()] = $warehouse;
