@@ -2,9 +2,9 @@
 
 namespace Marello\Bundle\ReturnBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
-class ReturnItemRepository extends EntityRepository
+class ReturnItemRepository extends ServiceEntityRepository
 {
     public function getReturnQuantityByReason()
     {

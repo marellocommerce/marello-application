@@ -1,3 +1,6 @@
+imports:
+    - { resource: controllers.yml }
+
 services:
     Marello\Bundle\WorkflowBundle\Datagrid\Extension\MassAction\WorkflowTransitMassAction:
         shared: false

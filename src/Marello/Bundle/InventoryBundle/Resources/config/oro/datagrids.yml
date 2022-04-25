@@ -26,7 +26,7 @@ datagrids:
                 label:              marello.product.sku.label
                 type:               twig
                 frontend_type:      html
-                template:           MarelloProductBundle:Product/Datagrid:productSku.html.twig
+                template:           '@MarelloProduct/Product/Datagrid/productSku.html.twig'
             productName:
                 label:              marello.product.names.label
             productUnit:
@@ -140,13 +140,13 @@ datagrids:
                 label:          marello.inventory.inventorylevellogrecord.inventory_alteration.label
                 type:           twig
                 frontend_type:  html
-                template:       MarelloInventoryBundle::Datagrid/InventoryLevel/diff.html.twig
+                template:       '@MarelloInventory/Datagrid/InventoryLevel/diff.html.twig'
             allocatedInventoryDiff:
                 data_name:      allocatedInventoryDiff
                 label:          marello.inventory.inventorylevellogrecord.allocated_inventory_alteration.label
                 type:           twig
                 frontend_type:  html
-                template:       MarelloInventoryBundle::Datagrid/InventoryLevel/diff.html.twig
+                template:       '@MarelloInventory/Datagrid/InventoryLevel/diff.html.twig'
             changeTrigger:
                 data_name:      changeTrigger
                 label:          marello.inventory.inventorylevellogrecord.change_trigger.label
@@ -160,7 +160,7 @@ datagrids:
                 label:          marello.inventory.inventorylevellogrecord.subject_type.label
                 type:           twig
                 frontend_type:  html
-                template:       MarelloInventoryBundle::Datagrid/InventoryLevel/subject.html.twig
+                template:       '@MarelloInventory/Datagrid/InventoryLevel/subject.html.twig'
             createdAt:
                 label:          oro.ui.created_at
                 frontend_type:  datetime
@@ -287,7 +287,7 @@ datagrids:
                 label:              marello.product.sku.label
                 type:               twig
                 frontend_type:      html
-                template:           MarelloProductBundle:Product/Datagrid:productSku.html.twig
+                template:           '@MarelloProduct/Product/Datagrid/productSku.html.twig'
             productName:
                 label:              marello.product.names.label
             inventoryQty:

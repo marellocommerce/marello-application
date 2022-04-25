@@ -1,2 +1,2 @@
 bundles:
-    - MarelloShippingBundle:Form:fields.html.twig
+    - '@MarelloShipping/Form/fields.html.twig'

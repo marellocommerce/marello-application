@@ -32,8 +32,8 @@ class BalancedInventoryManager implements InventoryManagerInterface
     public function updateInventoryLevel(InventoryUpdateContext $context)
     {
         $this->eventDispatcher->dispatch(
-            BalancedInventoryUpdateEvent::BALANCED_UPDATE_BEFORE,
-            new BalancedInventoryUpdateEvent($context)
+            new BalancedInventoryUpdateEvent($context),
+            BalancedInventoryUpdateEvent::BALANCED_UPDATE_BEFORE
         );
 
         if (!$this->contextValidator->validateContext($context)) {
@@ -65,8 +65,8 @@ class BalancedInventoryManager implements InventoryManagerInterface
         $context->setValue('balancedInventoryLevel', $level);
         
         $this->eventDispatcher->dispatch(
-            BalancedInventoryUpdateEvent::BALANCED_UPDATE_AFTER,
-            new BalancedInventoryUpdateEvent($context)
+            new BalancedInventoryUpdateEvent($context),
+            BalancedInventoryUpdateEvent::BALANCED_UPDATE_AFTER
         );
     }
 

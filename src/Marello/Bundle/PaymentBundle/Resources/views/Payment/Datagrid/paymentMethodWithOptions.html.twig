@@ -1,8 +1,8 @@
-{% spaceless %}
+{% apply spaceless %}
     {% set identifier = record.getValue('paymentMethod') %}
     {% set options = record.getValue('paymentMethodOptions') %}
     {{ marello_get_payment_method_label(identifier)|trans }}<br>
     {% for name, value in options %}
         {{ name ~ ': ' ~ value }}<br>
     {% endfor %}
-{% endspaceless %}
+{% endapply %}

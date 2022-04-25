@@ -2,39 +2,26 @@
 
 namespace Marello\Bundle\CatalogBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Marello\Bundle\CatalogBundle\Entity\Category;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
-class CategoryRepository extends EntityRepository
+class CategoryRepository extends ServiceEntityRepository
 {
     /**
-     * @var AclHelper
-     */
-    private $aclHelper;
-
-    /**
-     * @param AclHelper $aclHelper
-     */
-    public function setAclHelper(AclHelper $aclHelper) // weedizp3
-    {
-        $this->aclHelper = $aclHelper;
-    }
-
-    /**
      * @param array $relatedCategoriesIds
+     * @param AclHelper $aclHelper
      * @return array
      */
-    public function findExcludedCategoriesIds(array $relatedCategoriesIds)
+    public function findExcludedCategoriesIds(array $relatedCategoriesIds, AclHelper $aclHelper)
     {
         $qb = $this->createQueryBuilder('c')
             ->select('c.id')
             ->where('c.id NOT IN(:categories)')
             ->setParameter('categories', $relatedCategoriesIds);
 
-        return $this->aclHelper->apply($qb)->getArrayResult();
+        return $aclHelper->apply($qb)->getArrayResult();
     }
 
     /**

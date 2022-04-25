@@ -2,28 +2,12 @@
 
 namespace Marello\Bundle\InventoryBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
-
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
-
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 
-class InventoryItemRepository extends EntityRepository
+class InventoryItemRepository extends ServiceEntityRepository
 {
-    /**
-     * @var AclHelper
-     */
-    private $aclHelper;
-
-    /**
-     * @param AclHelper $aclHelper
-     */
-    public function setAclHelper(AclHelper $aclHelper) // weedizp3
-    {
-        $this->aclHelper = $aclHelper;
-    }
-
     /**
      * @param Product $product
      * @return InventoryItem

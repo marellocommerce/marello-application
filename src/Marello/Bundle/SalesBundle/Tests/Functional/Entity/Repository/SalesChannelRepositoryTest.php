@@ -26,7 +26,7 @@ class SalesChannelRepositoryTest extends WebTestCase
             LoadSalesData::class,
         ]);
 
-        $this->repository = static::getContainer()->get('marello_sales.repository.sales_channel');
+        $this->repository = static::getContainer()->get(SalesChannelRepository::class);
     }
 
     public function testGetActiveChannels()

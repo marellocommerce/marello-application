@@ -37,7 +37,7 @@ datagrids:
                 label:              marello.product.channels.label
                 type:               twig
                 frontend_type:      html
-                template:           MarelloProductBundle:Product/Datagrid/Property:channels.html.twig
+                template:           '@MarelloProduct/Product/Datagrid/Property/channels.html.twig'
                 renderable:         false
                 inline_editing:
                     enable: false
@@ -45,7 +45,7 @@ datagrids:
                 label:              marello.product.categories.label
                 type:               twig
                 frontend_type:      html
-                template:           MarelloProductBundle:Product/Datagrid/Property:categories.html.twig
+                template:           '@MarelloProduct/Product/Datagrid/Property/categories.html.twig'
                 renderable:         false
                 inline_editing:
                     enable: false

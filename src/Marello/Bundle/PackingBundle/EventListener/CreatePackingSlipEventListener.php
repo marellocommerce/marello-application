@@ -68,7 +68,7 @@ class CreatePackingSlipEventListener
         /** @var Order $entity */
         $entity = $event->getContext()->getData()->get('order');
         $this->eventDispatcher
-            ->dispatch(BeforePackingSlipCreationEvent::NAME, new BeforePackingSlipCreationEvent($entity));
+            ->dispatch(new BeforePackingSlipCreationEvent($entity), BeforePackingSlipCreationEvent::NAME);
         $packingSlips = $this->mapper->map($entity);
 
         if (0 === count($packingSlips)) {
@@ -76,7 +76,7 @@ class CreatePackingSlipEventListener
         }
         foreach ($packingSlips as $packingSlip) {
             $afterPackingSlipCreationEvent = new AfterPackingSlipCreationEvent($packingSlip);
-            $this->eventDispatcher->dispatch(AfterPackingSlipCreationEvent::NAME, $afterPackingSlipCreationEvent);
+            $this->eventDispatcher->dispatch($afterPackingSlipCreationEvent, AfterPackingSlipCreationEvent::NAME);
             if ($packingSlip = $afterPackingSlipCreationEvent->getPackingSlip()) {
                 $this->entityManager->persist($packingSlip);
             }

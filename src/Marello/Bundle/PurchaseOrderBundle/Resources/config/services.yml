@@ -1,3 +1,6 @@
+imports:
+    - { resource: controllers.yml }
+
 services:
     marello_purchaseorder.processor.note_activity_processor:
         class: Marello\Bundle\PurchaseOrderBundle\Processor\NoteActivityProcessor

@@ -61,7 +61,7 @@
 {% block marello_inventory_inventorylevel_collection_widget %}
     {% import _self as fields %}
 
-    {% spaceless %}
+    {% apply spaceless %}
         {% set widgetContainerAttributes = block('widget_container_attributes') %}
         {% if prototype is defined %}
             {% set prototype_html = fields.marello_inventory_inventorylevel_collection_item_prototype(form, widgetContainerAttributes) %}
@@ -92,7 +92,7 @@
                 </table>
             </div>
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
 {% block marello_inventory_inventorybatch_widget %}
@@ -162,7 +162,7 @@
 {% block marello_inventory_inventorybatch_collection_widget %}
     {% import _self as fields %}
 
-    {% spaceless %}
+    {% apply spaceless %}
         {% set widgetContainerAttributes = block('widget_container_attributes') %}
         {% if prototype is defined %}
             {% set prototype_html = fields.marello_inventory_inventorybatch_collection_item_prototype(form, widgetContainerAttributes) %}
@@ -198,5 +198,5 @@
                 <a class="btn marello-add-line-item" data-container=".marello-item-collection tbody" href="javascript: void(0);"><i class="fa-plus"></i>{{ 'marello.layout.add_entity'|trans({'%entityName%': 'marello.inventory.inventorybatch.entity_label'|trans}) }}</a>
             {% endif %}
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}

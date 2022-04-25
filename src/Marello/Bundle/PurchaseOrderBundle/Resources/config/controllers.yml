@@ -1,0 +1,12 @@
+services:
+    _defaults:
+        public: true
+
+    Marello\Bundle\PurchaseOrderBundle\Controller\PurchaseOrderController:
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: marello_purchase_order.form.handler.purchase_order_create, key: Marello\Bundle\PurchaseOrderBundle\Form\Handler\PurchaseOrderCreateHandler }
+            - { name: container.service_subscriber, id: marello_purchase_order.form.handler.purchase_order_update, key: Marello\Bundle\PurchaseOrderBundle\Form\Handler\PurchaseOrderUpdateHandler }
+            - { name: container.service_subscriber, id: oro_currency.helper.currency_name, key: Oro\Bundle\CurrencyBundle\Utils\CurrencyNameHelper }

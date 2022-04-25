@@ -1,4 +1,4 @@
-{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import '@OroUI/macros.html.twig' as UI %}
 {% if marello_entity_has_attribute(entity, 'image') %}
     {% set productImage = 'bundles/marelloproduct/img/no_image_available.jpg' | imagine_filter('product_view') %}
     {% if entity.image is not null %}

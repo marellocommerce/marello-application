@@ -1,5 +1,5 @@
 {% if is_granted('EDIT', entity) %}
-    {% import 'OroUIBundle::macros.html.twig' as UI %}
+    {% import '@OroUI/macros.html.twig' as UI %}
     {{ UI.button({
         'path' : path('marello_sales_config_saleschannel', { 'id': entity.id }),
         'label': 'oro.config.menu.system_configuration.label'|trans,

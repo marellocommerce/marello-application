@@ -104,6 +104,6 @@ class AvailablePaymentMethodsFormChangesProvider implements FormChangesProviderI
     {
         return $this
             ->twig
-            ->render('MarelloPaymentBundle:Form:paymentMethodSelector.html.twig', ['form' => $formView]);
+            ->render('@MarelloPayment/Form/paymentMethodSelector.html.twig', ['form' => $formView]);
     }
 }

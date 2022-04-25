@@ -1,3 +1,6 @@
+imports:
+    - { resource: controllers.yml }
+
 services:
     marello_pdf.factory.pdf_writer:
         class: 'Marello\Bundle\PdfBundle\Factory\PdfWriterFactory'

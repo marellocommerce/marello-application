@@ -127,8 +127,8 @@ class InventoryLevelType extends AbstractType
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         $this->eventDispatcher->dispatch(
-            InventoryLevelFinishFormViewEvent::NAME,
-            new InventoryLevelFinishFormViewEvent($view)
+            new InventoryLevelFinishFormViewEvent($view),
+            InventoryLevelFinishFormViewEvent::NAME
         );
         $vars = $view->vars;
         $value = $vars['value'];

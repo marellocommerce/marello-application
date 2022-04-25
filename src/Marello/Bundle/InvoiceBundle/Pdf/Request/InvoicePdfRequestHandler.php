@@ -109,7 +109,7 @@ class InvoicePdfRequestHandler implements PdfRequestHandlerInterface
             ->getParams($entity, [ConfigValuesProvider::SCOPE_IDENTIFIER_KEY => $entity->getSalesChannel()])
         ;
         $pdf = $this->renderer
-            ->render('MarelloInvoiceBundle:Pdf:invoice.html.twig', $params)
+            ->render('@MarelloInvoice/Pdf/invoice.html.twig', $params)
         ;
 
         $response->setContent($pdf);

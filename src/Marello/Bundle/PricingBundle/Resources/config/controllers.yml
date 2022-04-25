@@ -1,0 +1,10 @@
+services:
+    _defaults:
+        public: true
+
+    Marello\Bundle\PricingBundle\Controller\PricingController:
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: marello_productprice.pricing.provider.currency_provider, key: Marello\Bundle\PricingBundle\Provider\CurrencyProvider }

@@ -1069,11 +1069,11 @@ class Product extends ExtendProduct implements
     public function __toString()
     {
         try {
-            if ($this->getDefaultName()) {
-                return (string) $this->getDefaultName();
-            } else {
+//            if ($this->getDefaultName()) { // weedizp2
+//                return (string) $this->getDefaultName();
+//            } else {
                 return (string) $this->sku;
-            }
+//            }
         } catch (\LogicException $e) {
             return (string) $this->sku;
         }
@@ -1518,10 +1518,11 @@ class Product extends ExtendProduct implements
     public function prePersist()
     {
         $this->createdAt = new \DateTime('now', new \DateTimeZone('UTC'));
-        if (!$this->getDefaultName()) {
-            throw new \RuntimeException(sprintf('Product %s has to have a default name', $this->getSku()));
-        }
-        $this->denormalizedDefaultName = $this->getDefaultName()->getString();
+//        if (!$this->getDefaultName()) { // weedizp2
+//            throw new \RuntimeException(sprintf('Product %s has to have a default name', $this->getSku()));
+//        }
+//        $this->denormalizedDefaultName = $this->getDefaultName()->getString();
+        $this->denormalizedDefaultName = 'weedizp';
     }
 
     /**
@@ -1530,9 +1531,10 @@ class Product extends ExtendProduct implements
     public function preUpdate()
     {
         $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
-        if (!$this->getDefaultName()) {
-            throw new \RuntimeException(sprintf('Product %s has to have a default name', $this->getSku()));
-        }
-        $this->denormalizedDefaultName = $this->getDefaultName()->getString();
+//        if (!$this->getDefaultName()) {
+//            throw new \RuntimeException(sprintf('Product %s has to have a default name', $this->getSku()));
+//        }
+//        $this->denormalizedDefaultName = $this->getDefaultName()->getString();
+        $this->denormalizedDefaultName = 'weedizp';
     }
 }

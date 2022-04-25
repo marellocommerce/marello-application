@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\Tests\Functional\Controller;
 
+use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository;
 use Symfony\Component\HttpFoundation\Response;
 
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
@@ -22,7 +23,7 @@ class PurchaseOrderControllerTest extends WebTestCase
         $this->initClient([], $this->generateBasicAuthHeader());
         $this->loadFixtures([LoadPurchaseOrderData::class]);
         $this->defaultWarehouse = $this->getContainer()
-            ->get('marello_inventory.repository.warehouse')
+            ->get(WarehouseRepository::class)
             ->getDefault();
     }
 

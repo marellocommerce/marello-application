@@ -1,0 +1,10 @@
+services:
+    _defaults:
+        public: true
+
+    Marello\Bundle\UPSBundle\Controller\AjaxUPSController:
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: marello_ups.connection.validator, key: Marello\Bundle\UPSBundle\Connection\Validator\UpsConnectionValidator }

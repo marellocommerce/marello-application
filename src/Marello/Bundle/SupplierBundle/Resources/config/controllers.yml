@@ -1,0 +1,11 @@
+services:
+    _defaults:
+        public: true
+
+    Marello\Bundle\SupplierBundle\Controller\SupplierController:
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: marello_supplier.form.handler.supplier, key: Marello\Bundle\SupplierBundle\Form\Handler\SupplierHandler }
+            - { name: container.service_subscriber, id: marello_supplier.provider.supplier, key: Marello\Bundle\SupplierBundle\Provider\SupplierProvider }

@@ -70,7 +70,7 @@ class DerivedPropertySetter
         $args->getEntityManager()->commit();
 
         foreach ($dispatch as $entity) {
-            $this->eventDispatcher->dispatch(DerivedPropertySetEvent::NAME, new DerivedPropertySetEvent($entity));
+            $this->eventDispatcher->dispatch(new DerivedPropertySetEvent($entity), DerivedPropertySetEvent::NAME);
         }
 
         $this->generate = [];
