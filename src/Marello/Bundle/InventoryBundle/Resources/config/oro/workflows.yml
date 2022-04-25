@@ -118,7 +118,7 @@ workflows:
                           array: $allocation.items
                           value: $.result.value
                           actions:
-                              - '@assign_value': [$.result.value.quantityConfirmed, $.result.value.quantity]
+                              - '@assign_value': [$.result.value.quantityConfirmed, 0]
                               - '@assign_value': [$.result.value.quantityRejected, $.result.value.quantity]
                 post_actions:
                     - '@call_service_method':
