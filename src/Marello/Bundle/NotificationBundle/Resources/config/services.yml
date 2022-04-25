@@ -1,3 +1,6 @@
+imports:
+    - { resource: controllers.yml }
+
 services:
     marello_notification.email.send_processor:
         class: Marello\Bundle\NotificationBundle\Email\SendProcessor

@@ -3,6 +3,7 @@
 namespace Marello\Bundle\OrderBundle\Controller;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\AddressBundle\Form\Type\AddressType;
 use Marello\Bundle\OrderBundle\Entity\Order;
@@ -10,10 +11,12 @@ use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\OrderBundle\Form\Type\OrderType;
 use Marello\Bundle\OrderBundle\Form\Type\OrderUpdateType;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\UIBundle\Route\Router;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class OrderController extends AbstractController
 {
@@ -111,11 +114,11 @@ class OrderController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('session')->getFlashBag()->add(
+            $request->getSession()->getFlashBag()->add(
                 'success',
-                $this->get('translator')->trans('marello.order.messages.success.order.saved')
+                $this->container->get(TranslatorInterface::class)->trans('marello.order.messages.success.order.saved')
             );
-            $manager = $this->getDoctrine()->getManager();
+            $manager = $this->container->get(ManagerRegistry::class)->getManager();
 
             /*
              * Remove detached order items.
@@ -129,7 +132,7 @@ class OrderController extends AbstractController
             $manager->persist($order);
             $manager->flush();
 
-            return $this->get('oro_ui.router')->redirectAfterSave(
+            return $this->container->get(Router::class)->redirectAfterSave(
                 [
                     'route'      => 'marello_order_order_update',
                     'parameters' => [
@@ -159,7 +162,7 @@ class OrderController extends AbstractController
      *     requirements={"id"="\d+","typeId"="\d+"},
      *     name="marello_order_order_address"
      * )
-     * @Template("MarelloOrderBundle:Order/widget:address.html.twig")
+     * @Template("@MarelloOrder/Order/widget/address.html.twig")
      * @AclAncestor("marello_order_view")
      *
      * @param Request $request
@@ -182,7 +185,7 @@ class OrderController extends AbstractController
      *     requirements={"id"="\d+"},
      *     name="marello_order_order_updateaddress"
      * )
-     * @Template("MarelloOrderBundle:Order:widget/updateAddress.html.twig")
+     * @Template("@MarelloOrder/Order/widget/updateAddress.html.twig")
      * @AclAncestor("marello_order_update")
      *
      * @param Request $request
@@ -199,12 +202,24 @@ class OrderController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $this->container->get(ManagerRegistry::class)->getManager()->flush();
             $responseData['orderAddress'] = $address;
             $responseData['saved'] = true;
         }
 
         $responseData['form'] = $form->createView();
         return $responseData;
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                TranslatorInterface::class,
+                Router::class,
+                ManagerRegistry::class,
+            ]
+        );
     }
 }

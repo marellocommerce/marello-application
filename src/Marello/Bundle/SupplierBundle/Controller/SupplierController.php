@@ -2,7 +2,11 @@
 
 namespace Marello\Bundle\SupplierBundle\Controller;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\AddressBundle\Form\Type\AddressType;
+use Marello\Bundle\SupplierBundle\Form\Handler\SupplierHandler;
+use Marello\Bundle\SupplierBundle\Provider\SupplierProvider;
+use Oro\Bundle\UIBundle\Route\Router;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,6 +18,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SupplierController extends AbstractController
 {
@@ -57,11 +62,12 @@ class SupplierController extends AbstractController
      * @Template
      * @AclAncestor("marello_supplier_create")
      *
+     * @param Request $request
      * @return array
      */
-    public function createAction()
+    public function createAction(Request $request)
     {
-        return $this->update(new Supplier());
+        return $this->update($request, new Supplier());
     }
 
     /**
@@ -75,32 +81,32 @@ class SupplierController extends AbstractController
      * @AclAncestor("marello_supplier_update")
      *
      * @param Supplier $supplier
-     *
+     * @param Request $request
      * @return array
      */
-    public function updateAction(Supplier $supplier)
+    public function updateAction(Supplier $supplier, Request $request)
     {
-        return $this->update($supplier);
+        return $this->update($request, $supplier);
     }
 
     /**
      * Handles supplier updates and creation.
      *
-     * @param Supplier   $supplier
-     *
+     * @param Request $request
+     * @param Supplier $supplier
      * @return array
      */
-    protected function update(Supplier $supplier = null)
+    protected function update(Request $request, Supplier $supplier = null)
     {
-        $handler = $this->get('marello_supplier.form.handler.supplier');
+        $handler = $this->container->get(SupplierHandler::class);
         
         if ($handler->process($supplier)) {
-            $this->get('session')->getFlashBag()->add(
+            $request->getSession()->getFlashBag()->add(
                 'success',
-                $this->get('translator')->trans('marello.supplier.messages.success.supplier.saved')
+                $this->container->get(TranslatorInterface::class)->trans('marello.supplier.messages.success.supplier.saved')
             );
             
-            return $this->get('oro_ui.router')->redirectAfterSave(
+            return $this->container->get(Router::class)->redirectAfterSave(
                 [
                     'route'      => 'marello_supplier_supplier_update',
                     'parameters' => [
@@ -130,7 +136,7 @@ class SupplierController extends AbstractController
      *     requirements={"id"="\d+","typeId"="\d+"},
      *     name="marello_supplier_supplier_address"
      * )
-     * @Template("MarelloSupplierBundle:Supplier/widget:address.html.twig")
+     * @Template("@MarelloSupplier/Supplier/widget/address.html.twig")
      * @AclAncestor("marello_supplier_update")
      *
      * @param MarelloAddress $address
@@ -151,7 +157,7 @@ class SupplierController extends AbstractController
      *     requirements={"id"="\d+"},
      *     name="marello_supplier_supplier_updateaddress"
      * )
-     * @Template("MarelloSupplierBundle:Supplier:widget/updateAddress.html.twig")
+     * @Template("@MarelloSupplier/Supplier/widget/updateAddress.html.twig")
      * @AclAncestor("marello_supplier_update")
      *
      * @param Request $request
@@ -168,7 +174,7 @@ class SupplierController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $this->container->get(ManagerRegistry::class)->getManager()->flush();
             $responseData['supplierAddress'] = $address;
             $responseData['saved'] = true;
         }
@@ -190,9 +196,23 @@ class SupplierController extends AbstractController
     public function getSupplierDefaultDataAction(Request $request)
     {
         return new JsonResponse(
-            $this->get('marello_supplier.provider.supplier')->getSupplierDefaultDataById(
+            $this->container->get(SupplierProvider::class)->getSupplierDefaultDataById(
                 $request->query->get('supplier_id')
             )
+        );
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                SupplierHandler::class,
+                TranslatorInterface::class,
+                Router::class,
+                SupplierProvider::class,
+                ManagerRegistry::class,
+            ]
         );
     }
 }

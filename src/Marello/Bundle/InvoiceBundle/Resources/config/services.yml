@@ -1,3 +1,6 @@
+imports:
+    - { resource: controllers.yml }
+
 parameters:
     marello_invoice.pdf.document.total_rows:
         a4: 36

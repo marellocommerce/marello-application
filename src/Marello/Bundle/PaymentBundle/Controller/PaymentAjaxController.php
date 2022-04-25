@@ -3,6 +3,7 @@
 namespace Marello\Bundle\PaymentBundle\Controller;
 
 use Marello\Bundle\LayoutBundle\Context\FormChangeContext;
+use Marello\Bundle\LayoutBundle\Provider\CompositeFormChangesProvider;
 use Marello\Bundle\PaymentBundle\Entity\Payment;
 use Marello\Bundle\PaymentBundle\Form\Type\PaymentCreateType;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -46,7 +47,7 @@ class PaymentAjaxController extends AbstractController
             ]
         );
 
-        $formChangesProvider = $this->get('marello_layout.provider.form_changes_data.composite');
+        $formChangesProvider = $this->container->get(CompositeFormChangesProvider::class);
         $formChangesProvider
             ->setRequiredDataClass(Payment::class)
             ->setRequiredFields($request->get('updateFields', []))
@@ -62,5 +63,15 @@ class PaymentAjaxController extends AbstractController
     protected function getType(Payment $payment)
     {
         return $this->createForm(PaymentCreateType::class, $payment);
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                CompositeFormChangesProvider::class,
+            ]
+        );
     }
 }

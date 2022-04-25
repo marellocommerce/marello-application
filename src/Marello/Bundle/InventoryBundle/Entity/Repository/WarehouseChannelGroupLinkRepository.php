@@ -2,11 +2,11 @@
 
 namespace Marello\Bundle\InventoryBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
-class WarehouseChannelGroupLinkRepository extends EntityRepository
+class WarehouseChannelGroupLinkRepository extends ServiceEntityRepository
 {
     public function findSystemLink(AclHelper $aclHelper)
     {

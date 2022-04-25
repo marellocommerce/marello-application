@@ -1,3 +1,6 @@
+imports:
+    - { resource: controllers.yml }
+
 services:
     marello_productprice.pricing.provider.currency_provider:
         class: Marello\Bundle\PricingBundle\Provider\CurrencyProvider

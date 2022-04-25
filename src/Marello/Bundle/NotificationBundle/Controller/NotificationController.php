@@ -16,7 +16,7 @@ class NotificationController extends AbstractController
      *     name="marello_notification_thread_view",
      *     requirements={"id"="\d+"}
      * )
-     * @Template("MarelloNotificationBundle:Notification/Thread:notificationItem.html.twig")
+     * @Template("@MarelloNotification/Notification/Thread/notificationItem.html.twig")
      * @AclAncestor("marello_notification_notification_view")
      * @param Notification $entity
      * @return array

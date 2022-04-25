@@ -1,3 +1,6 @@
+imports:
+    - { resource: controllers.yml }
+
 parameters:
     marello_payment_term.method.identifier_prefix.payment_term: 'payment_term'
     marello_payment_term.integration.channel.type: 'payment_term'

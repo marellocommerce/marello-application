@@ -42,8 +42,8 @@ class InventoryManager implements InventoryManagerInterface
     public function updateInventoryLevel(InventoryUpdateContext $context)
     {
         $this->eventDispatcher->dispatch(
-            InventoryUpdateEvent::INVENTORY_UPDATE_BEFORE,
-            new InventoryUpdateEvent($context)
+            new InventoryUpdateEvent($context),
+            InventoryUpdateEvent::INVENTORY_UPDATE_BEFORE
         );
 
         if (!$this->contextValidator->validateContext($context)) {
@@ -104,8 +104,8 @@ class InventoryManager implements InventoryManagerInterface
         $context->setInventoryLevel($updatedLevel);
 
         $this->eventDispatcher->dispatch(
-            InventoryUpdateEvent::INVENTORY_UPDATE_AFTER,
-            new InventoryUpdateEvent($context)
+            new InventoryUpdateEvent($context),
+            InventoryUpdateEvent::INVENTORY_UPDATE_AFTER
         );
     }
     

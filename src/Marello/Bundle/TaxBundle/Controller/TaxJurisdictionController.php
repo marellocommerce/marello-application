@@ -4,6 +4,7 @@ namespace Marello\Bundle\TaxBundle\Controller;
 
 use Marello\Bundle\TaxBundle\Entity\TaxJurisdiction;
 use Marello\Bundle\TaxBundle\Form\Type\TaxJurisdictionType;
+use Oro\Bundle\FormBundle\Model\UpdateHandlerFacade;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -11,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class TaxJurisdictionController
@@ -64,7 +66,7 @@ class TaxJurisdictionController extends AbstractController
      *     path="/create",
      *     name="marello_tax_taxjurisdiction_create"
      * )
-     * @Template("MarelloTaxBundle:TaxJurisdiction:update.html.twig")
+     * @Template("@MarelloTax/TaxJurisdiction/update.html.twig")
      * @Acl(
      *      id="marello_tax_taxjurisdiction_create",
      *      type="entity",
@@ -110,11 +112,22 @@ class TaxJurisdictionController extends AbstractController
      */
     protected function update(TaxJurisdiction $taxJurisdiction, Request $request)
     {
-        return $this->get('oro_form.update_handler')->update(
+        return $this->container->get(UpdateHandlerFacade::class)->update(
             $taxJurisdiction,
             $this->createForm(TaxJurisdictionType::class, $taxJurisdiction),
-            $this->get('translator')->trans('marello.tax.messages.success.taxjurisdiction.saved'),
+            $this->container->get(TranslatorInterface::class)->trans('marello.tax.messages.success.taxjurisdiction.saved'),
             $request
+        );
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                UpdateHandlerFacade::class,
+                TranslatorInterface::class,
+            ]
         );
     }
 }

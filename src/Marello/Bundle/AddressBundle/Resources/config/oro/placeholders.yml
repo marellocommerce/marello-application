@@ -7,4 +7,4 @@ placeholders:
 
     items:
         marello_address_item_map:
-            template: MarelloAddressBundle:Address:addressMap.html.twig
+            template: '@@MarelloAddress/Address/addressMap.html.twig'

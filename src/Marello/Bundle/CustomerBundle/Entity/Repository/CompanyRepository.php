@@ -2,11 +2,11 @@
 
 namespace Marello\Bundle\CustomerBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Marello\Bundle\CustomerBundle\Entity\Company;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
-class CompanyRepository extends EntityRepository
+class CompanyRepository extends ServiceEntityRepository
 {
     /**
      * @param string $name
@@ -23,7 +23,7 @@ class CompanyRepository extends EntityRepository
      * @param AclHelper $aclHelper
      * @return array
      */
-    public function getChildrenIds($companyId, AclHelper $aclHelper = null) // weedizp3
+    public function getChildrenIds($companyId, AclHelper $aclHelper = null)
     {
         $qb = $this->createQueryBuilder('company');
         $qb->select('company.id as company_id')

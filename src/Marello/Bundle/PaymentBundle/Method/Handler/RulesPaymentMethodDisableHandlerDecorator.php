@@ -5,38 +5,16 @@ namespace Marello\Bundle\PaymentBundle\Method\Handler;
 use Marello\Bundle\PaymentBundle\Entity\Repository\PaymentMethodsConfigsRuleRepository;
 use Marello\Bundle\PaymentBundle\Method\Provider\PaymentMethodProviderInterface;
 use Marello\Bundle\PaymentBundle\Entity\PaymentMethodsConfigsRule;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class RulesPaymentMethodDisableHandlerDecorator implements PaymentMethodDisableHandlerInterface
 {
-    /**
-     * @var PaymentMethodDisableHandlerInterface
-     */
-    private $handler;
-
-    /**
-     * @var PaymentMethodsConfigsRuleRepository
-     */
-    private $repository;
-
-    /**
-     * @var PaymentMethodProviderInterface
-     */
-    private $paymentMethodProvider;
-
-    /**
-     * @param PaymentMethodDisableHandlerInterface $handler
-     * @param PaymentMethodsConfigsRuleRepository  $repository
-     * @param PaymentMethodProviderInterface       $paymentMethodProvider
-     */
     public function __construct(
-        PaymentMethodDisableHandlerInterface $handler,
-        PaymentMethodsConfigsRuleRepository $repository,
-        PaymentMethodProviderInterface $paymentMethodProvider
-    ) {
-        $this->handler = $handler;
-        $this->repository = $repository;
-        $this->paymentMethodProvider = $paymentMethodProvider;
-    }
+        private PaymentMethodDisableHandlerInterface $handler,
+        private PaymentMethodsConfigsRuleRepository $repository,
+        private PaymentMethodProviderInterface $paymentMethodProvider,
+        private AclHelper $aclHelper
+    ) {}
 
     /**
      * {@inheritDoc}
@@ -44,7 +22,7 @@ class RulesPaymentMethodDisableHandlerDecorator implements PaymentMethodDisableH
     public function handleMethodDisable($methodId)
     {
         $this->handler->handleMethodDisable($methodId);
-        $paymentMethodsConfigsRule = $this->repository->getEnabledRulesByMethod($methodId);
+        $paymentMethodsConfigsRule = $this->repository->getEnabledRulesByMethod($methodId, $this->aclHelper);
         foreach ($paymentMethodsConfigsRule as $configRule) {
             if (!$this->configHasEnabledMethod($configRule, $methodId)) {
                 $rule = $configRule->getRule();

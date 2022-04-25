@@ -1,4 +1,4 @@
-{% import 'MarelloProductBundle::macros.html.twig' as productMacro %}
+{% import '@MarelloProduct/macros.html.twig' as productMacro %}
 {% for key, value in item.value %}
     <div class="oro-datagrid">
         <span class="title"><b>{{ item.label|trans }} ({{ key }})</b></span>

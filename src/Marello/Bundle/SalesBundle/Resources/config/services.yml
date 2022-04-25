@@ -1,8 +1,12 @@
+imports:
+    - { resource: controllers.yml }
+
 services:
     marello_sales.form.event_listener.default_sales_channel_subscriber:
         class: Marello\Bundle\SalesBundle\Form\EventListener\DefaultSalesChannelSubscriber
         arguments:
             - '@doctrine.orm.entity_manager'
+            - '@oro_security.acl_helper'
 
     marello_sales.form.event_listener.sales_channel_form_subscriber:
         class: Marello\Bundle\SalesBundle\Form\EventListener\SalesChannelFormSubscriber
@@ -13,6 +17,7 @@ services:
         class: Marello\Bundle\SalesBundle\Provider\ChannelProvider
         arguments:
             - '@doctrine.orm.entity_manager'
+            - '@oro_security.acl_helper'
 
     marello_sales.provider.basic_sales_channels_choices:
         class: Marello\Bundle\SalesBundle\Provider\BasicSalesChannelsChoicesProvider
@@ -84,18 +89,21 @@ services:
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: system_group_saleschannels, acl_resource: marello_product_view }
 
-    marello_sales.repository.sales_channel:
-        class: 'Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelRepository'
+    Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelRepository:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\SalesBundle\Entity\SalesChannel'
-        calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
         tags:
             - { name: doctrine.repository_service }
 
-    marello_sales.repository.sales_channel_group:
-        class: 'Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelGroupRepository'
+    Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelTypeRepository:
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'Marello\Bundle\SalesBundle\Entity\SalesChannelType'
+        tags:
+            - { name: doctrine.repository_service }
+
+    Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelGroupRepository:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\SalesBundle\Entity\SalesChannelGroup'
@@ -106,6 +114,7 @@ services:
         class: Marello\Bundle\SalesBundle\Twig\SalesExtension
         arguments:
             - '@doctrine'
+            - '@oro_security.acl_helper'
         tags:
             - { name: twig.extension }
 

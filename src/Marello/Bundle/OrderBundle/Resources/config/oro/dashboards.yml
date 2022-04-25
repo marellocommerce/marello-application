@@ -27,17 +27,17 @@ dashboards:
                     data_provider: '@marello_order.provider.order_statistic.currency_number.processor->getBigNumberValues($widgetOptions$, getTotalRevenueValues)'
                     label:         marello.order.dashboard.order_statistics.revenue.label
                     acl:           marello_order_view
-                    template:      OroDashboardBundle:Dashboard:bigNumberSubwidget.html.twig
+                    template:      '@OroDashboard/Dashboard/bigNumberSubwidget.html.twig'
                 average_order_value:
                     data_provider: '@marello_order.provider.order_statistic.currency_number.processor->getBigNumberValues($widgetOptions$, getAverageOrderValues)'
                     label:         marello.order.dashboard.order_statistics.average_order_value.label
                     acl:           marello_order_view
-                    template:      OroDashboardBundle:Dashboard:bigNumberSubwidget.html.twig
+                    template:      '@OroDashboard/Dashboard/bigNumberSubwidget.html.twig'
                 orders_number:
                     data_provider: '@oro_dashboard.provider.big_number.processor->getBigNumberValues($widgetOptions$, marello-order, getTotalOrdersNumberValues, integer)'
                     label:         marello.order.dashboard.order_statistics.orders_number.label
                     acl:           marello_order_view
-                    template:      OroDashboardBundle:Dashboard:bigNumberSubwidget.html.twig
+                    template:      '@OroDashboard/Dashboard/bigNumberSubwidget.html.twig'
             configuration:
                 dateRange:
                     type: Oro\Bundle\DashboardBundle\Form\Type\WidgetDateRangeType
@@ -97,12 +97,12 @@ dashboards:
                     data_provider: '@marello_order.provider.order_item_statistic_provider->getTopProductsByRevenue($widgetOptions$)'
                     label:         marello.order.dashboard.hero_products.total_product_revenue.label
                     acl:           marello_order_view
-                    template:      MarelloOrderBundle:Dashboard:topProductsByRevenue.html.twig
+                    template:      '@MarelloOrder/Dashboard/topProductsByRevenue.html.twig'
                 total_items_sold:
                     data_provider: '@marello_order.provider.order_item_statistic_provider->getTopProductsByItemsSold($widgetOptions$)'
                     label:         marello.order.dashboard.hero_products.total_items_sold.label
                     acl:           marello_order_view
-                    template:      MarelloOrderBundle:Dashboard:topProductsByItemsSold.html.twig
+                    template:      '@MarelloOrder/Dashboard/topProductsByItemsSold.html.twig'
             configuration:
                 dateRange:
                     type: Oro\Bundle\DashboardBundle\Form\Type\WidgetDateRangeType

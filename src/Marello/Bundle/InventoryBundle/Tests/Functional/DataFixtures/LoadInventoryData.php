@@ -7,6 +7,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
 use Marello\Bundle\InventoryBundle\Model\BalancedInventory\BalancedInventoryHandler;
@@ -83,7 +84,7 @@ class LoadInventoryData extends AbstractFixture implements DependentFixtureInter
         }
 
         $this->defaultWarehouse = $this->container
-            ->get('marello_inventory.repository.warehouse')
+            ->get(WarehouseRepository::class)
             ->getDefault();
 
         $this->loadProductInventory();

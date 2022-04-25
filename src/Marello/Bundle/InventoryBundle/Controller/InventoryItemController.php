@@ -4,6 +4,7 @@ namespace Marello\Bundle\InventoryBundle\Controller;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Form\Type\InventoryItemType;
+use Oro\Bundle\FormBundle\Model\UpdateHandlerFacade;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -11,6 +12,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class InventoryItemController extends AbstractController
 {
@@ -19,7 +21,7 @@ class InventoryItemController extends AbstractController
      *     path="/",
      *     name="marello_inventory_inventory_index"
      * )
-     * @Template("MarelloInventoryBundle:Inventory:index.html.twig")
+     * @Template("@MarelloInventory/Inventory/index.html.twig")
      * @AclAncestor("marello_inventory_inventory_view")
      */
     public function indexAction()
@@ -35,7 +37,7 @@ class InventoryItemController extends AbstractController
      *     requirements={"id"="\d+"},
      *     name="marello_inventory_inventory_view"
      * )
-     * @Template("MarelloInventoryBundle:Inventory:view.html.twig")
+     * @Template("@MarelloInventory/Inventory/view.html.twig")
      * @Acl(
      *      id="marello_inventory_inventory_view",
      *      type="entity",
@@ -60,7 +62,7 @@ class InventoryItemController extends AbstractController
      *     requirements={"id"="\d+"},
      *     name="marello_inventory_inventory_update"
      * )
-     * @Template("MarelloInventoryBundle:Inventory:update.html.twig")
+     * @Template("@MarelloInventory/Inventory/update.html.twig")
      * @Acl(
      *      id="marello_inventory_inventory_update",
      *      type="entity",
@@ -74,10 +76,10 @@ class InventoryItemController extends AbstractController
      */
     public function updateAction(InventoryItem $inventoryItem, Request $request)
     {
-        $result = $this->get('oro_form.update_handler')->update(
+        $result = $this->container->get(UpdateHandlerFacade::class)->update(
             $inventoryItem,
             $this->createForm(InventoryItemType::class, $inventoryItem),
-            $this->get('translator')->trans('marello.inventory.messages.success.inventoryitem.saved'),
+            $this->container->get(TranslatorInterface::class)->trans('marello.inventory.messages.success.inventoryitem.saved'),
             $request
         );
         
@@ -91,7 +93,7 @@ class InventoryItemController extends AbstractController
      *     name="marello_inventory_widget_info",
      *     requirements={"id"="\d+"}
      * )
-     * @Template("MarelloInventoryBundle:Inventory/widget:info.html.twig")
+     * @Template("@MarelloInventory/Inventory/widget/info.html.twig")
      *
      * @param InventoryItem $inventoryItem
      *
@@ -111,7 +113,7 @@ class InventoryItemController extends AbstractController
      *     name="marello_inventory_widget_datagrid",
      *     requirements={"id"="\d+"}
      * )
-     * @Template("MarelloInventoryBundle:Inventory/widget:datagrid.html.twig")
+     * @Template("@MarelloInventory/Inventory/widget/datagrid.html.twig")
      *
      * @param InventoryItem $inventoryItem
      *
@@ -122,5 +124,16 @@ class InventoryItemController extends AbstractController
         return [
             'item' => $inventoryItem,
         ];
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                UpdateHandlerFacade::class,
+                TranslatorInterface::class,
+            ]
+        );
     }
 }

@@ -3,6 +3,7 @@
 namespace Marello\Bundle\RefundBundle\Controller;
 
 use Marello\Bundle\LayoutBundle\Context\FormChangeContext;
+use Marello\Bundle\LayoutBundle\Provider\CompositeFormChangesProvider;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\RefundBundle\Entity\Refund;
 use Marello\Bundle\RefundBundle\Form\Type\RefundType;
@@ -49,7 +50,7 @@ class RefundAjaxController extends AbstractController
             ]
         );
 
-        $formChangesProvider = $this->get('marello_layout.provider.form_changes_data.composite');
+        $formChangesProvider = $this->container->get(CompositeFormChangesProvider::class);
         $formChangesProvider
             ->setRequiredDataClass(Refund::class)
             ->setRequiredFields($request->get('updateFields', []))
@@ -87,7 +88,7 @@ class RefundAjaxController extends AbstractController
             ]
         );
 
-        $formChangesProvider = $this->get('marello_layout.provider.form_changes_data.composite');
+        $formChangesProvider = $this->container->get(CompositeFormChangesProvider::class);
         $formChangesProvider
             ->setRequiredDataClass(Refund::class)
             ->setRequiredFields($request->get('updateFields', []))
@@ -103,5 +104,15 @@ class RefundAjaxController extends AbstractController
     protected function getType(Refund $refund)
     {
         return $this->createForm(RefundType::class, $refund);
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                CompositeFormChangesProvider::class,
+            ]
+        );
     }
 }

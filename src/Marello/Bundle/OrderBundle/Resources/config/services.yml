@@ -1,3 +1,6 @@
+imports:
+    - { resource: controllers.yml }
+
 services:
     marello_order.listener.datagrid.order_grid_address_filter_listener:
         class: Marello\Bundle\OrderBundle\EventListener\Datagrid\OrderGridAddressFilterListener
@@ -77,8 +80,9 @@ services:
     marello_order.provider.order_statistic_provider:
         class: 'Marello\Bundle\OrderBundle\Provider\OrderDashboardStatisticProvider'
         arguments:
-            - '@marello_order.repository.order'
+            - '@Marello\Bundle\OrderBundle\Entity\Repository\OrderRepository'
             - '@oro_dashboard.provider.big_number.date_helper'
+            - '@oro_security.acl_helper'
         tags:
             - { name: oro_dashboard.big_number.provider, alias: marello-order }
 
@@ -99,9 +103,10 @@ services:
         class: 'Marello\Bundle\OrderBundle\Provider\OrderItem\OrderItemDashboardStatisticProvider'
         public: true
         arguments:
-            - '@marello_order.repository.order_item'
-            - '@marello_order.repository.order'
-            - '@marello_product.repository.product'
+            - '@Marello\Bundle\OrderBundle\Entity\Repository\OrderItemRepository'
+            - '@Marello\Bundle\OrderBundle\Entity\Repository\OrderRepository'
+            - '@Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository'
+            - '@oro_security.acl_helper'
 
     marello_order.provider.form_changes.items:
         class: Marello\Bundle\OrderBundle\Provider\OrderItem\OrderItemFormChangesProvider
@@ -257,18 +262,14 @@ services:
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-order-items, method: onBuildBefore }
 
-    marello_order.repository.order:
-        class: 'Marello\Bundle\OrderBundle\Entity\Repository\OrderRepository'
+    Marello\Bundle\OrderBundle\Entity\Repository\OrderRepository:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\OrderBundle\Entity\Order'
-        calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
         tags:
             - { name: doctrine.repository_service }
 
-    marello_order.repository.order_item:
-        class: 'Marello\Bundle\OrderBundle\Entity\Repository\OrderItemRepository'
+    Marello\Bundle\OrderBundle\Entity\Repository\OrderItemRepository:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\OrderBundle\Entity\OrderItem'

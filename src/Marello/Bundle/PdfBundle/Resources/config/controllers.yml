@@ -1,0 +1,10 @@
+services:
+    _defaults:
+        public: true
+
+    Marello\Bundle\PdfBundle\Controller\DownloadController:
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: marello_pdf.request_handler.composite, key: Marello\Bundle\PdfBundle\Request\CompositePdfRequestHandler }

@@ -1,3 +1,6 @@
+imports:
+    - { resource: controllers.yml }
+
 services:
     # Autocomplete search handler
     marello_supplier.supplier.form.autocomplete.search_handler:

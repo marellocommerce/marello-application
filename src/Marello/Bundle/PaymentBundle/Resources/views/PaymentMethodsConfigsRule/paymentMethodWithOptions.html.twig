@@ -1,6 +1,6 @@
-{% spaceless %}
+{% apply spaceless %}
     {{ marello_get_payment_method_label(methodData.identifier)|trans }}<br>
     {% for name, value in methodData.options %}
         {{ name ~ ': ' ~ value }}<br>
     {% endfor %}
-{% endspaceless %}
+{% endapply %}

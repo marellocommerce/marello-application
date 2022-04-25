@@ -5,6 +5,7 @@ namespace Marello\Bundle\SalesBundle\Twig;
 use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelRepository;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -17,7 +18,10 @@ class SalesExtension extends AbstractExtension
      */
     private $salesChannelRepository;
 
-    public function __construct(private ManagerRegistry $registry) {}
+    public function __construct(
+        private ManagerRegistry $registry,
+        private AclHelper $aclHelper
+    ) {}
 
     /**
      * @return array
@@ -41,7 +45,7 @@ class SalesExtension extends AbstractExtension
      */
     public function checkActiveChannels()
     {
-        if ($this->getRepository()->getActiveChannels()) {
+        if ($this->getRepository()->getActiveChannels($this->aclHelper)) {
             return true;
         }
         

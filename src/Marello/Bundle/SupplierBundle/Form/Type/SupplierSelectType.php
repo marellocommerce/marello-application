@@ -23,8 +23,8 @@ class SupplierSelectType extends AbstractType
                 'grid_parameters'       => [ 'isActive' => 1],
                 'configs'               => [
                     'placeholder'               => 'marello.supplier.form.choose_supplier',
-                    'result_template_twig'      => 'MarelloSupplierBundle:Supplier:Autocomplete/result.html.twig',
-                    'selection_template_twig'   => 'MarelloSupplierBundle:Supplier:Autocomplete/selection.html.twig',
+                    'result_template_twig'      => '@MarelloSupplier/Supplier/Autocomplete/result.html.twig',
+                    'selection_template_twig'   => '@MarelloSupplier/Supplier/Autocomplete/selection.html.twig',
                 ],
             ]
         );

@@ -104,7 +104,7 @@ class OrderPaymentContextFactory implements PaymentContextFactoryInterface
         }
         $paymentContext = $paymentContextBuilder->getResult();
         $event = new OrderPaymentContextBuildingEvent($paymentContext);
-        $this->eventDispatcher->dispatch(OrderPaymentContextBuildingEvent::NAME, $event);
+        $this->eventDispatcher->dispatch($event,OrderPaymentContextBuildingEvent::NAME);
         $results[] = $event->getPaymentContext();
 
         return $results;

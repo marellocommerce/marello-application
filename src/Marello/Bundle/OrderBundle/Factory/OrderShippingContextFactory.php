@@ -115,7 +115,7 @@ class OrderShippingContextFactory implements ShippingContextFactoryInterface
         }
         $shippingContext = $shippingContextBuilder->getResult();
         $event = new OrderShippingContextBuildingEvent($shippingContext);
-        $this->eventDispatcher->dispatch(OrderShippingContextBuildingEvent::NAME, $event);
+        $this->eventDispatcher->dispatch($event, OrderShippingContextBuildingEvent::NAME);
         $results[] = $event->getShippingContext();
 
         return $results;

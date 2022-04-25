@@ -22,8 +22,8 @@ class CustomerSelectType extends AbstractType
                 'create_enabled'     => true,
                 'configs'            => [
                     'placeholder' => 'marello.customer.form.choose',
-                    'result_template_twig' => 'MarelloCustomerBundle:Customer:Autocomplete/result.html.twig',
-                    'selection_template_twig' => 'MarelloCustomerBundle:Customer:Autocomplete/selection.html.twig',
+                    'result_template_twig' => '@MarelloCustomer/Customer/Autocomplete/result.html.twig',
+                    'selection_template_twig' => '@MarelloCustomer/Customer/Autocomplete/selection.html.twig',
                 ],
             ]
         );

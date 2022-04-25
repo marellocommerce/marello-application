@@ -2,13 +2,13 @@
 
 namespace Marello\Bundle\SalesBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Oro\Bundle\IntegrationBundle\Entity\Channel as IntegrationChannel;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
-class SalesChannelGroupRepository extends EntityRepository
+class SalesChannelGroupRepository extends ServiceEntityRepository
 {
     public function findSystemChannelGroup(AclHelper $aclHelper): SalesChannelGroup
     {

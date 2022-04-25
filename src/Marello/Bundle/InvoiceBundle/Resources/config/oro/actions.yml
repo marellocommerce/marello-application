@@ -68,7 +68,7 @@ operations:
             options:
                 width: 2000
             show_dialog: true
-            template: MarelloPaymentBundle:Action:payment_popup.html.twig
+            template: '@MarelloPayment/Action/payment_popup.html.twig'
         preactions:
             - '@call_service_method':
                   service: marello_invoice.provider.invoice_paid_amount

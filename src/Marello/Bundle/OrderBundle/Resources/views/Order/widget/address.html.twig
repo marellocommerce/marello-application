@@ -1,5 +1,5 @@
-{% import 'OroUIBundle::macros.html.twig' as UI %}
-{% import 'MarelloAddressBundle::macros.html.twig' as address %}
+{% import '@OroUI/macros.html.twig' as UI %}
+{% import '@MarelloAddress/macros.html.twig' as address %}
 {% set label = 'marello.order.'~ addressType ~'_address.label' %}
 <div class="widget-content" {{ UI.renderPageComponentAttributes({
     module: 'marelloaddress/js/app/components/address-component',

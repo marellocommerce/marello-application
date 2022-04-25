@@ -72,6 +72,6 @@ class OrderAddressFormChangesProvider implements FormChangesProviderInterface
     {
         return $this
             ->twig
-            ->render('MarelloOrderBundle:Form:customerAddressSelector.html.twig', ['form' => $formView]);
+            ->render('@MarelloOrder/Form/customerAddressSelector.html.twig', ['form' => $formView]);
     }
 }

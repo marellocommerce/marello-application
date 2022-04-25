@@ -132,8 +132,8 @@ class AvailableInventoryValidator extends ConstraintValidator
                 if ($violation === true) {
                     $event = new ProductAvailableInventoryValidationEvent($entity, $violation);
                     $this->eventDispatcher->dispatch(
-                        ProductAvailableInventoryValidationEvent::NAME,
-                        $event
+                        $event,
+                        ProductAvailableInventoryValidationEvent::NAME
                     );
                     $violation = $event->getViolation();
                 }

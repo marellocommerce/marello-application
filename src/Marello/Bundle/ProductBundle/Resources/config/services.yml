@@ -1,3 +1,6 @@
+imports:
+    - { resource: controllers.yml }
+
 services:
     # Autocomplete search handler
     marello_product.form.autocomplete.product.search_handler:
@@ -118,9 +121,7 @@ services:
         tags:
             - { name: marello_order.order_item_data_provider, type: product_unit, priority: 25 }
 
-
-    marello_product.repository.product:
-        class: 'Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository'
+    Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\ProductBundle\Entity\Product'
