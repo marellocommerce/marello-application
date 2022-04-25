@@ -35,6 +35,12 @@ class InventoryAllocationProvider
     /** @var ArrayCollection $allOrderItems */
     protected $allOrderItems;
 
+    /** @var array $allItems */
+    protected $allItems = [];
+
+    /** @var array $subAllocations */
+    protected $subAllocations = [];
+
     /**
      * InventoryAllocationProvider constructor.
      * @param DoctrineHelper $doctrineHelper
@@ -136,7 +142,7 @@ class InventoryAllocationProvider
      * @param OrderWarehouseResult $result
      * @param Allocation $allocation
      */
-    protected function createAllocationItems(OrderWarehouseResult $result, Allocation $allocation)
+    public function createAllocationItems(OrderWarehouseResult $result, Allocation $allocation)
     {
         $itemWithQty = $result->getItemsWithQuantity();
         foreach ($result->getOrderItems() as $item) {
@@ -155,6 +161,8 @@ class InventoryAllocationProvider
             $allocationItem->setQuantity($itemWithQty[$item->getProductSku()]);
             $allocation->addItem($allocationItem);
             $this->allOrderItems->add($orderItem);
+            $this->allItems[] = clone $allocationItem;
+            $this->subAllocations[] = $allocation;
         }
     }
 
@@ -164,6 +172,22 @@ class InventoryAllocationProvider
     public function getDoctrineHelper()
     {
         return $this->doctrineHelper;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAllItems()
+    {
+        return $this->allItems;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAllSubAllocations()
+    {
+        return $this->subAllocations;
     }
 
     /**
