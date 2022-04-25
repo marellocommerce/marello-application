@@ -88,7 +88,8 @@ services:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WFARuleType'
         arguments:
             - '@marelloenterprise_inventory.provider.wfa_strategy.choices'
-            - '@marelloenterprise_inventory.repository.wfa_rule'
+            - '@MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WFARuleRepository'
+            - '@oro_security.acl_helper'
         tags:
             - { name: form.type }
 
@@ -97,6 +98,7 @@ services:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Handler\WarehouseHandler'
         arguments:
             - '@doctrine.orm.entity_manager'
+            - '@oro_security.acl_helper'
         tags:
             - { name: oro_form.form.handler, alias: marelloenterprise_inventory.form_handler.warehouse }
 
@@ -104,5 +106,6 @@ services:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Handler\WarehouseGroupHandler'
         arguments:
             - '@doctrine.orm.entity_manager'
+            - '@oro_security.acl_helper'
         tags:
             - { name: oro_form.form.handler, alias: marelloenterprise_inventory.form_handler.warehousegroup }

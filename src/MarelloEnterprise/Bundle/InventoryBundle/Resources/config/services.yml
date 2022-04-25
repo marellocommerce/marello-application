@@ -1,3 +1,6 @@
+imports:
+    - { resource: controllers.yml }
+
 services:
     marelloenterprise_inventory.event_listener.default_warehouse_subscriber:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\DefaultWarehouseSubscriber'
@@ -10,6 +13,7 @@ services:
             - '%installed%'
             - '@translator.default'
             - '@session'
+            - '@oro_security.acl_helper'
         tags:
             - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\InventoryBundle\Entity\Warehouse', event: prePersist }
             - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\InventoryBundle\Entity\Warehouse', event: preRemove }
@@ -38,6 +42,7 @@ services:
             - '@translator.default'
             - '@session'
             - '@marelloenterprise_inventory.checker.warehousegroup.is_fixed'
+            - '@oro_security.acl_helper'
         tags:
             - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\InventoryBundle\Entity\WarehouseGroup', event: preRemove }
 
@@ -71,7 +76,8 @@ services:
     marelloenterprise_inventory.validator.default_warehouse_exists:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Validator\DefaultWarehouseExistsValidator'
         arguments:
-            - '@marelloenterprise_inventory.repository.warehouse'
+            - '@MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository'
+            - '@oro_security.acl_helper'
         tags:
             - { name: validator.constraint_validator, alias: marelloenterprise_inventory.default_warehouse_exists }
 
@@ -110,13 +116,12 @@ services:
         arguments:
             - 'Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink'
 
-    marelloenterprise_inventory.repository.warehouse:
-        class: 'MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository'
+    MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository:
+        parent: oro_entity.abstract_repository
         arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@marelloenterprise_inventory.metadata.warehouse'
-        calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
+            - 'Marello\Bundle\InventoryBundle\Entity\Warehouse'
+        tags:
+            - { name: doctrine.repository_service }
 
     marelloenterprise_inventory.repository.warehousechannelgrouplink:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository'
@@ -162,6 +167,7 @@ services:
             - '@marelloenterprise_inventory.wfa_strategy.registry'
             - '@marello_rule.rule_filtration.service'
             - '@doctrine'
+            - '@oro_security.acl_helper'
 
     marelloenterprise_inventory.formatter.wfa_strategy.label:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Formatter\WFAStrategyLabelFormatter'
@@ -177,13 +183,10 @@ services:
         tags:
             - { name: twig.extension }
 
-    marelloenterprise_inventory.repository.wfa_rule:
-        class: 'MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WFARuleRepository'
+    MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WFARuleRepository:
         parent: oro_entity.abstract_repository
         arguments:
             - 'MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule'
-        calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
         tags:
             - { name: doctrine.repository_service }
 

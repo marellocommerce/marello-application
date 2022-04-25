@@ -8,39 +8,18 @@ use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Oro\Bundle\SecurityBundle\Exception\ForbiddenException;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class WarehouseListener
 {
-    /**
-     * Installed flag
-     *
-     * @var bool
-     */
-    protected $installed;
-
-    /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    /**
-     * @var Session
-     */
-    protected $session;
-
-    /**
-     * @param bool $installed
-     * @param TranslatorInterface $translator
-     * @param Session $session
-     */
-    public function __construct($installed, TranslatorInterface $translator, Session $session)
-    {
-        $this->installed = $installed;
-        $this->translator = $translator;
-        $this->session = $session;
-    }
+    public function __construct(
+        protected $installed,
+        protected TranslatorInterface $translator,
+        protected Session $session,
+        protected AclHelper $aclHelper
+    ) {}
 
     /**
      * @param Warehouse $warehouse
@@ -63,7 +42,7 @@ class WarehouseListener
             } else {
                 $group = $em
                     ->getRepository(WarehouseGroup::class)
-                    ->findSystemWarehouseGroup();
+                    ->findSystemWarehouseGroup($this->aclHelper);
             }
 
             if ($group) {
@@ -75,7 +54,6 @@ class WarehouseListener
     /**
      * @param Warehouse $warehouse
      * @param LifecycleEventArgs $args
-     * @throws ForbiddenException
      */
     public function preRemove(Warehouse $warehouse, LifecycleEventArgs $args)
     {
@@ -95,7 +73,7 @@ class WarehouseListener
         }
         if (isset($message)) {
             $this->session->getFlashBag()->add('error', $message);
-            throw new ForbiddenException($message);
+            throw new ForbiddenException($message); // weedizp2
         }
         if ($group = $warehouse->getGroup()) {
             if (!$group->isSystem() && $group->getWarehouses()->count() < 1) {

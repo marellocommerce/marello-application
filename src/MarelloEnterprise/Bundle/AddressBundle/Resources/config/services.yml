@@ -56,12 +56,12 @@ services:
         arguments:
             - '@oro_entity.doctrine_helper'
             - '@marelloenterprise.google_api.result_provider.geocoding'
+            - '@oro_security.acl_helper'
 
     marelloenterprise_address.coordinates_provider.main:
         parent: marelloenterprise_address.coordinates_provider.chain_element.saved_coordinates
 
-    marelloenterprise_address.repository.marelloenterpriseaddress:
-        class: 'MarelloEnterprise\Bundle\AddressBundle\Entity\Repository\MarelloEnterpriseAddressRepository'
+    MarelloEnterprise\Bundle\AddressBundle\Entity\Repository\MarelloEnterpriseAddressRepository:
         parent: oro_entity.abstract_repository
         arguments:
             - 'MarelloEnterprise\Bundle\AddressBundle\Entity\MarelloEnterpriseAddress'

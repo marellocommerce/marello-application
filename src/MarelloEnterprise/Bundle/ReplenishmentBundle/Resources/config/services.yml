@@ -1,3 +1,6 @@
+imports:
+    - { resource: controllers.yml }
+
 services:
     marelloenterprise_replenishment.replenishment_strategy.registry:
         class: 'MarelloEnterprise\Bundle\ReplenishmentBundle\Strategy\ReplenishmentStrategiesRegistry'
@@ -20,8 +23,7 @@ services:
         arguments:
             - '@marelloenterprise_replenishment.replenishment_strategy.registry'
 
-    marelloenterprise_replenishment.repository.replenishment_order:
-        class: 'MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\Repository\ReplenishmentOrderRepository'
+    MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\Repository\ReplenishmentOrderRepository:
         parent: oro_entity.abstract_repository
         arguments:
             - 'MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrder'

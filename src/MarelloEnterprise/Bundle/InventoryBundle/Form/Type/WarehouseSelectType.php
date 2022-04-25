@@ -23,9 +23,9 @@ class WarehouseSelectType extends AbstractType
                 'configs'            => [
                     'placeholder' => 'marelloenterprise.inventory.warehouse.form.select_warehouse',
                     'result_template_twig' =>
-                        'MarelloEnterpriseInventoryBundle:Warehouse:Autocomplete/result.html.twig',
+                        '@MarelloEnterpriseInventory/Warehouse/Autocomplete/result.html.twig',
                     'selection_template_twig' =>
-                        'MarelloEnterpriseInventoryBundle:Warehouse:Autocomplete/selection.html.twig',
+                        '@MarelloEnterpriseInventory/Warehouse/Autocomplete/selection.html.twig',
                 ],
             ]
         );

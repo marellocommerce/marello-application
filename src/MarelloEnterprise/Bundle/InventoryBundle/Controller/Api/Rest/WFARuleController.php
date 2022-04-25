@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @Rest\RouteResource("wfarule")
  * @Rest\NamePrefix("marelloenterprise_inventory_api_")
  */
-class WFARuleController extends RestController implements ClassResourceInterface
+class WFARuleController extends RestController implements ClassResourceInterface // weedizp2
 {
     /**
      * Enable wfa rule
@@ -85,7 +85,7 @@ class WFARuleController extends RestController implements ClassResourceInterface
     public function massAction($gridName, $actionName, Request $request)
     {
         /** @var MassActionDispatcher $massActionDispatcher */
-        $massActionDispatcher = $this->get('oro_datagrid.mass_action.dispatcher');
+        $massActionDispatcher = $this->container->get('oro_datagrid.mass_action.dispatcher');
 
         $response = $massActionDispatcher->dispatchByRequest($gridName, $actionName, $request);
 
@@ -114,14 +114,14 @@ class WFARuleController extends RestController implements ClassResourceInterface
             $view = $this->view(
                 [
                     'message'    =>
-                        $this->get('translator')->trans($message),
+                        $this->container->get('translator')->trans($message),
                     'successful' => true,
                 ],
-                Codes::HTTP_OK
+                Response::HTTP_OK
             );
         } else {
             /** @var View $view */
-            $view = $this->view(null, Codes::HTTP_NOT_FOUND);
+            $view = $this->view(null, Response::HTTP_NOT_FOUND);
         }
 
 
@@ -135,7 +135,7 @@ class WFARuleController extends RestController implements ClassResourceInterface
      */
     public function getManager()
     {
-        return $this->get('marelloenterprise_inventory.wfa_rule.manager.api');
+        return $this->container->get('marelloenterprise_inventory.wfa_rule.manager.api');
     }
 
     /**

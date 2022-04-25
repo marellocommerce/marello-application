@@ -5,6 +5,7 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Validator;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository;
 use MarelloEnterprise\Bundle\InventoryBundle\Validator\Constraints\DefaultWarehouseExists;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -14,18 +15,10 @@ class DefaultWarehouseExistsValidator extends ConstraintValidator
 {
     const ALIAS = 'marelloenterprise_inventory.default_warehouse_exists';
 
-    /**
-     * @var WarehouseRepository
-     */
-    protected $warehouseRepository;
-
-    /**
-     * @param WarehouseRepository $warehouseRepository
-     */
-    public function __construct(WarehouseRepository $warehouseRepository)
-    {
-        $this->warehouseRepository = $warehouseRepository;
-    }
+    public function __construct(
+        protected WarehouseRepository $warehouseRepository,
+        protected AclHelper $aclHelper
+    ) {}
 
     /**
      * @param mixed $value
@@ -37,7 +30,7 @@ class DefaultWarehouseExistsValidator extends ConstraintValidator
             throw new UnexpectedTypeException($value, Warehouse::class);
         }
         if ($value->getId() && !$value->isDefault()) {
-            if (count($this->warehouseRepository->getDefaultExcept($value->getId())) === 0) {
+            if (count($this->warehouseRepository->getDefaultExcept($value->getId(), $this->aclHelper)) === 0) {
                 /** @var ExecutionContextInterface $context */
                 $context = $this->context;
                 $context->buildViolation($constraint->message)

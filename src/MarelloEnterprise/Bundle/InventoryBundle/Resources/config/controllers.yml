@@ -1,0 +1,27 @@
+services:
+    _defaults:
+        public: true
+
+    MarelloEnterprise\Bundle\InventoryBundle\Controller\WarehouseChannelGroupLinkController:
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+
+    MarelloEnterprise\Bundle\InventoryBundle\Controller\WarehouseController:
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+
+    MarelloEnterprise\Bundle\InventoryBundle\Controller\WarehouseGroupController:
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+
+    MarelloEnterprise\Bundle\InventoryBundle\Controller\WFARuleController:
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }

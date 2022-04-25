@@ -52,7 +52,7 @@
 {% block marello_replenishment_order_item_collection_widget %}
     {% import _self as fields %}
 
-    {% spaceless %}
+    {% apply spaceless %}
         {% if prototype is defined %}
             {% set prototype_html = fields.marello_replenishment_order_item_prototype(form) %}
         {% endif %}
@@ -82,7 +82,7 @@
                 </table>
             </div>
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
 {% block marello_replenishment_order_config_products_widget %}

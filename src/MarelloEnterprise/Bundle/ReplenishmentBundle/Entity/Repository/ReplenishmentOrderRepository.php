@@ -2,12 +2,12 @@
 
 namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\Repository;
 
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Types\Type;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrder;
 
-class ReplenishmentOrderRepository extends EntityRepository
+class ReplenishmentOrderRepository extends ServiceEntityRepository
 {
     /**
      * @param int $replOrderConfig
