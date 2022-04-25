@@ -30,7 +30,7 @@ class PurchaseOrderFormViewListener
     public function onPurchaseOrderCreateStepTwo(BeforeListRenderEvent $event)
     {
         $template = $event->getEnvironment()->render(
-            'MarelloEnterprisePurchaseOrderBundle:PurchaseOrder:warehouse.html.twig',
+            '@MarelloEnterprisePurchaseOrder/PurchaseOrder/warehouse.html.twig',
             ['form' => $event->getFormView()]
         );
         $this->addWarehouseBlock($event->getScrollData(), $template);

@@ -1,7 +1,7 @@
-{% extends 'OroUIBundle:actions:view.html.twig' %}
-{% import 'OroUIBundle::macros.html.twig' as UI %}
-{% import 'OroAddressBundle::macros.html.twig' as address %}
-{% import 'OroEntityConfigBundle::macros.html.twig' as entityConfig %}
+{% extends '@OroUI/actions/view.html.twig' %}
+{% import '@OroUI/macros.html.twig' as UI %}
+{% import '@OroAddress/macros.html.twig' as address %}
+{% import '@OroEntityConfig/macros.html.twig' as entityConfig %}
 
 {% if entity.id %}
     {% oro_title_set({params : {"%warehouse.label%": entity.label|default('N/A'|trans) } }) %}

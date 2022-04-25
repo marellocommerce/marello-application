@@ -4,6 +4,7 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Controller;
 
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseGroupType;
+use Oro\Bundle\FormBundle\Model\UpdateHandlerFacade;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\Routing\Annotation\Route;
@@ -11,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class WarehouseGroupController extends AbstractController
 {
@@ -19,7 +21,7 @@ class WarehouseGroupController extends AbstractController
      *     path="/",
      *     name="marelloenterprise_inventory_warehousegroup_index"
      * )
-     * @Template("MarelloEnterpriseInventoryBundle:WarehouseGroup:index.html.twig")
+     * @Template("@MarelloEnterpriseInventory/WarehouseGroup/index.html.twig")
      * @AclAncestor("marelloenterprise_inventory_warehousegroup_view")
      *
      * @return array
@@ -36,7 +38,7 @@ class WarehouseGroupController extends AbstractController
      *     path="/create",
      *     name="marelloenterprise_inventory_warehousegroup_create"
      * )
-     * @Template("MarelloEnterpriseInventoryBundle:WarehouseGroup:update.html.twig")
+     * @Template("@MarelloEnterpriseInventory/WarehouseGroup/update.html.twig")
      * @Acl(
      *     id="marelloenterprise_inventory_warehousegroup_create",
      *     type="entity",
@@ -58,7 +60,7 @@ class WarehouseGroupController extends AbstractController
      *     name="marelloenterprise_inventory_warehousegroup_view",
      *     requirements={"id"="\d+"}
      * )
-     * @Template("MarelloEnterpriseInventoryBundle:WarehouseGroup:view.html.twig")
+     * @Template("@MarelloEnterpriseInventory/WarehouseGroup/view.html.twig")
      * @Acl(
      *      id="marelloenterprise_inventory_warehousegroup_view",
      *      type="entity",
@@ -83,7 +85,7 @@ class WarehouseGroupController extends AbstractController
      *     name="marelloenterprise_inventory_warehousegroup_update",
      *     requirements={"id"="\d+"}
      * )
-     * @Template("MarelloEnterpriseInventoryBundle:WarehouseGroup:update.html.twig")
+     * @Template("@MarelloEnterpriseInventory/WarehouseGroup/update.html.twig")
      * @Acl(
      *     id="marelloenterprise_inventory_warehousegroup_update",
      *     type="entity",
@@ -116,12 +118,23 @@ class WarehouseGroupController extends AbstractController
      */
     protected function update(WarehouseGroup $entity, Request $request)
     {
-        return $this->get('oro_form.update_handler')->update(
+        return $this->container->get(UpdateHandlerFacade::class)->update(
             $entity,
             $this->createForm(WarehouseGroupType::class, $entity),
-            $this->get('translator')->trans('marelloenterprise.inventory.messages.success.warehousegroup.saved'),
+            $this->container->get(TranslatorInterface::class)->trans('marelloenterprise.inventory.messages.success.warehousegroup.saved'),
             $request,
             'marelloenterprise_inventory.form_handler.warehousegroup'
+        );
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                UpdateHandlerFacade::class,
+                TranslatorInterface::class,
+            ]
         );
     }
 }

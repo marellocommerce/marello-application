@@ -2,32 +2,18 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
-
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
-
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 
-class WarehouseRepository extends EntityRepository
+class WarehouseRepository extends ServiceEntityRepository
 {
     /**
-     * @var AclHelper
-     */
-    private $aclHelper;
-
-    /**
-     * @param AclHelper $aclHelper
-     */
-    public function setAclHelper(AclHelper $aclHelper) // weedizp3
-    {
-        $this->aclHelper = $aclHelper;
-    }
-    
-    /**
      * @param int $id
+     * @param AclHelper $aclHelper
      * @return Warehouse[]
      */
-    public function getDefaultExcept($id)
+    public function getDefaultExcept($id, AclHelper $aclHelper)
     {
         $qb = $this->createQueryBuilder('wh');
         $qb
@@ -35,6 +21,6 @@ class WarehouseRepository extends EntityRepository
             ->andWhere($qb->expr()->not($qb->expr()->eq('wh.id', ':id')))
             ->setParameter(':id', $id);
 
-        return $this->aclHelper->apply($qb)->getResult();
+        return $aclHelper->apply($qb)->getResult();
     }
 }

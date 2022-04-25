@@ -30,7 +30,7 @@ datagrids:
                 label: marelloenterprise.replenishment.replenishmentorder.percentage.label
                 type: twig
                 frontend_type: html
-                template: MarelloEnterpriseReplenishmentBundle:ReplenishmentOrder:Datagrid/Property/percentage.html.twig
+                template: '@MarelloEnterpriseReplenishment/ReplenishmentOrder/Datagrid/Property/percentage.html.twig'
             description:
                 label: marelloenterprise.replenishment.replenishmentorder.description.label
                 frontend_type: string
@@ -121,7 +121,7 @@ datagrids:
                 label:            marello.product.image.label
                 type:             twig
                 frontend_type:    html
-                template:         MarelloProductBundle:Product/Datagrid/Property:image.html.twig
+                template:         '@MarelloProduct/Product/Datagrid/Property/image.html.twig'
             sku:
                 label:              marello.product.sku.label
                 frontend_type:      string
@@ -139,7 +139,7 @@ datagrids:
 #                label:              marello.product.categories.label
 #                type:               twig
 #                frontend_type:      html
-#                template:           MarelloProductBundle:Product/Datagrid/Property:categories.html.twig
+#                template:           '@MarelloProduct/Product/Datagrid/Property/categories.html.twig'
             createdAt:
                 label:              oro.ui.created_at
                 frontend_type:      datetime
