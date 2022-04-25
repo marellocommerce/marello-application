@@ -81,7 +81,6 @@ class InventoryAllocationProvider extends BaseAllocationProvider
         if ($consolidation) {
             $this->consolidationWarehouse = $this->getConsolidationWarehouse($order);
         }
-
         // consolidation is not enabled, so we just run the 'normal' WFA rules (all of them)
         // the result of the WFA rules is also the input for the Allocation/AllocationItems
         // create all allocation/allocation items
@@ -101,11 +100,10 @@ class InventoryAllocationProvider extends BaseAllocationProvider
             $parentAllocation->setStatus($this->getEnumValue('marello_allocation_status', 'on_hand'));
             $parentAllocation->setWarehouse($this->consolidationWarehouse);
             $parentAllocation->setShippingAddress($order->getShippingAddress());
-            foreach ($this->allItems as $item) {
+            foreach ($this->baseAllocationProvider->getAllItems() as $item) {
                 $parentAllocation->addItem($item);
             }
-
-            foreach ($this->subAllocations as $subAllocation) {
+            foreach ($this->baseAllocationProvider->getAllSubAllocations() as $subAllocation) {
                 $parentAllocation->addChild($subAllocation);
             }
 
@@ -115,16 +113,16 @@ class InventoryAllocationProvider extends BaseAllocationProvider
         $em->flush();
 
         // not sure if needed, but will try both with and without
-        unset($this->allItems);
-        unset($this->subAllocations);
-        unset($this->consolidationWarehouse);
+        //unset($this->allItems);
+        //unset($this->subAllocations);
+        //unset($this->consolidationWarehouse);
     }
 
     /**
      * @param OrderWarehouseResult $result
      * @param Allocation $allocation
      */
-    protected function createAllocationItems(OrderWarehouseResult $result, Allocation $allocation)
+    public function createAllocationItems(OrderWarehouseResult $result, Allocation $allocation)
     {
         $itemWithQty = $result->getItemsWithQuantity();
         foreach ($result->getOrderItems() as $item) {
@@ -133,6 +131,11 @@ class InventoryAllocationProvider extends BaseAllocationProvider
             if ($item instanceof AllocationItem) {
                 $orderItem = $item->getOrderItem();
             }
+            file_put_contents(
+                '/app/var/logs/consolidation.log',
+                __METHOD__ . " " . __LINE__ . " " . print_r($item->getProductSku(), true) . "\r\n",
+                FILE_APPEND
+            );
             $allocationItem->setOrderItem($orderItem);
             $allocationItem->setProduct($item->getProduct());
             $allocationItem->setProductSku($item->getProductSku());
@@ -146,6 +149,11 @@ class InventoryAllocationProvider extends BaseAllocationProvider
             if ($this->consolidationWarehouse) {
                 $this->allItems[] = clone $allocationItem;
                 $this->subAllocations[] = $allocation;
+                file_put_contents(
+                    '/app/var/logs/consolidation.log',
+                    __METHOD__ . " " . __LINE__ . " " . print_r($item->getProductSku(), true) . "\r\n",
+                    FILE_APPEND
+                );
             }
         }
     }
