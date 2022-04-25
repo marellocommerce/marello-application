@@ -2,11 +2,11 @@
 
 namespace MarelloEnterprise\Bundle\AddressBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
-class MarelloEnterpriseAddressRepository extends EntityRepository
+class MarelloEnterpriseAddressRepository extends ServiceEntityRepository
 {
     public function findByAddressParts(MarelloAddress $address, AclHelper $aclHelper): array
     {

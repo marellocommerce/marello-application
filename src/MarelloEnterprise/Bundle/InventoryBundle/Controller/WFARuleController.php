@@ -5,6 +5,7 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Controller;
 use MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule;
 use MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WFARuleType;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
+use Oro\Bundle\FormBundle\Model\UpdateHandlerFacade;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class WFARuleController extends AbstractController
 {
@@ -21,7 +23,7 @@ class WFARuleController extends AbstractController
      *     path="/",
      *     name="marelloenterprise_inventory_wfa_rule_index"
      * )
-     * @Template("MarelloEnterpriseInventoryBundle:WFARule:index.html.twig")
+     * @Template("@MarelloEnterpriseInventory/WFARule/index.html.twig")
      * @AclAncestor("marelloenterprise_inventory_wfa_rule_view")
      *
      * @return array
@@ -38,7 +40,7 @@ class WFARuleController extends AbstractController
      *     path="/create",
      *     name="marelloenterprise_inventory_wfa_rule_create"
      * )
-     * @Template("MarelloEnterpriseInventoryBundle:WFARule:update.html.twig")
+     * @Template("@MarelloEnterpriseInventory/WFARule/update.html.twig")
      * @Acl(
      *     id="marelloenterprise_inventory_wfa_rule_create",
      *     type="entity",
@@ -60,7 +62,7 @@ class WFARuleController extends AbstractController
      *     name="marelloenterprise_inventory_wfa_rule_view",
      *     requirements={"id"="\d+"}
      * )
-     * @Template("MarelloEnterpriseInventoryBundle:WFARule:view.html.twig")
+     * @Template("@MarelloEnterpriseInventory/WFARule/view.html.twig")
      * @Acl(
      *      id="marelloenterprise_inventory_wfa_rule_view",
      *      type="entity",
@@ -85,7 +87,7 @@ class WFARuleController extends AbstractController
      *     name="marelloenterprise_inventory_wfa_rule_update",
      *     requirements={"id"="\d+"}
      * )
-     * @Template("MarelloEnterpriseInventoryBundle:WFARule:update.html.twig")
+     * @Template("@MarelloEnterpriseInventory/WFARule/update.html.twig")
      * @Acl(
      *     id="marelloenterprise_inventory_wfa_rule_update",
      *     type="entity",
@@ -118,10 +120,10 @@ class WFARuleController extends AbstractController
      */
     protected function update(WFARule $entity, Request $request)
     {
-        return $this->get('oro_form.update_handler')->update(
+        return $this->container->get(UpdateHandlerFacade::class)->update(
             $entity,
             $this->createForm(WFARuleType::class, $entity),
-            $this->get('translator')->trans('marelloenterprise.inventory.messages.success.wfarule.saved'),
+            $this->container->get(TranslatorInterface::class)->trans('marelloenterprise.inventory.messages.success.wfarule.saved'),
             $request
         );
     }
@@ -146,7 +148,7 @@ class WFARuleController extends AbstractController
     public function markMassAction($gridName, $actionName, Request $request)
     {
         /** @var MassActionDispatcher $massActionDispatcher */
-        $massActionDispatcher = $this->get('oro_datagrid.mass_action.dispatcher');
+        $massActionDispatcher = $this->container->get(MassActionDispatcher::class);
 
         $response = $massActionDispatcher->dispatchByRequest($gridName, $actionName, $request);
 
@@ -156,5 +158,17 @@ class WFARuleController extends AbstractController
         ];
 
         return new JsonResponse(array_merge($data, $response->getOptions()));
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                UpdateHandlerFacade::class,
+                TranslatorInterface::class,
+                MassActionDispatcher::class,
+            ]
+        );
     }
 }

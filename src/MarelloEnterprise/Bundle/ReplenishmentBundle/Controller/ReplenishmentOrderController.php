@@ -15,7 +15,7 @@ class ReplenishmentOrderController extends AbstractController
      *     path="/",
      *     name="marelloenterprise_replenishmentorder_index"
      * )
-     * @Template("MarelloEnterpriseReplenishmentBundle:ReplenishmentOrder:index.html.twig")
+     * @Template("@MarelloEnterpriseReplenishment/ReplenishmentOrder/index.html.twig")
      * @AclAncestor("marelloenterprise_replenishmentorder_view")
      */
     public function indexAction()
@@ -29,7 +29,7 @@ class ReplenishmentOrderController extends AbstractController
      *     requirements={"id"="\d+"},
      *     name="marelloenterprise_replenishmentorder_view"
      * )
-     * @Template("MarelloEnterpriseReplenishmentBundle:ReplenishmentOrder:view.html.twig")
+     * @Template("@MarelloEnterpriseReplenishment/ReplenishmentOrder/view.html.twig")
      * @AclAncestor("marelloenterprise_replenishmentorder_view")
      *
      * @param ReplenishmentOrder $order

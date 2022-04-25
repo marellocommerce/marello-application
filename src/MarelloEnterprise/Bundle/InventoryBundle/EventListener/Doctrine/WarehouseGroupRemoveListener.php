@@ -5,46 +5,23 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use MarelloEnterprise\Bundle\InventoryBundle\Checker\IsFixedWarehouseGroupChecker;
-use Oro\Bundle\SecurityBundle\Exception\ForbiddenException;
+use Oro\Bundle\SecurityBundle\Exception\ForbiddenException; // weedizp2
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class WarehouseGroupRemoveListener
 {
-    /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    /**
-     * @var Session
-     */
-    protected $session;
-
-    /**
-     * @var IsFixedWarehouseGroupChecker
-     */
-    protected $checker;
-    
-    /**
-     * @param TranslatorInterface $translator
-     * @param Session $session
-     * @param IsFixedWarehouseGroupChecker $checker
-     */
     public function __construct(
-        TranslatorInterface $translator,
-        Session $session,
-        IsFixedWarehouseGroupChecker $checker
-    ) {
-        $this->translator = $translator;
-        $this->session = $session;
-        $this->checker = $checker;
-    }
+        protected TranslatorInterface $translator,
+        protected Session $session,
+        protected IsFixedWarehouseGroupChecker $checker,
+        protected AclHelper $aclHelper
+    ) {}
     
     /**
      * @param WarehouseGroup $warehouseGroup
      * @param LifecycleEventArgs $args
-     * @throws ForbiddenException
      */
     public function preRemove(WarehouseGroup $warehouseGroup, LifecycleEventArgs $args)
     {
@@ -70,7 +47,7 @@ class WarehouseGroupRemoveListener
         $em = $args->getEntityManager();
         $systemGroup = $em
             ->getRepository(WarehouseGroup::class)
-            ->findSystemWarehouseGroup();
+            ->findSystemWarehouseGroup($this->aclHelper);
 
         if ($systemGroup) {
             $warehouses = $warehouseGroup->getWarehouses();

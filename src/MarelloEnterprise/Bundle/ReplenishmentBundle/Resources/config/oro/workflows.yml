@@ -42,7 +42,7 @@ workflows:
                 step_to: ready_for_shipping
                 transition_definition: check_and_pack_definition
                 display_type: page
-                page_template: OroWorkflowBundle:Workflow:transitionForm.html.twig
+                page_template: '@OroWorkflow/Workflow/transitionForm.html.twig'
                 form_options:
                     attribute_fields:
                         repl_order_items:

@@ -6,6 +6,7 @@ use Marello\Bundle\RuleBundle\Form\Type\RuleType;
 use MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WFARuleRepository;
 use MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule;
 use MarelloEnterprise\Bundle\InventoryBundle\Provider\WFAStrategyChoicesProvider;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,25 +20,11 @@ class WFARuleType extends AbstractType
 {
     const BLOCK_PREFIX = 'marello_inventory_wfarule_type';
 
-    /**
-     * @var WFAStrategyChoicesProvider
-     */
-    protected $choicesProvider;
-
-    /**
-     * @var WFARuleRepository
-     */
-    private $wfaRuleRepository;
-
-    /**
-     * @param WFAStrategyChoicesProvider $provider
-     * @param WFARuleRepository $wfaRuleRepository
-     */
-    public function __construct(WFAStrategyChoicesProvider $provider, WFARuleRepository $wfaRuleRepository)
-    {
-        $this->choicesProvider = $provider;
-        $this->wfaRuleRepository = $wfaRuleRepository;
-    }
+    public function __construct(
+        protected WFAStrategyChoicesProvider $choicesProvider,
+        private WFARuleRepository $wfaRuleRepository,
+        private AclHelper $aclHelper
+    ) {}
 
     /**
      * {@inheritdoc}
@@ -59,7 +46,7 @@ class WFARuleType extends AbstractType
         /** @var WFARule $wfaRule */
         $wfaRule = $event->getData();
         $usedStrategies = [];
-        foreach ($this->wfaRuleRepository->getUsedStrategies() as $v) {
+        foreach ($this->wfaRuleRepository->getUsedStrategies($this->aclHelper) as $v) {
             if ($v['strategy'] !== $wfaRule->getStrategy()) {
                 $usedStrategies[] = $v['strategy'];
             }

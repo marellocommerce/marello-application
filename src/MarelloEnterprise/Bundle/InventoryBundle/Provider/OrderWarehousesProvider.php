@@ -9,6 +9,7 @@ use Marello\Bundle\RuleBundle\RuleFiltration\RuleFiltrationServiceInterface;
 use MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WFARuleRepository;
 use MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule;
 use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategiesRegistry;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class OrderWarehousesProvider implements OrderWarehousesProviderInterface
 {
@@ -25,7 +26,8 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
     public function __construct(
         protected WFAStrategiesRegistry $strategiesRegistry,
         protected RuleFiltrationServiceInterface $rulesFiltrationService,
-        protected ManagerRegistry $registry
+        protected ManagerRegistry $registry,
+        protected AclHelper $aclHelper
     ) {}
 
     /**
@@ -43,7 +45,7 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
     {
         /** @var WFARule[] $filteredRules */
         $filteredRules = $this->rulesFiltrationService
-            ->getFilteredRuleOwners($this->getRepository()->findAllWFARules());
+            ->getFilteredRuleOwners($this->getRepository()->findAllWFARules($this->aclHelper));
         $results = [];
 
         foreach ($filteredRules as $rule) {
