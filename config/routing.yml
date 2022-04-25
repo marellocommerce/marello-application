@@ -1,8 +1,8 @@
-#
-# 3rd party routes
-#
-_liip_imagine:
-    resource: "@LiipImagineBundle/Resources/config/routing.yaml"
+##
+## 3rd party routes
+##
+#_liip_imagine: weedizp
+#    resource: "@LiipImagineBundle/Resources/config/routing.yaml"
 
 #
 # ORO routes
