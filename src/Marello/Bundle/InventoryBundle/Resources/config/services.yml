@@ -187,6 +187,14 @@ services:
         calls:
             - [setAclHelper, ['@oro_security.acl_helper']]
 
+    marello_inventory.repository.inventorylevel:
+        class: 'Marello\Bundle\InventoryBundle\Entity\Repository\InventoryLevelRepository'
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'Marello\Bundle\InventoryBundle\Entity\InventoryLevel'
+        calls:
+            - [setAclHelper, ['@oro_security.acl_helper']]
+
     marello_inventory.form.inventory_order_on_demand_validator:
         class: 'Marello\Bundle\InventoryBundle\Validator\InventoryOrderOnDemandValidator'
         calls:
