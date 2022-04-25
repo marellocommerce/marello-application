@@ -6,20 +6,14 @@ use Doctrine\Persistence\ObjectManager;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class ChannelProvider
 {
-    /** @var ObjectManager $manager */
-    protected $manager;
-
-    /**
-     * ChannelProvider constructor.
-     * @param ObjectManager $manager
-     */
-    public function __construct(ObjectManager $manager)
-    {
-        $this->manager = $manager;
-    }
+    public function __construct(
+        protected ObjectManager $manager,
+        protected AclHelper $aclHelper
+    ) {}
 
     /**
      * Returns ids of all related sales channels for a product.
@@ -54,7 +48,7 @@ class ChannelProvider
 
         $ids = $this->manager
             ->getRepository(SalesChannel::class)
-            ->findExcludedSalesChannelIds($relatedIds);
+            ->findExcludedSalesChannelIds($relatedIds, $this->aclHelper);
 
         foreach ($ids as $k => $v) {
             $excludedIds[] = $v['id'];

@@ -13,7 +13,7 @@ class ShippingMethodExtension extends AbstractExtension
 {
     const SHIPPING_METHOD_EXTENSION_NAME = 'marello_shipping_method';
     const DEFAULT_METHOD_CONFIG_TEMPLATE
-        = 'MarelloShippingBundle:ShippingMethodsConfigsRule:shippingMethodWithOptions.html.twig';
+        = '@MarelloShipping/ShippingMethodsConfigsRule/shippingMethodWithOptions.html.twig';
 
     /**
      * @var ShippingMethodLabelFormatter

@@ -1,8 +1,8 @@
-{% extends 'OroUIBundle:actions:view.html.twig' %}
-{% import 'OroUIBundle::macros.html.twig' as UI %}
-{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
-{% import 'OroEntityConfigBundle::macros.html.twig' as entityConfig %}
-{% import 'OroAddressBundle::macros.html.twig' as address %}
+{% extends '@OroUI/actions/view.html.twig' %}
+{% import '@OroUI/macros.html.twig' as UI %}
+{% import '@OroDataGrid/macros.html.twig' as dataGrid %}
+{% import '@OroEntityConfig/macros.html.twig' as entityConfig %}
+{% import '@OroAddress/macros.html.twig' as address %}
 
 {% oro_title_set({params : {"%id%": entity.packingSlipNumber }}) %}
 

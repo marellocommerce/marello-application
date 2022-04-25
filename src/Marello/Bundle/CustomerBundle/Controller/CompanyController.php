@@ -3,12 +3,17 @@
 namespace Marello\Bundle\CustomerBundle\Controller;
 
 use Marello\Bundle\CustomerBundle\Entity\Company;
+use Marello\Bundle\CustomerBundle\Form\Handler\CompanyHandler;
+use Marello\Bundle\CustomerBundle\JsTree\CompanyTreeHandler;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\UIBundle\Route\Router;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CompanyController extends AbstractController
 {
@@ -50,7 +55,7 @@ class CompanyController extends AbstractController
     {
         return [
             'entity' => $company,
-            'treeData' => $this->get('marello_customer.company_tree_handler')->createTree($company),
+            'treeData' => $this->container->get(CompanyTreeHandler::class)->createTree($company),
         ];
     }
 
@@ -59,7 +64,7 @@ class CompanyController extends AbstractController
      *     path="/create",
      *     name="marello_customer_company_create"
      * )
-     * @Template("MarelloCustomerBundle:Company:update.html.twig")
+     * @Template("@MarelloCustomer/Company/update.html.twig")
      * @Acl(
      *      id="marello_customer_company_create",
      *      type="entity",
@@ -67,11 +72,12 @@ class CompanyController extends AbstractController
      *      permission="CREATE"
      * )
      *
+     * @param Request $request
      * @return array
      */
-    public function createAction()
+    public function createAction(Request $request)
     {
-        return $this->update(new Company());
+        return $this->update(new Company(), $request);
     }
 
     /**
@@ -89,33 +95,48 @@ class CompanyController extends AbstractController
      * )
      *
      * @param Company $company
+     * @param Request $request
      * @return array
      */
-    public function updateAction(Company $company)
+    public function updateAction(Company $company, Request $request)
     {
-        return $this->update($company);
+        return $this->update($company, $request);
     }
 
     /**
      * @param Company $company
+     * @param Request $request
      * @return array|RedirectResponse
      */
-    protected function update(Company $company)
+    protected function update(Company $company, Request $request)
     {
-        $handler = $this->get('marello_customer.company.form.handler');
+        $handler = $this->container->get(CompanyHandler::class);
 
         if ($handler->process($company)) {
-            $this->get('session')->getFlashBag()->add(
+            $request->getSession()->getFlashBag()->add(
                 'success',
-                $this->get('translator')->trans('marello.customer.controller.company.saved.message')
+                $this->container->get(TranslatorInterface::class)->trans('marello.customer.controller.company.saved.message')
             );
 
-            return $this->get('oro_ui.router')->redirect($company);
+            return $this->container->get(Router::class)->redirect($company);
         }
 
         return [
             'entity' => $company,
             'form'   => $handler->getFormView(),
         ];
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                CompanyTreeHandler::class,
+                CompanyHandler::class,
+                TranslatorInterface::class,
+                Router::class,
+            ]
+        );
     }
 }

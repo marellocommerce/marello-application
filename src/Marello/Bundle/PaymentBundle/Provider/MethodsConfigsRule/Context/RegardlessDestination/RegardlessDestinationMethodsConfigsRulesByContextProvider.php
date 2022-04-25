@@ -6,30 +6,15 @@ use Marello\Bundle\PaymentBundle\Context\PaymentContextInterface;
 use Marello\Bundle\PaymentBundle\Entity\Repository\PaymentMethodsConfigsRuleRepository;
 use Marello\Bundle\PaymentBundle\Provider\MethodsConfigsRule\Context\MethodsConfigsRulesByContextProviderInterface;
 use Marello\Bundle\PaymentBundle\RuleFiltration\MethodsConfigsRulesFiltrationServiceInterface;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class RegardlessDestinationMethodsConfigsRulesByContextProvider implements MethodsConfigsRulesByContextProviderInterface
 {
-    /**
-     * @var MethodsConfigsRulesFiltrationServiceInterface
-     */
-    private $filtrationService;
-
-    /**
-     * @var PaymentMethodsConfigsRuleRepository
-     */
-    private $repository;
-
-    /**
-     * @param MethodsConfigsRulesFiltrationServiceInterface $filtrationService
-     * @param PaymentMethodsConfigsRuleRepository          $repository
-     */
     public function __construct(
-        MethodsConfigsRulesFiltrationServiceInterface $filtrationService,
-        PaymentMethodsConfigsRuleRepository $repository
-    ) {
-        $this->filtrationService = $filtrationService;
-        $this->repository = $repository;
-    }
+        private MethodsConfigsRulesFiltrationServiceInterface $filtrationService,
+        private PaymentMethodsConfigsRuleRepository $repository,
+        private AclHelper $aclHelper
+    ) {}
 
     /**
      * {@inheritDoc}
@@ -39,11 +24,13 @@ class RegardlessDestinationMethodsConfigsRulesByContextProvider implements Metho
         if ($context->getBillingAddress()) {
             $methodsConfigsRules = $this->repository->getByDestinationAndCurrency(
                 $context->getBillingAddress(),
-                $context->getCurrency()
+                $context->getCurrency(),
+                $this->aclHelper
             );
         } else {
             $methodsConfigsRules = $this->repository->getByCurrency(
-                $context->getCurrency()
+                $context->getCurrency(),
+                $this->aclHelper
             );
         }
 

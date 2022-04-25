@@ -40,7 +40,7 @@ class MarelloUPSExtensionTest extends ExtensionTestCase
             'marello_ups.connection.validator.result.factory',
             'marello_ups.connection.validator',
             'marello_ups.handler.action.invalidate_cache',
-            'marello_ups.repository.shipping_service',
+            'Marello\Bundle\UPSBundle\Entity\Repository\ShippingServiceRepository',
         ];
         $this->assertDefinitionsLoaded($expectedDefinitions);
     }

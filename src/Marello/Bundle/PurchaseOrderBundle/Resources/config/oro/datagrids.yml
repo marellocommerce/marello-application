@@ -28,7 +28,7 @@ datagrids:
             expectedDeliveryDate:
                 label:              marello.purchaseorder.expected_delivery_date.label
                 type:               twig
-                template:           MarelloPurchaseOrderBundle:Datagrid:Column/dueDate.html.twig
+                template:           '@MarelloPurchaseOrder/Datagrid/Column/dueDate.html.twig'
                 frontend_type:      html
             orderTotal:
                 label:              marello.purchaseorder.order_total.label
@@ -111,7 +111,7 @@ datagrids:
                 data_name:          productSku
                 type:               twig
                 frontend_type:      html
-                template:           MarelloProductBundle:Product/Datagrid:productSku.html.twig
+                template:           '@MarelloProduct/Product/Datagrid/productSku.html.twig'
             productName:
                 label: marello.product.name.label
                 frontend_type: string

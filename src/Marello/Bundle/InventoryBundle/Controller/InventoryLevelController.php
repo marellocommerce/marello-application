@@ -5,10 +5,14 @@ namespace Marello\Bundle\InventoryBundle\Controller;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Form\Type\InventoryLevelManageBatchesType;
+use Marello\Bundle\InventoryBundle\Logging\ChartBuilder;
+use Oro\Bundle\ChartBundle\Model\ChartViewBuilder;
+use Oro\Bundle\FormBundle\Model\UpdateHandlerFacade;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class InventoryLevelController extends AbstractController
 {
@@ -18,7 +22,7 @@ class InventoryLevelController extends AbstractController
      *     requirements={"id"="\d+"},
      *     name="marello_inventory_inventorylevel_index"
      * )
-     * @Template("MarelloInventoryBundle:InventoryLevel:index.html.twig")
+     * @Template("@MarelloInventory/InventoryLevel/index.html.twig")
      *
      * @param InventoryItem $inventoryItem
      *
@@ -38,7 +42,7 @@ class InventoryLevelController extends AbstractController
      *     requirements={"id"="\d+"},
      *     name="marello_inventory_inventorylevel_chart"
      * )
-     * @Template("MarelloInventoryBundle:InventoryLevel:chart.html.twig")
+     * @Template("@MarelloInventory/InventoryLevel/chart.html.twig")
      *
      * @param InventoryItem $inventoryItem
      * @param Request $request
@@ -54,10 +58,11 @@ class InventoryLevelController extends AbstractController
         $to       = new \DateTime($request->query->get('to', 'tomorrow - 1 second'));
 
         $items = $this
-            ->get('marello_inventory.logging.chart_builder')
+            ->container
+            ->get(ChartBuilder::class)
             ->getChartData($inventoryItem, $from, $to);
 
-        $viewBuilder = $this->container->get('oro_chart.view_builder');
+        $viewBuilder = $this->container->get(ChartViewBuilder::class);
 
         $chartView = $viewBuilder
             ->setArrayData($items)
@@ -108,10 +113,10 @@ class InventoryLevelController extends AbstractController
             ));
         }
 
-        return $this->get('oro_form.update_handler')->update(
+        return $this->container->get(UpdateHandlerFacade::class)->update(
             $inventoryLevel,
             $this->createForm(InventoryLevelManageBatchesType::class, $inventoryLevel),
-            $this->get('translator')->trans('marello.inventory.messages.success.inventorybatches.saved'),
+            $this->container->get(TranslatorInterface::class)->trans('marello.inventory.messages.success.inventorybatches.saved'),
             $request
         );
     }
@@ -122,7 +127,7 @@ class InventoryLevelController extends AbstractController
      *     requirements={"id"="\d+"},
      *     name="marello_inventory_inventorylevel_batches_view"
      * )
-     * @Template("MarelloInventoryBundle:InventoryLevel:batchesView.html.twig")
+     * @Template("@MarelloInventory/InventoryLevel/batchesView.html.twig")
      *
      * @param InventoryLevel $inventoryLevel
      *
@@ -133,5 +138,18 @@ class InventoryLevelController extends AbstractController
         return [
             'entity' => $inventoryLevel
         ];
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                ChartViewBuilder::class,
+                UpdateHandlerFacade::class,
+                TranslatorInterface::class,
+                ChartBuilder::class,
+            ]
+        );
     }
 }

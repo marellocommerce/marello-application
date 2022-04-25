@@ -3,11 +3,15 @@
 namespace Marello\Bundle\TaxBundle\Controller;
 
 use Marello\Bundle\TaxBundle\Entity\TaxRule;
+use Marello\Bundle\TaxBundle\Form\Handler\TaxRuleHandler;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\UIBundle\Route\Router;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class TaxRuleController
@@ -65,11 +69,12 @@ class TaxRuleController extends AbstractController
      *      permission="CREATE"
      * )
      *
+     * @param Request $request
      * @return array
      */
-    public function createAction()
+    public function createAction(Request $request)
     {
-        return $this->update(new TaxRule());
+        return $this->update($request, new TaxRule());
     }
 
     /**
@@ -88,37 +93,49 @@ class TaxRuleController extends AbstractController
      * )
      *
      * @param TaxRule $taxRule
-     *
+     * @param Request $request
      * @return array
      */
-    public function updateAction(TaxRule $taxRule)
+    public function updateAction(TaxRule $taxRule, Request $request)
     {
-        return $this->update($taxRule);
+        return $this->update($request, $taxRule);
     }
 
     /**
      * Handles supplier updates and creation.
      *
-     * @param TaxRule   $taxRule
-     *
+     * @param Request $request
+     * @param TaxRule $taxRule
      * @return array
      */
-    protected function update(TaxRule $taxRule = null)
+    protected function update(Request $request, TaxRule $taxRule = null)
     {
-        $handler = $this->get('marello_tax.form.handler.taxrule');
+        $handler = $this->container->get(TaxRuleHandler::class);
         
         if ($handler->process($taxRule)) {
-            $this->get('session')->getFlashBag()->add(
+            $request->getSession()->getFlashBag()->add(
                 'success',
-                $this->get('translator')->trans('marello.tax.messages.success.taxrule.saved')
+                $this->container->get(TranslatorInterface::class)->trans('marello.tax.messages.success.taxrule.saved')
             );
             
-            return $this->get('oro_ui.router')->redirect($taxRule);
+            return $this->container->get(Router::class)->redirect($taxRule);
         }
 
         return [
             'entity' => $taxRule,
             'form'   => $handler->getFormView(),
         ];
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                TaxRuleHandler::class,
+                TranslatorInterface::class,
+                Router::class,
+            ]
+        );
     }
 }

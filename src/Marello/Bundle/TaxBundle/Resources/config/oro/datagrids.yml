@@ -61,7 +61,7 @@ datagrids:
                 label:            marello.tax.taxrate.rate.label
                 type:             twig
                 frontend_type:    html
-                template:         MarelloTaxBundle:TaxRate/DataGrid:rate.html.twig
+                template:         '@MarelloTax/TaxRate/DataGrid/rate.html.twig'
         sorters:
             columns:
                 code:
@@ -117,7 +117,7 @@ datagrids:
                 label:            marello.tax.taxrule.tax_rate.label
                 type:             twig
                 frontend_type:    html
-                template:         MarelloTaxBundle:TaxRate/DataGrid:rate.html.twig
+                template:         '@MarelloTax/TaxRate/DataGrid/rate.html.twig'
             jurisdiction:
                 label:            marello.tax.taxrule.tax_jurisdiction.label
                 frontend_type:    string

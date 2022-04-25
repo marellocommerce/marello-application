@@ -2,8 +2,8 @@
 
 namespace Marello\Bundle\ShippingBundle\Condition;
 
-use Doctrine\ORM\EntityRepository;
 use Marello\Bundle\ShippingBundle\Entity\Repository\ShippingMethodsConfigsRuleRepository;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 /**
  * Check if shipping method has shipping rules
@@ -12,24 +12,16 @@ use Marello\Bundle\ShippingBundle\Entity\Repository\ShippingMethodsConfigsRuleRe
  */
 class ShippingMethodHasEnabledShippingRules extends AbstractShippingMethodHasShippingRules
 {
-    /**
-     * @var ShippingMethodsConfigsRuleRepository
-     */
-    private $repository;
-
-    /**
-     * @param EntityRepository $repository
-     */
-    public function __construct(EntityRepository $repository)
-    {
-        $this->repository = $repository;
-    }
+    public function __construct(
+        private ShippingMethodsConfigsRuleRepository $repository,
+        private AclHelper $aclHelper
+    ) {}
 
     /**
      * {@inheritDoc}
      */
     protected function getRulesByMethod($shippingMethodIdentifier)
     {
-        return $this->repository->getEnabledRulesByMethod($shippingMethodIdentifier);
+        return $this->repository->getEnabledRulesByMethod($shippingMethodIdentifier, $this->aclHelper);
     }
 }

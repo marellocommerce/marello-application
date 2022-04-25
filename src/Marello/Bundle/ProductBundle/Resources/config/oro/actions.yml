@@ -50,7 +50,7 @@ operations:
             icon: fa-cubes
         actions:
             - '@call_service_method':
-                service: marello_inventory.repository.inventoryitem
+                service: Marello\Bundle\InventoryBundle\Entity\Repository\InventoryItemRepository
                 method: findOneByProduct
                 method_parameters: [$.data]
                 attribute: $.inventoryitem

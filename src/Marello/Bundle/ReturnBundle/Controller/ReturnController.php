@@ -2,16 +2,19 @@
 
 namespace Marello\Bundle\ReturnBundle\Controller;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
 use Marello\Bundle\ReturnBundle\Form\Type\ReturnType;
 use Marello\Bundle\ReturnBundle\Form\Type\ReturnUpdateType;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\UIBundle\Route\Router;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ReturnController extends AbstractController
 {
@@ -53,15 +56,15 @@ class ReturnController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $manager = $this->getDoctrine()->getManager();
+                $manager = $this->container->get(ManagerRegistry::class)->getManager();
 
                 $manager->persist($return);
                 $manager->flush();
-                $this->get('session')->getFlashBag()->add(
+                $request->getSession()->getFlashBag()->add(
                     'success',
-                    $this->get('translator')->trans('marello.return.returnentity.messages.success.returnentity.saved')
+                    $this->container->get(TranslatorInterface::class)->trans('marello.return.returnentity.messages.success.returnentity.saved')
                 );
-                return $this->get('oro_ui.router')->redirectAfterSave(
+                return $this->container->get(Router::class)->redirectAfterSave(
                     [
                         'route' => 'marello_return_return_update',
                         'parameters' => [
@@ -85,7 +88,7 @@ class ReturnController extends AbstractController
             ];
         } else {
             throw new AccessDeniedException(
-                $this->get('translator')->trans(
+                $this->container->get(TranslatorInterface::class)->trans(
                     'marello.return.returnentity.messages.error.return.cannot_be_returned_without_shipment'
                 )
             );
@@ -130,12 +133,12 @@ class ReturnController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $manager = $this->getDoctrine()->getManager();
+            $manager = $this->container->get(ManagerRegistry::class)->getManager();
 
             $manager->persist($return);
             $manager->flush();
 
-            return $this->get('oro_ui.router')->redirectAfterSave(
+            return $this->container->get(Router::class)->redirectAfterSave(
                 [
                     'route'      => 'marello_return_return_update',
                     'parameters' => [
@@ -156,5 +159,17 @@ class ReturnController extends AbstractController
         return [
             'form' => $form->createView(),
         ];
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                ManagerRegistry::class,
+                TranslatorInterface::class,
+                Router::class,
+            ]
+        );
     }
 }

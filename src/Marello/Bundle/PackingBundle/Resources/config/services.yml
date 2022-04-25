@@ -1,3 +1,6 @@
+imports:
+    - { resource: controllers.yml }
+
 services:
     marello_packing.mapper.order_to_packingslip:
         class: 'Marello\Bundle\PackingBundle\Mapper\OrderToPackingSlipMapper'

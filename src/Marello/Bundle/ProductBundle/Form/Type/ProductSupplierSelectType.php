@@ -26,8 +26,8 @@ class ProductSupplierSelectType extends AbstractType
                 'grid_parameters' => [],
                 'configs'            => [
                     'placeholder' => 'marello.product.form.choose_product',
-                    'result_template_twig' => 'MarelloProductBundle:Product:Autocomplete/result.html.twig',
-                    'selection_template_twig' => 'MarelloProductBundle:Product:Autocomplete/selection.html.twig',
+                    'result_template_twig' => '@MarelloProduct/Product/Autocomplete/result.html.twig',
+                    'selection_template_twig' => '@MarelloProduct/Product/Autocomplete/selection.html.twig',
                 ],
             ]
         );

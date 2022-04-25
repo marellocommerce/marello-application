@@ -1,0 +1,9 @@
+services:
+    _defaults:
+        public: true
+
+    Marello\Bundle\PackingBundle\Controller\PackingSlipController:
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }

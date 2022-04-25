@@ -3,11 +3,17 @@
 namespace Marello\Bundle\CustomerBundle\Controller;
 
 use Marello\Bundle\CustomerBundle\Entity\Customer;
+use Marello\Bundle\CustomerBundle\Form\Handler\CustomerHandler;
+use Oro\Bundle\ActivityListBundle\Entity\Manager\ActivityListManager;
+use Oro\Bundle\EntityBundle\Tools\EntityRoutingHelper;
+use Oro\Bundle\FormBundle\Model\UpdateHandler;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CustomerController extends AbstractController
 {
@@ -34,8 +40,8 @@ class CustomerController extends AbstractController
      */
     public function viewAction(Customer $customer)
     {
-        $entityClass = $this->get('oro_entity.routing_helper')->resolveEntityClass('marellocustomers');
-        $manager = $this->get('oro_activity_list.manager');
+        $entityClass = $this->container->get(EntityRoutingHelper::class)->resolveEntityClass('marellocustomers');
+        $manager = $this->container->get(ActivityListManager::class);
         $results = $manager->getListData(
             $entityClass,
             1000,
@@ -55,13 +61,11 @@ class CustomerController extends AbstractController
      * @Template("@MarelloCustomer/Customer/update.html.twig")
      * @AclAncestor("marello_customer_create")
      *
-     * @param Request $request
-     *
      * @return array
      */
-    public function createAction(Request $request)
+    public function createAction()
     {
-        return $this->update($request);
+        return $this->update();
     }
 
     /**
@@ -74,32 +78,29 @@ class CustomerController extends AbstractController
      * @Template
      * @AclAncestor("marello_customer_update")
      *
-     * @param Request  $request
      * @param Customer $customer
      *
      * @return array
      */
-    public function updateAction(Request $request, Customer $customer)
+    public function updateAction(Customer $customer)
     {
-        return $this->update($request, $customer);
+        return $this->update($customer);
     }
 
     /**
-     * @param Request $request
      * @param Customer|null $customer
      *
      * @return mixed
      */
-    private function update(Request $request, Customer $customer = null)
+    private function update(Customer $customer = null)
     {
         if (!$customer) {
             $customer = new Customer();
         }
 
-        return $this->get('oro_form.model.update_handler')
-        ->handleUpdate(
+        return $this->container->get(UpdateHandler::class)->handleUpdate(
             $customer,
-            $this->get('marello_customer.form'),
+            $this->container->get(Form::class),
             function (Customer $entity) {
                 return [
                     'route' => 'marello_customer_update',
@@ -112,8 +113,23 @@ class CustomerController extends AbstractController
                     'parameters' => ['id' => $entity->getId()]
                 ];
             },
-            $this->get('translator')->trans('marello.order.messages.success.customer.saved'),
-            $this->get('marello_customer.form.handler.customer')
+            $this->container->get(TranslatorInterface::class)->trans('marello.order.messages.success.customer.saved'),
+            $this->container->get(CustomerHandler::class)
+        );
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                EntityRoutingHelper::class,
+                ActivityListManager::class,
+                UpdateHandler::class,
+                Form::class,
+                TranslatorInterface::class,
+                CustomerHandler::class,
+            ]
         );
     }
 }

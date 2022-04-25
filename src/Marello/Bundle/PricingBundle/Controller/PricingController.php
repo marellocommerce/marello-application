@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\PricingBundle\Controller;
 
+use Marello\Bundle\PricingBundle\Provider\CurrencyProvider;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,9 +24,19 @@ class PricingController extends AbstractController
     public function getCurrencyByChannelAction(Request $request)
     {
         return new JsonResponse(
-            $this->get('marello_productprice.pricing.provider.currency_provider')->getCurrencyDataByChannel(
+            $this->container->get(CurrencyProvider::class)->getCurrencyDataByChannel(
                 $request->query->get('salesChannel')
             )
+        );
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                CurrencyProvider::class,
+            ]
         );
     }
 }

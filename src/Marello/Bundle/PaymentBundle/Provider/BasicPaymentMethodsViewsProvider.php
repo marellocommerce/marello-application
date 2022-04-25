@@ -64,7 +64,7 @@ class BasicPaymentMethodsViewsProvider implements PaymentMethodsViewsProviderInt
                     $method->getLabel(),
                     $methodConfig->getOptions()
                 );
-                $this->eventDispatcher->dispatch(ApplicablePaymentMethodViewEvent::NAME, $event);
+                $this->eventDispatcher->dispatch($event, ApplicablePaymentMethodViewEvent::NAME);
                 $methodView = PaymentMethodViewFactory::createMethodView(
                     $event->getMethodId(),
                     $event->getMethodLabel(),

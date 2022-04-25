@@ -1,3 +1,6 @@
+imports:
+    - { resource: controllers.yml }
+
 services:
     marello_product.widget_provider.actions.variant_mass_inventory:
         parent: oro_ui.widget_provider.action_button.abstract
@@ -11,10 +14,11 @@ services:
         class: Marello\Bundle\InventoryBundle\Logging\ChartBuilder
         public: true
         arguments:
-            - '@marello_inventory.repository.inventorylevellogrecord'
+            - '@Marello\Bundle\InventoryBundle\Entity\Repository\InventoryLevelLogRecordRepository'
             - '@marello_inventory.model.inventory_level_totals_calculator'
             - '@oro_dashboard.datetime.helper'
             - '@translator'
+            - '@oro_security.acl_helper'
 
     marello_inventory.manager.inventory_manager:
         class: 'Marello\Bundle\InventoryBundle\Manager\InventoryManager'
@@ -60,31 +64,24 @@ services:
     marello_inventory.provider.order_warehouse:
         class: 'Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProvider'
 
-    marello_inventory.repository.warehouse:
-        class: 'Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository'
+    Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\InventoryBundle\Entity\Warehouse'
         tags:
             - { name: doctrine.repository_service }
 
-    marello_inventory.repository.warehousegroup:
-        class: 'Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseGroupRepository'
+    Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseGroupRepository:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\InventoryBundle\Entity\WarehouseGroup'
-        calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
         tags:
             - { name: doctrine.repository_service }
 
-    marello_inventory.repository.warehousechannelgrouplink:
-        class: 'Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository'
+    Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink'
-        calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
         tags:
             - { name: doctrine.repository_service }
 
@@ -151,7 +148,7 @@ services:
         arguments:
             - '@oro_message_queue.client.message_producer'
             - '@logger'
-            - '@marello_product.repository.product'
+            - '@Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository'
         tags:
             - { name: 'oro_message_queue.client.message_processor' }
 
@@ -173,41 +170,31 @@ services:
         tags:
             - { name: 'oro_message_queue.client.message_processor' }
 
-    marello_inventory.repository.balancedinventory:
-        class: 'Marello\Bundle\InventoryBundle\Entity\Repository\BalancedInventoryRepository'
+    Marello\Bundle\InventoryBundle\Entity\Repository\BalancedInventoryRepository:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel'
         tags:
             - { name: doctrine.repository_service }
 
-    marello_inventory.repository.inventorylevellogrecord:
-        class: 'Marello\Bundle\InventoryBundle\Entity\Repository\InventoryLevelLogRecordRepository'
+    Marello\Bundle\InventoryBundle\Entity\Repository\InventoryLevelLogRecordRepository:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\InventoryBundle\Entity\InventoryLevelLogRecord'
-        calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
         tags:
             - { name: doctrine.repository_service }
 
-    marello_inventory.repository.inventoryitem:
-        class: 'Marello\Bundle\InventoryBundle\Entity\Repository\InventoryItemRepository'
+    Marello\Bundle\InventoryBundle\Entity\Repository\InventoryItemRepository:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\InventoryBundle\Entity\InventoryItem'
-        calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
         tags:
             - { name: doctrine.repository_service }
 
-    marello_inventory.repository.inventorylevel:
-        class: 'Marello\Bundle\InventoryBundle\Entity\Repository\InventoryLevelRepository'
+    Marello\Bundle\InventoryBundle\Entity\Repository\InventoryLevelRepository:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\InventoryBundle\Entity\InventoryLevel'
-        calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
         tags:
             - { name: doctrine.repository_service }
 

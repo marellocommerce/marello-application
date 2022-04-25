@@ -4,6 +4,7 @@ namespace Marello\Bundle\SalesBundle\Controller;
 
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Form\Type\SalesChannelType;
+use Oro\Bundle\FormBundle\Model\UpdateHandlerFacade;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -11,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SalesChannelController extends AbstractController
 {
@@ -36,7 +38,7 @@ class SalesChannelController extends AbstractController
      *     methods={"GET", "POST"},
      *     name="marello_sales_saleschannel_create"
      * )
-     * @Template("MarelloSalesBundle:SalesChannel:update.html.twig")
+     * @Template("@MarelloSales/SalesChannel/update.html.twig")
      * @AclAncestor("marello_saleschannel_create")
      *
      * @param Request $request
@@ -97,12 +99,23 @@ class SalesChannelController extends AbstractController
      */
     protected function update(SalesChannel $channel, Request $request)
     {
-        return $this->get('oro_form.update_handler')->update(
+        return $this->container->get(UpdateHandlerFacade::class)->update(
             $channel,
             $this->createForm(SalesChannelType::class, $channel),
-            $this->get('translator')->trans('marello.sales.saleschannel.messages.success.saved'),
+            $this->container->get(TranslatorInterface::class)->trans('marello.sales.saleschannel.messages.success.saved'),
             $request,
             'marello_sales.saleschannel_form.handler'
+        );
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                UpdateHandlerFacade::class,
+                TranslatorInterface::class,
+            ]
         );
     }
 }

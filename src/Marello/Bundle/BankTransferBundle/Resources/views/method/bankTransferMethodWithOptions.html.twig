@@ -1,5 +1,5 @@
-{% spaceless %}
+{% apply spaceless %}
     {{ marello_get_payment_method_label(methodData.identifier)|trans }}
     <br>
     {{ 'marello.bank_transfer.method.instructions.label'|trans }}: {{ methodData.options.instructions }}
-{% endspaceless %}
+{% endapply %}

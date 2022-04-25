@@ -3,12 +3,17 @@
 namespace Marello\Bundle\SalesBundle\Controller;
 
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\SalesBundle\Provider\SalesChannelConfigurationFormProvider;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+use Oro\Bundle\ConfigBundle\Form\Handler\ConfigHandler;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SyncBundle\Content\DataUpdateTopicSender;
+use Oro\Bundle\SyncBundle\Content\TagGeneratorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ConfigController extends AbstractController
 {
@@ -33,9 +38,9 @@ class ConfigController extends AbstractController
         $activeGroup = null,
         $activeSubGroup = null
     ) {
-        $provider = $this->get('marello_sales.config_form_provider.saleschannel');
+        $provider = $this->container->get(SalesChannelConfigurationFormProvider::class);
         /** @var ConfigManager $manager */
-        $manager = $this->get('oro_config.saleschannel');
+        $manager = $this->container->get(ConfigManager::class);
         $prevScopeId = $manager->getScopeId();
         $manager->setScopeIdFromEntity($entity);
 
@@ -47,19 +52,19 @@ class ConfigController extends AbstractController
         if ($activeSubGroup !== null) {
             $form = $provider->getForm($activeSubGroup);
 
-            if ($this->get('oro_config.form.handler.config')
+            if ($this->container->get(ConfigHandler::class)
                 ->setConfigManager($manager)
                 ->process($form, $request)
             ) {
-                $this->get('session')->getFlashBag()->add(
+                $request->getSession()->getFlashBag()->add(
                     'success',
-                    $this->get('translator')->trans('oro.config.controller.config.saved.message')
+                    $this->container->get(TranslatorInterface::class)->trans('oro.config.controller.config.saved.message')
                 );
 
                 // outdate content tags, it's only special case for generation that are not covered by NavigationBundle
                 $taggableData = ['name' => 'saleschannel_configuration', 'params' => [$activeGroup, $activeSubGroup]];
-                $tagGenerator = $this->get('oro_sync.content.tag_generator');
-                $dataUpdateTopicSender = $this->get('oro_sync.content.data_update_topic_sender');
+                $tagGenerator = $this->container->get(TagGeneratorInterface::class);
+                $dataUpdateTopicSender = $this->container->get(DataUpdateTopicSender::class);
 
                 $dataUpdateTopicSender->send($tagGenerator->generate($taggableData));
 
@@ -80,5 +85,20 @@ class ConfigController extends AbstractController
             'scopeEntityClass' => SalesChannel::class,
             'scopeEntityId'  => $entity->getId()
         ];
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                SalesChannelConfigurationFormProvider::class,
+                ConfigHandler::class,
+                TranslatorInterface::class,
+                TagGeneratorInterface::class,
+                DataUpdateTopicSender::class,
+                ConfigManager::class,
+            ]
+        );
     }
 }

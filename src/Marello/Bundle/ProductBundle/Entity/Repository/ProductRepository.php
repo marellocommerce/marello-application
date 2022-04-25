@@ -2,14 +2,12 @@
 
 namespace Marello\Bundle\ProductBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
-
-use Marello\Bundle\ProductBundle\Entity\Product;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
-class ProductRepository extends EntityRepository
+class ProductRepository extends ServiceEntityRepository
 {
     const PGSQL_DRIVER = 'pdo_pgsql';
     const MYSQL_DRIVER = 'pdo_mysql';
@@ -22,7 +20,7 @@ class ProductRepository extends EntityRepository
     /**
      * @param string $databaseDriver
      */
-    public function setDatabaseDriver($databaseDriver)
+    public function setDatabaseDriver($databaseDriver) // weedizp
     {
         $this->databaseDriver = $databaseDriver;
     }

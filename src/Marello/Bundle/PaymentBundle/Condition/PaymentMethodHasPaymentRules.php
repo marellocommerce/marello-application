@@ -2,8 +2,8 @@
 
 namespace Marello\Bundle\PaymentBundle\Condition;
 
-use Doctrine\ORM\EntityRepository;
 use Marello\Bundle\PaymentBundle\Entity\Repository\PaymentMethodsConfigsRuleRepository;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 /**
  * Check if payment method has payment rules
@@ -12,24 +12,16 @@ use Marello\Bundle\PaymentBundle\Entity\Repository\PaymentMethodsConfigsRuleRepo
  */
 class PaymentMethodHasPaymentRules extends AbstractPaymentMethodHasPaymentRules
 {
-    /**
-     * @var PaymentMethodsConfigsRuleRepository
-     */
-    private $repository;
-
-    /**
-     * @param EntityRepository $repository
-     */
-    public function __construct(EntityRepository $repository)
-    {
-        $this->repository = $repository;
-    }
+    public function __construct(
+        private PaymentMethodsConfigsRuleRepository $repository,
+        private AclHelper $aclHelper
+    ) {}
 
     /**
      * {@inheritDoc}
      */
     protected function getRulesByMethod($paymentMethodIdentifier)
     {
-        return $this->repository->getRulesByMethod($paymentMethodIdentifier);
+        return $this->repository->getRulesByMethod($paymentMethodIdentifier, $this->aclHelper);
     }
 }

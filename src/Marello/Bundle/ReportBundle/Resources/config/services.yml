@@ -1,3 +1,6 @@
+imports:
+    - { resource: controllers.yml }
+
 services:
     marello_report.listener.datagrid.workflow_grid_listener:
         class: 'Marello\Bundle\DataGridBundle\EventListener\Datagrid\WorkflowGridListener'
@@ -7,6 +10,6 @@ services:
     marello_report.listener.datagrid.returns_returned_by_reason_listener:
         class: Marello\Bundle\ReportBundle\EventListener\Datagrid\ReturnsReturnedByReasonReportListener
         arguments:
-            - '@marello_return.repository.return_item'
+            - '@Marello\Bundle\ReturnBundle\Entity\Repository\ReturnItemRepository'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.marello_report-returns-returned_qty_by_reason, method: onBuildAfter }

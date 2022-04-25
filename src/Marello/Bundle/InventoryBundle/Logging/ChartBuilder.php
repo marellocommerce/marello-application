@@ -6,49 +6,18 @@ use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\Repository\InventoryLevelLogRecordRepository;
 use Marello\Bundle\InventoryBundle\Model\InventoryTotalCalculator;
 use Oro\Bundle\DashboardBundle\Helper\DateHelper;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ChartBuilder
 {
-    /**
-     * @var InventoryLevelLogRecordRepository
-     */
-    protected $logRecordRepository;
-
-    /**
-     * @var InventoryTotalCalculator
-     */
-    protected $inventoryCalculator;
-
-    /**
-     * @var DateHelper
-     */
-    protected $dateHelper;
-
-    /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    /**
-     * ChartBuilder constructor.
-     *
-     * @param InventoryLevelLogRecordRepository $logRecordRepository
-     * @param InventoryTotalCalculator $calculator
-     * @param DateHelper $dateHelper
-     * @param TranslatorInterface $translator
-     */
     public function __construct(
-        InventoryLevelLogRecordRepository $logRecordRepository,
-        InventoryTotalCalculator $calculator,
-        DateHelper $dateHelper,
-        TranslatorInterface $translator
-    ) {
-        $this->logRecordRepository = $logRecordRepository;
-        $this->inventoryCalculator = $calculator;
-        $this->dateHelper = $dateHelper;
-        $this->translator = $translator;
-    }
+        protected InventoryLevelLogRecordRepository $logRecordRepository,
+        protected InventoryTotalCalculator $inventoryCalculator,
+        protected DateHelper $dateHelper,
+        protected TranslatorInterface $translator,
+        protected AclHelper $aclHelper
+    ) {}
 
     /**
      * Returns data in format ready for inventory chart.
@@ -125,7 +94,7 @@ class ChartBuilder
      */
     protected function getResultRecords($inventoryItem, $from, $to)
     {
-        $records = $this->logRecordRepository->getInventoryLogRecordsForItem($inventoryItem, $from, $to);
+        $records = $this->logRecordRepository->getInventoryLogRecordsForItem($inventoryItem, $from, $to, $this->aclHelper);
         $resultRecords = [];
         foreach ($records as $k => $record) {
             $record['date'] = $this->modifyDateTimeString($record['date']);

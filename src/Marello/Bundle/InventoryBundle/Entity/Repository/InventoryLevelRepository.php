@@ -2,28 +2,15 @@
 
 namespace Marello\Bundle\InventoryBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
-class InventoryLevelRepository extends EntityRepository
+class InventoryLevelRepository extends ServiceEntityRepository
 {
-    /**
-     * @var AclHelper
-     */
-    private $aclHelper;
-
-    /**
-     * @param AclHelper $aclHelper
-     */
-    public function setAclHelper(AclHelper $aclHelper) // weedizp3
-    {
-        $this->aclHelper = $aclHelper;
-    }
-
     /**
      * @param Warehouse $warehouse
      */
@@ -40,9 +27,10 @@ class InventoryLevelRepository extends EntityRepository
 
     /**
      * @param InventoryItem $inventoryItem
+     * @param AclHelper $aclHelper
      * @return InventoryLevel[]
      */
-    public function findExternalLevelsForInventoryItem(InventoryItem $inventoryItem)
+    public function findExternalLevelsForInventoryItem(InventoryItem $inventoryItem, AclHelper $aclHelper)
     {
         $qb = $this->createQueryBuilder('il');
         $qb
@@ -53,6 +41,6 @@ class InventoryLevelRepository extends EntityRepository
             ->setParameter('inventoryItem', $inventoryItem)
             ->setParameter('warehouseType', WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL);
 
-        return $this->aclHelper->apply($qb)->getResult();
+        return $aclHelper->apply($qb)->getResult();
     }
 }

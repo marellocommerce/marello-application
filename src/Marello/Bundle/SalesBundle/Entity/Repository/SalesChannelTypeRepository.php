@@ -2,31 +2,13 @@
 
 namespace Marello\Bundle\SalesBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
-use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelType;
-use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
-class SalesChannelTypeRepository extends EntityRepository
+class SalesChannelTypeRepository extends ServiceEntityRepository
 {
     /**
-     * @var AclHelper
-     */
-    private $aclHelper;
-
-    /**
-     * @param AclHelper $aclHelper
-     */
-    public function setAclHelper(AclHelper $aclHelper) // weedizp3
-    {
-        $this->aclHelper = $aclHelper;
-    }
-
-    /**
      * @param string $query
-     *
      * @return SalesChannelType[]
      */
     public function search($query)
@@ -40,9 +22,6 @@ class SalesChannelTypeRepository extends EntityRepository
                 )
             )
             ->setParameter('query', '%' . $query . '%');
-        if ($this->aclHelper) {
-            return $this->aclHelper->apply($qb)->getResult();
-        }
 
         return $qb->getQuery()->getResult();
     }

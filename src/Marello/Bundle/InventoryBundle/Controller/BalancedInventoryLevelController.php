@@ -6,9 +6,12 @@ use Marello\Bundle\InventoryBundle\Async\Topics;
 use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class BalancedInventoryLevelController extends AbstractController
 {
@@ -40,19 +43,31 @@ class BalancedInventoryLevelController extends AbstractController
      *      class="MarelloInventoryBundle:BalancedInventoryLevel",
      *      permission="EDIT"
      * )
+     * @param Request $request
      */
-    public function recalculateAction()
+    public function recalculateAction(Request $request)
     {
-        $messageProducer = $this->container->get('oro_message_queue.client.message_producer');
+        $messageProducer = $this->container->get(MessageProducerInterface::class);
         $messageProducer->send(
             Topics::RESOLVE_REBALANCE_ALL_INVENTORY,
             Topics::ALL_INVENTORY
         );
 
-        $this->get('session')->getFlashBag()->add(
+        $request->getSession()->getFlashBag()->add(
             'success',
-            $this->get('translator')->trans('marello.inventory.messages.success.inventory_rebalance.started')
+            $this->container->get(TranslatorInterface::class)->trans('marello.inventory.messages.success.inventory_rebalance.started')
         );
         return $this->redirectToRoute('marello_inventory_balancedinventorylevel_index');
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                MessageProducerInterface::class,
+                TranslatorInterface::class,
+            ]
+        );
     }
 }

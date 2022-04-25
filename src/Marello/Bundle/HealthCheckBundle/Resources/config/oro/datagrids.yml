@@ -21,7 +21,7 @@ datagrids:
             name:
                 label: oro.integration.integration.name.label
                 type: twig
-                template: 'MarelloHealthCheckBundle:IntegrationStatus:Datagrid/name.html.twig'
+                template: '@MarelloHealthCheck/IntegrationStatus/Datagrid/name.html.twig'
                 frontend_type: html
             enabled:
                 label: oro.integration.integration.enabled.label
@@ -34,7 +34,7 @@ datagrids:
             code:
                 label: marello.healthcheck.integration_status.code.label
                 type: twig
-                template: 'MarelloHealthCheckBundle:IntegrationStatus:Datagrid/code.html.twig'
+                template: '@MarelloHealthCheck/IntegrationStatus/Datagrid/code.html.twig'
                 frontend_type: html
             message:
                 label: oro.integration.integration_status.message.label

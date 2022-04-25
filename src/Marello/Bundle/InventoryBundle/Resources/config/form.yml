@@ -50,6 +50,7 @@ services:
         class: 'Marello\Bundle\InventoryBundle\Form\EventListener\InventoryItemSubscriber'
         arguments:
             - '@doctrine'
+            - '@oro_security.acl_helper'
 
     marello_inventory.form.event_listener.inventory_batch_subscriber:
         class: 'Marello\Bundle\InventoryBundle\Form\EventListener\InventoryBatchSubscriber'

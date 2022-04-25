@@ -44,7 +44,7 @@ class ShippingPreparedOrderItemsForNotificationProvider
             }
         }
         $event = new OrderItemsForNotificationEvent($itemsInWarehouses, $templateName);
-        $this->eventDispatcher->dispatch(OrderItemsForNotificationEvent::NAME, $event);
+        $this->eventDispatcher->dispatch($event, OrderItemsForNotificationEvent::NAME);
         return $event->getOrderItems();
     }
 }

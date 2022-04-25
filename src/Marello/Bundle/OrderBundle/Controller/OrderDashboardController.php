@@ -13,39 +13,27 @@ use Marello\Bundle\OrderBundle\Provider\OrderDashboardOrderItemsByStatusProvider
 class OrderDashboardController extends AbstractController
 {
     /**
-     * {@inheritdoc}
-     */
-    public static function getSubscribedServices()
-    {
-        return array_merge(parent::getSubscribedServices(), [
-            WidgetConfigs::class,
-            ChartViewBuilder::class,
-            OrderDashboardOrderItemsByStatusProvider::class
-        ]);
-    }
-
-    /**
      * @Route(
      *      path="/orderitems_by_status/chart/{widget}",
      *      name="marello_order_dashboard_orderitems_by_status_chart",
      *      requirements={"widget"="[\w-]+"}
      * )
-     * @Template("MarelloOrderBundle:Dashboard:orderitemsByStatus.html.twig")
+     * @Template("@MarelloOrder/Dashboard/orderitemsByStatus.html.twig")
      * @param Request $request
      * @param mixed $widget
      * @return array
      */
     public function orderitemsByStatusAction(Request $request, $widget)
     {
-        $options = $this->get(WidgetConfigs::class)
+        $options = $this->container->get(WidgetConfigs::class)
             ->getWidgetOptions($request->query->get('_widgetId', null));
         $valueOptions = [
             'field_name' => 'quantity'
         ];
-        $items = $this->get(OrderDashboardOrderItemsByStatusProvider::class)
+        $items = $this->container->get(OrderDashboardOrderItemsByStatusProvider::class)
             ->getOrderItemsGroupedByStatus($options);
-        $widgetAttr              = $this->get(WidgetConfigs::class)->getWidgetAttributesForTwig($widget);
-        $widgetAttr['chartView'] = $this->get(ChartViewBuilder::class)
+        $widgetAttr              = $this->container->get(WidgetConfigs::class)->getWidgetAttributesForTwig($widget);
+        $widgetAttr['chartView'] = $this->container->get(ChartViewBuilder::class)
             ->setArrayData($items)
             ->setOptions(
                 [
@@ -59,5 +47,14 @@ class OrderDashboardController extends AbstractController
             ->getView();
 
         return $widgetAttr;
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(parent::getSubscribedServices(), [
+            WidgetConfigs::class,
+            ChartViewBuilder::class,
+            OrderDashboardOrderItemsByStatusProvider::class
+        ]);
     }
 }

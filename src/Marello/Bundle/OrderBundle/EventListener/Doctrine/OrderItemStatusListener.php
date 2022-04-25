@@ -87,8 +87,8 @@ class OrderItemStatusListener
             if ($availableInventory >= $orderItem->getQuantity()) {
                 $event = new OrderItemStatusUpdateEvent($orderItem, LoadOrderItemStatusData::PROCESSING);
                 $this->eventDispatcher->dispatch(
-                    OrderItemStatusUpdateEvent::NAME,
-                    $event
+                    $event,
+                    OrderItemStatusUpdateEvent::NAME
                 );
                 $orderItem->setStatus($this->findStatusByName($event->getStatusName()));
                 $entityManager->persist($orderItem);
@@ -119,8 +119,8 @@ class OrderItemStatusListener
                 $event = new OrderItemStatusUpdateEvent($orderItem, LoadOrderItemStatusData::COULD_NOT_ALLOCATE);
             }
             $this->eventDispatcher->dispatch(
-                OrderItemStatusUpdateEvent::NAME, // weedizp4
-                $event
+                $event,
+                OrderItemStatusUpdateEvent::NAME
             );
             $orderItem->setStatus($this->findStatusByName($event->getStatusName()));
             $entityManager->persist($orderItem);

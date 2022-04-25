@@ -84,7 +84,7 @@ class OrderAddressFormChangesProviderTest extends TestCase
 
         $this->twigEngine->expects($this->once())
             ->method('render')
-            ->with('MarelloOrderBundle:Form:customerAddressSelector.html.twig', ['form' => $fieldView])
+            ->with('@MarelloOrder/Form/customerAddressSelector.html.twig', ['form' => $fieldView])
             ->willReturn('view1');
 
         /** @var FormInterface|\PHPUnit\Framework\MockObject\MockObject $field1 */

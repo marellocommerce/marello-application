@@ -65,7 +65,7 @@
 {% block marello_return_item_collection_widget %}
     {% import _self as fields %}
 
-    {% spaceless %}
+    {% apply spaceless %}
         {% set widgetContainerAttributes = block('widget_container_attributes') %}
         {% if prototype is defined %}
             {% set prototype_html = fields.marello_return_item_collection_item_prototype(form, widgetContainerAttributes) %}
@@ -100,5 +100,5 @@
                 </table>
             </div>
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}

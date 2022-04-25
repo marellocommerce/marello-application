@@ -2,11 +2,11 @@
 
 namespace Marello\Bundle\InventoryBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
-class WarehouseRepository extends EntityRepository
+class WarehouseRepository extends ServiceEntityRepository
 {
     public function getDefault(AclHelper $aclHelper): Warehouse
     {

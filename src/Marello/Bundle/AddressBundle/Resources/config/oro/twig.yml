@@ -1,2 +1,2 @@
 bundles:
-    - MarelloAddressBundle:Form:fields.html.twig
+    - '@MarelloAddress/Form/fields.html.twig'
