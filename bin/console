@@ -27,9 +27,6 @@ if ($debug) {
     Debug::enable();
 }
 
-//$env = 'dev';
-//putenv('SYMFONY_ENV=dev'); // weedizp1
-
 $kernel = new AppKernel($env, $debug);
 $application = new Application($kernel);
 $application->run($input);
