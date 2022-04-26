@@ -5,6 +5,7 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Form\Handler;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ObjectManager;
 
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,6 +31,11 @@ class WarehouseGroupHandlerTest extends TestCase
     protected $manager;
 
     /**
+     * @var AclHelper|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected $aclHelper;
+
+    /**
      * @var WarehouseGroupHandler
      */
     protected $warehouseGroupHandler;
@@ -41,7 +47,8 @@ class WarehouseGroupHandlerTest extends TestCase
     {
         $this->form = $this->createMock(FormInterface::class);
         $this->manager = $this->createMock(ObjectManager::class);
-        $this->warehouseGroupHandler = new WarehouseGroupHandler($this->manager);
+        $this->aclHelper = $this->createMock(AclHelper::class);
+        $this->warehouseGroupHandler = new WarehouseGroupHandler($this->manager, $this->aclHelper);
     }
 
     public function testProcess()

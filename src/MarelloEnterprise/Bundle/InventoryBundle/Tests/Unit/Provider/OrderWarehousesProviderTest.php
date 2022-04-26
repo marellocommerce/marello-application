@@ -2,6 +2,8 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Provider;
 
+use Doctrine\Persistence\ManagerRegistry;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use PHPUnit\Framework\TestCase;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
@@ -31,6 +33,11 @@ class OrderWarehousesProviderTest extends TestCase
     protected $wfaRuleRepository;
 
     /**
+     * @var AclHelper|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected $aclHelper;
+
+    /**
      * @var OrderWarehousesProvider
      */
     protected $orderWarehousesProvider;
@@ -39,13 +46,18 @@ class OrderWarehousesProviderTest extends TestCase
     {
         $this->strategiesRegistry = $this->createMock(WFAStrategiesRegistry::class);
         $this->rulesFiltrationService = $this->createMock(RuleFiltrationServiceInterface::class);
-        $this->wfaRuleRepository = $this->getMockBuilder(WFARuleRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->wfaRuleRepository = $this->createMock(WFARuleRepository::class);
+        $registry = $this->createMock(ManagerRegistry::class);
+        $registry->expects($this->any())
+            ->method('getRepository')
+            ->with(WFARule::class)
+            ->willReturn($this->wfaRuleRepository);
+        $this->aclHelper = $this->createMock(AclHelper::class);
         $this->orderWarehousesProvider = new OrderWarehousesProvider(
             $this->strategiesRegistry,
             $this->rulesFiltrationService,
-            $this->wfaRuleRepository
+            $registry,
+            $this->aclHelper
         );
     }
 
