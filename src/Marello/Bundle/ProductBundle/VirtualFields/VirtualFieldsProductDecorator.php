@@ -102,7 +102,7 @@ class VirtualFieldsProductDecorator
      */
     protected function getRelationField($name)
     {
-        $fields = $this->provider->getFields(Product::class, true, true, true);
+        $fields = $this->provider->getFields(Product::class, true, true, true); // weedizp9
         foreach ($fields as $field) {
             if ($field['name'] === $name) {
                 return $field;

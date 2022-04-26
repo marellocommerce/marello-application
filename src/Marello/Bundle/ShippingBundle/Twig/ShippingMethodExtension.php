@@ -67,7 +67,7 @@ class ShippingMethodExtension extends AbstractExtension
     {
         $event = new ShippingMethodConfigDataEvent($shippingMethodName);
         if (!array_key_exists($shippingMethodName, $this->configCache)) {
-            $this->dispatcher->dispatch(ShippingMethodConfigDataEvent::NAME, $event);
+            $this->dispatcher->dispatch($event, ShippingMethodConfigDataEvent::NAME);
             $template = $event->getTemplate();
             if (!$template) {
                 $template = static::DEFAULT_METHOD_CONFIG_TEMPLATE;

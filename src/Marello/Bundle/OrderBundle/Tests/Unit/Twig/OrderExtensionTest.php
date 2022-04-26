@@ -10,6 +10,7 @@ use Marello\Bundle\OrderBundle\Provider\OrderItem\ShippingPreparedOrderItemsForN
 use Marello\Bundle\OrderBundle\Twig\OrderExtension;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Marello\Bundle\OrderBundle\Tests\Unit\Stub\StatusEnumClassStub;
+use Twig\TwigFunction;
 
 class OrderExtensionTest extends WebTestCase
 {
@@ -75,9 +76,8 @@ class OrderExtensionTest extends WebTestCase
             'marello_get_order_total_due'
         );
 
-        /** @var \Twig_SimpleFunction $function */
         foreach ($functions as $function) {
-            $this->assertInstanceOf('\Twig_SimpleFunction', $function);
+            $this->assertInstanceOf(TwigFunction::class, $function);
             $this->assertContains($function->getName(), $expectedFunctions);
         }
     }

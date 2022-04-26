@@ -2,6 +2,8 @@
 
 namespace Marello\Bundle\SalesBundle\Tests\Unit\Twig;
 
+use Doctrine\Persistence\ManagerRegistry;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use PHPUnit\Framework\TestCase;
 
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
@@ -17,6 +19,11 @@ class SalesExtensionTest extends TestCase
     protected $salesChannelRepository;
 
     /**
+     * @var AclHelper|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected $aclHelper;
+
+    /**
      * @var SalesExtension
      */
     protected $extension;
@@ -24,8 +31,14 @@ class SalesExtensionTest extends TestCase
     public function setUp(): void
     {
         $this->salesChannelRepository = $this->createMock(SalesChannelRepository::class);
+        $registry = $this->createMock(ManagerRegistry::class);
+        $registry->expects($this->any())
+            ->method('getRepository')
+            ->with(SalesChannel::class)
+            ->willReturn($this->salesChannelRepository);
+        $this->aclHelper = $this->createMock(AclHelper::class);
 
-        $this->extension = new SalesExtension($this->salesChannelRepository);
+        $this->extension = new SalesExtension($registry, $this->aclHelper);
     }
 
     public function testGetFunctions()

@@ -10,7 +10,7 @@ use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class SalesChannelGroupRepository extends ServiceEntityRepository
 {
-    public function findSystemChannelGroup(AclHelper $aclHelper): SalesChannelGroup
+    public function findSystemChannelGroup(AclHelper $aclHelper): ?SalesChannelGroup
     {
         $qb = $this->createQueryBuilder('scg');
         $qb

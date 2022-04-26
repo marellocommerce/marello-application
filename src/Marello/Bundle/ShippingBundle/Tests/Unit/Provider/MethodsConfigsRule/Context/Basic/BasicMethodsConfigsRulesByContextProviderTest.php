@@ -8,6 +8,7 @@ use Marello\Bundle\ShippingBundle\Provider\MethodsConfigsRule\Context\Basic\Basi
 use Marello\Bundle\ShippingBundle\RuleFiltration\MethodsConfigsRulesFiltrationServiceInterface;
 use Marello\Bundle\ShippingBundle\Tests\Unit\Context\ShippingContextMockTrait;
 use Marello\Bundle\ShippingBundle\Tests\Unit\Entity\ShippingMethodsConfigsRuleMockTrait;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class BasicMethodsConfigsRulesByContextProviderTest extends \PHPUnit\Framework\TestCase
 {
@@ -25,6 +26,11 @@ class BasicMethodsConfigsRulesByContextProviderTest extends \PHPUnit\Framework\T
     private $filtrationService;
 
     /**
+     * @var AclHelper|\PHPUnit\Framework\MockObject\MockObject
+     */
+    private $aclHelper;
+
+    /**
      * @var BasicMethodsConfigsRulesByContextProvider
      */
     private $provider;
@@ -32,12 +38,13 @@ class BasicMethodsConfigsRulesByContextProviderTest extends \PHPUnit\Framework\T
     protected function setUp(): void
     {
         $this->repository = $this->createMock(ShippingMethodsConfigsRuleRepository::class);
-
         $this->filtrationService = $this->createMock(MethodsConfigsRulesFiltrationServiceInterface::class);
+        $this->aclHelper = $this->createMock(AclHelper::class);
 
         $this->provider = new BasicMethodsConfigsRulesByContextProvider(
             $this->filtrationService,
-            $this->repository
+            $this->repository,
+            $this->aclHelper
         );
     }
 

@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\ProductBundle\Tests\Unit\Twig;
 
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use PHPUnit\Framework\TestCase;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
@@ -11,6 +12,7 @@ use Marello\Bundle\ProductBundle\Twig\ProductExtension;
 use Marello\Bundle\SalesBundle\Provider\ChannelProvider;
 use Marello\Bundle\CatalogBundle\Provider\CategoriesIdsProvider;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
+use Twig\TwigFunction;
 
 class ProductExtensionTest extends TestCase
 {
@@ -25,6 +27,11 @@ class ProductExtensionTest extends TestCase
     protected $categoryIdsProvider;
 
     /**
+     * @var \PHPUnit\Framework\MockObject\MockObject|AclHelper
+     */
+    protected $aclHelper;
+
+    /**
      * @var ProductExtension
      */
     protected $extension;
@@ -34,17 +41,14 @@ class ProductExtensionTest extends TestCase
      */
     protected function setUp(): void
     {
-        $this->channelProvider = $this->getMockBuilder(ChannelProvider::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->categoryIdsProvider = $this->getMockBuilder(CategoriesIdsProvider::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->channelProvider = $this->createMock(ChannelProvider::class);
+        $this->categoryIdsProvider = $this->createMock(CategoriesIdsProvider::class);
+        $this->aclHelper = $this->createMock(AclHelper::class);
 
         $this->extension = new ProductExtension(
             $this->channelProvider,
-            $this->categoryIdsProvider
+            $this->categoryIdsProvider,
+            $this->aclHelper
         );
     }
 
@@ -80,9 +84,8 @@ class ProductExtensionTest extends TestCase
             'marello_get_product_by_sku'
         );
 
-        /** @var \Twig_SimpleFunction $function */
         foreach ($functions as $function) {
-            $this->assertInstanceOf('\Twig_SimpleFunction', $function);
+            $this->assertInstanceOf(TwigFunction::class, $function);
             $this->assertContains($function->getName(), $expectedFunctions);
         }
     }

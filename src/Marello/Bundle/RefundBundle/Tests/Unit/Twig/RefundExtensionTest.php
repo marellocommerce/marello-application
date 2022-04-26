@@ -10,6 +10,7 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
 use Marello\Bundle\RefundBundle\Twig\RefundExtension;
 use Marello\Bundle\RefundBundle\Entity\Refund;
 use Marello\Bundle\RefundBundle\Calculator\RefundBalanceCalculator;
+use Twig\TwigFunction;
 
 class RefundExtensionTest extends WebTestCase
 {
@@ -76,9 +77,8 @@ class RefundExtensionTest extends WebTestCase
             'marello_refund_get_balance'
         );
 
-        /** @var \Twig_SimpleFunction $function */
         foreach ($functions as $function) {
-            $this->assertInstanceOf('\Twig_SimpleFunction', $function);
+            $this->assertInstanceOf(TwigFunction::class, $function);
             $this->assertContains($function->getName(), $expectedFunctions);
         }
     }

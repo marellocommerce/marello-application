@@ -76,7 +76,6 @@ class RemoveUsedShippingServiceValidator extends ConstraintValidator
 
         foreach ($shippingMethodValidatorResult->getErrors() as $error) {
             $context->buildViolation($error->getMessage())
-                ->setTranslationDomain(null)
                 ->atPath(static::VIOLATION_PATH)
                 ->addViolation();
         }

@@ -5,7 +5,7 @@ namespace Marello\Bundle\PdfBundle\Workflow\Action;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\Persistence\ManagerRegistry;
 
-use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
+use Liip\ImagineBundle\Binary\MimeTypeGuesserInterface;
 use Symfony\Component\Validator\Constraints\Email as EmailConstraints;
 use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -16,7 +16,6 @@ use Oro\Bundle\EmailBundle\Entity\EmailUser;
 use Oro\Bundle\EmailBundle\Entity\EmailAttachment as AttachmentEntity;
 use Oro\Bundle\EmailBundle\Form\Model\Email;
 use Oro\Bundle\EmailBundle\Form\Model\EmailAttachment;
-use Oro\Bundle\EmailBundle\Workflow\Action\SendEmailTemplate;
 use Oro\Bundle\EmailBundle\Workflow\Action\AbstractSendEmail;
 use Oro\Component\Action\Exception\InvalidArgumentException;
 use Oro\Component\Action\Exception\InvalidParameterException;
@@ -25,7 +24,7 @@ use Oro\Bundle\EmailBundle\Provider\EmailRenderer;
 use Oro\Bundle\EmailBundle\Tools\EmailAddressHelper;
 use Oro\Bundle\EntityBundle\Provider\EntityNameResolver;
 use Oro\Component\ConfigExpression\ContextAccessor;
-use Oro\Bundle\EmailBundle\Mailer\Processor;
+use Oro\Bundle\EmailBundle\Mailer\Processor; // weedizp3
 
 class SendEmailTemplateAttachmentAction extends AbstractSendEmail
 {
@@ -38,8 +37,6 @@ class SendEmailTemplateAttachmentAction extends AbstractSendEmail
 
     protected $options;
 
-    protected $mimeTypeGuesser;
-
     protected $emailConstraint;
 
     public function __construct(
@@ -49,7 +46,8 @@ class SendEmailTemplateAttachmentAction extends AbstractSendEmail
         protected ManagerRegistry $registry,
         ValidatorInterface $validator,
         protected EmailOriginHelper $emailOriginHelper,
-        protected EmailRenderer $renderer
+        protected EmailRenderer $renderer,
+        protected MimeTypeGuesserInterface $mimeTypeGuesser
     ) {
         parent::__construct($contextAccessor, $validator, $emailAddressHelper, $entityNameResolver);
     }
@@ -69,7 +67,7 @@ class SendEmailTemplateAttachmentAction extends AbstractSendEmail
             throw new InvalidParameterException('Need to specify "to" parameters');
         }
 
-        $options = $this->normalizeToOption($options);
+        $this->normalizeToOption($options);
 
         if (empty($options['template'])) {
             throw new InvalidParameterException('Template parameter is required');
@@ -121,7 +119,6 @@ class SendEmailTemplateAttachmentAction extends AbstractSendEmail
      * @param mixed $context
      * @throws EntityNotFoundException
      * @throws \Twig\Error\Error
-     * @throws \Twig_Error
      */
     public function executeAction($context): void
     {
@@ -243,7 +240,7 @@ class SendEmailTemplateAttachmentAction extends AbstractSendEmail
             $mimetype = $this->contextAccessor->getValue($context, $attachment[self::OPTION_ATTACHMENT_MIMETYPE]);
         } else {
             $extension = pathinfo($path, PATHINFO_EXTENSION);
-            $mimetype = $this->getMimeTypeGuesser()->guess($extension);
+            $mimetype = $this->mimeTypeGuesser->guess($extension);
         }
         if (isset($attachment[self::OPTION_ATTACHMENT_FILENAME])) {
             $filename = $this->contextAccessor->getValue($context, $attachment[self::OPTION_ATTACHMENT_FILENAME]);
@@ -292,18 +289,6 @@ class SendEmailTemplateAttachmentAction extends AbstractSendEmail
         $emailAttachment->setEmailAttachment($attachmentEntity);
 
         return $emailAttachment;
-    }
-
-    /**
-     * @return MimeTypeGuesser
-     */
-    protected function getMimeTypeGuesser()
-    {
-        if ($this->mimeTypeGuesser === null) {
-            $this->mimeTypeGuesser = MimeTypeGuesser::getInstance();
-        }
-
-        return $this->mimeTypeGuesser;
     }
 
     /**

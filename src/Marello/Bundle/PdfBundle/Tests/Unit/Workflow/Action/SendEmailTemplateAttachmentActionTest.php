@@ -33,7 +33,7 @@ class SendEmailTemplateAttachmentActionTest extends TestCase
         /** @var EmailOriginHelper|\PHPUnit\Framework\MockObject\MockObject $emailOriginHelper */
         $emailOriginHelper = $this->getMockBuilder(EmailOriginHelper::class)->disableOriginalConstructor()->getMock();
 
-        $this->action = new SendEmailTemplateAttachmentAction(
+        $this->action = new SendEmailTemplateAttachmentAction( // weedizp3
             new ContextAccessor(),
             $emailProcessor,
             new EmailAddressHelper(),

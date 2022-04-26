@@ -8,6 +8,7 @@ use Marello\Bundle\ShippingBundle\Provider\MethodsConfigsRule\Context\Regardless
 use Marello\Bundle\ShippingBundle\RuleFiltration\MethodsConfigsRulesFiltrationServiceInterface;
 use Marello\Bundle\ShippingBundle\Tests\Unit\Context\ShippingContextMockTrait;
 use Marello\Bundle\ShippingBundle\Tests\Unit\Entity\ShippingMethodsConfigsRuleMockTrait;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Oro\Bundle\WebsiteBundle\Entity\Website;
 
 class RegardlessDestinationMethodsConfigsRulesByContextProviderTest extends \PHPUnit\Framework\TestCase
@@ -26,6 +27,11 @@ class RegardlessDestinationMethodsConfigsRulesByContextProviderTest extends \PHP
     private $filtrationService;
 
     /**
+     * @var AclHelper|\PHPUnit\Framework\MockObject\MockObject
+     */
+    private $aclHelper;
+
+    /**
      * @var RegardlessDestination\RegardlessDestinationMethodsConfigsRulesByContextProvider
      */
     private $provider;
@@ -33,12 +39,13 @@ class RegardlessDestinationMethodsConfigsRulesByContextProviderTest extends \PHP
     protected function setUp(): void
     {
         $this->repository = $this->createMock(ShippingMethodsConfigsRuleRepository::class);
-
         $this->filtrationService = $this->createMock(MethodsConfigsRulesFiltrationServiceInterface::class);
+        $this->aclHelper = $this->createMock(AclHelper::class);
 
         $this->provider = new RegardlessDestination\RegardlessDestinationMethodsConfigsRulesByContextProvider(
             $this->filtrationService,
-            $this->repository
+            $this->repository,
+            $this->aclHelper
         );
     }
 

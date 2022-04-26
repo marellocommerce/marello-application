@@ -8,6 +8,7 @@ use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 use Marello\Bundle\ReturnBundle\Twig\ReturnExtension;
 use Marello\Bundle\ReturnBundle\Util\ReturnHelper;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Twig\TwigFunction;
 
 class ReturnExtensionTest extends WebTestCase
 {
@@ -73,9 +74,8 @@ class ReturnExtensionTest extends WebTestCase
             'marello_return_is_on_hold'
         );
 
-        /** @var \Twig_SimpleFunction $function */
         foreach ($functions as $function) {
-            $this->assertInstanceOf('\Twig_SimpleFunction', $function);
+            $this->assertInstanceOf(TwigFunction::class, $function);
             $this->assertContains($function->getName(), $expectedFunctions);
         }
     }

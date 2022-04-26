@@ -23,9 +23,7 @@ class BalancerStrategiesCompilerPassTest extends TestCase
 
     public function setUp(): void
     {
-        $this->containerBuilder = $this
-            ->getMockBuilder('Symfony\Component\DependencyInjection\ContainerBuilder')
-            ->getMock();
+        $this->containerBuilder = $this->createMock(ContainerBuilder::class);
 
         $this->compilerPass = new BalancerStrategiesCompilerPass();
     }
