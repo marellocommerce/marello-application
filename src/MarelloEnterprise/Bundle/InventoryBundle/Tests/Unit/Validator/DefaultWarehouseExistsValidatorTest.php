@@ -2,6 +2,8 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Validator;
 
+use MarelloEnterprise\Bundle\InventoryBundle\Validator\Constraints\DefaultWarehouseExists;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -35,6 +37,11 @@ class DefaultWarehouseExistsValidatorTest extends TestCase
     private $context;
 
     /**
+     * @var AclHelper|\PHPUnit\Framework\MockObject\MockObject
+     */
+    private $aclHelper;
+
+    /**
      * @var DefaultWarehouseExistsValidator
      */
     private $validator;
@@ -44,25 +51,20 @@ class DefaultWarehouseExistsValidatorTest extends TestCase
      */
     protected function setUp(): void
     {
-        $this->warehouseRepository = $this->getMockBuilder(WarehouseRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->constraint = $this->createMock(Constraint::class);
+        $this->warehouseRepository = $this->createMock(WarehouseRepository::class);
+        $this->constraint = $this->createMock(DefaultWarehouseExists::class);
         $this->context = $this->createMock(ExecutionContextInterface::class);
+        $this->aclHelper = $this->createMock(AclHelper::class);
 
-        $this->validator = new DefaultWarehouseExistsValidator($this->warehouseRepository);
+        $this->validator = new DefaultWarehouseExistsValidator($this->warehouseRepository, $this->aclHelper);
         $this->validator->initialize($this->context);
     }
 
-    /**
-     * @covers validate
-     * "NULL" given
-     */
     public function testValidateForWrongObject()
     {
         $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage(
-            'Expected argument of type "Marello\Bundle\InventoryBundle\Entity\Warehouse", "NULL" given'
+            'Expected argument of type "Marello\Bundle\InventoryBundle\Entity\Warehouse", "null" given'
         );
         $this->validator->validate(null, $this->constraint);
     }

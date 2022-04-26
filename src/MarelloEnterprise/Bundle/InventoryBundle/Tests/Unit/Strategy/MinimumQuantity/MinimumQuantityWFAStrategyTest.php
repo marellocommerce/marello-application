@@ -2,12 +2,14 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Strategy\MinimumQuantity;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use PHPUnit\Framework\TestCase;
 
 use Oro\Component\Testing\Unit\EntityTrait;
@@ -41,13 +43,25 @@ class MinimumQuantityWFAStrategyTest extends TestCase
      */
     protected $warehouseChannelGroupLinkRepository;
 
+    /**
+     * @var AclHelper|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected $aclHelper;
+
     protected function setUp(): void
     {
         $this->minQtyWHCalculator = $this->createMock(MinQtyWHCalculatorInterface::class);
         $this->warehouseChannelGroupLinkRepository = $this->createMock(WarehouseChannelGroupLinkRepository::class);
+        $registry = $this->createMock(ManagerRegistry::class);
+        $registry->expects($this->any())
+            ->method('getRepository')
+            ->with(WarehouseChannelGroupLink::class)
+            ->willReturn($this->warehouseChannelGroupLinkRepository);
+        $this->aclHelper = $this->createMock(AclHelper::class);
         $this->minimumQuantityWFAStrategy = new MinimumQuantityWFAStrategy(
             $this->minQtyWHCalculator,
-            $this->warehouseChannelGroupLinkRepository
+            $registry,
+            $this->aclHelper
         );
     }
 

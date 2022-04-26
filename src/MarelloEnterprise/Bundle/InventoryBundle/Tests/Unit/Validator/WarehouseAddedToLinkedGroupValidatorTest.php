@@ -5,6 +5,7 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Validator;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\UnitOfWork;
 
+use MarelloEnterprise\Bundle\InventoryBundle\Validator\Constraints\WarehouseAddedToLinkedGroup;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -50,7 +51,7 @@ class WarehouseAddedToLinkedGroupValidatorTest extends TestCase
      */
     protected function setUp(): void
     {
-        $this->constraint = $this->createMock(Constraint::class);
+        $this->constraint = $this->createMock(WarehouseAddedToLinkedGroup::class);
         $this->context = $this->createMock(ExecutionContextInterface::class);
         $this->manager = $this->createMock(EntityManager::class);
 
@@ -65,7 +66,7 @@ class WarehouseAddedToLinkedGroupValidatorTest extends TestCase
     {
         $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage(
-            'Expected argument of type "Marello\Bundle\InventoryBundle\Entity\Warehouse", "NULL" given'
+            'Expected argument of type "Marello\Bundle\InventoryBundle\Entity\Warehouse", "null" given'
         );
         $this->validator->validate(null, $this->constraint);
     }

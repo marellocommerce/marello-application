@@ -10,6 +10,7 @@ use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseListener;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -33,13 +34,24 @@ class WarehouseListenerTest extends TestCase
     private $session;
 
     /**
+     * @var AclHelper|\PHPUnit\Framework\MockObject\MockObject
+     */
+    private $aclHelper;
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp(): void
     {
         $this->translator = $this->createMock(TranslatorInterface::class);
         $this->session = $this->createMock(Session::class);
-        $this->warehouseListener = new WarehouseListener(true, $this->translator, $this->session);
+        $this->aclHelper = $this->createMock(AclHelper::class);
+        $this->warehouseListener = new WarehouseListener(
+            true,
+            $this->translator,
+            $this->session,
+            $this->aclHelper
+        );
     }
 
     /**

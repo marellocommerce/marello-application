@@ -24,8 +24,8 @@ class InventoryManager extends BaseInventoryManager
     public function updateInventoryLevel(InventoryUpdateContext $context)
     {
         $this->eventDispatcher->dispatch(
-            InventoryUpdateEvent::INVENTORY_UPDATE_BEFORE,
-            new InventoryUpdateEvent($context)
+            new InventoryUpdateEvent($context),
+            InventoryUpdateEvent::INVENTORY_UPDATE_BEFORE
         );
 
         if (!$this->contextValidator->validateContext($context)) {
@@ -90,8 +90,8 @@ class InventoryManager extends BaseInventoryManager
         $context->setInventoryLevel($updatedLevel);
 
         $this->eventDispatcher->dispatch(
-            InventoryUpdateEvent::INVENTORY_UPDATE_AFTER,
-            new InventoryUpdateEvent($context)
+            new InventoryUpdateEvent($context),
+            InventoryUpdateEvent::INVENTORY_UPDATE_AFTER
         );
         if (!empty($context->getInventoryBatches())) {
             // for some reason multiple batches are not saved when this flush is not triggered..
