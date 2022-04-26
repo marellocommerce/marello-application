@@ -6,6 +6,7 @@ use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 use Marello\Bundle\CoreBundle\Twig\CoreExtension;
 use Marello\Bundle\CoreBundle\Provider\AdditionalPlaceholderProvider;
+use Twig\TwigFunction;
 
 class CoreExtensionTest extends WebTestCase
 {
@@ -60,9 +61,8 @@ class CoreExtensionTest extends WebTestCase
             'marello_get_additional_placeholder_data'
         );
 
-        /** @var \Twig_SimpleFunction $function */
         foreach ($functions as $function) {
-            $this->assertInstanceOf('\Twig_SimpleFunction', $function);
+            $this->assertInstanceOf(TwigFunction::class, $function);
             $this->assertContains($function->getName(), $expectedFunctions);
         }
     }

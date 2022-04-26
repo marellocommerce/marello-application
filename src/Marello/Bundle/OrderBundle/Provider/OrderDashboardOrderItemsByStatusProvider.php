@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\OrderBundle\Provider;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\OrderBundle\Migrations\Data\ORM\LoadOrderItemStatusData;
 use Oro\Bundle\CurrencyBundle\Query\CurrencyQueryBuilderTransformerInterface;
 use Oro\Bundle\DashboardBundle\Filter\DateFilterProcessor;
@@ -11,11 +12,10 @@ use Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Marello\Bundle\OrderBundle\Entity\Repository\OrderItemRepository;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class OrderDashboardOrderItemsByStatusProvider
 {
-    /** @var RegistryInterface */
+    /** @var ManagerRegistry */
     protected $registry;
 
     /** @var AclHelper */
@@ -31,14 +31,14 @@ class OrderDashboardOrderItemsByStatusProvider
     protected $qbTransformer;
 
     /**
-     * @param RegistryInterface $doctrine
+     * @param ManagerRegistry $doctrine
      * @param AclHelper $aclHelper
      * @param WidgetProviderFilterManager $widgetProviderFilter
      * @param DateFilterProcessor $processor
      * @param CurrencyQueryBuilderTransformerInterface $qbTransformer
      */
     public function __construct(
-        RegistryInterface $doctrine,
+        ManagerRegistry $doctrine,
         AclHelper $aclHelper,
         WidgetProviderFilterManager $widgetProviderFilter,
         DateFilterProcessor $processor,

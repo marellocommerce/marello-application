@@ -9,7 +9,6 @@ use Marello\Bundle\PaymentBundle\Form\Type\PaymentMethodSelectType;
 use Marello\Bundle\PaymentBundle\Provider\PaymentMethodChoicesProviderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Twig\Environment;
 
