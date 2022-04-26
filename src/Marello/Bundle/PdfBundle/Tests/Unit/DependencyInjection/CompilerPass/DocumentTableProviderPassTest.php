@@ -24,9 +24,7 @@ class DocumentTableProviderPassTest extends TestCase
 
     public function setUp(): void
     {
-        $this->containerBuilder = $this
-            ->getMockBuilder(ContainerBuilder::class)
-            ->getMock();
+        $this->containerBuilder = $this->createMock(ContainerBuilder::class);
 
         $this->compilerPass = new DocumentTableProviderPass();
     }

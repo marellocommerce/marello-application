@@ -125,7 +125,6 @@ class ProductsAssignSalesChannelsProcessor implements MessageProcessorInterface,
     /**
      * @param array $assignedSalesChannels
      * @param array $modifiedProducts
-     * @throws \Swift_SwiftException
      */
     private function sendMail(array $assignedSalesChannels, array $modifiedProducts): void
     {

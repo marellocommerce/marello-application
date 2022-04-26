@@ -16,7 +16,6 @@ use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Oro\Component\Testing\Unit\EntityTrait;
 use PHPUnit\Framework\TestCase;
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 
 class OrderWarehousesProviderTest extends TestCase
 {
@@ -29,8 +28,7 @@ class OrderWarehousesProviderTest extends TestCase
 
     protected function setUp(): void
     {
-        $doctrineHelper = $this->createMock(DoctrineHelper::class);
-        $this->orderWarehousesProvider = new OrderWarehousesProvider($doctrineHelper);
+        $this->orderWarehousesProvider = new OrderWarehousesProvider();
     }
 
     /**

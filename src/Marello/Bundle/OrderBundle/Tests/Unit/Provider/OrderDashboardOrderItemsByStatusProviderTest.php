@@ -5,6 +5,7 @@ namespace Marello\Bundle\OrderBundle\Tests\Unit\Provider;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\OrderBundle\Migrations\Data\ORM\LoadOrderItemStatusData;
 use Marello\Bundle\OrderBundle\Provider\OrderDashboardOrderItemsByStatusProvider;
 use Oro\Bundle\CurrencyBundle\Query\CurrencyQueryBuilderTransformerInterface;
@@ -13,12 +14,11 @@ use Oro\Bundle\DashboardBundle\Filter\WidgetProviderFilterManager;
 use Oro\Bundle\DashboardBundle\Model\WidgetOptionBag;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use PHPUnit\Framework\TestCase;
 
 class OrderDashboardOrderItemsByStatusProviderTest extends TestCase
 {
-    /** @var RegistryInterface|\PHPUnit\Framework\MockObject\MockObject */
+    /** @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject */
     protected $registry;
 
     /** @var AclHelper|\PHPUnit\Framework\MockObject\MockObject */
@@ -51,7 +51,7 @@ class OrderDashboardOrderItemsByStatusProviderTest extends TestCase
      */
     protected function setUp(): void
     {
-        $this->registry = $this->createMock(RegistryInterface::class);
+        $this->registry = $this->createMock(ManagerRegistry::class);
         $this->aclHelper = $this->createMock(AclHelper::class);
         $this->widgetProviderFilter = $this->createMock(WidgetProviderFilterManager::class);
         $this->dateFilterProcessor = $this->createMock(DateFilterProcessor::class);

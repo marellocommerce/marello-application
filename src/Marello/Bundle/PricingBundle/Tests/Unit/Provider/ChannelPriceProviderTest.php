@@ -16,6 +16,7 @@ use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\EntityBundle\ORM\Registry;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Oro\Component\Testing\Unit\EntityTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormInterface;
@@ -30,6 +31,11 @@ class ChannelPriceProviderTest extends TestCase
     protected $registry;
 
     /**
+     * @var AclHelper|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected $aclHelper;
+
+    /**
      * @var FormChangeContextInterface
      */
     protected $context;
@@ -42,7 +48,8 @@ class ChannelPriceProviderTest extends TestCase
     protected function setUp(): void
     {
         $this->registry = $this->createMock(Registry::class);
-        $this->channelPriceProvider = new ChannelPriceProvider($this->registry);
+        $this->aclHelper = $this->createMock(AclHelper::class);
+        $this->channelPriceProvider = new ChannelPriceProvider($this->registry, $this->aclHelper);
     }
 
     /**

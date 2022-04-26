@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SupplierBundle\Twig\SupplierExtension;
 use Marello\Bundle\SupplierBundle\Provider\SupplierProvider;
+use Twig\TwigFunction;
 
 class SupplierExtensionTest extends TestCase
 {
@@ -48,9 +49,8 @@ class SupplierExtensionTest extends TestCase
             'marello_supplier_get_supplier_ids'
         );
 
-        /** @var \Twig_SimpleFunction $function */
         foreach ($functions as $function) {
-            $this->assertInstanceOf('\Twig_SimpleFunction', $function);
+            $this->assertInstanceOf(TwigFunction::class, $function);
             $this->assertContains($function->getName(), $expectedFunctions);
         }
     }
