@@ -561,7 +561,7 @@ datagrids:
                 label:          marello.inventory.allocation.warehouse.label
                 frontend_type:  string
             orderItem:
-                label:          marello.inventory.allocation.total_quantity_allocated.label
+                label:          marello.inventory.allocation.quantity_allocated.label
                 type:           twig
                 frontend_type:  html
                 template:       MarelloInventoryBundle:Datagrid/Property:total_allocated.html.twig
