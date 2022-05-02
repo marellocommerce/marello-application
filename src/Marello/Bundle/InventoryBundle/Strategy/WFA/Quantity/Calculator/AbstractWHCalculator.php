@@ -7,6 +7,7 @@ use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use phpDocumentor\Reflection\File;
 
 abstract class AbstractWHCalculator implements QtyWHCalculatorInterface
 {
@@ -128,10 +129,7 @@ abstract class AbstractWHCalculator implements QtyWHCalculatorInterface
         foreach ($product->getSuppliers() as $productSupplierRelation) {
             if ($productSupplierRelation->getCanDropship() === true) {
                 $supplier = $productSupplierRelation->getSupplier();
-                $supplierWarehouseCode = sprintf(
-                    '%s_external_warehouse',
-                    str_replace(' ', '_', strtolower($supplier->getName()))
-                );
+                $supplierWarehouseCode = $supplier->getCode();
                 if ($supplier->getCanDropship() === true && $supplierWarehouseCode === $warehouse->getCode()) {
                     return $productSupplierRelation->getPriority();
                 }
