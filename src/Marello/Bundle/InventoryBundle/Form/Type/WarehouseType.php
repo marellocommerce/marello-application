@@ -4,6 +4,8 @@ namespace Marello\Bundle\InventoryBundle\Form\Type;
 
 use Marello\Bundle\AddressBundle\Form\Type\AddressType;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
+use Oro\Bundle\FormBundle\Utils\FormUtils;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -85,6 +87,11 @@ class WarehouseType extends AbstractType
                 'mapped' => false,
                 'label' => 'marello.inventory.warehouse.form.create_own_group'
             ]);
+        }
+
+        if ($warehouse->getCode() !== null) {
+            // disable code field for wh's
+            FormUtils::replaceField($form, 'code', ['disabled' => true]);
         }
     }
 
