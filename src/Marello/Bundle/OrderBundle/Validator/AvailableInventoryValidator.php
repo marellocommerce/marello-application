@@ -236,7 +236,7 @@ class AvailableInventoryValidator extends ConstraintValidator
                 ->getEntityManagerForClass(Warehouse::class)
                 ->getRepository(Warehouse::class)
                 ->findOneBy([
-                    'code' => sprintf('%s_external_warehouse', str_replace(' ', '_', strtolower($supplierRelation->getSupplier()->getName()))),
+                    'code' => $supplierRelation->getSupplier()->getCode(),
                     'warehouseType' => $warehouseType
                 ]);
 
