@@ -112,6 +112,7 @@ services:
         arguments:
             - '@oro_workflow.manager'
             - '@oro_message_queue.client.message_producer'
+            - '@event_dispatcher'
         tags:
             - { name: kernel.event_listener, event: extendable_action.pending_transition_after, method: onPendingTransitionAfter, priority: 10 }
 
