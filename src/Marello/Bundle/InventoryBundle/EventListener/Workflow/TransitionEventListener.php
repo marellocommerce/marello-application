@@ -2,6 +2,13 @@
 
 namespace Marello\Bundle\InventoryBundle\EventListener\Workflow;
 
+use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
@@ -18,6 +25,7 @@ class TransitionEventListener
     const WORKFLOW_STEP_FROM = 'pending';
     const WORKFLOW_NAME = 'marello_allocate_workflow';
     const CONTEXT_KEY = 'allocation';
+    const WORKFLOW_COULD_NOT_ALLOCATE_STEP = 'could_not_allocate';
 
     /** @var WorkflowManager $workflowManager */
     protected $workflowManager;
@@ -25,16 +33,23 @@ class TransitionEventListener
     /** @var MessageProducerInterface $messageProducer */
     protected $messageProducer;
 
+    /** @var EventDispatcherInterface $eventDispatcher */
+    protected $eventDispatcher;
+
     /**
+     * TransitionEventListener constructor.
      * @param WorkflowManager $workflowManager
      * @param MessageProducerInterface $messageProducer
+     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         WorkflowManager $workflowManager,
-        MessageProducerInterface $messageProducer
+        MessageProducerInterface $messageProducer,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->workflowManager = $workflowManager;
         $this->messageProducer = $messageProducer;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -51,7 +66,7 @@ class TransitionEventListener
         $entity = $event->getContext()->getData()->get(self::CONTEXT_KEY);
 
         if ($this->getApplicableWorkflow($entity)) {
-            if ($entity->getStatus()->getName() === 'could_not_allocate') {
+            if ($entity->getStatus()->getName() === self::WORKFLOW_COULD_NOT_ALLOCATE_STEP) {
                 if ($event->getContext()->getCurrentStep()->getName() === self::WORKFLOW_STEP_FROM) {
                     $this->messageProducer->send(
                         Topics::WORKFLOW_TRANSIT_TOPIC,
@@ -59,14 +74,64 @@ class TransitionEventListener
                             'workflow_item_entity_id' => $event->getContext()->getEntityId(),
                             'current_step_id' => $event->getContext()->getCurrentStep()->getId(),
                             'entity_class' => Allocation::class,
-                            'transition' => 'could_not_allocate',
+                            'transition' => self::WORKFLOW_COULD_NOT_ALLOCATE_STEP,
                             'jobId' => md5($event->getContext()->getEntityId()),
                             'priority' => MessagePriority::NORMAL
                         ]
                     );
                 }
             }
+
+            if ($entity->getStatus()->getName() !== self::WORKFLOW_COULD_NOT_ALLOCATE_STEP) {
+                if ($entity->getWarehouse() && !$entity->hasChildren()) {
+                    // allocations that can be allocated and are not the parent allocation for the consolidation
+                    // option, we should decrease the reserved inventory quantity
+                    $entity->getItems()->map(function (AllocationItem $item) use ($entity) {
+                        $this->handleInventoryUpdate(
+                            $item->getOrderItem(),
+                            null,
+                            -$item->getQuantity(),
+                            null,
+                            $entity->getWarehouse(),
+                            $entity
+                        );
+                    });
+                }
+            }
         }
+    }
+
+    /**
+     * handle the inventory update for items which have been picked and packed
+     * @param OrderItem $item
+     * @param $inventoryUpdateQty
+     * @param $allocatedInventoryQty
+     * @param Warehouse $warehouse
+     * @param Allocation $entity
+     */
+    protected function handleInventoryUpdate(
+        $item,
+        $inventoryUpdateQty,
+        $allocatedInventoryQty,
+        $message,
+        $warehouse,
+        Allocation $entity
+    ) {
+        $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
+            $item,
+            null,
+            $inventoryUpdateQty,
+            $allocatedInventoryQty,
+            $message,
+            $entity->getOrder(),
+            true
+        );
+
+        $context->setValue('warehouse', $warehouse);
+        $this->eventDispatcher->dispatch(
+            InventoryUpdateEvent::NAME,
+            new InventoryUpdateEvent($context)
+        );
     }
 
     /**

@@ -384,11 +384,19 @@ class Allocation extends ExtendAllocation implements
     }
 
     /**
+     * @return bool
+     */
+    public function hasChildren(): bool
+    {
+        return ($this->children->count() > 0);
+    }
+
+    /**
      * @param Allocation $child
      *
      * @return bool
      */
-    protected function hasChild(Allocation $child)
+    public function hasChild(Allocation $child)
     {
         return $this->children->contains($child);
     }
