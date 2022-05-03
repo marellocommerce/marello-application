@@ -131,11 +131,7 @@ class InventoryAllocationProvider extends BaseAllocationProvider
             if ($item instanceof AllocationItem) {
                 $orderItem = $item->getOrderItem();
             }
-            file_put_contents(
-                '/app/var/logs/consolidation.log',
-                __METHOD__ . " " . __LINE__ . " " . print_r($item->getProductSku(), true) . "\r\n",
-                FILE_APPEND
-            );
+
             $allocationItem->setOrderItem($orderItem);
             $allocationItem->setProduct($item->getProduct());
             $allocationItem->setProductSku($item->getProductSku());
@@ -149,11 +145,6 @@ class InventoryAllocationProvider extends BaseAllocationProvider
             if ($this->consolidationWarehouse) {
                 $this->allItems[] = clone $allocationItem;
                 $this->subAllocations[] = $allocation;
-                file_put_contents(
-                    '/app/var/logs/consolidation.log',
-                    __METHOD__ . " " . __LINE__ . " " . print_r($item->getProductSku(), true) . "\r\n",
-                    FILE_APPEND
-                );
             }
         }
     }
