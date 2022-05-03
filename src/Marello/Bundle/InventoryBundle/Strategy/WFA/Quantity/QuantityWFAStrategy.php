@@ -141,25 +141,34 @@ class QuantityWFAStrategy implements WFAStrategyInterface
             /** @var InventoryLevel $inventoryLevel */
             foreach ($inventoryLevels as $i => $inventoryLevel) {
                 $warehouse = $inventoryLevel->getWarehouse();
+                $warehouses[$warehouse->getCode()] = $warehouse;
+                $this->warehouseTypes[$warehouse->getCode()] = $warehouse->getWarehouseType()->getName();
                 $virtualInventoryQuantity = $inventoryLevel->getVirtualInventoryQty();
-                if ($allocation && $allocation->getWarehouse()) {
-                    if ($allocation->getWarehouse()->getId() === $warehouse->getId()) {
-                        if (($orderItem->getQuantity() - $orderItem->getQuantityRejected()) <= 0) {
-                            $virtualInventoryQuantity = 0;
-                        } else {
-                            $virtualInventoryQuantity = $inventoryLevel->getVirtualInventoryQty() - $orderItem->getQuantityRejected();
-                        }
+                // if an allocation has been rejected, and the quantity would still be available in this warehouse (of said allocation)
+                // set the quantity (virtualInventoryQuantity to 0 to make sure this warehouse will be excluded from allocating
+                // rejections of an allocation for a warehouse will be excluded for the next allocation round (triggered by the rejection)
+                if ($allocation && $allocation->getWarehouse() === $warehouse) {
+                    $virtualInventoryQuantity = $inventoryLevel->getVirtualInventoryQty() - $orderItem->getQuantityRejected();
+                    if (($orderItem->getQuantity() - $orderItem->getQuantityRejected()) <= 0) {
+                        $virtualInventoryQuantity = 0;
                     }
                 }
-                $warehouses[$warehouse->getCode()] = $warehouse;
-                $productsByWh[$inventoryItem->getProduct()->getSku()]['selected_wh'][$warehouse->getCode()] = $virtualInventoryQuantity;
-                $quantityAvailable += $virtualInventoryQuantity;
 
+                // custom logic for dropship warehouses
                 if ($this->isWarehouseEligible($orderItem, $inventoryLevel, 'dropshipping')) {
-                    $productsByWh[$inventoryItem->getProduct()->getSku()]['selected_wh'][$warehouse->getCode()] = ($inventoryLevel->isManagedInventory()) ? $virtualInventoryQuantity : $orderItem->getQuantity();
-                    $quantityAvailable += ($inventoryLevel->isManagedInventory()) ? $virtualInventoryQuantity : $orderItemQtyToAllocateLeft;
+                    $dropshipUnmanagedQuantity = $orderItem->getQuantity();
+                    $availableForDropShipping = $orderItemQtyToAllocateLeft;
+                    if ($allocation && $allocation->getWarehouse() === $warehouse) {
+                        $dropshipUnmanagedQuantity = 0;
+                        $availableForDropShipping = 0;
+                    }
+                    $productsByWh[$inventoryItem->getProduct()->getSku()]['selected_wh'][$warehouse->getCode()] = ($inventoryLevel->isManagedInventory()) ? $virtualInventoryQuantity : $dropshipUnmanagedQuantity;
+                    $quantityAvailable += ($inventoryLevel->isManagedInventory()) ? $virtualInventoryQuantity : $availableForDropShipping;
+                } else {
+                    // default behaviour
+                    $productsByWh[$inventoryItem->getProduct()->getSku()]['selected_wh'][$warehouse->getCode()] = $virtualInventoryQuantity;
+                    $quantityAvailable += $virtualInventoryQuantity;
                 }
-                $this->warehouseTypes[$warehouse->getCode()] = $warehouse->getWarehouseType()->getName();
                 $orderItemQtyToAllocateLeft -= $virtualInventoryQuantity;
             }
 
@@ -183,6 +192,7 @@ class QuantityWFAStrategy implements WFAStrategyInterface
             $productsByWh[$inventoryItem->getProduct()->getSku()]['qtyOrdered'] = $orderItem->getQuantity();
             $productsByWh[$inventoryItem->getProduct()->getSku()]['qtyAvailable'] = $quantityAvailable;
         }
+
         $possibleOptionsToFulfill = array_map(function($item) {
                 return $this->getOptions($item['selected_wh'], $item['qtyOrdered']);
             }, $productsByWh
