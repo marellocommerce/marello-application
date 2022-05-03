@@ -45,4 +45,29 @@ class AllocationController extends AbstractController
     {
         return ['entity' => $allocation];
     }
+
+
+    /**
+     * @Route(
+     *        "/widget/allocation-grids/{id}",
+     *        name="marello_inventory_allocation_widget",
+     *        requirements={"id"="\d+"}
+     * )
+     * @AclAncestor("marello_inventory_inventory_view")
+     * @Template("MarelloInventoryBundle:Allocation:widget/orderAllocations.html.twig")
+     * @param Request $request
+     * @param Allocation $allocation
+     * @return array
+     */
+    public function allocationGridsAction(Request $request, Allocation $allocation)
+    {
+        $entityType = $request->get('entityType');
+        $entityState = $request->get('entityState');
+
+        return [
+            'entity' => $allocation,
+            'entityState' => $entityState,
+            'entityType' => $entityType
+        ];
+    }
 }

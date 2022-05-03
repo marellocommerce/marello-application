@@ -351,3 +351,10 @@ services:
         tags:
             - { name: doctrine.event_listener, event: postPersist }
             - { name: doctrine.event_listener, event: postFlush }
+
+    marello_order.event_listener.order_view_services:
+        class: 'Marello\Bundle\OrderBundle\EventListener\OrderViewListener'
+        arguments:
+            - '@translator'
+        tags:
+            - { name: kernel.event_subscriber }

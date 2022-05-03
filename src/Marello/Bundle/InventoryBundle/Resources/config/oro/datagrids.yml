@@ -456,9 +456,6 @@ datagrids:
                 warehouse:
                     type:       string
                     data_name:  warehouse
-#                type:
-#                    type:       string
-#                    data_name:  allocation.type
                 allocationStateId:
                     type:      enum
                     data_name: allocationStateId
