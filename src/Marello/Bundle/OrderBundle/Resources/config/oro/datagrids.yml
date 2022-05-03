@@ -372,6 +372,30 @@ datagrids:
                 frontend_type:    string
                 data_name:        status
 
+    marello-allocation-order-base-grid:
+        extends: marello-allocation-grid
+        source:
+            query:
+                where:
+                    and:
+                        - IDENTITY(allocation.order) = :orderId
+                        - IDENTITY(allocation.state) = :state
+            bind_parameters:
+                orderId: orderId
+                state: state
+        filters: ~
+        sorters: ~
+        options:
+            export: false
+            toolbarOptions:
+                hide: true
+
+    marello-allocation-order-wfs-grid:
+        extends: marello-allocation-order-base-grid
+
+    marello-allocation-order-alert-grid:
+        extends: marello-allocation-order-base-grid
+
     dashboard-latest-orders-grid:
             source:
                 type: orm

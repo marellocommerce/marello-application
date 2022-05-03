@@ -70,9 +70,15 @@ marello:
             order_totals:           Order Totals
             packing_slips:          Packing Slips
             invoices:               Invoices
+            allocations:            Allocations
             payments:               Payments
             source_references_information: Source References
             optional:               Optional
+        allocation:
+            tab:
+                available.label:    Available
+                wfs.label:          Waiting For Supply
+                alert.label:        Alert
         # OrderItem entity
         orderitem:
             entity_label:           Ordered Item
