@@ -82,7 +82,7 @@ class MultiWHCalculator extends AbstractWHCalculator
                     $totalAllocatedQty = $wh[$product['wh']][$product['sku']]['totalAllocatedQty'];
                 }
                 $totalAllocatedQty += $product['qty'];
-                $wh[$product['wh']][$product['sku']] = [
+                $wh[$product['wh']][base64_encode($product['sku'])] = [
                     'totalAllocatedQty' => ($totalAllocatedQty <= $product['qtyOrdered'])
                         ? $product['qty'] : ($product['qty'] - ($totalAllocatedQty - $product['qtyOrdered'])),
                     'totalQtyOrdered' => $product['qtyOrdered'],
@@ -94,16 +94,16 @@ class MultiWHCalculator extends AbstractWHCalculator
         foreach ($wh as $warehouseCode => $product) {
             $index = $idx !== null ? $idx : count($this->results);
             $matchedOrderItems = new ArrayCollection();
-            foreach ($product as $productSku => $inventoryData) {
+            foreach ($product as $encodedProductSku => $inventoryData) {
                 /**
                  * @var  $combinedSku string
                  * @var  $orderItem OrderItem
                  */
                 foreach ($orderItemsByProducts as $combinedSku => $orderItem) {
                     $sku = strstr($combinedSku, '_|_', true);
-                    if ($productSku === $sku && !$matchedOrderItems->contains($orderItem)) {
+                    if (base64_decode($encodedProductSku) === $sku && !$matchedOrderItems->contains($orderItem)) {
                         $matchedOrderItems->add($orderItem);
-                        $itemsWithQuantity[$productSku] = $inventoryData['totalAllocatedQty'];
+                        $itemsWithQuantity[$sku] = $inventoryData['totalAllocatedQty'];
                     }
                 }
             }
