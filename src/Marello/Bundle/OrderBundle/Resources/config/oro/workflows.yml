@@ -295,7 +295,7 @@ workflows:
                 post_actions:
                     - '@extendable':
                           events: [extendable_action.order_ship]
-                    - '@marello_ship_order': ~
+#                    - '@marello_ship_order': ~
                     - '@marello_notification_send':
                           entity: $order
                           recipient: $order.customer
