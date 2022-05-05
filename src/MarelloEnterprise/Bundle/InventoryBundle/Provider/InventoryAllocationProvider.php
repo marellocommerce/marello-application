@@ -111,11 +111,6 @@ class InventoryAllocationProvider extends BaseAllocationProvider
         }
 
         $em->flush();
-
-        // not sure if needed, but will try both with and without
-        //unset($this->allItems);
-        //unset($this->subAllocations);
-        //unset($this->consolidationWarehouse);
     }
 
     /**
