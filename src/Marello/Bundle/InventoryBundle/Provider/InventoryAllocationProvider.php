@@ -101,6 +101,7 @@ class InventoryAllocationProvider
 
                 $this->createAllocationItems($result, $newAllocation);
                 $em->persist($newAllocation);
+                $em->flush($newAllocation);
 
                 if ($newAllocation->getWarehouse()) {
                     $this->handleAllocationInventory($newAllocation);
@@ -230,7 +231,8 @@ class InventoryAllocationProvider
                     null,
                     -$item->getQuantity(),
                     'inventory_allocation.released',
-                    $allocation->getWarehouse()
+                    $allocation->getWarehouse(),
+                    $allocation
                 );
             });
         }
@@ -243,7 +245,8 @@ class InventoryAllocationProvider
                     null,
                     $item->getQuantity(),
                     'inventory_allocation.allocated',
-                    $allocation->getWarehouse()
+                    $allocation->getWarehouse(),
+                    $allocation
                 );
             });
         }
@@ -254,21 +257,25 @@ class InventoryAllocationProvider
      * @param OrderItem $item
      * @param $inventoryUpdateQty
      * @param $allocatedInventoryQty
+     * @param $message
      * @param Warehouse $warehouse
+     * @param Allocation $allocation
      */
     protected function handleInventoryUpdate(
-        $item,
+        OrderItem $item,
         $inventoryUpdateQty,
         $allocatedInventoryQty,
         $message,
-        $warehouse
+        Warehouse $warehouse,
+        Allocation $allocation
     ) {
         $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
             $item,
             null,
             $inventoryUpdateQty,
             $allocatedInventoryQty,
-            $message
+            $message,
+            $allocation
         );
 
         $context->setValue('warehouse', $warehouse);
