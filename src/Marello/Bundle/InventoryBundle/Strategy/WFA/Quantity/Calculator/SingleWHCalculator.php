@@ -61,7 +61,7 @@ class SingleWHCalculator extends AbstractWHCalculator
                     // this result has correctly allocated all items with the quantities required for the order
                     // this seems like a valid result for a single warehouse
                     if ($areResultsAllCorrectlyAllocatedForSingleWarehouse) {
-                        $results[][implode('|', $result)] = new OrderWarehouseResult(
+                        $results[][implode('|', array_keys($result))] = new OrderWarehouseResult(
                             [
                                 OrderWarehouseResult::WAREHOUSE_FIELD => $warehouses[$warehouseCode],
                                 OrderWarehouseResult::ORDER_ITEMS_FIELD => $orderItems,

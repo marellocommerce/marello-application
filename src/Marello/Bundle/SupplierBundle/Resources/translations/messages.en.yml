@@ -15,6 +15,7 @@ marello:
         email.label:                  Email
         organization.label:           Organization
         currency.label:               Currency
+        supplier_code.label:          Supplier Code
         po_send_by:
             label:                    Send Purchase Orders By
             manual:                   Manually
