@@ -6,15 +6,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Symfony\Component\Validator\Constraints as Assert;
-
-use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\InventoryBundle\Model\ExtendAllocation;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
@@ -23,6 +19,8 @@ use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 /**
  * @ORM\Entity()
  * @Oro\Config(
+ *      routeView="marello_inventory_allocation_view",
+ *      routeName="marello_inventory_allocation_index",
  *      defaultValues={
  *          "entity"={
  *              "icon"="fa-list-alt"
@@ -484,7 +482,9 @@ class Allocation extends ExtendAllocation implements
     public function setDerivedProperty($id)
     {
         if (!$this->allocationNumber) {
-            $this->setAllocationNumber(sprintf('%09d', $id));
+            $dateTime = new \DateTime('now', new \DateTimeZone('UTC'));
+            $allocationNumber = hash('crc32', sprintf('%s-%s', $dateTime->getTimestamp(), $id));
+            $this->setAllocationNumber($allocationNumber);
         }
     }
 
