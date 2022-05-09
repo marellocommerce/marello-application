@@ -8,7 +8,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 
 use Oro\Bundle\CronBundle\Entity\Schedule;
-use Oro\Bundle\NotificationBundle\Async\Topics;
+use Oro\Bundle\NotificationBundle\Async\Topics; // weedizp
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Bundle\MessageQueueBundle\Test\Functional\MessageQueueExtension;
@@ -36,7 +36,7 @@ class PurchaseOrderAdviceCronTest extends WebTestCase
 
         $this->application = new Application($this->client->getKernel());
         $this->application->setAutoExit(false);
-        $this->application->add(new PurchaseOrderAdviceCommand());
+        $this->application->add(new PurchaseOrderAdviceCommand($this->getContainer()));
     }
 
     /**
