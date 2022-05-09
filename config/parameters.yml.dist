@@ -37,7 +37,6 @@ parameters:
 
 
     search_engine_dsn:          'orm:'
-    website_search_engine_dsn:  'orm:'
 
     # Used to hide backend under specified prefix, should be started with "/", for instance "/admin"
     # You can use this default value when only backend is present

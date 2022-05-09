@@ -5,8 +5,8 @@ parameters:
     database_name:          marello_application_test
     database_user:          root
     database_password:      ~
-    database_driver_options: []
     database_server_version: ~
+    database_driver_options: []
 
     mailer_dsn:             'smtp://127.0.0.1'
 
@@ -35,6 +35,8 @@ parameters:
     search_engine_ssl_key: ~
     search_engine_ssl_key_password: ~
 
+    search_engine_dsn:          'orm:'
+
     # Used to hide backend under specified prefix, should be started with "/", for instance "/admin"
     # You can use this default value when only backend is present
     web_backend_prefix:         ''
@@ -43,6 +45,8 @@ parameters:
 
     secret:                 'ThisTokenIsNotSoSecretChangeIt'
     installed:              ~
+
+    enterprise_licence: ~
     message_queue_transport: 'null'
     message_queue_transport_config: {}
 
