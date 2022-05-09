@@ -67,7 +67,7 @@ class OrderToPackingSlipMapperTest extends TestCase
         $warehouse = new Warehouse();
         
         $this->entityFieldProvider->expects($this->exactly(2))
-            ->method('getFields')
+            ->method('getEntityFields')
             ->willReturnOnConsecutiveCalls(
                 [
                     ['name' => 'id', 'identifier' => true],

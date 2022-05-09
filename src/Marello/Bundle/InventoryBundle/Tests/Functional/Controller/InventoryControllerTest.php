@@ -213,7 +213,7 @@ class InventoryControllerTest extends WebTestCase
                 '_token' => $form['marello_inventory_item[_token]']->getValue(),
             ],
         ];
-        
+
         $this->client->followRedirects(true);
         $this->client->request($form->getMethod(), $form->getUri(), $formData);
 
