@@ -11,6 +11,7 @@ use Marello\Bundle\ShippingBundle\Tests\Unit\Provider\Stub\ShippingAddressStub;
 use Oro\Bundle\AddressBundle\Entity\Country;
 use Oro\Bundle\AddressBundle\Entity\Region;
 use Oro\Bundle\LocaleBundle\Model\AddressInterface;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Component\Testing\Unit\EntityTrait;
 
@@ -64,10 +65,13 @@ class PaymentMethodsConfigsRuleRepositoryTest extends WebTestCase
      */
     public function testGetByDestinationAndCurrency(array $shippingAddressData, $currency, array $expectedRules)
     {
+        /** @var AclHelper $aclHelper */
+        $aclHelper = $this->getContainer()->get('oro_security.acl_helper');
         $expectedRulesIds = $this->getEntitiesIds($this->getEntitiesByReferences($expectedRules));
         $actualRules = $this->repository->getByDestinationAndCurrency(
             $this->createShippingAddress($shippingAddressData),
-            $currency
+            $currency,
+            $aclHelper
         );
 
         $this->assertEquals($expectedRulesIds, $this->getEntitiesIds($actualRules));
@@ -108,7 +112,9 @@ class PaymentMethodsConfigsRuleRepositoryTest extends WebTestCase
             'payment_rule.11'
         ]);
 
-        $actualRules = $this->repository->getByCurrencyWithoutDestination($currency);
+        /** @var AclHelper $aclHelper */
+        $aclHelper = $this->getContainer()->get('oro_security.acl_helper');
+        $actualRules = $this->repository->getByCurrencyWithoutDestination($currency, $aclHelper);
 
         $this->assertEquals($this->getEntitiesIds($expectedRules), $this->getEntitiesIds($actualRules));
     }
@@ -135,7 +141,9 @@ class PaymentMethodsConfigsRuleRepositoryTest extends WebTestCase
 
     public function testGetRulesByMethod()
     {
-        $rulesByExistingMethod = $this->repository->getRulesByMethod($this->getPaymentTermIdentifier());
+        /** @var AclHelper $aclHelper */
+        $aclHelper = $this->getContainer()->get('oro_security.acl_helper');
+        $rulesByExistingMethod = $this->repository->getRulesByMethod($this->getPaymentTermIdentifier(), $aclHelper);
 
         $expectedRuleReferences = [
             'payment_rule.1',
@@ -153,7 +161,9 @@ class PaymentMethodsConfigsRuleRepositoryTest extends WebTestCase
             static::assertContains($this->getReference($expectedRuleReference), $rulesByExistingMethod);
         }
 
-        $rulesByNotExistingMethod = $this->repository->getRulesByMethod('not_existing_method');
+        /** @var AclHelper $aclHelper */
+        $aclHelper = $this->getContainer()->get('oro_security.acl_helper');
+        $rulesByNotExistingMethod = $this->repository->getRulesByMethod('not_existing_method', $aclHelper);
         static::assertCount(0, $rulesByNotExistingMethod);
     }
 
@@ -164,7 +174,9 @@ class PaymentMethodsConfigsRuleRepositoryTest extends WebTestCase
      */
     public function testGetEnabledRulesByMethod(array $expectedRuleReferences)
     {
-        $actualRules = $this->repository->getEnabledRulesByMethod($this->getPaymentTermIdentifier());
+        /** @var AclHelper $aclHelper */
+        $aclHelper = $this->getContainer()->get('oro_security.acl_helper');
+        $actualRules = $this->repository->getEnabledRulesByMethod($this->getPaymentTermIdentifier(), $aclHelper);
 
         foreach ($expectedRuleReferences as $expectedRuleReference) {
             static::assertContains($this->getReference($expectedRuleReference), $actualRules);
@@ -235,14 +247,18 @@ class PaymentMethodsConfigsRuleRepositoryTest extends WebTestCase
             'payment_rule.12'
         ]);
 
+        /** @var AclHelper $aclHelper */
+        $aclHelper = $this->getContainer()->get('oro_security.acl_helper');
         $this->assertEquals(
             $this->getEntitiesIds($expectedRules),
-            $this->getEntitiesIds($this->repository->getByCurrency('UAH'))
+            $this->getEntitiesIds($this->repository->getByCurrency('UAH', $aclHelper))
         );
     }
 
     public function testGetByCurrencyWhenCurrencyNotExists()
     {
-        $this->assertEmpty($this->repository->getByCurrency('WON'));
+        /** @var AclHelper $aclHelper */
+        $aclHelper = $this->getContainer()->get('oro_security.acl_helper');
+        $this->assertEmpty($this->repository->getByCurrency('WON', $aclHelper));
     }
 }

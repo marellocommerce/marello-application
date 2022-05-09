@@ -97,7 +97,7 @@ services:
 
     marello_purchaseorder.command.purchase_order_advice:
         class: 'Marello\Bundle\PurchaseOrderBundle\Cron\PurchaseOrderAdviceCommand'
-        calls:
-            - ['setContainer', ['@service_container']]
+        arguments:
+            - '@service_container'
         tags:
             - { name: console.command }

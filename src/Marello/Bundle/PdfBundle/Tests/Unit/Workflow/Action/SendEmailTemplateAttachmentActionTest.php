@@ -20,6 +20,7 @@ class SendEmailTemplateAttachmentActionTest extends TestCase
 
     public function setUp(): void
     {
+        $this->markTestSkipped('TODO // weedizp3');
         /** @var Processor|\PHPUnit\Framework\MockObject\MockObject $emailProcessor */
         $emailProcessor = $this->createMock(Processor::class);
         /** @var EntityNameResolver|\PHPUnit\Framework\MockObject\MockObject $entityNameResolver */
@@ -33,7 +34,7 @@ class SendEmailTemplateAttachmentActionTest extends TestCase
         /** @var EmailOriginHelper|\PHPUnit\Framework\MockObject\MockObject $emailOriginHelper */
         $emailOriginHelper = $this->getMockBuilder(EmailOriginHelper::class)->disableOriginalConstructor()->getMock();
 
-        $this->action = new SendEmailTemplateAttachmentAction( // weedizp3
+        $this->action = new SendEmailTemplateAttachmentAction(
             new ContextAccessor(),
             $emailProcessor,
             new EmailAddressHelper(),

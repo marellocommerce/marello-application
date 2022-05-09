@@ -19,11 +19,10 @@ class PurchaseOrderAdviceCommand extends Command implements CronCommandInterface
     const COMMAND_NAME = 'oro:cron:marello:po-advice';
     const EXIT_CODE = 0;
 
-    protected ContainerInterface $container;
-
-    public function setContainer(ContainerInterface $container)
-    {
-        $this->container = $container;
+    public function __construct(
+        protected ContainerInterface $container
+    ) {
+        parent::__construct();
     }
 
     /**
@@ -68,10 +67,11 @@ class PurchaseOrderAdviceCommand extends Command implements CronCommandInterface
         }
 
         $doctrine = $this->container->get('doctrine');
+        $aclHelper = $this->container->get('oro_security.acl_helper');
         $advisedItems = $doctrine
             ->getManagerForClass(Product::class)
             ->getRepository(Product::class)
-            ->getPurchaseOrderItemsCandidates();
+            ->getPurchaseOrderItemsCandidates($aclHelper);
         if (empty($advisedItems)) {
             $output->writeln('There are no advised items for PO notification. The command will not run.');
             return self::EXIT_CODE;

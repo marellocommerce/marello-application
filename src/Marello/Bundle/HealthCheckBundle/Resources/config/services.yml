@@ -1,3 +1,6 @@
+imports:
+    - { resource: controllers.yml }
+
 services:
     marello_health_check.listener.datagrid.last_integration_statuses_listener:
         class: Marello\Bundle\HealthCheckBundle\EventListener\Datagrid\LastIntegrationStatusesGridListener

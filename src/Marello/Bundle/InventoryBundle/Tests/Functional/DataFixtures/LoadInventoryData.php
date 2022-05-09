@@ -19,6 +19,7 @@ use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -83,9 +84,11 @@ class LoadInventoryData extends AbstractFixture implements DependentFixtureInter
             $this->defaultOrganization = array_shift($organizations);
         }
 
+        /** @var AclHelper $aclHelper */
+        $aclHelper = $this->container->get('oro_security.acl_helper');
         $this->defaultWarehouse = $this->container
             ->get(WarehouseRepository::class)
-            ->getDefault();
+            ->getDefault($aclHelper);
 
         $this->loadProductInventory();
     }
