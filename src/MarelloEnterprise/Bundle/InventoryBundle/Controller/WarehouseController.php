@@ -2,7 +2,6 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Controller;
 
-use FOS\RestBundle\Controller\Annotations\Route;
 use Marello\Bundle\InventoryBundle\Controller\WarehouseController as BaseController;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Form\Type\WarehouseType;
@@ -11,6 +10,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class WarehouseController extends BaseController
