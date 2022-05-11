@@ -186,6 +186,7 @@ services:
             - { name: doctrine.repository_service }
 
     Marello\Bundle\InventoryBundle\Entity\Repository\InventoryItemRepository:
+        public: true
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\InventoryBundle\Entity\InventoryItem'
