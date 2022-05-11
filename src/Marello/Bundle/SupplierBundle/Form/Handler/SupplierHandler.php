@@ -2,14 +2,16 @@
 
 namespace Marello\Bundle\SupplierBundle\Form\Handler;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Oro\Bundle\FormBundle\Form\Handler\FormHandlerInterface;
 
-class SupplierHandler
+class SupplierHandler implements FormHandlerInterface
 {
     use RequestHandlerTrait;
 
@@ -19,40 +21,37 @@ class SupplierHandler
     /** @var Request */
     protected $request;
 
-    /** @var ObjectManager */
+    /**
+     * @var EntityManagerInterface
+     */
     protected $manager;
 
     /**
-     * @param FormInterface   $form
-     * @param RequestStack    $requestStack
-     * @param ObjectManager   $manager
+     * @param EntityManagerInterface $manager
      */
-    public function __construct(
-        FormInterface $form,
-        RequestStack  $requestStack,
-        ObjectManager $manager
-    ) {
-        $this->form            = $form;
-        $this->request         = $requestStack->getCurrentRequest();
-        $this->manager         = $manager;
+    public function __construct(EntityManagerInterface $manager)
+    {
+        $this->manager = $manager;
     }
 
     /**
-     * Process form
-     *
-     * @param  Supplier $entity
-     *
-     * @return bool True on successful processing, false otherwise
+     * @param $data
+     * @param FormInterface $form
+     * @param Request $request
+     * @return bool
      */
-    public function process(Supplier $entity)
+    public function process($data, FormInterface $form, Request $request)
     {
-        $this->form->setData($entity);
+        if (!$data instanceof Supplier) {
+            throw new \InvalidArgumentException('Argument data should be instance of Supplier entity');
+        }
 
-        if (in_array($this->request->getMethod(), ['POST', 'PUT'])) {
-            $this->submitPostPutRequest($this->form, $this->request);
+        $form->setData($data);
 
-            if ($this->form->isValid()) {
-                $this->onSuccess($entity);
+        if (in_array($request->getMethod(), ['POST', 'PUT'])) {
+            $this->submitPostPutRequest($form, $request);
+            if ($form->isValid()) {
+                $this->onSuccess($data);
 
                 return true;
             }

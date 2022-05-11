@@ -109,7 +109,7 @@ class ProductSupplierRelationsDropshipValidator extends ConstraintValidator
             ->getManagerForClass(Warehouse::class)
             ->getRepository(Warehouse::class)
             ->findOneBy([
-                'code' => sprintf('%s_external_warehouse', str_replace(' ', '_', strtolower($supplier->getName()))),
+                'code' => $supplier->getCode(),
                 'warehouseType' => $warehouseType
             ]);
 

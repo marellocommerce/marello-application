@@ -46,6 +46,8 @@ marello:
         overridden_shipping_cost_amount.label: Overridden Shipping Cost Amount
         status.label:               Order Status
         order_status.label:               Order Status
+        consolidation_enabled.label: Consolidate Order
+        action.order.allocate:        Allocate Order
         billing_address:
             label:                  Billing Address
             name.label:             Bill to Name
@@ -68,9 +70,15 @@ marello:
             order_totals:           Order Totals
             packing_slips:          Packing Slips
             invoices:               Invoices
+            allocations:            Allocations
             payments:               Payments
             source_references_information: Source References
             optional:               Optional
+        allocation:
+            tab:
+                available.label:    Available
+                wfs.label:          Waiting For Supply
+                alert.label:        Alert
         # OrderItem entity
         orderitem:
             entity_label:           Ordered Item

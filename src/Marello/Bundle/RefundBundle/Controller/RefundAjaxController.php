@@ -38,7 +38,6 @@ class RefundAjaxController extends AbstractController
         } else {
             $form = $this->getType($refund);
             $submittedData = $request->get($form->getName());
-
             $form->submit($submittedData);
         }
 

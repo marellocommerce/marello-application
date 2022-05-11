@@ -3,22 +3,24 @@
 namespace Marello\Bundle\SupplierBundle\Controller;
 
 use Doctrine\Persistence\ManagerRegistry;
-use Marello\Bundle\AddressBundle\Form\Type\AddressType;
-use Marello\Bundle\SupplierBundle\Form\Handler\SupplierHandler;
-use Marello\Bundle\SupplierBundle\Provider\SupplierProvider;
-use Oro\Bundle\UIBundle\Route\Router;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+use Oro\Bundle\UIBundle\Route\Router;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
+use Marello\Bundle\AddressBundle\Form\Type\AddressType;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Marello\Bundle\SupplierBundle\Form\Type\SupplierType;
+use Marello\Bundle\SupplierBundle\Provider\SupplierProvider;
+use Marello\Bundle\SupplierBundle\Form\Handler\SupplierHandler;
 
 class SupplierController extends AbstractController
 {
@@ -67,7 +69,7 @@ class SupplierController extends AbstractController
      */
     public function createAction(Request $request)
     {
-        return $this->update($request, new Supplier());
+        return $this->update(new Supplier(), $request);
     }
 
     /**
@@ -86,7 +88,7 @@ class SupplierController extends AbstractController
      */
     public function updateAction(Supplier $supplier, Request $request)
     {
-        return $this->update($request, $supplier);
+        return $this->update($supplier, $request);
     }
 
     /**
@@ -94,39 +96,19 @@ class SupplierController extends AbstractController
      *
      * @param Request $request
      * @param Supplier $supplier
+     * @param Supplier   $supplier
+     * @param Request $request
      * @return array
      */
-    protected function update(Request $request, Supplier $supplier = null)
+    protected function update(Supplier $supplier = null, Request $request)
     {
-        $handler = $this->container->get(SupplierHandler::class);
-        
-        if ($handler->process($supplier)) {
-            $request->getSession()->getFlashBag()->add(
-                'success',
-                $this->container->get(TranslatorInterface::class)->trans('marello.supplier.messages.success.supplier.saved')
-            );
-            
-            return $this->container->get(Router::class)->redirectAfterSave(
-                [
-                    'route'      => 'marello_supplier_supplier_update',
-                    'parameters' => [
-                        'id' => $supplier->getId(),
-                    ],
-                ],
-                [
-                    'route'      => 'marello_supplier_supplier_view',
-                    'parameters' => [
-                        'id' => $supplier->getId(),
-                    ],
-                ],
-                $supplier
-            );
-        }
-
-        return [
-            'entity' => $supplier,
-            'form'   => $handler->getFormView(),
-        ];
+        return $this->get('oro_form.update_handler')->update(
+            $supplier,
+            $this->createForm(SupplierType::class, $supplier),
+            $this->get('translator')->trans('marello.supplier.messages.success.supplier.saved'),
+            $request,
+            'marello_supplier.supplier_form.handler'
+        );
     }
 
     /**
