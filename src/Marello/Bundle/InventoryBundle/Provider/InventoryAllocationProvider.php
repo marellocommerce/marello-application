@@ -100,6 +100,11 @@ class InventoryAllocationProvider
                 $newAllocation->setShippingAddress($shippingAddress);
 
                 $this->createAllocationItems($result, $newAllocation);
+                // allocation has been rejected or needs to be reallocated
+                // set allocation as the source for the new allocation for reference
+                if ($allocation) {
+                    $newAllocation->setSourceEntity($allocation);
+                }
                 $em->persist($newAllocation);
                 $em->flush($newAllocation);
 
