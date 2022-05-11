@@ -1,11 +1,12 @@
 <?php
 
-namespace MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumDistance;
+namespace MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFA\MinimumDistance;
 
+use Marello\Bundle\InventoryBundle\Entity\Allocation;
 use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use MarelloEnterprise\Bundle\AddressBundle\Distance\AddressesDistanceCalculatorInterface;
-use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategyInterface;
+use Marello\Bundle\InventoryBundle\Strategy\WFA\WFAStrategyInterface;
 
 class MinimumDistanceWFAStrategy implements WFAStrategyInterface
 {
@@ -25,7 +26,7 @@ class MinimumDistanceWFAStrategy implements WFAStrategyInterface
     /**
      * {@inheritdoc}
      */
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return self::IDENTIFIER;
     }
@@ -33,7 +34,7 @@ class MinimumDistanceWFAStrategy implements WFAStrategyInterface
     /**
      * {@inheritdoc}
      */
-    public function getLabel()
+    public function getLabel(): string
     {
         return self::LABEL;
     }
@@ -41,9 +42,9 @@ class MinimumDistanceWFAStrategy implements WFAStrategyInterface
     /**
      * {@inheritdoc}
      */
-    public function isEnabled()
+    public function isEnabled(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -65,7 +66,7 @@ class MinimumDistanceWFAStrategy implements WFAStrategyInterface
     /**
      * {@inheritdoc}
      */
-    public function getWarehouseResults(Order $order, array $initialResults = [])
+    public function getWarehouseResults(Order $order, Allocation $allocation = null, array $initialResults = []): array
     {
         if (!$this->isEnabled() || empty($initialResults)) {
             return $initialResults;
@@ -81,7 +82,9 @@ class MinimumDistanceWFAStrategy implements WFAStrategyInterface
             /** @var OrderWarehouseResult $warehouseResult */
             foreach ($warehousesSet as $warehouseResult) {
                 $originAddress = $warehouseResult->getWarehouse()->getAddress();
-                $distance += $this->distanceCalculator->calculate($originAddress, $destinationAddress);
+                if ($originAddress) {
+                    $distance += $this->distanceCalculator->calculate($originAddress, $destinationAddress);
+                }
             }
             $distances[$key] = $distance;
         }
