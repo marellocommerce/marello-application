@@ -170,6 +170,9 @@ marello:
             parent:
                 label:                      Parent Allocation
                 allocation_number.label:    Parent Allocation Number
+            source_entity:
+                label:                      Source Entity
+                allocation_number.label:    Source Entity Allocation Number
             comment.label:                  Comment
             items.label:                    Items
             order.label:                    Order

@@ -412,6 +412,7 @@ datagrids:
                 select:
                     - allocation
                     - parent.allocationNumber as parentAllocation
+                    - sourceEntity.allocationNumber as allocationSource
                     - wh.label as warehouse
                     - IDENTITY(allocation.state) as allocationStateId
                     - IDENTITY(allocation.status) as allocationStatusId
@@ -420,6 +421,7 @@ datagrids:
                 join:
                     left:
                         - { join: allocation.parent, alias: parent }
+                        - { join: allocation.sourceEntity, alias: sourceEntity }
                         - { join: allocation.warehouse, alias: wh}
                     inner:
                         - { join: allocation.order, alias: o }
@@ -439,6 +441,9 @@ datagrids:
                 frontend_type:  string
             parentAllocation:
                 label:          marello.inventory.allocation.parent.allocation_number.label
+                frontend_type:  string
+            allocationSource:
+                label:          marello.inventory.allocation.source_entity.allocation_number.label
                 frontend_type:  string
             warehouse:
                 label:          marello.inventory.allocation.warehouse.label
