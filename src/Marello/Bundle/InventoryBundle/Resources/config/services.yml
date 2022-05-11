@@ -82,6 +82,7 @@ services:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink'
+            - '@oro_security.acl_helper'
         tags:
             - { name: doctrine.repository_service }
 
@@ -205,11 +206,34 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: marello_inventory.order_on_demand_validator }
 
-    marello_inventory.command.inventory_rebalance:
-        class: 'Marello\Bundle\InventoryBundle\Command\InventoryBalanceCommand'
+    Marello\Bundle\InventoryBundle\Command\InventoryBalanceCommand:
         arguments:
             - '@doctrine'
             - '@marello_inventory.model.balancer.inventory_balancer'
             - '@oro_message_queue.client.message_producer'
         tags:
             - { name: console.command }
+
+    Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProvider:
+        arguments:
+            - '@Marello\Bundle\InventoryBundle\Strategy\WFA\WFAStrategiesRegistry'
+
+    Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider:
+        public: true
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProvider'
+            - '@event_dispatcher'
+
+    Marello\Bundle\InventoryBundle\Strategy\WFA\WFAStrategiesRegistry: ~
+
+    Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\QuantityWFAStrategy:
+        arguments:
+            - '@Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\Calculator\SingleWHCalculator'
+            ## check if we actually need to include the whgrouplink repository as a service.., maybe use oro_entity.doctrine_helper instead
+            - '@Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository'
+            - '@oro_config.manager'
+        tags:
+            - { name: marello_inventory_wfa_strategy }
+
+    Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\Calculator\SingleWHCalculator: ~

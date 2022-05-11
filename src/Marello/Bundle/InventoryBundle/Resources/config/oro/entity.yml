@@ -27,3 +27,11 @@ oro_entity:
         Marello\Bundle\InventoryBundle\Entity\WarehouseType:
             alias: marellowarehousetype
             plural_alias: marellowarehousetypes
+
+        Marello\Bundle\InventoryBundle\Entity\Allocation:
+            alias: marelloallocation
+            plural_alias: marelloallocation
+
+        Marello\Bundle\InventoryBundle\Entity\AllocationItem:
+            alias: marelloallocationitem
+            plural_alias: marelloallocationitems

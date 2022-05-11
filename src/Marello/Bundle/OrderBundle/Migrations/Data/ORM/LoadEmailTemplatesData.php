@@ -2,11 +2,14 @@
 
 namespace Marello\Bundle\OrderBundle\Migrations\Data\ORM;
 
+use Doctrine\Persistence\ObjectManager;
+
 use Oro\Bundle\EmailBundle\Migrations\Data\ORM\AbstractEmailFixture;
+use Oro\Bundle\MigrationBundle\Fixture\VersionedFixtureInterface;
 
-class LoadEmailTemplatesData extends AbstractEmailFixture
+class LoadEmailTemplatesData extends AbstractEmailFixture implements
+    VersionedFixtureInterface
 {
-
     /**
      * Return path to email templates
      *
@@ -17,5 +20,29 @@ class LoadEmailTemplatesData extends AbstractEmailFixture
         return $this->container
             ->get('kernel')
             ->locateResource('@MarelloOrderBundle/Migrations/Data/ORM/data/emails');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function findExistingTemplate(ObjectManager $manager, array $template)
+    {
+        $name = $template['params']['name'];
+        if (empty($name)) {
+            return null;
+        }
+
+        return $manager->getRepository('OroEmailBundle:EmailTemplate')->findOneBy([
+            'name' => $template['params']['name'],
+            'entityName' => 'Marello\Bundle\OrderBundle\Entity\Order',
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getVersion()
+    {
+        return '1.0';
     }
 }

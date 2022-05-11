@@ -1,122 +1,6 @@
 oro:
     workflow:
         marello_order_b2c_workflow_1:
-            label: 'Order B2C Workflow #1(Deprecated)'
-            attribute:
-                payment_reference:
-                    label: 'Payment Reference'
-                payment_details:
-                    label: 'Payment Details'
-                invoiced_at:
-                    label: 'Invoiced At'
-                note:
-                    label: 'Note'
-            step:
-                pending:
-                    label:  'Pending Order'
-                cancelled:
-                    label:  'Cancelled'
-                pending_on_hold:
-                    label:  'On Hold'
-                invoice_on_hold:
-                    label:  'On Hold'
-                invoice:
-                    label:  'Invoiced'
-                paid:
-                    label:  'Order Paid'
-                credit:
-                    label:  'Closed'
-                pick_and_pack:
-                    label: 'Pick and Pack'
-                shipped:
-                    label:  'Complete'
-            transition:
-                pending:
-                    label:     'Pending'
-                cancel:
-                    label:    'Cancel'
-                hold_pending:
-                    label:    'Hold'
-                un_hold_pending:
-                    label:    'Un-Hold'
-                hold_invoice:
-                    label:    'Hold'
-                un_hold_invoice:
-                    label:    'Un-Hold'
-                invoice:
-                    label:    'Invoice'
-                payment_received:
-                    label:    'Payment Received'
-                ship:
-                    label:    'Ship'
-                credit:
-                    label:    'Credit'
-                prepare_shipping:
-                    label:    'Prepare Shipping'
-                payment_reminder:
-                    label:    'Payment Reminder'
-
-        marello_order_b2c_workflow_2:
-            label: 'Order B2C Workflow #2(Deprecated)'
-            attribute:
-                payment_reference:
-                    label: 'Payment Reference'
-                payment_details:
-                    label: 'Payment Details'
-                invoiced_at:
-                    label: 'Invoiced At'
-                note:
-                    label: 'Note'
-            step:
-                pending:
-                    label:  'Pending Order'
-                cancelled:
-                    label:  'Cancelled'
-                pending_on_hold:
-                    label:  'On Hold'
-                invoice_on_hold:
-                    label:  'On Hold'
-                invoice:
-                    label:  'Complete'
-                paid:
-                    label:  'Order Paid'
-                credit:
-                    label:  'Closed'
-                pick_and_pack:
-                    label: 'Pick and Pack'
-                shipped:
-                    label:  'Shipped'
-            transition:
-                pending:
-                    label:    'Pending'
-                cancel:
-                    label:    'Cancel'
-                hold_pending:
-                    label:    'Hold'
-                un_hold_pending:
-                    label:    'Un-Hold'
-                hold_invoice:
-                    label:    'Hold'
-                un_hold_invoice:
-                    label:    'Un-Hold'
-                hold_shipped:
-                    label:    'Hold'
-                un_hold_shipped:
-                    label:    'Un-Hold'
-                invoice:
-                    label:    'Invoice'
-                payment_received:
-                    label:    'Payment Received'
-                ship:
-                    label:    'Ship'
-                credit:
-                    label:    'Credit'
-                prepare_shipping:
-                    label:    'Prepare Shipping'
-                payment_reminder:
-                    label:    'Payment Reminder'
-
-        marello_order_b2c_new_workflow_1:
             label: 'Order B2C Workflow #1'
             attribute:
                 payment_reference:
@@ -174,8 +58,8 @@ oro:
                 payment_reminder:
                     label:    'Payment Reminder'
 
-        marello_order_b2c_new_workflow_2:
-            label: 'Order B2C Workflow #2'
+        marello_order_b2c_workflow_2:
+            label: 'Order B2C/B2B Workflow #2'
             attribute:
                 payment_reference:
                     label: 'Payment Reference'

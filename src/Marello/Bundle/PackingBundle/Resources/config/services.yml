@@ -7,7 +7,7 @@ services:
         arguments:
             - '@oro_entity.entity_field_provider'
             - '@property_accessor'
-            - '@marello_inventory.provider.order_warehouse'
+            - '@Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProvider'
 
     marello_packing.event_listener.create_packing_slip:
         class: 'Marello\Bundle\PackingBundle\EventListener\CreatePackingSlipEventListener'
@@ -36,4 +36,4 @@ services:
             - '@oro_entity.doctrine_helper'
         tags:
             - { name: doctrine.event_listener, event: prePersist }
-            - { name: kernel.event_listener, event: extendable_action.order_ship, method: onOrderShipped }
+#            - { name: kernel.event_listener, event: extendable_action.order_ship, method: onOrderShipped }
