@@ -32,7 +32,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
      */
     public function getMigrationVersion()
     {
-        return 'v2_6';
+        return 'v2_6_1';
     }
 
     /**
@@ -312,6 +312,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addColumn('shipping_address_id', 'integer', ['notnull' => false]);
         $table->addColumn('warehouse_id', 'integer', ['notnull' => false]);
         $table->addColumn('parent_id', 'integer', ['notnull' => false]);
+        $table->addColumn('source_entity_id', 'integer', ['notnull' => false]);
         $table->addColumn('type', 'string', ['notnull' => false]);
         $table->addColumn('comment', 'text', ['notnull' => false]);
         $table->addColumn('allocation_number', 'string', ['length' => 255, 'notnull' => false]);

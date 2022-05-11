@@ -49,6 +49,8 @@ class QuantityWFAStrategy implements WFAStrategyInterface
 
     private $warehouseTypes = [];
 
+    private $excludedWarehouses = [];
+
     /**
      * @param QtyWHCalculatorInterface $minQtyWHCalculator
      * @param WarehouseChannelGroupLinkRepository $warehouseChannelGroupLinkRepository
@@ -138,6 +140,11 @@ class QuantityWFAStrategy implements WFAStrategyInterface
             $orderItemQtyToAllocateLeft = $orderItem->getQuantity();
             $inventoryLevels = $this->getInventoryLevelCandidates($inventoryItem, $warehousesIds);
             $quantityAvailable = 0;
+
+            if ($allocation) {
+                $this->getExcludedWarehouses($allocation);
+            }
+
             /** @var InventoryLevel $inventoryLevel */
             foreach ($inventoryLevels as $i => $inventoryLevel) {
                 $warehouse = $inventoryLevel->getWarehouse();
@@ -147,7 +154,7 @@ class QuantityWFAStrategy implements WFAStrategyInterface
                 // if an allocation has been rejected, and the quantity would still be available in this warehouse (of said allocation)
                 // set the quantity (virtualInventoryQuantity to 0 to make sure this warehouse will be excluded from allocating
                 // rejections of an allocation for a warehouse will be excluded for the next allocation round (triggered by the rejection)
-                if ($allocation && $allocation->getWarehouse() === $warehouse) {
+                if ($allocation && in_array($warehouse->getCode(), $this->excludedWarehouses)) {
                     $virtualInventoryQuantity = $inventoryLevel->getVirtualInventoryQty() - $orderItem->getQuantityRejected();
                     if (($orderItem->getQuantity() - $orderItem->getQuantityRejected()) <= 0) {
                         $virtualInventoryQuantity = 0;
@@ -158,7 +165,7 @@ class QuantityWFAStrategy implements WFAStrategyInterface
                 if ($this->isWarehouseEligible($orderItem, $inventoryLevel, 'dropshipping')) {
                     $dropshipUnmanagedQuantity = $orderItem->getQuantity();
                     $availableForDropShipping = $orderItemQtyToAllocateLeft;
-                    if ($allocation && $allocation->getWarehouse() === $warehouse) {
+                    if ($allocation && in_array($warehouse->getCode(), $this->excludedWarehouses)) {
                         $dropshipUnmanagedQuantity = 0;
                         $availableForDropShipping = 0;
                     }
@@ -521,6 +528,25 @@ class QuantityWFAStrategy implements WFAStrategyInterface
             default:
                 return false;
                 break;
+        }
+    }
+
+    /**
+     * Build up a list of previous warehouses that were excluded and should not be taken into account to
+     * allocate the product to.
+     * @param Allocation $allocation
+     */
+    protected function getExcludedWarehouses(Allocation $allocation)
+    {
+        if ($allocation->getWarehouse() && !in_array($allocation->getWarehouse()->getCode(), $this->excludedWarehouses)) {
+            $this->excludedWarehouses[] = $allocation->getWarehouse()->getCode();
+        }
+
+        // get allocation source (from a previous rejection) until no source from rejection has been found
+        // this will create a list of excluded warehouses it should not try to allocate to again
+        // as the allocation was already once rejected by them
+        if ($allocation->getSourceEntity()) {
+            $this->getExcludedWarehouses($allocation->getSourceEntity());
         }
     }
 

@@ -133,8 +133,7 @@ class Allocation extends ExtendAllocation implements
      *              "auditable"=true
      *          },
      *          "importexport"={
-     *              "header"="Parent",
-     *              "order"=30
+     *              "excluded"=true
      *          }
      *      }
      * )
@@ -157,6 +156,24 @@ class Allocation extends ExtendAllocation implements
      * )
      */
     protected $children;
+
+    /**
+     * @var Allocation
+     *
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\Allocation")
+     * @ORM\JoinColumn(name="source_entity_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $sourceEntity;
 
     /**
      * @ORM\Column(name="comment", type="text", nullable=true)
@@ -397,6 +414,25 @@ class Allocation extends ExtendAllocation implements
     public function hasChild(Allocation $child)
     {
         return $this->children->contains($child);
+    }
+
+    /**
+     * @return Allocation|null
+     */
+    public function getSourceEntity(): ?Allocation
+    {
+        return $this->sourceEntity;
+    }
+
+    /**
+     * @param Allocation $sourceEntity
+     * @return $this
+     */
+    public function setSourceEntity(Allocation $sourceEntity = null): self
+    {
+        $this->sourceEntity = $sourceEntity;
+
+        return $this;
     }
 
     /**
