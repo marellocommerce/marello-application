@@ -1,4 +1,10 @@
-{% set productImage = 'bundles/marelloproduct/img/no_image_available.jpg' | imagine_filter('product_grid') %}
+{#
+tmp removed "| imagine_filter('product_grid')" from no image available as OroAttachmentBundle did some rewriting of Liip services
+This results in the filter not working anymore and we should look at another approach for rendering the no image
+All image filters for Oro are using a file (image) as a parameter, so in this case we might consider creating a digital
+asset for the no image available and using this file for when no image is available for the product
+#}
+{% set productImage = asset('bundles/marelloproduct/img/no_image_available.jpg') %}
 {% set imageId = record.getValue('image') %}
 {% if imageId is not null %}
     {% set image = get_file_by_id(imageId) %}
