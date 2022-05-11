@@ -482,9 +482,7 @@ class Allocation extends ExtendAllocation implements
     public function setDerivedProperty($id)
     {
         if (!$this->allocationNumber) {
-            $dateTime = new \DateTime('now', new \DateTimeZone('UTC'));
-            $allocationNumber = hash('crc32', sprintf('%s-%s', $dateTime->getTimestamp(), $id));
-            $this->setAllocationNumber($allocationNumber);
+            $this->setAllocationNumber(sprintf('%09d', $id));
         }
     }
 
