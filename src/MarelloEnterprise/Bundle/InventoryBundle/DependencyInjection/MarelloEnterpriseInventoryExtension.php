@@ -18,5 +18,6 @@ class MarelloEnterpriseInventoryExtension extends Extension
         $loader->load('services.yml');
         $loader->load('form.yml');
         $loader->load('mass_action.yml');
+        $loader->load('eventlistener.yml');
     }
 }

@@ -9,7 +9,7 @@ use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
 use MarelloEnterprise\Bundle\AddressBundle\Distance\AddressesDistanceCalculatorInterface;
-use MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumDistance\MinimumDistanceWFAStrategy;
+use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFA\MinimumDistance\MinimumDistanceWFAStrategy;
 
 class MinimumDistanceWFAStrategyTest extends TestCase
 {

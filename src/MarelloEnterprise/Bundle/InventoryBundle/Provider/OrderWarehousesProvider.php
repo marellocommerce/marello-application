@@ -2,14 +2,15 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Provider;
 
-use Doctrine\Persistence\ManagerRegistry;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
+
+use Marello\Bundle\InventoryBundle\Entity\Allocation;
 use Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProviderInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\InventoryBundle\Strategy\WFA\WFAStrategiesRegistry;
 use Marello\Bundle\RuleBundle\RuleFiltration\RuleFiltrationServiceInterface;
 use MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WFARuleRepository;
 use MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule;
-use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategiesRegistry;
-use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class OrderWarehousesProvider implements OrderWarehousesProviderInterface
 {
@@ -19,14 +20,16 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
     private $estimation = false;
 
     /**
-     * @var WFARuleRepository
+     * OrderWarehousesProvider constructor.
+     * @param WFAStrategiesRegistry $strategiesRegistry
+     * @param RuleFiltrationServiceInterface $rulesFiltrationService
+     * @param WFARuleRepository $wfaRuleRepository
+     * @param AclHelper $aclHelper
      */
-    protected $wfaRuleRepository;
-
     public function __construct(
         protected WFAStrategiesRegistry $strategiesRegistry,
         protected RuleFiltrationServiceInterface $rulesFiltrationService,
-        protected ManagerRegistry $registry,
+        protected WFARuleRepository $wfaRuleRepository,
         protected AclHelper $aclHelper
     ) {}
 
@@ -41,32 +44,23 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getWarehousesForOrder(Order $order)
+    public function getWarehousesForOrder(Order $order, Allocation $allocation = null): array
     {
         /** @var WFARule[] $filteredRules */
         $filteredRules = $this->rulesFiltrationService
-            ->getFilteredRuleOwners($this->getRepository()->findAllWFARules($this->aclHelper));
+            ->getFilteredRuleOwners($this->wfaRuleRepository->findAllWFARules($this->aclHelper));
         $results = [];
 
         foreach ($filteredRules as $rule) {
             $strategy = $this->strategiesRegistry->getStrategy($rule->getStrategy());
             $strategy->setEstimation($this->estimation);
-            $results = $strategy->getWarehouseResults($order, $results);
+            $results = $strategy->getWarehouseResults($order, $allocation, $results);
         }
 
-        if (count($results) >= 1) {
-            return reset($results);
+        if (count($results) > 0) {
+            return $results;
         }
 
         return [];
-    }
-
-    protected function getRepository(): WFARuleRepository
-    {
-        if (!$this->wfaRuleRepository) {
-            $this->wfaRuleRepository = $this->registry->getRepository(WFARule::class);
-        }
-
-        return $this->wfaRuleRepository;
     }
 }

@@ -1,0 +1,64 @@
+services:
+    MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\DefaultWarehouseSubscriber:
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseListener:
+        arguments:
+            - '%installed%'
+            - '@translator.default'
+            - '@session'
+            - '@oro_security.acl_helper'
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\InventoryBundle\Entity\Warehouse', event: prePersist }
+            - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\InventoryBundle\Entity\Warehouse', event: preRemove }
+
+    MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseInventoryRebalanceListener:
+        arguments:
+            - '@oro_message_queue.client.message_producer'
+            - '@oro_security.acl_helper'
+        lazy:  true
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+
+    MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseGroupInventoryRebalanceListener:
+        arguments:
+            - '@oro_message_queue.client.message_producer'
+            - '@oro_security.acl_helper'
+        lazy:  true
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+
+    MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseGroupRemoveListener:
+        arguments:
+            - '@translator.default'
+            - '@session'
+            - '@marelloenterprise_inventory.checker.warehousegroup.is_fixed'
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\InventoryBundle\Entity\WarehouseGroup', event: preRemove }
+
+    MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\OrganizationCreateListener:
+        arguments:
+            - '%installed%'
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\OrganizationBundle\Entity\Organization', event: postPersist, priority: 10 }
+
+    MarelloEnterprise\Bundle\InventoryBundle\EventListener\Datagrid\WarehouseGroupDatagridListener:
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.after.marelloenterprise-inventory-warehousegroups-grid, method: onResultAfter }
+
+    MarelloEnterprise\Bundle\InventoryBundle\EventListener\Datagrid\WarehouseChannelGroupLinkDatagridListener:
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.after.marelloenterprise-inventory-warehousechannelgrouplinks-grid, method: onResultAfter }
+
+    MarelloEnterprise\Bundle\InventoryBundle\EventListener\Datagrid\InventoryLevelLogGridListener:
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-inventory-log, method: onBuildBefore }
+            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.before_query.marello-inventory-log, method: onResultBeforeQuery, priority: -255 }
+
+    MarelloEnterprise\Bundle\InventoryBundle\EventListener\Workflow\TransitionEventListener:
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@oro_workflow.manager'
+        tags:
+            - { name: kernel.event_listener, event: extendable_action.send_transition_after, method: onSendTransitionAfter, priority: 10 }
