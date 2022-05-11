@@ -24,7 +24,7 @@ class MarelloSupplierBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_5';
+        return 'v1_5_1';
     }
 
     /**
@@ -59,6 +59,7 @@ class MarelloSupplierBundleInstaller implements
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->addColumn('currency', 'string', ['length' => 3]);
         $table->addColumn('po_send_by', 'string', ['length' => 30]);
+        $table->addColumn('code', 'string', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['organization_id']);
         $table->addUniqueIndex(['address_id'], 'UNIQ_16532C7BF5B7AF75', []);

@@ -165,6 +165,13 @@ class Supplier implements CurrencyAwareInterface, EmailHolderInterface
     protected $poSendBy;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="code", type="string", nullable=true)
+     */
+    protected $code;
+
+    /**
      * @return string
      */
     public function __toString()
@@ -359,6 +366,25 @@ class Supplier implements CurrencyAwareInterface, EmailHolderInterface
     {
         $this->poSendBy = $poSendBy;
         
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    /**
+     * @param string $code
+     * @return $this
+     */
+    public function setCode(string $code): self
+    {
+        $this->code = $code;
+
         return $this;
     }
 }

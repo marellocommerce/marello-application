@@ -42,6 +42,9 @@ class Configuration implements ConfigurationInterface
                 ],
                 'inventory_on_demand' => [
                     'value' => false
+                ],
+                'inventory_allocation_priority' => [
+                    'value' => 0
                 ]
             ]
         );

@@ -6,7 +6,7 @@ navigation:
                 route: 'marello_packing_packingslip_index'
                 extras:
                     routes: ['marello_packing_packingslip_*']
-                    position: 20
+                    position: 25
 
         tree:
             application_menu:

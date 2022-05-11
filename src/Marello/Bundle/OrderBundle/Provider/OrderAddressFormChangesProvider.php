@@ -2,11 +2,13 @@
 
 namespace Marello\Bundle\OrderBundle\Provider;
 
+use Twig\Environment;
+
+use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\FormFactoryInterface;
+
 use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
 use Marello\Bundle\LayoutBundle\Provider\FormChangesProviderInterface;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\FormView;
-use Twig\Environment;
 
 class OrderAddressFormChangesProvider implements FormChangesProviderInterface
 {

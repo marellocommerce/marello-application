@@ -43,7 +43,7 @@ define(function(require) {
             PossiblePaymentMethodsView.__super__.initialize.apply(this, arguments);
 
             this.options = $.extend(true, {}, this.options, options || {});
-            this.orderHasChanged = false;
+            this.orderHasForPaymentChanged = false;
 
             this.$form = this.$el.closest('form');
             this.$document = $(document);
@@ -69,7 +69,7 @@ define(function(require) {
 
             var $form = this.getElement('$form');
             $form.validate();
-            if ($form.valid() && this.orderHasChanged && !this.getElement('overriddenPaymentCostAmount').val()) {
+            if ($form.valid() && this.orderHasForPaymentChanged && !this.getElement('overriddenPaymentCostAmount').val()) {
                 this.showConfirmation($form);
                 return false;
             }
@@ -88,14 +88,14 @@ define(function(require) {
 
             this.subview('confirmation')
                 .off('ok').on('ok', _.bind(function() {
-                    this.orderHasChanged = false;
+                    this.orderHasForPaymentChanged = false;
                     this.getElement('$form').trigger('submit');
                 }, this))
                 .open();
         },
 
         showLoadingMask: function() {
-            this.orderHasChanged = true;
+            this.orderHasForPaymentChanged = true;
             if (this.getElement('calculatePayment').val()) {
                 this.removeSubview('loadingMask');
                 this.subview('loadingMask', new LoadingMaskView({
@@ -111,7 +111,7 @@ define(function(require) {
 
         onOrderChange: function(e) {
             if (e.totals && _.size(e) === 1) {
-                this.orderHasChanged = false;
+                this.orderHasForPaymentChanged = false;
                 return;
             }
 
@@ -120,14 +120,14 @@ define(function(require) {
                 this.getElement('toggleBtn').parent('div').hide();
                 this.updatePossiblePaymentMethods(e.possiblePaymentMethods);
                 this.getElement('possiblePaymentMethodForm').show();
-                this.orderHasChanged = false;
+                this.orderHasForPaymentChanged = false;
             } else if (this.recalculationIsNotRequired === true) {
-                this.orderHasChanged = false;
+                this.orderHasForPaymentChanged = false;
                 this.recalculationIsNotRequired = false;
             } else {
-                this.getElement('possiblePaymentMethodForm').hide();
+                // this.getElement('possiblePaymentMethodForm').hide();
                 this.getElement('toggleBtn').parent('div').show();
-                this.orderHasChanged = true;
+                this.orderHasForPaymentChanged = true;
             }
         },
 

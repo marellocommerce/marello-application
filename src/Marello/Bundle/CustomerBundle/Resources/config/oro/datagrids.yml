@@ -27,9 +27,11 @@ datagrids:
             createdAt:
                 label:            oro.ui.created_at
                 frontend_type:    datetime
+                renderable:       false
             updatedAt:
                 label:            oro.ui.updated_at
                 frontend_type:    datetime
+                renderable:       false
         filters:
             columns:
                 namePrefix:
@@ -53,9 +55,11 @@ datagrids:
                 createdAt:
                     type: datetime
                     data_name: c.createdAt
+                    enabled: false
                 updatedAt:
                     type: datetime
                     data_name: c.updatedAt
+                    enabled: false
         sorters:
             columns:
                 namePrefix:
@@ -108,6 +112,21 @@ datagrids:
 
     marello-company-customers-select-grid:
         extends: marello-customer-select-grid
+        source:
+            query:
+                select:
+                    - company.name
+                join:
+                    left:
+                        - { join: c.company, alias: company }
+        columns:
+            name:
+                label: marello.customer.company.entity_label
+        filters:
+            columns:
+                name:
+                    type: string
+                    data_name: company.name
 
     marello-companies-select-grid:
         extended_entity_name: 'Marello\Bundle\CustomerBundle\Entity\Company'

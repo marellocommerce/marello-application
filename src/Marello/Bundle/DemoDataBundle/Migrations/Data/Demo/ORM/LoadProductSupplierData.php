@@ -207,7 +207,7 @@ class LoadProductSupplierData extends AbstractFixture implements
             $warehouse = $this->manager
                 ->getRepository(Warehouse::class)
                 ->findOneBy([
-                    'code' => sprintf('%s_external_warehouse', str_replace(' ', '_', strtolower($supplier->getName()))),
+                    'code' => $supplier->getCode(),
                     'warehouseType' => $warehouseType
                 ]);
             if ($warehouse) {
@@ -231,7 +231,7 @@ class LoadProductSupplierData extends AbstractFixture implements
         $warehouse = new Warehouse(sprintf('%s External Warehouse', $supplier->getName()));
         $warehouse
             ->setAddress(clone $supplier->getAddress())
-            ->setCode(sprintf('%s_external_warehouse', str_replace(' ', '_', strtolower($supplier->getName()))))
+            ->setCode($supplier->getCode())
             ->setWarehouseType($warehouseType);
         if ($organization = $supplier->getOrganization()) {
             $warehouse->setOwner($organization);

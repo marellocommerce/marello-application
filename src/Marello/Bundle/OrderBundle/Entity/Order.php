@@ -385,7 +385,7 @@ class Order extends ExtendOrder implements
     protected $customer;
 
     /**
-     * @var AbstractAddress
+     * @var MarelloAddress
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\MarelloAddress", cascade={"persist"})
      * @ORM\JoinColumn(name="billing_address_id", referencedColumnName="id")
@@ -403,7 +403,7 @@ class Order extends ExtendOrder implements
     protected $billingAddress;
 
     /**
-     * @var AbstractAddress
+     * @var MarelloAddress
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\MarelloAddress", cascade={"persist"})
      * @ORM\JoinColumn(name="shipping_address_id", referencedColumnName="id")
@@ -544,6 +544,20 @@ class Order extends ExtendOrder implements
      * )
      */
     protected $orderStatus;
+
+    /**
+     * @ORM\Column(name="consolidation_enabled", type="boolean", nullable=true, options={"default"=false})
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=false
+     *          }
+     *      }
+     * )
+     *
+     * @var boolean
+     */
+    protected $consolidationEnabled;
 
     /**
      * @param AbstractAddress|null $billingAddress
@@ -1095,20 +1109,6 @@ class Order extends ExtendOrder implements
     }
 
     /**
-     * @Assert\Callback
-     *
-     * @param ExecutionContextInterface $context
-     */
-    public function checkDiscountLowerThanSubTotal(ExecutionContextInterface $context)
-    {
-        if ($this->getDiscountAmount() > $this->getSubtotal()) {
-            $context->buildViolation('marello.order.discount_amount.validation.discount_lower_than_subtotal')
-                ->atPath('discountAmount')
-                ->addViolation();
-        }
-    }
-    
-    /**
      * {@inheritDoc}
      */
     public function getShippingMethodType()
@@ -1340,7 +1340,6 @@ class Order extends ExtendOrder implements
         return $this;
     }
 
-
     /**
      * @return \Extend\Entity\EV_Marello_Order_Status
      */
@@ -1356,6 +1355,25 @@ class Order extends ExtendOrder implements
     public function setOrderStatus($orderStatus)
     {
         $this->orderStatus = $orderStatus;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isConsolidationEnabled()
+    {
+        return $this->consolidationEnabled;
+    }
+
+    /**
+     * @param $consolidationEnabled
+     * @return $this
+     */
+    public function setConsolidationEnabled($consolidationEnabled)
+    {
+        $this->consolidationEnabled = $consolidationEnabled;
 
         return $this;
     }
