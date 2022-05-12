@@ -7,5 +7,4 @@ services:
             - [setContainer, ['@Psr\Container\ContainerInterface']]
         tags:
             - { name: container.service_subscriber }
-            - { name: container.service_subscriber, id: marello_supplier.supplier_form.handler, key: Marello\Bundle\SupplierBundle\Form\Handler\SupplierHandler }
             - { name: container.service_subscriber, id: marello_supplier.provider.supplier, key: Marello\Bundle\SupplierBundle\Provider\SupplierProvider }

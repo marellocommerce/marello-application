@@ -20,7 +20,6 @@ use Marello\Bundle\AddressBundle\Form\Type\AddressType;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\SupplierBundle\Form\Type\SupplierType;
 use Marello\Bundle\SupplierBundle\Provider\SupplierProvider;
-use Marello\Bundle\SupplierBundle\Form\Handler\SupplierHandler;
 
 class SupplierController extends AbstractController
 {
@@ -94,9 +93,7 @@ class SupplierController extends AbstractController
     /**
      * Handles supplier updates and creation.
      *
-     * @param Request $request
-     * @param Supplier $supplier
-     * @param Supplier   $supplier
+     * @param Supplier|null $supplier
      * @param Request $request
      * @return array
      */
@@ -106,8 +103,7 @@ class SupplierController extends AbstractController
             $supplier,
             $this->createForm(SupplierType::class, $supplier),
             $this->get(TranslatorInterface::class)->trans('marello.supplier.messages.success.supplier.saved'),
-            $request,
-            'marello_supplier.supplier_form.handler'
+            $request
         );
     }
 
@@ -189,7 +185,6 @@ class SupplierController extends AbstractController
         return array_merge(
             parent::getSubscribedServices(),
             [
-                SupplierHandler::class,
                 TranslatorInterface::class,
                 SupplierProvider::class,
                 ManagerRegistry::class,

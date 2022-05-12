@@ -110,6 +110,10 @@ class QuantityWFAStrategy implements WFAStrategyInterface
         $emptyWarehouse = new Warehouse();
         $emptyWarehouse->setWarehouseType(new WarehouseType('virtual'));
         $emptyWarehouse->setCode('no_warehouse');
+        $noAllocationWarehouse = new Warehouse();
+        $noAllocationWarehouse->setWarehouseType(new WarehouseType('virtual'));
+        $noAllocationWarehouse->setCode('could_not_allocate');
+        $warehouses[$noAllocationWarehouse->getCode()] = $noAllocationWarehouse;
 
         // the SalesChannel that the order is placed in is linked to a SalesChannelGroup
         // linked warehouses are warehouses connected to the WarehouseGroup that is linked to the SalesChannelGroup
@@ -196,6 +200,12 @@ class QuantityWFAStrategy implements WFAStrategyInterface
                 $productsByWh[$inventoryItem->getProduct()->getSku()]['selected_wh'][$emptyWarehouse->getCode()] = $orderItemQtyToAllocateLeft;
                 $quantityAvailable += $orderItem->getQuantity();
             }
+
+            // for one reason or another, no warehouse could be found for this product
+            // so add it to the no allocation warehouse to prevent errors but create an allocation with an alert state
+            if (!isset($productsByWh[$inventoryItem->getProduct()->getSku()]['selected_wh'])) {
+                $productsByWh[$inventoryItem->getProduct()->getSku()]['selected_wh'][$noAllocationWarehouse->getCode()] = $orderItem->getQuantity();
+            }
             $productsByWh[$inventoryItem->getProduct()->getSku()]['qtyOrdered'] = $orderItem->getQuantity();
             $productsByWh[$inventoryItem->getProduct()->getSku()]['qtyAvailable'] = $quantityAvailable;
         }
@@ -207,10 +217,6 @@ class QuantityWFAStrategy implements WFAStrategyInterface
         $optimizedOptions = $this->getOptimizedOptions($possibleOptionsToFulfill);
         $productsWithInventoryData = [];
 
-        $noAllocationWarehouse = new Warehouse();
-        $noAllocationWarehouse->setWarehouseType(new WarehouseType('virtual'));
-        $noAllocationWarehouse->setCode('could_not_allocate');
-        $warehouses[$noAllocationWarehouse->getCode()] = $noAllocationWarehouse;
         // format the data
         foreach ($optimizedOptions as $sku => $whs) {
             $data = $productsByWh[$sku];
@@ -226,12 +232,14 @@ class QuantityWFAStrategy implements WFAStrategyInterface
             }
 
             if ($data['qtyOrdered'] > $data['qtyAvailable']) {
-                $productsWithInventoryData[$sku][] = [
-                    'sku' => $sku,
-                    'wh' => $noAllocationWarehouse->getCode(),
-                    'qty' => $data['qtyOrdered'] - $data['qtyAvailable'],
-                    'qtyOrdered' => $data['qtyOrdered']
-                ];
+                if (!isset($productsWithInventoryData[$sku])) {
+                    $productsWithInventoryData[$sku][] = [
+                        'sku' => $sku,
+                        'wh' => $noAllocationWarehouse->getCode(),
+                        'qty' => $data['qtyOrdered'] - $data['qtyAvailable'],
+                        'qtyOrdered' => $data['qtyOrdered']
+                    ];
+                }
             }
         }
 
