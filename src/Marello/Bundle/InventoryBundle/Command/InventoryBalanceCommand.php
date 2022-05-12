@@ -100,8 +100,10 @@ class InventoryBalanceCommand extends Command
             $output->writeln(
                 '<comment>ATTENTION</comment>: To update all products run command with <info>--all</info> option:'
             );
-            $output->writeln(sprintf('    <info>%s --all</info>', $this->getName()));
+            $output->writeln(sprintf('<info>%s --all</info>', $this->getName()));
         }
+
+        return 0;
     }
 
     /**
