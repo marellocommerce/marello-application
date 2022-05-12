@@ -18,7 +18,7 @@ dashboards:
         order_statistics_widget:
             label:       marello.order.dashboard.order_statistics.title
             route:       oro_dashboard_itemized_data_widget
-            route_parameters: { bundle: MarelloOrderBundle, name: orderStatistics }
+            route_parameters: { bundle: MarelloOrder, name: orderStatistics }
             acl:         marello_order_view
             description: marello.order.dashboard.order_statistics.description
             icon:        bundles/orodashboard/img/no_icon.png
@@ -72,7 +72,7 @@ dashboards:
         latest_orders_widget:
             label:       marello.order.dashboard.latest_orders.title
             route:       oro_dashboard_widget
-            route_parameters: { bundle: MarelloOrderBundle, name: latestOrders }
+            route_parameters: { bundle: MarelloOrder, name: latestOrders }
             acl:         marello_order_view
             description: marello.order.dashboard.latest_orders.description
             icon:        bundles/orodashboard/img/no_icon.png
@@ -80,7 +80,7 @@ dashboards:
         top_revenue_channels_widget:
             label:       marello.order.dashboard.top_revenue_channels.title
             route:       oro_dashboard_widget
-            route_parameters: { bundle: MarelloOrderBundle, name: topRevenueChannels }
+            route_parameters: { bundle: MarelloOrder, name: topRevenueChannels }
             acl:         marello_order_view
             description: marello.order.dashboard.top_revenue_channels.description
             icon:        bundles/orodashboard/img/no_icon.png
@@ -88,7 +88,7 @@ dashboards:
         hero_products_widget:
             label:       marello.order.dashboard.hero_products.title
             route:       oro_dashboard_itemized_data_widget
-            route_parameters: { bundle: MarelloOrderBundle, name: heroProducts }
+            route_parameters: { bundle: MarelloOrder, name: heroProducts }
             acl:         marello_order_view
             description: marello.order.dashboard.hero_products.description
             icon:        bundles/marelloorder/img/first.svg
