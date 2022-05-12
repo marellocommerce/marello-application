@@ -4,6 +4,7 @@ namespace Marello\Bundle\SupplierBundle\Controller;
 
 use Doctrine\Persistence\ManagerRegistry;
 
+use Oro\Bundle\FormBundle\Model\UpdateHandlerFacade;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -12,7 +13,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-use Oro\Bundle\UIBundle\Route\Router;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
@@ -102,10 +102,10 @@ class SupplierController extends AbstractController
      */
     protected function update(Supplier $supplier = null, Request $request)
     {
-        return $this->get('oro_form.update_handler')->update(
+        return $this->container->get(UpdateHandlerFacade::class)->update(
             $supplier,
             $this->createForm(SupplierType::class, $supplier),
-            $this->get('translator')->trans('marello.supplier.messages.success.supplier.saved'),
+            $this->get(TranslatorInterface::class)->trans('marello.supplier.messages.success.supplier.saved'),
             $request,
             'marello_supplier.supplier_form.handler'
         );
@@ -191,9 +191,9 @@ class SupplierController extends AbstractController
             [
                 SupplierHandler::class,
                 TranslatorInterface::class,
-                Router::class,
                 SupplierProvider::class,
                 ManagerRegistry::class,
+                UpdateHandlerFacade::class,
             ]
         );
     }
