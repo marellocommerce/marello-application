@@ -3,7 +3,7 @@ dashboards:
         integration_status_widget:
             label:       marello.healthcheck.dashboard.last_integration_statuses.label
             route:       oro_dashboard_itemized_data_widget
-            route_parameters: { bundle: MarelloHealthCheckBundle, name: lastIntegrationStatuses }
+            route_parameters: { bundle: MarelloHealthCheck, name: lastIntegrationStatuses }
             acl:         oro_integration_view
             description: marello.healthcheck.dashboard.last_integration_statuses.description
             icon:        bundles/orodashboard/img/no_icon.png
