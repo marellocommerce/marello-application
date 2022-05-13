@@ -384,7 +384,9 @@ datagrids:
                 orderId: orderId
                 state: state
         filters: ~
-        sorters: ~
+        sorters:
+            default:
+                allocationNumber: 'DESC'
         options:
             export: false
             toolbarOptions:
