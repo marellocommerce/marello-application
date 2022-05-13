@@ -232,7 +232,8 @@ class QuantityWFAStrategy implements WFAStrategyInterface
             }
 
             if ($data['qtyOrdered'] > $data['qtyAvailable']) {
-                if (!isset($productsWithInventoryData[$sku])) {
+                // updated check to only add the no allocation once
+                if (!$this->recordExists($productsWithInventoryData[$sku], $noAllocationWarehouse)) {
                     $productsWithInventoryData[$sku][] = [
                         'sku' => $sku,
                         'wh' => $noAllocationWarehouse->getCode(),
@@ -243,7 +244,30 @@ class QuantityWFAStrategy implements WFAStrategyInterface
             }
         }
 
+        file_put_contents(
+            '/app/var/logs/inventory.log',
+            __METHOD__ . " " . __LINE__ . " " . print_r($productsByWh, true) . " \r\n",
+            FILE_APPEND
+        );
+
+        file_put_contents(
+            '/app/var/logs/inventory.log',
+            __METHOD__ . " " . __LINE__ . " " . print_r($productsWithInventoryData, true) . " \r\n",
+            FILE_APPEND
+        );
+
         return $this->minQtyWHCalculator->calculate($productsWithInventoryData, $orderItemsByProducts, $warehouses, $orderItems);
+    }
+
+    private function recordExists($productWithInventory, Warehouse $warehouse)
+    {
+        foreach ($productWithInventory as $product) {
+            if ($product['wh'] === $warehouse->getCode()) {
+                // it does exist so we break and return true;
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
