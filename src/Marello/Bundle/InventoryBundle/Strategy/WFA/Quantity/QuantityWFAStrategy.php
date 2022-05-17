@@ -244,18 +244,6 @@ class QuantityWFAStrategy implements WFAStrategyInterface
             }
         }
 
-        file_put_contents(
-            '/app/var/logs/inventory.log',
-            __METHOD__ . " " . __LINE__ . " " . print_r($productsByWh, true) . " \r\n",
-            FILE_APPEND
-        );
-
-        file_put_contents(
-            '/app/var/logs/inventory.log',
-            __METHOD__ . " " . __LINE__ . " " . print_r($productsWithInventoryData, true) . " \r\n",
-            FILE_APPEND
-        );
-
         return $this->minQtyWHCalculator->calculate($productsWithInventoryData, $orderItemsByProducts, $warehouses, $orderItems);
     }
 
