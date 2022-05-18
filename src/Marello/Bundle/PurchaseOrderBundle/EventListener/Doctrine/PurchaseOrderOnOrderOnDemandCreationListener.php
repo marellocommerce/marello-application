@@ -96,17 +96,17 @@ class PurchaseOrderOnOrderOnDemandCreationListener
                 foreach ($orderOnDemandItems as $onDemandItem) {
                     $product = $onDemandItem->getProduct();
                     $supplier = $product->getPreferredSupplier();
-                    $supplierName = $supplier->getName();
-                    $itemsBySuppliers[$supplierName][] = $onDemandItem->getId();
-                    if (!isset($poBySuppliers[$supplierName])) {
+                    $supplierCode = $supplier->getCode();
+                    $itemsBySuppliers[$supplierCode][] = $onDemandItem->getId();
+                    if (!isset($poBySuppliers[$supplierCode])) {
                         $po = new PurchaseOrder();
                         $po
                             ->setSupplier($supplier)
                             ->setOrganization($organization);
-                        $poBySuppliers[$supplierName] = $po;
+                        $poBySuppliers[$supplierCode] = $po;
                     }
                     /** @var PurchaseOrder $po */
-                    $po = $poBySuppliers[$supplierName];
+                    $po = $poBySuppliers[$supplierCode];
                     $qty = $onDemandItem->getQuantity();
                     $price = $this->getPurchasePrice($product);
                     $poItem = new PurchaseOrderItem();
@@ -128,7 +128,7 @@ class PurchaseOrderOnOrderOnDemandCreationListener
                         ->setCreatedAt(new \DateTime())
                         ->setData([self::ORDER_ON_DEMAND => [
                             'order' => $entity->getId(),
-                            'orderItems' => $itemsBySuppliers[$po->getSupplier()->getName()]
+                            'orderItems' => $itemsBySuppliers[$po->getSupplier()->getCode()]
                         ]
                         ]);
                     $entityManager->persist($po);
