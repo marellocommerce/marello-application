@@ -4,11 +4,10 @@ namespace Marello\Bundle\InventoryBundle\Tests\Functional\Model;
 
 use Doctrine\ORM\NoResultException;
 
-use Oro\Bundle\NotificationBundle\Async\Topics;
+use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Bundle\MessageQueueBundle\Test\Functional\MessageQueueExtension;
 
-use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\InventoryBundle\Model\BalancedInventory\BalancedInventoryHandler;
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 
@@ -22,8 +21,9 @@ class InventoryBalancer extends WebTestCase
     /** @var BalancedInventoryHandler $balancedInventoryHandler */
     protected $balancedInventoryHandler;
 
-    public function setUp()
+    public function setUp(): void
     {
+        $this->markTestIncomplete();
         $this->initClient($this->generateBasicAuthHeader());
 
         $this->loadFixtures(
@@ -38,11 +38,9 @@ class InventoryBalancer extends WebTestCase
             ->get('marello_inventory.model.balancedinventory.balanced_inventory_handler');
     }
 
-
     /**
      * @throws NoResultException
      * @throws \Oro\Bundle\NotificationBundle\Exception\NotificationSendException
-     * @throws \Twig_Error
      */
     public function testExceptionIsThrownWhenTemplateIsNotFoundForEntity()
     {
@@ -59,5 +57,4 @@ class InventoryBalancer extends WebTestCase
     {
 
     }
-
 }

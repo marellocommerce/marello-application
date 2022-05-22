@@ -1,9 +1,4 @@
 liip_imagine:
-#    loaders: weedizp
-#        default:
-#            filesystem:
-#                bundle_resources:
-#                    enabled: true
     filter_sets:
         cache : ~
         product_grid:

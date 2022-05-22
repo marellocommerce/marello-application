@@ -183,7 +183,7 @@ services:
             - '@oro_datagrid.datagrid.manager'
             - '@security.token_storage'
             - '@oro_email.form.factory'
-#            - '@oro_email.mailer.processor' weedizp
+            - '@oro_email.sender.email_model_sender'
         tags:
             - { name: 'oro_message_queue.client.message_processor' }
 

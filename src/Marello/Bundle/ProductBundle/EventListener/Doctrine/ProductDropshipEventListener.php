@@ -50,7 +50,7 @@ class ProductDropshipEventListener
             $em = $args->getEntityManager();
             /** @var OroEventManager $eventManager */
             $eventManager = $em->getEventManager();
-            $eventManager->removeEventListener('preUpdate', 'marello_product.listener.doctrine.product_dropship'); // weedizp8
+            $eventManager->removeEventListener('preUpdate', 'marello_product.listener.doctrine.product_dropship');
             if ($entity->getCanDropship() === true) {
                 $this->event = new ProductDropshipEvent($entity, true);
             } else {
