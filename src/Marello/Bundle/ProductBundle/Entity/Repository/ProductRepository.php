@@ -20,7 +20,7 @@ class ProductRepository extends ServiceEntityRepository
     /**
      * @param string $databaseDriver
      */
-    public function setDatabaseDriver($databaseDriver) // weedizp
+    public function setDatabaseDriver($databaseDriver)
     {
         $this->databaseDriver = $databaseDriver;
     }

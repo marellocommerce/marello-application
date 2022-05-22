@@ -61,7 +61,6 @@ class PaymentTermControllerTest extends WebTestCase
      */
     public function testCreate()
     {
-        // weedizp9
         $crawler = $this->client->request(
             'GET',
             $this->getUrl('marello_paymentterm_paymentterm_create')
@@ -136,12 +135,6 @@ class PaymentTermControllerTest extends WebTestCase
      */
     protected function assertPaymentTermSave(Crawler $crawler, $code, $term, $label)
     {
-        $token = $this->getContainer()
-            ->get('security.csrf.token_manager')
-            ->getToken(PaymentTermType::BLOCK_PREFIX)
-            ->getValue()
-        ;
-
         $labels = [];
         foreach ($this->getLocalizations() as $localization) {
             $labels[$localization->getId()] = [
@@ -149,22 +142,18 @@ class PaymentTermControllerTest extends WebTestCase
                 'fallback' => $localization->getParentLocalization() === null ? 'system' : 'parent_localization',
             ];
         }
-        $formData = [
-            'input_action' => '{"route":"marello_paymentterm_paymentterm_view","params":{"id":"$id"}}',
-            PaymentTermType::BLOCK_PREFIX => [
-                'code' => $code,
-                'term' => $term,
-                'labels' => [
-                    'values' => [
-                        'default' => $label,
-                        'localizations' => $labels,
-                    ],
-                ],
-                '_token' => $token,
-            ],
-        ];
 
         $form = $crawler->selectButton('Save and Close')->form();
+        $formData = $form->getPhpValues();
+        $formData['input_action'] = '{"route":"marello_paymentterm_paymentterm_view","params":{"id":"$id"}}';
+        $formData[PaymentTermType::BLOCK_PREFIX]['code'] = $code;
+        $formData[PaymentTermType::BLOCK_PREFIX]['term'] = $term;
+        $formData[PaymentTermType::BLOCK_PREFIX]['labels'] = [
+            'values' => [
+                'default' => $label,
+                'localizations' => $labels,
+            ],
+        ];
 
         $this->client->followRedirects(true);
         $crawler = $this->client->request($form->getMethod(), $form->getUri(), $formData);

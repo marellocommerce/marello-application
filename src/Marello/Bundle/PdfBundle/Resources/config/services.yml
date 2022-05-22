@@ -77,6 +77,8 @@ services:
             - '@validator'
             - '@oro_email.tools.email_origin_helper'
             - '@oro_email.email_renderer'
+            - '@oro_attachment.liip_imagine.binary.mime_type_guesser'
+            - '@oro_email.sender.email_model_sender'
         calls:
             - [setLogger, ['@logger']]
         tags:
