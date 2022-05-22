@@ -3,8 +3,7 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\Controller\Api\Rest;
 
 use Doctrine\Persistence\ObjectManager;
-use FOS\RestBundle\Controller\Annotations as Rest; #weedizp2
-use FOS\RestBundle\Util\Codes;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
 use MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
@@ -16,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Rest\RouteResource("wfarule")
+ * @Rest\RouteResource("wfarule")  #weedizp2
  * @Rest\NamePrefix("marelloenterprise_inventory_api_")
  */
 class WFARuleController extends RestController

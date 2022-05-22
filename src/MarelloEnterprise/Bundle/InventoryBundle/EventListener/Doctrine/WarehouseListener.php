@@ -7,9 +7,9 @@ use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
-use Oro\Bundle\SecurityBundle\Exception\ForbiddenException;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class WarehouseListener
@@ -73,7 +73,7 @@ class WarehouseListener
         }
         if (isset($message)) {
             $this->session->getFlashBag()->add('error', $message);
-            throw new ForbiddenException($message); // weedizp2
+            throw new AccessDeniedException($message);
         }
         if ($group = $warehouse->getGroup()) {
             if (!$group->isSystem() && $group->getWarehouses()->count() < 1) {
