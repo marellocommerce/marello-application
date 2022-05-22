@@ -6,7 +6,9 @@ Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder:
         items:
             - Valid: ~
         dueDate:
-            - Date: ~
+            - Type:
+                  type: \DateTimeInterface
+                  message: marello.purchaseorder.purchaseorder.due_date.type.message
 
 Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem:
     properties:

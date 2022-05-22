@@ -1,4 +1,4 @@
-{% set productImage = 'bundles/marelloproduct/img/no_image_available.jpg' | imagine_filter('product_grid') %}
+{% set productImage = asset('bundles/marelloproduct/img/no_image_available.jpg') %}
 {% set imageId = record.getValue('image') %}
 {% if imageId is not null %}
     {% set image = get_file_by_id(imageId) %}
