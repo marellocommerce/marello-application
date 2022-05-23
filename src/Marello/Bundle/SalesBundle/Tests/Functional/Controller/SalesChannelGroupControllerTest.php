@@ -6,12 +6,15 @@ use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\SalesBundle\Form\Type\SalesChannelGroupType;
 use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
+use Oro\Bundle\ActionBundle\Tests\Functional\OperationAwareTestTrait;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Response;
 
 class SalesChannelGroupControllerTest extends WebTestCase
 {
+    use OperationAwareTestTrait;
+
     const NAME = 'name';
     const DESCRIPTION = 'description';
 
@@ -178,9 +181,6 @@ class SalesChannelGroupControllerTest extends WebTestCase
      */
     protected function assertSalesChannelGroupSave(Crawler $crawler, $name, $description, array $channels)
     {
-        $token = $this->getContainer()->get('security.csrf.token_manager')
-            ->getToken(SalesChannelGroupType::BLOCK_PREFIX)->getValue();
-
         $channelIds = array_map(
             function (SalesChannel $channel) {
                 return $channel->getId();
@@ -195,17 +195,12 @@ class SalesChannelGroupControllerTest extends WebTestCase
             $channels
         );
 
-        $formData = [
-            'input_action' => '{"route":"marello_sales_saleschannelgroup_view","params":{"id":"$id"}}',
-            SalesChannelGroupType::BLOCK_PREFIX => [
-                'name' => $name,
-                'description' => $description,
-                'salesChannels' => implode(',', $channelIds),
-                '_token' => $token,
-            ],
-        ];
-
         $form = $crawler->selectButton('Save and Close')->form();
+        $formData = $form->getPhpValues();
+        $formData['input_action'] = '{"route":"marello_sales_saleschannelgroup_view","params":{"id":"$id"}}';
+        $formData[SalesChannelGroupType::BLOCK_PREFIX]['name'] = $name;
+        $formData[SalesChannelGroupType::BLOCK_PREFIX]['description'] = $description;
+        $formData[SalesChannelGroupType::BLOCK_PREFIX]['salesChannels'] = implode(',', $channelIds);
 
         $this->client->followRedirects(true);
         $crawler = $this->client->request($form->getMethod(), $form->getUri(), $formData);
@@ -233,30 +228,5 @@ class SalesChannelGroupControllerTest extends WebTestCase
         foreach ($channelNames as $name) {
             $this->assertStringContainsString($name, $html);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     * @param $operationName
-     * @param $entityId
-     * @param $entityClass
-     *
-     * @return array
-     */
-    protected function getOperationExecuteParams($operationName, $entityId, $entityClass)
-    {
-        $actionContext = [
-            'entityId'    => $entityId,
-            'entityClass' => $entityClass
-        ];
-        $container = self::getContainer();
-        $operation = $container->get('oro_action.operation_registry')->findByName($operationName);
-        $actionData = $container->get('oro_action.helper.context')->getActionData($actionContext);
-
-        $tokenData = $container->get('oro_action.operation.execution.form_provider')
-            ->createTokenData($operation, $actionData);
-        $container->get('session')->save();
-
-        return $tokenData;
     }
 }

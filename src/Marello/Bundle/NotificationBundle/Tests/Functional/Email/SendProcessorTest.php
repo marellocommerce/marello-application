@@ -4,7 +4,7 @@ namespace Marello\Bundle\NotificationBundle\Tests\Functional\Email;
 
 use Doctrine\ORM\NoResultException;
 
-use Oro\Bundle\NotificationBundle\Async\Topics;
+use Oro\Bundle\NotificationBundle\Async\Topic\SendEmailNotificationTopic;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Bundle\MessageQueueBundle\Test\Functional\MessageQueueExtension;
 
@@ -12,7 +12,6 @@ use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\NotificationBundle\Email\SendProcessor;
 use Marello\Bundle\NotificationBundle\Entity\Notification;
 use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
-use Marello\Bundle\NotificationBundle\Exception\MarelloNotificationException;
 
 class SendProcessorTest extends WebTestCase
 {
@@ -67,7 +66,6 @@ class SendProcessorTest extends WebTestCase
     /**
      * @throws NoResultException
      * @throws \Oro\Bundle\NotificationBundle\Exception\NotificationSendException
-     * @throws \Twig_Error
      */
     public function testExceptionIsThrownWhenTemplateIsNotFoundForEntity()
     {
@@ -82,7 +80,7 @@ class SendProcessorTest extends WebTestCase
             $order
         );
 
-        self::assertMessagesEmpty(Topics::SEND_NOTIFICATION_EMAIL);
+        self::assertMessagesEmpty(SendEmailNotificationTopic::getName());
     }
 
     /**
@@ -99,8 +97,8 @@ class SendProcessorTest extends WebTestCase
             $order
         );
 
-        self::assertMessageSent(Topics::SEND_NOTIFICATION_EMAIL);
-        $message = self::getSentMessage(Topics::SEND_NOTIFICATION_EMAIL);
+        self::assertMessageSent(SendEmailNotificationTopic::getName());
+        $message = self::getSentMessage(SendEmailNotificationTopic::getName());
         // check that the subject and body have been rendered
         self::assertStringNotContainsString('{{ entity', $message['subject']);
         self::assertStringNotContainsString('{{ entity', $message['body']);
@@ -141,8 +139,8 @@ class SendProcessorTest extends WebTestCase
         );
 
         static::assertEquals($notificationsBefore, $notificationsAfter);
-        self::assertMessageSent(Topics::SEND_NOTIFICATION_EMAIL);
-        $message = self::getSentMessage(Topics::SEND_NOTIFICATION_EMAIL);
+        self::assertMessageSent(SendEmailNotificationTopic::getName());
+        $message = self::getSentMessage(SendEmailNotificationTopic::getName());
         // check that the subject and body have been rendered
         self::assertStringNotContainsString('{{ entity', $message['subject']);
         self::assertStringNotContainsString('{{ entity', $message['body']);

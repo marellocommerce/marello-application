@@ -3,12 +3,12 @@
 namespace Marello\Bundle\PurchaseOrderBundle\Tests\Functional\Cron;
 
 use Oro\Bundle\CronBundle\Entity\Repository\ScheduleRepository;
+use Oro\Bundle\NotificationBundle\Async\Topic\SendEmailNotificationTopic;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 
 use Oro\Bundle\CronBundle\Entity\Schedule;
-use Oro\Bundle\NotificationBundle\Async\Topics; // weedizp
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Bundle\MessageQueueBundle\Test\Functional\MessageQueueExtension;
@@ -108,8 +108,8 @@ class PurchaseOrderAdviceCronTest extends WebTestCase
         self::assertEmpty($commandTester->getDisplay());
         self::assertEquals(PurchaseOrderAdviceCommand::EXIT_CODE, $commandTester->getStatusCode());
 
-        self::assertMessageSent(Topics::SEND_NOTIFICATION_EMAIL);
-        $message = self::getSentMessage(Topics::SEND_NOTIFICATION_EMAIL);
+        self::assertMessageSent(SendEmailNotificationTopic::getName());
+        $message = self::getSentMessage(SendEmailNotificationTopic::getName());
         self::assertStringNotContainsString('{{ entity', $message['subject']);
         self::assertStringNotContainsString('{{ entity', $message['body']);
         self::assertEquals('text/html', $message['contentType']);
