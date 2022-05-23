@@ -64,23 +64,12 @@ class SystemConfigurationControllerTest extends WebTestCase
             ])
         );
 
-        $token = $this->getContainer()
-            ->get('security.csrf.token_manager')
-            ->getToken(self::BLOCK_PREFIX)
-            ->getValue()
-        ;
-
-        $formData = [
-            'input_action' => '',
-            self::BLOCK_PREFIX => [
-                'marello_payment_term___default_payment_term' => [
-                    'value' => $this->getReference(LoadPaymentTermsData::PAYMENT_TERM_2_REF)->getId(),
-                ],
-                '_token' => $token,
-            ],
-        ];
-
         $form = $crawler->selectButton('Save settings')->form();
+        $formData = $form->getPhpValues();
+        $formData['input_action'] = '';
+        $formData[self::BLOCK_PREFIX]['marello_payment_term___default_payment_term'] = [
+            'value' => $this->getReference(LoadPaymentTermsData::PAYMENT_TERM_2_REF)->getId(),
+        ];
 
         $this->client->followRedirects(true);
         $crawler = $this->client->request($form->getMethod(), $form->getUri(), $formData);
