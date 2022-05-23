@@ -6,6 +6,8 @@ use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\Persistence\ManagerRegistry;
 
 use Liip\ImagineBundle\Binary\MimeTypeGuesserInterface;
+use Oro\Bundle\EmailBundle\Sender\EmailModelSender;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Validator\Constraints\Email as EmailConstraints;
 use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -24,7 +26,6 @@ use Oro\Bundle\EmailBundle\Provider\EmailRenderer;
 use Oro\Bundle\EmailBundle\Tools\EmailAddressHelper;
 use Oro\Bundle\EntityBundle\Provider\EntityNameResolver;
 use Oro\Component\ConfigExpression\ContextAccessor;
-use Oro\Bundle\EmailBundle\Mailer\Processor; // weedizp3
 
 class SendEmailTemplateAttachmentAction extends AbstractSendEmail
 {
@@ -47,7 +48,8 @@ class SendEmailTemplateAttachmentAction extends AbstractSendEmail
         ValidatorInterface $validator,
         protected EmailOriginHelper $emailOriginHelper,
         protected EmailRenderer $renderer,
-        protected MimeTypeGuesserInterface $mimeTypeGuesser
+        protected MimeTypeGuesserInterface $mimeTypeGuesser,
+        protected EmailModelSender $emailModelSender
     ) {
         parent::__construct($contextAccessor, $validator, $emailAddressHelper, $entityNameResolver);
     }
@@ -169,8 +171,8 @@ class SendEmailTemplateAttachmentAction extends AbstractSendEmail
                 $emailModel->getOrganization()
             );
 
-            $emailUser = $this->emailProcessor->process($emailModel, $emailOrigin); // weedizp
-        } catch (\Swift_SwiftException $exception) {
+            $emailUser = $this->emailModelSender->send($emailModel, $emailOrigin);
+        } catch (TransportExceptionInterface $exception) {
             $this->logger->error('Workflow send email template action.', ['exception' => $exception]);
         }
 

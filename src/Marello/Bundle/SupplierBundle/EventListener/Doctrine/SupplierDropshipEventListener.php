@@ -48,7 +48,7 @@ class SupplierDropshipEventListener
             $em = $args->getEntityManager();
             /** @var OroEventManager $eventManager */
             $eventManager = $em->getEventManager();
-            $eventManager->removeEventListener('preUpdate', $this); // weedizp8
+            $eventManager->removeEventListener('preUpdate', $this);
             if ($entity->getCanDropship() === true) {
                 $this->eventDispatcher->dispatch(
                     new SupplierDropshipEvent($entity, true),

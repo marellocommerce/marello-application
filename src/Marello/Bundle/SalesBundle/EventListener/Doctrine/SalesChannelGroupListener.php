@@ -8,10 +8,10 @@ use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
-use Oro\Bundle\SecurityBundle\Exception\ForbiddenException;
 
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class SalesChannelGroupListener
 {
@@ -38,7 +38,7 @@ class SalesChannelGroupListener
             $this->session
                 ->getFlashBag()
                 ->add('error', $message);
-            throw new ForbiddenException($message); // weedizp
+            throw new AccessDeniedException($message);
         }
         $em = $args->getEntityManager();
         $systemGroup = $em

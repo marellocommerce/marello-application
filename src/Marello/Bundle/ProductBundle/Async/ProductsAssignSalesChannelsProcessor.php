@@ -4,6 +4,7 @@ namespace Marello\Bundle\ProductBundle\Async;
 
 use Doctrine\ORM\EntityManagerInterface;
 
+use Oro\Bundle\EmailBundle\Sender\EmailModelSender;
 use Psr\Log\LoggerInterface;
 
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -26,38 +27,13 @@ class ProductsAssignSalesChannelsProcessor implements MessageProcessorInterface,
 
     const FLUSH_BATCH_SIZE = 100;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
-
-    /**
-     * @var Factory
-     */
-    private $emailModelFactory;
-
     public function __construct(
-        LoggerInterface $logger,
-        EntityManagerInterface $entityManager,
-        TokenStorageInterface $tokenStorage,
-        Factory $emailModelFactory
-    ) {
-        $this->logger = $logger;
-        $this->entityManager = $entityManager;
-        $this->tokenStorage = $tokenStorage;
-        $this->emailModelFactory = $emailModelFactory;
-        $this->emailProcessor = $emailProcessor; // weedizp
-    }
+        private LoggerInterface $logger,
+        private EntityManagerInterface $entityManager,
+        private TokenStorageInterface $tokenStorage,
+        private Factory $emailModelFactory,
+        private EmailModelSender $emailModelSender
+    ) {}
 
     /**
      * {@inheritdoc}
@@ -158,6 +134,6 @@ class ProductsAssignSalesChannelsProcessor implements MessageProcessorInterface,
                     implode('<br>', $products)
                 )
             );
-        $this->emailProcessor->process($emailModel);
+        $this->emailModelSender->send($emailModel);
     }
 }

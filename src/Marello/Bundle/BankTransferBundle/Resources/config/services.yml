@@ -1,6 +1,6 @@
 parameters:
     marello_bank_transfer.method.identifier_prefix.bank_transfer: 'bank_transfer'
-    marello_bank_transfer.admin_view.method_template: 'MarelloBankTransfer/method/bankTransferMethodWithOptions.html.twig'
+    marello_bank_transfer.admin_view.method_template: '@@MarelloBankTransfer/method/bankTransferMethodWithOptions.html.twig'
 
 services:
     marello_bank_transfer.method.identifier_generator.method:

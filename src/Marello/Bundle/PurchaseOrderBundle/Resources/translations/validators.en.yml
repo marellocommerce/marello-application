@@ -8,3 +8,8 @@ marello:
             messages:
                 error:
                     greater_than_date: Expected Delivery date must be greater than today
+
+        purchaseorder:
+            due_date:
+                type:
+                    message: 'This value is not a valid date.'
