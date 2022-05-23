@@ -57,22 +57,6 @@ twig:
 #    password:                 "%mailer_password%"
 #    spool:                    { type: memory }
 
-#fos_rest: #weedizp
-#    body_listener:
-#        decoders:
-#            json: fos_rest.decoder.json
-#    view:
-#        failed_validation: HTTP_BAD_REQUEST
-#        formats:
-#            json: true
-#            xml: false
-#    format_listener:
-#        rules:
-#            - { path: '^/api/rest', priorities: [ json ], fallback_format: json, prefer_extension: false }
-#            - { path: '^/api/soap', stop: true }
-#            - { path: '^/', stop: true }
-#    routing_loader: false
-
 fos_js_routing:
     routes_to_expose: ['oro_.*', 'oropro_.*', 'marello_.*']
 
@@ -95,16 +79,6 @@ oro_maintenance:
     driver:
         options:
             file_path:        '%kernel.project_dir%/var/cache/maintenance_lock'
-
-#liip_imagine: weedizp
-#    loaders:
-#        default:
-#            filesystem:
-#                data_root: '%kernel.project_dir%/public'
-#    resolvers:
-#        default:
-#            web_path:
-#                web_root: '%kernel.project_dir%/public'
 
 #
 # ORO Bundles config
