@@ -100,10 +100,26 @@ class InventoryAllocationProvider extends BaseAllocationProvider
             $parentAllocation->setStatus($this->getEnumValue('marello_allocation_status', 'on_hand'));
             $parentAllocation->setWarehouse($this->consolidationWarehouse);
             $parentAllocation->setShippingAddress($order->getShippingAddress());
+            /** @var AllocationItem $item */
             foreach ($this->baseAllocationProvider->getAllItems() as $item) {
+//                if ($item->getAllocation()->getState() !== 'available') {
+//                    continue;
+//                }
+                if ($item->getAllocation()->getWarehouse()->getWarehouseType()->getName() === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
+                    continue;
+                }
+
                 $parentAllocation->addItem($item);
             }
+            /** @var Allocation $subAllocation */
             foreach ($this->baseAllocationProvider->getAllSubAllocations() as $subAllocation) {
+//                if ($subAllocation->getState() !== 'available') {
+//                    continue;
+//                }
+
+                if ($subAllocation->getWarehouse()->getWarehouseType()->getName() === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
+                    continue;
+                }
                 $parentAllocation->addChild($subAllocation);
             }
 
