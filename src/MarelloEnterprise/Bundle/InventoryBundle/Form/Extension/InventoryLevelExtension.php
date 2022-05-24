@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 
 use Marello\Bundle\InventoryBundle\Form\Type\InventoryLevelType;
-use MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseSelectType;
+use MarelloEnterprise\Bundle\InventoryBundle\Form\Type\InventoryLevelWarehouseSelectType;
 
 class InventoryLevelExtension extends AbstractTypeExtension
 {
@@ -29,6 +29,6 @@ class InventoryLevelExtension extends AbstractTypeExtension
             $builder->remove('warehouse');
         }
 
-        $builder->add('warehouse', WarehouseSelectType::class);
+        $builder->add('warehouse', InventoryLevelWarehouseSelectType::class);
     }
 }

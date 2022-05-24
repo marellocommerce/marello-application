@@ -18,6 +18,15 @@ services:
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: warehouses, acl_resource: marello_inventory_inventory_view }
 
+    marelloenterprise_inventory.form.autocomplete.search_handler.inventory_level_warehouses:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Autocomplete\InventoryLevelWarehousesSearchHandler'
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - 'Marello\Bundle\InventoryBundle\Entity\Warehouse'
+            - ['code', 'label']
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: inventory_level_warehouses, acl_resource: marello_inventory_inventory_view }
+
     marelloenterprise_inventory.form.autocomplete.search_handler.system_group_global_warehouses:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Autocomplete\SystemGroupGlobalWarehousesSearchHandler'
         parent: oro_form.autocomplete.search_handler
