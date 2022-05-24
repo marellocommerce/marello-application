@@ -29,7 +29,7 @@ oro:
                 credit:
                     label:  'Closed'
                 pick_and_pack:
-                    label: 'Pick and Pack'
+                    label: 'Allocated'
                 shipped:
                     label:  'Complete'
             transition:
@@ -50,7 +50,7 @@ oro:
                 payment_received:
                     label:    'Payment Received'
                 ship:
-                    label:    'Ship'
+                    label:    'Complete'
                 credit:
                     label:    'Credit'
                 prepare_shipping:
@@ -87,7 +87,7 @@ oro:
                 credit:
                     label:  'Closed'
                 pick_and_pack:
-                    label: 'Pick and Pack'
+                    label: 'Allocated'
                 shipped:
                     label:  'Shipped'
             transition:
@@ -112,7 +112,7 @@ oro:
                 payment_received:
                     label:    'Payment Received'
                 ship:
-                    label:    'Ship'
+                    label:    'Complete'
                 credit:
                     label:    'Credit'
                 prepare_shipping:
