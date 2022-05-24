@@ -24,6 +24,10 @@ marelloenterprise:
                 status:
                     success_message:    "{0} No entities status were changed|{1} One entity status was changed|]1,Inf[ %count% entities status were changed"
 
+        system_configuration:
+            fields:
+                inventory_allocation_consolidation_exclusion.label: Allocation consolidation state exclusion
+
         messages:
             error:
                 warehouse:

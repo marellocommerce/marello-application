@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
@@ -16,13 +17,14 @@ use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
 use MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule;
 use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
+use Marello\Bundle\InventoryBundle\Strategy\WFA\WFAStrategiesRegistry;
+use Marello\Bundle\InventoryBundle\Provider\AllocationStateStatusInterface;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Marello\Bundle\RuleBundle\RuleFiltration\RuleFiltrationServiceInterface;
-use Marello\Bundle\InventoryBundle\Strategy\WFA\WFAStrategiesRegistry;
 use Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProviderInterface;
 use MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WFARuleRepository;
-use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFA\MinimumDistance\MinimumDistanceWFAStrategy;
 use Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider as BaseAllocationProvider;
+use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFA\MinimumDistance\MinimumDistanceWFAStrategy;
 
 class InventoryAllocationProvider extends BaseAllocationProvider
 {
@@ -47,6 +49,9 @@ class InventoryAllocationProvider extends BaseAllocationProvider
     /** @var BaseAllocationProvider $baseAllocationProvider */
     protected $baseAllocationProvider;
 
+    /** @var ConfigManager $configManager */
+    private $configManager;
+
     /**
      * InventoryAllocationProvider constructor.
      * @param InventoryAllocationProvider $allocationProvider
@@ -59,12 +64,14 @@ class InventoryAllocationProvider extends BaseAllocationProvider
         RuleFiltrationServiceInterface $rulesFiltrationService,
         DoctrineHelper $doctrineHelper,
         OrderWarehousesProviderInterface $warehousesProvider,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        ConfigManager $configManager
     ) {
         parent::__construct($doctrineHelper, $warehousesProvider, $eventDispatcher);
         $this->baseAllocationProvider = $allocationProvider;
         $this->strategiesRegistry = $strategiesRegistry;
         $this->rulesFiltrationService = $rulesFiltrationService;
+        $this->configManager = $configManager;
     }
 
     /**
@@ -96,28 +103,20 @@ class InventoryAllocationProvider extends BaseAllocationProvider
             /** @var Order $order */
             $parentAllocation = new Allocation();
             $parentAllocation->setOrder($order);
-            $parentAllocation->setState($this->getEnumValue('marello_allocation_state', 'available'));
-            $parentAllocation->setStatus($this->getEnumValue('marello_allocation_status', 'on_hand'));
+            $parentAllocation->setState($this->getEnumValue('marello_allocation_state', AllocationStateStatusInterface::ALLOCATION_STATE_AVAILABLE));
+            $parentAllocation->setStatus($this->getEnumValue('marello_allocation_status', AllocationStateStatusInterface::ALLOCATION_STATUS_ON_HAND));
             $parentAllocation->setWarehouse($this->consolidationWarehouse);
             $parentAllocation->setShippingAddress($order->getShippingAddress());
             /** @var AllocationItem $item */
             foreach ($this->baseAllocationProvider->getAllItems() as $item) {
-//                if ($item->getAllocation()->getState() !== 'available') {
-//                    continue;
-//                }
-                if ($item->getAllocation()->getWarehouse()->getWarehouseType()->getName() === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
+                if ($this->isAllocationExcluded($item->getAllocation())) {
                     continue;
                 }
-
                 $parentAllocation->addItem($item);
             }
             /** @var Allocation $subAllocation */
             foreach ($this->baseAllocationProvider->getAllSubAllocations() as $subAllocation) {
-//                if ($subAllocation->getState() !== 'available') {
-//                    continue;
-//                }
-
-                if ($subAllocation->getWarehouse()->getWarehouseType()->getName() === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
+                if ($this->isAllocationExcluded($subAllocation)) {
                     continue;
                 }
                 $parentAllocation->addChild($subAllocation);
@@ -127,6 +126,23 @@ class InventoryAllocationProvider extends BaseAllocationProvider
         }
 
         $em->flush();
+    }
+
+    /**
+     * @param Allocation $allocation
+     * @return bool
+     */
+    protected function isAllocationExcluded(Allocation $allocation)
+    {
+        file_put_contents(
+            '/app/var/logs/test.log',
+            __METHOD__ . " " . __LINE__ . " " . print_r($this->configManager->get('marello_enterprise_inventory.inventory_allocation_consolidation_exclusion'), true) . "\r\n",
+            FILE_APPEND
+        );
+        return (
+            $allocation->getWarehouse()->getWarehouseType()->getName() === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL ||
+            in_array($allocation->getState()->getName(), $this->configManager->get('marello_enterprise_inventory.inventory_allocation_consolidation_exclusion'))
+        );
     }
 
     /**
