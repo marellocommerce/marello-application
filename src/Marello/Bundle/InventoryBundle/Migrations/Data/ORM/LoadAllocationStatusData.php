@@ -4,6 +4,7 @@ namespace Marello\Bundle\ProductBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
+use Marello\Bundle\InventoryBundle\Provider\AllocationStateStatusInterface;
 use Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 
@@ -14,18 +15,18 @@ class LoadAllocationStatusData extends AbstractFixture
 
     /** @var array */
     protected $stateData = [
-        'available' => 'Available',
-        'waiting' => 'Waiting for Supply',
-        'alert'  => 'Alert'
+        AllocationStateStatusInterface::ALLOCATION_STATE_AVAILABLE => 'Available',
+        AllocationStateStatusInterface::ALLOCATION_STATE_WFS => 'Waiting for Supply',
+        AllocationStateStatusInterface::ALLOCATION_STATE_ALERT  => 'Alert'
     ];
 
     /** @var array */
     protected $statusData = [
-        'on_hand' => 'On hand',
-        'dropshipping'  => 'Dropshipping',
-        'backorder'  => 'Backorder',
-        'preorder'  => 'Pre-order',
-        'could_not_allocate'  => 'Could not allocate',
+        AllocationStateStatusInterface::ALLOCATION_STATUS_ON_HAND => 'On hand',
+        AllocationStateStatusInterface::ALLOCATION_STATUS_DROPSHIP  => 'Dropshipping',
+        AllocationStateStatusInterface::ALLOCATION_STATUS_BACK_ORDER  => 'Backorder',
+        AllocationStateStatusInterface::ALLOCATION_STATUS_PRE_ORDER  => 'Pre-order',
+        AllocationStateStatusInterface::ALLOCATION_STATUS_CNA  => 'Could not allocate',
     ];
 
     /**
