@@ -118,3 +118,10 @@ services:
             - '@oro_security.acl_helper'
         tags:
             - { name: oro_form.form.handler, alias: marelloenterprise_inventory.form_handler.warehousegroup }
+
+    marelloenterprise_inventory.form_type.marello_inventory_consolidation_exclusion:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Type\AllocationConsolidationExclusionSelectType'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: form.type, alias: marelloenterprise_inventory_consolidation_exclusion }
