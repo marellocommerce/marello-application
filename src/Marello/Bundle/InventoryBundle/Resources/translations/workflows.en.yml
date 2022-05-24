@@ -13,6 +13,8 @@ oro:
                     label:  'Rejected By Warehouse'
                 pick_and_pack:
                     label:  'Pick and Pack'
+                resolved:
+                    label:  'Resolved'
                 complete:
                     label:  'Complete'
             transition:
@@ -26,5 +28,7 @@ oro:
                     label:    'Pick and Pack'
                 rejected:
                     label:    'Reject'
+                reallocate:
+                    label:    'Reallocate'
                 complete:
                     label:    'Complete'
