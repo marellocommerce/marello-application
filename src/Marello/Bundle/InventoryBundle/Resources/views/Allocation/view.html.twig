@@ -25,8 +25,14 @@
                     {{ UI.renderProperty('marello.inventory.warehouse.entity_label'|trans, entity.warehouse.label) }}
                     {% if entity.sourceEntity %}
                         {{ UI.renderHtmlProperty(
-                            'Source'|trans,
+                            'marello.inventory.allocation.source_entity.label'|trans,
                             UI.entityViewLink(entity.sourceEntity, entity.sourceEntity.allocationNumber, 'marello_inventory_allocation_view')
+                        )}}
+                    {% endif %}
+                    {% if entity.parent %}
+                        {{ UI.renderHtmlProperty(
+                            'marello.inventory.allocation.parent.label'|trans,
+                            UI.entityViewLink(entity.parent, entity.parent.allocationNumber, 'marello_inventory_allocation_view')
                         )}}
                     {% endif %}
                     <div class="attribute-item">
@@ -35,6 +41,8 @@
                             {{ Address.renderAddress(entity.shippingAddress) }}
                         </div>
                     </div>
+                    {{ UI.renderProperty('marello.inventory.allocation.state.label'|trans, entity.state) }}
+                    {{ UI.renderProperty('marello.inventory.allocation.status.label'|trans, entity.status) }}
                 </div>
                 <div class="responsive-block">
                     {{ UI.renderHtmlProperty(
