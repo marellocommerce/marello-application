@@ -2,11 +2,15 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Form\Extension;
 
-use Marello\Bundle\InventoryBundle\Form\Type\WarehouseType;
+use Doctrine\ORM\EntityRepository;
+
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\FormBuilderInterface;
+
+use Marello\Bundle\InventoryBundle\Form\Type\WarehouseType;
 
 class WarehouseExtension extends AbstractTypeExtension
 {
@@ -34,6 +38,14 @@ class WarehouseExtension extends AbstractTypeExtension
                 'label'    => 'marello.inventory.warehouse.warehouse_type.label',
                 'class'    => 'MarelloInventoryBundle:WarehouseType',
                 'required' => true,
+                'query_builder' => function(EntityRepository $repository) {
+                    $qb = $repository->createQueryBuilder('whtype');
+                    return $qb
+                        ->where($qb->expr()->neq('whtype.name', '?1'))
+                        ->setParameter('1', WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL)
+                        ->orderBy('whtype.name', 'ASC')
+                        ;
+                }
             ]);
     }
 }
