@@ -76,6 +76,15 @@ define(function(require) {
 
             if (data.canDropship.length !== 0) {
                 this.options.canDropship = data.canDropship;
+                if (this.fieldsByName.canDropship !== undefined) {
+                    this.fieldsByName.canDropship
+                        .prop('checked', this.options.canDropship);
+                    if (this.options.canDropship) {
+                        $(this.fieldsByName.canDropship).parent().show();
+                    } else {
+                        $(this.fieldsByName.canDropship).parent().hide();
+                    }
+                }
             }
 
             if (data.currency.length !== 0) {
@@ -84,9 +93,6 @@ define(function(require) {
 
             this.fieldsByName.priority
                 .val(this.options.priority);
-
-            this.fieldsByName.canDropship
-                .prop('checked', this.options.canDropship);
 
             var parent = $(this.fieldsByName.cost).parent();
             parent.contents().filter(function(){
