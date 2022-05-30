@@ -85,7 +85,7 @@ class InventoryAllocationProvider extends BaseAllocationProvider
         // check if order needs to be consolidated
         $consolidation = $order->isConsolidationEnabled();
         $this->consolidationWarehouse = null;
-        if ($consolidation) {
+        if ($this->isConsolidationEnabled($order)) {
             $this->consolidationWarehouse = $this->getConsolidationWarehouse($order);
         }
         // consolidation is not enabled, so we just run the 'normal' WFA rules (all of them)
@@ -129,16 +129,24 @@ class InventoryAllocationProvider extends BaseAllocationProvider
     }
 
     /**
+     * @param Order $order
+     * @return bool
+     */
+    protected function isConsolidationEnabled(Order $order)
+    {
+        return (
+            $order->isConsolidationEnabled() ||
+            $this->configManager->get('marello_enterprise_order.enable_order_consolidation', false, false, $order->getSalesChannel()) ||
+            $this->configManager->get('marello_enterprise_order.enable_order_consolidation')
+        );
+    }
+
+    /**
      * @param Allocation $allocation
      * @return bool
      */
     protected function isAllocationExcluded(Allocation $allocation)
     {
-        file_put_contents(
-            '/app/var/logs/test.log',
-            __METHOD__ . " " . __LINE__ . " " . print_r($this->configManager->get('marello_enterprise_inventory.inventory_allocation_consolidation_exclusion'), true) . "\r\n",
-            FILE_APPEND
-        );
         return (
             $allocation->getWarehouse()->getWarehouseType()->getName() === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL ||
             in_array($allocation->getState()->getName(), $this->configManager->get('marello_enterprise_inventory.inventory_allocation_consolidation_exclusion'))
