@@ -31,3 +31,13 @@ system_configuration:
                                     marello_order_consolidation:
                                         children:
                                             - marello_enterprise_order.enable_order_consolidation
+        saleschannel_configuration:
+            marello:
+                children:
+                    marello_order:
+                        children:
+                            marello_order_general:
+                                children:
+                                    marello_order_consolidation:
+                                        children:
+                                            - marello_enterprise_order.enable_order_consolidation
