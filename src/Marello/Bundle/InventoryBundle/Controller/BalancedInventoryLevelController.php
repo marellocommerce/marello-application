@@ -55,7 +55,9 @@ class BalancedInventoryLevelController extends AbstractController
 
         $request->getSession()->getFlashBag()->add(
             'success',
-            $this->container->get(TranslatorInterface::class)->trans('marello.inventory.messages.success.inventory_rebalance.started')
+            $this->container
+                ->get(TranslatorInterface::class)
+                ->trans('marello.inventory.messages.success.inventory_rebalance.started')
         );
         return $this->redirectToRoute('marello_inventory_balancedinventorylevel_index');
     }

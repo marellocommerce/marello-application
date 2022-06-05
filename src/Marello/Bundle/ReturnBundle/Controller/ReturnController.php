@@ -62,7 +62,9 @@ class ReturnController extends AbstractController
                 $manager->flush();
                 $request->getSession()->getFlashBag()->add(
                     'success',
-                    $this->container->get(TranslatorInterface::class)->trans('marello.return.returnentity.messages.success.returnentity.saved')
+                    $this->container
+                        ->get(TranslatorInterface::class)
+                        ->trans('marello.return.returnentity.messages.success.returnentity.saved')
                 );
                 return $this->container->get(Router::class)->redirectAfterSave(
                     [
