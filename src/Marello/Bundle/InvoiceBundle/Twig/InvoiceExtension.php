@@ -12,7 +12,9 @@ class InvoiceExtension extends AbstractExtension
 {
     const NAME = 'marello_invoice';
 
-    public function __construct(protected Registry $doctrine) {}
+    public function __construct(
+        protected Registry $doctrine
+    ) {}
 
     /**
      * Returns the name of the extension.
