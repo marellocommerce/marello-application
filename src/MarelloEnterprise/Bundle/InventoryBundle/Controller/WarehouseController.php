@@ -101,7 +101,9 @@ class WarehouseController extends BaseController
         return $this->container->get(UpdateHandlerFacade::class)->update(
             $warehouse,
             $this->createForm(WarehouseType::class, $warehouse),
-            $this->container->get(TranslatorInterface::class)->trans('marelloenterprise.inventory.messages.success.warehouse.saved'),
+            $this->container
+                ->get(TranslatorInterface::class)
+                ->trans('marelloenterprise.inventory.messages.success.warehouse.saved'),
             $request,
             'marelloenterprise_inventory.form_handler.warehouse'
         );
