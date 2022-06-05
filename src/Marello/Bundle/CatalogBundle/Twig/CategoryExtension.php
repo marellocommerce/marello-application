@@ -11,7 +11,9 @@ class CategoryExtension extends AbstractExtension
 {
     const NAME = 'marello_category';
 
-    public function __construct(private Registry $doctrine) {}
+    public function __construct(
+        private Registry $doctrine
+    ) {}
 
     /**
      * Returns the name of the extension.
