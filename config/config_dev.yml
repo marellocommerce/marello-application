@@ -25,13 +25,6 @@ monolog:
             level:     debug
             channels:  '%main_log_channels%'
 
-        # collect all log records to buffer on CLI command error
-#        message_queue.consumer.console_error: weedizp
-#            type:      service
-#            id:        oro_message_queue.log.handler.console_error
-#            handler:   main
-#            level:     debug
-
 oro_message_queue:
     client:
         traceable_producer: true

@@ -30,8 +30,8 @@
         "oro/calendar-bundle": "5.0.*",
         "oro/health-check-bundle": "5.0.*",
         "oro/oauth2-server": "5.0.*",
-        "marellocommerce/marello": "3.2.x-dev",
-        "marellocommerce/marello-enterprise": "3.2.x-dev"
+        "marellocommerce/marello": "4.0.x-dev",
+        "marellocommerce/marello-enterprise": "4.0.x-dev"
     },
     "require-dev": {
         "behat/behat": "~3.10.0",
@@ -74,13 +74,6 @@
             "rm -rf public/media/cache/*",
             "sed -i -e 's/installed:.*/installed: ~/g' config/parameters.yml",
             "bin/console oro:install --timeout 3600 --sample-data=y --drop-database --env=prod --user-name=admin --user-firstname=John --user-lastname=Doe --user-password=marello123 --user-email=johndoe@example.com  --organization-name=Marello --formatting-code=en_US --language=en"
-        ],
-        "marello-reset1": [
-            "rm -rf var/logs/*",
-            "rm -rf var/cache/*",
-            "rm -rf var/attachment/*",
-            "rm -rf public/media/cache/*",
-            "sed -i -e 's/installed:.*/installed: ~/g' config/parameters.yml"
         ],
         "test": [
             "rm -rf var/cache/*",
