@@ -63,6 +63,8 @@ class WarehouseGroupHandler implements FormHandlerInterface
         /** @var Warehouse $warehouse */
         foreach ($diff as $warehouse) {
             $warehouse->setGroup($systemGroup);
+            // reset consolidation option for this warehouse
+            $warehouse->setIsConsolidationWarehouse(false);
             $this->manager->persist($warehouse);
         }
         /** @var Warehouse $warehouseAfter */

@@ -125,3 +125,11 @@ services:
             - '@oro_entity.doctrine_helper'
         tags:
             - { name: form.type, alias: marelloenterprise_inventory_consolidation_exclusion }
+
+    marelloenterprise_inventory.form.type.consolidation_warehouse_grid:
+        class: MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseGridType
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@marelloenterprise_inventory.form.data_transformer.warehouse'
+        tags:
+            - { name: form.type, alias: marello_warehouse_grid }
