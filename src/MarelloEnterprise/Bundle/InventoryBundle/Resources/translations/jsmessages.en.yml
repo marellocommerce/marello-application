@@ -5,3 +5,10 @@ marelloenterprise:
                 delete.confirmation: Any inventory assigned to this warehouse will be lost, are you sure you want to delete it?
                 delete.forbidden: Inventory level cannot be deleted while the inventory qty is greater than 0, you should decrease the inventory to 0 before deleting
                 delete.forbidden.title: Delete Forbidden
+
+        warehouse:
+            form:
+                select_warehouse: Select Warehouse
+                grid:
+                    delete_action: Delete Warehouse
+                    delete_confirmation: You are about to delete the warehouse from the group. Do you want to continue?

@@ -2,14 +2,17 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Form\Type;
 
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
-use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class WarehouseGroupType extends AbstractType
 {
@@ -20,21 +23,6 @@ class WarehouseGroupType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $entity = $builder->getData();
-        $entityId = null;
-        $fixedType = false;
-        if ($entity instanceof WarehouseGroup) {
-            $entityId = $entity->getId();
-            if ($entityId) {
-                foreach ($entity->getWarehouses() as $warehouse) {
-                    $warehouseType = $warehouse->getWarehouseType()->getName();
-                    if ($warehouseType === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED) {
-                        $fixedType = true;
-                    }
-                }
-            }
-        }
-
         $builder
             ->add(
                 'name',
@@ -52,15 +40,42 @@ class WarehouseGroupType extends AbstractType
             )
             ->add(
                 'warehouses',
-                SystemGroupGlobalWarehouseMultiSelectType::class,
+                WarehouseGridType::class,
                 [
-                    'attr' => [
-                        'data-entity-id' => $entityId,
-                        'readonly' => $fixedType
-                    ],
-                    'required' => true
+                    'required' => true,
+                    'constraints' => new NotBlank()
                 ]
+            )
+            ->add(
+                'isConsolidationWarehouse',
+                HiddenType::class, [
+                    'mapped' => false
+                ]
+            )->addEventListener(
+                FormEvents::POST_SUBMIT,
+                [$this, 'postSubmitDataListener']
             );
+    }
+
+    /**
+     * @param FormEvent $event
+     */
+    public function postSubmitDataListener(FormEvent $event)
+    {
+        /** @var WarehouseGroup $warehouseGroup */
+        $warehouseGroup = $event->getData();
+        $form = $event->getForm();
+        if ($form->has('isConsolidationWarehouse')) {
+            $data = $form->get('isConsolidationWarehouse')->getData();
+            $consolidationData = json_decode($data, true);
+            foreach($warehouseGroup->getWarehouses() as $warehouse) {
+                if (array_key_exists($warehouse->getCode(), $consolidationData)) {
+                    $warehouse->setIsConsolidationWarehouse($consolidationData[$warehouse->getCode()]);
+                } else {
+                    $warehouse->setIsConsolidationWarehouse(false);
+                }
+            }
+        }
     }
 
     /**

@@ -1,0 +1,28 @@
+/* @theme: admin.oro; */
+
+.warehouse-grid-container {
+    margin-left: 206px;
+
+    .btn-warehouse-add {
+        margin-left: 8px;
+    }
+
+    .warehouse-grid {
+        margin-top: 12px;
+        margin-bottom: 4px;
+        max-width: initial;
+
+        th {
+            text-transform: uppercase;
+
+            &.required em {
+                color: $danger-darken;
+            }
+        }
+    }
+
+    .new-warehouse {
+        width: 295px;
+        display: inline-flex;
+    }
+}
