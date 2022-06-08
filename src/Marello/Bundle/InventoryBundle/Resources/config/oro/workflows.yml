@@ -10,6 +10,7 @@ workflows:
                 allowed_transitions:
                     - sent_to_warehouse
                     - could_not_allocate
+                    - reallocate
             could_not_allocate:
                 allowed_transitions:
                     - pending
@@ -56,9 +57,9 @@ workflows:
                     -  '@extendable':
                             events: [ extendable_action.pending_transition_after ]
             send_definition:
-#                conditions:
-#                    '@and':
-#                        - '@not_empty': $allocation.warehouse
+                conditions:
+                    '@and':
+                        - '@not_empty': $allocation.warehouse
 #                        - '@not_empty': $allocation.warehouse.email
 #                preactions:
 #                    - '@flash_message':
@@ -86,6 +87,8 @@ workflows:
                           actions:
                               - '@assign_value': [$.result.value.quantityConfirmed, $.result.value.quantity]
                               - '@assign_value': [$.result.value.quantityRejected, 0]
+#                    - '@extendable':
+#                          events: [extendable_action.create_packingslip]
             reallocate_definition:
                 actions:
                     - '@foreach':
