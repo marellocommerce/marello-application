@@ -58,7 +58,7 @@ marelloenterprise:
                 select_warehouse:       Select Warehouse
                 create_own_group:       Create Warehouse Group
                 grid:
-                    consolidation_enabled:  Consolidation Enabled
+                    consolidation_enabled:  Consolidation Location
                     actions:                Actions
             datablock:
                 additional:             Additional

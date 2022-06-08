@@ -168,6 +168,10 @@ datagrids:
                         - whg.id = :id
             bind_parameters:
                 - id
+        columns:
+            isConsolidationWarehouse:
+                label: marello.inventory.warehouse.is_consolidation_warehouse.label
+                frontend_type:      boolean
         filters: ~
         actions: ~
 
