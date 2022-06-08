@@ -80,6 +80,7 @@ class InventoryAllocationProvider
                 /** @var Order $order */
                 $newAllocation = new Allocation();
                 $newAllocation->setOrder($order);
+                $newAllocation->setOrganization($order->getOrganization());
                 $newAllocation->setState($this->getEnumValue('marello_allocation_state', AllocationStateStatusInterface::ALLOCATION_STATE_AVAILABLE));
                 $newAllocation->setStatus($this->getEnumValue('marello_allocation_status', AllocationStateStatusInterface::ALLOCATION_STATUS_ON_HAND));
 
@@ -162,6 +163,8 @@ class InventoryAllocationProvider
             if ($item instanceof AllocationItem) {
                 $orderItem = $item->getOrderItem();
             }
+
+            $allocationItem->setOrganization($orderItem->getOrganization());
             $allocationItem->setOrderItem($orderItem);
             $allocationItem->setProduct($item->getProduct());
             $allocationItem->setProductSku($item->getProductSku());
