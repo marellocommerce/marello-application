@@ -22,7 +22,18 @@
     }
 
     .new-warehouse {
-        width: 295px;
-        display: inline-flex;
+        .select2-container {
+            width: 300px;
+
+            .select2-choice {
+                .select2-arrow {
+                    right: 8px;
+                }
+            }
+
+            select {
+                width: 190px;
+            }
+        }
     }
 }
