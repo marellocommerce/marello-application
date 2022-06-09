@@ -10,7 +10,6 @@ workflows:
                 allowed_transitions:
                     - sent_to_warehouse
                     - could_not_allocate
-                    - reallocate
             could_not_allocate:
                 allowed_transitions:
                     - pending
