@@ -19,7 +19,11 @@ class Configuration implements ConfigurationInterface
         SettingsBuilder::append($rootNode, [
             'enable_order_consolidation' => [
                 'value' => false,
-                'type' => 'boolean',
+                'type' => 'boolean'
+            ],
+            'set_global_consolidation' => [
+                'value' => false,
+                'type' => 'boolean'
             ]
         ]);
 

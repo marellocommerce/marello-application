@@ -82,9 +82,8 @@ class InventoryAllocationProvider extends BaseAllocationProvider
      */
     public function allocateOrderToWarehouses(Order $order, Allocation $allocation = null)
     {
-        // check if order needs to be consolidated
-        $consolidation = $order->isConsolidationEnabled();
         $this->consolidationWarehouse = null;
+        // check if order needs to be consolidated
         if ($this->isConsolidationEnabled($order)) {
             $this->consolidationWarehouse = $this->getConsolidationWarehouse($order);
         }
@@ -120,6 +119,8 @@ class InventoryAllocationProvider extends BaseAllocationProvider
                 if ($this->isAllocationExcluded($subAllocation)) {
                     continue;
                 }
+                $subAllocation->setShippingAddress($this->consolidationWarehouse->getAddress());
+                $em->persist($subAllocation);
                 $parentAllocation->addChild($subAllocation);
             }
 
@@ -135,10 +136,14 @@ class InventoryAllocationProvider extends BaseAllocationProvider
      */
     protected function isConsolidationEnabled(Order $order)
     {
+        if ($this->configManager->get('marello_enterprise_order.enable_order_consolidation')) {
+            return false;
+        }
+
         return (
             $order->isConsolidationEnabled() ||
             $this->configManager->get('marello_enterprise_order.enable_order_consolidation', false, false, $order->getSalesChannel()) ||
-            $this->configManager->get('marello_enterprise_order.enable_order_consolidation')
+            $this->configManager->get('marello_enterprise_order.set_global_consolidation')
         );
     }
 
@@ -205,11 +210,6 @@ class InventoryAllocationProvider extends BaseAllocationProvider
      */
     protected function getConsolidationWarehouse(Order $order)
     {
-        $consolidationWH = false; //$order->getConsolidationWarehouse()
-        if ($consolidationWH) {
-            // consolidation WH is already set and we shouldn't override it (could be a pick up from store)
-            return $consolidationWH;
-        }
         // determine consolidation WH, but first get all eligible warehouses (filtering WH's that are connected to the
         // WHG that is linked to the SalesChannelGroup from the SalesChannel that comes from the order)
         $consolidationWHs = $this->getEligibleWarehouses($order);
@@ -266,6 +266,10 @@ class InventoryAllocationProvider extends BaseAllocationProvider
         // External WH's are used for dropshipping and we don't want to consolidate to a dropshipping WH
         foreach ($linkOwner->getWarehouseGroup()->getWarehouses() as $warehouse) {
             if ($warehouse->getWarehouseType()->getName() === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
+                continue;
+            }
+
+            if (!$warehouse->getIsConsolidationWarehouse()) {
                 continue;
             }
 
