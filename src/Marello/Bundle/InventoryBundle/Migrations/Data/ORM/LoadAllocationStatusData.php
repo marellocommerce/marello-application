@@ -17,7 +17,8 @@ class LoadAllocationStatusData extends AbstractFixture
     protected $stateData = [
         AllocationStateStatusInterface::ALLOCATION_STATE_AVAILABLE => 'Available',
         AllocationStateStatusInterface::ALLOCATION_STATE_WFS => 'Waiting for Supply',
-        AllocationStateStatusInterface::ALLOCATION_STATE_ALERT  => 'Alert'
+        AllocationStateStatusInterface::ALLOCATION_STATE_ALERT  => 'Alert',
+        AllocationStateStatusInterface::ALLOCATION_STATE_CLOSED => 'Closed'
     ];
 
     /** @var array */
@@ -27,6 +28,7 @@ class LoadAllocationStatusData extends AbstractFixture
         AllocationStateStatusInterface::ALLOCATION_STATUS_BACK_ORDER  => 'Backorder',
         AllocationStateStatusInterface::ALLOCATION_STATUS_PRE_ORDER  => 'Pre-order',
         AllocationStateStatusInterface::ALLOCATION_STATUS_CNA  => 'Could not allocate',
+        AllocationStateStatusInterface::ALLOCATION_STATUS_CLOSED => 'Closed'
     ];
 
     /**
