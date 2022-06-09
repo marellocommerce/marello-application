@@ -2,23 +2,21 @@
 
 namespace Marello\Bundle\InventoryBundle\Command;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
-
-use Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProviderInterface;
-use Marello\Bundle\WorkflowBundle\Async\Topics;
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
-use Oro\Component\MessageQueue\Client\MessagePriority;
-use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\CronBundle\Command\CronCommandInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository;
 
 use Marello\Bundle\InventoryBundle\Entity\Allocation;
 use Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider;
+use Marello\Bundle\InventoryBundle\Provider\AllocationStateStatusInterface;
+use Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProviderInterface;
 
-class InventoryReAllocateCronCommand extends Command implements CronCommandInterface
+class InventoryReAllocateCronCommand extends Command //implements CronCommandInterface
 {
     const COMMAND_NAME = 'oro:cron:marello:inventory:reallocate';
     const WORKFLOW_STEP_FROM = 'pending';
@@ -26,8 +24,8 @@ class InventoryReAllocateCronCommand extends Command implements CronCommandInter
     const WORKFLOW_RE_ALLOCATE_STEP = 'reallocate';
     const EXIT_CODE = 0;
 
-    /** @var Registry $registry */
-    protected $registry;
+    /** @var DoctrineHelper $doctrineHelper */
+    protected $doctrineHelper;
 
     /** @var InventoryAllocationProvider $allocationProvider */
     protected $allocationProvider;
@@ -35,28 +33,22 @@ class InventoryReAllocateCronCommand extends Command implements CronCommandInter
     /** @var OrderWarehousesProviderInterface $warehousesProvider */
     protected $warehousesProvider;
 
-    /** @var MessageProducerInterface $messageProducer */
-    protected $messageProducer;
-
     /**
      * InventoryReAllocateCronCommand constructor.
-     * @param Registry $registry
+     * @param DoctrineHelper $doctrineHelper
      * @param InventoryAllocationProvider $allocationProvider
      * @param OrderWarehousesProviderInterface $warehousesProvider
-     * @param MessageProducerInterface $messageProducer
      */
     public function __construct(
-        Registry $registry,
+        DoctrineHelper $doctrineHelper,
         InventoryAllocationProvider $allocationProvider,
-        OrderWarehousesProviderInterface $warehousesProvider,
-        MessageProducerInterface $messageProducer
+        OrderWarehousesProviderInterface $warehousesProvider
     ) {
         parent::__construct();
         
-        $this->registry = $registry;
+        $this->doctrineHelper = $doctrineHelper;
         $this->allocationProvider = $allocationProvider;
         $this->warehousesProvider = $warehousesProvider;
-        $this->messageProducer = $messageProducer;
     }
 
     /**
@@ -92,35 +84,43 @@ class InventoryReAllocateCronCommand extends Command implements CronCommandInter
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $allocations = $this
-            ->registry
-            ->getRepository(Allocation::class)
+            ->doctrineHelper
+            ->getEntityRepositoryForClass(Allocation::class)
             ->findBy(['state' => 'waiting']);
 
+        $em = $this->doctrineHelper->getEntityManagerForClass(Allocation::class);
         /** @var Allocation $allocation */
         foreach ($allocations as $allocation) {
-            foreach ($this->warehousesProvider->getWarehousesForOrder($allocation->getOrder(), $allocation) as $orderWarehouseResults) {
+            foreach ($this->warehousesProvider->getWarehousesForOrder($allocation->getOrder()) as $orderWarehouseResults) {
                 foreach ($orderWarehouseResults as $result) {
                     if (!in_array($result->getWarehouse()->getCode(), ['no_warehouse', 'could_not_allocate'])) {
-                        /** @var WorkflowItem $workflowItem */
-                        $workflowItem = $this->registry
-                            ->getRepository(WorkflowItem::class)
-                            ->findOneBy(['entityId' => $allocation->getId()]);
-                        $this->messageProducer->send(
-                            Topics::WORKFLOW_TRANSIT_TOPIC,
-                            [
-                                'workflow_item_entity_id' => $allocation->getId(),
-                                'current_step_id' => $workflowItem->getCurrentStep()->getId(),
-                                'entity_class' => Allocation::class,
-                                'transition' => self::WORKFLOW_RE_ALLOCATE_STEP,
-                                'jobId' => md5($allocation->getId()),
-                                'priority' => MessagePriority::NORMAL
-                            ]
-                        );
+                        //$this->allocationProvider->allocateOrderToWarehouses($allocation->getOrder());
+                        // todo only generate allocation results once
+                        $allocation->setState($this->getEnumValue('marello_allocation_state', AllocationStateStatusInterface::ALLOCATION_STATE_CLOSED));
+                        $allocation->setStatus($this->getEnumValue('marello_allocation_status', AllocationStateStatusInterface::ALLOCATION_STATUS_CLOSED));
+                        $em->persist($allocation);
                     }
                 }
             }
         }
 
+        $em->flush();
+
         return self::EXIT_CODE;
+    }
+
+    /**
+     * @param $enumClass
+     * @param $value
+     * @return object|null
+     */
+    protected function getEnumValue($enumClass, $value)
+    {
+        $className = ExtendHelper::buildEnumValueClassName($enumClass);
+        /** @var EnumValueRepository $enumRepo */
+        $enumRepo = $this->doctrineHelper
+            ->getEntityRepositoryForClass($className);
+
+        return $enumRepo->findOneBy(['id' => $value]);
     }
 }
