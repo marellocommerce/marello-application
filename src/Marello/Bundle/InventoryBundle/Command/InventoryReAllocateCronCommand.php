@@ -14,14 +14,10 @@ use Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository;
 use Marello\Bundle\InventoryBundle\Entity\Allocation;
 use Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider;
 use Marello\Bundle\InventoryBundle\Provider\AllocationStateStatusInterface;
-use Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProviderInterface;
 
-class InventoryReAllocateCronCommand extends Command //implements CronCommandInterface
+class InventoryReAllocateCronCommand extends Command implements CronCommandInterface
 {
     const COMMAND_NAME = 'oro:cron:marello:inventory:reallocate';
-    const WORKFLOW_STEP_FROM = 'pending';
-    const WORKFLOW_NAME = 'marello_allocate_workflow';
-    const WORKFLOW_RE_ALLOCATE_STEP = 'reallocate';
     const EXIT_CODE = 0;
 
     /** @var DoctrineHelper $doctrineHelper */
@@ -30,25 +26,19 @@ class InventoryReAllocateCronCommand extends Command //implements CronCommandInt
     /** @var InventoryAllocationProvider $allocationProvider */
     protected $allocationProvider;
 
-    /** @var OrderWarehousesProviderInterface $warehousesProvider */
-    protected $warehousesProvider;
-
     /**
      * InventoryReAllocateCronCommand constructor.
      * @param DoctrineHelper $doctrineHelper
      * @param InventoryAllocationProvider $allocationProvider
-     * @param OrderWarehousesProviderInterface $warehousesProvider
      */
     public function __construct(
         DoctrineHelper $doctrineHelper,
-        InventoryAllocationProvider $allocationProvider,
-        OrderWarehousesProviderInterface $warehousesProvider
+        InventoryAllocationProvider $allocationProvider
     ) {
         parent::__construct();
         
         $this->doctrineHelper = $doctrineHelper;
         $this->allocationProvider = $allocationProvider;
-        $this->warehousesProvider = $warehousesProvider;
     }
 
     /**
@@ -58,7 +48,7 @@ class InventoryReAllocateCronCommand extends Command //implements CronCommandInt
     {
         $this
             ->setName(self::COMMAND_NAME)
-            ->setDescription('Re allocate');
+            ->setDescription('Re allocate waiting for supply allocations');
     }
 
     /**
@@ -91,11 +81,10 @@ class InventoryReAllocateCronCommand extends Command //implements CronCommandInt
         $em = $this->doctrineHelper->getEntityManagerForClass(Allocation::class);
         /** @var Allocation $allocation */
         foreach ($allocations as $allocation) {
-            foreach ($this->warehousesProvider->getWarehousesForOrder($allocation->getOrder()) as $orderWarehouseResults) {
+            foreach ($this->allocationProvider->getWarehouseResults($allocation->getOrder()) as $orderWarehouseResults) {
                 foreach ($orderWarehouseResults as $result) {
                     if (!in_array($result->getWarehouse()->getCode(), ['no_warehouse', 'could_not_allocate'])) {
-                        //$this->allocationProvider->allocateOrderToWarehouses($allocation->getOrder());
-                        // todo only generate allocation results once
+                        $this->allocationProvider->allocateOrderToWarehouses($allocation->getOrder());
                         $allocation->setState($this->getEnumValue('marello_allocation_state', AllocationStateStatusInterface::ALLOCATION_STATE_CLOSED));
                         $allocation->setStatus($this->getEnumValue('marello_allocation_status', AllocationStateStatusInterface::ALLOCATION_STATUS_CLOSED));
                         $em->persist($allocation);

@@ -4,12 +4,11 @@ namespace Marello\Bundle\InventoryBundle\Provider;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Marello\Bundle\OrderBundle\Model\OrderStatusesInterface;
-use Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository;
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
+use Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
@@ -41,6 +40,8 @@ class InventoryAllocationProvider
     /** @var array $subAllocations */
     protected $subAllocations = [];
 
+    protected $warehouseResults = [];
+
     /**
      * InventoryAllocationProvider constructor.
      * @param DoctrineHelper $doctrineHelper
@@ -70,7 +71,7 @@ class InventoryAllocationProvider
         $em = $this
             ->getDoctrineHelper()
             ->getEntityManagerForClass(Allocation::class);
-        foreach ($this->warehousesProvider->getWarehousesForOrder($order, $allocation) as $orderWarehouseResults) {
+        foreach ($this->getWarehouseResults($order, $allocation) as $orderWarehouseResults) {
             if ($allocation && $allocation->getWarehouse()) {
                 $this->handleAllocationInventory($allocation, $order, true);
             }
@@ -185,6 +186,10 @@ class InventoryAllocationProvider
      */
     public function getDoctrineHelper()
     {
+        $a = 'hello';
+        $b = 'sir';
+
+        return ($b === 'sir') ? 'a' : 'b';
         return $this->doctrineHelper;
     }
 
@@ -202,6 +207,20 @@ class InventoryAllocationProvider
     public function getAllSubAllocations()
     {
         return $this->subAllocations;
+    }
+
+    /**
+     * @param Order $order
+     * @param Allocation $allocation
+     * @return OrderWarehouseResult[]
+     */
+    public function getWarehouseResults(Order $order, Allocation $allocation = null)
+    {
+        if (empty($this->warehouseResults)) {
+            $this->warehouseResults = $this->warehousesProvider->getWarehousesForOrder($order, $allocation);
+        }
+
+        return $this->warehouseResults;
     }
 
     /**
