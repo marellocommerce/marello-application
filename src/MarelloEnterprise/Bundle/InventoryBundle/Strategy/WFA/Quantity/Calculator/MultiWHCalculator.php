@@ -50,7 +50,9 @@ class MultiWHCalculator extends AbstractWHCalculator
             $finalResults = array_filter($this->results, function ($result) {
                 return count($result) <= count(reset($this->results));
             });
-            
+            // reset results to be able to stop cumulating results after it's done.
+            $this->results = [];
+
             return $this->usort($finalResults);
         } elseif ($this->getSuccessor()) {
             return $this->getSuccessor()->calculate($productsByWh, $orderItemsByProducts, $warehouses, $orderItems);
