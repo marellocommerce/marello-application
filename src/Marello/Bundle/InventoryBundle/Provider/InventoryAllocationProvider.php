@@ -186,10 +186,6 @@ class InventoryAllocationProvider
      */
     public function getDoctrineHelper()
     {
-        $a = 'hello';
-        $b = 'sir';
-
-        return ($b === 'sir') ? 'a' : 'b';
         return $this->doctrineHelper;
     }
 
