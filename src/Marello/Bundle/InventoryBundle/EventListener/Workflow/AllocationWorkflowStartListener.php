@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\InventoryBundle\EventListener\Doctrine;
+namespace Marello\Bundle\InventoryBundle\EventListener\Workflow;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;

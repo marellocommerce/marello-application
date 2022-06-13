@@ -145,6 +145,8 @@ workflows:
                                         enum_code: marello_item_status
                                         identifier: 'shipped'
                                         attribute: $.result.value.orderItem.status
+                    -   '@extendable':
+                            events: [ extendable_action.allocation_complete ]
             rejected_definition:
                 actions:
                     - '@foreach':
