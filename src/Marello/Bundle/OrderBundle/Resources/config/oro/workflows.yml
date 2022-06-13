@@ -266,8 +266,6 @@ workflows:
                           service: Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider
                           method: allocateOrderToWarehouses
                           method_parameters: [ $order ]
-#                    - '@extendable':
-#                          events: [extendable_action.create_packingslip]
                     - '@marello_notification_send':
                           entity: $order
                           recipient: $order.customer
