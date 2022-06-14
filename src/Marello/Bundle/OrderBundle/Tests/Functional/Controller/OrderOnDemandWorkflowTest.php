@@ -148,10 +148,10 @@ class OrderOnDemandWorkflowTest extends WebTestCase
         $this->assertEmpty($beforePackingSlips);
 
         $workflowManager = $this->getContainer()->get('oro_workflow.manager');
-        $orderWorkflowItem = $workflowManager->getWorkflowItem($order, 'marello_order_b2c_new_workflow_1');
+        $orderWorkflowItem = $workflowManager->getWorkflowItem($order, 'marello_order_b2c_workflow_1');
         if (!$orderWorkflowItem) {
             $orderWorkflowItem = $workflowManager
-                ->startWorkflow('marello_order_b2c_new_workflow_1', $order, 'pending');
+                ->startWorkflow('marello_order_b2c_workflow_1', $order, 'pending');
         }
         $workflowManager->transit($orderWorkflowItem, 'invoice');
         $data = $orderWorkflowItem->getData();
