@@ -118,10 +118,10 @@ class OrderControllerDropshipmentTest extends WebTestCase
     public function testAssigningOwnWarehouse(Order $entity)
     {
         $workflowItem = $this->workflowManager
-            ->getWorkflowItem($entity, 'marello_order_b2c_new_workflow_1');
+            ->getWorkflowItem($entity, 'marello_order_b2c_workflow_1');
         if (!$workflowItem) {
             $workflowItem = $this->workflowManager
-                ->startWorkflow('marello_order_b2c_new_workflow_1', $entity, 'pending');
+                ->startWorkflow('marello_order_b2c_workflow_1', $entity, 'pending');
         }
         $this->workflowManager->transit($workflowItem, 'invoice');
         $data = $workflowItem->getData();
@@ -233,10 +233,10 @@ class OrderControllerDropshipmentTest extends WebTestCase
     public function testAssigningOwnAndExternalWarehouse(Order $entity)
     {
         $workflowItem = $this->workflowManager
-            ->getWorkflowItem($entity, 'marello_order_b2c_new_workflow_1');
+            ->getWorkflowItem($entity, 'marello_order_b2c_workflow_1');
         if (!$workflowItem) {
             $workflowItem = $this->workflowManager
-                ->startWorkflow('marello_order_b2c_new_workflow_1', $entity, 'pending');
+                ->startWorkflow('marello_order_b2c_workflow_1', $entity, 'pending');
         }
         $this->workflowManager->transit($workflowItem, 'invoice');
         $data = $workflowItem->getData();
