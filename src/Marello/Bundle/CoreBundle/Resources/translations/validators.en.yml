@@ -1,0 +1,3 @@
+marello:
+    core:
+        code.not_match_regex: 'This value should contain only latin letters, numbers and symbols "-" or "_".'
