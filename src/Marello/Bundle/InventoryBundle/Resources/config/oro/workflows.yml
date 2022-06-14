@@ -59,6 +59,13 @@ workflows:
                 conditions:
                     '@and':
                         - '@not_empty': $allocation.warehouse
+                        - '@not_empty': $allocation.warehouse.notifier
+                preactions:
+                    - '@flash_message':
+                          conditions:
+                              '@empty': $allocation.warehouse.notifier
+                          message: 'No notification can be send, notification method is empty'
+                          type: 'error'
                 post_actions:
                     -  '@extendable':
                            events: [ extendable_action.send_transition_after ]

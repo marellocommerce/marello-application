@@ -138,5 +138,6 @@ services:
     Marello\Bundle\InventoryBundle\EventListener\Workflow\SendToWarehouseListener:
         arguments:
             - '@oro_workflow.manager'
+            - '@Marello\Bundle\InventoryBundle\Model\Allocation\WarehouseNotifierRegistry'
         tags:
             - { name: kernel.event_listener, event: extendable_action.send_transition_after, method: onSendTransitionAfter, priority: 15 }

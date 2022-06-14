@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\InventoryBundle\EventListener\Workflow;
 
-use Marello\Bundle\InventoryBundle\Model\Allocation\WarehouseNotifierInterface;
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
@@ -10,6 +9,8 @@ use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 use Oro\Component\Action\Event\ExtendableActionEvent;
 
 use Marello\Bundle\InventoryBundle\Entity\Allocation;
+use Marello\Bundle\InventoryBundle\Model\Allocation\WarehouseNotifierRegistry;
+use Marello\Bundle\InventoryBundle\Model\Allocation\WarehouseNotifierInterface;
 
 class SendToWarehouseListener
 {
@@ -19,17 +20,25 @@ class SendToWarehouseListener
     /** @var WorkflowManager $workflowManager */
     protected $workflowManager;
 
+    /** @var WarehouseNotifierRegistry $notifierRegistry */
+    protected $notifierRegistry;
+
     /**
      * SendToWarehouseListener constructor.
      * @param WorkflowManager $workflowManager
+     * @param WarehouseNotifierRegistry $notifierRegistry
      */
-    public function __construct(WorkflowManager $workflowManager)
-    {
+    public function __construct(
+        WorkflowManager $workflowManager,
+        WarehouseNotifierRegistry $notifierRegistry
+    ) {
         $this->workflowManager = $workflowManager;
+        $this->notifierRegistry = $notifierRegistry;
     }
 
     /**
      * @param ExtendableActionEvent $event
+     * @throws \Exception
      */
     public function onSendTransitionAfter(ExtendableActionEvent $event)
     {
@@ -41,8 +50,13 @@ class SendToWarehouseListener
         $entity = $event->getContext()->getData()->get(self::CONTEXT_KEY);
         if ($this->getApplicableWorkflow($entity)) {
             $selectedWarehouse = $entity->getWarehouse();
-            /** @var WarehouseNotifierInterface $notifier */
-            $notifier = $selectedWarehouse->getNotifier();
+            $notifierId = $selectedWarehouse->getNotifier();
+            /** @var WarehouseNotifierInterface|null $notifier */
+            $notifier = $this->notifierRegistry->getNotifier($notifierId);
+            if (!$notifier) {
+                throw new \Exception(sprintf('NotifierId %s not found in notifier registry', $notifierId));
+            }
+
             $notifier->notifyWarehouse($entity);
         }
     }
