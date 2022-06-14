@@ -64,6 +64,13 @@ class WarehouseType extends AbstractType
                     ],
                 ]
             )
+            ->add(
+                'notifier',
+                NotifierChoiceType::class,
+                [
+                    'required' => true
+                ]
+            )
             ->addEventListener(
                 FormEvents::PRE_SET_DATA,
                 [$this, 'preSetDataListener']

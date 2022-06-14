@@ -245,3 +245,16 @@ services:
             - '@Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider'
         tags:
             - { name: console.command }
+
+    Marello\Bundle\InventoryBundle\Model\Allocation\WarehouseNotifierRegistry: ~
+
+    Marello\Bundle\InventoryBundle\Provider\WarehouseNotifierChoicesProvider:
+        arguments:
+            - '@Marello\Bundle\InventoryBundle\Model\Allocation\WarehouseNotifierRegistry'
+            - '@translator'
+
+    Marello\Bundle\InventoryBundle\Model\Allocation\Notifier\WarehouseEmailNotifier:
+        arguments:
+            - '@marello_notification.email.send_processor'
+        tags:
+            - { name: marello_inventory_warehouse_notifier }

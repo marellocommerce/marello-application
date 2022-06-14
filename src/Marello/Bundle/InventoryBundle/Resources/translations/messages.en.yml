@@ -208,7 +208,8 @@ marello:
         balancing:
             strategies:
                 equal_division:             Equal Division
-
+        warehouse_notifier:
+            email:                          Email notification
         management:
             menu:
                 label:                      Inventory
