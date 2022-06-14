@@ -60,6 +60,6 @@ class WarehouseEmailNotifier implements WarehouseNotifierInterface
             $recipients = [$recipients];
         }
 
-        $this->notificationProcessor->sendNotification($template, $recipients, $allocation, $data);    // TODO: Implement notifyWarehouse() method.
+        $this->notificationProcessor->sendNotification($template, $recipients, $allocation, []);
     }
 }

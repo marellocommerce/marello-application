@@ -258,3 +258,7 @@ services:
             - '@marello_notification.email.send_processor'
         tags:
             - { name: marello_inventory_warehouse_notifier }
+
+    Marello\Bundle\InventoryBundle\Model\Allocation\Notifier\WarehouseManualNotifier:
+        tags:
+            - { name: marello_inventory_warehouse_notifier }
