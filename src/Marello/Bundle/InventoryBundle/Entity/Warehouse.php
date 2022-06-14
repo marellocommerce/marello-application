@@ -170,6 +170,13 @@ class Warehouse extends ExtendWarehouse implements EmailHolderInterface
     protected $email;
 
     /**
+     * @ORM\Column(name="notifier", type="string", nullable=true)
+     *
+     * @var string
+     */
+    protected $notifier;
+
+    /**
      * @param string $label
      * @param bool   $default
      */
@@ -348,10 +355,29 @@ class Warehouse extends ExtendWarehouse implements EmailHolderInterface
      * @param string $email
      * @return Warehouse
      */
-    public function setEmail($email = null)
+    public function setEmail($email = null): self
     {
         $this->email = $email;
         
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getNotifier(): ?string
+    {
+        return $this->notifier;
+    }
+
+    /**
+     * @param string|null $notifier
+     * @return $this
+     */
+    public function setNotifier(string $notifier = null): self
+    {
+        $this->notifier = $notifier;
+
         return $this;
     }
 }
