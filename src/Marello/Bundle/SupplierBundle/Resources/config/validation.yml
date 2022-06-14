@@ -11,5 +11,6 @@ Marello\Bundle\SupplierBundle\Entity\Supplier:
             - NotBlank: ~
         code:
             - NotBlank: ~
+            - Marello\Bundle\CoreBundle\Validator\Constraints\CodeRegex: ~
         currency:
             - NotBlank: ~

@@ -31,9 +31,11 @@ class AllocationCompleteListener
     /** @var MessageProducerInterface $messageProducer */
     protected $messageProducer;
 
-    /**use Oro\Bundle\WorkflowBundle\Model\Workflow;
-     * AllocationWorkflowStartListener constructor.
+    /**
+     * AllocationCompleteListener constructor.
+     * @param DoctrineHelper $doctrineHelper
      * @param WorkflowManager $workflowManager
+     * @param MessageProducerInterface $messageProducer
      */
     public function __construct(
         DoctrineHelper $doctrineHelper,
