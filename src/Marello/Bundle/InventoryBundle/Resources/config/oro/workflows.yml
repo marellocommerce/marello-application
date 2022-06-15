@@ -78,8 +78,8 @@ workflows:
                           actions:
                               - '@assign_value': [$.result.value.quantityConfirmed, $.result.value.quantity]
                               - '@assign_value': [$.result.value.quantityRejected, 0]
-#                    - '@extendable':
-#                          events: [extendable_action.create_packingslip]
+                    - '@extendable':
+                          events: [extendable_action.create_packingslip]
             reallocate_definition:
                 actions:
                     - '@foreach':
