@@ -35,30 +35,30 @@ class PackingSlipItemStatusListener
     public function prePersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-//        if ($entity instanceof PackingSlipItem) {
-//            $warehouse = $entity->getPackingSlip()->getWarehouse();
-//            $warehouseType = null;//$warehouse->getWarehouseType()->getName();
-//            if ($warehouseType === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
-//                foreach ($entity->getProduct()->getInventoryItems() as $inventoryItem) {
-//                    if ($inventoryLevel = $inventoryItem->getInventoryLevel($warehouse)) {
-//                        if ($inventoryLevel->getVirtualInventoryQty() >= $entity->getQuantity() ||
-//                            $inventoryLevel->isManagedInventory() === false) {
-//                            $entity->setStatus($this->findStatus(LoadOrderItemStatusData::DROPSHIPPING));
-//                        } else {
-//                            $entity->setStatus($this->findStatus(LoadOrderItemStatusData::COULD_NOT_ALLOCATE));
-//                        }
-//                    }
-//                }
-//            } else {
-//                foreach ($entity->getProduct()->getInventoryItems() as $inventoryItem) {
-//                    if ($inventoryLevel = $inventoryItem->getInventoryLevel($warehouse)) {
-//                        if ($inventoryLevel->getVirtualInventoryQty() >= $entity->getQuantity()) {
-//                            $entity->setStatus($this->findStatus(LoadOrderItemStatusData::PROCESSING));
-//                        }
-//                    }
-//                }
-//            }
-//        }
+        if ($entity instanceof PackingSlipItem) {
+            $warehouse = $entity->getPackingSlip()->getWarehouse();
+            $warehouseType = $warehouse->getWarehouseType()->getName();
+            if ($warehouseType === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
+                foreach ($entity->getProduct()->getInventoryItems() as $inventoryItem) {
+                    if ($inventoryLevel = $inventoryItem->getInventoryLevel($warehouse)) {
+                        if ($inventoryLevel->getVirtualInventoryQty() >= $entity->getQuantity() ||
+                            $inventoryLevel->isManagedInventory() === false) {
+                            $entity->setStatus($this->findStatus(LoadOrderItemStatusData::DROPSHIPPING));
+                        } else {
+                            $entity->setStatus($this->findStatus(LoadOrderItemStatusData::COULD_NOT_ALLOCATE));
+                        }
+                    }
+                }
+            } else {
+                foreach ($entity->getProduct()->getInventoryItems() as $inventoryItem) {
+                    if ($inventoryLevel = $inventoryItem->getInventoryLevel($warehouse)) {
+                        if ($inventoryLevel->getVirtualInventoryQty() >= $entity->getQuantity()) {
+                            $entity->setStatus($this->findStatus(LoadOrderItemStatusData::PROCESSING));
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**

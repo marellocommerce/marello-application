@@ -4,6 +4,7 @@ namespace Marello\Bundle\PackingBundle\Mapper;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Marello\Bundle\InventoryBundle\Entity\Allocation;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProviderInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
@@ -35,16 +36,17 @@ class OrderToPackingSlipMapper extends AbstractPackingSlipMapper
      */
     public function map($sourceEntity)
     {
-        if (!($sourceEntity instanceof Order)) {
+        if (!($sourceEntity instanceof Allocation)) {
             throw new \InvalidArgumentException(
                 sprintf('Wrong source entity "%s" provided to OrderToPackingSlipMapper', get_class($sourceEntity))
             );
         }
         /** @var Order $sourceEntity */
         $packingSlip = new PackingSlip();
-        $data = $this->getData($sourceEntity, PackingSlip::class);
-        $data['order'] = $sourceEntity;
-        $data['items'] = $this->getItems($sourceEntity->getItems());
+        $data = $this->getData($sourceEntity->getOrder(), PackingSlip::class);
+        $data['order'] = $sourceEntity->getOrder();
+        $data['warehouse'] = $sourceEntity->getWarehouse();
+        $data['items'] = $this->getItems($sourceEntity->getOrder()->getItems());
 
         $this->assignData($packingSlip, $data);
 
@@ -53,7 +55,7 @@ class OrderToPackingSlipMapper extends AbstractPackingSlipMapper
 
     /**
      * @param Collection $items
-x     * @return ArrayCollection
+     * @return ArrayCollection
      */
     protected function getItems(Collection $items)
     {

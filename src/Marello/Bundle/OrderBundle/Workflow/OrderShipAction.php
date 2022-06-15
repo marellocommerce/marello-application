@@ -3,6 +3,8 @@
 namespace Marello\Bundle\OrderBundle\Workflow;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
+use Marello\Bundle\InventoryBundle\Entity\Allocation;
+use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
@@ -23,28 +25,22 @@ class OrderShipAction extends OrderTransitionAction
     /** @var EventDispatcherInterface $eventDispatcher */
     protected $eventDispatcher;
 
-    /** @var OrderWarehousesProviderInterface $warehousesProvider */
-    protected $warehousesProvider;
-
     /**
      * OrderShipAction constructor.
      *
      * @param ContextAccessor           $contextAccessor
      * @param Registry                  $doctrine
      * @param EventDispatcherInterface  $eventDispatcher
-     * @param OrderWarehousesProviderInterface $warehousesProvider
      */
     public function __construct(
         ContextAccessor $contextAccessor,
         Registry $doctrine,
-        EventDispatcherInterface $eventDispatcher,
-        OrderWarehousesProviderInterface $warehousesProvider
+        EventDispatcherInterface $eventDispatcher
     ) {
         parent::__construct($contextAccessor);
 
         $this->doctrine = $doctrine;
         $this->eventDispatcher = $eventDispatcher;
-        $this->warehousesProvider = $warehousesProvider;
     }
 
     /**
@@ -54,11 +50,16 @@ class OrderShipAction extends OrderTransitionAction
     {
         /** @var Order $order */
         $order = $context->getEntity();
-        foreach ($this->warehousesProvider->getWarehousesForOrder($order) as $result) {
+        $allocations = $this
+            ->doctrine
+            ->getRepository(Allocation::class)
+            ->findBy(['order' => $order]);
+        /** @var Allocation $result */
+        foreach ($allocations as $result) {
             $warehouse = $result->getWarehouse();
-            $items = $result->getOrderItems();
-            $items->map(function (OrderItem $item) use ($order, $warehouse) {
-                $this->handleInventoryUpdate($item, -$item->getQuantity(), -$item->getQuantity(), $order, $warehouse);
+            $items = $result->getItems();
+            $items->map(function (AllocationItem $item) use ($order, $warehouse) {
+                $this->handleInventoryUpdate($item->getOrderItem(), -$item->getQuantity(), -$item->getQuantity(), $order, $warehouse);
             });
         }
     }
