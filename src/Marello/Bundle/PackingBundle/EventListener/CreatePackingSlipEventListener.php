@@ -3,6 +3,7 @@
 namespace Marello\Bundle\PackingBundle\EventListener;
 
 use Doctrine\Persistence\ObjectManager;
+use Marello\Bundle\InventoryBundle\Entity\Allocation;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\PackingBundle\Entity\PackingSlip;
 use Marello\Bundle\PackingBundle\Event\AfterPackingSlipCreationEvent;
@@ -61,15 +62,17 @@ class CreatePackingSlipEventListener
      */
     public function onCreatePackingSlip(ExtendableActionEvent $event)
     {
-        if (!$this->isCorrectOrderContext($event->getContext())) {
+        if (!$this->isCorrectContext($event->getContext())) {
             return;
         }
 
+        /** @var Allocation $allocation */
+        $allocation = $event->getContext()->getData()->get('allocation');
         /** @var Order $entity */
-        $entity = $event->getContext()->getData()->get('order');
+        $entity = $allocation->getOrder();
         $this->eventDispatcher
             ->dispatch(new BeforePackingSlipCreationEvent($entity), BeforePackingSlipCreationEvent::NAME);
-        $packingSlips = $this->mapper->map($entity);
+        $packingSlips = $this->mapper->map($allocation);
 
         if (0 === count($packingSlips)) {
             return;
@@ -92,12 +95,12 @@ class CreatePackingSlipEventListener
      * @param mixed $context
      * @return bool
      */
-    protected function isCorrectOrderContext($context)
+    protected function isCorrectContext($context)
     {
         return ($context instanceof WorkflowItem
             && $context->getData() instanceof WorkflowData
-            && $context->getData()->has('order')
-            && $context->getData()->get('order') instanceof Order
+            && $context->getData()->has('allocation')
+            && $context->getData()->get('allocation') instanceof Allocation
         );
     }
 }
