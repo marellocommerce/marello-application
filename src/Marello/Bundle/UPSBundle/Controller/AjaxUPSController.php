@@ -83,7 +83,9 @@ class AjaxUPSController extends AbstractController
 
         return new JsonResponse([
             'success' => true,
-            'message' => $this->container->get(TranslatorInterface::class)->trans('marello.ups.connection_validation.result.success.message'),
+            'message' => $this->container
+                ->get(TranslatorInterface::class)
+                ->trans('marello.ups.connection_validation.result.success.message'),
         ]);
     }
 
