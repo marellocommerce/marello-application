@@ -191,7 +191,9 @@ class ProductController extends AbstractController
                     /** @var Product $productCopy */
                     if ($productCopy = $actionData->offsetGet('productCopy')) {
                         return new RedirectResponse(
-                            $this->container->get(Router::class)->generate('marello_product_view', ['id' => $productCopy->getId()])
+                            $this->container
+                                ->get(Router::class)
+                                ->generate('marello_product_view', ['id' => $productCopy->getId()])
                         );
                     }
                 }

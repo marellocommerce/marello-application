@@ -233,6 +233,12 @@ data:
                     -
                         type: marelloassembledpricelists
                         id: '<toString(@product5->prices->get(0)->id)>'
+                    -
+                        type: marelloassembledpricelists
+                        id: '<toString(@product5->prices->get(1)->id)>'
+                    -
+                        type: marelloassembledpricelists
+                        id: '<toString(@product5->prices->get(2)->id)>'
             channelPrices:
                 data: []
             saleschannels:
@@ -240,6 +246,12 @@ data:
                     -
                         type: marellosaleschannels
                         id: chan_eur
+                    -
+                        type: marellosaleschannels
+                        id: chan_usd
+                    -
+                        type: marellosaleschannels
+                        id: chan_gbp
             taxcode:
                 data:
                     type: marellotaxcodes
@@ -278,6 +290,12 @@ data:
                     -
                         type: marelloassembledpricelists
                         id: '<toString(@product6->prices->get(0)->id)>'
+                    -
+                        type: marelloassembledpricelists
+                        id: '<toString(@product6->prices->get(1)->id)>'
+                    -
+                        type: marelloassembledpricelists
+                        id: '<toString(@product6->prices->get(2)->id)>'
             channelPrices:
                 data: []
             saleschannels:
@@ -285,6 +303,12 @@ data:
                     -
                         type: marellosaleschannels
                         id: chan_eur
+                    -
+                        type: marellosaleschannels
+                        id: chan_usd
+                    -
+                        type: marellosaleschannels
+                        id: chan_gbp
             taxcode:
                 data:
                     type: marellotaxcodes
