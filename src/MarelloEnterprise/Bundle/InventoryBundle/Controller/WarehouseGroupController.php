@@ -121,7 +121,9 @@ class WarehouseGroupController extends AbstractController
         return $this->container->get(UpdateHandlerFacade::class)->update(
             $entity,
             $this->createForm(WarehouseGroupType::class, $entity),
-            $this->container->get(TranslatorInterface::class)->trans('marelloenterprise.inventory.messages.success.warehousegroup.saved'),
+            $this->container
+                ->get(TranslatorInterface::class)
+                ->trans('marelloenterprise.inventory.messages.success.warehousegroup.saved'),
             $request,
             'marelloenterprise_inventory.form_handler.warehousegroup'
         );

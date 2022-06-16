@@ -123,7 +123,9 @@ class WFARuleController extends AbstractController
         return $this->container->get(UpdateHandlerFacade::class)->update(
             $entity,
             $this->createForm(WFARuleType::class, $entity),
-            $this->container->get(TranslatorInterface::class)->trans('marelloenterprise.inventory.messages.success.wfarule.saved'),
+            $this->container
+                ->get(TranslatorInterface::class)
+                ->trans('marelloenterprise.inventory.messages.success.wfarule.saved'),
             $request
         );
     }
