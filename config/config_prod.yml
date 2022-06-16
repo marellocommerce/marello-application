@@ -10,11 +10,6 @@ doctrine:
 
 monolog:
     handlers:
-#        detailed_logs: weedizp
-#            type:           service
-#            id:             oro_logger.monolog.detailed_logs.handler
-#            handler:        nested
-#            channels:       '%main_log_channels%'
         filtered:
             type: filter
             min_level: info
