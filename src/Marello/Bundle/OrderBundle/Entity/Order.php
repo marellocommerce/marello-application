@@ -546,20 +546,6 @@ class Order extends ExtendOrder implements
     protected $orderStatus;
 
     /**
-     * @ORM\Column(name="consolidation_enabled", type="boolean", nullable=true, options={"default"=false})
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "dataaudit"={
-     *              "auditable"=false
-     *          }
-     *      }
-     * )
-     *
-     * @var boolean
-     */
-    protected $consolidationEnabled;
-
-    /**
      * @param AbstractAddress|null $billingAddress
      * @param AbstractAddress|null $shippingAddress
      */
@@ -1355,25 +1341,6 @@ class Order extends ExtendOrder implements
     public function setOrderStatus($orderStatus)
     {
         $this->orderStatus = $orderStatus;
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isConsolidationEnabled()
-    {
-        return $this->consolidationEnabled;
-    }
-
-    /**
-     * @param $consolidationEnabled
-     * @return $this
-     */
-    public function setConsolidationEnabled($consolidationEnabled)
-    {
-        $this->consolidationEnabled = $consolidationEnabled;
 
         return $this;
     }
