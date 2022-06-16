@@ -46,7 +46,7 @@ class MarelloOrderBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v3_1_3';
+        return 'v3_1_2';
     }
 
     /**
@@ -166,8 +166,6 @@ class MarelloOrderBundleInstaller implements
                 'extend' => ['owner' => ExtendScope::OWNER_SYSTEM],
             ]
         );
-
-        $table->addColumn('consolidation_enabled', 'boolean', ['notnull' => false, 'default' => false]);
     }
 
     /**
