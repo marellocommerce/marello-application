@@ -3,7 +3,6 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\Controller\Api\Rest;
 
 use Doctrine\Persistence\ObjectManager;
-use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
 use MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
@@ -14,10 +13,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @Rest\RouteResource("wfarule")  #weedizp2
- * @Rest\NamePrefix("marelloenterprise_inventory_api_")
- */
 class WFARuleController extends RestController
 {
     /**
@@ -26,11 +21,6 @@ class WFARuleController extends RestController
      * Returns
      * - HTTP_OK (200)
      *
-     * @Rest\Get(
-     *      "/wfarules/{id}/enable",
-     *      requirements={"version"="latest|v1"},
-     *      defaults={"version"="latest", "_format"="json"}
-     * )
      * @ApiDoc(description="Enable WFA Rule", resource=true)
      * @AclAncestor("marelloenterprise_inventory_wfa_rule_update")
      *
@@ -48,11 +38,6 @@ class WFARuleController extends RestController
      * Returns
      * - HTTP_OK (200)
      *
-     * @Rest\Get(
-     *      "/wfarules/{id}/disable",
-     *      requirements={"version"="latest|v1"},
-     *      defaults={"version"="latest", "_format"="json"}
-     * )
      * @ApiDoc(description="Disable WFA Rule", resource=true)
      * @AclAncestor("marelloenterprise_inventory_wfa_rule_update")
      *
@@ -68,11 +53,6 @@ class WFARuleController extends RestController
      * Returns
      * - HTTP_OK (200)
      *
-     * @Rest\Get(
-     *      "/wfarules/{gridName}/massAction/{actionName}",
-     *      requirements={"version"="latest|v1"},
-     *      defaults={"version"="latest", "_format"="json"}
-     * )
      * @AclAncestor("marelloenterprise_inventory_wfa_rule_update")
      *
      * @param string $gridName
