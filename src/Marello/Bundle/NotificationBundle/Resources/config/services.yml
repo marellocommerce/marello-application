@@ -16,11 +16,27 @@ services:
         calls:
             - ['setEmailNotificationSender', ['@oro_notification.manager.email_notification_sender']]
 
+    marello_order.provider.send_email_template_attachment_processor:
+        class: 'Marello\Bundle\NotificationBundle\Provider\AttachmentEmailSendProcessor'
+        public: true
+        arguments:
+            - '@oro_email.sender.email_model_sender'
+            - '@oro_email.email.address.helper'
+            - '@validator'
+            - '@oro_email.tools.email_origin_helper'
+            - '@oro_email.email_renderer'
+            - '@marello_locale.manager.email_template'
+            - '@oro_notification.model.notification_settings'
+            - '@oro_email.email_attachment_transformer'
+        calls:
+            - [ setLogger, [ '@logger' ] ]
+
     marello_notification.workflow.send_notification_action:
         class: Marello\Bundle\NotificationBundle\Workflow\SendNotificationAction
         arguments:
             - '@oro_action.expression.context_accessor'
             - '@marello_notification.email.send_processor'
+            - '@marello_order.provider.send_email_template_attachment_processor'
         tags:
             - { name: oro_action.action, alias: marello_notification_send }
 

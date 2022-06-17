@@ -6,6 +6,8 @@ use Marello\Bundle\InventoryBundle\Entity\Allocation;
 use Marello\Bundle\NotificationBundle\Email\SendProcessor;
 use Marello\Bundle\InventoryBundle\Model\Allocation\WarehouseNotifierInterface;
 
+use Marello\Bundle\NotificationBundle\Provider\AttachmentEmailSendProcessor;
+
 class WarehouseEmailNotifier implements WarehouseNotifierInterface
 {
     const IDENTIFIER = 'email_notifier';
@@ -22,9 +24,10 @@ class WarehouseEmailNotifier implements WarehouseNotifierInterface
      * @param SendProcessor $notificationProcessor
      */
     public function __construct(
-        SendProcessor $notificationProcessor
+        SendProcessor $notificationProcessor,
+        AttachmentEmailSendProcessor $processor
     ) {
-        $this->notificationProcessor = $notificationProcessor;
+        $this->notificationProcessor = $processor;
     }
 
     /**
