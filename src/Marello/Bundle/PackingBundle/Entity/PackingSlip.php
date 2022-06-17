@@ -17,6 +17,7 @@ use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Entity\Allocation;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\PackingBundle\Model\ExtendPackingSlip;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
@@ -196,6 +197,21 @@ class PackingSlip extends ExtendPackingSlip implements
      * @var string
      */
     protected $packingSlipNumber;
+
+    /**
+     * @var Allocation
+     *
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\Allocation")
+     * @ORM\JoinColumn(name="source_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=false
+     *          }
+     *      }
+     * )
+     */
+    protected $sourceEntity;
 
     public function __construct()
     {
@@ -404,6 +420,24 @@ class PackingSlip extends ExtendPackingSlip implements
     public function setPackingSlipNumber($packingSlipNumber)
     {
         $this->packingSlipNumber = $packingSlipNumber;
+
+        return $this;
+    }
+
+    /**
+     * @return Allocation|null
+     */
+    public function getSourceEntity(): ?Allocation
+    {
+        return $this->sourceEntity;
+    }
+
+    /**
+     * @param Allocation|null $sourceEntity
+     */
+    public function setSourceEntity(Allocation $sourceEntity = null): self
+    {
+        $this->sourceEntity = $sourceEntity;
 
         return $this;
     }
