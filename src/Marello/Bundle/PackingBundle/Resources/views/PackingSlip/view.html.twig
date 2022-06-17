@@ -36,6 +36,10 @@
                             'marello.order.sales_channel.label'|trans,
                             UI.entityViewLink(entity.order.salesChannel, entity.order.salesChannel.name, 'marello_sales_saleschannel_view')
                         )}}
+                        {{ UI.renderHtmlProperty(
+                            'marello.inventory.allocation.allocation_number.label'|trans,
+                            UI.entityViewLink(entity.sourceEntity, entity.sourceEntity.allocationNumber, 'marello_inventory_allocation_view')
+                        )}}
                         {{ UI.renderProperty('marello.packing.packingslip.warehouse.label'|trans, entity.warehouse) }}
                         {{ oro_widget_render({
                             'widgetType': 'block',
