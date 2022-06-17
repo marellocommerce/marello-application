@@ -24,7 +24,7 @@ class MarelloPurchaseOrderBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_3_3';
+        return 'v1_3_4';
     }
 
     /**
@@ -63,6 +63,7 @@ class MarelloPurchaseOrderBundleInstaller implements
 
         $this->activityExtension->addActivityAssociation($schema, 'oro_note', $table->getName());
         $this->activityExtension->addActivityAssociation($schema, 'marello_notification', $table->getName());
+        $this->activityExtension->addActivityAssociation($schema, 'oro_email', $table->getName());
     }
 
     /**
