@@ -96,7 +96,7 @@ class PurchaseOrderAdviceCommand extends Command implements CronCommandInterface
         $recipient = new Customer();
         $recipient->setEmail($configManager->get('marello_purchaseorder.purchaseorder_notification_address'));
         /** @var SendProcessor $sendProcessor */
-        $sendProcessor = $this->container->get('marello_notification.email.send_processor');
+        $sendProcessor = $this->container->get('marello_order.provider.send_email_template_attachment_processor');
         $sendProcessor->setNotifcationShouldBeSavedAsActivity(false);
         $sendProcessor->sendNotification(
             'marello_purchase_order_advise',

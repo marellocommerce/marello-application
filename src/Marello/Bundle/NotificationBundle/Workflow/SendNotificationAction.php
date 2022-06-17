@@ -11,6 +11,8 @@ use Oro\Component\Action\Action\ActionInterface;
 use Oro\Component\ConfigExpression\ContextAccessor;
 use Symfony\Component\PropertyAccess\PropertyPathInterface;
 
+use Marello\Bundle\NotificationBundle\Provider\AttachmentEmailSendProcessor;
+
 class SendNotificationAction extends AbstractAction
 {
     /** @var PropertyPathInterface */
@@ -28,17 +30,24 @@ class SendNotificationAction extends AbstractAction
     /** @var SendProcessor */
     protected $sendProcessor;
 
+    /** @var AttachmentEmailSendProcessor $attachmentEmailProcessor */
+    protected $attachmentEmailProcessor;
+
     /**
      * SendNotificationAction constructor.
      *
      * @param ContextAccessor $contextAccessor
      * @param SendProcessor   $sendProcessor
      */
-    public function __construct(ContextAccessor $contextAccessor, SendProcessor $sendProcessor)
-    {
+    public function __construct(
+        ContextAccessor $contextAccessor,
+        SendProcessor $sendProcessor,
+        AttachmentEmailSendProcessor $attachmentEmailProcessor
+    ) {
         parent::__construct($contextAccessor);
 
         $this->sendProcessor = $sendProcessor;
+        $this->attachmentEmailProcessor = $attachmentEmailProcessor;
     }
 
     /**
@@ -55,7 +64,7 @@ class SendNotificationAction extends AbstractAction
             $recipients = [$recipients];
         }
 
-        $this->sendProcessor->sendNotification($template, $recipients, $entity, $data);
+        $this->attachmentEmailProcessor->sendNotification($template, $recipients, $entity, $data);
     }
 
     /**
