@@ -46,6 +46,7 @@ class OrderToPackingSlipMapper extends AbstractPackingSlipMapper
         $data = $this->getData($sourceEntity->getOrder(), PackingSlip::class);
         $data['order'] = $sourceEntity->getOrder();
         $data['warehouse'] = $sourceEntity->getWarehouse();
+        $data['sourceEntity'] = $sourceEntity;
         $data['items'] = $this->getItems($sourceEntity->getOrder()->getItems());
 
         $this->assignData($packingSlip, $data);
