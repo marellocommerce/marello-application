@@ -82,21 +82,56 @@ class InventoryAllocationProvider
                 $newAllocation = new Allocation();
                 $newAllocation->setOrder($order);
                 $newAllocation->setOrganization($order->getOrganization());
-                $newAllocation->setState($this->getEnumValue('marello_allocation_state', AllocationStateStatusInterface::ALLOCATION_STATE_AVAILABLE));
-                $newAllocation->setStatus($this->getEnumValue('marello_allocation_status', AllocationStateStatusInterface::ALLOCATION_STATUS_ON_HAND));
+                $newAllocation->setState(
+                    $this->getEnumValue(
+                        'marello_allocation_state',
+                        AllocationStateStatusInterface::ALLOCATION_STATE_AVAILABLE
+                    )
+                );
+                $newAllocation->setStatus(
+                    $this->getEnumValue(
+                        'marello_allocation_status',
+                        AllocationStateStatusInterface::ALLOCATION_STATUS_ON_HAND
+                    )
+                );
 
                 // find allocation by warehouse
                 if ($result->getWarehouse()->getCode() === 'no_warehouse') {
-                    $newAllocation->setState($this->getEnumValue('marello_allocation_state', AllocationStateStatusInterface::ALLOCATION_STATE_WFS));
-                    $newAllocation->setStatus($this->getEnumValue('marello_allocation_status', AllocationStateStatusInterface::ALLOCATION_STATUS_CNA));
+                    $newAllocation->setState(
+                        $this->getEnumValue(
+                            'marello_allocation_state',
+                            AllocationStateStatusInterface::ALLOCATION_STATE_WFS
+                        )
+                    );
+                    $newAllocation->setStatus(
+                        $this->getEnumValue(
+                            'marello_allocation_status',
+                            AllocationStateStatusInterface::ALLOCATION_STATUS_CNA
+                        )
+                    );
                 }
                 if ($result->getWarehouse()->getCode() === AllocationStateStatusInterface::ALLOCATION_STATUS_CNA) {
-                    $newAllocation->setState($this->getEnumValue('marello_allocation_state', AllocationStateStatusInterface::ALLOCATION_STATE_ALERT));
-                    $newAllocation->setStatus($this->getEnumValue('marello_allocation_status', AllocationStateStatusInterface::ALLOCATION_STATUS_CNA));
+                    $newAllocation->setState(
+                        $this->getEnumValue(
+                            'marello_allocation_state',
+                            AllocationStateStatusInterface::ALLOCATION_STATE_ALERT
+                        )
+                    );
+                    $newAllocation->setStatus(
+                        $this->getEnumValue(
+                            'marello_allocation_status',
+                            AllocationStateStatusInterface::ALLOCATION_STATUS_CNA
+                        )
+                    );
                 }
 
                 if ($result->getWarehouse()->getWarehouseType()->getName() === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
-                    $newAllocation->setStatus($this->getEnumValue('marello_allocation_status', AllocationStateStatusInterface::ALLOCATION_STATUS_DROPSHIP));
+                    $newAllocation->setStatus(
+                        $this->getEnumValue(
+                            'marello_allocation_status',
+                            AllocationStateStatusInterface::ALLOCATION_STATUS_DROPSHIP
+                        )
+                    );
                 }
 
                 if (!in_array($result->getWarehouse()->getCode(), ['no_warehouse', 'could_not_allocate'])) {
@@ -134,9 +169,18 @@ class InventoryAllocationProvider
                 /** @var Order $order */
                 $diffAllocation = new Allocation();
                 $diffAllocation->setOrder($order);
-                $diffAllocation->setStatus('could_not_allocate');
-                $diffAllocation->setState($this->getEnumValue('marello_allocation_state', AllocationStateStatusInterface::ALLOCATION_STATE_ALERT));
-                $diffAllocation->setStatus($this->getEnumValue('marello_allocation_status', AllocationStateStatusInterface::ALLOCATION_STATUS_CNA));
+                $diffAllocation->setState(
+                    $this->getEnumValue(
+                        'marello_allocation_state',
+                        AllocationStateStatusInterface::ALLOCATION_STATE_ALERT
+                    )
+                );
+                $diffAllocation->setStatus(
+                    $this->getEnumValue(
+                        'marello_allocation_status',
+                        AllocationStateStatusInterface::ALLOCATION_STATUS_CNA
+                    )
+                );
                 $allocationItem = new AllocationItem();
                 $allocationItem->setOrderItem($orderItem);
                 $allocationItem->setProduct($orderItem->getProduct());
