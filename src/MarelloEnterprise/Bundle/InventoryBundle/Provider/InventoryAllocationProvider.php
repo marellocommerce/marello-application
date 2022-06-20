@@ -103,8 +103,18 @@ class InventoryAllocationProvider extends BaseAllocationProvider
             $parentAllocation = new Allocation();
             $parentAllocation->setOrder($order);
             $parentAllocation->setOrganization($order->getOrganization());
-            $parentAllocation->setState($this->getEnumValue('marello_allocation_state', AllocationStateStatusInterface::ALLOCATION_STATE_AVAILABLE));
-            $parentAllocation->setStatus($this->getEnumValue('marello_allocation_status', AllocationStateStatusInterface::ALLOCATION_STATUS_ON_HAND));
+            $parentAllocation->setState(
+                $this->getEnumValue(
+                    'marello_allocation_state',
+                    AllocationStateStatusInterface::ALLOCATION_STATE_AVAILABLE
+                )
+            );
+            $parentAllocation->setStatus(
+                $this->getEnumValue(
+                    'marello_allocation_status',
+                    AllocationStateStatusInterface::ALLOCATION_STATUS_ON_HAND
+                )
+            );
             $parentAllocation->setWarehouse($this->consolidationWarehouse);
             $parentAllocation->setShippingAddress($order->getShippingAddress());
             /** @var AllocationItem $item */
@@ -136,7 +146,7 @@ class InventoryAllocationProvider extends BaseAllocationProvider
      */
     protected function isConsolidationEnabled(Order $order)
     {
-        if ($this->configManager->get('marello_enterprise_order.enable_order_consolidation')) {
+        if (!$this->configManager->get('marello_enterprise_order.enable_order_consolidation')) {
             return false;
         }
 
