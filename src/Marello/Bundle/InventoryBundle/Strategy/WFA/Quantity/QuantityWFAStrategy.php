@@ -247,7 +247,12 @@ class QuantityWFAStrategy implements WFAStrategyInterface
         return $this->minQtyWHCalculator->calculate($productsWithInventoryData, $orderItemsByProducts, $warehouses, $orderItems);
     }
 
-    private function recordExists($productWithInventory, Warehouse $warehouse)
+    /**
+     * @param $productWithInventory
+     * @param Warehouse $warehouse
+     * @return bool
+     */
+    private function recordExists($productWithInventory, Warehouse $warehouse): bool
     {
         foreach ($productWithInventory as $product) {
             if ($product['wh'] === $warehouse->getCode()) {
@@ -521,6 +526,9 @@ class QuantityWFAStrategy implements WFAStrategyInterface
         return new ArrayCollection(iterator_to_array($inventoryLevelIterator, false));
     }
 
+    /**
+     * @return int
+     */
     protected function getInventoryLevelSortingPriorityFromConfig()
     {
         return (int) $this->configManager->get('marello_inventory.inventory_allocation_priority');

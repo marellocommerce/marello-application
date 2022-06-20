@@ -44,7 +44,7 @@ class WFAStrategiesRegistry
      * @param string $identifier
      * @return bool
      */
-    public function hasStrategy(string $identifier)
+    public function hasStrategy(string $identifier): bool
     {
         if (array_key_exists($identifier, $this->strategies)) {
             return true;
