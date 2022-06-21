@@ -4,6 +4,7 @@ namespace Marello\Bundle\InventoryBundle\Provider;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\QuantityWFAStrategy;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
@@ -96,7 +97,7 @@ class InventoryAllocationProvider
                 );
 
                 // find allocation by warehouse
-                if ($result->getWarehouse()->getCode() === 'no_warehouse') {
+                if ($result->getWarehouse()->getCode() ===  QuantityWFAStrategy::EMPTY_WAREHOUSE_CODE) {
                     $newAllocation->setState(
                         $this->getEnumValue(
                             'marello_allocation_state',
@@ -134,7 +135,7 @@ class InventoryAllocationProvider
                     );
                 }
 
-                if (!in_array($result->getWarehouse()->getCode(), ['no_warehouse', 'could_not_allocate'])) {
+                if (!in_array($result->getWarehouse()->getCode(), [QuantityWFAStrategy::CNA_WAREHOUSE_CODE, QuantityWFAStrategy::EMPTY_WAREHOUSE_CODE])) {
                     $newAllocation->setWarehouse($result->getWarehouse());
                 }
 
