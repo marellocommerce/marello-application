@@ -24,6 +24,9 @@ class QuantityWFAStrategy implements WFAStrategyInterface
     const IDENTIFIER = 'min_quantity';
     const LABEL = 'marello.inventory.strategies.min_quantity';
 
+    const EMPTY_WAREHOUSE_CODE = 'no_warehouse';
+    const CNA_WAREHOUSE_CODE = 'could_not_allocate';
+
     /**
      * @var bool
      */
@@ -109,10 +112,10 @@ class QuantityWFAStrategy implements WFAStrategyInterface
         $orderItemsByProducts = [];
         $emptyWarehouse = new Warehouse();
         $emptyWarehouse->setWarehouseType(new WarehouseType('virtual'));
-        $emptyWarehouse->setCode('no_warehouse');
+        $emptyWarehouse->setCode(self::EMPTY_WAREHOUSE_CODE);
         $noAllocationWarehouse = new Warehouse();
         $noAllocationWarehouse->setWarehouseType(new WarehouseType('virtual'));
-        $noAllocationWarehouse->setCode('could_not_allocate');
+        $noAllocationWarehouse->setCode(self::CNA_WAREHOUSE_CODE);
         $warehouses[$noAllocationWarehouse->getCode()] = $noAllocationWarehouse;
 
         // the SalesChannel that the order is placed in is linked to a SalesChannelGroup
