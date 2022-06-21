@@ -170,42 +170,6 @@ class InventoryAllocationProvider extends BaseAllocationProvider
     }
 
     /**
-     * @param OrderWarehouseResult $result
-     * @param Allocation $allocation
-     */
-    public function createAllocationItems(OrderWarehouseResult $result, Allocation $allocation)
-    {
-        $itemWithQty = $result->getItemsWithQuantity();
-        file_put_contents(
-            '/app/var/logs/createAllocationItems.log',
-            __METHOD__ . " " . __LINE__ . " " . print_r($allocation->getId(), true) . "\r\n",
-            FILE_APPEND
-        );
-        foreach ($result->getOrderItems() as $item) {
-            $allocationItem = new AllocationItem();
-            $orderItem = $item;
-            if ($item instanceof AllocationItem) {
-                $orderItem = $item->getOrderItem();
-            }
-
-            $allocationItem->setOrderItem($orderItem);
-            $allocationItem->setProduct($item->getProduct());
-            $allocationItem->setProductSku($item->getProductSku());
-            $allocationItem->setProductName($item->getProductName());
-            if ($allocation->getWarehouse()) {
-                $allocationItem->setWarehouse($allocation->getWarehouse());
-            }
-            $allocationItem->setQuantity($itemWithQty[$item->getProductSku()]);
-            $allocation->addItem($allocationItem);
-            $this->allOrderItems->add($orderItem);
-            if ($this->consolidationWarehouse) {
-                $this->allItems[] = clone $allocationItem;
-                $this->subAllocations[] = $allocation;
-            }
-        }
-    }
-
-    /**
      * @param Order $order
      * @return MarelloAddress|null
      */

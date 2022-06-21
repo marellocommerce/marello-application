@@ -5,7 +5,7 @@ system_configuration:
             type: MarelloEnterprise\Bundle\InventoryBundle\Form\Type\AllocationConsolidationExclusionSelectType
             options:
                 label: marelloenterprise.inventory.system_configuration.fields.inventory_allocation_consolidation_exclusion.label
-#                tooltip: marello.inventory.system_configuration.fields.inventory_allocation_consolidation_exclusion
+                tooltip: marelloenterprise.inventory.system_configuration.fields.inventory_allocation_consolidation_exclusion
     tree:
         system_configuration:
             marello:
