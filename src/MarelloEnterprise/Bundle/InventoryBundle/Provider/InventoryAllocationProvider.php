@@ -176,6 +176,11 @@ class InventoryAllocationProvider extends BaseAllocationProvider
     public function createAllocationItems(OrderWarehouseResult $result, Allocation $allocation)
     {
         $itemWithQty = $result->getItemsWithQuantity();
+        file_put_contents(
+            '/app/var/logs/createAllocationItems.log',
+            __METHOD__ . " " . __LINE__ . " " . print_r($allocation->getId(), true) . "\r\n",
+            FILE_APPEND
+        );
         foreach ($result->getOrderItems() as $item) {
             $allocationItem = new AllocationItem();
             $orderItem = $item;
