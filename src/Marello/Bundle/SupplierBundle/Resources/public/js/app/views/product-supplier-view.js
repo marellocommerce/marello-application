@@ -39,6 +39,7 @@ define(function(require) {
          */
         initSupplierDataTriggers: function() {
             this.addFieldEvents('supplier', this.loadSupplierDefaultData);
+            this.loadSupplierDefaultData();
         },
 
         /**
@@ -57,7 +58,6 @@ define(function(require) {
                 {'supplier_id': supplierId},
                 _.bind(this.setSupplierDefaultData, this)
             );
-
         },
 
         /**

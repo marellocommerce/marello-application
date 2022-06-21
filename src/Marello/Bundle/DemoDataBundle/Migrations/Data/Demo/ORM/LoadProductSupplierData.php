@@ -51,7 +51,6 @@ class LoadProductSupplierData extends AbstractFixture implements
     {
         $this->manager = $manager;
         $this->addProductsToSuppliers();
-        $this->updateCurrentSuppliers();
     }
 
     /**
@@ -102,14 +101,14 @@ class LoadProductSupplierData extends AbstractFixture implements
             ->findBy([
                 'name' => $data['supplier']
             ]);
-
+        /** @var Supplier $supplier */
         foreach ($suppliers as $supplier) {
             $productSupplierRelation = new ProductSupplierRelation();
             $productSupplierRelation
                 ->setProduct($product)
                 ->setSupplier($supplier)
                 ->setQuantityOfUnit(1)
-                ->setCanDropship(true)
+                ->setCanDropship($supplier->getCanDropship())
                 ->setPriority(1)
                 ->setCost($this->calculateSupplierCost($product))
             ;
@@ -154,44 +153,6 @@ class LoadProductSupplierData extends AbstractFixture implements
         $supplierCost = $assembledPriceList->getDefaultPrice()->getValue() * $percentage;
 
         return $supplierCost;
-    }
-
-    /**
-     * Persist current suppliers that support dropshipping
-     * in order to create external warehouse
-     */
-    public function updateCurrentSuppliers()
-    {
-        $suppliers = $this->manager
-            ->getRepository('MarelloSupplierBundle:Supplier')
-            ->findBy(['canDropship' => true]);
-
-        /** @var Supplier $supplier */
-        foreach ($suppliers as $supplier) {
-            $warehouse = $this->getWarehouse($supplier);
-            if (!$warehouse) {
-                $warehouse = $this->createWarehouse($supplier);
-            }
-            $this->createInventoryLevelsForRelatedProducts($supplier, $warehouse);
-        }
-        $this->manager->flush();
-    }
-
-    /**
-     * @param Supplier $supplier
-     * @param Warehouse $warehouse
-     */
-    private function createInventoryLevelsForRelatedProducts(Supplier $supplier, Warehouse $warehouse)
-    {
-        $productSupplierRelations = $this->manager
-            ->getRepository(ProductSupplierRelation::class)
-            ->findBy(['supplier' => $supplier, 'canDropship' => true]);
-
-        foreach ($productSupplierRelations as $productSupplierRelation) {
-            $this->createInventoryLevelForRelatedProduct($productSupplierRelation, $warehouse);
-        }
-
-        $this->manager->flush();
     }
 
     /**
@@ -251,6 +212,7 @@ class LoadProductSupplierData extends AbstractFixture implements
         ProductSupplierRelation $productSupplierRelation,
         Warehouse $warehouse
     ) {
+        /** @var InventoryItem $inventoryItem */
         $inventoryItem = $this->manager
             ->getRepository(InventoryItem::class)
             ->findOneByProduct($productSupplierRelation->getProduct());
