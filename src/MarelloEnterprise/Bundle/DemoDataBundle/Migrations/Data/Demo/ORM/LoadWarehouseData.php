@@ -49,6 +49,7 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
             'name'          => 'Warehouse DE 2',
             'code'          => 'warehouse_de_2',
             'default'       => false,
+            'is_consolidation_warehouse' => true,
             'address'       => [
                 'country' => 'DE',
                 'street' => 'Platz der Luftbrücke 5',
@@ -65,6 +66,7 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
             'name'          => 'Warehouse FR 1',
             'code'          => 'warehouse_fr_1',
             'default'       => false,
+            'is_consolidation_warehouse' => false,
             'address'       => [
                 'country' => 'FR',
                 'street' => '22 Av. des Champs-Élysées',
@@ -81,6 +83,7 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
             'name'          => 'Warehouse FR 2',
             'code'          => 'warehouse_fr_2',
             'default'       => false,
+            'is_consolidation_warehouse' => true,
             'address'       => [
                 'country' => 'FR',
                 'street' => '120 Cours de la Marne',
@@ -274,13 +277,14 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
             $warehouse = new Warehouse($data['name'], false);
             $warehouse->setOwner($this->organization);
             $warehouse->setCode($data['code']);
-
+            if (isset($data['is_consolidation_warehouse'])) {
+                $warehouse->setIsConsolidationWarehouse($data['is_consolidation_warehouse']);
+            }
             $address = $this->createAddress($data['address']);
             $warehouse->setAddress($address);
 
             $this->manager->persist($warehouse);
         }
-
         $type = $this->getWarehouseType($data['type']);
         $warehouse->setWarehouseType($type);
         $this->loadWarehouseGroups($warehouse, $data);
