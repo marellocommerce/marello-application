@@ -97,7 +97,7 @@ class InventoryAllocationProvider
                 );
 
                 // find allocation by warehouse
-                if ($result->getWarehouse()->getCode() ===  QuantityWFAStrategy::EMPTY_WAREHOUSE_CODE) {
+                if ($result->getWarehouse()->getCode() === QuantityWFAStrategy::EMPTY_WAREHOUSE_CODE) {
                     $newAllocation->setState(
                         $this->getEnumValue(
                             'marello_allocation_state',
