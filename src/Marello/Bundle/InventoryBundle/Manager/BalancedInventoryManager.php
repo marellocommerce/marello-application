@@ -24,12 +24,22 @@ class BalancedInventoryManager implements InventoryManagerInterface
     /** @var BalancedInventoryHandler $handler */
     protected $handler;
 
+    public function __construct(
+        BalancedInventoryHandler $handler,
+        InventoryUpdateContextValidator $contextValidator,
+        EventDispatcherInterface $eventDispatcher
+    ) {
+        $this->handler = $handler;
+        $this->contextValidator = $contextValidator;
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
     /**
      * Update the balanced inventory levels to keep track of inventory needed to be reserved and available
      * @param InventoryUpdateContext $context
      * @throws \Exception
      */
-    public function updateInventoryLevel(InventoryUpdateContext $context)
+    public function updateInventoryLevel(InventoryUpdateContext $context): void
     {
         $this->eventDispatcher->dispatch(
             new BalancedInventoryUpdateEvent($context),
@@ -59,7 +69,7 @@ class BalancedInventoryManager implements InventoryManagerInterface
         }
 
         $level = $this->updateReservedInventory($level, $context->getAllocatedInventory());
-        $level = $this->updateInventory($level, $context);
+        $level = $this->updateBalancedInventory($level, $context);
         $this->handler->saveBalancedInventory($level, true);
 
         $context->setValue('balancedInventoryLevel', $level);
@@ -86,7 +96,7 @@ class BalancedInventoryManager implements InventoryManagerInterface
      * @param InventoryUpdateContext $context
      * @return BalancedInventoryLevel
      */
-    private function updateInventory(BalancedInventoryLevel $level, $context)
+    private function updateBalancedInventory(BalancedInventoryLevel $level, $context)
     {
         $allocQty = $context->getAllocatedInventory();
         $inventoryQty = $context->getInventory();
@@ -114,34 +124,5 @@ class BalancedInventoryManager implements InventoryManagerInterface
         $newInventoryQty = ($level->getReservedInventoryQty() + $allocQty);
         $level->setReservedInventoryQty($newInventoryQty);
         return $level;
-    }
-
-
-    /**
-     * Sets the context validator
-     * @param InventoryUpdateContextValidator $validator
-     */
-    public function setContextValidator(InventoryUpdateContextValidator $validator)
-    {
-        $this->contextValidator = $validator;
-    }
-
-    /**
-     * Sets the event dispatcher
-     *
-     * @param EventDispatcherInterface $eventDispatcher
-     */
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
-    {
-        $this->eventDispatcher = $eventDispatcher;
-    }
-
-    /**
-     * Sets the balanced inventory handler
-     * @param BalancedInventoryHandler $handler
-     */
-    public function setBalancedInventoryHandler(BalancedInventoryHandler $handler)
-    {
-        $this->handler = $handler;
     }
 }

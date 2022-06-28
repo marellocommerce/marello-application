@@ -7,7 +7,6 @@ services:
         arguments:
             - '@oro_entity.entity_field_provider'
             - '@property_accessor'
-            - '@Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProvider'
 
     marello_packing.event_listener.create_packing_slip:
         class: 'Marello\Bundle\PackingBundle\EventListener\CreatePackingSlipEventListener'

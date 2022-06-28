@@ -105,7 +105,7 @@ class PurchaseOrderOnOrderOnDemandCreationListenerTest extends TestCase
             ->method('getEntityManager')
             ->willReturn($manager);
         $manager
-            ->expects(static::exactly(2))
+            ->expects(static::exactly(1))
             ->method('persist');
         $manager
             ->expects(static::exactly(1))

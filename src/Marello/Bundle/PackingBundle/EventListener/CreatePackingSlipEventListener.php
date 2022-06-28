@@ -70,6 +70,11 @@ class CreatePackingSlipEventListener
         $allocation = $event->getContext()->getData()->get('allocation');
         /** @var Order $entity */
         $entity = $allocation->getOrder();
+
+        if (!$entity) {
+            return;
+        }
+
         $this->eventDispatcher
             ->dispatch(new BeforePackingSlipCreationEvent($entity), BeforePackingSlipCreationEvent::NAME);
         $packingSlips = $this->mapper->map($allocation);

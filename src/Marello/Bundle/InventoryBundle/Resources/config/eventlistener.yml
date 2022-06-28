@@ -95,11 +95,15 @@ services:
         tags:
             - { name: doctrine.event_listener, event: onFlush }
 
-    marello_inventory.event_listener.doctrine.inventory_batch.creation:
-        class: 'Marello\Bundle\InventoryBundle\EventListener\Doctrine\InventoryBatchCreationEventListener'
+    marello_inventory.event_listener.doctrine.inventory_batch:
+        class: 'Marello\Bundle\InventoryBundle\EventListener\Doctrine\InventoryBatchEventListener'
+        arguments:
+            - '@marello_inventory.manager.inventory_manager'
+            - '@marello_inventory.model.inventory_level_calculator'
         tags:
             - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\InventoryBundle\Entity\InventoryItem', event: postPersist }
             - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\InventoryBundle\Entity\InventoryItem', event: preUpdate }
+            - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\InventoryBundle\Entity\InventoryBatch', event: preUpdate, method: inventoryBatchPreUpdate }
             - { name: doctrine.event_listener, event: postFlush }
 
     marello_inventory.event_listener.datagrid.inventory_level_grid:

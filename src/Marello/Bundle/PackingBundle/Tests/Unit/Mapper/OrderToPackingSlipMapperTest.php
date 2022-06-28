@@ -4,6 +4,8 @@ namespace Marello\Bundle\PackingBundle\Tests\Unit\Mapper;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Marello\Bundle\InventoryBundle\Entity\Allocation;
+use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
@@ -38,11 +40,6 @@ class OrderToPackingSlipMapperTest extends TestCase
     protected $entityFieldProvider;
 
     /**
-     * @var OrderWarehousesProviderInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $warehousesProvider;
-
-    /**
      * @var OrderToPackingSlipMapper
      */
     protected $orderToPackingSlipMapper;
@@ -52,13 +49,10 @@ class OrderToPackingSlipMapperTest extends TestCase
         $this->entityFieldProvider = $this->getMockBuilder(EntityFieldProvider::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->warehousesProvider = $this->getMockBuilder(OrderWarehousesProviderInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+
         $this->orderToPackingSlipMapper = new OrderToPackingSlipMapper(
             $this->entityFieldProvider,
-            PropertyAccess::createPropertyAccessor(),
-            $this->warehousesProvider
+            PropertyAccess::createPropertyAccessor()
         );
     }
 
@@ -107,13 +101,25 @@ class OrderToPackingSlipMapperTest extends TestCase
         $orderItem2 = $this->getEntity(OrderItem::class, ['id' => 2, 'product' => $product2, 'quantity' => 3]);
         $orderItem3 = $this->getEntity(OrderItem::class, ['id' => 3, 'product' => $product3, 'quantity' => 1]);
 
-        $sourceEntity = $this->getEntity(Order::class, [
+        $order = $this->getEntity(Order::class, [
             'billingAddress' => $billingAddress,
             'shippingAddress' => $shippingAddress,
             'salesChannel' => $salesChannel,
             'customer' => $customer,
             'organization' => $organization,
             'items' => new ArrayCollection([$orderItem1, $orderItem2, $orderItem3])
+        ]);
+
+        $alloItem1 = $this->getEntity(AllocationItem::class, ['id' => 1, 'orderItem' => $orderItem1, 'quantity' => 5]);
+        $alloItem2 = $this->getEntity(AllocationItem::class, ['id' => 2, 'orderItem' => $orderItem2, 'quantity' => 3]);
+        $alloItem3 = $this->getEntity(AllocationItem::class, ['id' => 3, 'orderItem' => $orderItem3, 'quantity' => 1]);
+
+        $sourceEntity = $this->getEntity(Allocation::class, [
+            'shippingAddress' => $shippingAddress,
+            'order' => $order,
+            'organization' => $organization,
+            'items' => new ArrayCollection([$alloItem1, $alloItem2, $alloItem3]),
+            'warehouse' => $warehouse
         ]);
 
         $expectedItems = [
@@ -139,7 +145,8 @@ class OrderToPackingSlipMapperTest extends TestCase
         ];
 
         $expectedEntity = $this->getEntity(PackingSlip::class, [
-            'order' => $sourceEntity,
+            'order' => $order,
+            'sourceEntity' => $sourceEntity,
             'billingAddress' => $billingAddress,
             'shippingAddress' => $shippingAddress,
             'salesChannel' => $salesChannel,
@@ -148,16 +155,6 @@ class OrderToPackingSlipMapperTest extends TestCase
             'items' => $expectedItems,
             'warehouse' => $warehouse
         ]);
-
-        $this->warehousesProvider
-            ->expects(static::once())
-            ->method('getWarehousesForOrder')
-            ->willReturn([
-                0 => new OrderWarehouseResult([
-                    OrderWarehouseResult::WAREHOUSE_FIELD => $warehouse,
-                    OrderWarehouseResult::ORDER_ITEMS_FIELD => $sourceEntity->getItems(),
-                ])
-            ]);
 
         static::assertEquals([$expectedEntity], $result = $this->orderToPackingSlipMapper->map($sourceEntity));
     }

@@ -2,44 +2,62 @@
 
 namespace Marello\Bundle\InventoryBundle\Manager;
 
-use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
-use Marello\Bundle\InventoryBundle\Factory\InventoryBatchFromInventoryLevelFactory;
-use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
-use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
-use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
+use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
+use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
+use Marello\Bundle\InventoryBundle\Model\InventoryLevelCalculator;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextValidator;
 use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository;
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
+use Marello\Bundle\InventoryBundle\Factory\InventoryBatchFromInventoryLevelFactory;
 
 class InventoryManager implements InventoryManagerInterface
 {
     /** @var DoctrineHelper $doctrineHelper*/
-    protected $doctrineHelper;
+    protected DoctrineHelper $doctrineHelper;
 
     /** @var InventoryUpdateContextValidator $contextValidator */
-    protected $contextValidator;
+    protected InventoryUpdateContextValidator $contextValidator;
+
+    /** @var InventoryLevelCalculator $inventoryLevelCalculator */
+    protected InventoryLevelCalculator $inventoryLevelCalculator;
 
     /** @var EventDispatcherInterface $eventDispatcher */
-    protected $eventDispatcher;
+    protected EventDispatcherInterface $eventDispatcher;
 
     /** @var AclHelper $aclHelper */
-    protected $aclHelper;
+    protected AclHelper $aclHelper;
+
+    public function __construct(
+        InventoryUpdateContextValidator $contextValidator,
+        InventoryLevelCalculator $inventoryLevelCalculator,
+        DoctrineHelper $doctrineHelper,
+        AclHelper $aclHelper,
+        EventDispatcherInterface $eventDispatcher
+    ) {
+        $this->contextValidator = $contextValidator;
+        $this->inventoryLevelCalculator = $inventoryLevelCalculator;
+        $this->doctrineHelper = $doctrineHelper;
+        $this->aclHelper = $aclHelper;
+        $this->eventDispatcher = $eventDispatcher;
+    }
 
     /**
      * Update inventory items based of context and calculate new inventory level
      * @param InventoryUpdateContext $context
      * @throws \Exception
      */
-    public function updateInventoryLevel(InventoryUpdateContext $context)
+    public function updateInventoryLevel(InventoryUpdateContext $context): void
     {
         $this->eventDispatcher->dispatch(
             new InventoryUpdateEvent($context),
@@ -91,6 +109,11 @@ class InventoryManager implements InventoryManagerInterface
             $inventory = ($level->getInventoryQty() + $context->getInventory());
         }
 
+        if ($level->getInventoryItem()->isEnableBatchInventory()) {
+            $batches = $level->getInventoryBatches()->toArray();
+            $inventory = $this->inventoryLevelCalculator->calculateBatchInventoryLevelQty($batches);
+        }
+
         if ($context->getAllocatedInventory()) {
             $allocatedInventory = ($level->getAllocatedInventoryQty() + $context->getAllocatedInventory());
         }
@@ -110,59 +133,59 @@ class InventoryManager implements InventoryManagerInterface
     }
     
     /**
-     * @param InventoryLevel    $level                  InventoryLevel to be updated
+     * @param InventoryLevel    $inventoryLevel         InventoryLevel to be updated
      * @param int|null          $inventory              New inventory or null if it should remain unchanged
      * @param int|null          $allocatedInventory     New allocated inventory or null if it should remain unchanged
-     *                                                  actual change
+
      * @throws \Exception
      * @return InventoryLevel
      */
-    protected function updateInventory(
-        InventoryLevel $level,
-        $inventory = null,
-        $allocatedInventory = null
-    ) {
+    public function updateInventory(
+        InventoryLevel $inventoryLevel,
+        int $inventory = null,
+        int $allocatedInventory = null
+    ): InventoryLevel {
         if (($inventory === null) && ($allocatedInventory === null)) {
-            return $level;
+            return $inventoryLevel;
         }
 
-        if (($level->getInventoryQty() === $inventory) &&
-            ($level->getAllocatedInventoryQty() === $allocatedInventory)) {
-            return $level;
+        if (($inventoryLevel->getInventoryQty() === $inventory) &&
+            ($inventoryLevel->getAllocatedInventoryQty() === $allocatedInventory)) {
+            return $inventoryLevel;
         }
 
         if ($inventory === null) {
-            $inventory = $level->getInventoryQty();
+            $inventory = $inventoryLevel->getInventoryQty();
         }
 
         if ($allocatedInventory === null) {
-            $allocatedInventory = $level->getAllocatedInventoryQty();
+            $allocatedInventory = $inventoryLevel->getAllocatedInventoryQty();
         }
 
         try {
-            $level
+            $inventoryLevel
                 ->setInventoryQty($inventory)
                 ->setAllocatedInventoryQty($allocatedInventory);
 
-            $em = $this->doctrineHelper->getEntityManager($level);
-            $em->persist($level);
+            $em = $this->doctrineHelper->getEntityManager($inventoryLevel);
+            $em->persist($inventoryLevel);
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
 
-        return $level;
+        return $inventoryLevel;
     }
 
     /**
-     * @param InventoryBatch $batch
-     * @param int|null $quantity
+     * @param InventoryBatch $batch InventoryBatch to be updated
+     * @param int|null $quantity New batch quantity or null if it should remain unchanged
      * @throws \Exception
      * @return InventoryBatch
      */
-    protected function updateInventoryBatch(
+    public function updateInventoryBatch(
         InventoryBatch $batch,
         $quantity = null
-    ) {
+    ): InventoryBatch {
         if ($quantity === null) {
             return $batch;
         }
@@ -231,39 +254,5 @@ class InventoryManager implements InventoryManagerInterface
         /** @var WarehouseRepository $repo */
         $repo = $this->doctrineHelper->getEntityRepositoryForClass(Warehouse::class);
         return $repo->getDefault($this->aclHelper);
-    }
-
-    /**
-     * Sets the context validator
-     * @param InventoryUpdateContextValidator $validator
-     */
-    public function setContextValidator(InventoryUpdateContextValidator $validator)
-    {
-        $this->contextValidator = $validator;
-    }
-
-    /**
-     * Sets the doctrine helper
-     *
-     * @param DoctrineHelper $doctrineHelper
-     */
-    public function setDoctrineHelper(DoctrineHelper $doctrineHelper)
-    {
-        $this->doctrineHelper = $doctrineHelper;
-    }
-
-    /**
-     * Sets the event dispatcher
-     *
-     * @param EventDispatcherInterface $eventDispatcher
-     */
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
-    {
-        $this->eventDispatcher = $eventDispatcher;
-    }
-
-    public function setAclHelper(AclHelper $aclHelper)
-    {
-        $this->aclHelper = $aclHelper;
     }
 }
