@@ -23,11 +23,12 @@ services:
     marello_inventory.manager.inventory_manager:
         class: 'Marello\Bundle\InventoryBundle\Manager\InventoryManager'
         public: true
-        calls:
-            - [setContextValidator, ['@marello_inventory.validator.inventory_update_context']]
-            - [setDoctrineHelper, ['@oro_entity.doctrine_helper']]
-            - [setEventDispatcher, ['@event_dispatcher']]
-            - [setAclHelper, ['@oro_security.acl_helper']]
+        arguments:
+            - '@marello_inventory.validator.inventory_update_context'
+            - '@marello_inventory.model.inventory_level_calculator'
+            - '@oro_entity.doctrine_helper'
+            - '@oro_security.acl_helper'
+            - '@event_dispatcher'
         lazy: true
 
     marello_inventory.validator.inventory_update_context:
@@ -138,10 +139,10 @@ services:
 
     marello_inventory.manager.balancedinventory_manager:
         class: 'Marello\Bundle\InventoryBundle\Manager\BalancedInventoryManager'
-        calls:
-            - [setBalancedInventoryHandler, ['@marello_inventory.model.balancedinventory.balanced_inventory_handler']]
-            - [setContextValidator, ['@marello_inventory.validator.inventory_update_context']]
-            - [setEventDispatcher, ['@event_dispatcher']]
+        arguments:
+            - '@marello_inventory.model.balancedinventory.balanced_inventory_handler'
+            - '@marello_inventory.validator.inventory_update_context'
+            - '@event_dispatcher'
         lazy: true
 
     marello_inventory.async.inventory_rebalance_products_processor:

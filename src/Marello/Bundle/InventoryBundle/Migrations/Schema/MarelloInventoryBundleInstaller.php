@@ -366,6 +366,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addColumn('quantity_confirmed', 'float', ['notnull' => false]);
         $table->addColumn('quantity_rejected', 'float', ['notnull' => false]);
         $table->addColumn('comment', 'text', ['notnull' => false]);
+        $table->addColumn('inventory_batches', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);

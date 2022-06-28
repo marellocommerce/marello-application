@@ -68,25 +68,25 @@ class AllocationCompleteListener
 
         if (count($shippedItems) === $order->getItems()->count()) {
             // order is considered complete
-            if ($workflow = $this->getApplicableWorkflow($entity->getOrder())) {
+            if ($this->getApplicableWorkflow($order)) {
                 /** @var WorkflowItem $workflowItem */
                 $workflowItem = $this
                     ->doctrineHelper
                     ->getEntityRepositoryForClass(WorkflowItem::class)
                     ->findOneBy(
                         [
-                            'entityId' => $entity->getOrder()->getId(),
+                            'entityId' => $order->getId(),
                             'entityClass' => Order::class
                         ]
                     );
                 $this->messageProducer->send(
                     Topics::WORKFLOW_TRANSIT_TOPIC,
                     [
-                        'workflow_item_entity_id' => $entity->getOrder()->getId(),
+                        'workflow_item_entity_id' => $order->getId(),
                         'current_step_id' => $workflowItem->getCurrentStep()->getId(),
                         'entity_class' => Order::class,
                         'transition' => self::TRANSIT_TO_STEP,
-                        'jobId' => md5($entity->getOrder()->getId()),
+                        'jobId' => md5($order->getId()),
                         'priority' => MessagePriority::NORMAL
                     ]
                 );
