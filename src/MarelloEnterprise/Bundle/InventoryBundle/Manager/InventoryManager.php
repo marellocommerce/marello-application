@@ -21,7 +21,7 @@ class InventoryManager extends BaseInventoryManager
      * @param InventoryUpdateContext $context
      * @throws \Exception
      */
-    public function updateInventoryLevel(InventoryUpdateContext $context)
+    public function updateInventoryLevel(InventoryUpdateContext $context): void
     {
         $this->eventDispatcher->dispatch(
             new InventoryUpdateEvent($context),
@@ -72,6 +72,11 @@ class InventoryManager extends BaseInventoryManager
         $allocatedInventory = null;
         if ($context->getInventory()) {
             $inventory = ($level->getInventoryQty() + $context->getInventory());
+        }
+
+        if ($level->getInventoryItem()->isEnableBatchInventory()) {
+            $batches = $level->getInventoryBatches()->toArray();
+            $inventory = $this->inventoryLevelCalculator->calculateBatchInventoryLevelQty($batches);
         }
 
         if ($context->getAllocatedInventory()) {
