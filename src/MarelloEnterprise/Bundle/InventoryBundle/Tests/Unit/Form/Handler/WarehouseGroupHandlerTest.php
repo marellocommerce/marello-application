@@ -5,16 +5,18 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Form\Handler;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ObjectManager;
 
-use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
-use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
+
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
+use MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Entity\Stub\WarehouseStub;
 use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseGroupRepository;
 use MarelloEnterprise\Bundle\InventoryBundle\Form\Handler\WarehouseGroupHandler;
 
@@ -123,16 +125,12 @@ class WarehouseGroupHandlerTest extends TestCase
 
     /**
      * @param MockObject $group
-     * @return MockObject
+     * @return WarehouseStub
      */
     private function mockWarehouse(MockObject $group)
     {
-        $salesChannel = $this->createMock(Warehouse::class);
-        $salesChannel
-            ->expects(static::once())
-            ->method('setGroup')
-            ->with($group);
-
-        return $salesChannel;
+        $warehouse = new WarehouseStub();
+        $warehouse->setGroup($group);
+        return $warehouse;
     }
 }
