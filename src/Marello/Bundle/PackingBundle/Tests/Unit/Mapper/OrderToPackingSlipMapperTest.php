@@ -110,9 +110,9 @@ class OrderToPackingSlipMapperTest extends TestCase
             'items' => new ArrayCollection([$orderItem1, $orderItem2, $orderItem3])
         ]);
 
-        $alloItem1 = $this->getEntity(AllocationItem::class, ['id' => 1, 'orderItem' => $orderItem1, 'quantity' => 5]);
-        $alloItem2 = $this->getEntity(AllocationItem::class, ['id' => 2, 'orderItem' => $orderItem2, 'quantity' => 3]);
-        $alloItem3 = $this->getEntity(AllocationItem::class, ['id' => 3, 'orderItem' => $orderItem3, 'quantity' => 1]);
+        $alloItem1 = $this->getEntity(AllocationItem::class, ['id' => 1, 'product' => $product1, 'orderItem' => $orderItem1, 'quantity' => 5]);
+        $alloItem2 = $this->getEntity(AllocationItem::class, ['id' => 2,  'product' => $product2, 'orderItem' => $orderItem2, 'quantity' => 3]);
+        $alloItem3 = $this->getEntity(AllocationItem::class, ['id' => 3,  'product' => $product3, 'orderItem' => $orderItem3, 'quantity' => 1]);
 
         $sourceEntity = $this->getEntity(Allocation::class, [
             'shippingAddress' => $shippingAddress,

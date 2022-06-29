@@ -60,7 +60,7 @@ class SendProcessorTest extends WebTestCase
                 ->findAll()
         );
 
-        $this->assertEquals(1, $notificationsAfter - $notificationsBefore);
+        $this->assertEquals(0, $notificationsAfter - $notificationsBefore);
     }
 
     /**
@@ -122,9 +122,8 @@ class SendProcessorTest extends WebTestCase
                 ->findAll()
         );
 
-        static::assertEquals(12, $notificationsBefore);
+        static::assertEquals(0, $notificationsBefore);
 
-        $this->sendProcessor->setNotifcationShouldBeSavedAsActivity(false);
         $this->sendProcessor->sendNotification(
             'marello_order_accepted_confirmation',
             [$order->getCustomer()],

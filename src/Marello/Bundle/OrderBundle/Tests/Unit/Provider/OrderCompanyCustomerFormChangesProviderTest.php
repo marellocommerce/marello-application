@@ -16,13 +16,14 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\ResolvedFormTypeInterface;
 use Symfony\Component\Templating\EngineInterface;
+use Twig\Environment;
 
 use PHPUnit\Framework\TestCase;
 
 class OrderCompanyCustomerFormChangesProviderTest extends TestCase
 {
     /**
-     * @var EngineInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var Environment|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $twigEngine;
 
@@ -43,7 +44,7 @@ class OrderCompanyCustomerFormChangesProviderTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->twigEngine = $this->createMock(EngineInterface::class);
+        $this->twigEngine = $this->createMock(Environment::class);
         $this->formFactory = $this->createMock(FormFactoryInterface::class);
         $this->registry = $this->createMock(ManagerRegistry::class);
         $this->provider = new OrderCompanyCustomerFormChangesProvider(
@@ -100,7 +101,7 @@ class OrderCompanyCustomerFormChangesProviderTest extends TestCase
         $fieldView = $this->createMock(FormView::class);
         $this->twigEngine->expects($this->once())
             ->method('render')
-            ->with('MarelloOrderBundle:Form:companySelector.html.twig', ['form' => $fieldView])
+            ->with('@MarelloOrder/Form/companySelector.html.twig', ['form' => $fieldView])
             ->willReturn('view1');
 
         $newField = $this->createMock(FormInterface::class);
@@ -161,7 +162,7 @@ class OrderCompanyCustomerFormChangesProviderTest extends TestCase
         $fieldView = $this->createMock(FormView::class);
         $this->twigEngine->expects($this->once())
             ->method('render')
-            ->with('MarelloOrderBundle:Form:companySelector.html.twig', ['form' => $fieldView])
+            ->with('@MarelloOrder/Form/companySelector.html.twig', ['form' => $fieldView])
             ->willReturn('view1');
 
         $newField = $this->createMock(FormInterface::class);

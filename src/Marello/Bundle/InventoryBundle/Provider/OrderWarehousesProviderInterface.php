@@ -8,9 +8,6 @@ use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
 
 interface OrderWarehousesProviderInterface
 {
-    // estimation method (public function setEstimation($estimation = false)
-    // will be included in 3.0, not in 2.2 because of BC breaks
-
     /**
      * @param Order $order
      * @param Allocation|null $allocation

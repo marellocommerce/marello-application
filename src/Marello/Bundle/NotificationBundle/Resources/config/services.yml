@@ -3,21 +3,7 @@ imports:
 
 services:
     marello_notification.email.send_processor:
-        class: Marello\Bundle\NotificationBundle\Email\SendProcessor
-        public: true
-        arguments:
-            - '@oro_notification.manager.email_notification'
-            - '@doctrine.orm.entity_manager'
-            - '@oro_activity.manager'
-            - '@oro_email.email_renderer'
-            - '@marello_locale.manager.email_template'
-            - '@marello_notification.provider.entity_notification_configuration'
-            - '@marello_notification.provider.notification_attachment'
-        calls:
-            - ['setEmailNotificationSender', ['@oro_notification.manager.email_notification_sender']]
-
-    marello_order.provider.send_email_template_attachment_processor:
-        class: 'Marello\Bundle\NotificationBundle\Provider\AttachmentEmailSendProcessor'
+        class: 'Marello\Bundle\NotificationBundle\Provider\EmailSendProcessor'
         public: true
         arguments:
             - '@oro_email.sender.email_model_sender'
@@ -36,7 +22,6 @@ services:
         arguments:
             - '@oro_action.expression.context_accessor'
             - '@marello_notification.email.send_processor'
-            - '@marello_order.provider.send_email_template_attachment_processor'
         tags:
             - { name: oro_action.action, alias: marello_notification_send }
 
