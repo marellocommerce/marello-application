@@ -28,19 +28,10 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function setEstimation($estimation = false)
-    {
-        $this->estimation = $estimation;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getWarehousesForOrder(Order $order, Allocation $allocation = null): array
     {
         $results = [];
         $strategy = $this->strategiesRegistry->getStrategy(QuantityWFAStrategy::IDENTIFIER);
-        $strategy->setEstimation($this->estimation);
         $results = $strategy->getWarehouseResults($order, $allocation, $results);
 
         if (count($results) > 0) {

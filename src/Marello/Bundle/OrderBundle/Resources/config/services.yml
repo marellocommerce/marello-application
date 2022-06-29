@@ -11,8 +11,7 @@ services:
 
     marello_order.email_processor_link:
         tags:
-#            - { name: oro_service_link, service: marello_notification.email.send_processor }
-            - { name: oro_service_link, service: marello_order.provider.send_email_template_attachment_processor }
+            - { name: oro_service_link, service: marello_notification.email.send_processor }
 
     marello_order.listener.order_created_notification_sender:
         class: Marello\Bundle\OrderBundle\EventListener\OrderCreatedNotificationSender
@@ -193,7 +192,6 @@ services:
         class: 'Marello\Bundle\OrderBundle\Factory\OrderShippingContextFactory'
         public: true
         arguments:
-            - '@Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProvider'
             - '@marello_order.shipping_line_item.converter_basic'
             - '@marello_shipping.context.builder_factory_basic'
         calls:

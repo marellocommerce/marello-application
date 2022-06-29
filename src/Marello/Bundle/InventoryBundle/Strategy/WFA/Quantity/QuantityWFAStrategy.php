@@ -28,11 +28,6 @@ class QuantityWFAStrategy implements WFAStrategyInterface
     const CNA_WAREHOUSE_CODE = 'could_not_allocate';
 
     /**
-     * @var bool
-     */
-    private $estimation = false;
-
-    /**
      * @var QtyWHCalculatorInterface
      */
     private $minQtyWHCalculator;
@@ -91,14 +86,6 @@ class QuantityWFAStrategy implements WFAStrategyInterface
     public function isEnabled(): bool
     {
         return true;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function setEstimation($estimation = false)
-    {
-        $this->estimation = $estimation;
     }
 
     /**

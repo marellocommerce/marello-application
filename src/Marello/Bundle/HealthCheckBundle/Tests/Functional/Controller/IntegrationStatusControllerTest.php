@@ -138,7 +138,7 @@ class IntegrationStatusControllerTest extends WebTestCase
             'marello-last-integration-statuses-grid',
             [
                 'marello-last-integration-statuses-grid[widgetConfiguration][dateRange][start]'
-                    => (new \DateTime())->format(\DateTime::W3C),
+                    => (new \DateTime())->format('Y-m-d'),
                 'marello-last-integration-statuses-grid[widgetConfiguration][dateRange][end]' => null,
                 'marello-last-integration-statuses-grid[widgetConfiguration][dateRange][part]'
                     => AbstractDateFilterType::TYPE_BETWEEN,

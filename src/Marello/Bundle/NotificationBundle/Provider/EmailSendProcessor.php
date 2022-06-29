@@ -21,7 +21,7 @@ use Oro\Bundle\EmailBundle\Tools\EmailAttachmentTransformer;
 use Marello\Bundle\LocaleBundle\Manager\EmailTemplateManager;
 use Marello\Bundle\NotificationBundle\Exception\MarelloNotificationException;
 
-class AttachmentEmailSendProcessor
+class EmailSendProcessor
 {
     use LoggerAwareTrait;
 

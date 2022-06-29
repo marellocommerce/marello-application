@@ -15,6 +15,7 @@ marello:
             id.label:                   Id
             owner.label:                Owner
             warehouse_type.label:       Type
+            notifier.label:             Notifier
             group.label:                Warehouse Group
             create_group.label:         Create Group
 

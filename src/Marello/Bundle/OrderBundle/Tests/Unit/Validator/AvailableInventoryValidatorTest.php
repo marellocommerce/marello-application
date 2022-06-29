@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\OrderBundle\Tests\Unit\Validator;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\Mapping\ClassMetadata;
 
@@ -19,7 +20,6 @@ use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\OrderBundle\Validator\AvailableInventoryValidator;
-use Marello\Bundle\OrderBundle\Validator\Constraints\AvailableInventory;
 use Marello\Bundle\InventoryBundle\Provider\AvailableInventoryProvider;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\OrderBundle\Validator\Constraints\AvailableInventoryConstraint;
@@ -152,7 +152,7 @@ class AvailableInventoryValidatorTest extends TestCase
             'fields' => ['quantity', 'product', 'order'],
             'errorPath' => 'quantity'
         ]);
-        $product->expects($this->once())->method('getSuppliers')->willReturn([]);
+        $product->expects($this->once())->method('getSuppliers')->willReturn(new ArrayCollection());
         $product->expects($this->exactly(3))->method('getInventoryItems')->willReturn([]);
         $violationBuilderMock = $this->createMock(ConstraintViolationBuilderInterface::class);
 
