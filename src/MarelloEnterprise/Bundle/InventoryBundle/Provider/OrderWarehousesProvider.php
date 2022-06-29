@@ -34,14 +34,6 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
     ) {}
 
     /**
-     * {@inheritDoc}
-     */
-    public function setEstimation($estimation = false)
-    {
-        $this->estimation = $estimation;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getWarehousesForOrder(Order $order, Allocation $allocation = null): array
@@ -53,7 +45,6 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
 
         foreach ($filteredRules as $rule) {
             $strategy = $this->strategiesRegistry->getStrategy($rule->getStrategy());
-            $strategy->setEstimation($this->estimation);
             $results = $strategy->getWarehouseResults($order, $allocation, $results);
         }
 

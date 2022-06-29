@@ -14,11 +14,6 @@ class MinimumDistanceWFAStrategy implements WFAStrategyInterface
     const LABEL = 'marelloenterprise.inventory.strategies.min_distance';
 
     /**
-     * @var bool
-     */
-    private $estimation = false;
-
-    /**
      * @var AddressesDistanceCalculatorInterface
      */
     private $distanceCalculator;
@@ -56,14 +51,6 @@ class MinimumDistanceWFAStrategy implements WFAStrategyInterface
     }
 
     /**
-     * @inheritDoc
-     */
-    public function setEstimation($estimation = false)
-    {
-        $this->estimation = $estimation;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getWarehouseResults(Order $order, Allocation $allocation = null, array $initialResults = []): array
@@ -88,7 +75,6 @@ class MinimumDistanceWFAStrategy implements WFAStrategyInterface
             }
             $distances[$key] = $distance;
         }
-
-        return [$initialResults[array_search(min($distances), $distances)]];
+        return $initialResults[array_search(min($distances), $distances)];
     }
 }

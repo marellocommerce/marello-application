@@ -3,7 +3,9 @@
 namespace MarelloEnterprise\Bundle\OrderBundle\Tests\Functional\Controller;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
+use Marello\Bundle\InventoryBundle\Entity\Allocation;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
@@ -133,21 +135,15 @@ class OrderControllerDropshipmentTest extends WebTestCase
         $this->workflowManager->transit($workflowItem, 'payment_received');
         $this->workflowManager->transit($workflowItem, 'prepare_shipping');
 
-        /** @var PackingSlip $packingSlip */
-        $packingSlip = $this->doctrine
-            ->getManagerForClass(PackingSlip::class)
-            ->getRepository(PackingSlip::class)
+        /** @var Allocation $allocation */
+        $allocation = $this->doctrine
+            ->getManagerForClass(Allocation::class)
+            ->getRepository(Allocation::class)
             ->findOneBy([
                 'order' => $entity
             ]);
-        $this->assertNotEmpty($packingSlip);
-        foreach ($packingSlip->getItems() as $packingSlipItem) {
-            $warehouseType = $packingSlip->getWarehouse()->getWarehouseType()->getName();
-            $this->assertNotEquals(WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL, $warehouseType);
-            $this->assertEquals(LoadOrderItemStatusData::PROCESSING, $packingSlipItem->getStatus()->getId());
-            $orderItem = $packingSlipItem->getOrderItem();
-            $this->assertEquals(LoadOrderItemStatusData::PROCESSING, $orderItem->getStatus()->getId());
-        }
+
+        $this->assertNotEmpty($allocation);
     }
 
     /**
@@ -248,37 +244,41 @@ class OrderControllerDropshipmentTest extends WebTestCase
         $this->workflowManager->transit($workflowItem, 'payment_received');
         $this->workflowManager->transit($workflowItem, 'prepare_shipping');
 
-        /** @var PackingSlip[] $packingSlips */
-        $packingSlips = $this->doctrine
-            ->getManagerForClass(PackingSlip::class)
-            ->getRepository(PackingSlip::class)
-            ->findBy([
-                'order' => $entity
-            ]);
-        $this->assertCount(2, $packingSlips);
+//        /** @var PackingSlip[] $packingSlips */
+//        $packingSlips = $this->doctrine
+//            ->getManagerForClass(PackingSlip::class)
+//            ->getRepository(PackingSlip::class)
+//            ->findBy([
+//                'order' => $entity
+//            ]);
+//        $this->assertCount(2, $packingSlips);
 
         /** @var Product $ownProduct */
         $ownProduct = $this->getReference(LoadProductData::PRODUCT_1_REF);
         /** @var Product $externalProduct */
         $externalProduct = $this->getReference(LoadProductData::PRODUCT_5_REF);
-        
-        foreach ($packingSlips as $packingSlip) {
-            $packingSlipItems = $packingSlip->getItems()->toArray();
-            $this->assertCount(1, $packingSlipItems);
-            /** @var PackingSlipItem $packingSlipItem */
-            $packingSlipItem = reset($packingSlipItems);
-            $orderItem = $packingSlipItem->getOrderItem();
-            $warehouseType = $packingSlip->getWarehouse()->getWarehouseType()->getName();
+
+        /** @var Allocation $allocation */
+        $allocations = $this->doctrine
+            ->getManagerForClass(Allocation::class)
+            ->getRepository(Allocation::class)
+            ->findBy([
+                'order' => $entity
+            ]);
+        $this->assertCount(2, $allocations);
+
+        foreach ($allocations as $allocation) {
+            $allocationItems = $allocation->getItems()->toArray();
+            $this->assertCount(1, $allocationItems);
+            /** @var AllocationItem $allocationItem */
+            $allocationItem = reset($allocationItems);
+            $orderItem = $allocationItem->getOrderItem();
+            $warehouseType = $allocation->getWarehouse()->getWarehouseType()->getName();
             if ($warehouseType === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
-                $this->assertEquals($packingSlipItem->getProductSku(), $externalProduct->getSku());
-                $this->assertEquals(
-                    LoadOrderItemStatusData::DROPSHIPPING,
-                    $packingSlipItem->getStatus()->getId()
-                );
-                $this->assertEquals(LoadOrderItemStatusData::DROPSHIPPING, $orderItem->getStatus()->getId());
+                $this->assertEquals($allocationItem->getProductSku(), $externalProduct->getSku());
+                $this->assertEquals(LoadOrderItemStatusData::PENDING, $orderItem->getStatus()->getId());
             } else {
-                $this->assertEquals($packingSlipItem->getProductSku(), $ownProduct->getSku());
-                $this->assertEquals(LoadOrderItemStatusData::PROCESSING, $packingSlipItem->getStatus()->getId());
+                $this->assertEquals($allocationItem->getProductSku(), $ownProduct->getSku());
                 $this->assertEquals(LoadOrderItemStatusData::PROCESSING, $orderItem->getStatus()->getId());
             }
         }
