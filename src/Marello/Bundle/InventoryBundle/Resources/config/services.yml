@@ -257,7 +257,6 @@ services:
     Marello\Bundle\InventoryBundle\Model\Allocation\Notifier\WarehouseEmailNotifier:
         arguments:
             - '@marello_notification.email.send_processor'
-            - '@marello_order.provider.send_email_template_attachment_processor'
         tags:
             - { name: marello_inventory_warehouse_notifier }
 

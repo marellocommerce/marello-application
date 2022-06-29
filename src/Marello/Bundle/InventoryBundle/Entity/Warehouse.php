@@ -324,7 +324,7 @@ class Warehouse extends ExtendWarehouse implements EmailHolderInterface
     }
 
     /**
-     * @return WarehouseGroup
+     * @return WarehouseGroup|null
      */
     public function getGroup()
     {
@@ -332,11 +332,11 @@ class Warehouse extends ExtendWarehouse implements EmailHolderInterface
     }
 
     /**
-     * @param WarehouseGroup $group
+     * @param WarehouseGroup|null $group
      *
      * @return $this
      */
-    public function setGroup(WarehouseGroup $group)
+    public function setGroup(WarehouseGroup $group = null)
     {
         $this->group = $group;
 
