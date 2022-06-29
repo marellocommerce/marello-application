@@ -6,8 +6,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 use PHPUnit\Framework\TestCase;
 
-use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategyInterface;
-use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategiesRegistry;
+use Marello\Bundle\InventoryBundle\Strategy\WFA\WFAStrategyInterface;
+use Marello\Bundle\InventoryBundle\Strategy\WFA\WFAStrategiesRegistry;
 use MarelloEnterprise\Bundle\InventoryBundle\Provider\WFAStrategyChoicesProvider;
 
 class WFAStrategyChoicesProviderTest extends TestCase
