@@ -1,61 +1,7 @@
+imports:
+    - { resource: controllers.yml }
+
 services:
-    marelloenterprise_inventory.event_listener.default_warehouse_subscriber:
-        class: 'MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\DefaultWarehouseSubscriber'
-        tags:
-            - { name: doctrine.event_subscriber }
-
-    marelloenterprise_inventory.event_listener.doctrine.warehouse:
-        class: 'MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseListener'
-        arguments:
-            - '%installed%'
-            - '@translator.default'
-            - '@session'
-        tags:
-            - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\InventoryBundle\Entity\Warehouse', event: prePersist }
-            - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\InventoryBundle\Entity\Warehouse', event: preRemove }
-
-    marelloenterprise_inventory.event_listener.doctrine.warehouse.inventory_rebalance:
-        class: 'MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseInventoryRebalanceListener'
-        arguments:
-            - '@oro_message_queue.client.message_producer'
-        lazy:  true
-        tags:
-            - { name: doctrine.event_listener, event: onFlush }
-
-    marelloenterprise_inventory.event_listener.doctrine.warehouse_group.inventory_rebalance:
-        class: 'MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseGroupInventoryRebalanceListener'
-        arguments:
-            - '@oro_message_queue.client.message_producer'
-        lazy:  true
-        tags:
-            - { name: doctrine.event_listener, event: onFlush }
-
-    marelloenterprise_inventory.event_listener.doctrine.warehousegroup.remove:
-        class: 'MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseGroupRemoveListener'
-        arguments:
-            - '@translator.default'
-            - '@session'
-            - '@marelloenterprise_inventory.checker.warehousegroup.is_fixed'
-        tags:
-            - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\InventoryBundle\Entity\WarehouseGroup', event: preRemove }
-
-    marelloenterprise_inventory.event_listener.doctrine.organization.create:
-        class: 'MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\OrganizationCreateListener'
-        arguments:
-            - '%installed%'
-        tags:
-            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\OrganizationBundle\Entity\Organization', event: postPersist, priority: 10 }
-
-    marelloenterprise_inventory.event_listener.datagrid.warehousegroups_grid:
-        class: 'MarelloEnterprise\Bundle\InventoryBundle\EventListener\Datagrid\WarehouseGroupDatagridListener'
-        tags:
-            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.after.marelloenterprise-inventory-warehousegroups-grid, method: onResultAfter }
-
-    marelloenterprise_inventory.event_listener.datagrid.warehousechannelgrouplinks_grid:
-        class: 'MarelloEnterprise\Bundle\InventoryBundle\EventListener\Datagrid\WarehouseChannelGroupLinkDatagridListener'
-        tags:
-            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.after.marelloenterprise-inventory-warehousechannelgrouplinks-grid, method: onResultAfter }
-
     marelloenterprise_inventory.datagrid.warehouse.action_permission_provider:
         public: true
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Datagrid\WarehouseActionPermissionProvider'
@@ -69,7 +15,8 @@ services:
     marelloenterprise_inventory.validator.default_warehouse_exists:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Validator\DefaultWarehouseExistsValidator'
         arguments:
-            - '@marelloenterprise_inventory.repository.warehouse'
+            - '@MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository'
+            - '@oro_security.acl_helper'
         tags:
             - { name: validator.constraint_validator, alias: marelloenterprise_inventory.default_warehouse_exists }
 
@@ -108,13 +55,12 @@ services:
         arguments:
             - 'Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink'
 
-    marelloenterprise_inventory.repository.warehouse:
-        class: 'MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository'
+    MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository:
+        parent: oro_entity.abstract_repository
         arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@marelloenterprise_inventory.metadata.warehouse'
-        calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
+            - 'Marello\Bundle\InventoryBundle\Entity\Warehouse'
+        tags:
+            - { name: doctrine.repository_service }
 
     marelloenterprise_inventory.repository.warehousechannelgrouplink:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository'
@@ -122,26 +68,14 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@marelloenterprise_inventory.metadata.warehousechannelgrouplink'
-        calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
+            - '@oro_security.acl_helper'
 
     marelloenterprise_inventory.datagrid.wfa_rule_actions_visibility_provider:
         public: true
         parent: marello_rule.action.visibility_provider
 
-    marelloenterprise_inventory.wfa_strategy.registry:
-        class: 'MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategiesRegistry'
-
-    marelloenterprise_inventory.wfa_strategy.min_quantity:
-        class: 'MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\MinimumQuantityWFAStrategy'
-        arguments:
-            - '@marelloenterprise_inventory.wfa_strategy.min_quantity.calculator.main'
-            - '@marello_inventory.repository.warehousechannelgrouplink'
-        tags:
-            - { name: marello_inventory_wfa_strategy }
-
     marelloenterprise_inventory.wfa_strategy.min_distance:
-        class: 'MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumDistance\MinimumDistanceWFAStrategy'
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFA\MinimumDistance\MinimumDistanceWFAStrategy'
         arguments:
             - '@marelloenterprise_address.distance_calculator.main'
         tags:
@@ -151,22 +85,23 @@ services:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Provider\WFAStrategyChoicesProvider'
         public: true
         arguments:
-            - '@marelloenterprise_inventory.wfa_strategy.registry'
+            - '@Marello\Bundle\InventoryBundle\Strategy\WFA\WFAStrategiesRegistry'
             - '@translator'
 
     marelloenterprise_inventory.provider.order_warehouse:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Provider\OrderWarehousesProvider'
-        decorates: marello_inventory.provider.order_warehouse
+        decorates: Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProvider
         arguments:
-            - '@marelloenterprise_inventory.wfa_strategy.registry'
+            - '@Marello\Bundle\InventoryBundle\Strategy\WFA\WFAStrategiesRegistry'
             - '@marello_rule.rule_filtration.service'
-            - '@marelloenterprise_inventory.repository.wfa_rule'
+            - '@MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WFARuleRepository'
+            - '@oro_security.acl_helper'
 
     marelloenterprise_inventory.formatter.wfa_strategy.label:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Formatter\WFAStrategyLabelFormatter'
         arguments:
-        - '@marelloenterprise_inventory.wfa_strategy.registry'
-        - '@translator'
+            - '@Marello\Bundle\InventoryBundle\Strategy\WFA\WFAStrategiesRegistry'
+            - '@translator'
 
     marelloenterprise_inventory.twig.wfa_strategy_extension:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Twig\WFAStrategyExtension'
@@ -176,30 +111,18 @@ services:
         tags:
             - { name: twig.extension }
 
-    marelloenterprise_inventory.repository.wfa_rule:
-        class: 'MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WFARuleRepository'
+    MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WFARuleRepository:
         parent: oro_entity.abstract_repository
         arguments:
             - 'MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule'
-        calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
-
-    marelloenterprise_inventory.wfa_strategy.min_quantity.calculator.chain_element.multiple_wh:
-        class: 'MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\Calculator\Chain\Element\MultipleWarehouses\MultipleWHCalculatorChainElement'
-
-    marelloenterprise_inventory.wfa_strategy.min_quantity.calculator.chain_element.single_wh:
-        class: 'MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\Calculator\Chain\Element\SingleWarehouse\SingleWHCalculatorChainElement'
-        calls:
-            - ['setSuccessor', ['@marelloenterprise_inventory.wfa_strategy.min_quantity.calculator.chain_element.multiple_wh']]
-
-    marelloenterprise_inventory.wfa_strategy.min_quantity.calculator.main:
-        parent: marelloenterprise_inventory.wfa_strategy.min_quantity.calculator.chain_element.single_wh
-
-    marelloenterprise_inventory.listener.datagrid.inventory_level_log:
-        class: 'MarelloEnterprise\Bundle\InventoryBundle\EventListener\Datagrid\InventoryLevelLogGridListener'
         tags:
-            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-inventory-log, method: onBuildBefore }
-            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.before_query.marello-inventory-log, method: onResultBeforeQuery, priority: -255 }
+            - { name: doctrine.repository_service }
+
+    Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\Calculator\SingleWHCalculator:
+        calls:
+            - ['setSuccessor', ['@MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFA\Quantity\Calculator\MultiWHCalculator']]
+
+    MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFA\Quantity\Calculator\MultiWHCalculator: ~
 
     marelloenterprise_inventory.action.handler.wfa_rule.enable_status:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Action\Handler\WfaRuleToggleStatusActionHandler'
@@ -214,3 +137,14 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - false
+
+    MarelloEnterprise\Bundle\InventoryBundle\Provider\InventoryAllocationProvider:
+        decorates: Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider
+        arguments:
+            - '@MarelloEnterprise\Bundle\InventoryBundle\Provider\InventoryAllocationProvider.inner'
+            - '@Marello\Bundle\InventoryBundle\Strategy\WFA\WFAStrategiesRegistry'
+            - '@marello_rule.rule_filtration.service'
+            - '@oro_entity.doctrine_helper'
+            - '@Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProvider'
+            - '@event_dispatcher'
+            - '@oro_config.manager'

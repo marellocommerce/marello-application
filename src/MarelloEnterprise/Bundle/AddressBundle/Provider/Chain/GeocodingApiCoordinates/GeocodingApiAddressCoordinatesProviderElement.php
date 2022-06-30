@@ -12,31 +12,16 @@ use MarelloEnterprise\Bundle\GoogleApiBundle\Exception\GoogleApiException;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Provider\GoogleApiResultsProviderInterface;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\GeocodingApiResultFactory;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class GeocodingApiAddressCoordinatesProviderElement extends AbstractAddressCoordinatesProviderElement implements
     AddressCoordinatesProviderChainElementInterface
 {
-    /**
-     * @var DoctrineHelper
-     */
-    private $doctrineHelper;
-
-    /**
-     * @var GoogleApiResultsProviderInterface
-     */
-    private $geocodingApiResultsProvider;
-
-    /**
-     * @param DoctrineHelper $doctrineHelper
-     * @param GoogleApiResultsProviderInterface $geocodingApiResultsProvider
-     */
     public function __construct(
-        DoctrineHelper $doctrineHelper,
-        GoogleApiResultsProviderInterface $geocodingApiResultsProvider
-    ) {
-        $this->doctrineHelper = $doctrineHelper;
-        $this->geocodingApiResultsProvider = $geocodingApiResultsProvider;
-    }
+        private DoctrineHelper $doctrineHelper,
+        private GoogleApiResultsProviderInterface $geocodingApiResultsProvider,
+        private AclHelper $aclHelper
+    ) {}
 
     /**
      * @inheritDoc
@@ -49,7 +34,7 @@ class GeocodingApiAddressCoordinatesProviderElement extends AbstractAddressCoord
             ->getEntityManagerForClass(MarelloAddress::class)
             ->getRepository(MarelloAddress::class);
         /** @var MarelloAddress $sameAddresses */
-        $sameAddresses = $repository->findByAddressParts($address);
+        $sameAddresses = $repository->findByAddressParts($address, $this->aclHelper);
         $results = $this->geocodingApiResultsProvider
             ->getApiResults(GoogleApiContextFactory::createContext($address));
         if ($results->getStatus() === false && $results->getErrorType() && $results->getErrorMessage()) {

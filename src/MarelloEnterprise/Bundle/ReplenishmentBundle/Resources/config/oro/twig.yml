@@ -1,2 +1,2 @@
 bundles:
-    - MarelloEnterpriseReplenishmentBundle:Form:fields.html.twig
+    - '@MarelloEnterpriseReplenishment/Form/fields.html.twig'

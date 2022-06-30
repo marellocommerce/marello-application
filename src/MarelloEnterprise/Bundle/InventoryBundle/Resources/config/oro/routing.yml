@@ -18,11 +18,38 @@ marelloenterprise_inventory_wfarule:
     type:     annotation
     prefix:   /marello/inventory/wfa-rule
 
-marelloenterprise_inventory_bundle_api:
-    resource: "@MarelloEnterpriseInventoryBundle/Resources/config/oro/routing_api.yml"
-    type: rest
-    prefix: api/rest/{version}
-    requirements:
-        version:  latest|v1
+marelloenterprise_api_enable_wfa_rule:
+    path: '/api/rest/{version}/wfarules/{id}/enable'
+    methods: [GET]
     defaults:
-        version:  latest
+        _controller: 'MarelloEnterprise\Bundle\InventoryBundle\Controller\Api\Rest\WFARuleController::enableAction'
+        _format: json
+        version: latest
+    requirements:
+        id: \d+
+        _format: json|html
+        version: latest|v1
+
+marelloenterprise_api_disabe_wfa_rule:
+    path: '/api/rest/{version}/wfarules/{id}/disable'
+    methods: [GET]
+    defaults:
+        _controller: 'MarelloEnterprise\Bundle\InventoryBundle\Controller\Api\Rest\WFARuleController::disableAction'
+        _format: json
+        version: latest
+    requirements:
+        id: \d+
+        _format: json|html
+        version: latest|v1
+
+marelloenterprise_api_mass_wfa_rule:
+    path: '/api/rest/{version}/wfarules/{gridName}/massAction/{actionName}'
+    methods: [GET]
+    defaults:
+        _controller: 'MarelloEnterprise\Bundle\InventoryBundle\Controller\Api\Rest\WFARuleController::massAction'
+        _format: json
+        version: latest
+    requirements:
+        id: \d+
+        _format: json|html
+        version: latest|v1

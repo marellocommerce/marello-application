@@ -5,6 +5,7 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Form\Handler;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ObjectManager;
 
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -44,6 +45,11 @@ class WarehouseHandlerTest extends TestCase
      * @var Warehouse|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $entity;
+
+    /**
+     * @var AclHelper|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected $aclHelper;
 
     /**
      * @var WarehouseHandler
@@ -101,8 +107,9 @@ class WarehouseHandlerTest extends TestCase
             ->method('get')
             ->with('createOwnGroup')
             ->willReturn($childForm);
+        $this->aclHelper = $this->createMock(AclHelper::class);
 
-        $this->warehouseHandler = new WarehouseHandler($this->manager);
+        $this->warehouseHandler = new WarehouseHandler($this->manager, $this->aclHelper);
     }
 
     public function testProcessFixedBefore()

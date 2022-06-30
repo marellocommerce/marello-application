@@ -4,12 +4,14 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Controller;
 
 use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 use MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseChannelGroupLinkType;
+use Oro\Bundle\FormBundle\Model\UpdateHandlerFacade;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class WarehouseChannelGroupLinkController extends AbstractController
 {
@@ -18,7 +20,7 @@ class WarehouseChannelGroupLinkController extends AbstractController
      *     path="/",
      *     name="marelloenterprise_inventory_warehousechannelgrouplink_index"
      * )
-     * @Template("MarelloEnterpriseInventoryBundle:WarehouseChannelGroupLink:index.html.twig")
+     * @Template("@MarelloEnterpriseInventory/WarehouseChannelGroupLink/index.html.twig")
      * @Acl(
      *      id="marelloenterprise_inventory_warehousechannelgrouplink_view",
      *      type="entity",
@@ -40,7 +42,7 @@ class WarehouseChannelGroupLinkController extends AbstractController
      *     path="/create",
      *     name="marelloenterprise_inventory_warehousechannelgrouplink_create"
      * )
-     * @Template("MarelloEnterpriseInventoryBundle:WarehouseChannelGroupLink:update.html.twig")
+     * @Template("@MarelloEnterpriseInventory/WarehouseChannelGroupLink/update.html.twig")
      * @Acl(
      *     id="marelloenterprise_inventory_warehousechannelgrouplink_create",
      *     type="entity",
@@ -62,7 +64,7 @@ class WarehouseChannelGroupLinkController extends AbstractController
      *     name="marelloenterprise_inventory_warehousechannelgrouplink_update",
      *     requirements={"id"="\d+"}
      * )
-     * @Template("MarelloEnterpriseInventoryBundle:WarehouseChannelGroupLink:update.html.twig")
+     * @Template("@MarelloEnterpriseInventory/WarehouseChannelGroupLink/update.html.twig")
      * @Acl(
      *     id="marelloenterprise_inventory_warehousechannelgrouplink_update",
      *     type="entity",
@@ -95,13 +97,25 @@ class WarehouseChannelGroupLinkController extends AbstractController
      */
     protected function update(WarehouseChannelGroupLink $entity, Request $request)
     {
-        return $this->get('oro_form.update_handler')->update(
+        return $this->container->get(UpdateHandlerFacade::class)->update(
             $entity,
             $this->createForm(WarehouseChannelGroupLinkType::class, $entity),
             $this
-                ->get('translator')
+                ->container
+                ->get(TranslatorInterface::class)
                 ->trans('marelloenterprise.inventory.messages.success.warehousechannelgrouplink.saved'),
             $request
+        );
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                UpdateHandlerFacade::class,
+                TranslatorInterface::class,
+            ]
         );
     }
 }

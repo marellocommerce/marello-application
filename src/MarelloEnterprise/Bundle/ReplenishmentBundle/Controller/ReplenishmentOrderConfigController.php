@@ -3,11 +3,14 @@
 namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Controller;
 
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderConfig;
+use MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Handler\ReplenishmentOrderConfigHandler;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ReplenishmentOrderConfigController extends AbstractController
 {
@@ -17,30 +20,31 @@ class ReplenishmentOrderConfigController extends AbstractController
      *     methods={"GET", "POST"},
      *     name="marello_replenishment_order_config_create"
      * )
-     * @Template("MarelloEnterpriseReplenishmentBundle:ReplenishmentOrderConfig:create.html.twig")
+     * @Template("@MarelloEnterpriseReplenishment/ReplenishmentOrderConfig/create.html.twig")
      * @AclAncestor("marello_replenishment_order_config_create")
      *
+     * @param Request $request
      * @return array
      */
-    public function createAction()
+    public function createAction(Request $request)
     {
-        return $this->update(new ReplenishmentOrderConfig());
+        return $this->update($request, new ReplenishmentOrderConfig());
     }
 
     /**
+     * @param Request $request
      * @param ReplenishmentOrderConfig $orderConfig
-     *
      * @return RedirectResponse|array
      */
-    protected function update(ReplenishmentOrderConfig $orderConfig = null)
+    protected function update(Request $request, ReplenishmentOrderConfig $orderConfig = null)
     {
-        $handler = $this->get('marelloenterprise_replenishment.form.handler.replenishment_order_config');
+        $handler = $this->container->get(ReplenishmentOrderConfigHandler::class);
         $result = $handler->process($orderConfig);
         if (isset($result['result']) && isset($result['messageType']) && isset($result['message']) &&
             $result['result'] !== false) {
-            $this->get('session')->getFlashBag()->add(
+            $request->getSession()->getFlashBag()->add(
                 $result['messageType'],
-                $this->get('translator')
+                $this->container->get(TranslatorInterface::class)
                     ->trans($result['message'])
             );
 
@@ -61,10 +65,21 @@ class ReplenishmentOrderConfigController extends AbstractController
      *      defaults={"id"=0}
      * )
      * @AclAncestor("marello_product_view")
-     * @Template("MarelloEnterpriseReplenishmentBundle:ReplenishmentOrderConfig/widget:productsCandidates.html.twig")
+     * @Template("@MarelloEnterpriseReplenishment/ReplenishmentOrderConfig/widget/productsCandidates.html.twig")
      */
     public function productsCandidatesAction()
     {
         return [];
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                ReplenishmentOrderConfigHandler::class,
+                TranslatorInterface::class,
+            ]
+        );
     }
 }

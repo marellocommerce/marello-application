@@ -98,7 +98,7 @@ datagrids:
                 label:                marello.inventory.warehousegroup.warehouses.label
                 type:                 twig
                 frontend_type:        html
-                template:             MarelloEnterpriseInventoryBundle:WarehouseGroup/Datagrid:warehouses.html.twig
+                template:             '@MarelloEnterpriseInventory/WarehouseGroup/Datagrid/warehouses.html.twig'
         filters:
             columns:
                 name:
@@ -168,6 +168,10 @@ datagrids:
                         - whg.id = :id
             bind_parameters:
                 - id
+        columns:
+            isConsolidationWarehouse:
+                label: marello.inventory.warehouse.is_consolidation_warehouse.label
+                frontend_type:      boolean
         filters: ~
         actions: ~
 
@@ -194,7 +198,7 @@ datagrids:
                 label:                marello.inventory.warehousechannelgrouplink.sales_channel_groups.label
                 type:                 twig
                 frontend_type:        html
-                template:             MarelloEnterpriseInventoryBundle:WarehouseChannelGroupLink/Datagrid:salesChannelGroups.html.twig
+                template:             '@MarelloEnterpriseInventory/WarehouseChannelGroupLink/Datagrid/salesChannelGroups.html.twig'
         properties:
             id: ~
             update_link:
@@ -289,7 +293,7 @@ datagrids:
                 label:         marelloenterprise.inventory.wfarule.strategy.label
                 type:          twig
                 frontend_type: html
-                template:      MarelloEnterpriseInventoryBundle:WFARule/DataGrid:strategy.html.twig
+                template:      '@MarelloEnterpriseInventory/WFARule/DataGrid/strategy.html.twig'
         properties:
             id: ~
             view_link:

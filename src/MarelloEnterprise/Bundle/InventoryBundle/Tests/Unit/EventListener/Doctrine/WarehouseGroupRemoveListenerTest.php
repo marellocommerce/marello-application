@@ -9,6 +9,7 @@ use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use MarelloEnterprise\Bundle\InventoryBundle\Checker\IsFixedWarehouseGroupChecker;
 use MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseGroupRemoveListener;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -37,6 +38,11 @@ class WarehouseGroupREmoveListenerTest extends TestCase
     private $session;
 
     /**
+     * @var AclHelper|\PHPUnit\Framework\MockObject\MockObject
+     */
+    private $aclHelper;
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp(): void
@@ -44,10 +50,12 @@ class WarehouseGroupREmoveListenerTest extends TestCase
         $this->translator = $this->createMock(TranslatorInterface::class);
         $this->session = $this->createMock(Session::class);
         $this->checker = $this->createMock(IsFixedWarehouseGroupChecker::class);
+        $this->aclHelper = $this->createMock(AclHelper::class);
         $this->warehouseGroupRemoveListener = new WarehouseGroupRemoveListener(
             $this->translator,
             $this->session,
-            $this->checker
+            $this->checker,
+            $this->aclHelper
         );
     }
 

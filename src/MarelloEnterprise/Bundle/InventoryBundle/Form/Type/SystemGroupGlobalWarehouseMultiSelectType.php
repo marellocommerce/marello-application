@@ -19,9 +19,9 @@ class SystemGroupGlobalWarehouseMultiSelectType extends AbstractWarehouseMultiSe
                 'multiple'    => true,
                 'placeholder' => 'marelloenterprise.inventory.warehouse.form.select_warehouse',
                 'result_template_twig' =>
-                    'MarelloEnterpriseInventoryBundle:Warehouse:Autocomplete/result.html.twig',
+                    '@MarelloEnterpriseInventory/Warehouse/Autocomplete/result.html.twig',
                 'selection_template_twig' =>
-                    'MarelloEnterpriseInventoryBundle:Warehouse:Autocomplete/selection.html.twig',
+                    '@MarelloEnterpriseInventory/Warehouse/Autocomplete/selection.html.twig',
                 'allowClear'  => true,
                 'component' => 'autocomplete-owner-aware-warehouse-group'
             ],

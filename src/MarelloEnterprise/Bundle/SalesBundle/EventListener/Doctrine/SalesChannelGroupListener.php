@@ -5,22 +5,15 @@ namespace MarelloEnterprise\Bundle\SalesBundle\EventListener\Doctrine;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class SalesChannelGroupListener
 {
-    /**
-     * @var Session
-     */
-    protected $session;
-
-    /**
-     * @param Session $session
-     */
-    public function __construct(Session $session)
-    {
-        $this->session = $session;
-    }
+    public function __construct(
+        protected Session $session,
+        protected AclHelper $aclHelper
+    ) {}
     
     /**
      * @param LifecycleEventArgs $args
@@ -36,7 +29,7 @@ class SalesChannelGroupListener
         $linkOwner = $args
             ->getEntityManager()
             ->getRepository(WarehouseChannelGroupLink::class)
-            ->findLinkBySalesChannelGroup($entity);
+            ->findLinkBySalesChannelGroup($entity, $this->aclHelper);
         if ($linkOwner && !$linkOwner->isSystem()) {
             $this->session
                 ->getFlashBag()
