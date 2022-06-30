@@ -2,6 +2,8 @@
 
 namespace Marello\Bundle\UPSBundle\Controller;
 
+use Doctrine\Persistence\ManagerRegistry;
+use Marello\Bundle\UPSBundle\Connection\Validator\UpsConnectionValidator;
 use Oro\Bundle\AddressBundle\Entity\Country;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Marello\Bundle\UPSBundle\Connection\Validator\Result\Factory\UpsConnectionValidatorResultFactory;
@@ -14,6 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AjaxUPSController extends AbstractController
 {
@@ -31,8 +34,7 @@ class AjaxUPSController extends AbstractController
     public function getShippingServicesByCountryAction(Country $country)
     {
         /** @var ShippingServiceRepository $repository */
-        $repository = $this->container
-            ->get('doctrine')
+        $repository = $this->container->get(ManagerRegistry::class)
             ->getManagerForClass('MarelloUPSBundle:ShippingService')
             ->getRepository('MarelloUPSBundle:ShippingService');
         $services = $repository->getShippingServicesByCountry($country);
@@ -70,7 +72,7 @@ class AjaxUPSController extends AbstractController
 
         /** @var UPSSettings $transport */
         $transport = $channel->getTransport();
-        $result = $this->get('marello_ups.connection.validator')->validateConnectionByUpsSettings($transport);
+        $result = $this->container->get(UpsConnectionValidator::class)->validateConnectionByUpsSettings($transport);
 
         if (!$result->getStatus()) {
             return new JsonResponse([
@@ -81,7 +83,9 @@ class AjaxUPSController extends AbstractController
 
         return new JsonResponse([
             'success' => true,
-            'message' => $this->get('translator')->trans('marello.ups.connection_validation.result.success.message'),
+            'message' => $this->container
+                ->get(TranslatorInterface::class)
+                ->trans('marello.ups.connection_validation.result.success.message'),
         ]);
     }
 
@@ -107,6 +111,18 @@ class AjaxUPSController extends AbstractController
                 $message = 'marello.ups.connection_validation.result.server_error.message';
                 break;
         }
-        return $this->get('translator')->trans($message, $parameters);
+        return $this->container->get(TranslatorInterface::class)->trans($message, $parameters);
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                ManagerRegistry::class,
+                UpsConnectionValidator::class,
+                TranslatorInterface::class,
+            ]
+        );
     }
 }

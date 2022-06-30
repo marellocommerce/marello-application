@@ -15,7 +15,7 @@ class PackingSlipController extends AbstractController
      *     path="/",
      *     name="marello_packing_packingslip_index"
      * )
-     * @Template("MarelloPackingBundle:PackingSlip:index.html.twig")
+     * @Template("@MarelloPacking/PackingSlip/index.html.twig")
      * @AclAncestor("marello_packing_slip_view")
      */
     public function indexAction()
@@ -29,7 +29,7 @@ class PackingSlipController extends AbstractController
      *     requirements={"id"="\d+"},
      *     name="marello_packing_packingslip_view"
      * )
-     * @Template("MarelloPackingBundle:PackingSlip:view.html.twig")
+     * @Template("@MarelloPacking/PackingSlip/view.html.twig")
      * @AclAncestor("marello_packing_slip_view")
      *
      * @param PackingSlip $packingSlip

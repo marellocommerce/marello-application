@@ -22,9 +22,9 @@ class TaxEventDispatcherTest extends TestCase
 
         $eventDispatcher->expects($this->exactly(3))->method('dispatch')
             ->withConsecutive(
-                [ResolveTaxEvent::RESOLVE_BEFORE, $this->isInstanceOf(ResolveTaxEvent::class)],
-                [ResolveTaxEvent::RESOLVE, $this->isInstanceOf(ResolveTaxEvent::class)],
-                [ResolveTaxEvent::RESOLVE_AFTER, $this->isInstanceOf(ResolveTaxEvent::class)]
+                [$this->isInstanceOf(ResolveTaxEvent::class), ResolveTaxEvent::RESOLVE_BEFORE],
+                [$this->isInstanceOf(ResolveTaxEvent::class), ResolveTaxEvent::RESOLVE],
+                [$this->isInstanceOf(ResolveTaxEvent::class), ResolveTaxEvent::RESOLVE_AFTER]
             );
 
         $taxDispatcher->dispatch($taxable);

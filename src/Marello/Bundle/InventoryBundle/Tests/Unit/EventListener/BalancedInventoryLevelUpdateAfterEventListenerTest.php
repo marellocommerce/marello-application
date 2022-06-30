@@ -3,6 +3,7 @@
 namespace Marello\Bundle\InventoryBundle\Tests\Unit\EventListener;
 
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 
 use PHPUnit\Framework\TestCase;
@@ -40,6 +41,11 @@ class BalancedInventoryLevelUpdateAfterEventListenerTest extends TestCase
     protected $producer;
 
     /**
+     * @var AclHelper|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected $aclHelper;
+
+    /**
      * @var BalancedInventoryRepository
      */
     protected $repository;
@@ -56,12 +62,14 @@ class BalancedInventoryLevelUpdateAfterEventListenerTest extends TestCase
         $configManager =  $this->createMock(ConfigManager::class);
         $calculator = new InventoryBalancerTriggerCalculator($configManager);
 
-        $this->repository =  $this->createMock(BalancedInventoryRepository::class);
+        $this->repository = $this->createMock(BalancedInventoryRepository::class);
+        $this->aclHelper = $this->createMock(AclHelper::class);
 
         $this->listener = new BalancedInventoryUpdateAfterEventListener(
             $this->producer,
             $calculator,
-            $this->repository
+            $this->repository,
+            $this->aclHelper
         );
     }
 
@@ -121,7 +129,8 @@ EOF
         $listener = new BalancedInventoryUpdateAfterEventListener(
             $this->producer,
             $calculator,
-            $this->repository
+            $this->repository,
+            $this->aclHelper
         );
 
         $listener->handleInventoryUpdateAfterEvent($event);

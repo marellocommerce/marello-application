@@ -1,7 +1,7 @@
-{% extends 'OroUIBundle:actions:view.html.twig' %}
-{% import 'OroUIBundle::macros.html.twig' as UI %}
-{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
-{% import 'OroEntityConfigBundle::macros.html.twig' as entityConfig %}
+{% extends '@OroUI/actions/view.html.twig' %}
+{% import '@OroUI/macros.html.twig' as UI %}
+{% import '@OroDataGrid/macros.html.twig' as dataGrid %}
+{% import '@OroEntityConfig/macros.html.twig' as entityConfig %}
 
 {% oro_title_set({params : {"%id%": entity.orderNumber }}) %}
 
@@ -186,21 +186,25 @@
         {
             'title': 'marello.order.datablock.general'|trans,
             'class': 'active',
+            'priority' : 10,
             'subblocks': generalSubblocks
         },
         {
             'title': 'marello.order.datablock.billing_address'|trans,
             'class': 'active',
+            'priority' : 20,
             'subblocks': billingSubblocks
         },
         {
             'title': 'marello.order.datablock.delivery'|trans,
             'class': 'active',
+            'priority' : 30,
             'subblocks': shippingSubblocks
         },
         {
             'title': 'marello.order.datablock.order_items'|trans,
             'class': 'active',
+            'priority' : 40,
             'subblocks': [
                 { 'data' : [items] }
             ]
@@ -208,6 +212,7 @@
         {
             'title': 'marello.order.datablock.invoices'|trans,
             'class': 'active',
+            'priority' : 50,
             'subblocks': [
                 { 'data' : [invoices] }
             ]
@@ -215,6 +220,7 @@
         {
             'title': 'marello.order.datablock.payments'|trans,
             'class': 'active',
+            'priority' : 60,
             'subblocks': [
                 { 'data' : [payments] }
             ]
@@ -222,6 +228,7 @@
         {
             'title': 'marello.order.datablock.packing_slips'|trans,
             'class': 'active',
+            'priority' : 70,
             'subblocks': [
                 { 'data' : [packingSlips] }
             ]
@@ -229,6 +236,7 @@
         {
             'title': 'marello.order.datablock.optional'|trans,
             'class': 'active',
+            'priority' : 80,
             'subblocks': [
                 { 'data' : [optionalWidget] }
             ]
@@ -241,6 +249,7 @@
 
     {% set dataBlocks = dataBlocks|merge([{
         'title' : 'marello.order.sections.additional'|trans,
+        'priority' : 90,
         'subblocks': [{
             'title' : null,
             'useSpan': false,
@@ -261,6 +270,7 @@
                 {
                     'title': additionalInfo.label|trans,
                     'class': 'active',
+                    'priority' : 100,
                     'subblocks': [
                         { 'data': [orderAdditionalInfoSection] }
                     ]

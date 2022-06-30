@@ -5,38 +5,16 @@ namespace Marello\Bundle\ShippingBundle\Method\Handler;
 use Marello\Bundle\ShippingBundle\Entity\Repository\ShippingMethodsConfigsRuleRepository;
 use Marello\Bundle\ShippingBundle\Entity\ShippingMethodsConfigsRule;
 use Marello\Bundle\ShippingBundle\Method\ShippingMethodProviderInterface;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class RulesShippingMethodDisableHandlerDecorator implements ShippingMethodDisableHandlerInterface
 {
-    /**
-     * @var ShippingMethodDisableHandlerInterface
-     */
-    private $handler;
-
-    /**
-     * @var ShippingMethodsConfigsRuleRepository
-     */
-    private $repository;
-
-    /**
-     * @var ShippingMethodProviderInterface
-     */
-    private $shippingMethodProvider;
-
-    /**
-     * @param ShippingMethodDisableHandlerInterface $handler
-     * @param ShippingMethodsConfigsRuleRepository  $repository
-     * @param ShippingMethodProviderInterface       $shippingMethodProvider
-     */
     public function __construct(
-        ShippingMethodDisableHandlerInterface $handler,
-        ShippingMethodsConfigsRuleRepository $repository,
-        ShippingMethodProviderInterface $shippingMethodProvider
-    ) {
-        $this->handler = $handler;
-        $this->repository = $repository;
-        $this->shippingMethodProvider = $shippingMethodProvider;
-    }
+        private ShippingMethodDisableHandlerInterface $handler,
+        private ShippingMethodsConfigsRuleRepository $repository,
+        private ShippingMethodProviderInterface $shippingMethodProvider,
+        private AclHelper $aclHelper
+    ) {}
 
     /**
      * {@inheritDoc}
@@ -44,7 +22,7 @@ class RulesShippingMethodDisableHandlerDecorator implements ShippingMethodDisabl
     public function handleMethodDisable($methodId)
     {
         $this->handler->handleMethodDisable($methodId);
-        $shippingMethodsConfigsRule = $this->repository->getEnabledRulesByMethod($methodId);
+        $shippingMethodsConfigsRule = $this->repository->getEnabledRulesByMethod($methodId, $this->aclHelper);
         foreach ($shippingMethodsConfigsRule as $configRule) {
             if (!$this->configHasEnabledMethod($configRule, $methodId)) {
                 $rule = $configRule->getRule();

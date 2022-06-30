@@ -1,0 +1,21 @@
+services:
+    _defaults:
+        public: true
+
+    Marello\Bundle\ProductBundle\Controller\ProductController:
+        calls:
+            - ['setContainer', ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: marello_product.provider.product_types, key: Marello\Bundle\ProductBundle\Provider\ProductTypesProvider }
+            - { name: container.service_subscriber, id: marello_product.product_form.handler, key: Marello\Bundle\ProductBundle\Form\Handler\ProductHandler }
+            - { name: container.service_subscriber, id: marello_product.provider.action_group_registry, key: Marello\Bundle\ProductBundle\Provider\ActionGroupRegistryProvider }
+            - { name: container.service_subscriber, id: marello_product.sales_channels_assign.handler, key: Marello\Bundle\ProductBundle\Form\Handler\ProductsSalesChannelsAssignHandler }
+
+    Marello\Bundle\ProductBundle\Controller\VariantController:
+        calls:
+            - ['setContainer', ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: marello_product.product_variant_form.handler, key: Marello\Bundle\ProductBundle\Form\Handler\ProductVariantHandler }
+

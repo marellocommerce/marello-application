@@ -15,9 +15,13 @@ use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
+class LoadOrderData extends AbstractFixture implements DependentFixtureInterface, ContainerAwareInterface
 {
+    use ContainerAwareTrait;
+
     /** flush manager count */
     const FLUSH_MAX = 25;
 
@@ -76,7 +80,8 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
     {
         $this->manager = $manager;
 
-        $this->defaultWarehouse = $manager->getRepository(Warehouse::class)->getDefault();
+        $aclHelper = $this->container->get('oro_security.acl_helper');
+        $this->defaultWarehouse = $manager->getRepository(Warehouse::class)->getDefault($aclHelper);
         $this->setReference('marello_warehouse_default', $this->defaultWarehouse);
 
         /** @var Order $order */

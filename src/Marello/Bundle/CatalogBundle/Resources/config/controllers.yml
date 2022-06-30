@@ -1,0 +1,10 @@
+services:
+    _defaults:
+        public: true
+
+    Marello\Bundle\CatalogBundle\Controller\CategoryController:
+        calls:
+            - ['setContainer', ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: marello_catalog.category.form.handler, key: Marello\Bundle\CatalogBundle\Form\Handler\CategoryHandler }

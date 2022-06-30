@@ -11,6 +11,8 @@ use Oro\Bundle\EntityExtendBundle\Tests\Unit\Fixtures\TestEnumValue;
 
 use Marello\Bundle\ProductBundle\Twig\ProductUnitExtension;
 use Marello\Bundle\ProductBundle\Migrations\Data\ORM\LoadProductUnitData;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 
 class ProductUnitExtensionTest extends WebTestCase
 {
@@ -58,9 +60,8 @@ class ProductUnitExtensionTest extends WebTestCase
             'get_product_unit_value_by_id'
         );
 
-        /** @var \Twig_SimpleFunction $function */
         foreach ($functions as $function) {
-            $this->assertInstanceOf('\Twig_SimpleFunction', $function);
+            $this->assertInstanceOf(TwigFunction::class, $function);
             $this->assertContains($function->getName(), $expectedFunctions);
         }
     }
@@ -77,9 +78,8 @@ class ProductUnitExtensionTest extends WebTestCase
             'marello_format_product_unit'
         );
 
-        /** @var \Twig_SimpleFilter $filter */
         foreach ($filters as $filter) {
-            $this->assertInstanceOf('\Twig_SimpleFilter', $filter);
+            $this->assertInstanceOf(TwigFilter::class, $filter);
             $this->assertContains($filter->getName(), $expectedFilters);
         }
     }

@@ -3,10 +3,14 @@
 namespace Marello\Bundle\CatalogBundle\Controller;
 
 use Marello\Bundle\CatalogBundle\Entity\Category;
+use Marello\Bundle\CatalogBundle\Form\Handler\CategoryHandler;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\UIBundle\Route\Router;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CategoryController extends AbstractController
 {
@@ -23,45 +27,46 @@ class CategoryController extends AbstractController
     /**
      * @Route(path="/create", name="marello_category_create")
      * @AclAncestor("marello_category_create")
-     * @Template("MarelloCatalogBundle:Category:update.html.twig")
+     * @Template("@MarelloCatalog/Category/update.html.twig")
      *
+     * @param Request $request
      * @return array
      */
-    public function createAction()
+    public function createAction(Request $request)
     {
-        return $this->update(new Category());
+        return $this->update(new Category(), $request);
     }
 
     /**
      * @Route(path="/update/{id}", requirements={"id"="\d+"}, name="marello_category_update")
      * @AclAncestor("marello_category_update")
-     * @Template("MarelloCatalogBundle:Category:update.html.twig")
+     * @Template("@MarelloCatalog/Category/update.html.twig")
      *
      * @param Category $category
-     *
+     * @param Request $request
      * @return array
      */
-    public function updateAction(Category $category)
+    public function updateAction(Category $category, Request $request)
     {
-        return $this->update($category);
+        return $this->update($category, $request);
     }
 
     /**
      * @param Category $category
-     *
+     * @param Request $request
      * @return array
      */
-    protected function update(Category $category)
+    protected function update(Category $category, Request $request)
     {
-        $handler = $this->get('marello_catalog.category.form.handler');
+        $handler = $this->container->get(CategoryHandler::class);
 
         if ($handler->process($category)) {
-            $this->get('session')->getFlashBag()->add(
+            $request->getSession()->getFlashBag()->add(
                 'success',
-                $this->get('translator')->trans('marello.catalog.ui.category.saved.message')
+                $this->container->get(TranslatorInterface::class)->trans('marello.catalog.ui.category.saved.message')
             );
 
-            return $this->get('oro_ui.router')->redirect($category);
+            return $this->container->get(Router::class)->redirect($category);
         }
 
         return [
@@ -73,7 +78,7 @@ class CategoryController extends AbstractController
     /**
      * @Route(path="/view/{id}", requirements={"id"="\d+"}, name="marello_category_view")
      * @AclAncestor("marello_category_view")
-     * @Template("MarelloCatalogBundle:Category:view.html.twig")
+     * @Template("@MarelloCatalog/Category/view.html.twig")
      *
      * @param Category $category
      *
@@ -84,5 +89,17 @@ class CategoryController extends AbstractController
         return [
             'entity' => $category,
         ];
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                CategoryHandler::class,
+                TranslatorInterface::class,
+                Router::class,
+            ]
+        );
     }
 }

@@ -2,36 +2,20 @@
 
 namespace Marello\Bundle\SalesBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Oro\Bundle\IntegrationBundle\Entity\Channel as IntegrationChannel;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
-class SalesChannelGroupRepository extends EntityRepository
+class SalesChannelGroupRepository extends ServiceEntityRepository
 {
-    /**
-     * @var AclHelper
-     */
-    private $aclHelper;
-
-    /**
-     * @param AclHelper $aclHelper
-     */
-    public function setAclHelper(AclHelper $aclHelper)
-    {
-        $this->aclHelper = $aclHelper;
-    }
-
-    /**
-     * @return SalesChannelGroup
-     */
-    public function findSystemChannelGroup()
+    public function findSystemChannelGroup(AclHelper $aclHelper): ?SalesChannelGroup
     {
         $qb = $this->createQueryBuilder('scg');
         $qb
             ->where($qb->expr()->eq('scg.system', $qb->expr()->literal(true)));
-        $result = $this->aclHelper->apply($qb)->getResult();
+        $result = $aclHelper->apply($qb)->getResult();
         
         return reset($result);
     }

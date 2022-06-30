@@ -3,8 +3,6 @@
 namespace Marello\Bundle\OrderBundle\Factory;
 
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
-use Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProviderInterface;
 use Marello\Bundle\OrderBundle\Converter\OrderShippingLineItemConverterInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
@@ -17,16 +15,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class OrderShippingContextFactory implements ShippingContextFactoryInterface
 {
-    /**
-     * @var bool
-     */
-    private $estimation = false;
-    
-    /**
-     * @var OrderWarehousesProviderInterface
-     */
-    private $orderWarehousesProvider;
-
     /**
      * @var OrderShippingLineItemConverterInterface
      */
@@ -43,17 +31,14 @@ class OrderShippingContextFactory implements ShippingContextFactoryInterface
     private $eventDispatcher;
 
     /**
-     * @param OrderWarehousesProviderInterface $orderWarehousesProvider
      * @param OrderShippingLineItemConverterInterface $shippingLineItemConverter
      * @param EventDispatcherInterface $eventDispatcher
      * @param null|ShippingContextBuilderFactoryInterface $shippingContextBuilderFactory
      */
     public function __construct(
-        OrderWarehousesProviderInterface $orderWarehousesProvider,
         OrderShippingLineItemConverterInterface $shippingLineItemConverter,
         ShippingContextBuilderFactoryInterface $shippingContextBuilderFactory = null
     ) {
-        $this->orderWarehousesProvider = $orderWarehousesProvider;
         $this->shippingLineItemConverter = $shippingLineItemConverter;
         $this->shippingContextBuilderFactory = $shippingContextBuilderFactory;
     }
@@ -93,7 +78,6 @@ class OrderShippingContextFactory implements ShippingContextFactoryInterface
 
         $convertedLineItems = $this->shippingLineItemConverter->convertLineItems($orderItems);
 
-        $this->orderWarehousesProvider->setEstimation($this->estimation);
         $shippingOrigin = $this->getShippingOrigin($order);
         if (null !== $shippingOrigin) {
             $shippingContextBuilder->setShippingOrigin($shippingOrigin);
@@ -115,7 +99,7 @@ class OrderShippingContextFactory implements ShippingContextFactoryInterface
         }
         $shippingContext = $shippingContextBuilder->getResult();
         $event = new OrderShippingContextBuildingEvent($shippingContext);
-        $this->eventDispatcher->dispatch(OrderShippingContextBuildingEvent::NAME, $event);
+        $this->eventDispatcher->dispatch($event, OrderShippingContextBuildingEvent::NAME);
         $results[] = $event->getShippingContext();
 
         return $results;
@@ -142,14 +126,7 @@ class OrderShippingContextFactory implements ShippingContextFactoryInterface
      */
     protected function getShippingOrigin(Order $order)
     {
-        $orderWarehouseResults = $this->orderWarehousesProvider->getWarehousesForOrder($order);
-        if (!empty($orderWarehouseResults)) {
-            /** @var OrderWarehouseResult $orderWarehouseResult */
-            $orderWarehouseResult = reset($orderWarehouseResults);
-
-            return $orderWarehouseResult->getWarehouse()->getAddress();
-        }
-
+        // keep method just in case we need to get the address from the default warehouse
         return null;
     }
 
@@ -160,23 +137,5 @@ class OrderShippingContextFactory implements ShippingContextFactoryInterface
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
-    }
-
-    /**
-     * Set estimation for getting correct shipping methods when order on demand items are in the order
-     * @param bool $estimation
-     */
-    public function setEstimation($estimation = false)
-    {
-        $this->estimation = $estimation;
-    }
-
-    /**
-     * {@inheritdoc}
-     * @return bool
-     */
-    public function isEstimation()
-    {
-        return $this->estimation;
     }
 }

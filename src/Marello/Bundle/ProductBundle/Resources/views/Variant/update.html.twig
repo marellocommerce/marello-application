@@ -1,6 +1,6 @@
-{% extends 'OroUIBundle:actions:update.html.twig' %}
-{% import 'OroUIBundle::macros.html.twig' as UI %}
-{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% extends '@OroUI/actions/update.html.twig' %}
+{% import '@OroUI/macros.html.twig' as UI %}
+{% import '@OroDataGrid/macros.html.twig' as dataGrid %}
 {% set gridName = 'marello-product-variant-extended-grid' %}
 
 {% set entity = form.vars.value %}
@@ -21,7 +21,7 @@
         {{ parent() }}
     {% else %}
         {% set title = 'marello.layout.add_entity'|trans({'%entityName%': 'marello.product.variant.entity_plural_label'|trans}) %}
-        {% include 'OroUIBundle::page_title_block.html.twig' with { title: title }%}
+        {% include '@OroUI/page_title_block.html.twig' with { title: title }%}
     {% endif %}
 {% endblock pageHeader %}
 

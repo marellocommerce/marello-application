@@ -1,0 +1,18 @@
+{% extends '@OroDashboard/Dashboard/widget.html.twig' %}
+{% import '@OroDataGrid/macros.html.twig' as dataGrid %}
+
+{% set gridName = 'marello-last-integration-statuses-grid' %}
+
+{% block content %}
+    {{ dataGrid.renderGrid(gridName, {widgetConfiguration: {code: items.code.value, dateRange: items.dateRange.value}}) }}
+{% endblock %}
+
+{% block actions %}
+    {% set actions = [{
+        'url': path('marello_healthcheck_integration_statuses_index'),
+        'type': 'link',
+        'label': 'marello.healthcheck.dashboard.last_integration_statuses.view_all'|trans
+    }] %}
+
+    {{ parent() }}
+{% endblock %}

@@ -5,18 +5,18 @@ namespace Marello\Bundle\OrderBundle\Tests\Unit\Provider;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Templating\EngineInterface;
 
 use PHPUnit\Framework\TestCase;
 
 use Marello\Bundle\AddressBundle\Form\Type\AddressType;
 use Marello\Bundle\LayoutBundle\Context\FormChangeContext;
 use Marello\Bundle\OrderBundle\Provider\OrderAddressFormChangesProvider;
+use Twig\Environment;
 
 class OrderAddressFormChangesProviderTest extends TestCase
 {
     /**
-     * @var EngineInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var Environment|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $twigEngine;
 
@@ -37,7 +37,7 @@ class OrderAddressFormChangesProviderTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->twigEngine = $this->createMock(EngineInterface::class);
+        $this->twigEngine = $this->createMock(Environment::class);
         $this->formFactory = $this->createMock(FormFactoryInterface::class);
         $this->orderAddressFormChangesProvider = new OrderAddressFormChangesProvider(
             $this->twigEngine,
@@ -84,7 +84,7 @@ class OrderAddressFormChangesProviderTest extends TestCase
 
         $this->twigEngine->expects($this->once())
             ->method('render')
-            ->with('MarelloOrderBundle:Form:customerAddressSelector.html.twig', ['form' => $fieldView])
+            ->with('@MarelloOrder/Form/customerAddressSelector.html.twig', ['form' => $fieldView])
             ->willReturn('view1');
 
         /** @var FormInterface|\PHPUnit\Framework\MockObject\MockObject $field1 */

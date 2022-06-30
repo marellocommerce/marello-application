@@ -2,28 +2,15 @@
 
 namespace Marello\Bundle\SalesBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
-class SalesChannelRepository extends EntityRepository
+class SalesChannelRepository extends ServiceEntityRepository
 {
-    /**
-     * @var AclHelper
-     */
-    private $aclHelper;
-
-    /**
-     * @param AclHelper $aclHelper
-     */
-    public function setAclHelper(AclHelper $aclHelper)
-    {
-        $this->aclHelper = $aclHelper;
-    }
-
     /**
      * @param string $searchTerm
      * @param int $groupId
@@ -57,10 +44,11 @@ class SalesChannelRepository extends EntityRepository
      *
      * @param int $salesChannel
      * @param int $productId
+     * @param AclHelper $aclHelper
      *
      * @return ProductChannelPrice[]
      */
-    public function findOneBySalesChannel($salesChannel, $productId)
+    public function findOneBySalesChannel($salesChannel, $productId, AclHelper $aclHelper)
     {
         $qb = $this->createQueryBuilder('price');
         $qb
@@ -71,22 +59,23 @@ class SalesChannelRepository extends EntityRepository
             ->setParameter('salesChannel', $salesChannel)
             ->setParameter('productId', $productId);
 
-        return $this->aclHelper->apply($qb)->getScalarResult();
+        return $aclHelper->apply($qb)->getScalarResult();
     }
 
     /**
      * Get excluded sales channel ids
      * @param array $relatedChannelIds
+     * @param AclHelper $aclHelper
      * @return array
      */
-    public function findExcludedSalesChannelIds(array $relatedChannelIds)
+    public function findExcludedSalesChannelIds(array $relatedChannelIds, AclHelper $aclHelper)
     {
         $qb = $this->createQueryBuilder('sc')
             ->select('sc.id')
             ->where('sc.id NOT IN(:channels)')
             ->setParameter('channels', $relatedChannelIds);
 
-        return $this->aclHelper->apply($qb)->getArrayResult();
+        return $aclHelper->apply($qb)->getArrayResult();
     }
 
     /**
@@ -102,26 +91,26 @@ class SalesChannelRepository extends EntityRepository
     }
 
     /**
-     * Get active channels.
+     * @param AclHelper $aclHelper
      * @return SalesChannel[]
      */
-    public function getActiveChannels()
+    public function getActiveChannels(AclHelper $aclHelper)
     {
         $qb = $this->getActiveChannelsQuery();
 
-        return $this->aclHelper->apply($qb)->getResult();
+        return $aclHelper->apply($qb)->getResult();
     }
 
     /**
-     * Get default active channels.
+     * @param AclHelper $aclHelper
      * @return SalesChannel[]
      */
-    public function getDefaultActiveChannels()
+    public function getDefaultActiveChannels(AclHelper $aclHelper)
     {
         $qb = $this->getActiveChannelsQuery();
         $qb->andWhere($qb->expr()->eq('sc.default', $qb->expr()->literal(true)));
 
-        return $this->aclHelper->apply($qb)->getResult();
+        return $aclHelper->apply($qb)->getResult();
     }
 
     /**

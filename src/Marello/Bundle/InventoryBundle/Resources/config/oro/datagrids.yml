@@ -26,7 +26,7 @@ datagrids:
                 label:              marello.product.sku.label
                 type:               twig
                 frontend_type:      html
-                template:           MarelloProductBundle:Product/Datagrid:productSku.html.twig
+                template:           '@MarelloProduct/Product/Datagrid/productSku.html.twig'
             productName:
                 label:              marello.product.names.label
             productUnit:
@@ -140,13 +140,13 @@ datagrids:
                 label:          marello.inventory.inventorylevellogrecord.inventory_alteration.label
                 type:           twig
                 frontend_type:  html
-                template:       MarelloInventoryBundle::Datagrid/InventoryLevel/diff.html.twig
+                template:       '@MarelloInventory/Datagrid/InventoryLevel/diff.html.twig'
             allocatedInventoryDiff:
                 data_name:      allocatedInventoryDiff
                 label:          marello.inventory.inventorylevellogrecord.allocated_inventory_alteration.label
                 type:           twig
                 frontend_type:  html
-                template:       MarelloInventoryBundle::Datagrid/InventoryLevel/diff.html.twig
+                template:       '@MarelloInventory/Datagrid/InventoryLevel/diff.html.twig'
             changeTrigger:
                 data_name:      changeTrigger
                 label:          marello.inventory.inventorylevellogrecord.change_trigger.label
@@ -160,7 +160,7 @@ datagrids:
                 label:          marello.inventory.inventorylevellogrecord.subject_type.label
                 type:           twig
                 frontend_type:  html
-                template:       MarelloInventoryBundle::Datagrid/InventoryLevel/subject.html.twig
+                template:       '@MarelloInventory/Datagrid/InventoryLevel/subject.html.twig'
             createdAt:
                 label:          oro.ui.created_at
                 frontend_type:  datetime
@@ -287,7 +287,7 @@ datagrids:
                 label:              marello.product.sku.label
                 type:               twig
                 frontend_type:      html
-                template:           MarelloProductBundle:Product/Datagrid:productSku.html.twig
+                template:           '@MarelloProduct/Product/Datagrid/productSku.html.twig'
             productName:
                 label:              marello.product.names.label
             inventoryQty:
@@ -404,3 +404,199 @@ datagrids:
                 hide: true
                 pagination:
                     hide: true
+
+    marello-allocation-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - allocation
+                    - parent.allocationNumber as parentAllocation
+                    - sourceEntity.allocationNumber as allocationSource
+                    - wh.label as warehouse
+                    - IDENTITY(allocation.state) as allocationStateId
+                    - IDENTITY(allocation.status) as allocationStatusId
+                from:
+                    - { table: MarelloInventoryBundle:Allocation, alias: allocation }
+                join:
+                    left:
+                        - { join: allocation.parent, alias: parent }
+                        - { join: allocation.sourceEntity, alias: sourceEntity }
+                        - { join: allocation.warehouse, alias: wh}
+                    inner:
+                        - { join: allocation.order, alias: o }
+        columns:
+            allocationNumber:
+                label:          marello.inventory.allocation.allocation_number.label
+                frontend_type:  string
+            orderNumber:
+                data_name:      order.orderNumber
+                label:          marello.order.order_number.label
+                type:           twig
+                frontend_type:  html
+                template:       '@MarelloOrder/Order/Datagrid/Property/orderNumber.html.twig'
+            orderReference:
+                data_name:      order.orderReference
+                label:          marello.order.order_reference.label
+                frontend_type:  string
+            parentAllocation:
+                label:          marello.inventory.allocation.parent.allocation_number.label
+                frontend_type:  string
+            allocationSource:
+                label:          marello.inventory.allocation.source_entity.allocation_number.label
+                frontend_type:  string
+            warehouse:
+                label:          marello.inventory.allocation.warehouse.label
+                frontend_type:  string
+            allocationStateId:
+                label:          marello.inventory.allocation.state.label
+                choices:        "@oro_entity_extend.enum_value_provider->getEnumChoicesByCode('marello_allocation_state')"
+                frontend_type:  select
+            allocationStatusId:
+                label:          marello.inventory.allocation.status.label
+                choices:        "@oro_entity_extend.enum_value_provider->getEnumChoicesByCode('marello_allocation_status')"
+                frontend_type:  select
+            createdAt:
+                label:          oro.ui.created_at
+                frontend_type:  datetime
+            updatedAt:
+                label:          oro.ui.updated_at
+                frontend_type:  datetime
+        filters:
+            columns:
+                allocationNumber:
+                    type:       string
+                    data_name:  allocation.allocationNumber
+                orderNumber:
+                    type: string
+                    data_name: o.orderNumber
+                orderReference:
+                    type: string
+                    data_name: o.orderReference
+                parentAllocation:
+                    type:       string
+                    data_name:  parent.allocationNumber
+                warehouse:
+                    type:       string
+                    data_name:  warehouse
+                allocationStateId:
+                    type:      enum
+                    data_name: allocationStateId
+                    enum_code: marello_allocation_state
+                allocationStatusId:
+                    type:      enum
+                    data_name: allocationStatusId
+                    enum_code: marello_allocation_status
+                createdAt:
+                    type:       datetime
+                    data_name:  allocation.createdAt
+                updatedAt:
+                    type:       datetime
+                    data_name:  allocation.updatedAt
+        sorters:
+            columns:
+                allocationNumber:
+                    data_name:  allocation.allocationNumber
+                orderNumber:
+                    data_name: o.orderNumber
+                orderReference:
+                    data_name: o.orderReference
+                allocationStateId:
+                    data_name:  allocationStateId
+                allocationStatusId:
+                    data_name:  allocationStatusId
+                createdAt:
+                    data_name:  allocation.createdAt
+                updatedAt:
+                    data_name:  allocation.updatedAt
+                parentAllocation:
+                    data_name:  parentAllocation
+            default:
+                allocationNumber: 'DESC'
+        properties:
+            id: ~
+            inventory_view_link:
+                type:       url
+                route:      marello_inventory_allocation_view
+                params:     [ id ]
+        actions:
+            view:
+                type:           navigate
+                label:          oro.grid.action.view
+                link:           inventory_view_link
+                icon:           eye
+                acl_recource:   marello_inventory_inventory_view
+                rowAction:      true
+
+    marello-allocation-sub-allocation-grid:
+        extends: marello-allocation-grid
+        source:
+            query:
+                where:
+                    and:
+                        - IDENTITY(allocation.parent) = :allocationParentId
+            bind_parameters:
+                 allocationParentId: allocationParentId
+        filters: ~
+        sorters: ~
+        options:
+            export: false
+            toolbarOptions:
+                hide: true
+
+    marello-allocation-items-grid:
+        source:
+            extended_entity_name: Marello\Bundle\InventoryBundle\Entity\AllocationItem
+            type: orm
+            query:
+                select:
+                    - allocationItem
+                    - wh.label as warehouse
+                from:
+                    - { table: MarelloInventoryBundle:AllocationItem, alias: allocationItem }
+                join:
+                    left:
+                        - { join: allocationItem.orderItem, alias: orderItem }
+                        - { join: allocationItem.warehouse, alias: wh }
+                where:
+                    and:
+                        - IDENTITY(allocationItem.allocation) = :allocationId
+            bind_parameters:
+                allocationId: allocationId
+        columns:
+            productSku:
+                label:              marello.product.sku.label
+                data_name:          productSku
+                type:               twig
+                frontend_type:      html
+                template:           '@MarelloProduct/Product/Datagrid/productSku.html.twig'
+            productName:
+                label:          marello.product.name.label
+                frontend_type:  string
+                data_name:      productName
+            quantity:
+                label:          marello.inventory.allocationitem.quantity.label
+                frontend_type:  number
+            quantityConfirmed:
+                label:          marello.inventory.allocationitem.quantity_confirmed.label
+                frontend_type:  number
+            quantityRejected:
+                label:          marello.inventory.allocationitem.quantity_rejected.label
+                frontend_type:  number
+            warehouse:
+                label:          marello.inventory.allocation.warehouse.label
+                frontend_type:  string
+            orderItem:
+                label:          marello.inventory.allocation.quantity_allocated.label
+                type:           twig
+                frontend_type:  html
+                template:       '@MarelloInventory/Datagrid/Property/total_allocated.html.twig'
+        sorters:
+            columns:
+                productSku:
+                    data_name:  allocationItem.productSku
+            default:
+                productSku: 'ASC'
+        options:
+            toolbarOptions:
+                hide: true

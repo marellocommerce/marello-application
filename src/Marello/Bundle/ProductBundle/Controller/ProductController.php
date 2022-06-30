@@ -4,11 +4,15 @@ namespace Marello\Bundle\ProductBundle\Controller;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Form\Handler\ProductCreateStepOneHandler;
+use Marello\Bundle\ProductBundle\Form\Handler\ProductHandler;
+use Marello\Bundle\ProductBundle\Form\Handler\ProductsSalesChannelsAssignHandler;
 use Marello\Bundle\ProductBundle\Form\Type\ProductStepOneType;
 use Marello\Bundle\ProductBundle\Form\Type\ProductType;
+use Marello\Bundle\ProductBundle\Provider\ActionGroupRegistryProvider;
+use Marello\Bundle\ProductBundle\Provider\ProductTypesProvider;
 use Oro\Bundle\ActionBundle\Model\ActionData;
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
-use Oro\Bundle\SecurityBundle\Annotation as Security;
 use Oro\Bundle\UIBundle\Route\Router;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,6 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ProductController extends AbstractController
 {
@@ -42,10 +47,9 @@ class ProductController extends AbstractController
      *     name="marello_product_create"
      * )
      * @AclAncestor("marello_product_create")
-     * @Template("MarelloProductBundle:Product:createStepOne.html.twig")
+     * @Template("@MarelloProduct/Product/createStepOne.html.twig")
      *
      * @param Request $request
-     *
      * @return array
      */
     public function createAction(Request $request)
@@ -64,11 +68,11 @@ class ProductController extends AbstractController
         $queryParams = $request->query->all();
 
         if ($handler->process()) {
-            return $this->forward('MarelloProductBundle:Product:createStepTwo', [], $queryParams);
+            return $this->forward(__CLASS__ . '::createStepTwoAction', [], $queryParams);
         }
 
-        $productTypesProvider = $this->get('marello_product.provider.product_types');
-        $em = $this->get('oro_entity.doctrine_helper');
+        $productTypesProvider = $this->container->get(ProductTypesProvider::class);
+        $em = $this->container->get(DoctrineHelper::class);
         /** @var AttributeFamily $attributeFamily */
         $countAttributeFamilies = $em
             ->getEntityRepositoryForClass(AttributeFamily::class)
@@ -77,7 +81,7 @@ class ProductController extends AbstractController
             $request->setMethod('POST');
             $request->request->set('input_action', 'marello_product_create');
             $request->request->set('single_product_type', true);
-            return $this->forward('MarelloProductBundle:Product:createStepTwo', [], $queryParams);
+            return $this->forward(__CLASS__ . '::createStepTwoAction', [], $queryParams);
         }
 
         return [
@@ -92,7 +96,7 @@ class ProductController extends AbstractController
      *     name="marello_product_create_step_two"
      * )
      *
-     * @Template("MarelloProductBundle:Product:createStepTwo.html.twig")
+     * @Template("@MarelloProduct/Product/createStepTwo.html.twig")
      *
      * @AclAncestor("marello_product_create")
      *
@@ -118,7 +122,7 @@ class ProductController extends AbstractController
             $formData = $form->all();
 
             if ($request->get('single_product_type')) {
-                $em = $this->get('oro_entity.doctrine_helper');
+                $em = $this->container->get(DoctrineHelper::class);
                 /** @var AttributeFamily $attributeFamily */
                 $attributeFamily = $em
                     ->getEntityRepositoryForClass(AttributeFamily::class)
@@ -157,7 +161,6 @@ class ProductController extends AbstractController
      *
      * @param Product $product
      * @param Request $request
-     *
      * @return array
      */
     public function updateAction(Product $product, Request $request)
@@ -168,37 +171,39 @@ class ProductController extends AbstractController
     /**
      * @param Product $product
      * @param Request $request
-     *
      * @return array
      */
     protected function update(Product $product, Request $request)
     {
-        $handler = $this->get('marello_product.product_form.handler');
+        $handler = $this->container->get(ProductHandler::class);
 
         if ($handler->process($product)) {
             if ($request->get(Router::ACTION_PARAMETER) === self::ACTION_SAVE_AND_DUPLICATE) {
-                $saveMessage = $this->get('translator')
+                $saveMessage = $this->container->get(TranslatorInterface::class)
                     ->trans('marello.product.ui.product.saved_and_duplicated.message');
-                $this->get('session')->getFlashBag()->set('success', $saveMessage);
+                $request->getSession()->getFlashBag()->set('success', $saveMessage);
                 $actionGroup = $this
-                    ->get('marello_product.provider.action_group_registry')
+                    ->container
+                    ->get(ActionGroupRegistryProvider::class)
                     ->findActionByName('marello_product_duplicate');
                 if ($actionGroup) {
                     $actionData = $actionGroup->execute(new ActionData(['data' => $product]));
                     /** @var Product $productCopy */
                     if ($productCopy = $actionData->offsetGet('productCopy')) {
                         return new RedirectResponse(
-                            $this->get('router')->generate('marello_product_view', ['id' => $productCopy->getId()])
+                            $this->container
+                                ->get(Router::class)
+                                ->generate('marello_product_view', ['id' => $productCopy->getId()])
                         );
                     }
                 }
             } else {
-                $this->get('session')->getFlashBag()->add(
+                $request->getSession()->getFlashBag()->add(
                     'success',
-                    $this->get('translator')->trans('marello.product.messages.success.product.saved')
+                    $this->container->get(TranslatorInterface::class)->trans('marello.product.messages.success.product.saved')
                 );
 
-                return $this->get('oro_ui.router')->redirectAfterSave(
+                return $this->container->get(Router::class)->redirectAfterSave(
                     [
                         'route' => 'marello_product_update',
                         'parameters' => [
@@ -229,10 +234,9 @@ class ProductController extends AbstractController
      *     name="marello_product_view"
      * )
      * @AclAncestor("marello_product_view")
-     * @Template("MarelloProductBundle:Product:view.html.twig")
+     * @Template("@MarelloProduct/Product/view.html.twig")
      *
      * @param Product $product
-     *
      * @return array
      */
     public function viewAction(Product $product)
@@ -249,10 +253,9 @@ class ProductController extends AbstractController
      *     requirements={"id"="\d+"}
      * )
      * @AclAncestor("marello_product_view")
-     * @Template("MarelloProductBundle:Product/widget:info.html.twig")
+     * @Template("@MarelloProduct/Product/widget/info.html.twig")
      *
      * @param Product $product
-     *
      * @return array
      */
     public function infoAction(Product $product)
@@ -269,10 +272,9 @@ class ProductController extends AbstractController
      *     requirements={"id"="\d+"}
      * )
      * @AclAncestor("marello_product_view")
-     * @Template("MarelloProductBundle:Product/widget:image.html.twig")
+     * @Template("@MarelloProduct/Product/widget/image.html.twig")
      *
      * @param Product $product
-     *
      * @return array
      */
     public function imageAction(Product $product)
@@ -289,10 +291,9 @@ class ProductController extends AbstractController
      *     requirements={"id"="\d+"}
      * )
      * @AclAncestor("marello_product_view")
-     * @Template("MarelloProductBundle:Product/widget:price.html.twig")
+     * @Template("@MarelloProduct/Product/widget/price.html.twig")
      *
      * @param Product $product
-     *
      * @return array
      */
     public function priceAction(Product $product)
@@ -310,17 +311,18 @@ class ProductController extends AbstractController
      * @AclAncestor("marello_product_update")
      * @Template
      *
+     * @param Request $request
      * @return array
      */
-    public function assignSalesChannelsAction()
+    public function assignSalesChannelsAction(Request $request)
     {
-        $handler = $this->get('marello_product.sales_channels_assign.handler');
+        $handler = $this->container->get(ProductsSalesChannelsAssignHandler::class);
         $result = $handler->process();
 
         if (true === $result['success']) {
-            $this->get('session')->getFlashBag()->add(
+            $request->getSession()->getFlashBag()->add(
                 $result['type'],
-                $this->get('translator')->trans($result['message'])
+                $this->container->get(TranslatorInterface::class)->trans($result['message'])
             );
 
             return $this->redirectToRoute('marello_product_index');
@@ -329,5 +331,21 @@ class ProductController extends AbstractController
         return [
             'form' => $handler->getFormView(),
         ];
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                ProductTypesProvider::class,
+                DoctrineHelper::class,
+                ProductHandler::class,
+                TranslatorInterface::class,
+                ActionGroupRegistryProvider::class,
+                ProductsSalesChannelsAssignHandler::class,
+                Router::class,
+            ]
+        );
     }
 }

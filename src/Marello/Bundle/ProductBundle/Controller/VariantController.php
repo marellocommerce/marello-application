@@ -2,6 +2,10 @@
 
 namespace Marello\Bundle\ProductBundle\Controller;
 
+use Doctrine\Persistence\ManagerRegistry;
+use Marello\Bundle\ProductBundle\Form\Handler\ProductVariantHandler;
+use Oro\Bundle\EntityBundle\Tools\EntityRoutingHelper;
+use Oro\Bundle\UIBundle\Route\Router;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,6 +17,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\Variant;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class VariantController extends AbstractController
 {
@@ -24,14 +29,15 @@ class VariantController extends AbstractController
      *     name="marello_product_create_variant"
      * )
      * @AclAncestor("marello_product_create_variant")
-     * @Template("MarelloProductBundle:Variant:update.html.twig")
+     * @Template("@MarelloProduct/Variant/update.html.twig")
      *
      * @param Product $product
+     * @param Request $request
      * @return array
      */
-    public function createVariantAction(Product $product)
+    public function createVariantAction(Product $product, Request $request)
     {
-        return $this->updateVariant($product, new Variant());
+        return $this->updateVariant($product, new Variant(), $request);
     }
 
     /**
@@ -40,7 +46,7 @@ class VariantController extends AbstractController
      *     requirements={"id"="\d+","parentId"="\d+"}, name="marello_product_add_variant"
      * )
      * @AclAncestor("marello_product_add_variant")
-     * @Template("MarelloProductBundle:Variant:update.html.twig")
+     * @Template("@MarelloProduct/Variant/update.html.twig")
      *
      * @param Request $request
      * @param Variant $variant
@@ -55,15 +61,15 @@ class VariantController extends AbstractController
             throw new NotFoundHttpException(sprintf('Entity class "%s" is not found', $entityClass));
         }
 
-        $entityClass = $this->get('oro_entity.routing_helper')->resolveEntityClass($entityClass);
+        $entityClass = $this->container->get(EntityRoutingHelper::class)->resolveEntityClass($entityClass);
         $parentId = $request->get('parentId');
 
         if ($parentId && $entityClass === Product::class) {
-            $repository = $this->getDoctrine()->getRepository($entityClass);
+            $repository = $this->container->get(ManagerRegistry::class)->getRepository($entityClass);
             /** @var Product $parent */
             $parent = $repository->find($parentId);
 
-            return $this->updateVariant($parent, $variant);
+            return $this->updateVariant($parent, $variant, $request);
         }
 
         return new Response('', Response::HTTP_BAD_REQUEST);
@@ -73,25 +79,26 @@ class VariantController extends AbstractController
      * Process request and return the correct view to display
      * @param Product $product
      * @param Variant $variant
+     * @param Request $request
      * @return array
      */
-    protected function updateVariant(Product $product, Variant $variant)
+    protected function updateVariant(Product $product, Variant $variant, Request $request)
     {
-        $handler = $this->get('marello_product.product_variant_form.handler');
+        $handler = $this->container->get(ProductVariantHandler::class);
 
         /*
          * Process request using handler.
          */
         if ($handler->process($variant, $product)) {
-            $this->get('session')->getFlashBag()->add(
+            $request->getSession()->getFlashBag()->add(
                 'success',
-                $this->get('translator')->trans('marello.product.messages.success.variant.saved')
+                $this->container->get(TranslatorInterface::class)->trans('marello.product.messages.success.variant.saved')
             );
 
             /*
              * Redirect to product page.
              */
-            return $this->get('oro_ui.router')->redirectAfterSave(
+            return $this->container->get(Router::class)->redirectAfterSave(
                 [],
                 [
                     'route'      => 'marello_product_view',
@@ -124,5 +131,19 @@ class VariantController extends AbstractController
         return [
             'product' => $product
         ];
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                EntityRoutingHelper::class,
+                ProductVariantHandler::class,
+                TranslatorInterface::class,
+                Router::class,
+                ManagerRegistry::class,
+            ]
+        );
     }
 }

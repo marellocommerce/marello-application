@@ -2,7 +2,10 @@
 
 namespace Marello\Bundle\SalesBundle\Twig;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelRepository;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -15,13 +18,10 @@ class SalesExtension extends AbstractExtension
      */
     private $salesChannelRepository;
 
-    /**
-     * @param SalesChannelRepository $salesChannelRepository
-     */
-    public function __construct(SalesChannelRepository $salesChannelRepository)
-    {
-        $this->salesChannelRepository = $salesChannelRepository;
-    }
+    public function __construct(
+        private ManagerRegistry $registry,
+        private AclHelper $aclHelper
+    ) {}
 
     /**
      * @return array
@@ -45,7 +45,7 @@ class SalesExtension extends AbstractExtension
      */
     public function checkActiveChannels()
     {
-        if ($this->salesChannelRepository->getActiveChannels()) {
+        if ($this->getRepository()->getActiveChannels($this->aclHelper)) {
             return true;
         }
         
@@ -58,7 +58,7 @@ class SalesExtension extends AbstractExtension
      */
     public function getChannelNameByCode($code)
     {
-        $channel = $this->salesChannelRepository
+        $channel = $this->getRepository()
             ->findOneBy(['code' => $code]);
         if ($channel) {
             return $channel->getName();
@@ -75,5 +75,14 @@ class SalesExtension extends AbstractExtension
     public function getName()
     {
         return self::NAME;
+    }
+
+    protected function getRepository(): SalesChannelRepository
+    {
+        if (!$this->salesChannelRepository) {
+            $this->salesChannelRepository = $this->registry->getRepository(SalesChannel::class);
+        }
+
+        return $this->salesChannelRepository;
     }
 }

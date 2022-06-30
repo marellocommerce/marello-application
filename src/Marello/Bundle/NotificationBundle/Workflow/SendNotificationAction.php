@@ -2,14 +2,16 @@
 
 namespace Marello\Bundle\NotificationBundle\Workflow;
 
-use Marello\Bundle\NotificationBundle\Email\SendProcessor;
-use Marello\Bundle\NotificationBundle\Model\StringAttachment;
-use Marello\Bundle\NotificationBundle\Provider\NotificationAttachmentProvider;
+use Symfony\Component\PropertyAccess\PropertyPathInterface;
+
 use Oro\Component\Action\Exception\InvalidParameterException;
 use Oro\Component\Action\Action\AbstractAction;
 use Oro\Component\Action\Action\ActionInterface;
 use Oro\Component\ConfigExpression\ContextAccessor;
-use Symfony\Component\PropertyAccess\PropertyPathInterface;
+
+use Marello\Bundle\NotificationBundle\Model\StringAttachment;
+use Marello\Bundle\NotificationBundle\Provider\EmailSendProcessor;
+use Marello\Bundle\NotificationBundle\Provider\NotificationAttachmentProvider;
 
 class SendNotificationAction extends AbstractAction
 {
@@ -25,17 +27,19 @@ class SendNotificationAction extends AbstractAction
     /** @var PropertyPathInterface|string */
     protected $attachments;
 
-    /** @var SendProcessor */
+    /** @var EmailSendProcessor */
     protected $sendProcessor;
 
     /**
      * SendNotificationAction constructor.
      *
      * @param ContextAccessor $contextAccessor
-     * @param SendProcessor   $sendProcessor
+     * @param EmailSendProcessor   $sendProcessor
      */
-    public function __construct(ContextAccessor $contextAccessor, SendProcessor $sendProcessor)
-    {
+    public function __construct(
+        ContextAccessor $contextAccessor,
+        EmailSendProcessor $sendProcessor
+    ) {
         parent::__construct($contextAccessor);
 
         $this->sendProcessor = $sendProcessor;

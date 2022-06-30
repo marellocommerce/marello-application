@@ -24,9 +24,7 @@ class SubtotalProviderPassTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->container = $this
-            ->getMockBuilder(ContainerBuilder::class)
-            ->getMock();
+        $this->container = $this->createMock(ContainerBuilder::class);
 
         $this->compilerPass = new SubtotalProviderPass();
     }

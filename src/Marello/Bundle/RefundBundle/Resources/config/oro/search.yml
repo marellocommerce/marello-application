@@ -7,7 +7,7 @@ search:
             name:                       marello_refund_view
             parameters:
                 id:                     id
-        search_template:                MarelloRefundBundle:Refund:searchResult.html.twig
+        search_template:                '@MarelloRefund/Refund/searchResult.html.twig'
         fields:
             -
                 name:                   refundNumber

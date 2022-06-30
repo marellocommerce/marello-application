@@ -11,19 +11,10 @@ use Twig\TwigFunction;
 class InvoiceExtension extends AbstractExtension
 {
     const NAME = 'marello_invoice';
-    
-    /**
-     * @var Registry
-     */
-    protected $doctrine;
 
-    /**
-     * @param Registry $doctrine
-     */
-    public function __construct(Registry $doctrine)
-    {
-        $this->doctrine = $doctrine;
-    }
+    public function __construct(
+        protected Registry $doctrine
+    ) {}
 
     /**
      * Returns the name of the extension.

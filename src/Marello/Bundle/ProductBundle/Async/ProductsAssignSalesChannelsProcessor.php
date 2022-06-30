@@ -4,15 +4,14 @@ namespace Marello\Bundle\ProductBundle\Async;
 
 use Doctrine\ORM\EntityManagerInterface;
 
+use Oro\Bundle\EmailBundle\Sender\EmailModelSender;
 use Psr\Log\LoggerInterface;
 
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Component\MessageQueue\Util\JSON;
-use Oro\Bundle\EmailBundle\Mailer\Processor;
 use Oro\Bundle\EmailBundle\Form\Model\Factory;
-use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
 use Oro\Component\MessageQueue\Transport\SessionInterface;
 use Oro\Component\MessageQueue\Client\TopicSubscriberInterface;
@@ -28,59 +27,13 @@ class ProductsAssignSalesChannelsProcessor implements MessageProcessorInterface,
 
     const FLUSH_BATCH_SIZE = 100;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    /**
-     * @var Manager
-     */
-    private $datagridManager;
-
-    /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
-
-    /**
-     * @var Factory
-     */
-    private $emailModelFactory;
-
-    /**
-     * @var Processor
-     */
-    private $emailProcessor;
-
-    /**
-     * @param LoggerInterface $logger
-     * @param EntityManagerInterface $entityManager
-     * @param Manager $datagridManager
-     * @param TokenStorageInterface $tokenStorage,
-     * @param Factory $emailModelFactory,
-     * @param Processor $emailProcessor
-     */
     public function __construct(
-        LoggerInterface $logger,
-        EntityManagerInterface $entityManager,
-        Manager $datagridManager,
-        TokenStorageInterface $tokenStorage,
-        Factory $emailModelFactory,
-        Processor $emailProcessor
-    ) {
-        $this->logger = $logger;
-        $this->entityManager = $entityManager;
-        $this->datagridManager = $datagridManager;
-        $this->tokenStorage = $tokenStorage;
-        $this->emailModelFactory = $emailModelFactory;
-        $this->emailProcessor = $emailProcessor;
-    }
+        private LoggerInterface $logger,
+        private EntityManagerInterface $entityManager,
+        private TokenStorageInterface $tokenStorage,
+        private Factory $emailModelFactory,
+        private EmailModelSender $emailModelSender
+    ) {}
 
     /**
      * {@inheritdoc}
@@ -148,7 +101,6 @@ class ProductsAssignSalesChannelsProcessor implements MessageProcessorInterface,
     /**
      * @param array $assignedSalesChannels
      * @param array $modifiedProducts
-     * @throws \Swift_SwiftException
      */
     private function sendMail(array $assignedSalesChannels, array $modifiedProducts): void
     {
@@ -182,6 +134,6 @@ class ProductsAssignSalesChannelsProcessor implements MessageProcessorInterface,
                     implode('<br>', $products)
                 )
             );
-        $this->emailProcessor->process($emailModel);
+        $this->emailModelSender->send($emailModel);
     }
 }

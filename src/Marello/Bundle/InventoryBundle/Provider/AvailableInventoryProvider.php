@@ -9,22 +9,14 @@ use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class AvailableInventoryProvider
 {
-    /**
-     * @var DoctrineHelper
-     */
-    protected $doctrineHelper;
-
-    /**
-     * {@inheritdoc}
-     * @param DoctrineHelper $doctrineHelper
-     */
-    public function __construct(DoctrineHelper $doctrineHelper)
-    {
-        $this->doctrineHelper = $doctrineHelper;
-    }
+    public function __construct(
+        protected DoctrineHelper $doctrineHelper,
+        protected AclHelper $aclHelper
+    ) {}
 
     /**
      * Get available inventory for a product in a certain saleschannel
@@ -63,7 +55,7 @@ class AvailableInventoryProvider
         return $this->doctrineHelper
             ->getEntityManagerForClass(Product::class)
             ->getRepository(Product::class)
-            ->findBySalesChannel($channelId, $productIds);
+            ->findBySalesChannel($channelId, $productIds, $this->aclHelper);
     }
 
     /**
@@ -77,6 +69,6 @@ class AvailableInventoryProvider
         return $this->doctrineHelper
             ->getEntityManagerForClass(BalancedInventoryLevel::class)
             ->getRepository(BalancedInventoryLevel::class)
-            ->findExistingBalancedInventory($product, $salesChannelGroup);
+            ->findExistingBalancedInventory($product, $salesChannelGroup, $this->aclHelper);
     }
 }

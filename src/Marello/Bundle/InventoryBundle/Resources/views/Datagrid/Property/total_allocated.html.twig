@@ -1,0 +1,12 @@
+{% import '@OroUI/macros.html.twig' as UI %}
+{% set label = value %}
+{% set orderItem = record.getValue('orderItem') %}
+{% set qtyAllocated = record.getValue('quantity') %}
+
+{% if orderItem is not null %}
+    {% set result =  'marello.inventory.allocation.total_quantity_allocated.label'|trans({'%allocatedQty%': qtyAllocated, '%totalQty%': orderItem.quantity}) %}
+{% else %}
+    {% set result = qtyAllocated %}
+{% endif %}
+
+{{ result }}

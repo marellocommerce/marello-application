@@ -1,3 +1,6 @@
+imports:
+  - { resource: controllers.yml }
+
 services:
     marello_tax.tax_rule.matcher.composite:
         class: Marello\Bundle\TaxBundle\Matcher\CompositeTaxRuleMatcher

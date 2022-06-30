@@ -179,7 +179,7 @@ class InventoryBatch extends ExtendInventoryBatch implements
      *              "label"="marello.inventory.inventorylevel.entity_label"
      *          },
      *          "importexport"={
-     *              "exclude"=true
+     *              "excluded"=true
      *          },
      *          "dataaudit"={
      *              "auditable"=false

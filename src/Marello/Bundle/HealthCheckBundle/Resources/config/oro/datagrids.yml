@@ -1,0 +1,102 @@
+datagrids:
+    marello-base-integration-statuses-grid:
+        acl_resource: oro_integration_view
+        source:
+            type: orm
+            query:
+                select:
+                    - c.id
+                    - c.name
+                    - c.enabled
+                    - s.connector
+                    - s.code
+                    - s.message
+                    - s.date
+                from:
+                    - { table: 'Oro\Bundle\IntegrationBundle\Entity\Status', alias: s }
+                join:
+                    inner:
+                        - { join: s.channel, alias: c }
+        columns:
+            name:
+                label: oro.integration.integration.name.label
+                type: twig
+                template: '@MarelloHealthCheck/IntegrationStatus/Datagrid/name.html.twig'
+                frontend_type: html
+            enabled:
+                label: oro.integration.integration.enabled.label
+                frontend_type:  select
+                choices:
+                    oro.integration.integration.enabled.active.label: 1
+                    oro.integration.integration.enabled.inactive.label: 0
+            connector:
+                label: oro.integration.integration_status.connector.label
+            code:
+                label: marello.healthcheck.integration_status.code.label
+                type: twig
+                template: '@MarelloHealthCheck/IntegrationStatus/Datagrid/code.html.twig'
+                frontend_type: html
+            message:
+                label: oro.integration.integration_status.message.label
+            date:
+                label: marello.healthcheck.integration_status.date.label
+                frontend_type: datetime
+
+    marello-integration-statuses-grid:
+        extends: marello-base-integration-statuses-grid
+        sorters:
+            columns:
+                name: { data_name: c.name }
+                connector: { data_name: s.connector }
+                code: { data_name: s.code }
+                date: { data_name: s.date }
+            default:
+                date: DESC
+        filters:
+            columns:
+                name:
+                    data_name: c.name
+                    type: string
+                enabled:
+                    data_name: c.enabled
+                    type: choice
+                    options:
+                        field_options:
+                            choices:
+                                oro.integration.integration.enabled.inactive.label: '0'
+                                oro.integration.integration.enabled.active.label: '1'
+                connector:
+                    data_name: s.connector
+                    type: string
+                code:
+                    data_name: s.code
+                    type: choice
+                    options:
+                        field_options:
+                            choices:
+                                oro.integration.integration_status.failed.label: '2' # See Oro\Bundle\IntegrationBundle\Entity\Status::STATUS_FAILED
+                                oro.integration.integration_status.competed.label: '1'
+                message:
+                    data_name: s.message
+                    type: string
+                date:
+                    data_name: s.date
+                    type: datetime
+            default:
+                code:
+                    value: '2'
+
+    marello-last-integration-statuses-grid:
+        extends: marello-base-integration-statuses-grid
+        columns:
+            message: ~
+        sorters:
+            columns:
+                date: { data_name: s.date }
+            default:
+                date: DESC
+        options:
+            toolbarOptions:
+                hide: true
+                pageSize:
+                    default_per_page: 10

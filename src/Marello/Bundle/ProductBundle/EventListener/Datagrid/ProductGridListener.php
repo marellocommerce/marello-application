@@ -38,7 +38,7 @@ class ProductGridListener
                     'label' => 'marello.product.image.label',
                     'type' => 'twig',
                     'frontend_type' => 'html',
-                    'template' => 'MarelloProductBundle:Product/Datagrid/Property:image.html.twig',
+                    'template' => '@MarelloProduct/Product/Datagrid/Property/image.html.twig',
                     'inline_editing' => ['enable' => false]
                 ],
                 'status' => [

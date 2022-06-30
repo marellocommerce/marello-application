@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\InventoryBundle\Model;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 
 class InventoryLevelCalculator
@@ -37,6 +38,35 @@ class InventoryLevelCalculator
     ) {
         $adjustment = $this->calculateAdjustment($operator, $inventoryAllocatedQuantity);
         return $inventoryLevel->getAllocatedInventoryQty() + $adjustment;
+    }
+
+    /**
+     * @param array $batches
+     * @return int
+     * @throws \Exception
+     */
+    public function calculateBatchInventoryLevelQty(array $batches)
+    {
+        // check level's inventory batches for expiration dates
+        $currentDateTime = new \DateTime('now', new \DateTimeZone('UTC'));
+        $expiredInventory = 0;
+        $batchInventoryTotal = 0;
+        foreach ($batches as $inventoryBatch) {
+            if (!$inventoryBatch instanceof InventoryBatch) {
+                continue;
+            }
+            // we cannot use expired batches
+            if ($inventoryBatch->getExpirationDate() && $inventoryBatch->getExpirationDate() <= $currentDateTime) {
+                $expiredInventory += $inventoryBatch->getQuantity();
+            }
+            $batchInventoryTotal += $inventoryBatch->getQuantity();
+        }
+
+        if ($expiredInventory > 0) {
+            return ($batchInventoryTotal - $expiredInventory);
+        }
+
+        return $batchInventoryTotal;
     }
 
     /**

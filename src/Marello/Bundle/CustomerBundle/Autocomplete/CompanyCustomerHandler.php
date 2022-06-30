@@ -73,9 +73,6 @@ class CompanyCustomerHandler extends FullNameSearchHandler
             $queryBuilder
                 ->andWhere('c.company IN (:company_ids)')
                 ->setParameter('company_ids', $ids);
-        } else {
-            $queryBuilder
-                ->andWhere('c.company IS NULL');
         }
 
         return $queryBuilder;

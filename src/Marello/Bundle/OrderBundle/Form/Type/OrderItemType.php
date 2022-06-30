@@ -5,6 +5,7 @@ namespace Marello\Bundle\OrderBundle\Form\Type;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\OrderBundle\Form\DataTransformer\TaxCodeToCodeTransformer;
 use Marello\Bundle\OrderBundle\Form\EventListener\OrderItemPurchasePriceSubscriber;
+use Marello\Bundle\OrderBundle\Validator\Constraints\AvailableInventoryConstraint;
 use Marello\Bundle\PricingBundle\DependencyInjection\Configuration;
 use Marello\Bundle\ProductBundle\Form\Type\ProductSalesChannelAwareSelectType;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
@@ -103,7 +104,10 @@ class OrderItemType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => OrderItem::class
+            'data_class' => OrderItem::class,
+            'constraints' => [
+                new AvailableInventoryConstraint(['fields' => ['quantity', 'order', 'product']])
+            ]
         ]);
     }
 

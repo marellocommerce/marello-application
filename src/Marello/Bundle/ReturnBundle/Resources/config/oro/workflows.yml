@@ -52,7 +52,6 @@ workflows:
                                 required: true
                                 constraints:
                                     - NotBlank: ~
-                                    - DateTime: ~
             contents_verified:
                 step_to: inspection
                 transition_definition: contents_verified_def

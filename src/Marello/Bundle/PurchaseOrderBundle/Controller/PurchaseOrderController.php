@@ -2,20 +2,27 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\Controller;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
+use Marello\Bundle\PurchaseOrderBundle\Form\Handler\PurchaseOrderCreateHandler;
 use Marello\Bundle\PurchaseOrderBundle\Form\Handler\PurchaseOrderCreateStepOneHandler;
+use Marello\Bundle\PurchaseOrderBundle\Form\Handler\PurchaseOrderUpdateHandler;
 use Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderCreateStepOneType;
 use Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderCreateStepTwoType;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
+use Oro\Bundle\CurrencyBundle\Utils\CurrencyNameHelper;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\UIBundle\Route\Router;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PurchaseOrderController extends AbstractController
 {
@@ -24,7 +31,7 @@ class PurchaseOrderController extends AbstractController
      *     path="/",
      *     name="marello_purchaseorder_purchaseorder_index"
      * )
-     * @Config\Template("MarelloPurchaseOrderBundle:PurchaseOrder:index.html.twig")
+     * @Config\Template("@MarelloPurchaseOrder/PurchaseOrder/index.html.twig")
      * @AclAncestor("marello_purchase_order_view")
      */
     public function indexAction()
@@ -38,7 +45,7 @@ class PurchaseOrderController extends AbstractController
      *     requirements={"id"="\d+"},
      *     name="marello_purchaseorder_purchaseorder_view"
      * )
-     * @Config\Template("MarelloPurchaseOrderBundle:PurchaseOrder:view.html.twig")
+     * @Config\Template("@MarelloPurchaseOrder/PurchaseOrder/view.html.twig")
      * @AclAncestor("marello_purchase_order_view")
      *
      * @param PurchaseOrder $purchaseOrder
@@ -70,7 +77,7 @@ class PurchaseOrderController extends AbstractController
      *     path="/create",
      *     name="marello_purchaseorder_purchaseorder_create"
      * )
-     * @Config\Template("MarelloPurchaseOrderBundle:PurchaseOrder:createStepOne.html.twig")
+     * @Config\Template("@MarelloPurchaseOrder/PurchaseOrder/createStepOne.html.twig")
      * @AclAncestor("marello_purchase_order_create")
      *
      * @param Request $request
@@ -89,7 +96,7 @@ class PurchaseOrderController extends AbstractController
      *     name="marello_purchaseorder_purchaseorder_update"
      * )
      * @AclAncestor("marello_purchase_order_update")
-     * @Config\Template("MarelloPurchaseOrderBundle:PurchaseOrder:update.html.twig")
+     * @Config\Template("@MarelloPurchaseOrder/PurchaseOrder/update.html.twig")
      *
      * @param PurchaseOrder $purchaseOrder
      *
@@ -105,7 +112,7 @@ class PurchaseOrderController extends AbstractController
      *     path="/create/step-two",
      *     name="marello_purchaseorder_purchaseorder_create_step_two"
      * )
-     * @Config\Template("MarelloPurchaseOrderBundle:PurchaseOrder:createStepTwo.html.twig")
+     * @Config\Template("@MarelloPurchaseOrder/PurchaseOrder/createStepTwo.html.twig")
      * @AclAncestor("marello_purchase_order_create")
      *
      * @param Request $request
@@ -128,7 +135,7 @@ class PurchaseOrderController extends AbstractController
         $queryParams = $request->query->all();
 
         if ($handler->process()) {
-            return $this->forward('MarelloPurchaseOrderBundle:PurchaseOrder:createStepTwo', [], $queryParams);
+            return $this->forward(__CLASS__ . '::createStepTwoAction', [], $queryParams);
         }
 
         return ['form' => $form->createView()];
@@ -162,15 +169,15 @@ class PurchaseOrderController extends AbstractController
             ];
         }
 
-        $handler = $this->get("marello_purchase_order.form.handler.purchase_order_create");
+        $handler = $this->container->get(PurchaseOrderCreateHandler::class);
         $form = $handler->getForm();
 
         if ($handler->handle()) {
             $this->addFlash(
                 'success',
-                $this->get('translator')->trans('marello.purchaseorder.messages.purchaseorder.saved')
+                $this->container->get(TranslatorInterface::class)->trans('marello.purchaseorder.messages.purchaseorder.saved')
             );
-            return $this->get('oro_ui.router')->redirectAfterSave(
+            return $this->container->get(Router::class)->redirectAfterSave(
                 [
                     'route'      => 'marello_purchaseorder_purchaseorder_view',
                     'parameters' => [
@@ -186,7 +193,7 @@ class PurchaseOrderController extends AbstractController
 
         $this->addFlash(
             'error',
-            $this->get('translator')->trans('marello.purchaseorder.messages.purchaseorder.not_saved')
+            $this->container->get(TranslatorInterface::class)->trans('marello.purchaseorder.messages.purchaseorder.not_saved')
         );
 
         if ($form->getErrors()->count() > 0) {
@@ -208,16 +215,16 @@ class PurchaseOrderController extends AbstractController
      */
     protected function update(PurchaseOrder $purchaseOrder)
     {
-        $handler = $this->get('marello_purchase_order.form.handler.purchase_order_update');
+        $handler = $this->container->get(PurchaseOrderUpdateHandler::class);
 
         if ($handler->process($purchaseOrder)) {
             $this->addFlash(
                 'success',
-                $this->get('translator')->trans('marello.purchaseorder.messages.purchaseorder.saved')
+                $this->container->get(TranslatorInterface::class)->trans('marello.purchaseorder.messages.purchaseorder.saved')
             );
 
 
-            return $this->get('oro_ui.router')->redirectAfterSave(
+            return $this->container->get(Router::class)->redirectAfterSave(
                 [
                     'route'      => 'marello_purchaseorder_purchaseorder_update',
                     'parameters' => [
@@ -249,21 +256,20 @@ class PurchaseOrderController extends AbstractController
      *      defaults={"id"=0}
      * )
      * @AclAncestor("marello_product_view")
-     * @Config\Template("MarelloPurchaseOrderBundle:PurchaseOrder/widget:productsBySupplier.html.twig")
+     * @Config\Template("@MarelloPurchaseOrder/PurchaseOrder/widget/productsBySupplier.html.twig")
      * @return array
      */
     public function productsBySupplierAction(PurchaseOrder $purchaseOrder = null)
     {
-        $supplier = $this->get('doctrine')
+        $supplier = $this->container->get(ManagerRegistry::class)
             ->getManagerForClass(Supplier::class)
             ->getRepository(Supplier::class)
-            ->find($this->get('request_stack')->getCurrentRequest()->get('supplierId'));
+            ->find($this->container->get(RequestStack::class)->getCurrentRequest()->get('supplierId'));
 
         return [
             'purchaseOrder' => $purchaseOrder,
             'supplierId' => $supplier->getId(),
-            'currency' => $this->get('oro_currency.helper.currency_name')->getCurrencyName($supplier->getCurrency())
-            
+            'currency' => $this->container->get(CurrencyNameHelper::class)->getCurrencyName($supplier->getCurrency())
         ];
     }
 
@@ -291,5 +297,21 @@ class PurchaseOrderController extends AbstractController
         }
 
         return new JsonResponse(['purchasePrice' => null]);
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                PurchaseOrderCreateHandler::class,
+                TranslatorInterface::class,
+                Router::class,
+                PurchaseOrderUpdateHandler::class,
+                ManagerRegistry::class,
+                RequestStack::class,
+                CurrencyNameHelper::class,
+            ]
+        );
     }
 }

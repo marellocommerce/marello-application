@@ -105,7 +105,7 @@ system_configuration:
             options:
                 label: marello.pdf.config.fields.email_workflow_transition.label
                 tooltip: marello.pdf.config.fields.email_workflow_transition.tooltip
-                workflow: marello_order_b2c_new_workflow_1
+                workflow: marello_order_b2c_workflow_1
                 required: false
                 placeholder: marello.pdf.config.fields.email_workflow_transition.placeholder
 

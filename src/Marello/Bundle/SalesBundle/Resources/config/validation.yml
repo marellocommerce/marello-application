@@ -10,6 +10,7 @@ Marello\Bundle\SalesBundle\Entity\SalesChannel:
                 max: 255
         code:
             - NotBlank: ~
+            - Marello\Bundle\CoreBundle\Validator\Constraints\CodeRegex: ~
         channelType:
             - NotBlank: ~
 

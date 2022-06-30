@@ -2,14 +2,17 @@
 
 namespace Marello\Bundle\RefundBundle\Controller;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\RefundBundle\Entity\Refund;
 use Marello\Bundle\RefundBundle\Form\Type\RefundType;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\UIBundle\Route\Router;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RefundController extends AbstractController
 {
@@ -50,7 +53,7 @@ class RefundController extends AbstractController
      *     path="/create/{id}",
      *     name="marello_refund_create"
      * )
-     * @Template("MarelloRefundBundle:Refund:create.html.twig")
+     * @Template("@MarelloRefund/Refund/create.html.twig")
      * @AclAncestor("marello_refund_create")
      *
      * @param Request $request
@@ -99,18 +102,19 @@ class RefundController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $manager = $this
-                ->getDoctrine()
+                ->container
+                ->get(ManagerRegistry::class)
                 ->getManagerForClass(Refund::class);
 
             $manager->persist($entity = $form->getData());
             $manager->flush();
 
-            $this->get('session')->getFlashBag()->add(
+            $request->getSession()->getFlashBag()->add(
                 'success',
-                $this->get('translator')->trans('marello.refund.messages.success.refund.saved')
+                $this->container->get(TranslatorInterface::class)->trans('marello.refund.messages.success.refund.saved')
             );
 
-            return $this->get('oro_ui.router')->redirectAfterSave(
+            return $this->container->get(Router::class)->redirectAfterSave(
                 [
                     'route'      => 'marello_refund_update',
                     'parameters' => [
@@ -130,5 +134,17 @@ class RefundController extends AbstractController
         $form = $form->createView();
 
         return compact('form', 'entity');
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                TranslatorInterface::class,
+                Router::class,
+                ManagerRegistry::class,
+            ]
+        );
     }
 }

@@ -8,26 +8,20 @@ use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\ShippingBundle\Integration\ShippingServiceDataProviderInterface;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class OrderShippingServiceDataProvider implements ShippingServiceDataProviderInterface
 {
     /** @var $entity */
     protected $entity;
 
-    /** @var EntityManager $entityManager */
-    protected $entityManager;
-
     /** @var Warehouse $warehouse */
     protected $warehouse;
 
-    /**
-     * OrderShippingServiceDataProvider constructor.
-     * @param EntityManager $entityManager
-     */
-    public function __construct(EntityManager $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
+    public function __construct(
+        protected EntityManager $entityManager,
+        protected AclHelper $aclHelper
+    ) {}
 
     /**
      * {@inheritdoc}
@@ -36,7 +30,9 @@ class OrderShippingServiceDataProvider implements ShippingServiceDataProviderInt
     public function getShippingShipFrom()
     {
         if (!$this->warehouse) {
-            $this->setWarehouse($this->entityManager->getRepository(Warehouse::class)->getDefault());
+            $this->setWarehouse(
+                $this->entityManager->getRepository(Warehouse::class)->getDefault($this->aclHelper)
+            );
         }
 
         return $this->warehouse->getAddress();

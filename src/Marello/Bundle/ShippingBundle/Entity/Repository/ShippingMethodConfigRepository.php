@@ -2,10 +2,10 @@
 
 namespace Marello\Bundle\ShippingBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Marello\Bundle\ShippingBundle\Entity\ShippingMethodConfig;
 
-class ShippingMethodConfigRepository extends EntityRepository
+class ShippingMethodConfigRepository extends ServiceEntityRepository
 {
     /**
      * @param string $method

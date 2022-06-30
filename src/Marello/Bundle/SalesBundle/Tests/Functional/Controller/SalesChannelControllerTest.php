@@ -5,6 +5,7 @@ namespace Marello\Bundle\SalesBundle\Tests\Functional\Controller;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Form\Type\SalesChannelType;
 use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
+use Oro\Bundle\ActionBundle\Tests\Functional\OperationAwareTestTrait;
 use Oro\Bundle\LocaleBundle\Entity\Localization;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
@@ -12,6 +13,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SalesChannelControllerTest extends WebTestCase
 {
+    use OperationAwareTestTrait;
+
     const NAME = 'name';
     const CODE = 'code';
     const CHANNEL_TYPE = 'magento';
@@ -75,12 +78,12 @@ class SalesChannelControllerTest extends WebTestCase
         $this->assertSalesChannelSave(
             $crawler,
             self::NAME,
-            self::CODE,
             self::CHANNEL_TYPE,
             self::CURRENCY,
             self::DEFAULT,
             self::ACTIVE,
-            self::LOCALIZATION
+            self::LOCALIZATION,
+            self::CODE
         );
 
         /** @var SalesChannel $salesChannel */
@@ -111,7 +114,6 @@ class SalesChannelControllerTest extends WebTestCase
         $this->assertSalesChannelSave(
             $crawler,
             self::UPDATED_NAME,
-            self::UPDATED_CODE,
             self::UPDATED_CHANNEL_TYPE,
             self::UPDATED_CURRENCY,
             self::UPDATED_DEFAULT,
@@ -139,12 +141,12 @@ class SalesChannelControllerTest extends WebTestCase
         $this->assertViewPage(
             $crawler->html(),
             self::UPDATED_NAME,
-            self::UPDATED_CODE,
             self::UPDATED_CHANNEL_TYPE,
             self::UPDATED_CURRENCY,
             self::UPDATED_DEFAULT,
             self::UPDATED_ACTIVE,
-            self::UPDATED_LOCALIZATION
+            self::UPDATED_LOCALIZATION,
+            self::CODE
         );
     }
     
@@ -192,41 +194,35 @@ class SalesChannelControllerTest extends WebTestCase
      * {@inheritdoc}
      * @param Crawler $crawler
      * @param string $name
-     * @param string $code
      * @param string $channelType
      * @param string $currency
      * @param bool $default
      * @param bool $active
      * @param int $localizationId
+     * @param string $code
      */
     protected function assertSalesChannelSave(
         Crawler $crawler,
         $name,
-        $code,
         $channelType,
         $currency,
         $default,
         $active,
-        $localizationId
+        $localizationId,
+        $code = null
     ) {
-        $token = $this->getContainer()->get('security.csrf.token_manager')
-            ->getToken(SalesChannelType::BLOCK_PREFIX)->getValue();
-
-        $formData = [
-            'input_action' => '{"route":"marello_sales_saleschannel_view","params":{"id":"$id"}}',
-            SalesChannelType::BLOCK_PREFIX => [
-                'name' => $name,
-                'code' => $code,
-                'channelType' => $channelType,
-                'currency' => $currency,
-                'default' => $default,
-                'active' => $active,
-                'localization' => $localizationId,
-                '_token' => $token,
-            ],
-        ];
-
         $form = $crawler->selectButton('Save and Close')->form();
+        $formData = $form->getPhpValues();
+        $formData['input_action'] = '{"route":"marello_sales_saleschannel_view","params":{"id":"$id"}}';
+        $formData[SalesChannelType::BLOCK_PREFIX]['name'] = $name;
+        if ($code) {
+            $formData[SalesChannelType::BLOCK_PREFIX]['code'] = $code;
+        }
+        $formData[SalesChannelType::BLOCK_PREFIX]['channelType'] = $channelType;
+        $formData[SalesChannelType::BLOCK_PREFIX]['currency'] = $currency;
+        $formData[SalesChannelType::BLOCK_PREFIX]['default'] = $default;
+        $formData[SalesChannelType::BLOCK_PREFIX]['active'] = $active;
+        $formData[SalesChannelType::BLOCK_PREFIX]['localization'] = $localizationId;
 
         $this->client->followRedirects(true);
         $crawler = $this->client->request($form->getMethod(), $form->getUri(), $formData);
@@ -240,12 +236,12 @@ class SalesChannelControllerTest extends WebTestCase
         $this->assertViewPage(
             $html,
             $name,
-            $code,
             $channelType,
             $currency,
             $default,
             $active,
-            $localizationId
+            $localizationId,
+            $code
         );
     }
     
@@ -263,12 +259,12 @@ class SalesChannelControllerTest extends WebTestCase
     protected function assertViewPage(
         $html,
         $name,
-        $code,
         $channelType,
         $currency,
         $default,
         $active,
-        $localizationId
+        $localizationId,
+        $code = null
     ) {
         /** @var Localization $localization */
         $localization = $this->getContainer()->get('doctrine')
@@ -277,36 +273,13 @@ class SalesChannelControllerTest extends WebTestCase
             ->find($localizationId);
         
         $this->assertStringContainsString($name, $html);
-        $this->assertStringContainsString($code, $html);
+        if ($code) {
+            $this->assertStringContainsString($code, $html);
+        }
         $this->assertStringContainsString($channelType, $html);
         $this->assertStringContainsString($currency, $html);
         $this->assertStringContainsString($default ? 'Yes' : 'No', $html);
         $this->assertStringContainsString($active ? 'Yes' : 'No', $html);
         $this->assertStringContainsString($localization->getLanguageCode(), $html);
-    }
-
-    /**
-     * {@inheritdoc}
-     * @param $operationName
-     * @param $entityId
-     * @param $entityClass
-     *
-     * @return array
-     */
-    protected function getOperationExecuteParams($operationName, $entityId, $entityClass)
-    {
-        $actionContext = [
-            'entityId'    => $entityId,
-            'entityClass' => $entityClass
-        ];
-        $container = self::getContainer();
-        $operation = $container->get('oro_action.operation_registry')->findByName($operationName);
-        $actionData = $container->get('oro_action.helper.context')->getActionData($actionContext);
-
-        $tokenData = $container->get('oro_action.operation.execution.form_provider')
-            ->createTokenData($operation, $actionData);
-        $container->get('session')->save();
-
-        return $tokenData;
     }
 }

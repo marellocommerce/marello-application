@@ -3,7 +3,7 @@
 namespace Marello\Bundle\OrderBundle\Provider;
 
 use Oro\Bundle\LocaleBundle\Formatter\NumberFormatter;
-
+use NumberFormatter as IntlNumberFormatter;
 class OrderStatisticsCurrencyNumberFormatter
 {
     /** @var NumberFormatter */
@@ -33,7 +33,7 @@ class OrderStatisticsCurrencyNumberFormatter
             $value = abs($value);
         }
 
-        $value = $this->numberFormatter->formatCurrency($value, $currencyCode);
+        $value = $this->numberFormatter->formatCurrency($value, $currencyCode, [IntlNumberFormatter::MIN_FRACTION_DIGITS => 2]);
 
         return !is_null($sign) ? sprintf('%s%s', $sign, $value) : $value;
     }

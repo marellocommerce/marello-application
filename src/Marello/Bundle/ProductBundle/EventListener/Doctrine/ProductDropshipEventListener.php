@@ -66,7 +66,7 @@ class ProductDropshipEventListener
     {
         $entity = $args->getEntity();
         if ($entity instanceof ProductSupplierRelation && $entity->getCanDropship() === true) {
-            $this->event= new ProductDropshipEvent($entity, false);
+            $this->event = new ProductDropshipEvent($entity, false);
         }
     }
 
@@ -76,8 +76,8 @@ class ProductDropshipEventListener
             $event = $this->event;
             $this->event = null;
             $this->eventDispatcher->dispatch(
-                ProductDropshipEvent::NAME,
-                $event
+                $event,
+                ProductDropshipEvent::NAME
             );
         }
     }

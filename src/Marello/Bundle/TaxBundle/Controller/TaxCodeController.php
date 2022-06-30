@@ -3,11 +3,15 @@
 namespace Marello\Bundle\TaxBundle\Controller;
 
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
+use Marello\Bundle\TaxBundle\Form\Handler\TaxCodeHandler;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\UIBundle\Route\Router;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class TaxCodeController
@@ -65,11 +69,12 @@ class TaxCodeController extends AbstractController
      *      permission="CREATE"
      * )
      *
+     * @param Request $request
      * @return array
      */
-    public function createAction()
+    public function createAction(Request $request)
     {
-        return $this->update(new TaxCode());
+        return $this->update($request, new TaxCode());
     }
 
     /**
@@ -88,37 +93,49 @@ class TaxCodeController extends AbstractController
      * )
      *
      * @param TaxCode $taxCode
-     *
+     * @param Request $request
      * @return array
      */
-    public function updateAction(TaxCode $taxCode)
+    public function updateAction(TaxCode $taxCode, Request $request)
     {
-        return $this->update($taxCode);
+        return $this->update($request, $taxCode);
     }
 
     /**
      * Handles supplier updates and creation.
      *
-     * @param TaxCode   $taxCode
-     *
+     * @param Request $request
+     * @param TaxCode $taxCode
      * @return array
      */
-    protected function update(TaxCode $taxCode = null)
+    protected function update(Request $request, TaxCode $taxCode = null)
     {
-        $handler = $this->get('marello_tax.form.handler.taxcode');
+        $handler = $this->container->get(TaxCodeHandler::class);
         
         if ($handler->process($taxCode)) {
-            $this->get('session')->getFlashBag()->add(
+            $request->getSession()->getFlashBag()->add(
                 'success',
-                $this->get('translator')->trans('marello.tax.messages.success.taxcode.saved')
+                $this->container->get(TranslatorInterface::class)->trans('marello.tax.messages.success.taxcode.saved')
             );
             
-            return $this->get('oro_ui.router')->redirect($taxCode);
+            return $this->container->get(Router::class)->redirect($taxCode);
         }
 
         return [
             'entity' => $taxCode,
             'form'   => $handler->getFormView(),
         ];
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                TaxCodeHandler::class,
+                TranslatorInterface::class,
+                Router::class,
+            ]
+        );
     }
 }

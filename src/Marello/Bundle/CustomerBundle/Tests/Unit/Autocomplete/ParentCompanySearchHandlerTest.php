@@ -11,6 +11,7 @@ use Oro\Bundle\SearchBundle\Engine\Indexer;
 use Oro\Bundle\SearchBundle\Provider\SearchMappingProvider;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class ParentCompanySearchHandlerTest extends TestCase
 {
@@ -86,6 +87,8 @@ class ParentCompanySearchHandlerTest extends TestCase
         $this->searchHandler = new ParentCompanySearchHandler(self::TEST_ENTITY_CLASS, ['name']);
         $this->searchHandler->initSearchIndexer($this->indexer, $searchMappingProvider);
         $this->searchHandler->initDoctrinePropertiesByManagerRegistry($this->managerRegistry);
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        $this->searchHandler->setPropertyAccessor($propertyAccessor);
     }
 
     /**

@@ -9,5 +9,8 @@ Marello\Bundle\SupplierBundle\Entity\Supplier:
     properties:
         name:
             - NotBlank: ~
+        code:
+            - NotBlank: ~
+            - Marello\Bundle\CoreBundle\Validator\Constraints\CodeRegex: ~
         currency:
             - NotBlank: ~

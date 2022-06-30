@@ -1,0 +1,10 @@
+services:
+    _defaults:
+        public: true
+
+    Marello\Bundle\ShippingBundle\Controller\ShippingMethodsConfigsRuleController:
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: marello_shipping.form.handler.shipping_methods_configs_rule, key: Marello\Bundle\ShippingBundle\Form\Handler\ShippingMethodsConfigsRuleHandler }

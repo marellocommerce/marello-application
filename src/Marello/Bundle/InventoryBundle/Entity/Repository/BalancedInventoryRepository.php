@@ -2,38 +2,19 @@
 
 namespace Marello\Bundle\InventoryBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
-
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
-
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
 
-class BalancedInventoryRepository extends EntityRepository
+class BalancedInventoryRepository extends ServiceEntityRepository
 {
-    /**
-     * @var AclHelper
-     */
-    private $aclHelper;
-
-    /**
-     * @param AclHelper $aclHelper
-     */
-    public function setAclHelper(AclHelper $aclHelper)
-    {
-        $this->aclHelper = $aclHelper;
-    }
-
-    /**
-     * Finds level based on Product and SalesChannelGroup
-     *
-     * @param ProductInterface $product
-     * @param SalesChannelGroup $group
-     * @return null|BalancedInventoryLevel
-     */
-    public function findExistingBalancedInventory(ProductInterface $product, SalesChannelGroup $group)
-    {
+    public function findExistingBalancedInventory(
+        ProductInterface $product,
+        SalesChannelGroup $group,
+        AclHelper $aclHelper
+    ): ?BalancedInventoryLevel {
         $qb = $this->createQueryBuilder('balanced_inventory');
         $qb
             ->where(
@@ -43,6 +24,6 @@ class BalancedInventoryRepository extends EntityRepository
             ->setParameter('product', $product)
             ->setParameter('salesChannelGroup', $group);
 
-        return $this->aclHelper->apply($qb)->getOneOrNullResult();
+        return $aclHelper->apply($qb)->getOneOrNullResult();
     }
 }

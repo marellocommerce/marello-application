@@ -6,6 +6,7 @@ marello:
         id.label:                     Id
         name.label:                   Name
         priority.label:               Priority
+        code.label:                   Supplier Code
         can_dropship.label:           Can Dropship
         quantity_of_unit.label:       Quantity of Unit
         cost.label:                   Cost
@@ -14,6 +15,7 @@ marello:
         email.label:                  Email
         organization.label:           Organization
         currency.label:               Currency
+        supplier_code.label:          Supplier Code
         po_send_by:
             label:                    Send Purchase Orders By
             manual:                   Manually

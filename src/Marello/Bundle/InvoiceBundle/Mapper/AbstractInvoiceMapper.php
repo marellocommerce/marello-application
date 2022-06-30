@@ -92,7 +92,10 @@ abstract class AbstractInvoiceMapper implements MapperInterface
         if (isset($this->mappedFields[$entityClass])) {
             $fields = $this->mappedFields[$entityClass];
         } else {
-            $fields = $this->entityFieldProvider->getFields($entityClass, true, true, false, false, true, false);
+            $fields = $this->entityFieldProvider->getEntityFields(
+                $entityClass,
+                EntityFieldProvider::OPTION_WITH_RELATIONS | EntityFieldProvider::OPTION_WITH_VIRTUAL_FIELDS
+            );
             $this->mappedFields[$entityClass] = $fields;
         }
 

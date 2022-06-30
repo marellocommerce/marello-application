@@ -1,0 +1,15 @@
+imports:
+    - { resource: controllers.yml }
+
+services:
+    marello_health_check.listener.datagrid.last_integration_statuses_listener:
+        class: Marello\Bundle\HealthCheckBundle\EventListener\Datagrid\LastIntegrationStatusesGridListener
+        arguments:
+            - '@oro_dashboard.provider.big_number.date_helper'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.pre.marello-last-integration-statuses-grid, method: onPreBuild }
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.marello-last-integration-statuses-grid, method: buildAfter }
+
+    marello_health_check.provider.datagrid.last_integration_statuses_data_provider:
+        class: Marello\Bundle\HealthCheckBundle\Provider\Datagrid\LastIntegrationStatusesDataProvider
+        public: true

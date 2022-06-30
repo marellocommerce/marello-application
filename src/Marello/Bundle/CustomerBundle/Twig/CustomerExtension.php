@@ -2,6 +2,8 @@
 
 namespace Marello\Bundle\CustomerBundle\Twig;
 
+use Doctrine\Persistence\ManagerRegistry;
+use Marello\Bundle\CustomerBundle\Entity\Company;
 use Marello\Bundle\CustomerBundle\Entity\Repository\CompanyRepository;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -15,13 +17,9 @@ class CustomerExtension extends AbstractExtension
      */
     protected $companyRepository;
 
-    /**
-     * @param CompanyRepository $companyRepository
-     */
-    public function __construct(CompanyRepository $companyRepository)
-    {
-        $this->companyRepository = $companyRepository;
-    }
+    public function __construct(
+        protected ManagerRegistry $registry
+    ) {}
 
     /**
      * Returns the name of the extension.
@@ -56,11 +54,20 @@ class CustomerExtension extends AbstractExtension
      */
     public function getCompanyChildrenIds($companyId, $includeOwnId = true)
     {
-        $children = $this->companyRepository->getChildrenIds($companyId);
+        $children = $this->getRepository()->getChildrenIds($companyId);
         if ($includeOwnId) {
             $children[] = $companyId;
         }
         
         return $children;
+    }
+
+    protected function getRepository(): CompanyRepository
+    {
+        if (!$this->companyRepository) {
+            $this->companyRepository = $this->registry->getRepository(Company::class);
+        }
+
+        return $this->companyRepository;
     }
 }

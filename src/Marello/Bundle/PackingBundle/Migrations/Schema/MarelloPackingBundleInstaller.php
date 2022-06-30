@@ -39,7 +39,7 @@ class MarelloPackingBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_4';
+        return 'v1_4_1';
     }
 
     /**
@@ -73,6 +73,7 @@ class MarelloPackingBundleInstaller implements
         $table->addColumn('warehouse_id', 'integer', ['notnull' => false]);
         $table->addColumn('comment', 'text', ['notnull' => false]);
         $table->addColumn('packing_slip_number', 'string', ['length' => 255, 'notnull' => false]);
+        $table->addColumn('source_id', 'integer', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
 
@@ -125,7 +126,7 @@ class MarelloPackingBundleInstaller implements
         );
         $table->setPrimaryKey(['id']);
         $table->addIndex(['organization_id']);
-        $table->addUniqueIndex(['order_item_id'], 'UNIQ_DBF8FC2AE415FB15', []);
+//        $table->addUniqueIndex(['order_item_id'], 'UNIQ_DBF8FC2AE415FB15', []);
     }
 
     /**
@@ -175,6 +176,12 @@ class MarelloPackingBundleInstaller implements
             ['warehouse_id'],
             ['id'],
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_inventory_allocation'),
+            ['source_id'],
+            ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
         );
     }
 

@@ -7,7 +7,7 @@ search:
             name:                       marello_order_order_view
             parameters:
                 id:                     id
-        search_template:                MarelloOrderBundle:Order:searchResult.html.twig
+        search_template:                '@MarelloOrder/Order/searchResult.html.twig'
         fields:
             -
                 name:                   orderNumber

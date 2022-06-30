@@ -1,3 +1,6 @@
+imports:
+    - { resource: controllers.yml }
+
 parameters:
     marello_shipping.rule_grid_route_name: 'marello_shipping_methods_configs_rule_index'
     marello_shipping.rule_grid_name: 'marello-shipping-methods-configs-rule-grid'
@@ -118,7 +121,7 @@ services:
     marello_shipping.method.event_listener.method_renaming:
         class: 'Marello\Bundle\ShippingBundle\Method\EventListener\MethodRenamingListener'
         arguments:
-            - '@marello_shipping.repository.shipping_method_config'
+            - '@Marello\Bundle\ShippingBundle\Entity\Repository\ShippingMethodConfigRepository'
         tags:
             - { name: kernel.event_listener, event: marello_shipping.method_renaming, method: onMethodRename}
 
@@ -128,19 +131,19 @@ services:
         arguments:
             - '@event_dispatcher'
 
-    marello_shipping.repository.shipping_method_config:
-        class: 'Marello\Bundle\ShippingBundle\Entity\Repository\ShippingMethodConfigRepository'
+    Marello\Bundle\ShippingBundle\Entity\Repository\ShippingMethodConfigRepository:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\ShippingBundle\Entity\ShippingMethodConfig'
+        tags:
+            - { name: doctrine.repository_service }
 
-    marello_shipping.repository.shipping_methods_configs_rule:
-        class: 'Marello\Bundle\ShippingBundle\Entity\Repository\ShippingMethodsConfigsRuleRepository'
+    Marello\Bundle\ShippingBundle\Entity\Repository\ShippingMethodsConfigsRuleRepository:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\ShippingBundle\Entity\ShippingMethodsConfigsRule'
-        calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
+        tags:
+            - { name: doctrine.repository_service }
 
     marello_shipping.method_disable_handler.basic:
         class: 'Marello\Bundle\ShippingBundle\Method\Handler\BasicShippingMethodDisableHandler'
@@ -153,8 +156,9 @@ services:
         public: false
         arguments:
             - '@marello_shipping.method_disable_handler.decorator.inner'
-            - '@marello_shipping.repository.shipping_methods_configs_rule'
+            - '@Marello\Bundle\ShippingBundle\Entity\Repository\ShippingMethodsConfigsRuleRepository'
             - '@marello_shipping.shipping_method_provider'
+            - '@oro_security.acl_helper'
 
     marello_shipping.rule_filtration.basic_service:
         class: 'Marello\Bundle\ShippingBundle\RuleFiltration\Basic\BasicMethodsConfigsRulesFiltrationService'
@@ -177,7 +181,8 @@ services:
         public: false
         arguments:
             - '@marello_shipping.rule_filtration.basic_service'
-            - '@marello_shipping.repository.shipping_methods_configs_rule'
+            - '@Marello\Bundle\ShippingBundle\Entity\Repository\ShippingMethodsConfigsRuleRepository'
+            - '@oro_security.acl_helper'
 
     marello_shipping.shipping_price.provider:
         class: 'Marello\Bundle\ShippingBundle\Provider\Price\ShippingPriceProvider'
@@ -268,7 +273,8 @@ services:
     marello_shipping.condition.shipping_method_has_shipping_rules:
         class: 'Marello\Bundle\ShippingBundle\Condition\ShippingMethodHasShippingRules'
         arguments:
-            - '@marello_shipping.repository.shipping_methods_configs_rule'
+            - '@Marello\Bundle\ShippingBundle\Entity\Repository\ShippingMethodsConfigsRuleRepository'
+            - '@oro_security.acl_helper'
         tags:
             - { name: oro_workflow.condition, alias: 'marello_shipping_method_has_shipping_rules' }
             - { name: oro_action.condition, alias: 'marello_shipping_method_has_shipping_rules' }
@@ -276,7 +282,8 @@ services:
     marello_shipping.condition.shipping_method_has_enabled_shipping_rules:
         class: 'Marello\Bundle\ShippingBundle\Condition\ShippingMethodHasEnabledShippingRules'
         arguments:
-            - '@marello_shipping.repository.shipping_methods_configs_rule'
+            - '@Marello\Bundle\ShippingBundle\Entity\Repository\ShippingMethodsConfigsRuleRepository'
+            - '@oro_security.acl_helper'
         tags:
             - { name: oro_workflow.condition, alias: 'marello_shipping_method_has_enabled_shipping_rules' }
             - { name: oro_action.condition, alias: 'marello_shipping_method_has_enabled_shipping_rules' }
