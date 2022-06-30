@@ -5,15 +5,10 @@ parameters:
     database_name:          marello_application_test
     database_user:          root
     database_password:      ~
-    database_driver_options: []
     database_server_version: ~
+    database_driver_options: []
 
-    mailer_transport:       smtp
-    mailer_host:            127.0.0.1
-    mailer_port:            ~
-    mailer_encryption:      ~
-    mailer_user:            ~
-    mailer_password:        ~
+    mailer_dsn:             'smtp://127.0.0.1'
 
     # WebSocket server config
     websocket_bind_address:                "0.0.0.0"  # The host IP the socket server will bind to
@@ -40,19 +35,21 @@ parameters:
     search_engine_ssl_key: ~
     search_engine_ssl_key_password: ~
 
+    search_engine_dsn:          'orm:'
+
     # Used to hide backend under specified prefix, should be started with "/", for instance "/admin"
     # You can use this default value when only backend is present
     web_backend_prefix:         ''
 
     session_handler:        ~
 
-    secret:                 ThisTokenIsNotSoSecretChangeIt
+    secret:                 'ThisTokenIsNotSoSecretChangeIt'
     installed:              ~
-    assets_version:         ~
-    assets_version_strategy: time_hash
-    enterprise_licence:     ~
+
+    enterprise_licence: ~
     message_queue_transport: 'null'
     message_queue_transport_config: {}
+
     deployment_type: ~
 
     # Post processors binary
