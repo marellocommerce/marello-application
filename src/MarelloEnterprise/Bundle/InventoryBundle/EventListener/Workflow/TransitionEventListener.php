@@ -54,7 +54,7 @@ class TransitionEventListener
 
         if ($this->getApplicableWorkflow($entity)) {
             if ($entity->getParent() && $entity->getChildren()->isEmpty()) {
-                // sub allocation so it needs to create a replenishment order
+                // sub allocation, so it needs to create a replenishment order
                 $items = $entity->getItems();
                 $products = [];
                 $consolidationWarehouse = $entity->getParent()->getWarehouse();
@@ -74,7 +74,9 @@ class TransitionEventListener
                 $replOrder = new ReplenishmentOrder();
                 $replOrder->setOrigin($entity->getWarehouse());
                 $replOrder->setDestination($consolidationWarehouse);
-                $replOrder->setDescription('it should be shipped to somewhere else...');
+                $replOrder->setDescription(
+                    sprintf('Replenishment for consolidation of Allocation %s', $entity->getParent()->getAllocationNumber())
+                );
                 $replOrder->setReplOrderConfig($replOrderConfig);
                 $replOrder->setPercentage(100);
                 $replOrder->setOrganization($entity->getOrganization());
