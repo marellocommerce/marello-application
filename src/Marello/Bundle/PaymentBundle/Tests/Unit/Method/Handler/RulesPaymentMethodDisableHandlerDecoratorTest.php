@@ -10,6 +10,7 @@ use Marello\Bundle\PaymentBundle\Method\Handler\RulesPaymentMethodDisableHandler
 use Marello\Bundle\PaymentBundle\Method\Handler\PaymentMethodDisableHandlerInterface;
 use Marello\Bundle\PaymentBundle\Method\PaymentMethodInterface;
 use Marello\Bundle\PaymentBundle\Method\Provider\PaymentMethodProviderInterface;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class RulesPaymentMethodDisableHandlerDecoratorTest extends \PHPUnit\Framework\TestCase
 {
@@ -29,6 +30,11 @@ class RulesPaymentMethodDisableHandlerDecoratorTest extends \PHPUnit\Framework\T
     protected $paymentMethodProvider;
 
     /**
+     * @var AclHelper|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected $aclHelper;
+
+    /**
      * @var RulesPaymentMethodDisableHandlerDecorator
      */
     protected $decorator;
@@ -41,11 +47,13 @@ class RulesPaymentMethodDisableHandlerDecoratorTest extends \PHPUnit\Framework\T
         $this->handler = $this->createMock(PaymentMethodDisableHandlerInterface::class);
         $this->repository = $this->createMock(PaymentMethodsConfigsRuleRepository::class);
         $this->paymentMethodProvider = $this->createMock(PaymentMethodProviderInterface::class);
+        $this->aclHelper = $this->createMock(AclHelper::class);
 
         $this->decorator = new RulesPaymentMethodDisableHandlerDecorator(
             $this->handler,
             $this->repository,
-            $this->paymentMethodProvider
+            $this->paymentMethodProvider,
+            $this->aclHelper
         );
     }
 

@@ -54,7 +54,7 @@
 {% block marello_assembled_price_list_collection_widget %}
     {% import _self as fields %}
 
-    {% spaceless %}
+    {% apply spaceless %}
         {% set widgetContainerAttributes = block('widget_container_attributes') %}
         {% if prototype is defined %}
             {% set prototype_html = fields.marello_assembled_price_list_collection_item_prototype(form, widgetContainerAttributes) %}
@@ -88,7 +88,7 @@
         {% if handle_primary and (prototype is not defined or prototype.primary is defined) %}
             {{ fields.oro_collection_validate_primary_js(_context) }}
         {% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
 {% block marello_assembled_channel_price_list_widget %}
@@ -154,7 +154,7 @@
 {% block marello_assembled_channel_price_list_collection_widget %}
     {% import _self as fields %}
 
-    {% spaceless %}
+    {% apply spaceless %}
         {% set widgetContainerAttributes = block('widget_container_attributes') %}
         {% if prototype is defined %}
             {% set prototype_html = fields.marello_assembled_channel_price_list_collection_item_prototype(form, widgetContainerAttributes) %}
@@ -195,5 +195,5 @@
         {% if handle_primary and (prototype is not defined or prototype.primary is defined) %}
             {{ fields.oro_collection_validate_primary_js(_context) }}
         {% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}

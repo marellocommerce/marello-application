@@ -1,0 +1,6 @@
+{% import '@OroDataGrid/macros.html.twig' as dataGrid %}
+
+{% set gridName = 'marello-allocation-order-' ~ entityType ~ '-grid' %}
+<div class="widget-content">
+    {{ dataGrid.renderGrid(gridName, { 'orderId': entity.id, 'state': entityState}) }}
+</div>

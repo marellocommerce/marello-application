@@ -1,0 +1,154 @@
+workflows:
+    marello_allocate_workflow:
+        entity: Marello\Bundle\InventoryBundle\Entity\Allocation
+        entity_attribute: allocation
+
+        defaults:
+            active: true
+        steps:
+            pending:
+                allowed_transitions:
+                    - sent_to_warehouse
+                    - could_not_allocate
+            could_not_allocate:
+                allowed_transitions:
+                    - pending
+                    - reallocate
+            warehouse_notified:
+                allowed_transitions:
+                    - pick_and_pack
+                    - rejected
+            rejected_by_warehouse:
+                is_final: true
+            pick_and_pack:
+                allowed_transitions:
+                    - complete
+            resolved:
+                is_final: true
+            complete:
+                is_final: true
+        transitions:
+            pending:
+                step_to: pending
+                is_start: true
+                transition_definition: pending_definition
+            sent_to_warehouse:
+                step_to: warehouse_notified
+                transition_definition: send_definition
+            could_not_allocate:
+                step_to: could_not_allocate
+                transition_definition: could_not_allocate_definition
+            pick_and_pack:
+                step_to: pick_and_pack
+                transition_definition: pick_pack_definition
+            rejected:
+                step_to: rejected_by_warehouse
+                transition_definition: rejected_definition
+            reallocate:
+                step_to: resolved
+                transition_definition: reallocate_definition
+            complete:
+                step_to: complete
+                transition_definition: complete_definition
+        transition_definitions:
+            pending_definition:
+                post_actions:
+                    -  '@extendable':
+                            events: [ extendable_action.pending_transition_after ]
+            send_definition:
+                conditions:
+                    '@and':
+                        - '@not_empty': $allocation.warehouse
+                        - '@not_empty': $allocation.warehouse.notifier
+                preactions:
+                    - '@flash_message':
+                          conditions:
+                              '@empty': $allocation.warehouse.notifier
+                          message: 'No notification can be send, notification method is empty'
+                          type: 'error'
+                post_actions:
+                    -  '@extendable':
+                           events: [ extendable_action.send_transition_after ]
+            could_not_allocate_definition: ~
+            pick_pack_definition:
+                post_actions:
+                    - '@foreach':
+                          array: $allocation.items
+                          value: $.result.value
+                          actions:
+                              - '@assign_value': [$.result.value.quantityConfirmed, $.result.value.quantity]
+                              - '@assign_value': [$.result.value.quantityRejected, 0]
+                    - '@extendable':
+                          events: [extendable_action.create_packingslip]
+            reallocate_definition:
+                actions:
+                    - '@foreach':
+                          array: $allocation.items
+                          value: $.result.value
+                          actions:
+                              - '@assign_value': [$.result.value.quantityConfirmed, 0]
+                              - '@assign_value': [$.result.value.quantityRejected, $.result.value.quantity]
+                post_actions:
+                    - '@call_service_method':
+                          service: Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider
+                          method: allocateOrderToWarehouses
+                          method_parameters: [ $allocation.order, $allocation ]
+            complete_definition:
+                post_actions:
+                    # parent allocation and children are empty, so we need to send email to customer with 'partial' shipped email
+                    - '@marello_notification_send':
+                        conditions:
+                            '@and':
+                                - '@not_empty': $allocation.order.customer.email
+                                - '@empty': $allocation.parent
+                                - '@no_elements': $allocation.children
+                        entity: $allocation
+                        recipient: $allocation.order.customer
+                        template: marello_order_shipped_allocation_confirmation
+                    # parent allocation is empty, so we need to send email to customer with 'full' shipped email
+                    - '@marello_notification_send':
+                        conditions:
+                            '@and':
+                                - '@not_empty': $allocation.order.customer.email
+                                - '@empty': $allocation.parent
+                                - '@has_elements': $allocation.children
+                        entity: $allocation.order
+                        recipient: $allocation.order.customer
+                        template: marello_order_shipped_confirmation
+                    # parent allocation is not empty, so we need to send email to parent allocation warehouse to inform
+                    # them a shipment is underway.
+                    - '@marello_notification_send':
+                        conditions:
+                            '@and':
+                                - '@not_empty': $allocation.parent.warehouse.email
+                                - '@not_empty': $allocation.parent
+                        entity: $allocation
+                        recipient: $allocation.parent.warehouse
+                        template: marello_warehouse_allocation
+                    - '@tree':
+                        conditions:
+                            '@equal': [$.result.value.quantityConfirmed, $.result.value.orderItem.quantity]
+                        actions:
+                            - '@foreach':
+                                array: $allocation.items
+                                value: $.result.value
+                                actions:
+                                    - '@request_enum_entity':
+                                        enum_code: marello_item_status
+                                        identifier: 'shipped'
+                                        attribute: $.result.value.orderItem.status
+                    -   '@extendable':
+                            events: [ extendable_action.allocation_complete ]
+            rejected_definition:
+                actions:
+                    - '@foreach':
+                          array: $allocation.items
+                          value: $.result.value
+                          actions:
+                              - '@assign_value': [$.result.value.quantityConfirmed, 0]
+                              - '@assign_value': [$.result.value.quantityRejected, $.result.value.quantity]
+                post_actions:
+                    - '@call_service_method':
+                            service: Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider
+                            method: allocateOrderToWarehouses
+                            method_parameters: [ $allocation.order, $allocation ]

@@ -10,6 +10,7 @@ use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\SalesBundle\EventListener\Doctrine\SalesChannelGroupListener;
 use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -27,12 +28,18 @@ class SalesChannelGroupListenerTest extends TestCase
     private $session;
 
     /**
+     * @var AclHelper|\PHPUnit\Framework\MockObject\MockObject
+     */
+    private $aclHelper;
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp(): void
     {
         $this->session = $this->createMock(Session::class);
-        $this->salesChannelGroupListener = new SalesChannelGroupListener(true, $this->session);
+        $this->aclHelper = $this->createMock(AclHelper::class);
+        $this->salesChannelGroupListener = new SalesChannelGroupListener(true, $this->session, $this->aclHelper);
     }
 
     /**

@@ -1,6 +1,6 @@
-{% extends 'OroUIBundle:actions:update.html.twig' %}
-{% import 'OroUIBundle::macros.html.twig' as UI %}
-{% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
+{% extends '@OroUI/actions/update.html.twig' %}
+{% import '@OroUI/macros.html.twig' as UI %}
+{% form_theme form with '@OroForm/Form/fields.html.twig' %}
 
 {% set formAction = path('marello_inventory_warehouse_updatedefault') %}
 

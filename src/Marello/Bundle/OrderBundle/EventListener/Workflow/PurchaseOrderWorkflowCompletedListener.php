@@ -184,8 +184,8 @@ class PurchaseOrderWorkflowCompletedListener
                     $workflowItems = $this->workflowManager->getWorkflowItemsByEntity($order);
                     foreach ($workflowItems as $workflowItem) {
                         $this->eventDispatcher->dispatch(
-                            'extendable_action.create_packingslip',
-                            new ExtendableActionEvent($workflowItem)
+                            new ExtendableActionEvent($workflowItem),
+                            'extendable_action.create_packingslip'
                         );
                     }
                     if ($this->packingSlip) {
@@ -349,14 +349,14 @@ class PurchaseOrderWorkflowCompletedListener
         $context->setValue('warehouse', $warehouse);
 
         $this->eventDispatcher->dispatch(
-            InventoryUpdateEvent::NAME,
-            new InventoryUpdateEvent($context)
+            new InventoryUpdateEvent($context),
+            InventoryUpdateEvent::NAME
         );
         if ($isVirtual) {
             $context->setIsVirtual(true);
             $this->eventDispatcher->dispatch(
-                InventoryUpdateEvent::NAME,
-                new InventoryUpdateEvent($context)
+                new InventoryUpdateEvent($context),
+                InventoryUpdateEvent::NAME
             );
         }
     }

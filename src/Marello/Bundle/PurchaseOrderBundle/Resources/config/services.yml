@@ -1,3 +1,6 @@
+imports:
+    - { resource: controllers.yml }
+
 services:
     marello_purchaseorder.processor.note_activity_processor:
         class: Marello\Bundle\PurchaseOrderBundle\Processor\NoteActivityProcessor
@@ -55,6 +58,7 @@ services:
         class: Marello\Bundle\PurchaseOrderBundle\EventListener\Doctrine\PurchaseOrderOnOrderOnDemandCreationListener
         arguments:
             - '@marello_inventory.provider.available_inventory_provider'
+            - '@oro_security.acl_helper'
         calls:
             - ['setConfigManager', ['@oro_config.manager']]
         tags:
@@ -65,6 +69,7 @@ services:
         class: Marello\Bundle\PurchaseOrderBundle\EventListener\Doctrine\PurchaseOrderWarehouseListener
         arguments:
             - '@doctrine'
+            - '@oro_security.acl_helper'
         tags:
             - { name: doctrine.event_listener, event: prePersist }
 
@@ -92,7 +97,7 @@ services:
 
     marello_purchaseorder.command.purchase_order_advice:
         class: 'Marello\Bundle\PurchaseOrderBundle\Cron\PurchaseOrderAdviceCommand'
-        calls:
-            - ['setContainer', ['@service_container']]
+        arguments:
+            - '@service_container'
         tags:
             - { name: console.command }

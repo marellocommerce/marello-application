@@ -9,26 +9,15 @@ use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class BalancedInventoryHandler
 {
-    /** @var BalancedInventoryFactory $balancedInventoryFactory */
-    protected $balancedInventoryFactory;
-
-    /** @var Registry $doctrine */
-    protected $doctrine;
-
-    /**
-     * @param Registry $doctrine
-     * @param BalancedInventoryFactory $balancedInventoryFactory
-     */
     public function __construct(
-        Registry $doctrine,
-        BalancedInventoryFactory $balancedInventoryFactory
-    ) {
-        $this->doctrine = $doctrine;
-        $this->balancedInventoryFactory = $balancedInventoryFactory;
-    }
+        protected Registry $doctrine,
+        protected BalancedInventoryFactory $balancedInventoryFactory,
+        protected AclHelper $aclHelper
+    ) {}
 
     /**
      * @param ProductInterface $product
@@ -95,7 +84,7 @@ class BalancedInventoryHandler
     {
         /** @var BalancedInventoryRepository $repository */
         $repository = $this->doctrine->getRepository(BalancedInventoryLevel::class);
-        return $repository->findExistingBalancedInventory($product, $group);
+        return $repository->findExistingBalancedInventory($product, $group, $this->aclHelper);
     }
 
     /**

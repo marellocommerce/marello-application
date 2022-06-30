@@ -2,11 +2,11 @@
 
 namespace Marello\Bundle\OrderBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Oro\Bundle\DashboardBundle\Filter\DateFilterProcessor;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
-class OrderItemRepository extends EntityRepository
+class OrderItemRepository extends ServiceEntityRepository
 {
     /**
      * @var AclHelper

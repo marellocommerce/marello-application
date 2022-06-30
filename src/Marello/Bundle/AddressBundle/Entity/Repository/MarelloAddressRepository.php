@@ -10,24 +10,11 @@ use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 class MarelloAddressRepository extends EntityRepository
 {
     /**
-     * @var AclHelper
-     */
-    private $aclHelper;
-
-    /**
-     * @param AclHelper $aclHelper
-     */
-    public function setAclHelper(AclHelper $aclHelper)
-    {
-        $this->aclHelper = $aclHelper;
-    }
-    
-    /**
      * @param MarelloAddress $address
-     *
+     * @param AclHelper $aclHelper
      * @return MarelloEnterpriseAddress[]
      */
-    public function findByAddressParts(MarelloAddress $address)
+    public function findByAddressParts(MarelloAddress $address, AclHelper $aclHelper)
     {
         $qb = $this->createQueryBuilder('addr');
         $qb
@@ -69,6 +56,6 @@ class MarelloAddressRepository extends EntityRepository
                 ->setParameter('postalCode', $address->getPostalCode());
         }
 
-        return $this->aclHelper->apply($qb)->getResult();
+        return $aclHelper->apply($qb)->getResult();
     }
 }

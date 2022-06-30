@@ -1,0 +1,29 @@
+services:
+    _defaults:
+        public: true
+
+    Marello\Bundle\SalesBundle\Controller\ConfigController:
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: marello_sales.config_form_provider.saleschannel, key: Marello\Bundle\SalesBundle\Provider\SalesChannelConfigurationFormProvider }
+            - { name: container.service_subscriber, id: oro_config.saleschannel, key: Oro\Bundle\ConfigBundle\Config\ConfigManager }
+
+    Marello\Bundle\SalesBundle\Controller\SalesChannelController:
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+
+    Marello\Bundle\SalesBundle\Controller\SalesChannelGroupController:
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+
+    Marello\Bundle\SalesBundle\Controller\SalesChannelTypeController:
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }

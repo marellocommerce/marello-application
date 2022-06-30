@@ -8,11 +8,13 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Marello\Bundle\ShippingBundle\Entity\ShippingMethodsConfigsRule;
 use Marello\Bundle\ShippingBundle\Form\Handler\ShippingMethodsConfigsRuleHandler;
 use Marello\Bundle\ShippingBundle\Form\Type\ShippingMethodsConfigsRuleType;
+use Oro\Bundle\UIBundle\Route\Router;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ShippingMethodsConfigsRuleController extends AbstractController
 {
@@ -38,7 +40,7 @@ class ShippingMethodsConfigsRuleController extends AbstractController
      *     path="/create",
      *     name="marello_shipping_methods_configs_rule_create"
      * )
-     * @Template("MarelloShippingBundle:ShippingMethodsConfigsRule:update.html.twig")
+     * @Template("@MarelloShipping/ShippingMethodsConfigsRule/update.html.twig")
      * @Acl(
      *     id="marello_shipping_methods_configs_rule_create",
      *     type="entity",
@@ -110,13 +112,13 @@ class ShippingMethodsConfigsRuleController extends AbstractController
     protected function update(ShippingMethodsConfigsRule $entity, Request $request)
     {
         $form = $this->createForm(ShippingMethodsConfigsRuleType::class);
-        if ($this->get('marello_shipping.form.handler.shipping_methods_configs_rule')->process($form, $entity)) {
-            $this->get('session')->getFlashBag()->add(
+        if ($this->container->get(ShippingMethodsConfigsRuleHandler::class)->process($form, $entity)) {
+            $request->getSession()->getFlashBag()->add(
                 'success',
-                $this->get('translator')->trans('marello.shipping.controller.rule.saved.message')
+                $this->container->get(TranslatorInterface::class)->trans('marello.shipping.controller.rule.saved.message')
             );
 
-            return $this->get('oro_ui.router')->redirect($entity);
+            return $this->container->get(Router::class)->redirect($entity);
         }
 
         if ($request->get(ShippingMethodsConfigsRuleHandler::UPDATE_FLAG, false)) {
@@ -151,7 +153,7 @@ class ShippingMethodsConfigsRuleController extends AbstractController
     public function markMassAction($gridName, $actionName, Request $request)
     {
         /** @var MassActionDispatcher $massActionDispatcher */
-        $massActionDispatcher = $this->get('oro_datagrid.mass_action.dispatcher');
+        $massActionDispatcher = $this->container->get(MassActionDispatcher::class);
 
         $response = $massActionDispatcher->dispatchByRequest($gridName, $actionName, $request);
 
@@ -161,5 +163,18 @@ class ShippingMethodsConfigsRuleController extends AbstractController
         ];
 
         return new JsonResponse(array_merge($data, $response->getOptions()));
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                ShippingMethodsConfigsRuleHandler::class,
+                TranslatorInterface::class,
+                Router::class,
+                MassActionDispatcher::class,
+            ]
+        );
     }
 }

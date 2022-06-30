@@ -6,6 +6,7 @@ use Doctrine\ORM\UnitOfWork;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 
 use Marello\Bundle\InventoryBundle\Async\Topics;
@@ -25,18 +26,10 @@ class WarehouseGroupLinkRebalanceListener
      */
     protected $em;
 
-    /**
-     * @var MessageProducerInterface
-     */
-    private $messageProducer;
-
-    /**
-     * @param MessageProducerInterface $messageProducer
-     */
-    public function __construct(MessageProducerInterface $messageProducer)
-    {
-        $this->messageProducer = $messageProducer;
-    }
+    public function __construct(
+        private MessageProducerInterface $messageProducer,
+        private AclHelper $aclHelper
+    ) {}
 
     /**
      * Handle incoming event
@@ -94,7 +87,10 @@ class WarehouseGroupLinkRebalanceListener
         $channelsGroups = $entity->getSalesChannelGroups()->toArray();
         foreach ($channelsGroups as $salesChannelGroup) {
             foreach ($salesChannelGroup->getSalesChannels() as $salesChannel) {
-                $products = $this->em->getRepository(Product::class)->findByChannel($salesChannel);
+                $products = $this->em->getRepository(Product::class)->findByChannel(
+                    $salesChannel,
+                    $this->aclHelper
+                );
                 foreach ($products as $product) {
                     $this->messageProducer->send(
                         Topics::RESOLVE_REBALANCE_INVENTORY,

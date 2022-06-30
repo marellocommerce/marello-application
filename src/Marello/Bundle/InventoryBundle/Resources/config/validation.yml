@@ -9,6 +9,7 @@ Marello\Bundle\InventoryBundle\Entity\Warehouse:
             - NotBlank: ~
         code:
             - NotBlank: ~
+            - Marello\Bundle\CoreBundle\Validator\Constraints\CodeRegex: ~
 
 Marello\Bundle\InventoryBundle\Entity\WarehouseGroup:
     properties:

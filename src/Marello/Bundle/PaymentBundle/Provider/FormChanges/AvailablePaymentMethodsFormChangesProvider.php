@@ -9,17 +9,17 @@ use Marello\Bundle\PaymentBundle\Form\Type\PaymentMethodSelectType;
 use Marello\Bundle\PaymentBundle\Provider\PaymentMethodChoicesProviderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Validator\Constraints\NotNull;
+use Twig\Environment;
 
 class AvailablePaymentMethodsFormChangesProvider implements FormChangesProviderInterface
 {
     const FIELD = 'paymentMethods';
 
     /**
-     * @var EngineInterface
+     * @var Environment
      */
-    protected $templatingEngine;
+    protected $twig;
 
     /**
      * @var FormFactoryInterface
@@ -32,16 +32,16 @@ class AvailablePaymentMethodsFormChangesProvider implements FormChangesProviderI
     protected $paymentMethodChoicesProvider;
 
     /**
-     * @param EngineInterface $templatingEngine
+     * @param Environment $twig
      * @param FormFactoryInterface $formFactory
      * @param PaymentMethodChoicesProviderInterface $paymentMethodChoicesProvider
      */
     public function __construct(
-        EngineInterface $templatingEngine,
+        Environment $twig,
         FormFactoryInterface $formFactory,
         PaymentMethodChoicesProviderInterface $paymentMethodChoicesProvider
     ) {
-        $this->templatingEngine = $templatingEngine;
+        $this->twig = $twig;
         $this->formFactory = $formFactory;
         $this->paymentMethodChoicesProvider = $paymentMethodChoicesProvider;
     }
@@ -102,7 +102,7 @@ class AvailablePaymentMethodsFormChangesProvider implements FormChangesProviderI
     protected function renderForm(FormView $formView)
     {
         return $this
-            ->templatingEngine
-            ->render('MarelloPaymentBundle:Form:paymentMethodSelector.html.twig', ['form' => $formView]);
+            ->twig
+            ->render('@MarelloPayment/Form/paymentMethodSelector.html.twig', ['form' => $formView]);
     }
 }

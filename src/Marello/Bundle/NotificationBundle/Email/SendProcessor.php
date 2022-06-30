@@ -94,7 +94,6 @@ class SendProcessor
      * @param array  $data         Empty array for possible extending of additional parameters
      * @throws MarelloNotificationException
      * @throws \Oro\Bundle\NotificationBundle\Exception\NotificationSendException
-     * @throws \Twig_Error
      */
     public function sendNotification($templateName, array $recipients, $entity, array $data = [])
     {

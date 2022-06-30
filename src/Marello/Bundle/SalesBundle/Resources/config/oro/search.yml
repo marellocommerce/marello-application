@@ -6,7 +6,7 @@ search:
             name:                       marello_sales_saleschannel_index
             parameters:
                 id:                     id
-        search_template: MarelloSalesBundle:SalesChannel:searchResult.html.twig
+        search_template: '@MarelloSales/SalesChannel/searchResult.html.twig'
         fields:
             -
                 name:                   name
@@ -20,7 +20,7 @@ search:
         #    name:                       marello_sales_saleschannel_index
         #    parameters:
         #        id:                     id
-        #search_template: MarelloSalesBundle:SalesChannelType:searchResult.html.twig
+        #search_template: '@MarelloSales/SalesChannelType/searchResult.html.twig'
         #fields:
         #    -
         #        name:                   name

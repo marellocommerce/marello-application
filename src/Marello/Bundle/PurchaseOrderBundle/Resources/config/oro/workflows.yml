@@ -36,7 +36,7 @@ workflows:
                 step_to: partially_received
                 transition_definition: partially_receive_definition
                 display_type: page
-                page_template: OroWorkflowBundle:Workflow:transitionForm.html.twig
+                page_template: '@OroWorkflow/Workflow/transitionForm.html.twig'
                 form_options:
                     attribute_fields:
                         received_items:

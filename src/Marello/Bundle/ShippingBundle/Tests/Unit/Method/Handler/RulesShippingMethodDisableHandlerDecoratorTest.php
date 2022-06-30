@@ -10,6 +10,7 @@ use Marello\Bundle\ShippingBundle\Method\Handler\RulesShippingMethodDisableHandl
 use Marello\Bundle\ShippingBundle\Method\Handler\ShippingMethodDisableHandlerInterface;
 use Marello\Bundle\ShippingBundle\Method\ShippingMethodInterface;
 use Marello\Bundle\ShippingBundle\Method\ShippingMethodProviderInterface;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class RulesShippingMethodDisableHandlerDecoratorTest extends \PHPUnit\Framework\TestCase
 {
@@ -29,6 +30,11 @@ class RulesShippingMethodDisableHandlerDecoratorTest extends \PHPUnit\Framework\
     protected $shippingMethodProvider;
 
     /**
+     * @var AclHelper|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected $aclHelper;
+
+    /**
      * @var RulesShippingMethodDisableHandlerDecorator
      */
     protected $decorator;
@@ -41,11 +47,13 @@ class RulesShippingMethodDisableHandlerDecoratorTest extends \PHPUnit\Framework\
         $this->handler = $this->createMock(ShippingMethodDisableHandlerInterface::class);
         $this->repository = $this->createMock(ShippingMethodsConfigsRuleRepository::class);
         $this->shippingMethodProvider = $this->createMock(ShippingMethodProviderInterface::class);
+        $this->aclHelper = $this->createMock(AclHelper::class);
 
         $this->decorator = new RulesShippingMethodDisableHandlerDecorator(
             $this->handler,
             $this->repository,
-            $this->shippingMethodProvider
+            $this->shippingMethodProvider,
+            $this->aclHelper
         );
     }
 

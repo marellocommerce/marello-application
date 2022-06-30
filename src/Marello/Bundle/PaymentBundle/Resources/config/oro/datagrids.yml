@@ -36,12 +36,12 @@ datagrids:
                 label:         marello.payment.paymentmethodsconfigsrule.method_configs.label
                 type:          twig
                 frontend_type: html
-                template:      MarelloPaymentBundle:PaymentMethodsConfigsRule:Datagrid/configurations.html.twig
+                template:      '@MarelloPayment/PaymentMethodsConfigsRule/Datagrid/configurations.html.twig'
             destinations:
                 label:         marello.payment.paymentmethodsconfigsrule.destinations.label
                 type:          twig
                 frontend_type: html
-                template:      MarelloPaymentBundle:PaymentMethodsConfigsRule:Datagrid/destinations.html.twig
+                template:      '@MarelloPayment/PaymentMethodsConfigsRule/Datagrid/destinations.html.twig'
         properties:
             id: ~
             view_link:
@@ -132,7 +132,7 @@ datagrids:
                 label:            marello.payment.payment_method.label
                 type:             twig
                 frontend_type:    html
-                template:         MarelloPaymentBundle:Payment/Datagrid:paymentMethodWithoutOptions.html.twig
+                template:         '@MarelloPayment/Payment/Datagrid/paymentMethodWithoutOptions.html.twig'
             paymentReference:
                 label:            marello.payment.payment_reference.label
                 frontend_type:    string

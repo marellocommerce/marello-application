@@ -157,20 +157,12 @@ class TaxJurisdictionControllerTest extends WebTestCase
         $stateFull,
         array $zipCodes
     ) {
-        $token = $this->getContainer()->get('security.csrf.token_manager')
-            ->getToken('marello_tax_jurisdiction_type')->getValue();
-
-        $formData = [
-            'input_action' => '{"route":"marello_tax_taxjurisdiction_view","params":{"id":"$id"}}',
-            'marello_tax_jurisdiction_type' => [
-                'code' => $code,
-                'description' => $description,
-                'zipCodes' => $zipCodes,
-                '_token' => $token,
-            ],
-        ];
-
         $form = $crawler->selectButton('Save and Close')->form();
+        $formData = $form->getPhpValues();
+        $formData['input_action'] = '{"route":"marello_tax_taxjurisdiction_view","params":{"id":"$id"}}';
+        $formData['marello_tax_jurisdiction_type']['code'] = $code;
+        $formData['marello_tax_jurisdiction_type']['description'] = $description;
+        $formData['marello_tax_jurisdiction_type']['zipCodes'] = $zipCodes;
 
         $formData = $this->setCountryAndState($form, $formData, $country, $countryFull, $state, $stateFull);
 

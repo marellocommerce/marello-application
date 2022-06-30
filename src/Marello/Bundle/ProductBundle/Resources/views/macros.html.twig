@@ -5,7 +5,7 @@
         sku: product sku
 #}
 {% macro renderProductSkuViewLink(sku) %}
-    {% import 'OroUIBundle::macros.html.twig' as UI %}
+    {% import '@OroUI/macros.html.twig' as UI %}
     {% set label = sku %}
     {% if is_granted('marello_product_view') %}
         {% set product = marello_get_product_by_sku(sku) %}

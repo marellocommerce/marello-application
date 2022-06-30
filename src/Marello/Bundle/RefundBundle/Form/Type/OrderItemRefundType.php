@@ -4,6 +4,7 @@ namespace Marello\Bundle\RefundBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -28,7 +29,13 @@ class OrderItemRefundType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('quantity')
+            ->add(
+                'quantity',
+                NumberType::class,
+                [
+                    'empty_data' => 0
+                ]
+            )
             ->add('taxCode', TextType::class, [
                 'attr' => [
                     'readonly' => true

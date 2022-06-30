@@ -13,9 +13,16 @@ use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\PricingBundle\Entity\AssembledChannelPriceList;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadProductChannelPricingData extends AbstractFixture implements DependentFixtureInterface
+class LoadProductChannelPricingData extends AbstractFixture implements
+    DependentFixtureInterface,
+    ContainerAwareInterface
 {
+    use ContainerAwareTrait;
+
     /** @var ObjectManager $manager */
     protected $manager;
 
@@ -68,8 +75,10 @@ class LoadProductChannelPricingData extends AbstractFixture implements Dependent
      */
     private function createProductChannelPrice($data)
     {
+        /** @var AclHelper $aclHelper */
+        $aclHelper = $this->container->get('oro_security.acl_helper');
         /** @var Product $product */
-        $product = $this->manager->getRepository(Product::class)->findOneBySku($data['sku']);
+        $product = $this->manager->getRepository(Product::class)->findOneBySku($data['sku'], $aclHelper);
         if (!$product) {
             return;
         }

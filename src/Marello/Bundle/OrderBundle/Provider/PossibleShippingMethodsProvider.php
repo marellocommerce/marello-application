@@ -72,7 +72,6 @@ class PossibleShippingMethodsProvider implements FormChangesProviderInterface
     {
         $data = [];
         if ($this->priceProvider) {
-            $this->factory->setEstimation(true);
             $shippingContextArray = $this->factory->create($order);
             $shippingContext = !empty($shippingContextArray) ? reset($shippingContextArray) : null;
             if (!$shippingContext) {

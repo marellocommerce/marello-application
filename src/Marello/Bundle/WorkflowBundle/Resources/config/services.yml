@@ -1,3 +1,6 @@
+imports:
+    - { resource: controllers.yml }
+
 services:
     Marello\Bundle\WorkflowBundle\Datagrid\Extension\MassAction\WorkflowTransitMassAction:
         shared: false
@@ -43,3 +46,11 @@ services:
             - '@Oro\Bundle\WorkflowBundle\Model\WorkflowRegistry'
             - '@oro_entity.orm.entity_class_resolver'
             - '@logger'
+
+    Marello\Bundle\WorkflowBundle\Async\WorkflowTransitProcessor:
+        arguments:
+            - '@oro_workflow.manager'
+            - '@logger'
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }

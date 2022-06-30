@@ -4,6 +4,8 @@ namespace Marello\Bundle\OrderBundle\Tests\Functional\Controller;
 
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\CustomerBundle\Entity\Customer;
+use Marello\Bundle\InventoryBundle\Entity\Allocation;
+use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
 use Marello\Bundle\PackingBundle\Entity\PackingSlip;
@@ -141,17 +143,17 @@ class OrderOnDemandWorkflowTest extends WebTestCase
             ->getRepository(Shipment::class)
             ->findAll();
         $this->assertEmpty($beforeShipment);
-        $beforePackingSlips = $doctrine
-            ->getManagerForClass(PackingSlip::class)
-            ->getRepository(PackingSlip::class)
+        $beforeAllocations = $doctrine
+            ->getManagerForClass(Allocation::class)
+            ->getRepository(Allocation::class)
             ->findAll();
-        $this->assertEmpty($beforePackingSlips);
+        $this->assertEmpty($beforeAllocations);
 
         $workflowManager = $this->getContainer()->get('oro_workflow.manager');
-        $orderWorkflowItem = $workflowManager->getWorkflowItem($order, 'marello_order_b2c_new_workflow_1');
+        $orderWorkflowItem = $workflowManager->getWorkflowItem($order, 'marello_order_b2c_workflow_1');
         if (!$orderWorkflowItem) {
             $orderWorkflowItem = $workflowManager
-                ->startWorkflow('marello_order_b2c_new_workflow_1', $order, 'pending');
+                ->startWorkflow('marello_order_b2c_workflow_1', $order, 'pending');
         }
         $workflowManager->transit($orderWorkflowItem, 'invoice');
         $data = $orderWorkflowItem->getData();
@@ -169,17 +171,17 @@ class OrderOnDemandWorkflowTest extends WebTestCase
             ->getRepository(Shipment::class)
             ->findAll();
         $this->assertCount(1, $afterShipment);
-        $afterPackingSlips = $doctrine
-            ->getManagerForClass(PackingSlip::class)
-            ->getRepository(PackingSlip::class)
+        $afterAllocations = $doctrine
+            ->getManagerForClass(Allocation::class)
+            ->getRepository(Allocation::class)
             ->findAll();
-        $this->assertCount(1, $afterPackingSlips);
-        /** @var PackingSlip $packingSlip */
-        $packingSlip = reset($afterPackingSlips);
-        $this->assertCount(1, $packingSlip->getItems());
-        /** @var PackingSlipItem $packingSlipItem */
-        $packingSlipItem = $packingSlip->getItems()->first();
-        static::assertSame($packingSlipItem->getProductSku(), $orderItem1->getProductSku());
+        $this->assertCount(1, $afterAllocations);
+        /** @var Allocation $allocation */
+        $allocation = reset($afterAllocations);
+        $this->assertCount(1, $allocation->getItems());
+        /** @var AllocationItem $allocationItem */
+        $allocationItem = $allocation->getItems()->first();
+        static::assertSame($allocationItem->getProductSku(), $orderItem1->getProductSku());
 
         $poWorkflowItem = $workflowManager->getWorkflowItem($purchaseOrder, 'marello_purchase_order_workflow');
         $data = $poWorkflowItem->getData();
@@ -195,11 +197,11 @@ class OrderOnDemandWorkflowTest extends WebTestCase
             ->getRepository(Shipment::class)
             ->findAll();
         $this->assertCount(2, $afterPoShipment);
-        $afterPoPackingSlips = $doctrine
-            ->getManagerForClass(PackingSlip::class)
-            ->getRepository(PackingSlip::class)
+        $afterAllocations = $doctrine
+            ->getManagerForClass(Allocation::class)
+            ->getRepository(Allocation::class)
             ->findAll();
-        $this->assertCount(2, $afterPoPackingSlips);
+        $this->assertCount(2, $afterAllocations);
         
         return $order->getId();
     }

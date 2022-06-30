@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 use Marello\Bundle\PricingBundle\Twig\PricingExtension;
 use Marello\Bundle\PricingBundle\Provider\CurrencyProvider;
 use Marello\Bundle\PricingBundle\Formatter\LabelVATAwareFormatter;
+use Twig\TwigFunction;
 
 class PricingExtensionTest extends TestCase
 {
@@ -61,9 +62,8 @@ class PricingExtensionTest extends TestCase
             'marello_pricing_vat_aware_label'
         );
 
-        /** @var \Twig_SimpleFunction $function */
         foreach ($functions as $function) {
-            $this->assertInstanceOf('\Twig_SimpleFunction', $function);
+            $this->assertInstanceOf(TwigFunction::class, $function);
             $this->assertContains($function->getName(), $expectedFunctions);
         }
     }

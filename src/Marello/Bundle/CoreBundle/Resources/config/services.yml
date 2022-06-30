@@ -1,3 +1,6 @@
+parameters:
+    marello_core.validator.code.regex_pattern: '/^[-_a-zA-Z0-9]*$/'
+
 services:
     marello_core.workflow.action.workflow_transit_action:
         class: Marello\Bundle\CoreBundle\Workflow\Action\WorkflowTransitAction
@@ -27,6 +30,14 @@ services:
             - '@doctrine'
         tags:
             - { name: validator.constraint_validator, alias: marello_core.greater_than_or_equal_to_value_validator }
+
+    marello_core.validator_constraints.code_regex_validator:
+        class: Marello\Bundle\CoreBundle\Validator\CodeRegexValidator
+        arguments:
+            - '%marello_core.validator.code.regex_pattern%'
+        tags:
+            - { name: validator.constraint_validator, alias: marello_core.validator_constraints.code_regex_validator }
+
 
     marello_core.twig.core_extension:
         class: Marello\Bundle\CoreBundle\Twig\CoreExtension

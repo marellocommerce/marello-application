@@ -2,12 +2,9 @@
 
 namespace Marello\Bundle\ProductBundle;
 
+use Oro\Bundle\LocaleBundle\DependencyInjection\Compiler\EntityFallbackFieldsStoragePass;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-
-use Oro\Bundle\LocaleBundle\DependencyInjection\Compiler\DefaultFallbackExtensionPass;
-
-use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\DependencyInjection\Compiler\ProductTypesPass;
 use Marello\Bundle\ProductBundle\DependencyInjection\Compiler\EmailTwigSandboxConfigurationPass;
 
@@ -22,8 +19,8 @@ class MarelloProductBundle extends Bundle
         
         $container
             ->addCompilerPass(new ProductTypesPass())
-            ->addCompilerPass(new DefaultFallbackExtensionPass([
-                Product::class => [
+            ->addCompilerPass(new EntityFallbackFieldsStoragePass([
+                'Marello\Bundle\ProductBundle\Entity\Product' => [
                     'name' => 'names'
                 ]
             ]))

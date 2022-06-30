@@ -18,4 +18,4 @@ charts:
             chartFontSize: 9
             chartFontColor: '#454545'
             chartHighlightColor: '#FF5E5E'
-        template: MarelloInventoryBundle:Chart:inventory.html.twig
+        template: '@MarelloInventory/Chart/inventory.html.twig'

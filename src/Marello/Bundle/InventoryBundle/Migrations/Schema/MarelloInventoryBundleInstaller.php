@@ -6,6 +6,8 @@ use Doctrine\DBAL\Schema\Schema;
 use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
+use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
+use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
 use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
@@ -13,7 +15,7 @@ use Oro\Bundle\MigrationBundle\Migration\QueryBag;
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAwareInterface
+class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAwareInterface, ActivityExtensionAwareInterface
 {
     /**
      * @var ExtendExtension
@@ -21,11 +23,16 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
     protected $extendExtension;
 
     /**
+     * @var ActivityExtension
+     */
+    protected $activityExtension;
+
+    /**
      * {@inheritdoc}
      */
     public function getMigrationVersion()
     {
-        return 'v2_5_1';
+        return 'v2_6_2';
     }
 
     /**
@@ -44,6 +51,8 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $this->createMarelloInventoryWarehouseChannelGroupLinkTable($schema);
         $this->createMarelloInventoryWhChLinkJoinChannelGroupTable($schema);
         $this->createMarelloInventoryBalancedInventoryLevel($schema);
+        $this->createMarelloInventoryAllocation($schema);
+        $this->createMarelloInventoryAllocationItem($schema);
 
         /** Foreign keys generation **/
         $this->addMarelloInventoryItemForeignKeys($schema);
@@ -55,6 +64,8 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $this->addMarelloInventoryWarehouseChannelGroupLinkForeignKeys($schema);
         $this->addMarelloInventoryWhChLinkJoinChannelGroupForeignKeys($schema);
         $this->addMarelloInventoryBalancedInventoryLevelForeignKeys($schema);
+        $this->addMarelloInventoryAllocationForeignKeys($schema);
+        $this->addMarelloInventoryAllocationItemForeignKeys($schema);
     }
 
     /**
@@ -199,6 +210,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addColumn('warehouse_type', 'string', ['notnull' => false, 'length' => 32]);
         $table->addColumn('group_id', 'integer', ['notnull' => false]);
         $table->addColumn('email', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('notifier', 'string', ['notnull' => false, 'length' => 100]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['address_id'], 'uniq_15597d1f5b7af75');
         $table->addUniqueIndex(['code'], 'UNIQ_15597D177153098');
@@ -286,6 +298,78 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addUniqueIndex(['product_id', 'channel_group_id'], 'UNIQ_BDB9A2F64584665A89E4AAEE');
         $table->addIndex(['channel_group_id'], 'IDX_BDB9A2F689E4AAEE', []);
         $table->addIndex(['product_id'], 'IDX_BDB9A2F64584665A', []);
+        $table->addIndex(['organization_id']);
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    protected function createMarelloInventoryAllocation(Schema $schema)
+    {
+        $table = $schema->createTable('marello_inventory_allocation');
+        $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
+        $table->addColumn('order_id', 'integer', ['notnull' => true]);
+        $table->addColumn('shipping_address_id', 'integer', ['notnull' => false]);
+        $table->addColumn('warehouse_id', 'integer', ['notnull' => false]);
+        $table->addColumn('parent_id', 'integer', ['notnull' => false]);
+        $table->addColumn('source_entity_id', 'integer', ['notnull' => false]);
+        $table->addColumn('type', 'string', ['notnull' => false]);
+        $table->addColumn('comment', 'text', ['notnull' => false]);
+        $table->addColumn('allocation_number', 'string', ['length' => 255, 'notnull' => false]);
+        $table->addColumn('created_at', 'datetime');
+        $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
+
+        $table->setPrimaryKey(['id']);
+
+        $this->activityExtension->addActivityAssociation($schema, 'marello_notification', $table->getName());
+        $this->activityExtension->addActivityAssociation($schema, 'oro_email', $table->getName());
+        $this->extendExtension->addEnumField(
+            $schema,
+            $table,
+            'status',
+            'marello_allocation_status',
+            false,
+            false,
+            [
+                'extend' => ['owner' => ExtendScope::OWNER_SYSTEM],
+            ]
+        );
+        $this->extendExtension->addEnumField(
+            $schema,
+            $table,
+            'state',
+            'marello_allocation_state',
+            false,
+            false,
+            [
+                'extend' => ['owner' => ExtendScope::OWNER_SYSTEM],
+            ]
+        );
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    protected function createMarelloInventoryAllocationItem(Schema $schema)
+    {
+        $table = $schema->createTable('marello_inventory_alloc_item');
+        $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
+        $table->addColumn('allocation_id', 'integer', ['notnull' => true]);
+        $table->addColumn('product_id', 'integer', ['notnull' => true]);
+        $table->addColumn('product_name', 'string', ['length' => 255]);
+        $table->addColumn('product_sku', 'string', ['length' => 255]);
+        $table->addColumn('order_item_id', 'integer', ['notnull' => false]);
+        $table->addColumn('warehouse_id', 'integer', ['notnull' => false]);
+        $table->addColumn('quantity', 'float', ['notnull' => true]);
+        $table->addColumn('quantity_confirmed', 'float', ['notnull' => false]);
+        $table->addColumn('quantity_rejected', 'float', ['notnull' => false]);
+        $table->addColumn('comment', 'text', ['notnull' => false]);
+        $table->addColumn('inventory_batches', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
+        $table->addColumn('created_at', 'datetime');
+        $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
+        $table->setPrimaryKey(['id']);
         $table->addIndex(['organization_id']);
     }
 
@@ -506,6 +590,82 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
     }
 
     /**
+     * @param Schema $schema
+     */
+    protected function addMarelloInventoryAllocationForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('marello_inventory_allocation');
+        $table->addForeignKeyConstraint(
+            $table,
+            ['parent_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_organization'),
+            ['organization_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_order_order'),
+            ['order_id'],
+            ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_address'),
+            ['shipping_address_id'],
+            ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_inventory_warehouse'),
+            ['warehouse_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    protected function addMarelloInventoryAllocationItemForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('marello_inventory_alloc_item');
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_product_product'),
+            ['product_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_order_order_item'),
+            ['order_item_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_inventory_allocation'),
+            ['allocation_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_inventory_warehouse'),
+            ['warehouse_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_organization'),
+            ['organization_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+    }
+
+    /**
      * Sets the ExtendExtension
      *
      * @param ExtendExtension $extendExtension
@@ -513,5 +673,15 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
     public function setExtendExtension(ExtendExtension $extendExtension)
     {
         $this->extendExtension = $extendExtension;
+    }
+
+    /**
+     * Sets the ActivityExtension
+     *
+     * @param ActivityExtension $activityExtension
+     */
+    public function setActivityExtension(ActivityExtension $activityExtension)
+    {
+        $this->activityExtension = $activityExtension;
     }
 }

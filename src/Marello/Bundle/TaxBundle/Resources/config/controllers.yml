@@ -1,0 +1,30 @@
+services:
+    _defaults:
+        public: true
+
+    Marello\Bundle\TaxBundle\Controller\TaxCodeController:
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: marello_tax.form.handler.taxcode, key: Marello\Bundle\TaxBundle\Form\Handler\TaxCodeHandler }
+
+    Marello\Bundle\TaxBundle\Controller\TaxJurisdictionController:
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+
+    Marello\Bundle\TaxBundle\Controller\TaxRateController:
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: marello_tax.form.handler.taxrate, key: Marello\Bundle\TaxBundle\Form\Handler\TaxRateHandler }
+
+    Marello\Bundle\TaxBundle\Controller\TaxRuleController:
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: marello_tax.form.handler.taxrule, key: Marello\Bundle\TaxBundle\Form\Handler\TaxRuleHandler }

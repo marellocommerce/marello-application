@@ -3,6 +3,7 @@
 namespace Marello\Bundle\OrderBundle\Controller;
 
 use Marello\Bundle\LayoutBundle\Context\FormChangeContext;
+use Marello\Bundle\LayoutBundle\Provider\CompositeFormChangesProvider;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Form\Type\OrderType;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -46,7 +47,7 @@ class OrderAjaxController extends AbstractController
             ]
         );
 
-        $formChangesProvider = $this->get('marello_layout.provider.form_changes_data.composite');
+        $formChangesProvider = $this->container->get(CompositeFormChangesProvider::class);
         $formChangesProvider
             ->setRequiredDataClass(Order::class)
             ->setRequiredFields($request->get('updateFields', []))
@@ -62,5 +63,15 @@ class OrderAjaxController extends AbstractController
     protected function getType(Order $order)
     {
         return $this->createForm(OrderType::class, $order);
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                CompositeFormChangesProvider::class,
+            ]
+        );
     }
 }

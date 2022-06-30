@@ -37,7 +37,7 @@ class ChannelPricesDatagridListener
             'label' => 'marello.pricing.assembledchannelpricelist.default_price.plural_label',
             'type' => 'twig',
             'frontend_type' => 'html',
-            'template' => 'MarelloPricingBundle:Datagrid/Property:defaultChannelPrices.html.twig',
+            'template' => '@MarelloPricing/Datagrid/Property/defaultChannelPrices.html.twig',
             'renderable' => false,
             'align' => 'right'
         ]);
@@ -45,7 +45,7 @@ class ChannelPricesDatagridListener
             'label' => 'marello.pricing.assembledchannelpricelist.special_price.plural_label',
             'type' => 'twig',
             'frontend_type' => 'html',
-            'template' => 'MarelloPricingBundle:Datagrid/Property:specialChannelPrices.html.twig',
+            'template' => '@MarelloPricing/Datagrid/Property/specialChannelPrices.html.twig',
             'renderable' => false,
             'align' => 'right'
         ]);

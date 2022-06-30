@@ -2,6 +2,8 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\Tests\Functional\Controller;
 
+use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Symfony\Component\HttpFoundation\Response;
 
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
@@ -21,9 +23,12 @@ class PurchaseOrderControllerTest extends WebTestCase
     {
         $this->initClient([], $this->generateBasicAuthHeader());
         $this->loadFixtures([LoadPurchaseOrderData::class]);
+
+        /** @var AclHelper $aclHelper */
+        $aclHelper = $this->getContainer()->get('oro_security.acl_helper');
         $this->defaultWarehouse = $this->getContainer()
-            ->get('marello_inventory.repository.warehouse')
-            ->getDefault();
+            ->get(WarehouseRepository::class)
+            ->getDefault($aclHelper);
     }
 
     /** @test */

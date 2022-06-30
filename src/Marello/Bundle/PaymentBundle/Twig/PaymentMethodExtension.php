@@ -13,7 +13,7 @@ class PaymentMethodExtension extends AbstractExtension
 {
     const PAYMENT_METHOD_EXTENSION_NAME = 'marello_payment_method';
     const DEFAULT_METHOD_CONFIG_TEMPLATE
-        = 'MarelloPaymentBundle:PaymentMethodsConfigsRule:paymentMethodWithOptions.html.twig';
+        = '@MarelloPayment/PaymentMethodsConfigsRule/paymentMethodWithOptions.html.twig';
 
     /**
      * @var PaymentMethodLabelFormatter
@@ -67,7 +67,7 @@ class PaymentMethodExtension extends AbstractExtension
     {
         $event = new PaymentMethodConfigDataEvent($paymentMethodName);
         if (!array_key_exists($paymentMethodName, $this->configCache)) {
-            $this->dispatcher->dispatch(PaymentMethodConfigDataEvent::NAME, $event);
+            $this->dispatcher->dispatch($event, PaymentMethodConfigDataEvent::NAME);
             $template = $event->getTemplate();
             if (!$template) {
                 $template = static::DEFAULT_METHOD_CONFIG_TEMPLATE;

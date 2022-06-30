@@ -2,8 +2,10 @@
 
 namespace Marello\Bundle\SalesBundle\Controller;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelType;
 use Marello\Bundle\SalesBundle\Form\Type\SalesChannelTypeType;
+use Oro\Bundle\FormBundle\Model\UpdateHandlerFacade;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -11,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SalesChannelTypeController extends AbstractController
 {
@@ -33,7 +36,7 @@ class SalesChannelTypeController extends AbstractController
             'hasMore' => false,
             'errors'  => []
         ];
-        $doctrine = $this->get('doctrine');
+        $doctrine = $this->container->get(ManagerRegistry::class);
         if (empty($query)) {
             $channelTypes = $doctrine
                 ->getManagerForClass(SalesChannelType::class)
@@ -71,13 +74,26 @@ class SalesChannelTypeController extends AbstractController
     public function createAction(Request $request)
     {
         $entity = new SalesChannelType();
-        return $this->get('oro_form.update_handler')->update(
+        return $this->container->get(UpdateHandlerFacade::class)->update(
             $entity,
             $this->createForm(SalesChannelTypeType::class, $entity),
             $this
-                ->get('translator')
+                ->container
+                ->get(TranslatorInterface::class)
                 ->trans('marelloenterprise.inventory.messages.success.warehousechannelgrouplink.saved'),
             $request
+        );
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                ManagerRegistry::class,
+                UpdateHandlerFacade::class,
+                TranslatorInterface::class,
+            ]
         );
     }
 }

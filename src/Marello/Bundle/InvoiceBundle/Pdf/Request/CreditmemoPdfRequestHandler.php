@@ -110,7 +110,7 @@ class CreditmemoPdfRequestHandler implements PdfRequestHandlerInterface
             ->getParams($entity, [ConfigValuesProvider::SCOPE_IDENTIFIER_KEY => $entity->getSalesChannel()])
         ;
         $pdf = $this->renderer
-            ->render('MarelloInvoiceBundle:Pdf:creditmemo.html.twig', $params)
+            ->render('@MarelloInvoice/Pdf/creditmemo.html.twig', $params)
         ;
 
         $response = new Response();

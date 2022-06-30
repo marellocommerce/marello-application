@@ -7,7 +7,7 @@ search:
             name: marello_product_view
             parameters:
                 id: id
-        search_template: MarelloProductBundle:Product:searchResult.html.twig
+        search_template: '@MarelloProduct/Product/searchResult.html.twig'
         fields:
             -
                 name: denormalizedDefaultName

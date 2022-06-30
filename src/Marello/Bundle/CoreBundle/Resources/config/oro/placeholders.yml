@@ -6,5 +6,5 @@ placeholders:
 
     items:
         call_on_me:
-            template: MarelloCoreBundle::call_on_me.html.twig
+            template: '@@MarelloCore/call_on_me.html.twig'
             data: '@marello_core.form.url_generator->getUrl()'

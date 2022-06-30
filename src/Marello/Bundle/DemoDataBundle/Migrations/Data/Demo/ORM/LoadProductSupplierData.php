@@ -14,9 +14,16 @@ use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadProductSupplierData extends AbstractFixture implements DependentFixtureInterface
+class LoadProductSupplierData extends AbstractFixture implements
+    DependentFixtureInterface,
+    ContainerAwareInterface
 {
+    use ContainerAwareTrait;
+
     const SUPPLIER_COST_PERCENTAGE = 0.40;
     const DEFAULT_SUPPLIER_COST = 0.00;
 
@@ -44,7 +51,6 @@ class LoadProductSupplierData extends AbstractFixture implements DependentFixtur
     {
         $this->manager = $manager;
         $this->addProductsToSuppliers();
-        $this->updateCurrentSuppliers();
     }
 
     /**
@@ -74,8 +80,10 @@ class LoadProductSupplierData extends AbstractFixture implements DependentFixtur
      */
     protected function addProductSuppliers(array $data)
     {
+        /** @var AclHelper $aclHelper */
+        $aclHelper = $this->container->get('oro_security.acl_helper');
         /** @var Product $product */
-        $product = $this->manager->getRepository(Product::class)->findOneBySku($data['sku']);
+        $product = $this->manager->getRepository(Product::class)->findOneBySku($data['sku'], $aclHelper);
         if (!$product) {
             return;
         }
@@ -93,14 +101,14 @@ class LoadProductSupplierData extends AbstractFixture implements DependentFixtur
             ->findBy([
                 'name' => $data['supplier']
             ]);
-
+        /** @var Supplier $supplier */
         foreach ($suppliers as $supplier) {
             $productSupplierRelation = new ProductSupplierRelation();
             $productSupplierRelation
                 ->setProduct($product)
                 ->setSupplier($supplier)
                 ->setQuantityOfUnit(1)
-                ->setCanDropship(true)
+                ->setCanDropship($supplier->getCanDropship())
                 ->setPriority(1)
                 ->setCost($this->calculateSupplierCost($product))
             ;
@@ -148,44 +156,6 @@ class LoadProductSupplierData extends AbstractFixture implements DependentFixtur
     }
 
     /**
-     * Persist current suppliers that support dropshipping
-     * in order to create external warehouse
-     */
-    public function updateCurrentSuppliers()
-    {
-        $suppliers = $this->manager
-            ->getRepository('MarelloSupplierBundle:Supplier')
-            ->findBy(['canDropship' => true]);
-
-        /** @var Supplier $supplier */
-        foreach ($suppliers as $supplier) {
-            $warehouse = $this->getWarehouse($supplier);
-            if (!$warehouse) {
-                $warehouse = $this->createWarehouse($supplier);
-            }
-            $this->createInventoryLevelsForRelatedProducts($supplier, $warehouse);
-        }
-        $this->manager->flush();
-    }
-
-    /**
-     * @param Supplier $supplier
-     * @param Warehouse $warehouse
-     */
-    private function createInventoryLevelsForRelatedProducts(Supplier $supplier, Warehouse $warehouse)
-    {
-        $productSupplierRelations = $this->manager
-            ->getRepository(ProductSupplierRelation::class)
-            ->findBy(['supplier' => $supplier, 'canDropship' => true]);
-
-        foreach ($productSupplierRelations as $productSupplierRelation) {
-            $this->createInventoryLevelForRelatedProduct($productSupplierRelation, $warehouse);
-        }
-
-        $this->manager->flush();
-    }
-
-    /**
      * @param Supplier $supplier
      * @return Warehouse
      */
@@ -198,7 +168,7 @@ class LoadProductSupplierData extends AbstractFixture implements DependentFixtur
             $warehouse = $this->manager
                 ->getRepository(Warehouse::class)
                 ->findOneBy([
-                    'code' => sprintf('%s_external_warehouse', str_replace(' ', '_', strtolower($supplier->getName()))),
+                    'code' => $supplier->getCode(),
                     'warehouseType' => $warehouseType
                 ]);
             if ($warehouse) {
@@ -222,7 +192,7 @@ class LoadProductSupplierData extends AbstractFixture implements DependentFixtur
         $warehouse = new Warehouse(sprintf('%s External Warehouse', $supplier->getName()));
         $warehouse
             ->setAddress(clone $supplier->getAddress())
-            ->setCode(sprintf('%s_external_warehouse', str_replace(' ', '_', strtolower($supplier->getName()))))
+            ->setCode($supplier->getCode())
             ->setWarehouseType($warehouseType);
         if ($organization = $supplier->getOrganization()) {
             $warehouse->setOwner($organization);
@@ -242,6 +212,7 @@ class LoadProductSupplierData extends AbstractFixture implements DependentFixtur
         ProductSupplierRelation $productSupplierRelation,
         Warehouse $warehouse
     ) {
+        /** @var InventoryItem $inventoryItem */
         $inventoryItem = $this->manager
             ->getRepository(InventoryItem::class)
             ->findOneByProduct($productSupplierRelation->getProduct());

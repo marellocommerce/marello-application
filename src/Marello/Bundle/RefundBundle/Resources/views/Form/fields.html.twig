@@ -141,7 +141,7 @@
 {% block marello_order_item_refund_collection_widget %}
     {% import _self as fields %}
 
-    {% spaceless %}
+    {% apply spaceless %}
         {% set widgetContainerAttributes = block('widget_container_attributes') %}
         {% if prototype is defined %}
             {% set prototype_html = fields.marello_order_item_refund_prototype(form, widgetContainerAttributes) %}
@@ -176,13 +176,13 @@
                 </table>
             </div>
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
 {% block marello_additional_refund_collection_widget %}
     {% import _self as fields %}
 
-    {% spaceless %}
+    {% apply spaceless %}
         {% set widgetContainerAttributes = block('widget_container_attributes') %}
         {% if prototype is defined %}
             {% set prototype_html = fields.marello_additional_refund_prototype(form, widgetContainerAttributes) %}
@@ -222,5 +222,5 @@
                 </a>
             {% endif %}
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}

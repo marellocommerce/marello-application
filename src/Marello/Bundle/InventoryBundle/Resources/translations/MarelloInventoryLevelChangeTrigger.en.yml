@@ -8,3 +8,7 @@ order_workflow:
     inventory_allocated:  Inventory Allocation
 return_workflow:
     inspection_ok: Inspected Return
+
+inventory_allocation:
+    allocated: Inventory Allocated
+    released: Allocated Inventory Released

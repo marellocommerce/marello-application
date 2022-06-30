@@ -11,6 +11,7 @@ class OrderWarehouseResult extends ParameterBag
 {
     const WAREHOUSE_FIELD = 'warehouse';
     const ORDER_ITEMS_FIELD = 'orderItems';
+    const ITEMS_WITH_QUANTITY_FIELD = 'quantityFields';
 
     /**
      * @return Warehouse
@@ -26,5 +27,13 @@ class OrderWarehouseResult extends ParameterBag
     public function getOrderItems()
     {
         return $this->get(self::ORDER_ITEMS_FIELD, false);
+    }
+
+    /**
+     * @return array
+     */
+    public function getItemsWithQuantity()
+    {
+        return $this->get(self::ITEMS_WITH_QUANTITY_FIELD, false);
     }
 }

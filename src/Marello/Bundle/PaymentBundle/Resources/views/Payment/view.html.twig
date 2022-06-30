@@ -1,5 +1,5 @@
-{% extends 'OroUIBundle:actions:view.html.twig' %}
-{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% extends '@OroUI/actions/view.html.twig' %}
+{% import '@OroUI/macros.html.twig' as UI %}
 
 {% block navButtons %}
     {% if is_granted('marello_payment_update') %}
