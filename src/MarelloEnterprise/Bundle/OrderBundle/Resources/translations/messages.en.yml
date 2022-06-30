@@ -14,7 +14,7 @@ marelloenterprise:
                 order_consolidation.label: Order Consolidation
             fields:
                 enable_order_consolidation:
-                    label: Enable
+                    label: Enable consolidation feature
                     tooltip: Enable consolidation feature
                 set_global_consolidation:
                     label: Set global consolidation
