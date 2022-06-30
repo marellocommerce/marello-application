@@ -1,4 +1,4 @@
-{% extends status_code == 403 ? 'OroUIBundle:Default:index.html.twig' : 'TwigBundle::layout.html.twig' %}
+{% extends status_code == 403 ? '@OroUI/Default/index.html.twig' : '@Twig/layout.html.twig' %}
 
 {% set pageTitle = status_code ~ ' ' ~ status_text ~ ' - ' ~ exception.message %}
 {% oro_title_set({titleTemplate : pageTitle, force : true}) %}
@@ -20,7 +20,7 @@
 {% endblock %}
 
 {% block body %}
-    {% include 'TwigBundle:Exception:exception.html.twig' %}
+    {% include '@Twig/Exception/exception.html.twig' %}
 {% endblock %}
 
 {% block content %}
