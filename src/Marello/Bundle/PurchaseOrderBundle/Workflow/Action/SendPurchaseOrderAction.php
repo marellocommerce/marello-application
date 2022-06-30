@@ -23,7 +23,7 @@ class SendPurchaseOrderAction extends SendNotificationAction
         }
         
         if ($entity->getSupplier()->getPoSendBy() === Supplier::SEND_PO_BY_EMAIL) {
-            $this->attachmentEmailProcessor->sendNotification($template, $recipients, $entity);
+            $this->sendProcessor->sendNotification($template, $recipients, $entity);
         }
     }
 }

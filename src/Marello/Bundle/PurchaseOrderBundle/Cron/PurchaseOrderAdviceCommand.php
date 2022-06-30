@@ -100,8 +100,7 @@ class PurchaseOrderAdviceCommand extends Command implements CronCommandInterface
         $sendProcessor->sendNotification(
             'marello_purchase_order_advise',
             [$recipient],
-            $entity,
-            []
+            $entity
         );
 
         return self::EXIT_CODE;

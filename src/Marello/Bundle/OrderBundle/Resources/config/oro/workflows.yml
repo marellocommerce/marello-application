@@ -293,10 +293,6 @@ workflows:
                     - '@extendable':
                           events: [extendable_action.order_ship]
                     - '@marello_ship_order': ~
-                    - '@marello_notification_send':
-                          entity: $order
-                          recipient: $order.customer
-                          template: marello_order_shipped_confirmation
                     - '@extendable':
                           events: [extendable_action.order_shipped]
                     - '@run_action_group':
@@ -598,10 +594,6 @@ workflows:
                     - '@extendable':
                           events: [extendable_action.order_ship]
                     - '@marello_ship_order': ~
-                    - '@marello_notification_send':
-                          entity: $order
-                          recipient: $order.customer
-                          template: marello_order_shipped_confirmation
                     - '@extendable':
                           events: [extendable_action.order_shipped]
                     - '@run_action_group':

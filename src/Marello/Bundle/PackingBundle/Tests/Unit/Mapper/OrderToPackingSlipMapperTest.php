@@ -86,7 +86,7 @@ class OrderToPackingSlipMapperTest extends TestCase
         $salesChannel = new SalesChannel();
         $customer = new Customer();
         $organization = new Organization();
-        
+
         $product1 = $this->getEntity(Product::class, ['id' => 1, 'weight' => 2]);
         $product2 = $this->getEntity(Product::class, ['id' => 2, 'weight' => 3]);
         $product3 = $this->getEntity(Product::class, ['id' => 3, 'weight' => 5]);
@@ -97,9 +97,33 @@ class OrderToPackingSlipMapperTest extends TestCase
         $inventoryLevel1->addInventoryBatch($inventoryBatch1);
         $inventoryItem1->addInventoryLevel($inventoryLevel1);
 
-        $orderItem1 = $this->getEntity(OrderItem::class, ['id' => 1, 'product' => $product1, 'quantity' => 5]);
-        $orderItem2 = $this->getEntity(OrderItem::class, ['id' => 2, 'product' => $product2, 'quantity' => 3]);
-        $orderItem3 = $this->getEntity(OrderItem::class, ['id' => 3, 'product' => $product3, 'quantity' => 1]);
+        $orderItem1 = $this->getEntity(
+            OrderItem::class,
+            [
+                'id' => 1,
+                'product' => $product1,
+                'quantity' => 5,
+                'organization' => $organization
+            ]
+        );
+        $orderItem2 = $this->getEntity(
+            OrderItem::class,
+            [
+                'id' => 2,
+                'product' => $product2,
+                'quantity' => 3,
+                'organization' => $organization
+            ]
+        );
+        $orderItem3 = $this->getEntity(
+            OrderItem::class,
+            [
+                'id' => 3,
+                'product' => $product3,
+                'quantity' => 1,
+                'organization' => $organization
+            ]
+        );
 
         $order = $this->getEntity(Order::class, [
             'billingAddress' => $billingAddress,
@@ -110,9 +134,36 @@ class OrderToPackingSlipMapperTest extends TestCase
             'items' => new ArrayCollection([$orderItem1, $orderItem2, $orderItem3])
         ]);
 
-        $alloItem1 = $this->getEntity(AllocationItem::class, ['id' => 1, 'product' => $product1, 'orderItem' => $orderItem1, 'quantity' => 5]);
-        $alloItem2 = $this->getEntity(AllocationItem::class, ['id' => 2,  'product' => $product2, 'orderItem' => $orderItem2, 'quantity' => 3]);
-        $alloItem3 = $this->getEntity(AllocationItem::class, ['id' => 3,  'product' => $product3, 'orderItem' => $orderItem3, 'quantity' => 1]);
+        $alloItem1 = $this->getEntity(
+            AllocationItem::class,
+            [
+                'id' => 1,
+                'product' => $product1,
+                'orderItem' => $orderItem1,
+                'quantity' => 5,
+                'organization' => $organization
+            ]
+        );
+        $alloItem2 = $this->getEntity(
+            AllocationItem::class,
+            [
+                'id' => 2,
+                'product' => $product2,
+                'orderItem' => $orderItem2,
+                'quantity' => 3,
+                'organization' => $organization
+            ]
+        );
+        $alloItem3 = $this->getEntity(
+            AllocationItem::class,
+            [
+                'id' => 3,
+                'product' => $product3,
+                'orderItem' => $orderItem3,
+                'quantity' => 1,
+                'organization' => $organization
+            ]
+        );
 
         $sourceEntity = $this->getEntity(Allocation::class, [
             'shippingAddress' => $shippingAddress,

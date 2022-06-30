@@ -48,13 +48,4 @@ class InventoryBalancer extends WebTestCase
         $product = $this->getReference(LoadProductData::PRODUCT_1_REF);
         // todo
     }
-
-    /**
-     * test if the message is sent to the consumer with the subject and content rendered instead of plain text
-     * without the dynamic attributes like `entity.orderNumber`
-     */
-    public function testMessageSendIsRenderedTemplateAndSubject()
-    {
-
-    }
 }

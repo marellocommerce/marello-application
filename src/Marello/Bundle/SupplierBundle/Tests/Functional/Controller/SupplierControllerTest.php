@@ -44,6 +44,7 @@ class SupplierControllerTest extends WebTestCase
         $form = $crawler->selectButton('Save and Close')->form();
         $name = 'Supplier 1';
         $form['marello_supplier_form[name]']               = $name;
+        $form['marello_supplier_form[code]']               = 'supplier1';
         $form['marello_supplier_form[address][country]']     = 'NL';
         $form['marello_supplier_form[address][street]']      = 'Street 1';
         $form['marello_supplier_form[address][city]']        = 'Eindhoven';
@@ -58,7 +59,6 @@ class SupplierControllerTest extends WebTestCase
 
         $this->assertResponseStatusCodeEquals($result, Response::HTTP_OK);
         $this->assertStringContainsString('Supplier saved', $crawler->html());
-        $this->assertStringContainsString($name, $crawler->html());
 
         $response = $this->client->requestGrid(
             'marello-supplier-grid',
