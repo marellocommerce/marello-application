@@ -6,3 +6,4 @@ dynamic-imports:
         - marelloenterpriseinventory/js/app/components/select2-autocomplete-owner-aware-warehouse-group-component
     commons:
         - oro/select2-autocomplete-owner-aware-warehouse-group-component
+        - marelloenterpriseinventory/js/app/views/warehouse-grid-view

@@ -3,9 +3,6 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\Controller\Api\Rest;
 
 use Doctrine\Persistence\ObjectManager;
-use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Routing\ClassResourceInterface;
-use FOS\RestBundle\Util\Codes;
 use FOS\RestBundle\View\View;
 use MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
@@ -16,11 +13,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @Rest\RouteResource("wfarule")
- * @Rest\NamePrefix("marelloenterprise_inventory_api_")
- */
-class WFARuleController extends RestController implements ClassResourceInterface
+class WFARuleController extends RestController
 {
     /**
      * Enable wfa rule
@@ -28,11 +21,6 @@ class WFARuleController extends RestController implements ClassResourceInterface
      * Returns
      * - HTTP_OK (200)
      *
-     * @Rest\Get(
-     *      "/wfarules/{id}/enable",
-     *      requirements={"version"="latest|v1"},
-     *      defaults={"version"="latest", "_format"="json"}
-     * )
      * @ApiDoc(description="Enable WFA Rule", resource=true)
      * @AclAncestor("marelloenterprise_inventory_wfa_rule_update")
      *
@@ -50,11 +38,6 @@ class WFARuleController extends RestController implements ClassResourceInterface
      * Returns
      * - HTTP_OK (200)
      *
-     * @Rest\Get(
-     *      "/wfarules/{id}/disable",
-     *      requirements={"version"="latest|v1"},
-     *      defaults={"version"="latest", "_format"="json"}
-     * )
      * @ApiDoc(description="Disable WFA Rule", resource=true)
      * @AclAncestor("marelloenterprise_inventory_wfa_rule_update")
      *
@@ -70,11 +53,6 @@ class WFARuleController extends RestController implements ClassResourceInterface
      * Returns
      * - HTTP_OK (200)
      *
-     * @Rest\Get(
-     *      "/wfarules/{gridName}/massAction/{actionName}",
-     *      requirements={"version"="latest|v1"},
-     *      defaults={"version"="latest", "_format"="json"}
-     * )
      * @AclAncestor("marelloenterprise_inventory_wfa_rule_update")
      *
      * @param string $gridName
@@ -85,7 +63,7 @@ class WFARuleController extends RestController implements ClassResourceInterface
     public function massAction($gridName, $actionName, Request $request)
     {
         /** @var MassActionDispatcher $massActionDispatcher */
-        $massActionDispatcher = $this->get('oro_datagrid.mass_action.dispatcher');
+        $massActionDispatcher = $this->container->get('oro_datagrid.mass_action.dispatcher');
 
         $response = $massActionDispatcher->dispatchByRequest($gridName, $actionName, $request);
 
@@ -114,14 +92,14 @@ class WFARuleController extends RestController implements ClassResourceInterface
             $view = $this->view(
                 [
                     'message'    =>
-                        $this->get('translator')->trans($message),
+                        $this->container->get('translator')->trans($message),
                     'successful' => true,
                 ],
-                Codes::HTTP_OK
+                Response::HTTP_OK
             );
         } else {
             /** @var View $view */
-            $view = $this->view(null, Codes::HTTP_NOT_FOUND);
+            $view = $this->view(null, Response::HTTP_NOT_FOUND);
         }
 
 
@@ -135,7 +113,7 @@ class WFARuleController extends RestController implements ClassResourceInterface
      */
     public function getManager()
     {
-        return $this->get('marelloenterprise_inventory.wfa_rule.manager.api');
+        return $this->container->get('marelloenterprise_inventory.wfa_rule.manager.api');
     }
 
     /**

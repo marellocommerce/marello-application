@@ -81,7 +81,7 @@
 {% block marello_inventory_inventorylevel_collection_widget %}
     {% import _self as fields %}
 
-    {% spaceless %}
+    {% apply spaceless %}
         {% set widgetContainerAttributes = block('widget_container_attributes') %}
         {% if prototype is defined %}
             {% set prototype_html = fields.marello_inventory_inventorylevel_collection_item_prototype(form, widgetContainerAttributes) %}
@@ -120,5 +120,34 @@
                 <a class="btn marello-add-line-item" data-container=".marello-item-collection tbody" href="javascript: void(0);"><i class="fa-plus"></i>{{ 'marello.layout.add_entity'|trans({'%entityName%': 'marello.inventory.inventorylevel.entity_label'|trans}) }}</a>
             {% endif %}
         </div>
-    {% endspaceless %}
+    {% endapply %}
+{% endblock %}
+
+{% block marello_warehouse_grid_widget %}
+    {% import '@OroUI/macros.html.twig' as UI %}
+    <div class="warehouse-grid-container grid-container oro-item-collection" {{ UI.renderPageComponentAttributes({
+        module: 'oroui/js/app/components/view-component',
+        options: {
+            view: 'marelloenterpriseinventory/js/app/views/warehouse-grid-view',
+            autoRender: true,
+            allowedWarehouses: warehouseCollection
+        }
+    }) }}>
+        <div class="new-warehouse">
+            <input type="hidden" data-name="warehouse-select">
+            <button class="btn btn-primary btn-warehouse-add" data-name="warehouse-add">
+                {{ 'Add'|trans }}
+            </button>
+        </div>
+        <table class="grid warehouse-grid table-hover table table-bordered table-condensed">
+            <thead>
+                <th>{{ 'marello.inventory.warehouse.label.label'|trans }}</th>
+                <th>{{ 'marello.inventory.warehouse.code.label'|trans }}</th>
+                <th>{{ 'marelloenterprise.inventory.warehouse.form.grid.consolidation_enabled'|trans }}</th>
+                <th>{{ 'marelloenterprise.inventory.warehouse.form.grid.actions'|trans }}</th>
+            </thead>
+            <tbody data-name="warehouse-table-body"></tbody>
+        </table>
+        {{ form_widget(form) }}
+    </div>
 {% endblock %}

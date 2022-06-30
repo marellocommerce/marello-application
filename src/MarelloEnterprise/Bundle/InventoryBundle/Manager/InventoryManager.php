@@ -13,7 +13,6 @@ use Marello\Bundle\InventoryBundle\Manager\InventoryManager as BaseInventoryMana
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
-use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrder;
 
 class InventoryManager extends BaseInventoryManager
 {
@@ -22,11 +21,11 @@ class InventoryManager extends BaseInventoryManager
      * @param InventoryUpdateContext $context
      * @throws \Exception
      */
-    public function updateInventoryLevel(InventoryUpdateContext $context)
+    public function updateInventoryLevel(InventoryUpdateContext $context): void
     {
         $this->eventDispatcher->dispatch(
-            InventoryUpdateEvent::INVENTORY_UPDATE_BEFORE,
-            new InventoryUpdateEvent($context)
+            new InventoryUpdateEvent($context),
+            InventoryUpdateEvent::INVENTORY_UPDATE_BEFORE
         );
 
         if (!$this->contextValidator->validateContext($context)) {
@@ -75,6 +74,11 @@ class InventoryManager extends BaseInventoryManager
             $inventory = ($level->getInventoryQty() + $context->getInventory());
         }
 
+        if ($level->getInventoryItem()->isEnableBatchInventory()) {
+            $batches = $level->getInventoryBatches()->toArray();
+            $inventory = $this->inventoryLevelCalculator->calculateBatchInventoryLevelQty($batches);
+        }
+
         if ($context->getAllocatedInventory()) {
             $allocatedInventory = ($level->getAllocatedInventoryQty() + $context->getAllocatedInventory());
         }
@@ -91,8 +95,8 @@ class InventoryManager extends BaseInventoryManager
         $context->setInventoryLevel($updatedLevel);
 
         $this->eventDispatcher->dispatch(
-            InventoryUpdateEvent::INVENTORY_UPDATE_AFTER,
-            new InventoryUpdateEvent($context)
+            new InventoryUpdateEvent($context),
+            InventoryUpdateEvent::INVENTORY_UPDATE_AFTER
         );
         if (!empty($context->getInventoryBatches())) {
             // for some reason multiple batches are not saved when this flush is not triggered..
@@ -116,7 +120,7 @@ class InventoryManager extends BaseInventoryManager
 
         /** @var WarehouseRepository $repo */
         $repo = $this->doctrineHelper->getEntityRepositoryForClass(Warehouse::class);
-        return $repo->getDefault();
+        return $repo->getDefault($this->aclHelper);
     }
 
     /**

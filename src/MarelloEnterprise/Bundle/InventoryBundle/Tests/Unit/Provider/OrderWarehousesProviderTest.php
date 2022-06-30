@@ -2,14 +2,17 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Provider;
 
+use Doctrine\Persistence\ManagerRegistry;
+use Marello\Bundle\InventoryBundle\Strategy\WFA\WFAStrategyInterface;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use PHPUnit\Framework\TestCase;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
 use MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule;
 use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
-use MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\MinimumQuantityWFAStrategy;
+use Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\QuantityWFAStrategy;
 use Marello\Bundle\RuleBundle\RuleFiltration\RuleFiltrationServiceInterface;
-use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategiesRegistry;
+use Marello\Bundle\InventoryBundle\Strategy\WFA\WFAStrategiesRegistry;
 use MarelloEnterprise\Bundle\InventoryBundle\Provider\OrderWarehousesProvider;
 use MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WFARuleRepository;
 
@@ -31,6 +34,11 @@ class OrderWarehousesProviderTest extends TestCase
     protected $wfaRuleRepository;
 
     /**
+     * @var AclHelper|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected $aclHelper;
+
+    /**
      * @var OrderWarehousesProvider
      */
     protected $orderWarehousesProvider;
@@ -39,13 +47,18 @@ class OrderWarehousesProviderTest extends TestCase
     {
         $this->strategiesRegistry = $this->createMock(WFAStrategiesRegistry::class);
         $this->rulesFiltrationService = $this->createMock(RuleFiltrationServiceInterface::class);
-        $this->wfaRuleRepository = $this->getMockBuilder(WFARuleRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->wfaRuleRepository = $this->createMock(WFARuleRepository::class);
+        $registry = $this->createMock(ManagerRegistry::class);
+        $registry->expects($this->any())
+            ->method('getRepository')
+            ->with(WFARule::class)
+            ->willReturn($this->wfaRuleRepository);
+        $this->aclHelper = $this->createMock(AclHelper::class);
         $this->orderWarehousesProvider = new OrderWarehousesProvider(
             $this->strategiesRegistry,
             $this->rulesFiltrationService,
-            $this->wfaRuleRepository
+            $this->wfaRuleRepository,
+            $this->aclHelper
         );
     }
 
@@ -61,7 +74,7 @@ class OrderWarehousesProviderTest extends TestCase
         array $firstStrategyResults,
         array $secondStrategyResults,
         $callStrategiesTimes,
-        OrderWarehouseResult $expectedResult
+        array $expectedResult
     ) {
         /** @var Order|\PHPUnit\Framework\MockObject\MockObject $order **/
         $order = $this->getMockBuilder(Order::class)
@@ -104,19 +117,19 @@ class OrderWarehousesProviderTest extends TestCase
                 'firstStrategyResults' => [$result1, $result2],
                 'secondStrategyResults' => [$result2],
                 'callStrategiesTimes' => 2,
-                'expectedResult' => $result2
+                'expectedResult' => [$result2]
             ],
             [
                 'firstStrategyResults' => [$result1],
                 'secondStrategyResults' => [$result2],
                 'callStrategiesTimes' => 2,
-                'expectedResult' => $result2
+                'expectedResult' => [$result2]
             ],
             [
                 'firstStrategyResults' => [],
                 'secondStrategyResults' => [$result2],
                 'callStrategiesTimes' => 2,
-                'expectedResult' => $result2
+                'expectedResult' => [$result2]
             ]
         ];
     }
@@ -142,9 +155,7 @@ class OrderWarehousesProviderTest extends TestCase
      */
     private function mockStrategy(array $results)
     {
-        // temporarily replace WFAStrategyInterface for concrete implementation because of prevention for BC breaks
-        // setEstimation method will be added in major version not in 2.2
-        $strategy = $this->createMock(MinimumQuantityWFAStrategy::class);
+        $strategy = $this->createMock(WFAStrategyInterface::class);
         $strategy
             ->expects(static::any())
             ->method('getWarehouseResults')

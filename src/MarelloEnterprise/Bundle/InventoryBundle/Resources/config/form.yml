@@ -18,6 +18,15 @@ services:
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: warehouses, acl_resource: marello_inventory_inventory_view }
 
+    marelloenterprise_inventory.form.autocomplete.search_handler.inventory_level_warehouses:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Autocomplete\InventoryLevelWarehousesSearchHandler'
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - 'Marello\Bundle\InventoryBundle\Entity\Warehouse'
+            - ['code', 'label']
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: inventory_level_warehouses, acl_resource: marello_inventory_inventory_view }
+
     marelloenterprise_inventory.form.autocomplete.search_handler.system_group_global_warehouses:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Autocomplete\SystemGroupGlobalWarehousesSearchHandler'
         parent: oro_form.autocomplete.search_handler
@@ -88,7 +97,8 @@ services:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WFARuleType'
         arguments:
             - '@marelloenterprise_inventory.provider.wfa_strategy.choices'
-            - '@marelloenterprise_inventory.repository.wfa_rule'
+            - '@MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WFARuleRepository'
+            - '@oro_security.acl_helper'
         tags:
             - { name: form.type }
 
@@ -97,6 +107,7 @@ services:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Handler\WarehouseHandler'
         arguments:
             - '@doctrine.orm.entity_manager'
+            - '@oro_security.acl_helper'
         tags:
             - { name: oro_form.form.handler, alias: marelloenterprise_inventory.form_handler.warehouse }
 
@@ -104,5 +115,21 @@ services:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Handler\WarehouseGroupHandler'
         arguments:
             - '@doctrine.orm.entity_manager'
+            - '@oro_security.acl_helper'
         tags:
             - { name: oro_form.form.handler, alias: marelloenterprise_inventory.form_handler.warehousegroup }
+
+    marelloenterprise_inventory.form_type.marello_inventory_consolidation_exclusion:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Type\AllocationConsolidationExclusionSelectType'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: form.type, alias: marelloenterprise_inventory_consolidation_exclusion }
+
+    marelloenterprise_inventory.form.type.consolidation_warehouse_grid:
+        class: MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseGridType
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@marelloenterprise_inventory.form.data_transformer.warehouse'
+        tags:
+            - { name: form.type, alias: marello_warehouse_grid }

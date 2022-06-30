@@ -1,5 +1,5 @@
-{% extends 'OroUIBundle:actions:view.html.twig' %}
-{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% extends '@OroUI/actions/view.html.twig' %}
+{% import '@OroUI/macros.html.twig' as UI %}
 
 {% if entity.id %}
     {% oro_title_set({params : {"%wfarule.label%": entity.rule.name|default('N/A'|trans) } }) %}

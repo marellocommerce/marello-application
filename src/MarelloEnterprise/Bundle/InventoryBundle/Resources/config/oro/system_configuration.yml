@@ -1,0 +1,19 @@
+system_configuration:
+    fields:
+        marello_enterprise_inventory.inventory_allocation_consolidation_exclusion:
+            data_type: array
+            type: MarelloEnterprise\Bundle\InventoryBundle\Form\Type\AllocationConsolidationExclusionSelectType
+            options:
+                label: marelloenterprise.inventory.system_configuration.fields.inventory_allocation_consolidation_exclusion.label
+                tooltip: marelloenterprise.inventory.system_configuration.fields.inventory_allocation_consolidation_exclusion
+    tree:
+        system_configuration:
+            marello:
+                children:
+                    inventory:
+                        children:
+                            inventory_allocation:
+                                children:
+                                    inventory_allocation_general:
+                                        children:
+                                            - marello_enterprise_inventory.inventory_allocation_consolidation_exclusion

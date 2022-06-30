@@ -8,6 +8,7 @@ use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Oro\Bundle\FormBundle\Form\Handler\FormHandlerInterface;
 use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -15,18 +16,10 @@ class WarehouseGroupHandler implements FormHandlerInterface
 {
     use RequestHandlerTrait;
 
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $manager;
-
-    /**
-     * @param ObjectManager $manager
-     */
-    public function __construct(ObjectManager $manager)
-    {
-        $this->manager = $manager;
-    }
+    public function __construct(
+        protected ObjectManager $manager,
+        protected AclHelper $aclHelper
+    ) {}
 
     /**
      * {@inheritdoc}
@@ -70,6 +63,8 @@ class WarehouseGroupHandler implements FormHandlerInterface
         /** @var Warehouse $warehouse */
         foreach ($diff as $warehouse) {
             $warehouse->setGroup($systemGroup);
+            // reset consolidation option for this warehouse
+            $warehouse->setIsConsolidationWarehouse(false);
             $this->manager->persist($warehouse);
         }
         /** @var Warehouse $warehouseAfter */
@@ -88,6 +83,6 @@ class WarehouseGroupHandler implements FormHandlerInterface
     {
         return $this->manager
             ->getRepository(WarehouseGroup::class)
-            ->findSystemWarehouseGroup();
+            ->findSystemWarehouseGroup($this->aclHelper);
     }
 }
