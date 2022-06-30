@@ -8,6 +8,7 @@ use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductData;
 use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductInventoryData as BaseProductInventoryData;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
@@ -138,7 +139,7 @@ class LoadProductInventoryData extends AbstractFixture implements DependentFixtu
 
         /** @var Warehouse $warehouse */
         $warehouse = $this->container
-            ->get('marello_inventory.repository.warehouse')
+            ->get(WarehouseRepository::class)
             ->findOneBy(['code' => $data['warehouse']]);
 
         $context->setValue('warehouse', $warehouse);

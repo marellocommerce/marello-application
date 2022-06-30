@@ -1,0 +1,54 @@
+system_configuration:
+    groups:
+        marello_order:
+            title: marello.order.system_configuration.groups.order.title
+        marello_order_general:
+            title: marello.order.system_configuration.groups.order_general.title
+            icon: fa-shopping-cart
+        marello_order_consolidation:
+            title: marelloenterprise.order.system_configuration.groups.order_consolidation.label
+
+    fields:
+        marello_enterprise_order.enable_order_consolidation:
+            data_type: boolean
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+            page_reload: true
+            options:
+                label: marelloenterprise.order.system_configuration.fields.enable_order_consolidation.label
+                tooltip: marelloenterprise.order.system_configuration.fields.enable_order_consolidation.tooltip
+                required: false
+                resettable: false
+            priority: 15
+        marello_enterprise_order.set_global_consolidation:
+            data_type: boolean
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+            page_reload: true
+            options:
+                label: marelloenterprise.order.system_configuration.fields.set_global_consolidation.label
+                tooltip: marelloenterprise.order.system_configuration.fields.set_global_consolidation.tooltip
+                required: false
+                resettable: false
+            priority: 10
+
+    tree:
+        system_configuration:
+            marello:
+                children:
+                    marello_order:
+                        children:
+                            marello_order_general:
+                                children:
+                                    marello_order_consolidation:
+                                        children:
+                                            - marello_enterprise_order.enable_order_consolidation
+                                            - marello_enterprise_order.set_global_consolidation
+        saleschannel_configuration:
+            marello:
+                children:
+                    marello_order:
+                        children:
+                            marello_order_general:
+                                children:
+                                    marello_order_consolidation:
+                                        children:
+                                            - marello_enterprise_order.enable_order_consolidation

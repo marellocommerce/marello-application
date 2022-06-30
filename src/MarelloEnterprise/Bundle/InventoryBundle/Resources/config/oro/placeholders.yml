@@ -7,4 +7,4 @@ placeholders:
 
     items:
         marelloenterprise_inventory_levels_totals:
-            template: MarelloEnterpriseInventoryBundle:InventoryItem:inventoryLevelsTotals.html.twig
+            template: '@@MarelloEnterpriseInventory/InventoryItem/inventoryLevelsTotals.html.twig'

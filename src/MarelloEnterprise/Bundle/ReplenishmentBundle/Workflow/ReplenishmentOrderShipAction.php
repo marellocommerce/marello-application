@@ -97,8 +97,8 @@ class ReplenishmentOrderShipAction extends ReplenishmentOrderTransitionAction
         $context->setValue('warehouse', $warehouse);
 
         $this->eventDispatcher->dispatch(
-            InventoryUpdateEvent::NAME,
-            new InventoryUpdateEvent($context)
+            new InventoryUpdateEvent($context),
+            InventoryUpdateEvent::NAME
         );
     }
 }

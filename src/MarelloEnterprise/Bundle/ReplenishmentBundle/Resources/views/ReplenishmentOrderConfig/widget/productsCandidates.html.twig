@@ -1,5 +1,5 @@
 <div class="widget-content grid-widget-content">
-    {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+    {% import '@OroDataGrid/macros.html.twig' as dataGrid %}
     {% set gridName = 'marello-replenishment-products-candidates' %}
 
     {% set params = {} %}
@@ -24,7 +24,7 @@
         <input type="hidden" name="removeProducts" id="removeProducts" value="{{ app.request.get('removed') }}" />
     {% endblock %}
 
-    {% import 'OroUIBundle::macros.html.twig' as UI %}
+    {% import '@OroUI/macros.html.twig' as UI %}
 
     <div {{ UI.renderPageComponentAttributes({
         module: 'marelloenterprisereplenishment/js/app/components/replenishment-product-component',

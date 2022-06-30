@@ -1,3 +1,0 @@
-marelloenterprise_inventory_wfarule_api:
-    resource:     "@MarelloEnterpriseInventoryBundle/Controller/Api/Rest/WFARuleController.php"
-    type:         rest
