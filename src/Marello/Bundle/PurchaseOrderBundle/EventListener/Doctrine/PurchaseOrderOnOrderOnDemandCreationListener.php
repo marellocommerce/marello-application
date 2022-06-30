@@ -108,7 +108,7 @@ class PurchaseOrderOnOrderOnDemandCreationListener
                     /** @var PurchaseOrder $po */
                     $po = $poBySuppliers[$supplierCode];
                     $qty = $onDemandItem->getQuantity();
-                    $price = $this->getPurchasePrice($product);
+                    $price = $this->getPurchasePrice($product, $entity);
                     $poItem = new PurchaseOrderItem();
                     $poItem
                         ->setProduct($product)
@@ -140,24 +140,28 @@ class PurchaseOrderOnOrderOnDemandCreationListener
     
     /**
      * @param Product $product
+     * @param Order $order
      * @return ProductPrice|null
      */
-    private function getPurchasePrice(Product $product)
+    private function getPurchasePrice(Product $product, Order $order)
     {
         $supplier = $product->getPreferredSupplier();
+        $productPrice = new ProductPrice();
+        $productPrice
+            ->setValue(0)
+            ->setProduct($product)
+            ->setCurrency($order->getCurrency());
         foreach ($product->getSuppliers() as $productSupplierRelation) {
             if ($productSupplierRelation->getSupplier() === $supplier) {
-                $productPrice = new ProductPrice();
                 $productPrice
                     ->setValue($productSupplierRelation->getCost())
                     ->setProduct($product)
                     ->setCurrency($supplier->getCurrency());
-
                 return $productPrice;
             }
         }
 
-        return null;
+        return $productPrice;
     }
 
     /**

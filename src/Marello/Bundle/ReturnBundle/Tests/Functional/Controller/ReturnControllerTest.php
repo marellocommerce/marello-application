@@ -39,8 +39,8 @@ class ReturnControllerTest extends WebTestCase
 
         $result = $this->getJsonResponseContent($response, 200);
         $this->assertNotCount(0, $result['data']);
-        $this->assertLessThan(1, (float) $result['data'][0]['percentageReturned']);
-        $this->assertGreaterThan(0, (float) $result['data'][0]['percentageReturned']);
+        $this->assertLessThanOrEqual(100, (float) $result['data'][0]['percentageReturned']);
+        $this->assertGreaterThanOrEqual(0, (float) $result['data'][0]['percentageReturned']);
 
         $response = $this->client->requestGrid(
             'marello_report-returns-returned_qty',
@@ -50,7 +50,7 @@ class ReturnControllerTest extends WebTestCase
         $result = $this->getJsonResponseContent($response, 200);
         $this->assertNotCount(0, $result['data']);
         $this->assertNotEmpty($result['data'][0]['productSku']);
-        $this->assertLessThan(1, (float) $result['data'][0]['percentageReturned']);
-        $this->assertGreaterThan(0, (float) $result['data'][0]['percentageReturned']);
+        $this->assertLessThanOrEqual(100, (float) $result['data'][0]['percentageReturned']);
+        $this->assertGreaterThanOrEqual(0, (float) $result['data'][0]['percentageReturned']);
     }
 }
