@@ -2,10 +2,10 @@
 
 namespace Marello\Bundle\PaymentBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Marello\Bundle\PaymentBundle\Entity\PaymentMethodConfig;
 
-class PaymentMethodConfigRepository extends EntityRepository
+class PaymentMethodConfigRepository extends ServiceEntityRepository
 {
     /**
      * @param string $method

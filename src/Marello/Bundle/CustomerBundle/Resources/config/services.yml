@@ -1,14 +1,18 @@
+imports:
+    - { resource: controllers.yml }
+
 services:
-    marello_customer.repository.company:
-        class: 'Marello\Bundle\CustomerBundle\Entity\Repository\CompanyRepository'
+    Marello\Bundle\CustomerBundle\Entity\Repository\CompanyRepository:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\CustomerBundle\Entity\Company'
+        tags:
+            - { name: doctrine.repository_service }
 
     marello_customer.twig.customer_extension:
         class: 'Marello\Bundle\CustomerBundle\Twig\CustomerExtension'
         arguments:
-            - '@marello_customer.repository.company'
+            - '@doctrine'
         tags:
             - { name: twig.extension }
 
@@ -29,7 +33,7 @@ services:
     marello_customer.listener.datagrid.company-customers-select_listener:
         class: 'Marello\Bundle\CustomerBundle\EventListener\Datagrid\CompanyCustomersSelectGridListener'
         arguments:
-            - '@marello_customer.repository.company'
+            - '@Marello\Bundle\CustomerBundle\Entity\Repository\CompanyRepository'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.before_query.marello-company-customers-select-grid, method: onResultBeforeQuery }
 

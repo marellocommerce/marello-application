@@ -1,0 +1,10 @@
+services:
+    _defaults:
+        public: true
+
+    Marello\Bundle\WorkflowBundle\Controller\WorkflowController:
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: knp_gaufrette.filesystem_map, key: Oro\Bundle\GaufretteBundle\FilesystemMap }

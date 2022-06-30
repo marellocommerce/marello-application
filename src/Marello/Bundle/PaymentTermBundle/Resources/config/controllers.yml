@@ -1,0 +1,10 @@
+services:
+    _defaults:
+        public: true
+
+    Marello\Bundle\PaymentTermBundle\Controller\PaymentTermController:
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: marello_payment_term.payment_term.form.handler, key: Marello\Bundle\PaymentTermBundle\Form\Handler\PaymentTermFormHandler }

@@ -4,6 +4,7 @@ namespace Marello\Bundle\SalesBundle\Controller;
 
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\SalesBundle\Form\Type\SalesChannelGroupType;
+use Oro\Bundle\FormBundle\Model\UpdateHandlerFacade;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\Routing\Annotation\Route;
@@ -11,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SalesChannelGroupController extends AbstractController
 {
@@ -36,7 +38,7 @@ class SalesChannelGroupController extends AbstractController
      *     path="/create",
      *     name="marello_sales_saleschannelgroup_create"
      * )
-     * @Template("MarelloSalesBundle:SalesChannelGroup:update.html.twig")
+     * @Template("@MarelloSales/SalesChannelGroup/update.html.twig")
      * @Acl(
      *     id="marello_sales_saleschannelgroup_create",
      *     type="entity",
@@ -116,12 +118,23 @@ class SalesChannelGroupController extends AbstractController
      */
     protected function update(SalesChannelGroup $entity, Request $request)
     {
-        return $this->get('oro_form.update_handler')->update(
+        return $this->container->get(UpdateHandlerFacade::class)->update(
             $entity,
             $this->createForm(SalesChannelGroupType::class, $entity),
-            $this->get('translator')->trans('marello.sales.saleschannelgroup.messages.success.saved'),
+            $this->container->get(TranslatorInterface::class)->trans('marello.sales.saleschannelgroup.messages.success.saved'),
             $request,
             'marello_sales.saleschannelgroup_form.handler'
+        );
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                UpdateHandlerFacade::class,
+                TranslatorInterface::class,
+            ]
         );
     }
 }

@@ -32,8 +32,8 @@ class SupplierDropshipEventListener
         $entity = $args->getEntity();
         if ($entity instanceof Supplier && $entity->getCanDropship() === true) {
             $this->eventDispatcher->dispatch(
-                SupplierDropshipEvent::NAME,
-                new SupplierDropshipEvent($entity, true)
+                new SupplierDropshipEvent($entity, true),
+                SupplierDropshipEvent::NAME
             );
         }
     }
@@ -48,16 +48,16 @@ class SupplierDropshipEventListener
             $em = $args->getEntityManager();
             /** @var OroEventManager $eventManager */
             $eventManager = $em->getEventManager();
-            $eventManager->removeEventListener('preUpdate', 'marello_supplier.event_listener.dropship');
+            $eventManager->removeEventListener('preUpdate', $this);
             if ($entity->getCanDropship() === true) {
                 $this->eventDispatcher->dispatch(
-                    SupplierDropshipEvent::NAME,
-                    new SupplierDropshipEvent($entity, true)
+                    new SupplierDropshipEvent($entity, true),
+                    SupplierDropshipEvent::NAME
                 );
             } else {
                 $this->eventDispatcher->dispatch(
-                    SupplierDropshipEvent::NAME,
-                    new SupplierDropshipEvent($entity, false)
+                    new SupplierDropshipEvent($entity, false),
+                    SupplierDropshipEvent::NAME
                 );
             }
         }
@@ -71,8 +71,8 @@ class SupplierDropshipEventListener
         $entity = $args->getEntity();
         if ($entity instanceof Supplier && $entity->getCanDropship() === true) {
             $this->eventDispatcher->dispatch(
-                SupplierDropshipEvent::NAME,
-                new SupplierDropshipEvent($entity, false)
+                new SupplierDropshipEvent($entity, false),
+                SupplierDropshipEvent::NAME
             );
         }
     }

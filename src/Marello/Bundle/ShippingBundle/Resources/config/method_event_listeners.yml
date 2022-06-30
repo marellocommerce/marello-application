@@ -23,6 +23,6 @@ services:
     marello_shipping.method.event_listener.method_renaming:
         class: 'Marello\Bundle\ShippingBundle\Method\EventListener\MethodRenamingListener'
         arguments:
-            - '@marello_shipping.repository.shipping_method_config'
+            - '@Marello\Bundle\ShippingBundle\Entity\Repository\ShippingMethodConfigRepository'
         tags:
             - { name: kernel.event_listener, event: marello_shipping.method_renaming, method: onMethodRename}

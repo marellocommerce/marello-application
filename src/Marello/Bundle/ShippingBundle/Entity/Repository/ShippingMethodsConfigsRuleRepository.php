@@ -2,35 +2,23 @@
 
 namespace Marello\Bundle\ShippingBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\LocaleBundle\Model\AddressInterface;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Marello\Bundle\ShippingBundle\Entity\ShippingMethodsConfigsRule;
 
-class ShippingMethodsConfigsRuleRepository extends EntityRepository
+class ShippingMethodsConfigsRuleRepository extends ServiceEntityRepository
 {
     /**
-     * @var AclHelper
-     */
-    private $aclHelper;
-
-    /**
-     * @param AclHelper $aclHelper
-     */
-    public function setAclHelper(AclHelper $aclHelper)
-    {
-        $this->aclHelper = $aclHelper;
-    }
-
-    /**
      * @param AddressInterface $shippingAddress
-     * @param string           $currency
+     * @param string $currency
+     * @param AclHelper $aclHelper
      *
      * @return ShippingMethodsConfigsRule[]
      */
-    public function getByDestinationAndCurrency(AddressInterface $shippingAddress, $currency)
+    public function getByDestinationAndCurrency(AddressInterface $shippingAddress, $currency, AclHelper $aclHelper)
     {
         $query = $this->getByCurrencyQuery($currency)
             ->leftJoin('methodsConfigsRule.destinations', 'destination')
@@ -43,41 +31,41 @@ class ShippingMethodsConfigsRuleRepository extends EntityRepository
             ->setParameter('regionCode', $shippingAddress->getRegionCode())
             ->setParameter('postalCodes', explode(',', $shippingAddress->getPostalCode()));
 
-        return $this->aclHelper->apply($query)->getResult();
+        return $aclHelper->apply($query)->getResult();
     }
 
     /**
      * @param string $currency
-     *
+     * @param AclHelper $aclHelper
      * @return ShippingMethodsConfigsRule[]
      */
-    public function getByCurrency($currency)
+    public function getByCurrency($currency, AclHelper $aclHelper)
     {
         $query = $this->getByCurrencyQuery($currency);
 
-        return $this->aclHelper->apply($query)->getResult();
+        return $aclHelper->apply($query)->getResult();
     }
 
     /**
      * @param string $currency
-     *
+     * @param AclHelper $aclHelper
      * @return ShippingMethodsConfigsRule[]
      */
-    public function getByCurrencyWithoutDestination($currency)
+    public function getByCurrencyWithoutDestination($currency, AclHelper $aclHelper)
     {
         $query = $this->getByCurrencyQuery($currency)
             ->leftJoin('methodsConfigsRule.destinations', 'destination')
             ->andWhere('destination.id is null');
 
-        return $this->aclHelper->apply($query)->getResult();
+        return $aclHelper->apply($query)->getResult();
     }
 
     /**
      * @param string $methodId
-     *
+     * @param AclHelper $aclHelper
      * @return ShippingMethodsConfigsRule[]
      */
-    public function getConfigsWithEnabledRuleAndMethod($methodId)
+    public function getConfigsWithEnabledRuleAndMethod($methodId, AclHelper $aclHelper)
     {
         $query = $this->createQueryBuilder('methodsConfigsRule')
             ->innerJoin('methodsConfigsRule.methodConfigs', 'methodConfigs')
@@ -86,7 +74,7 @@ class ShippingMethodsConfigsRuleRepository extends EntityRepository
             ->andWhere('methodConfigs.method = :methodId')
             ->setParameter('methodId', $methodId);
 
-        return $this->aclHelper->apply($query)->getResult();
+        return $aclHelper->apply($query)->getResult();
     }
 
     /**
@@ -145,27 +133,27 @@ class ShippingMethodsConfigsRuleRepository extends EntityRepository
 
     /**
      * @param string $method
-     *
+     * @param AclHelper $aclHelper
      * @return ShippingMethodsConfigsRule[]
      */
-    public function getRulesByMethod($method)
+    public function getRulesByMethod($method, AclHelper $aclHelper)
     {
         $qb = $this->getRulesByMethodQueryBuilder($method);
 
-        return $this->aclHelper->apply($qb)->getResult();
+        return $aclHelper->apply($qb)->getResult();
     }
 
     /**
      * @param string $method
-     *
+     * @param AclHelper $aclHelper
      * @return ShippingMethodsConfigsRule[]
      */
-    public function getEnabledRulesByMethod($method)
+    public function getEnabledRulesByMethod($method, AclHelper $aclHelper)
     {
         $qb = $this->getRulesByMethodQueryBuilder($method)
             ->innerJoin('methodsConfigsRule.rule', 'rule', Expr\Join::WITH, 'rule.enabled = true');
 
-        return $this->aclHelper->apply($qb)->getResult();
+        return $aclHelper->apply($qb)->getResult();
     }
 
     /**

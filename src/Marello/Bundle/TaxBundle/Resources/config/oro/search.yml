@@ -6,7 +6,7 @@ search:
             name:                       marello_tax_taxcode_index
             parameters:
                 id:                     id
-        search_template: MarelloTaxBundle:TaxCode:searchResult.html.twig
+        search_template: '@MarelloTax/TaxCode/searchResult.html.twig'
         fields:
             -
                 name:                   code
@@ -20,7 +20,7 @@ search:
             name:                       marello_tax_taxrate_view
             parameters:
                 id:                     id
-        search_template:                MarelloTaxBundle:TaxRate:searchResult.html.twig
+        search_template:                '@MarelloTax/TaxRate/searchResult.html.twig'
         fields:
             -
                 name:                   code
@@ -34,7 +34,7 @@ search:
             name:                       marello_tax_taxjurisdiction_view
             parameters:
                 id:                     id
-        search_template:                MarelloTaxBundle:TaxJurisdiction:searchResult.html.twig
+        search_template:                '@MarelloTax/TaxJurisdiction/searchResult.html.twig'
         fields:
             -
                 name:                   code

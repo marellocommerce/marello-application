@@ -32,6 +32,30 @@ navigation:
                     description: 'marello.order.report.order_items_by_status.description'
                     skipBreadcrumbs: true
 
+            order_allocation_available_tab:
+                label: 'marello.order.allocation.tab.available.label'
+                extras:
+                    position: 5
+                    widgetAcl: 'marello_inventory_allocation_view'
+                    widgetRoute: 'marello_inventory_allocation_widget'
+                    widgetRouteParameters: { entityType: base, entityState: 'available' }
+
+            order_allocation_wfs_tab:
+                label: 'marello.order.allocation.tab.wfs.label'
+                extras:
+                    position: 10
+                    widgetAcl: 'marello_inventory_allocation_view'
+                    widgetRoute: 'marello_inventory_allocation_widget'
+                    widgetRouteParameters: { entityType: wfs, entityState: 'waiting' }
+
+            order_allocation_alert_tab:
+                label: 'marello.order.allocation.tab.alert.label'
+                extras:
+                    position: 15
+                    widgetAcl: 'marello_inventory_allocation_view'
+                    widgetRoute: 'marello_inventory_allocation_widget'
+                    widgetRouteParameters: { entityType: alert, entityState: 'alert' }
+
         tree:
             application_menu:
                 children:
@@ -50,6 +74,11 @@ navigation:
                     shortcut_new_order: ~
                     shortcut_list_orders: ~
 
+            order_allocations_tab_panel:
+                children:
+                    order_allocation_available_tab: ~
+                    order_allocation_wfs_tab: ~
+                    order_allocation_alert_tab: ~
     titles:
         marello_order_order_index: marello.order.entity_plural_label
         marello_order_order_view: 'Order #%id%'

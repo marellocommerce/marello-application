@@ -1,5 +1,5 @@
 parameters:
-    marello_manual_shipping.admin_view.method_template: 'MarelloManualShippingBundle::method/manualShippingMethodWithOptions.html.twig'
+    marello_manual_shipping.admin_view.method_template: '@@MarelloManualShipping/method/manualShippingMethodWithOptions.html.twig'
 
 services:
     marello_manual_shipping.event_listener.shipping_method_config_data:

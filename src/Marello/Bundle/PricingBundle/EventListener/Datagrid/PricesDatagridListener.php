@@ -38,7 +38,7 @@ class PricesDatagridListener
             'label' => 'marello.pricing.assembledpricelist.default_price.plural_label',
             'type' => 'twig',
             'frontend_type' => 'html',
-            'template' => 'MarelloPricingBundle:Datagrid/Property:defaultPrices.html.twig',
+            'template' => '@MarelloPricing/Datagrid/Property/defaultPrices.html.twig',
             'renderable' => false,
             'align' => 'right'
         ]);
@@ -46,7 +46,7 @@ class PricesDatagridListener
             'label' => 'marello.pricing.assembledpricelist.special_price.plural_label',
             'type' => 'twig',
             'frontend_type' => 'html',
-            'template' => 'MarelloPricingBundle:Datagrid/Property:specialPrices.html.twig',
+            'template' => '@MarelloPricing/Datagrid/Property/specialPrices.html.twig',
             'renderable' => false,
             'align' => 'right'
         ]);
@@ -54,7 +54,7 @@ class PricesDatagridListener
             'label' => 'marello.pricing.assembledpricelist.msrp_price.plural_label',
             'type' => 'twig',
             'frontend_type' => 'html',
-            'template' => 'MarelloPricingBundle:Datagrid/Property:msrpPrices.html.twig',
+            'template' => '@MarelloPricing/Datagrid/Property/msrpPrices.html.twig',
             'renderable' => false,
             'align' => 'right'
         ]);

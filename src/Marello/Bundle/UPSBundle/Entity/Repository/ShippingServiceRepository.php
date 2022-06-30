@@ -2,11 +2,11 @@
 
 namespace Marello\Bundle\UPSBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Oro\Bundle\AddressBundle\Entity\Country;
 use Marello\Bundle\UPSBundle\Entity\ShippingService;
 
-class ShippingServiceRepository extends EntityRepository
+class ShippingServiceRepository extends ServiceEntityRepository
 {
     /**
      * @param Country $country

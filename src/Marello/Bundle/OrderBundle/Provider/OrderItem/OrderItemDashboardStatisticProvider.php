@@ -6,44 +6,22 @@ use Marello\Bundle\OrderBundle\Entity\Repository\OrderItemRepository;
 use Marello\Bundle\OrderBundle\Entity\Repository\OrderRepository;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 use Oro\Bundle\DashboardBundle\Model\WidgetOptionBag;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class OrderItemDashboardStatisticProvider
 {
-    /**
-     * @var OrderRepository
-     */
-    protected $orderRepository;
-
-    /**
-     * @var OrderItemRepository
-     */
-    protected $orderItemRepository;
-
-    /**
-     * @var ProductRepository
-     */
-    protected $productRepository;
-    
     protected $medalImages = [
         'bundles/marelloorder/img/first.svg',
         'bundles/marelloorder/img/second.svg',
         'bundles/marelloorder/img/third.svg'
     ];
 
-    /**
-     * @param OrderItemRepository $orderItemRepository
-     * @param OrderRepository $orderRepository
-     * @param ProductRepository $productRepository
-     */
     public function __construct(
-        OrderItemRepository $orderItemRepository,
-        OrderRepository $orderRepository,
-        ProductRepository $productRepository
-    ) {
-        $this->orderItemRepository = $orderItemRepository;
-        $this->orderRepository = $orderRepository;
-        $this->productRepository = $productRepository;
-    }
+        protected OrderItemRepository $orderItemRepository,
+        protected OrderRepository $orderRepository,
+        protected ProductRepository $productRepository,
+        protected AclHelper $aclHelper
+    ) {}
 
     /**
      * @param WidgetOptionBag $widgetOptions
@@ -53,7 +31,7 @@ class OrderItemDashboardStatisticProvider
     {
         $quantity = $widgetOptions->get('quantity') ? : 3;
         $dateRange = $widgetOptions->get('dateRange');
-        $currencies = $this->orderRepository->getOrdersCurrencies();
+        $currencies = $this->orderRepository->getOrdersCurrencies($this->aclHelper);
 
         $result = [];
         foreach ($currencies as $currency) {

@@ -2,8 +2,21 @@ services:
     _defaults:
         public: true
 
+    Marello\Bundle\OrderBundle\Controller\OrderAjaxController:
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: marello_layout.provider.form_changes_data.composite, key: Marello\Bundle\LayoutBundle\Provider\CompositeFormChangesProvider }
+
+    Marello\Bundle\OrderBundle\Controller\OrderController:
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+
     Marello\Bundle\OrderBundle\Controller\OrderDashboardController:
         calls:
             - [setContainer, ['@Psr\Container\ContainerInterface']]
         tags:
-            - { name: 'container.service_subscriber' }
+            - { name: container.service_subscriber }

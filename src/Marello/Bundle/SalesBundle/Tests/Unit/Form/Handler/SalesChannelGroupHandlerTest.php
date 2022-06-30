@@ -5,6 +5,7 @@ namespace Marello\Bundle\SalesBundle\Tests\Unit\Form\Handler;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ObjectManager;
 
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,6 +31,11 @@ class SalesChannelGroupHandlerTest extends TestCase
     protected $manager;
 
     /**
+     * @var AclHelper|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected $aclHelper;
+
+    /**
      * @var SalesChannelGroupHandler
      */
     protected $salesChannelGroupHandler;
@@ -41,7 +47,8 @@ class SalesChannelGroupHandlerTest extends TestCase
     {
         $this->form = $this->createMock(FormInterface::class);
         $this->manager = $this->createMock(ObjectManager::class);
-        $this->salesChannelGroupHandler = new SalesChannelGroupHandler($this->manager);
+        $this->aclHelper = $this->createMock(AclHelper::class);
+        $this->salesChannelGroupHandler = new SalesChannelGroupHandler($this->manager, $this->aclHelper);
     }
 
     public function testProcess()

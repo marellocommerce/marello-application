@@ -1,0 +1,16 @@
+services:
+    _defaults:
+        public: true
+
+    Marello\Bundle\NotificationBundle\Controller\NotificationController:
+        calls:
+            - ['setContainer', ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+
+    Marello\Bundle\InventoryBundle\Controller\WarehouseController:
+        calls:
+            - ['setContainer', ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: marello_customer.company_tree_handler, key: Marello\Bundle\CustomerBundle\JsTree\CompanyTreeHandler }

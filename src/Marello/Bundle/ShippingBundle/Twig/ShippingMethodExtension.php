@@ -13,7 +13,7 @@ class ShippingMethodExtension extends AbstractExtension
 {
     const SHIPPING_METHOD_EXTENSION_NAME = 'marello_shipping_method';
     const DEFAULT_METHOD_CONFIG_TEMPLATE
-        = 'MarelloShippingBundle:ShippingMethodsConfigsRule:shippingMethodWithOptions.html.twig';
+        = '@MarelloShipping/ShippingMethodsConfigsRule/shippingMethodWithOptions.html.twig';
 
     /**
      * @var ShippingMethodLabelFormatter
@@ -67,7 +67,7 @@ class ShippingMethodExtension extends AbstractExtension
     {
         $event = new ShippingMethodConfigDataEvent($shippingMethodName);
         if (!array_key_exists($shippingMethodName, $this->configCache)) {
-            $this->dispatcher->dispatch(ShippingMethodConfigDataEvent::NAME, $event);
+            $this->dispatcher->dispatch($event, ShippingMethodConfigDataEvent::NAME);
             $template = $event->getTemplate();
             if (!$template) {
                 $template = static::DEFAULT_METHOD_CONFIG_TEMPLATE;

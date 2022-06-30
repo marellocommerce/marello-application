@@ -26,6 +26,7 @@ class LoadSupplierData extends AbstractFixture implements DependentFixtureInterf
             'can_dropship' => true,
             'is_active' => true,
             'currency' => 'USD',
+            'code' => 'quiksilver',
             'po_send_by' => Supplier::SEND_PO_BY_EMAIL,
             'address'=>
                 [
@@ -43,6 +44,7 @@ class LoadSupplierData extends AbstractFixture implements DependentFixtureInterf
             'can_dropship' => false,
             'is_active' => true,
             'currency' => 'EUR',
+            'code' => 'bic_sport_north_america_inc',
             'po_send_by' => Supplier::SEND_PO_MANUALLY,
             'address'=>
                 [
@@ -88,6 +90,7 @@ class LoadSupplierData extends AbstractFixture implements DependentFixtureInterf
         foreach ($this->data as $values) {
             $supplier = new Supplier();
             $supplier->setName($values['name']);
+            $supplier->setCode($values['code']);
             $supplier->setPriority($values['priority']);
             $supplier->setCanDropship($values['can_dropship']);
             $supplier->setIsActive($values['is_active']);

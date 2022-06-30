@@ -20,9 +20,13 @@ use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
 use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxCodeData;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
+class LoadOrderData extends AbstractFixture implements DependentFixtureInterface, ContainerAwareInterface
 {
+    use ContainerAwareTrait;
+
     const DEFAULT_WAREHOUSE_REF = 'marello_warehouse_default';
 
     /**
@@ -82,7 +86,8 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
     {
         $this->manager = $manager;
 
-        $this->defaultWarehouse = $manager->getRepository(Warehouse::class)->getDefault();
+        $aclHelper = $this->container->get('oro_security.acl_helper');
+        $this->defaultWarehouse = $manager->getRepository(Warehouse::class)->getDefault($aclHelper);
         $this->setReference(self::DEFAULT_WAREHOUSE_REF, $this->defaultWarehouse);
 
         /** @var Order $order */

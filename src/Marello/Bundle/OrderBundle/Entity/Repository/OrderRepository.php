@@ -2,27 +2,14 @@
 
 namespace Marello\Bundle\OrderBundle\Entity\Repository;
 
-use DateTime;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
-class OrderRepository extends EntityRepository
+class OrderRepository extends ServiceEntityRepository
 {
     /**
-     * @var AclHelper
-     */
-    private $aclHelper;
-
-    /**
      * @param AclHelper $aclHelper
-     */
-    public function setAclHelper(AclHelper $aclHelper)
-    {
-        $this->aclHelper = $aclHelper;
-    }
-    
-    /**
      * @param \DateTime|null $start
      * @param \DateTime|null $end
      * @param SalesChannel|null $salesChannel
@@ -30,6 +17,7 @@ class OrderRepository extends EntityRepository
      * @return int
      */
     public function getTotalRevenueValue(
+        AclHelper $aclHelper,
         \DateTime $start = null,
         \DateTime $end = null,
         SalesChannel $salesChannel = null
@@ -58,12 +46,13 @@ class OrderRepository extends EntityRepository
                 ->andWhere('orders.salesChannelName = :salesChannelName')
                 ->setParameter('salesChannelName', $salesChannel->getName());
         }
-        $value = $this->aclHelper->apply($qb)->getOneOrNullResult();
+        $value = $aclHelper->apply($qb)->getOneOrNullResult();
 
         return $value['val'] ?: 0;
     }
 
     /**
+     * @param AclHelper $aclHelper
      * @param \DateTime|null $start
      * @param \DateTime|null $end
      * @param SalesChannel|null $salesChannel
@@ -71,6 +60,7 @@ class OrderRepository extends EntityRepository
      * @return int
      */
     public function getTotalOrdersNumberValue(
+        AclHelper $aclHelper,
         \DateTime $start = null,
         \DateTime $end = null,
         SalesChannel $salesChannel = null
@@ -95,7 +85,7 @@ class OrderRepository extends EntityRepository
                 ->andWhere('o.salesChannelName = :salesChannelName')
                 ->setParameter('salesChannelName', $salesChannel->getName());
         }
-        $value = $this->aclHelper->apply($qb)->getOneOrNullResult();
+        $value = $aclHelper->apply($qb)->getOneOrNullResult();
 
         return $value['val'] ?: 0;
     }
@@ -103,6 +93,7 @@ class OrderRepository extends EntityRepository
     /**
      * get Average Order Amount by given period
      *
+     * @param AclHelper $aclHelper
      * @param \DateTime|null $start
      * @param \DateTime|null $end
      * @param SalesChannel|null $salesChannel
@@ -110,6 +101,7 @@ class OrderRepository extends EntityRepository
      * @return int
      */
     public function getAverageOrderValue(
+        AclHelper $aclHelper,
         \DateTime $start = null,
         \DateTime $end = null,
         SalesChannel $salesChannel = null
@@ -139,21 +131,22 @@ class OrderRepository extends EntityRepository
                 ->andWhere('o.salesChannelName = :salesChannelName')
                 ->setParameter('salesChannelName', $salesChannel->getName());
         }
-        $value = $this->aclHelper->apply($qb)->getOneOrNullResult();
+        $value = $aclHelper->apply($qb)->getOneOrNullResult();
 
         return $value['revenue'] ? $value['revenue'] / $value['ordersCount'] : 0;
     }
 
     /**
+     * @param AclHelper $aclHelper
      * @return array
      */
-    public function getOrdersCurrencies()
+    public function getOrdersCurrencies(AclHelper $aclHelper)
     {
         $qb = $this->createQueryBuilder('o');
         $qb
             ->distinct(true)
             ->select('o.currency');
 
-        return $this->aclHelper->apply($qb)->getArrayResult();
+        return $aclHelper->apply($qb)->getArrayResult();
     }
 }

@@ -42,12 +42,12 @@ datagrids:
                 label:         marello.shipping.shippingmethodsconfigsrule.method_configs.label
                 type:          twig
                 frontend_type: html
-                template:      MarelloShippingBundle:ShippingMethodsConfigsRule:Datagrid/configurations.html.twig
+                template:      '@MarelloShipping/ShippingMethodsConfigsRule/Datagrid/configurations.html.twig'
             destinations:
                 label:         marello.shipping.shippingmethodsconfigsrule.destinations.label
                 type:          twig
                 frontend_type: html
-                template:      MarelloShippingBundle:ShippingMethodsConfigsRule:Datagrid/destinations.html.twig
+                template:      '@MarelloShipping/ShippingMethodsConfigsRule/Datagrid/destinations.html.twig'
         properties:
             id: ~
             view_link:

@@ -153,9 +153,6 @@ class RemoveUsedShippingServiceValidatorTest extends TestCase
 
         $violationBuilder = $this->createMock(ConstraintViolationBuilderInterface::class);
         $violationBuilder->expects(static::once())
-            ->method('setTranslationDomain')
-            ->willReturn($violationBuilder);
-        $violationBuilder->expects(static::once())
             ->method('atPath')
             ->with('applicableShippingServices')
             ->willReturn($violationBuilder);

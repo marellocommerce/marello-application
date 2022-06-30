@@ -8,7 +8,7 @@ use Knp\Bundle\GaufretteBundle\FilesystemMap;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\IterableResultInterface;
 use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
-use Oro\Bundle\NotificationBundle\Async\Topics;
+use Oro\Bundle\NotificationBundle\Async\Topic\SendEmailNotificationTopic;
 use Oro\Bundle\NotificationBundle\Model\NotificationSettings;
 use Oro\Bundle\WorkflowBundle\Exception\WorkflowException;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
@@ -199,7 +199,7 @@ class WorkflowTransitMassManager
     ) {
         $sender = $this->notificationSettings->getSender();
         $this->messageProducer->send(
-            Topics::SEND_NOTIFICATION_EMAIL,
+            SendEmailNotificationTopic::getName(),
             [
                 'sender' => $sender->toArray(),
                 'toEmail' => $userEmail,

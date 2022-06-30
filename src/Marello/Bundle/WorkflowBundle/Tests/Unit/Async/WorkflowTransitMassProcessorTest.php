@@ -20,6 +20,7 @@ use Oro\Component\MessageQueue\Transport\SessionInterface;
 use Oro\Component\MessageQueue\Util\JSON;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use Marello\Bundle\WorkflowBundle\Async\Topics;
 
 class WorkflowTransitMassProcessorTest extends TestCase
 {
@@ -72,7 +73,7 @@ class WorkflowTransitMassProcessorTest extends TestCase
     public function testGetSubscribedTopics()
     {
         $this->assertEquals(
-            [WorkflowTransitMassProcessor::TOPIC],
+            [Topics::MASS_WORKFLOW_TRANSIT_TOPIC],
             WorkflowTransitMassProcessor::getSubscribedTopics()
         );
     }

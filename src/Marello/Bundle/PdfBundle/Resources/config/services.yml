@@ -1,3 +1,6 @@
+imports:
+    - { resource: controllers.yml }
+
 services:
     marello_pdf.factory.pdf_writer:
         class: 'Marello\Bundle\PdfBundle\Factory\PdfWriterFactory'
@@ -68,13 +71,14 @@ services:
         class: 'Marello\Bundle\PdfBundle\Workflow\Action\SendEmailTemplateAttachmentAction'
         arguments:
             - '@oro_action.expression.context_accessor'
-            - '@oro_email.mailer.processor'
             - '@oro_email.email.address.helper'
             - '@oro_entity.entity_name_resolver'
             - '@doctrine'
             - '@validator'
             - '@oro_email.tools.email_origin_helper'
             - '@oro_email.email_renderer'
+            - '@oro_attachment.liip_imagine.binary.mime_type_guesser'
+            - '@oro_email.sender.email_model_sender'
         calls:
             - [setLogger, ['@logger']]
         tags:

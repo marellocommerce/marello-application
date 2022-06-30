@@ -10,9 +10,16 @@ use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesChannelGroupData;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadWarehouseChannelLinkData extends AbstractFixture implements DependentFixtureInterface
+class LoadWarehouseChannelLinkData extends AbstractFixture implements
+    DependentFixtureInterface,
+    ContainerAwareInterface
 {
+    use ContainerAwareTrait;
+
     /**
      * @var ObjectManager
      */
@@ -39,9 +46,11 @@ class LoadWarehouseChannelLinkData extends AbstractFixture implements DependentF
             ->getRepository('OroOrganizationBundle:Organization')
             ->getFirst();
 
+        /** @var AclHelper $aclHelper */
+        $aclHelper = $this->container->get('oro_security.acl_helper');
         $defaultWarehouseChannelGroupLink = $this->manager
             ->getRepository(WarehouseChannelGroupLink::class)
-            ->findSystemLink();
+            ->findSystemLink($aclHelper);
 
         if ($defaultWarehouseChannelGroupLink) {
             return;

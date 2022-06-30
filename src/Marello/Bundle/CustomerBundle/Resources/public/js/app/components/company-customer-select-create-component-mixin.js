@@ -35,7 +35,6 @@ define(function(require) {
             var parts = this.getUrlParts();
             parts.grid.parameters.params = {'companyId': companyId};
             this.setUrlParts(parts);
-            
         },
         
         dispose: function() {

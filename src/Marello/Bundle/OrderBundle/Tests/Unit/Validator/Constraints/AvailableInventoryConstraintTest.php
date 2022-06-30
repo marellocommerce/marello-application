@@ -6,11 +6,11 @@ use PHPUnit\Framework\TestCase;
 
 use Symfony\Component\Validator\Constraint;
 
-use Marello\Bundle\OrderBundle\Validator\Constraints\AvailableInventory;
+use Marello\Bundle\OrderBundle\Validator\Constraints\AvailableInventoryConstraint;
 
 class AvailableInventoryContraintTest extends TestCase
 {
-    /** @var AvailableInventory $constraint */
+    /** @var AvailableInventoryConstraint $constraint */
     protected $constraint;
 
     /**
@@ -18,7 +18,7 @@ class AvailableInventoryContraintTest extends TestCase
      */
     protected function setUp(): void
     {
-        $this->constraint = new AvailableInventory(['fields' => ['somefield1', 'somefield2']]);
+        $this->constraint = new AvailableInventoryConstraint(['fields' => ['somefield1', 'somefield2']]);
     }
 
     /**

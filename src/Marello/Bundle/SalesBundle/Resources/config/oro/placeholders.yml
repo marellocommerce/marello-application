@@ -6,5 +6,5 @@ placeholders:
 
     items:
         saleschannel_config_button:
-            template: MarelloSalesBundle:Config:button.html.twig
+            template: '@@MarelloSales/Config/button.html.twig'
             applicable: "@marello_sales.placeholder.filter->isSalesChannelPage($entity$)"

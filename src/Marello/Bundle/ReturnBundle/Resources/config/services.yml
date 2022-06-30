@@ -1,3 +1,6 @@
+imports:
+    - { resource: controllers.yml }
+
 services:
     marello_return.util.return_helper:
         class: Marello\Bundle\ReturnBundle\Util\ReturnHelper
@@ -84,8 +87,9 @@ services:
 #        tags:
 #            - { name: oro.api.processor, action: customize_loaded_data, class: Marello\Bundle\ReturnBundle\Entity\ReturnEntity }
 
-    marello_return.repository.return_item:
-        class: 'Marello\Bundle\ReturnBundle\Entity\Repository\ReturnItemRepository'
+    Marello\Bundle\ReturnBundle\Entity\Repository\ReturnItemRepository:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\ReturnBundle\Entity\ReturnItem'
+        tags:
+            - { name: doctrine.repository_service }

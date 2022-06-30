@@ -26,8 +26,8 @@ class SalesChannelTypeSelectType extends AbstractType
                 'configs'            => [
                     'route_name'  => 'marello_sales_saleschanneltype_search',
                     'placeholder' => 'marello.sales.saleschanneltype.form.choose',
-                    'result_template_twig' => 'MarelloSalesBundle:SalesChannelType:Autocomplete/result.html.twig',
-                    'selection_template_twig' => 'MarelloSalesBundle:SalesChannelType:Autocomplete/selection.html.twig',
+                    'result_template_twig' => '@MarelloSales/SalesChannelType/Autocomplete/result.html.twig',
+                    'selection_template_twig' => '@MarelloSales/SalesChannelType/Autocomplete/selection.html.twig',
                 ],
             ]
         );

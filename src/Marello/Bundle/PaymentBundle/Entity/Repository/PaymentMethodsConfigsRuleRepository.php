@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\PaymentBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\LocaleBundle\Model\AddressInterface;
@@ -12,30 +12,18 @@ use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 /**
  * Returns payment method config rules by destination, currency and website
  */
-class PaymentMethodsConfigsRuleRepository extends EntityRepository
+class PaymentMethodsConfigsRuleRepository extends ServiceEntityRepository
 {
     /**
-     * @var AclHelper
-     */
-    private $aclHelper;
-
-    /**
-     * @param AclHelper $aclHelper
-     */
-    public function setAclHelper(AclHelper $aclHelper)
-    {
-        $this->aclHelper = $aclHelper;
-    }
-
-    /**
      * @param AddressInterface $billingAddress
-     * @param string           $currency
-     *
+     * @param string $currency
+     * @param AclHelper $aclHelper
      * @return PaymentMethodsConfigsRule[]
      */
     public function getByDestinationAndCurrency(
         AddressInterface $billingAddress,
-        string $currency
+        string $currency,
+        AclHelper $aclHelper
     ): array {
         $queryBuilder = $this->getByCurrencyQueryBuilder($currency)
             ->leftJoin('methodsConfigsRule.destinations', 'destination')
@@ -50,41 +38,41 @@ class PaymentMethodsConfigsRuleRepository extends EntityRepository
             ->setParameter('regionCode', $billingAddress->getRegionCode())
             ->setParameter('postalCodes', explode(',', $billingAddress->getPostalCode()));
 
-        return $this->aclHelper->apply($queryBuilder)->getResult();
+        return $aclHelper->apply($queryBuilder)->getResult();
     }
 
     /**
      * @param string $currency
-     *
+     * @param AclHelper $aclHelper
      * @return PaymentMethodsConfigsRule[]
      */
-    public function getByCurrency(string $currency): array
+    public function getByCurrency(string $currency, AclHelper $aclHelper): array
     {
         $query = $this->getByCurrencyQueryBuilder($currency);
 
-        return $this->aclHelper->apply($query)->getResult();
+        return $aclHelper->apply($query)->getResult();
     }
 
     /**
      * @param string $currency
-     *
+     * @param AclHelper $aclHelper
      * @return PaymentMethodsConfigsRule[]
      */
-    public function getByCurrencyWithoutDestination(string $currency): array
+    public function getByCurrencyWithoutDestination(string $currency, AclHelper $aclHelper): array
     {
         $query = $this->getByCurrencyQueryBuilder($currency)
             ->leftJoin('methodsConfigsRule.destinations', 'destination')
             ->andWhere('destination.id is null');
 
-        return $this->aclHelper->apply($query)->getResult();
+        return $aclHelper->apply($query)->getResult();
     }
 
     /**
      * @param string $methodId
-     *
+     * @param AclHelper $aclHelper
      * @return PaymentMethodsConfigsRule[]
      */
-    public function getConfigsWithEnabledRuleAndMethod($methodId)
+    public function getConfigsWithEnabledRuleAndMethod($methodId, AclHelper $aclHelper)
     {
         $query = $this->createQueryBuilder('methodsConfigsRule')
             ->innerJoin('methodsConfigsRule.methodConfigs', 'methodConfigs')
@@ -93,7 +81,7 @@ class PaymentMethodsConfigsRuleRepository extends EntityRepository
             ->andWhere('methodConfigs.method = :methodId')
             ->setParameter('methodId', $methodId);
 
-        return $this->aclHelper->apply($query)->getResult();
+        return $aclHelper->apply($query)->getResult();
     }
 
     /**
@@ -150,27 +138,27 @@ class PaymentMethodsConfigsRuleRepository extends EntityRepository
 
     /**
      * @param string $method
-     *
+     * @param AclHelper $aclHelper
      * @return PaymentMethodsConfigsRule[]
      */
-    public function getRulesByMethod($method)
+    public function getRulesByMethod($method, AclHelper $aclHelper)
     {
         $qb = $this->getRulesByMethodQueryBuilder($method);
 
-        return $this->aclHelper->apply($qb)->getResult();
+        return $aclHelper->apply($qb)->getResult();
     }
 
     /**
      * @param string $method
-     *
+     * @param AclHelper $aclHelper
      * @return PaymentMethodsConfigsRule[]
      */
-    public function getEnabledRulesByMethod($method)
+    public function getEnabledRulesByMethod($method, AclHelper $aclHelper)
     {
         $qb = $this->getRulesByMethodQueryBuilder($method)
             ->innerJoin('methodsConfigsRule.rule', 'rule', Expr\Join::WITH, 'rule.enabled = true');
 
-        return $this->aclHelper->apply($qb)->getResult();
+        return $aclHelper->apply($qb)->getResult();
     }
 
     /**

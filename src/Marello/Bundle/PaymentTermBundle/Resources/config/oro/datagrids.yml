@@ -15,7 +15,7 @@ datagrids:
                 label: marello.paymentterm.labels.label
                 type: twig
                 frontend_type: html
-                template: 'MarelloPaymentTermBundle:PaymentTerm:Datagrid/label.html.twig'
+                template: '@MarelloPaymentTerm/PaymentTerm/Datagrid/label.html.twig'
             code:
                 label: marello.paymentterm.code.label
                 frontend_type: string
@@ -23,7 +23,7 @@ datagrids:
                 label: marello.paymentterm.term.label
                 type: twig
                 frontend_type: html
-                template: 'MarelloPaymentTermBundle:PaymentTerm:Datagrid/term.html.twig'
+                template: '@MarelloPaymentTerm/PaymentTerm/Datagrid/term.html.twig'
         filters:
             columns:
                 label:

@@ -1,2 +1,2 @@
 bundles:
-    - MarelloRefundBundle:Form:fields.html.twig
+    - '@MarelloRefund/Form/fields.html.twig'

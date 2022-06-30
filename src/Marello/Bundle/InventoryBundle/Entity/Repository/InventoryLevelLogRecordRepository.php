@@ -2,35 +2,25 @@
 
 namespace Marello\Bundle\InventoryBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
-
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
-
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 
-class InventoryLevelLogRecordRepository extends EntityRepository
+class InventoryLevelLogRecordRepository extends ServiceEntityRepository
 {
-    /**
-     * @var AclHelper
-     */
-    private $aclHelper;
-
-    /**
-     * @param AclHelper $aclHelper
-     */
-    public function setAclHelper(AclHelper $aclHelper)
-    {
-        $this->aclHelper = $aclHelper;
-    }
-
     /**
      * @param InventoryItem $inventoryItem
      * @param \DateTime $from
      * @param \DateTime $to
+     * @param AclHelper $aclHelper
      * @return array
      */
-    public function getInventoryLogRecordsForItem(InventoryItem $inventoryItem, \DateTime $from, \DateTime $to)
-    {
+    public function getInventoryLogRecordsForItem(
+        InventoryItem $inventoryItem,
+        \DateTime $from,
+        \DateTime $to,
+        AclHelper $aclHelper
+    ) {
         $qb = $this->createQueryBuilder('ir');
         $qb
             ->join('ir.inventoryLevel', 'il');
@@ -50,7 +40,7 @@ class InventoryLevelLogRecordRepository extends EntityRepository
 
         $qb->setParameters(compact('inventoryItem', 'from', 'to'));
 
-        $results = $this->aclHelper
+        $results = $aclHelper
             ->apply($qb)
             ->getArrayResult();
 

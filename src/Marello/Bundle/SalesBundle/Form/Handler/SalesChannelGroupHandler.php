@@ -3,11 +3,11 @@
 namespace Marello\Bundle\SalesBundle\Form\Handler;
 
 use Doctrine\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Oro\Bundle\FormBundle\Form\Handler\FormHandlerInterface;
 use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -15,18 +15,10 @@ class SalesChannelGroupHandler implements FormHandlerInterface
 {
     use RequestHandlerTrait;
 
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $manager;
-
-    /**
-     * @param ObjectManager $manager
-     */
-    public function __construct(ObjectManager $manager)
-    {
-        $this->manager = $manager;
-    }
+    public function __construct(
+        protected ObjectManager $manager,
+        protected AclHelper $aclHelper
+    ) {}
 
     /**
      * {@inheritdoc}
@@ -88,6 +80,6 @@ class SalesChannelGroupHandler implements FormHandlerInterface
     {
         return $this->manager
             ->getRepository(SalesChannelGroup::class)
-            ->findSystemChannelGroup();
+            ->findSystemChannelGroup($this->aclHelper);
     }
 }

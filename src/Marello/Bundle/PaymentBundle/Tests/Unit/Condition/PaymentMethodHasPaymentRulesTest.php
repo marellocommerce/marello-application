@@ -5,6 +5,7 @@ namespace Marello\Bundle\PaymentBundle\Tests\Unit\Condition;
 use Marello\Bundle\PaymentBundle\Condition\PaymentMethodHasPaymentRules;
 use Marello\Bundle\PaymentBundle\Entity\Repository\PaymentMethodsConfigsRuleRepository;
 use Marello\Bundle\PaymentBundle\Entity\PaymentMethodsConfigsRule;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Oro\Component\ConfigExpression\ContextAccessorInterface;
 use Symfony\Component\PropertyAccess\PropertyPathInterface;
 
@@ -18,6 +19,11 @@ class PaymentMethodHasPaymentRulesTest extends \PHPUnit\Framework\TestCase
     protected $repository;
 
     /**
+     * @var AclHelper|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected $aclHelper;
+
+    /**
      * @var PropertyPathInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $propertyPath;
@@ -29,9 +35,8 @@ class PaymentMethodHasPaymentRulesTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp(): void
     {
-        $this->repository = $this->getMockBuilder(PaymentMethodsConfigsRuleRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->repository = $this->createMock(PaymentMethodsConfigsRuleRepository::class);
+        $this->aclHelper = $this->createMock(AclHelper::class);
 
         $this->propertyPath = $this->createMock(PropertyPathInterface::class);
         $this->propertyPath->expects($this->any())
@@ -41,7 +46,10 @@ class PaymentMethodHasPaymentRulesTest extends \PHPUnit\Framework\TestCase
             ->method('getElements')
             ->will($this->returnValue([self::PROPERTY_PATH_NAME]));
 
-        $this->paymentMethodHasPaymentRulesCondition = new PaymentMethodHasPaymentRules($this->repository);
+        $this->paymentMethodHasPaymentRulesCondition = new PaymentMethodHasPaymentRules(
+            $this->repository,
+            $this->aclHelper
+        );
     }
 
     public function testGetName()

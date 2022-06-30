@@ -5,7 +5,9 @@ namespace Marello\Bundle\PdfBundle\Workflow\Action;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\Persistence\ManagerRegistry;
 
-use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
+use Liip\ImagineBundle\Binary\MimeTypeGuesserInterface;
+use Oro\Bundle\EmailBundle\Sender\EmailModelSender;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Validator\Constraints\Email as EmailConstraints;
 use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -16,7 +18,6 @@ use Oro\Bundle\EmailBundle\Entity\EmailUser;
 use Oro\Bundle\EmailBundle\Entity\EmailAttachment as AttachmentEntity;
 use Oro\Bundle\EmailBundle\Form\Model\Email;
 use Oro\Bundle\EmailBundle\Form\Model\EmailAttachment;
-use Oro\Bundle\EmailBundle\Workflow\Action\SendEmailTemplate;
 use Oro\Bundle\EmailBundle\Workflow\Action\AbstractSendEmail;
 use Oro\Component\Action\Exception\InvalidArgumentException;
 use Oro\Component\Action\Exception\InvalidParameterException;
@@ -25,7 +26,6 @@ use Oro\Bundle\EmailBundle\Provider\EmailRenderer;
 use Oro\Bundle\EmailBundle\Tools\EmailAddressHelper;
 use Oro\Bundle\EntityBundle\Provider\EntityNameResolver;
 use Oro\Component\ConfigExpression\ContextAccessor;
-use Oro\Bundle\EmailBundle\Mailer\Processor;
 
 class SendEmailTemplateAttachmentAction extends AbstractSendEmail
 {
@@ -38,53 +38,22 @@ class SendEmailTemplateAttachmentAction extends AbstractSendEmail
 
     protected $options;
 
-    protected $mimeTypeGuesser;
-
     protected $emailConstraint;
 
-    protected $renderer;
-
-    /** @var ManagerRegistry */
-    protected $registry;
-
-    /** @var ValidatorInterface */
-    protected $validator;
-
-    /** @var EmailOriginHelper */
-    protected $emailOriginHelper;
-
-    /**
-     * @param ContextAccessor $contextAccessor
-     * @param Processor $emailProcessor
-     * @param EmailAddressHelper $emailAddressHelper
-     * @param EntityNameResolver $entityNameResolver
-     * @param ManagerRegistry $registry
-     * @param ValidatorInterface $validator
-     * @param EmailOriginHelper $emailOriginHelper
-     * @param EmailRenderer $renderer
-     */
     public function __construct(
         ContextAccessor $contextAccessor,
-        Processor $emailProcessor,
         EmailAddressHelper $emailAddressHelper,
         EntityNameResolver $entityNameResolver,
-        ManagerRegistry $registry,
+        protected ManagerRegistry $registry,
         ValidatorInterface $validator,
-        EmailOriginHelper $emailOriginHelper,
-        EmailRenderer $renderer
+        protected EmailOriginHelper $emailOriginHelper,
+        protected EmailRenderer $renderer,
+        protected MimeTypeGuesserInterface $mimeTypeGuesser,
+        protected EmailModelSender $emailModelSender
     ) {
-        parent::__construct($contextAccessor, $emailProcessor, $emailAddressHelper, $entityNameResolver);
-
-        $this->registry = $registry;
-        $this->validator = $validator;
-        $this->renderer = $renderer;
-        $this->emailOriginHelper = $emailOriginHelper;
+        parent::__construct($contextAccessor, $validator, $emailAddressHelper, $entityNameResolver);
     }
 
-    /**
-     * @param array $options
-     * @return SendEmailTemplate
-     */
     public function initialize(array $options): self
     {
         if (isset($options[self::OPTION_BCC])) {
@@ -100,7 +69,7 @@ class SendEmailTemplateAttachmentAction extends AbstractSendEmail
             throw new InvalidParameterException('Need to specify "to" parameters');
         }
 
-        $options = $this->normalizeToOption($options);
+        $this->normalizeToOption($options);
 
         if (empty($options['template'])) {
             throw new InvalidParameterException('Template parameter is required');
@@ -152,7 +121,6 @@ class SendEmailTemplateAttachmentAction extends AbstractSendEmail
      * @param mixed $context
      * @throws EntityNotFoundException
      * @throws \Twig\Error\Error
-     * @throws \Twig_Error
      */
     public function executeAction($context): void
     {
@@ -203,8 +171,8 @@ class SendEmailTemplateAttachmentAction extends AbstractSendEmail
                 $emailModel->getOrganization()
             );
 
-            $emailUser = $this->emailProcessor->process($emailModel, $emailOrigin);
-        } catch (\Swift_SwiftException $exception) {
+            $emailUser = $this->emailModelSender->send($emailModel, $emailOrigin);
+        } catch (TransportExceptionInterface $exception) {
             $this->logger->error('Workflow send email template action.', ['exception' => $exception]);
         }
 
@@ -274,7 +242,7 @@ class SendEmailTemplateAttachmentAction extends AbstractSendEmail
             $mimetype = $this->contextAccessor->getValue($context, $attachment[self::OPTION_ATTACHMENT_MIMETYPE]);
         } else {
             $extension = pathinfo($path, PATHINFO_EXTENSION);
-            $mimetype = $this->getMimeTypeGuesser()->guess($extension);
+            $mimetype = $this->mimeTypeGuesser->guess($extension);
         }
         if (isset($attachment[self::OPTION_ATTACHMENT_FILENAME])) {
             $filename = $this->contextAccessor->getValue($context, $attachment[self::OPTION_ATTACHMENT_FILENAME]);
@@ -326,18 +294,6 @@ class SendEmailTemplateAttachmentAction extends AbstractSendEmail
     }
 
     /**
-     * @return MimeTypeGuesser
-     */
-    protected function getMimeTypeGuesser()
-    {
-        if ($this->mimeTypeGuesser === null) {
-            $this->mimeTypeGuesser = MimeTypeGuesser::getInstance();
-        }
-
-        return $this->mimeTypeGuesser;
-    }
-
-    /**
      * @param string $email
      * @throws ValidatorException
      */
@@ -350,11 +306,7 @@ class SendEmailTemplateAttachmentAction extends AbstractSendEmail
         }
     }
 
-    /**
-     * @param array $options
-     * @return array
-     */
-    protected function normalizeToOption(array $options): array
+    protected function normalizeToOption(array &$options): void
     {
         if (empty($options['to'])) {
             $options['to'] = [];
@@ -369,7 +321,5 @@ class SendEmailTemplateAttachmentAction extends AbstractSendEmail
         foreach ($options['to'] as $to) {
             $this->assertEmailAddressOption($to);
         }
-
-        return $options;
     }
 }

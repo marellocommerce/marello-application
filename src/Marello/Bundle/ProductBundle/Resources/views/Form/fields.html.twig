@@ -51,7 +51,7 @@
 {% block marello_product_channel_tax_relation_collection_form_widget %}
     {% import _self as fields %}
 
-    {% spaceless %}
+    {% apply spaceless %}
         {% set widgetContainerAttributes = block('widget_container_attributes') %}
         {% if prototype is defined %}
             {% set prototype_html = fields.marello_product_channel_tax_relation_collection_form_item_prototype(form, widgetContainerAttributes) %}
@@ -87,7 +87,7 @@
                 <a class="btn marello-add-line-item" data-container=".marello-item-collection tbody" href="javascript: void(0);"><i class="fa-plus"></i>{{ form.vars.add_label|default('marello.product.productchanneltaxrelation.form.add_productchanneltaxrelation')|trans }}</a>
             {% endif %}
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
 {% block oro_entity_create_or_select_inline_js_autocomplete_sales_channel_aware %}
@@ -99,27 +99,27 @@
 {% endblock %}
 
 {% block oro_entity_create_or_select_inline_js_sales_channel_aware %}
-    {% import 'OroUIBundle::macros.html.twig' as UI %}
+    {% import '@OroUI/macros.html.twig' as UI %}
     {% if form.vars.configs.async_dialogs|default(false) is same as(true) %}
         {% set asyncNameSegment = 'async-' %}
     {% endif %}
     {% set urlParts = {
-    grid: {
-    route: 'oro_datagrid_widget',
-    parameters: {
-    gridName     : form.vars.grid_name,
-    params       : form.vars.grid_parameters,
-    renderParams : form.vars.grid_render_parameters
-    }
-    }
+        grid: {
+            route: 'oro_datagrid_widget',
+            parameters: {
+                gridName     : form.vars.grid_name,
+                params       : form.vars.grid_parameters,
+                renderParams : form.vars.grid_render_parameters
+            }
+        }
     } %}
 
     {% if form.vars.create_enabled|default(false) is same as(true) %}
         {% set urlParts = urlParts|merge({
-        create: {
-        route:      form.vars.create_form_route,
-        parameters: form.vars.create_form_route_parameters
-        }
+            create: {
+                route:      form.vars.create_form_route,
+                parameters: form.vars.create_form_route_parameters
+            }
         }) %}
     {% endif %}
     <div {{ UI.renderPageComponentAttributes({
@@ -206,7 +206,7 @@
 {% block marello_product_supplier_relation_collection_form_widget %}
     {% import _self as fields %}
 
-    {% spaceless %}
+    {% apply spaceless %}
         {% set widgetContainerAttributes = block('widget_container_attributes') %}
         {% if prototype is defined %}
             {% set prototype_html = fields.marello_product_supplier_relation_collection_form_item_prototype(form, widgetContainerAttributes) %}
@@ -245,7 +245,7 @@
                 <a class="btn marello-add-line-item" data-container=".marello-item-collection tbody" href="javascript: void(0);"><i class="fa-plus"></i>{{ form.vars.add_label|default('marello.product.form.add_supplier')|trans }}</a>
             {% endif %}
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
 {% macro marello_product_select_collection_form_item_prototype(widget) %}
@@ -292,7 +292,7 @@
 {% block marello_product_select_collection_form_widget %}
     {% import _self as fields %}
 
-    {% spaceless %}
+    {% apply spaceless %}
         {% set widgetContainerAttributes = block('widget_container_attributes') %}
         {% if prototype is defined %}
             {% set prototype_html = fields.marello_product_select_collection_form_item_prototype(form) %}
@@ -327,5 +327,5 @@
                 <a class="btn marello-add-line-item" data-container=".marello-item-collection tbody" href="javascript: void(0);"><i class="fa-plus"></i>{{ form.vars.add_label|default('oro.form.collection.add')|trans }}</a>
             {% endif %}
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}

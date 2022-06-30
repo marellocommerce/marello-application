@@ -1,3 +1,6 @@
+imports:
+    - { resource: controllers.yml }
+
 services:
     marello_refund.workflow.create_refund_action:
         class: Marello\Bundle\RefundBundle\Workflow\Actions\CreateRefundAction
