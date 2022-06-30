@@ -16,24 +16,18 @@ framework:
     csrf_protection: true
     profiler:
         enabled: false
+    mailer:
+        transports:
+            main: 'null://null'
+            oro_user_email_origin: 'null://null'
 
 monolog:
     handlers:
-        fingers_crossed:
-            type: fingers_crossed
-            action_level: error
-            handler: nested
-            excluded_http_codes: [ 404, 405 ]
-            channels: [ "!event" ]
         nested:
             type: stream
             path: "%kernel.logs_dir%/%kernel.environment%.log"
             level: debug
             channels: '%main_log_channels%'
-
-swiftmailer:
-    logging: true
-    disable_delivery: true
 
 # configure loose default password requirements for auto-generated test users
 oro_user:
@@ -53,7 +47,16 @@ twig:
     strict_variables: true
     debug: false
 
+oro_search:
+    engine_parameters:
+        force_refresh: true
+
 oro_api:
     settings:
         web_api:
             value: true
+
+oro_message_queue:
+    client:
+        redelivery:
+            delay_time: 1

@@ -25,6 +25,3 @@ monolog:
 oro_message_queue:
     client:
         traceable_producer: true
-
-#swiftmailer:
-#    delivery_addresses: ['me@example.com']

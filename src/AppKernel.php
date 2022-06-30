@@ -28,6 +28,7 @@ class AppKernel extends OroKernel
             $bundles[] = new Nelmio\Alice\Bridge\Symfony\NelmioAliceBundle();
             $bundles[] = new Fidry\AliceDataFixtures\Bridge\Symfony\FidryAliceDataFixturesBundle();
             $bundles[] = new Oro\Bundle\TestFrameworkBundle\OroTestFrameworkBundle();
+            $bundles[] = new Oro\Bundle\TestFrameworkProBundle\OroTestFrameworkProBundle();
         }
 
         return array_merge(parent::registerBundles(), $bundles);
