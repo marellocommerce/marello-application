@@ -8,24 +8,29 @@ using Marello.
 
 ## Requirements
 
-Marello is a Symfony 3.4 based application with the following requirements:
+Marello is a Symfony 4.4 based application with the following requirements:
 
-* PHP 7.1.26 or above with command line interface
+* PHP 7.4.14 or above with command line interface
 * PHP Extensions
-    * Ctype
-    * Fileinfo
-    * GD 2.0 and above
-    * Intl (ICU library 4.4 and above)
-    * JSON
-    * Mbstring
-    * Mcrypt
-    * Mysql
-    * PCRE 8.0 and above
-    * SimpleXML
-    * Tokenizer
-    * Xml
-    * Zip    
-* MySQL 5.7 or above
+    * ctype
+    * curl
+    * fileinfo
+    * gd
+    * intl (ICU library 4.4 and above)
+    * json
+    * mbstring
+    * openssl
+    * mysql
+    * pcre
+    * simplexml
+    * tokenizer
+    * xml
+    * zip
+    * imap
+    * soap
+    * bcmath
+    * ldap
+* MySQL 8.0
 
 ## Installation instructions
 
@@ -45,7 +50,7 @@ where x.y.z is the latest [release tag](https://github.com/marellocommerce/marel
 
 - Install [Composer][1] globally following the official Composer installation documentation
 
-- Make sure that you have [NodeJS][3] installed
+- Make sure that you have [NodeJS][4] >=12.0, <15.0 installed
 
 - Install Marello dependencies with composer. If installation process seems too slow you can use `--prefer-dist` option. Go to marello-application folder and run composer installation:
 
@@ -88,8 +93,8 @@ php bin/console oro:message-queue:consume --env=prod
 ```
 **Note** We do recommend to use a supervisor for running the ``oro:message-queue:consume`` command. This will make sure that the command and
 the consumer will run all the time. This has become important for every Oro Platform based application since a lot of background tasks depend
- on the consumer to run. For more information about configuration and what supervisor can do for you can either be found in the [Oro(CRM) docs][5] or the
- [site of Supervisord][6].
+ on the consumer to run. For more information about configuration and what supervisor can do for you can either be found in the [Oro(CRM) docs][6] or the
+ [site of Supervisord][7].
  
 **Note:** ``bin/console`` is a path from project root folder. Please make sure you are using full path for crontab configuration or if you running console command from other location.
 
@@ -99,7 +104,7 @@ Installed PHP Accelerators must be compatible with Symfony and Doctrine (support
 
 Note that the port used in Websocket must be open in firewall for outgoing/incoming connections
 
-Using MySQL 5.6 on HDD is potentially risky because of performance issues
+Using MySQL 8.0.x on HDD is potentially risky because of performance issues
 
 Recommended configuration for this case:
 
@@ -109,11 +114,11 @@ And ensure that timeout has default value
 
     wait_timeout = 28800
 
-See [Optimizing InnoDB Disk I/O][2] for more
+See [Oro's recommendation regarding optimization][2] and [Optimizing InnoDB Disk I/O][3] for more 
 
 ## Web Server Configuration
 
-The Marello application is based on the Symfony standard application so web server configuration recommendations are the [same][4].
+The Marello application is based on the Symfony standard application so web server configuration recommendations are the [same][5].
 
 ## Package Manager Configuration
 
@@ -121,12 +126,13 @@ Github OAuth token should be configured in package manager settings
 
 ## Need Support?
 
-[Join the Community Chat][7] and get help from other users in the Marello community.
+[Join the Community Chat][8] and get help from other users in the Marello community.
 
 [1]:  https://getcomposer.org/
-[2]:  https://dev.mysql.com/doc/refman/5.6/en/optimizing-innodb-diskio.html
-[3]:  https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager
-[4]:  https://symfony.com/doc/3.4/setup/web_server_configuration.html
-[5]:  https://oroinc.com/orocrm/doc/current/install-upgrade/installation-quick-start-dev/crm#step-4-post-installation-environment-configuration
-[6]:  https://supervisord.org/
-[7]:  https://www.marello.com/community/
+[2]:  https://doc.oroinc.com/backend/setup/system-requirements/database-optimization/
+[3]:  https://dev.mysql.com/doc/refman/8.0/en/optimizing-innodb-diskio.html
+[4]:  https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager
+[5]:  https://symfony.com/doc/4.4/setup/web_server_configuration.html
+[6]:  https://oroinc.com/orocrm/doc/current/install-upgrade/installation-quick-start-dev/crm#step-4-post-installation-environment-configuration
+[7]:  https://supervisord.org/
+[8]:  https://www.marello.com/community/

@@ -1,6 +1,9 @@
 imports:
     - { resource: config.yml }
 
+parameters:
+    main_log_channels: []
+
 framework:
     router:   { resource: "%kernel.project_dir%/config/routing_dev.yml" }
     profiler: { only_exceptions: false }
@@ -14,13 +17,11 @@ web_profiler:
 monolog:
     handlers:
         main:
-            type:  stream
-            path:  "%kernel.logs_dir%/%kernel.environment%.log"
-            level: debug
+            type:      stream
+            path:      "%kernel.logs_dir%/%kernel.environment%.log"
+            level:     debug
+            channels:  '%main_log_channels%' # The channels configuration only works for top-level handlers
 
 oro_message_queue:
     client:
         traceable_producer: true
-
-#swiftmailer:
-#    delivery_address: me@example.com
