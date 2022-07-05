@@ -12,66 +12,42 @@ framework:
     router:
         resource: "%kernel.project_dir%/config/routing.yml"
         strict_requirements: "%kernel.debug%"
-    form:            true
+    form:
+        legacy_error_messages: false
     csrf_protection: true
     validation:      { enable_annotations: true }
-    templating:
-        engines: ['twig', 'php']
     assets:
-        version: '%assets_version%'
-        version_format: '%%s?version=%%s'
+        version_strategy: 'Oro\Bundle\AssetBundle\VersionStrategy\BuildVersionStrategy'
     default_locale: en
     session:
-        name:                 MARELLOID
+        # More info about session cookie configuration can be found at
+        # https://doc.oroinc.com/backend/setup/post-install/cookies-configuration/#back-office-session-cookie
+        name:                 BAPID
         handler_id:           '%session_handler%'
         save_path:            '%kernel.project_dir%/var/sessions/%kernel.environment%'
         gc_maxlifetime:       3600
+        cookie_secure:        'auto'
         cookie_httponly:      true
     fragments:
         enabled:              true
         path:                 /_fragment # used for controller action in template
     serializer:
         enabled:              true
+    mailer:
+        transports:
+            main: 'oro://system-config?fallback=%mailer_dsn%'
+            oro_user_email_origin: 'oro://user-email-origin'
 
 # Twig Configuration
 twig:
     debug:                    "%kernel.debug%"
     strict_variables:         "%kernel.debug%"
-    exception_controller:     "Oro\\Bundle\\UIBundle\\Controller\\ExceptionController::showAction"
     globals:
         bap:
             layout:           base.html.twig  # default layout across all Oro bundles
 
-# Swiftmailer Configuration
-swiftmailer:
-    transport:                "%mailer_transport%"
-    host:                     "%mailer_host%"
-    port:                     "%mailer_port%"
-    encryption:               "%mailer_encryption%"
-    username:                 "%mailer_user%"
-    password:                 "%mailer_password%"
-    spool:                    { type: memory }
-
-fos_rest:
-    body_listener:
-        decoders:
-            json: fos_rest.decoder.json
-    view:
-        failed_validation:    HTTP_BAD_REQUEST
-        default_engine:       php
-        formats:
-            json:             true
-            xml:              false
-    format_listener:
-        rules:
-            - { path: '^/api/rest', priorities: [ json ], fallback_format: json, prefer_extension: false }
-            - { path: '^/api/soap', stop: true }
-            - { path: '^/', stop: true }
-    routing_loader:
-        default_format:       json
-
 fos_js_routing:
-    routes_to_expose:         [oro_*]
+    routes_to_expose: ['oro_.*', 'marello_.*']
 
 stof_doctrine_extensions:
     default_locale: en
@@ -81,40 +57,25 @@ stof_doctrine_extensions:
             translatable:     true
             tree:             true
 
-services:
-    twig.extension.intl:
-         class:               Twig_Extensions_Extension_Intl
-         tags:
-             - { name: twig.extension }
-
 oro_translation:
     locales: [en, fr]
-    templating: "OroUIBundle:Form:translatable.html.twig"
+    templating: "@OroUI/Form/translatable.html.twig"
 
-lexik_maintenance:
+oro_maintenance:
     authorized:
         path:                 'maintenance|.*\.js'             # "maintenance" is only for demo purposes, remove in production!
-#        ips:                  ["127.0.0.1"]                   # Optional. Authorized ip addresses
+    #        ips:                  ["127.0.0.1"]                   # Optional. Authorized ip addresses
     driver:
-        class:                Lexik\Bundle\MaintenanceBundle\Drivers\FileDriver
         options:
             file_path:        '%kernel.project_dir%/var/cache/maintenance_lock'
-
-liip_imagine:
-    loaders:
-        default:
-            filesystem:
-                data_root: '%kernel.project_dir%/public'
-    resolvers:
-        default:
-            web_path:
-                web_root: '%kernel.project_dir%/public'
 
 #
 # ORO Bundles config
 #
-oro_distribution:
-    entry_point: ~
+oro_ui:
+    settings:
+        organization_name:
+            value:            "Marello"
 
 oro_theme:
     active_theme: oro
@@ -123,14 +84,27 @@ oro_message_queue:
     transport:
         '%message_queue_transport%': '%message_queue_transport_config%'
 
+oro_layout:
+    enabled_themes:
+        - blank
+        - default
+        - custom
+        - view-switcher
+
 oro_locale:
     formatting_code: en
     language: en
 
 oro_attachment:
     upload_file_mime_types:
+        - text/csv
+        - text/plain
         - application/msword
+        - application/vnd.openxmlformats-officedocument.wordprocessingml.document
         - application/vnd.ms-excel
+        - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+        - application/vnd.ms-powerpoint
+        - application/vnd.openxmlformats-officedocument.presentationml.presentation
         - application/pdf
         - application/zip
         - image/gif

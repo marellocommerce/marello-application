@@ -20,23 +20,8 @@ monolog:
             type:      stream
             path:      "%kernel.logs_dir%/%kernel.environment%.log"
             level:     debug
-            channels:  '%main_log_channels%'
-
-        # collect all log records to buffer on CLI command error
-        message_queue.consumer.console_error:
-            type:      service
-            id:        oro_message_queue.log.handler.console_error
-            handler:   main
-            level:     debug
+            channels:  '%main_log_channels%' # The channels configuration only works for top-level handlers
 
 oro_message_queue:
     client:
         traceable_producer: true
-
-#swiftmailer:
-#    delivery_addresses: ['me@example.com']
-
-oro_api:
-    settings:
-        web_api:
-            value: true

@@ -19,7 +19,6 @@ class AppKernel extends OroKernel
 
         if ('dev' === $this->getEnvironment()) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
-            $bundles[] = new Symfony\Bundle\WebServerBundle\WebServerBundle();
             if (class_exists('Oro\TwigInspector\Bundle\OroTwigInspectorBundle')) {
                 $bundles[] = new Oro\TwigInspector\Bundle\OroTwigInspectorBundle();
             }
@@ -29,6 +28,7 @@ class AppKernel extends OroKernel
             $bundles[] = new Nelmio\Alice\Bridge\Symfony\NelmioAliceBundle();
             $bundles[] = new Fidry\AliceDataFixtures\Bridge\Symfony\FidryAliceDataFixturesBundle();
             $bundles[] = new Oro\Bundle\TestFrameworkBundle\OroTestFrameworkBundle();
+            $bundles[] = new Oro\Bundle\TestFrameworkProBundle\OroTestFrameworkProBundle();
         }
 
         return array_merge(parent::registerBundles(), $bundles);
