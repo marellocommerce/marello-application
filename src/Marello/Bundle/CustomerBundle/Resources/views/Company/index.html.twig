@@ -1,12 +1,12 @@
-{% extends 'OroUIBundle:actions:index.html.twig' %}
+{% extends '@OroUI/actions/index.html.twig' %}
 
-{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import '@OroUI/macros.html.twig' as UI %}
 
 {% set gridName = 'marello-companies-grid' %}
 {% set pageTitle = 'marello.customer.company.entity_plural_label'|trans %}
 
 {% block navButtons %}
-    {% include 'OroImportExportBundle:ImportExport:buttons_from_configuration.html.twig' with {
+    {% include '@OroImportExport/ImportExport/buttons_from_configuration.html.twig' with {
         'alias': 'marellocompany'
     } %}
     

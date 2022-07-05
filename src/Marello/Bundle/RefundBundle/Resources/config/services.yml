@@ -1,3 +1,6 @@
+imports:
+    - { resource: controllers.yml }
+
 services:
     marello_refund.workflow.create_refund_action:
         class: Marello\Bundle\RefundBundle\Workflow\Actions\CreateRefundAction
@@ -39,6 +42,9 @@ services:
         class: 'Marello\Bundle\RefundBundle\Calculator\RefundBalanceCalculator'
         arguments:
             - '@doctrine'
+        calls:
+            - [setTaxCalculator, ['@marello_tax.calculator']]
+            - [setTaxRuleMatcher, ['@marello_tax.tax_rule.matcher.composite']]
 
     marello_refund.validator.refund_balance:
         class: 'Marello\Bundle\RefundBundle\Validator\RefundBalanceValidator'
@@ -46,3 +52,21 @@ services:
             - '@marello_refund.calculator.refund_balance'
         tags:
             - { name: validator.constraint_validator, alias: marello_refund.refund_balance_validator }
+
+    marello_refund.provider.form_changes.balance_totals:
+        class: Marello\Bundle\RefundBundle\Provider\RefundBalanceTotalsProvider
+        arguments:
+            - '@marello_refund.calculator.refund_balance'
+            - '@oro_currency.rounding.price_rounding_service'
+            - '@translator'
+        tags:
+            - { name: marello.form_changes_data_provider, class: 'Marello\Bundle\RefundBundle\Entity\Refund', type: balance_totals, priority: 40 }
+
+    marello_refund.provider.form_changes.totals:
+        class: Marello\Bundle\RefundBundle\Provider\RefundTotalsProvider
+        arguments:
+            - '@marello_refund.calculator.refund_balance'
+            - '@oro_currency.rounding.price_rounding_service'
+            - '@translator'
+        tags:
+            - { name: marello.form_changes_data_provider, class: 'Marello\Bundle\RefundBundle\Entity\Refund', type: totals, priority: 30 }

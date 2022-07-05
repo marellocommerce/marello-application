@@ -10,7 +10,7 @@ class WarehouseRepositoryTest extends WebTestCase
     /** @var WarehouseRepository */
     protected $repository;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->initClient();
 
@@ -22,7 +22,8 @@ class WarehouseRepositoryTest extends WebTestCase
      */
     public function testGetDefault()
     {
-        $result = $this->repository->getDefault();
+        $aclHelper = $this->getContainer()->get('oro_security.acl_helper');
+        $result = $this->repository->getDefault($aclHelper);
 
         $this->assertTrue($result->isDefault(), 'Result of getDefault should be default repository.');
     }

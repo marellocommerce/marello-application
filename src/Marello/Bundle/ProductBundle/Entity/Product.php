@@ -19,7 +19,8 @@ use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
 use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
 use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamilyAwareInterface;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
@@ -41,7 +42,7 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
  *      }
  * )
  * @ORM\HasLifecycleCallbacks()
- * @Oro\Config(
+ * @Config(
  *  routeName="marello_product_index",
  *  routeView="marello_product_view",
  *  defaultValues={
@@ -83,7 +84,7 @@ class Product extends ExtendProduct implements
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(name="id", type="integer")
-     * @Oro\ConfigField(
+     * @ConfigField(
      *      defaultValues={
      *          "importexport"={
      *              "excluded"=true
@@ -100,7 +101,7 @@ class Product extends ExtendProduct implements
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
-     * @Oro\ConfigField(
+     * @ConfigField(
      *      defaultValues={
      *          "importexport"={
      *              "excluded"=true
@@ -128,7 +129,7 @@ class Product extends ExtendProduct implements
      *          @ORM\JoinColumn(name="localized_value_id", referencedColumnName="id", onDelete="CASCADE", unique=true)
      *      }
      * )
-     * @Oro\ConfigField(
+     * @ConfigField(
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
@@ -153,7 +154,7 @@ class Product extends ExtendProduct implements
      * @var string
      *
      * @ORM\Column(name="sku", type="string", nullable=false)
-     * @Oro\ConfigField(
+     * @ConfigField(
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
@@ -178,7 +179,7 @@ class Product extends ExtendProduct implements
      * @var string
      *
      * @ORM\Column(name="manufacturing_code", type="string", nullable=true)
-     * @Oro\ConfigField(
+     * @ConfigField(
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
@@ -202,7 +203,7 @@ class Product extends ExtendProduct implements
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\ProductStatus")
      * @ORM\JoinColumn(name="product_status", referencedColumnName="name")
-     * @Oro\ConfigField(
+     * @ConfigField(
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
@@ -225,7 +226,7 @@ class Product extends ExtendProduct implements
      * @var string
      *
      * @ORM\Column(name="type", type="string", length=255, nullable=true)
-     * @Oro\ConfigField(
+     * @ConfigField(
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
@@ -240,7 +241,7 @@ class Product extends ExtendProduct implements
 
     /**
      * @ORM\Column(type="float", nullable=true)
-     * @Oro\ConfigField(
+     * @ConfigField(
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
@@ -265,7 +266,7 @@ class Product extends ExtendProduct implements
      * @var integer
      *
      * @ORM\Column(name="warranty", type="integer", nullable=true)
-     * @Oro\ConfigField(
+     * @ConfigField(
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
@@ -289,7 +290,7 @@ class Product extends ExtendProduct implements
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
      * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
-     * @Oro\ConfigField(
+     * @ConfigField(
      *  defaultValues={
      *      "dataaudit"={
      *          "auditable"=true
@@ -312,7 +313,7 @@ class Product extends ExtendProduct implements
      *     orphanRemoval=true
      * )
      * @ORM\OrderBy({"id" = "ASC"})
-     * @Oro\ConfigField(
+     * @ConfigField(
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
@@ -341,7 +342,7 @@ class Product extends ExtendProduct implements
      *     orphanRemoval=true
      * )
      * @ORM\OrderBy({"id" = "ASC"})
-     * @Oro\ConfigField(
+     * @ConfigField(
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
@@ -367,7 +368,7 @@ class Product extends ExtendProduct implements
      *     fetch="EAGER"
      * )
      * @ORM\JoinTable(name="marello_product_saleschannel")
-     * @Oro\ConfigField(
+     * @ConfigField(
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
@@ -390,7 +391,7 @@ class Product extends ExtendProduct implements
      * @var string
      *
      * @ORM\Column(name="channels_codes", type="text", nullable=true)
-     * @Oro\ConfigField(
+     * @ConfigField(
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
@@ -408,7 +409,7 @@ class Product extends ExtendProduct implements
      *
      * @ORM\ManyToOne(targetEntity="Variant", inversedBy="products")
      * @ORM\JoinColumn(name="variant_id", referencedColumnName="id", onDelete="SET NULL")
-     * @Oro\ConfigField(
+     * @ConfigField(
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
@@ -431,7 +432,7 @@ class Product extends ExtendProduct implements
      *      orphanRemoval=true
      * )
      * @ORM\OrderBy({"id" = "ASC"})
-     * @Oro\ConfigField(
+     * @ConfigField(
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
@@ -448,7 +449,7 @@ class Product extends ExtendProduct implements
      * @var array $data
      *
      * @ORM\Column(name="data", type="json_array", nullable=true)
-     * @Oro\ConfigField(
+     * @ConfigField(
      *      defaultValues={
      *          "importexport"={
      *              "excluded"=true
@@ -467,7 +468,7 @@ class Product extends ExtendProduct implements
      *     cascade={"persist", "remove"},
      *     orphanRemoval=true
      * )
-     * @Oro\ConfigField(
+     * @ConfigField(
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
@@ -490,7 +491,7 @@ class Product extends ExtendProduct implements
      * @var Supplier
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\SupplierBundle\Entity\Supplier")
      * @ORM\JoinColumn(name="preferred_supplier_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
-     * @Oro\ConfigField(
+     * @ConfigField(
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
@@ -508,7 +509,7 @@ class Product extends ExtendProduct implements
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\TaxBundle\Entity\TaxCode")
      * @ORM\JoinColumn(name="tax_code_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
-     * @Oro\ConfigField(
+     * @ConfigField(
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
@@ -536,7 +537,7 @@ class Product extends ExtendProduct implements
      *     cascade={"persist", "remove"},
      *     orphanRemoval=true
      * )
-     * @Oro\ConfigField(
+     * @ConfigField(
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
@@ -564,7 +565,7 @@ class Product extends ExtendProduct implements
      * @var ArrayCollection|Category[]
      *
      * @ORM\ManyToMany(targetEntity="Marello\Bundle\CatalogBundle\Entity\Category", mappedBy="products", fetch="EAGER")
-     * @Oro\ConfigField(
+     * @ConfigField(
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
@@ -587,7 +588,7 @@ class Product extends ExtendProduct implements
      * @var string
      *
      * @ORM\Column(name="categories_codes", type="text", nullable=true)
-     * @Oro\ConfigField(
+     * @ConfigField(
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
@@ -605,7 +606,7 @@ class Product extends ExtendProduct implements
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily")
      * @ORM\JoinColumn(name="attribute_family_id", referencedColumnName="id", onDelete="RESTRICT")
-     * @Oro\ConfigField(
+     * @ConfigField(
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=false
@@ -622,7 +623,7 @@ class Product extends ExtendProduct implements
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
-     * @Oro\ConfigField(
+     * @ConfigField(
      *      defaultValues={
      *          "entity"={
      *              "label"="oro.ui.created_at"
@@ -636,7 +637,7 @@ class Product extends ExtendProduct implements
      * @var \DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
-     * @Oro\ConfigField(
+     * @ConfigField(
      *      defaultValues={
      *          "entity"={
      *              "label"="oro.ui.updated_at"
@@ -648,6 +649,8 @@ class Product extends ExtendProduct implements
 
     public function __construct()
     {
+        parent::__construct();
+
         $this->names                = new ArrayCollection();
         $this->prices               = new ArrayCollection();
         $this->channelPrices        = new ArrayCollection();
@@ -1018,7 +1021,7 @@ class Product extends ExtendProduct implements
                 $channelsCodes = substr($channelsCodes, 0, -1);
             }
             $channelsCodes = explode("|", $channelsCodes);
-            $channelsCodes = array_diff([$channelsCodes], [$channel->getCode()]);
+            $channelsCodes = array_diff($channelsCodes, [$channel->getCode()]);
             $this->channelsCodes = sprintf('|%s|', implode('|', $channelsCodes));
         }
 

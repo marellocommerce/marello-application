@@ -7,7 +7,7 @@ search:
             name:               marello_customer_view
             parameters:
                 id:             id
-        search_template:        MarelloCustomerBundle:Customer:searchResult.html.twig
+        search_template:        '@MarelloCustomer/Customer/searchResult.html.twig'
         fields:
             -
                 name: namePrefix
@@ -38,7 +38,7 @@ search:
             name:                       marello_customer_company_view
             parameters:
                 id:                     id
-        search_template:                MarelloCustomerBundle:Company:searchResult.html.twig
+        search_template:                '@MarelloCustomer/Company/searchResult.html.twig'
         fields:
             -
                 name:                   name

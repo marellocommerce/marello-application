@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\SupplierBundle\Migrations\Data\ORM;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
@@ -95,7 +95,7 @@ class UpdateCurrentSuppliersWithWarehouseAndInvLevels extends AbstractFixture im
             $warehouse = $this->manager
                 ->getRepository(Warehouse::class)
                 ->findOneBy([
-                    'code' => sprintf('%s_external_warehouse', str_replace(' ', '_', strtolower($supplier->getName()))),
+                    'code' => $supplier->getCode(),
                     'warehouseType' => $warehouseType
                 ]);
             if ($warehouse) {
@@ -119,7 +119,7 @@ class UpdateCurrentSuppliersWithWarehouseAndInvLevels extends AbstractFixture im
         $warehouse = new Warehouse(sprintf('%s External Warehouse', $supplier->getName()));
         $warehouse
             ->setAddress(clone $supplier->getAddress())
-            ->setCode(sprintf('%s_external_warehouse', str_replace(' ', '_', strtolower($supplier->getName()))))
+            ->setCode($supplier->getCode())
             ->setWarehouseType($warehouseType);
         if ($organization = $supplier->getOrganization()) {
             $warehouse->setOwner($organization);

@@ -21,17 +21,17 @@ use Marello\Bundle\ShippingBundle\Method\Validator\Result\ShippingMethodValidato
 class RemoveUsedShippingServiceValidatorTest extends TestCase
 {
     /**
-     * @var IntegrationShippingMethodFactoryInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var IntegrationShippingMethodFactoryInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $integrationShippingMethodFactory;
 
     /**
-     * @var ShippingMethodValidatorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ShippingMethodValidatorInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $shippingMethodValidator;
 
     /**
-     * @var ExecutionContextInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ExecutionContextInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $context;
 
@@ -45,7 +45,7 @@ class RemoveUsedShippingServiceValidatorTest extends TestCase
      */
     private $constraint;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->integrationShippingMethodFactory = $this->createMock(IntegrationShippingMethodFactoryInterface::class);
         $this->shippingMethodValidator = $this->createMock(ShippingMethodValidatorInterface::class);
@@ -153,9 +153,6 @@ class RemoveUsedShippingServiceValidatorTest extends TestCase
 
         $violationBuilder = $this->createMock(ConstraintViolationBuilderInterface::class);
         $violationBuilder->expects(static::once())
-            ->method('setTranslationDomain')
-            ->willReturn($violationBuilder);
-        $violationBuilder->expects(static::once())
             ->method('atPath')
             ->with('applicableShippingServices')
             ->willReturn($violationBuilder);
@@ -169,7 +166,7 @@ class RemoveUsedShippingServiceValidatorTest extends TestCase
     }
 
     /**
-     * @return UPSSettings|\PHPUnit_Framework_MockObject_MockObject
+     * @return UPSSettings|\PHPUnit\Framework\MockObject\MockObject
      */
     private function createUPSSettingsMock()
     {
@@ -177,7 +174,7 @@ class RemoveUsedShippingServiceValidatorTest extends TestCase
     }
 
     /**
-     * @return Error\ShippingMethodValidatorResultErrorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @return Error\ShippingMethodValidatorResultErrorInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private function createErrorMock()
     {

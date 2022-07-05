@@ -1,9 +1,10 @@
 <?php
 
-namespace Marello\Bundle\SalesBundle\Tests\Provider;
+namespace Marello\Bundle\SalesBundle\Tests\Functional\Provider;
 
 use Doctrine\ORM\EntityManager;
 
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
@@ -18,7 +19,7 @@ class ChannelProviderTest extends WebTestCase
      */
     protected $em;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->initClient(
             [],
@@ -39,8 +40,9 @@ class ChannelProviderTest extends WebTestCase
      */
     public function testGetAssociatedSalesChannelIds()
     {
-        /** @var ChannelProvider $provider */
-        $provider = new ChannelProvider($this->em);
+        /** @var AclHelper $aclHelper */
+        $aclHelper = $this->getContainer()->get('oro_security.acl_helper');
+        $provider = new ChannelProvider($this->em, $aclHelper);
         /** @var Product $product */
         $product = $this->getReference(LoadProductData::PRODUCT_1_REF);
 
@@ -67,7 +69,9 @@ class ChannelProviderTest extends WebTestCase
         /** @var Product $product */
         $product = $this->getReference(LoadProductData::PRODUCT_1_REF);
 
-        $provider = new ChannelProvider($this->em);
+        /** @var AclHelper $aclHelper */
+        $aclHelper = $this->getContainer()->get('oro_security.acl_helper');
+        $provider = new ChannelProvider($this->em, $aclHelper);
 
         $ids = [];
         $product

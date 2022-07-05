@@ -1,9 +1,13 @@
 Marello\Bundle\RefundBundle\Entity\Refund:
+    constraints:
+        - Marello\Bundle\RefundBundle\Validator\Constraints\RefundBalanceConstraint: ~
     properties:
         items:
             - Valid: ~
 
 Marello\Bundle\RefundBundle\Entity\RefundItem:
-    constraints:
-        - Marello\Bundle\RefundBundle\Validator\Constraints\RefundBalanceConstraint:
-            message: 'marello.refund.refunditem.messages.error.refund_balance'
+    properties:
+        refundAmount:
+            -   GreaterThanOrEqual:
+                    value: 0
+

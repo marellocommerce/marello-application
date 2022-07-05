@@ -1,0 +1,25 @@
+services:
+    _defaults:
+        public: true
+
+    Marello\Bundle\PaymentBundle\Controller\PaymentAjaxController:
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: marello_layout.provider.form_changes_data.composite, key: Marello\Bundle\LayoutBundle\Provider\CompositeFormChangesProvider }
+
+    Marello\Bundle\PaymentBundle\Controller\PaymentController:
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: marello_payment.form.handler.payment_create, key: Marello\Bundle\PaymentBundle\Form\Handler\PaymentCreateHandler }
+            - { name: container.service_subscriber, id: marello_payment.form.handler.payment_update, key: Marello\Bundle\PaymentBundle\Form\Handler\PaymentUpdateHandler }
+
+    Marello\Bundle\PaymentBundle\Controller\PaymentMethodsConfigsRuleController:
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: marello_payment.form.handler.payment_methods_configs_rule, key: Marello\Bundle\PaymentBundle\Form\Handler\PaymentMethodsConfigsRuleHandler }

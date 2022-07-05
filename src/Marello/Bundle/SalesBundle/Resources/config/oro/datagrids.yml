@@ -126,7 +126,7 @@ datagrids:
                 label:                marello.sales.saleschannelgroup.sales_channels.label
                 type:                 twig
                 frontend_type:        html
-                template:             MarelloSalesBundle:SalesChannelGroup/Datagrid:salesChannels.html.twig
+                template:             '@MarelloSales/SalesChannelGroup/Datagrid/salesChannels.html.twig'
         filters:
             columns:
                 name:

@@ -3,10 +3,10 @@
 namespace Marello\Bundle\InventoryBundle\Async;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
 
 use Psr\Log\LoggerInterface;
 
+use Oro\Bundle\EntityBundle\ORM\Registry;
 use Oro\Component\MessageQueue\Util\JSON;
 use Oro\Component\MessageQueue\Transport\SessionInterface;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
@@ -24,18 +24,18 @@ class InventoryRebalanceProductProcessor implements MessageProcessorInterface, T
     /** @var InventoryBalancer $inventoryBalancer */
     protected $inventoryBalancer;
 
-    /** @var ManagerRegistry $registry */
+    /** @var Registry $registry */
     protected $registry;
 
     /**
      * @param InventoryBalancer $inventoryBalancer
      * @param LoggerInterface $logger
-     * @param ManagerRegistry $registry
+     * @param Registry $registry
      */
     public function __construct(
         InventoryBalancer $inventoryBalancer,
         LoggerInterface $logger,
-        ManagerRegistry $registry
+        Registry $registry
     ) {
         $this->inventoryBalancer = $inventoryBalancer;
         $this->logger = $logger;
@@ -68,6 +68,7 @@ class InventoryRebalanceProductProcessor implements MessageProcessorInterface, T
         /** @var EntityManagerInterface $em */
         $em = $this->registry->getManagerForClass(Product::class);
         try {
+            /** @var Product $product */
             $product = $em->getRepository(Product::class)->find($data['product_id']);
 
             if (!$product) {

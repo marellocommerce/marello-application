@@ -13,7 +13,7 @@ class BasicPaymentLineItemBuilderFactoryTest extends \PHPUnit\Framework\TestCase
      */
     private $productHolderMock;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->productHolderMock = $this->createMock(OrderItem::class);
     }

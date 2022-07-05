@@ -271,6 +271,11 @@ class InventoryBalancer
             $reservedInventoryQuantity = $this->getReservedInventoryForProductScgs($product, $scgs);
             $totalInventoryToBalance = ($inventoryTotalForWhg - $reservedInventoryQuantity);
 
+            // prevent balanced inventory below 0.
+            if ($totalInventoryToBalance < 0) {
+                $totalInventoryToBalance = 0;
+            }
+
             /** @var BalancedResultObject[] $balancedResults */
             $balancedResults = $strategy->getResults($product, $scgs, $totalInventoryToBalance);
             $this->processResults($balancedResults, $product, $flushManager);

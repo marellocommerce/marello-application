@@ -28,7 +28,7 @@ class InventoryControllerTest extends WebTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->initClient(
             [],
@@ -129,8 +129,8 @@ class InventoryControllerTest extends WebTestCase
         $result = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
 
-        $this->assertContains('Warehouse DE 1', $crawler->html());
-        $this->assertContains('never_out_of_stock', $crawler->html());
+        $this->assertStringContainsString('Warehouse DE 1', $crawler->html());
+        $this->assertStringContainsString('never_out_of_stock', $crawler->html());
     }
 
     /**
@@ -144,9 +144,6 @@ class InventoryControllerTest extends WebTestCase
         $inventoryItem = $manager->getInventoryItem($this->getReference(LoadProductData::PRODUCT_1_REF));
         $this->assertEquals(true, $inventoryItem->hasInventoryLevels());
 
-        $token = $this->getContainer()->get('security.csrf.token_manager')
-            ->getToken('marello_inventory_inventory_update')->getValue();
-
         $crawler = $this->client->request(
             'GET',
             $this->getUrl(
@@ -159,24 +156,20 @@ class InventoryControllerTest extends WebTestCase
 
         $this->assertResponseStatusCodeEquals($this->client->getResponse(), Response::HTTP_OK);
 
-        $formData = [
-            'marello_inventory_item' => [
-                'inventoryLevels' => [],
-                'desiredInventory' => $inventoryItem->getDesiredInventory(),
-                'purchaseInventory' => $inventoryItem->getPurchaseInventory(),
-                'replenishment' => $inventoryItem->getReplenishment(),
-                '_token' => $token,
-            ],
-        ];
+        $form = $crawler->selectButton('Save and Close')->form();
+        $formData = $form->getPhpValues();
+        $formData['marello_inventory_item']['inventoryLevels'] = [];
+        $formData['marello_inventory_item']['desiredInventory'] = $inventoryItem->getDesiredInventory();
+        $formData['marello_inventory_item']['purchaseInventory'] = $inventoryItem->getPurchaseInventory();
+        $formData['marello_inventory_item']['replenishment'] = $inventoryItem->getReplenishment();
 
-        $form   = $crawler->selectButton('Save and Close')->form();
         $this->client->followRedirects(true);
         $crawler = $this->client->request($form->getMethod(), $form->getUri(), $formData);
 
         $result = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
 
-        $this->assertContains('never_out_of_stock', $crawler->html());
+        $this->assertStringContainsString('never_out_of_stock', $crawler->html());
     }
     /**
      * {@inheritdoc}
@@ -200,7 +193,7 @@ class InventoryControllerTest extends WebTestCase
 
         $this->assertResponseStatusCodeEquals($this->client->getResponse(), Response::HTTP_OK);
 
-        $form   = $crawler->selectButton('Save and Close')->form();
+        $form = $crawler->selectButton('Save and Close')->form();
         $formData = [
             'marello_inventory_item' => [
                 'backorderAllowed' => true,
@@ -213,7 +206,7 @@ class InventoryControllerTest extends WebTestCase
                 '_token' => $form['marello_inventory_item[_token]']->getValue(),
             ],
         ];
-        
+
         $this->client->followRedirects(true);
         $this->client->request($form->getMethod(), $form->getUri(), $formData);
 

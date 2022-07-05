@@ -2,10 +2,10 @@
 
 namespace Marello\Bundle\OrderBundle\Tests\Unit\Validator;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\Mapping\ClassMetadata;
 
-use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -20,36 +20,37 @@ use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\OrderBundle\Validator\AvailableInventoryValidator;
-use Marello\Bundle\OrderBundle\Validator\Constraints\AvailableInventory;
 use Marello\Bundle\InventoryBundle\Provider\AvailableInventoryProvider;
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Marello\Bundle\OrderBundle\Validator\Constraints\AvailableInventoryConstraint;
 
 class AvailableInventoryValidatorTest extends TestCase
 {
-    /** @var AvailableInventory $constraint */
+    /** @var AvailableInventoryConstraint $constraint */
     protected $constraint;
 
-    /** @var ExecutionContextInterface|\PHPUnit_Framework_MockObject_MockObject $context */
+    /** @var ExecutionContextInterface|\PHPUnit\Framework\MockObject\MockObject $context */
     protected $context;
 
-    /** @var DoctrineHelper|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject */
     protected $doctrineHelper;
 
-    /** @var AvailableInventoryProvider|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var AvailableInventoryProvider|\PHPUnit\Framework\MockObject\MockObject */
     protected $inventoryProvider;
 
-    /** @var ObjectManager|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var ObjectManager|\PHPUnit\Framework\MockObject\MockObject */
     protected $objectManager;
 
-    /** @var ClassMetadata|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var ClassMetadata|\PHPUnit\Framework\MockObject\MockObject */
     protected $classMetaData;
 
-    /** @var EventDispatcherInterface|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var EventDispatcherInterface|\PHPUnit\Framework\MockObject\MockObject */
     protected $eventDispatcher;
 
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->context = $this->createMock(ExecutionContextInterface::class);
         $this->doctrineHelper = $this->createMock(DoctrineHelper::class);
@@ -151,7 +152,7 @@ class AvailableInventoryValidatorTest extends TestCase
             'fields' => ['quantity', 'product', 'order'],
             'errorPath' => 'quantity'
         ]);
-        $product->expects($this->once())->method('getSuppliers')->willReturn([]);
+        $product->expects($this->once())->method('getSuppliers')->willReturn(new ArrayCollection());
         $product->expects($this->exactly(3))->method('getInventoryItems')->willReturn([]);
         $violationBuilderMock = $this->createMock(ConstraintViolationBuilderInterface::class);
 
@@ -184,6 +185,9 @@ class AvailableInventoryValidatorTest extends TestCase
         $violationBuilderMock->expects($this->exactly(1))
             ->method('atPath')
             ->with(AvailableInventoryValidator::QUANTITY_FIELD)
+            ->willReturnSelf();
+        $violationBuilderMock->expects($this->exactly(1))
+            ->method('setParameter')
             ->willReturnSelf();
 
         $violationBuilderMock->expects($this->exactly(1))
@@ -244,14 +248,14 @@ class AvailableInventoryValidatorTest extends TestCase
 
     /**
      * @param $options array
-     * @return AvailableInventory
+     * @return AvailableInventoryConstraint
      */
     protected function getConstraint($options = null)
     {
         if (!$options) {
             $options = ['fields' => ['test', 'test2']];
         }
-        return new AvailableInventory($options);
+        return new AvailableInventoryConstraint($options);
     }
 
     /**

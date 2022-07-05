@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\CustomerBundle\Tests\Unit\Autocomplete;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Marello\Bundle\CustomerBundle\Autocomplete\ParentCompanySearchHandler;
@@ -11,6 +11,7 @@ use Oro\Bundle\SearchBundle\Engine\Indexer;
 use Oro\Bundle\SearchBundle\Provider\SearchMappingProvider;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class ParentCompanySearchHandlerTest extends TestCase
 {
@@ -46,7 +47,7 @@ class ParentCompanySearchHandlerTest extends TestCase
      */
     protected $aclHelper;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->entityRepository = $this
             ->getMockBuilder(CompanyRepository::class)
@@ -65,7 +66,7 @@ class ParentCompanySearchHandlerTest extends TestCase
             ->with(self::TEST_ENTITY_CLASS)
             ->will($this->returnValue($this->entityRepository));
 
-        $this->managerRegistry = $this->createMock('Doctrine\Common\Persistence\ManagerRegistry');
+        $this->managerRegistry = $this->createMock('Doctrine\Persistence\ManagerRegistry');
         $this->managerRegistry->expects($this->once())
             ->method('getManagerForClass')
             ->with(self::TEST_ENTITY_CLASS)
@@ -86,7 +87,8 @@ class ParentCompanySearchHandlerTest extends TestCase
         $this->searchHandler = new ParentCompanySearchHandler(self::TEST_ENTITY_CLASS, ['name']);
         $this->searchHandler->initSearchIndexer($this->indexer, $searchMappingProvider);
         $this->searchHandler->initDoctrinePropertiesByManagerRegistry($this->managerRegistry);
-        $this->searchHandler->setAclHelper($this->aclHelper);
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        $this->searchHandler->setPropertyAccessor($propertyAccessor);
     }
 
     /**
@@ -98,7 +100,7 @@ class ParentCompanySearchHandlerTest extends TestCase
         $this->indexer->expects($this->never())
             ->method($this->anything());
         $result = $this->searchHandler->search($query, 1, 10);
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
         $this->assertArrayHasKey('more', $result);
         $this->assertArrayHasKey('results', $result);
         $this->assertFalse($result['more']);
@@ -143,7 +145,7 @@ class ParentCompanySearchHandlerTest extends TestCase
         $this->assertSearchCall($search, $page, $perPage, $foundElements, $resultData, $expectedIds);
 
         $searchResult = $this->searchHandler->search($queryString, $page, $perPage);
-        $this->assertInternalType('array', $searchResult);
+        $this->assertIsArray($searchResult);
         $this->assertArrayHasKey('more', $searchResult);
         $this->assertArrayHasKey('results', $searchResult);
         $this->assertEquals($expectedResultData, $searchResult['results']);
@@ -174,13 +176,13 @@ class ParentCompanySearchHandlerTest extends TestCase
 
         $this->entityRepository->expects($this->once())
             ->method('getChildrenIds')
-            ->with($customerId, $this->aclHelper)
+            ->with($customerId, $this->anything())
             ->will($this->returnValue([]));
 
         $this->assertSearchCall($search, $page, $perPage, $foundElements, $resultData, $expectedIds);
 
         $searchResult = $this->searchHandler->search($queryString, $page, $perPage);
-        $this->assertInternalType('array', $searchResult);
+        $this->assertIsArray($searchResult);
         $this->assertArrayHasKey('more', $searchResult);
         $this->assertArrayHasKey('results', $searchResult);
         $this->assertEquals($expectedResultData, $searchResult['results']);
@@ -210,13 +212,13 @@ class ParentCompanySearchHandlerTest extends TestCase
 
         $this->entityRepository->expects($this->once())
             ->method('getChildrenIds')
-            ->with($customerId, $this->aclHelper)
+            ->with($customerId, $this->anything())
             ->will($this->returnValue([3]));
 
         $this->assertSearchCall($search, $page, $perPage, $foundElements, $resultData, $expectedIds);
 
         $searchResult = $this->searchHandler->search($queryString, $page, $perPage);
-        $this->assertInternalType('array', $searchResult);
+        $this->assertIsArray($searchResult);
         $this->assertArrayHasKey('more', $searchResult);
         $this->assertArrayHasKey('results', $searchResult);
         $this->assertEquals($expectedResultData, $searchResult['results']);
@@ -228,14 +230,14 @@ class ParentCompanySearchHandlerTest extends TestCase
     protected function getMetaMocks()
     {
         $metadata = $this->getMockBuilder('Doctrine\ORM\Mapping\ClassMetadata')
-            ->setMethods(['getSingleIdentifierFieldName'])
+            ->onlyMethods(['getSingleIdentifierFieldName'])
             ->disableOriginalConstructor()
             ->getMock();
         $metadata->expects($this->once())
             ->method('getSingleIdentifierFieldName')
             ->will($this->returnValue('id'));
         $metadataFactory = $this->getMockBuilder('Doctrine\ORM\Mapping\ClassMetadataFactory')
-            ->setMethods(['getMetadataFor'])
+            ->onlyMethods(['getMetadataFor'])
             ->disableOriginalConstructor()
             ->getMock();
         $metadataFactory->expects($this->once())

@@ -24,6 +24,12 @@ navigation:
                 extras:
                     routes: ['marello_inventory_balancedinventorylevel_index*']
                     position: 30
+            allocations:
+                label: marello.inventory.allocation.entity_plural_label
+                route: marello_inventory_allocation_index
+                extras:
+                    routes: ['marello_inventory_allocation_index*']
+                    position: 25
         tree:
             application_menu:
                 children:
@@ -36,6 +42,9 @@ navigation:
                                 children:
                                     inventory: ~
                                     balanced_inventory: ~
+                    sales_tab:
+                        children:
+                            allocations: ~
 
     titles:
         marello_inventory_warehouse_updatedefault: 'Default Warehouse - Update'
@@ -44,3 +53,5 @@ navigation:
         marello_inventory_inventorylevel_index: 'marello.inventory.management.menu.inventory_level_log.label'
         marello_inventory_balancedinventorylevel_index: 'marello.inventory.management.menu.balanced_inventory.label'
         marello_inventory_inventorylevel_manage_batches: 'marello.inventory.inventorybatch.entity_plural_label'
+        marello_inventory_allocation_index: 'marello.inventory.allocation.entity_plural_label'
+        marello_inventory_allocation_view: 'marello.inventory.allocation.page_title.view'

@@ -145,7 +145,7 @@ class UPSShippingMethodFactory implements IntegrationShippingMethodFactoryInterf
         $applicableShippingServices = $this->getSettings($channel)->getApplicableShippingServices()->toArray();
 
         $event = new MethodTypesBeforeCreateEvent($channel, $applicableShippingServices);
-        $this->eventDispatcher->dispatch(MethodTypesBeforeCreateEvent::NAME, $event);
+        $this->eventDispatcher->dispatch($event, MethodTypesBeforeCreateEvent::NAME);
         
         return array_map(function (ShippingService $shippingService) use ($channel) {
             return $this->methodTypeFactory->create($channel, $shippingService);

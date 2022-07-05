@@ -1,7 +1,7 @@
 {% block marello_tax_zip_code_collection_type_widget %}
     {% import _self as fields %}
 
-    {% spaceless %}
+    {% apply spaceless %}
         {% set widgetContainerAttributes = block('widget_container_attributes') %}
         {% if prototype is defined %}
             {% set prototype_html = fields.marello_tax_zip_code_collection_prototype(form, widgetContainerAttributes) %}
@@ -37,7 +37,7 @@
                 <a class="btn marello-add-line-item" data-container=".marello-item-collection tbody" href="javascript: void(0);"><i class="fa-plus"></i>{{ form.vars.add_label|default('oro.form.collection.add')|trans }}</a>
             {% endif %}
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
 {% macro marello_tax_zip_code_collection_prototype(widget, attributes) %}

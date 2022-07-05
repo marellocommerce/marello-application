@@ -4,12 +4,17 @@ namespace Marello\Bundle\InventoryBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class UpdateCurrentWarehouseWithType extends AbstractFixture implements DependentFixtureInterface
+class UpdateCurrentWarehouseWithType extends AbstractFixture implements DependentFixtureInterface, ContainerAwareInterface
 {
+    use ContainerAwareTrait;
+
     /**
      * @var ObjectManager
      */
@@ -39,7 +44,9 @@ class UpdateCurrentWarehouseWithType extends AbstractFixture implements Dependen
      */
     public function updateCurrentWarehouse()
     {
-        $defaultWarehouse = $this->manager->getRepository(Warehouse::class)->getDefault();
+        /** @var AclHelper $aclHelper */
+        $aclHelper = $this->container->get('oro_security.acl_helper');
+        $defaultWarehouse = $this->manager->getRepository(Warehouse::class)->getDefault($aclHelper);
         /** @var WarehouseType $warehouseType */
         $warehouseType = $this->getReference('warehouse_type_global');
         $defaultWarehouse->setWarehouseType($warehouseType);

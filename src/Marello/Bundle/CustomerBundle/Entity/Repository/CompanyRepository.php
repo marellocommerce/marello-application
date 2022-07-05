@@ -2,11 +2,12 @@
 
 namespace Marello\Bundle\CustomerBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Marello\Bundle\CustomerBundle\Entity\Company;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
-class CompanyRepository extends EntityRepository
+class CompanyRepository extends ServiceEntityRepository
 {
     /**
      * @param string $name
@@ -51,5 +52,28 @@ class CompanyRepository extends EntityRepository
         }
 
         return $children;
+    }
+
+    /**
+     * @param int $customerId
+     * @return int|null
+     */
+    public function getCompanyIdByCustomerId(int $customerId): ?int
+    {
+        $qb = $this->_em->createQueryBuilder();
+        $qb
+            ->select('company.id')
+            ->from(Customer::class, 'customer')
+            ->innerJoin('customer.company', 'company')
+            ->where($qb->expr()->eq('customer.id', ':customerId'))
+            ->setParameter('customerId', $customerId)
+            ->setMaxResults(1);
+
+        $result = $qb->getQuery()->getResult();
+        if (!$result) {
+            return null;
+        }
+
+        return reset($result)['id'];
     }
 }

@@ -3,7 +3,7 @@
 namespace Marello\Bundle\SupplierBundle\Tests\Functional\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
@@ -33,6 +33,7 @@ class LoadSupplierData extends AbstractFixture
                 'country'=> 'NL',
                 'state' => 'NB'
             ],
+            'code' => 'ActiveAndDropshipSupplier',
             'email' => 'supplier1@email.com',
             'currency' => 'USD',
             'sendBy'    => 'email'
@@ -49,6 +50,7 @@ class LoadSupplierData extends AbstractFixture
                 'country'=> 'NL',
                 'state'=> 'NB'
             ],
+            'code' => 'ActiveFalseSupplier',
             'email' => 'supplier2@email.com',
             'currency' => 'EUR',
             'sendBy'    => 'email'
@@ -65,6 +67,7 @@ class LoadSupplierData extends AbstractFixture
                 'country'=> 'NL',
                 'state'=> 'NB'
             ],
+            'code' => 'ActiveNoDropshipSupplier',
             'email' => 'supplier3@email.com',
             'currency' => 'USD',
             'sendBy'    => 'email'
@@ -91,6 +94,7 @@ class LoadSupplierData extends AbstractFixture
             $supplier->setPriority($values['priority']);
             $supplier->setCanDropship($values['can_dropship']);
             $supplier->setIsActive($values['is_active']);
+            $supplier->setCode($values['code']);
             $supplier->setEmail($values['email']);
             $supplier->setCurrency($values['currency']);
             $organization = $this->manager

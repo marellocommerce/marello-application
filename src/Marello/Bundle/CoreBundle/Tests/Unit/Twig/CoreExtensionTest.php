@@ -6,11 +6,12 @@ use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 use Marello\Bundle\CoreBundle\Twig\CoreExtension;
 use Marello\Bundle\CoreBundle\Provider\AdditionalPlaceholderProvider;
+use Twig\TwigFunction;
 
 class CoreExtensionTest extends WebTestCase
 {
     /**
-     * @var AdditionalPlaceholderProvider|\PHPUnit_Framework_MockObject_MockObject
+     * @var AdditionalPlaceholderProvider|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $additionalPlaceholderProvider;
 
@@ -22,7 +23,7 @@ class CoreExtensionTest extends WebTestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->additionalPlaceholderProvider = $this->getMockBuilder(AdditionalPlaceholderProvider::class)
             ->disableOriginalConstructor()
@@ -35,7 +36,7 @@ class CoreExtensionTest extends WebTestCase
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->extension, $this->additionalPlaceholderProvider);
     }
@@ -60,9 +61,8 @@ class CoreExtensionTest extends WebTestCase
             'marello_get_additional_placeholder_data'
         );
 
-        /** @var \Twig_SimpleFunction $function */
         foreach ($functions as $function) {
-            $this->assertInstanceOf('\Twig_SimpleFunction', $function);
+            $this->assertInstanceOf(TwigFunction::class, $function);
             $this->assertContains($function->getName(), $expectedFunctions);
         }
     }

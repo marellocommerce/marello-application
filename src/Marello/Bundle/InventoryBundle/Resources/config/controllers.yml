@@ -1,0 +1,34 @@
+services:
+    _defaults:
+        public: true
+
+    Marello\Bundle\InventoryBundle\Controller\BalancedInventoryLevelController:
+        calls:
+            - ['setContainer', ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+
+    Marello\Bundle\InventoryBundle\Controller\InventoryItemController:
+        calls:
+            - ['setContainer', ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+
+    Marello\Bundle\InventoryBundle\Controller\InventoryLevelController:
+        calls:
+            - ['setContainer', ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: marello_inventory.logging.chart_builder, key: Marello\Bundle\InventoryBundle\Logging\ChartBuilder }
+
+    Marello\Bundle\InventoryBundle\Controller\WarehouseController:
+        calls:
+            - ['setContainer', ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+
+    Marello\Bundle\InventoryBundle\Controller\AllocationController:
+        calls:
+            - ['setContainer', ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }

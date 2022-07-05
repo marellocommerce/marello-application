@@ -10,11 +10,12 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
 use Marello\Bundle\RefundBundle\Twig\RefundExtension;
 use Marello\Bundle\RefundBundle\Entity\Refund;
 use Marello\Bundle\RefundBundle\Calculator\RefundBalanceCalculator;
+use Twig\TwigFunction;
 
 class RefundExtensionTest extends WebTestCase
 {
     /**
-     * @var WorkflowManager|\PHPUnit_Framework_MockObject_MockObject
+     * @var WorkflowManager|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $workflowManager;
 
@@ -23,13 +24,13 @@ class RefundExtensionTest extends WebTestCase
      */
     protected $extension;
 
-    /** @var RefundBalanceCalculator|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var RefundBalanceCalculator|\PHPUnit\Framework\MockObject\MockObject */
     protected $refundCalculator;
 
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->workflowManager = $this->getMockBuilder(WorkflowManager::class)
             ->disableOriginalConstructor()
@@ -48,7 +49,7 @@ class RefundExtensionTest extends WebTestCase
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->extension);
         unset($this->workflowManager);
@@ -76,9 +77,8 @@ class RefundExtensionTest extends WebTestCase
             'marello_refund_get_balance'
         );
 
-        /** @var \Twig_SimpleFunction $function */
         foreach ($functions as $function) {
-            $this->assertInstanceOf('\Twig_SimpleFunction', $function);
+            $this->assertInstanceOf(TwigFunction::class, $function);
             $this->assertContains($function->getName(), $expectedFunctions);
         }
     }

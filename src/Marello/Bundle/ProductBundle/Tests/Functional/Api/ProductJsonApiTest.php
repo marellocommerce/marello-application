@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\ProductBundle\Tests\Functional\Api;
 
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Symfony\Component\HttpFoundation\Response;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
@@ -12,7 +13,7 @@ class ProductJsonApiTest extends RestJsonApiTestCase
 {
     const TESTING_ENTITY = 'marelloproducts';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->loadFixtures([
@@ -81,7 +82,9 @@ class ProductJsonApiTest extends RestJsonApiTestCase
 
         /** @var Product $product */
         $productRepo = $this->getEntityManager()->getRepository(Product::class);
-        $product = $productRepo->findOneBySku($responseContent->data->id);
+        /** @var AclHelper $aclHelper */
+        $aclHelper = $this->getContainer()->get('oro_security.acl_helper');
+        $product = $productRepo->findOneBySku($responseContent->data->id, $aclHelper);
         $this->assertEquals(
             $product->getDenormalizedDefaultName(),
             $responseContent->data->attributes->denormalizedDefaultName
@@ -108,7 +111,9 @@ class ProductJsonApiTest extends RestJsonApiTestCase
 
         /** @var Product $product */
         $productRepo = $this->getEntityManager()->getRepository(Product::class);
-        $product = $productRepo->findOneBySku($responseContent->data->id);
+        /** @var AclHelper $aclHelper */
+        $aclHelper = $this->getContainer()->get('oro_security.acl_helper');
+        $product = $productRepo->findOneBySku($responseContent->data->id, $aclHelper);
         $this->assertEquals($product->getManufacturingCode(), $responseContent->data->attributes->manufacturingCode);
         $this->assertEquals(
             $product->getDenormalizedDefaultName(),

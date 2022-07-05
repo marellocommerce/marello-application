@@ -2,27 +2,20 @@
 
 namespace Marello\Bundle\ProductBundle\Provider;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Oro\Bundle\EntityBundle\ORM\Registry;
 use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Provider\OrderItem\AbstractOrderItemFormChangesProvider;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class ProductTaxCodeProvider extends AbstractOrderItemFormChangesProvider
 {
-    /**
-     * @var ManagerRegistry $registry
-     */
-    protected $registry;
-
-    /**
-     * @param ManagerRegistry $registry
-     */
-    public function __construct(ManagerRegistry $registry)
-    {
-        $this->registry = $registry;
-    }
+    public function __construct(
+        protected Registry $registry,
+        protected AclHelper $aclHelper
+    ) {}
 
     /**
      * {@inheritdoc}
@@ -42,7 +35,7 @@ class ProductTaxCodeProvider extends AbstractOrderItemFormChangesProvider
         }
         $data = [];
         /** @var Product[] $products */
-        $products = $this->getRepository()->findBySalesChannel($salesChannel->getId(), $productIds);
+        $products = $this->getRepository()->findBySalesChannel($salesChannel->getId(), $productIds, $this->aclHelper);
 
         foreach ($products as $product) {
             $taxCode = $product->getSalesChannelTaxCode($salesChannel) ? : $product->getTaxCode();

@@ -28,7 +28,7 @@ class ChartBuilderTest extends WebTestCase
      */
     protected $totalCalculator;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->initClient();
 

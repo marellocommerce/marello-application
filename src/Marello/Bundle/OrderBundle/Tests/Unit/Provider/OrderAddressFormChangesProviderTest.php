@@ -5,28 +5,28 @@ namespace Marello\Bundle\OrderBundle\Tests\Unit\Provider;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Templating\EngineInterface;
 
 use PHPUnit\Framework\TestCase;
 
 use Marello\Bundle\AddressBundle\Form\Type\AddressType;
 use Marello\Bundle\LayoutBundle\Context\FormChangeContext;
 use Marello\Bundle\OrderBundle\Provider\OrderAddressFormChangesProvider;
+use Twig\Environment;
 
 class OrderAddressFormChangesProviderTest extends TestCase
 {
     /**
-     * @var EngineInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var Environment|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $twigEngine;
 
     /**
-     * @var FormFactoryInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var FormFactoryInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $formFactory;
 
     /**
-     * @var |\PHPUnit_Framework_MockObject_MockObject
+     * @var |\PHPUnit\Framework\MockObject\MockObject
      */
     protected $addressType = 'billing';
 
@@ -35,9 +35,9 @@ class OrderAddressFormChangesProviderTest extends TestCase
      */
     protected $orderAddressFormChangesProvider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->twigEngine = $this->createMock(EngineInterface::class);
+        $this->twigEngine = $this->createMock(Environment::class);
         $this->formFactory = $this->createMock(FormFactoryInterface::class);
         $this->orderAddressFormChangesProvider = new OrderAddressFormChangesProvider(
             $this->twigEngine,
@@ -55,7 +55,7 @@ class OrderAddressFormChangesProviderTest extends TestCase
         $formConfig->expects($this->once())->method('getType')->willReturn($type);
         $formConfig->expects($this->once())->method('getOptions')->willReturn([]);
 
-        /** @var Form|\PHPUnit_Framework_MockObject_MockObject $oldForm */
+        /** @var Form|\PHPUnit\Framework\MockObject\MockObject $oldForm */
         $oldForm = $this->getMockBuilder('Symfony\Component\Form\Form')
             ->disableOriginalConstructor()
             ->getMock();
@@ -68,7 +68,7 @@ class OrderAddressFormChangesProviderTest extends TestCase
             ->with($addressField)
             ->willReturnOnConsecutiveCalls(true, false);
 
-        /** @var FormInterface|\PHPUnit_Framework_MockObject_MockObject $field */
+        /** @var FormInterface|\PHPUnit\Framework\MockObject\MockObject $field */
         $field = $this->createMock('Symfony\Component\Form\FormInterface');
 
         $oldForm->expects($this->once())->method('get')->with($addressField)->willReturn($field);
@@ -84,13 +84,13 @@ class OrderAddressFormChangesProviderTest extends TestCase
 
         $this->twigEngine->expects($this->once())
             ->method('render')
-            ->with('MarelloOrderBundle:Form:customerAddressSelector.html.twig', ['form' => $fieldView])
+            ->with('@MarelloOrder/Form/customerAddressSelector.html.twig', ['form' => $fieldView])
             ->willReturn('view1');
 
-        /** @var FormInterface|\PHPUnit_Framework_MockObject_MockObject $field1 */
+        /** @var FormInterface|\PHPUnit\Framework\MockObject\MockObject $field1 */
         $newField = $this->createMock('Symfony\Component\Form\FormInterface');
         $newField->expects($this->once())->method('createView')->willReturn($fieldView);
-        /** @var Form|\PHPUnit_Framework_MockObject_MockObject $oldForm */
+        /** @var Form|\PHPUnit\Framework\MockObject\MockObject $oldForm */
         $newForm = $this->getMockBuilder('Symfony\Component\Form\Form')
             ->disableOriginalConstructor()
             ->getMock();

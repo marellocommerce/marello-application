@@ -2,29 +2,21 @@
 
 namespace Marello\Bundle\InventoryBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
-class WarehouseChannelGroupLinkRepository extends EntityRepository
+class WarehouseChannelGroupLinkRepository extends ServiceEntityRepository
 {
-    /**
-     * @var AclHelper
-     */
-    private $aclHelper;
-
-    /**
-     * @param AclHelper $aclHelper
-     */
-    public function setAclHelper(AclHelper $aclHelper)
-    {
-        $this->aclHelper = $aclHelper;
+    public function __construct(
+        ManagerRegistry $registry,
+        string $entityClass,
+        private AclHelper $aclHelper
+    ) {
+        parent::__construct($registry, $entityClass);
     }
 
-    /**
-     * @return WarehouseChannelGroupLink
-     */
     public function findSystemLink()
     {
         $qb = $this->createQueryBuilder('wcgl');
@@ -35,10 +27,6 @@ class WarehouseChannelGroupLinkRepository extends EntityRepository
         return reset($results);
     }
 
-    /**
-     * @param SalesChannelGroup $group
-     * @return WarehouseChannelGroupLink
-     */
     public function findLinkBySalesChannelGroup(SalesChannelGroup $group)
     {
         $qb = $this->createQueryBuilder('wcgl');

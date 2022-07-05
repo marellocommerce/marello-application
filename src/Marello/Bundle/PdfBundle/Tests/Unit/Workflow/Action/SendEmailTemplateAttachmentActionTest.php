@@ -2,11 +2,11 @@
 
 namespace Marello\Bundle\PdfBundle\Tests\Unit\Workflow\Action;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Persistence\ManagerRegistry;
+use Liip\ImagineBundle\Binary\MimeTypeGuesserInterface;
 use Marello\Bundle\PdfBundle\Workflow\Action\SendEmailTemplateAttachmentAction;
-use Oro\Bundle\EmailBundle\Mailer\Processor;
 use Oro\Bundle\EmailBundle\Provider\EmailRenderer;
+use Oro\Bundle\EmailBundle\Sender\EmailModelSender;
 use Oro\Bundle\EmailBundle\Tools\EmailAddressHelper;
 use Oro\Bundle\EmailBundle\Tools\EmailOriginHelper;
 use Oro\Bundle\EntityBundle\Provider\EntityNameResolver;
@@ -19,30 +19,33 @@ class SendEmailTemplateAttachmentActionTest extends TestCase
 {
     protected $action;
 
-    public function setUp()
+    public function setUp(): void
     {
-        /** @var Processor|\PHPUnit_Framework_MockObject_MockObject $emailProcessor */
-        $emailProcessor = $this->createMock(Processor::class);
-        /** @var EntityNameResolver|\PHPUnit_Framework_MockObject_MockObject $entityNameResolver */
+        /** @var EntityNameResolver|\PHPUnit\Framework\MockObject\MockObject $entityNameResolver */
         $entityNameResolver = $this->createMock(EntityNameResolver::class);
-        /** @var EmailRenderer|\PHPUnit_Framework_MockObject_MockObject $renderer */
+        /** @var EmailRenderer|\PHPUnit\Framework\MockObject\MockObject $renderer */
         $renderer = $this->createMock(EmailRenderer::class);
-        /** @var ManagerRegistry|\PHPUnit_Framework_MockObject_MockObject $managerRegistry */
+        /** @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject $managerRegistry */
         $managerRegistry = $this->createMock(ManagerRegistry::class);
-        /** @var ValidatorInterface|\PHPUnit_Framework_MockObject_MockObject $validator */
+        /** @var ValidatorInterface|\PHPUnit\Framework\MockObject\MockObject $validator */
         $validator = $this->createMock(ValidatorInterface::class);
-        /** @var EmailOriginHelper|\PHPUnit_Framework_MockObject_MockObject $emailOriginHelper */
-        $emailOriginHelper = $this->getMockBuilder(EmailOriginHelper::class)->disableOriginalConstructor()->getMock();
+        /** @var EmailOriginHelper|\PHPUnit\Framework\MockObject\MockObject $emailOriginHelper */
+        $emailOriginHelper = $this->createMock(EmailOriginHelper::class);
+        /** @var MimeTypeGuesserInterface|\PHPUnit\Framework\MockObject\MockObject $mimeTypeGuesser */
+        $mimeTypeGuesser = $this->createMock(MimeTypeGuesserInterface::class);
+        /** @var EmailModelSender|\PHPUnit\Framework\MockObject\MockObject $emailModelSender */
+        $emailModelSender = $this->createMock(EmailModelSender::class);
 
         $this->action = new SendEmailTemplateAttachmentAction(
             new ContextAccessor(),
-            $emailProcessor,
             new EmailAddressHelper(),
             $entityNameResolver,
             $managerRegistry,
             $validator,
             $emailOriginHelper,
             $renderer,
+            $mimeTypeGuesser,
+            $emailModelSender
         );
     }
 

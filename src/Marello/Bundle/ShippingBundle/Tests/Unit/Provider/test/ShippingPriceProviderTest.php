@@ -50,7 +50,7 @@ class ShippingPriceProviderTest extends \PHPUnit\Framework\TestCase
      */
     protected $shippingPriceProvider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->shippingRulesProvider = $this->getMockBuilder(MethodsConfigsRulesByContextProviderInterface::class)
             ->disableOriginalConstructor()->getMock();
@@ -131,7 +131,7 @@ class ShippingPriceProviderTest extends \PHPUnit\Framework\TestCase
 
         $this->eventDispatcher->expects($this->once())
             ->method('dispatch')
-            ->with(ApplicableMethodsEvent::NAME);
+            ->with($this->isInstanceOf(ApplicableMethodsEvent::class), ApplicableMethodsEvent::NAME);
 
         $this->assertEquals(
             $expectedData,
@@ -366,22 +366,20 @@ class ShippingPriceProviderTest extends \PHPUnit\Framework\TestCase
             ]
         ];
 
-        $this->priceCache->expects(static::at(0))
+        $this->priceCache->expects(static::exactly(2))
             ->method('hasPrice')
-            ->with($context, 'flat_rate', 'primary')
-            ->willReturn(false);
+            ->withConsecutive(
+                [$context, 'flat_rate', 'primary'],
+                [$context, 'flat_rate', 'primary']
+            )
+            ->willReturnOnConsecutiveCalls(false, true);
 
-        $this->priceCache->expects(static::at(1))
+        $this->priceCache->expects(static::once())
             ->method('savePrice')
             ->with($context, 'flat_rate', 'primary', Price::create(1, 'USD'))
             ->willReturn(true);
 
-        $this->priceCache->expects(static::at(2))
-            ->method('hasPrice')
-            ->with($context, 'flat_rate', 'primary')
-            ->willReturn(true);
-
-        $this->priceCache->expects(static::at(3))
+        $this->priceCache->expects(static::once())
             ->method('getPrice')
             ->with($context, 'flat_rate', 'primary')
             ->willReturn(Price::create(2, 'USD'));
@@ -590,22 +588,20 @@ class ShippingPriceProviderTest extends \PHPUnit\Framework\TestCase
 
         $expectedPrice = Price::create(1, 'USD');
 
-        $this->priceCache->expects(static::at(0))
+        $this->priceCache->expects(static::exactly(2))
             ->method('hasPrice')
-            ->with($context, 'flat_rate', 'primary')
-            ->willReturn(false);
+            ->withConsecutive(
+                [$context, 'flat_rate', 'primary'],
+                [$context, 'flat_rate', 'primary']
+            )
+            ->willReturnOnConsecutiveCalls(false, true);
 
-        $this->priceCache->expects(static::at(1))
+        $this->priceCache->expects(static::once())
             ->method('savePrice')
             ->with($context, 'flat_rate', 'primary', Price::create(1, 'USD'))
             ->willReturn(true);
 
-        $this->priceCache->expects(static::at(2))
-            ->method('hasPrice')
-            ->with($context, 'flat_rate', 'primary')
-            ->willReturn(true);
-
-        $this->priceCache->expects(static::at(3))
+        $this->priceCache->expects(static::once())
             ->method('getPrice')
             ->with($context, 'flat_rate', 'primary')
             ->willReturn(Price::create(2, 'USD'));

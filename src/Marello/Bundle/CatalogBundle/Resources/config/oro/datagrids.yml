@@ -72,7 +72,7 @@ datagrids:
                 label:              marello.product.sku.label
                 type:               twig
                 frontend_type:      html
-                template:           MarelloProductBundle:Product/Datagrid:productSku.html.twig
+                template:           '@MarelloProduct/Product/Datagrid/productSku.html.twig'
             name:
                 label:         marello.product.name.label
             createdAt:

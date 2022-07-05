@@ -11,6 +11,8 @@ use Oro\Bundle\EntityExtendBundle\Tests\Unit\Fixtures\TestEnumValue;
 
 use Marello\Bundle\ProductBundle\Twig\ProductUnitExtension;
 use Marello\Bundle\ProductBundle\Migrations\Data\ORM\LoadProductUnitData;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 
 class ProductUnitExtensionTest extends WebTestCase
 {
@@ -19,12 +21,12 @@ class ProductUnitExtensionTest extends WebTestCase
      */
     protected $extension;
 
-    /** @var DoctrineHelper|\PHPUnit_Framework_MockObject_MockObject $doctrineHelperMock */
+    /** @var DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject $doctrineHelperMock */
     protected $doctrineHelperMock;
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->doctrineHelperMock = $this->createMock(DoctrineHelper::class);
         $this->extension = new ProductUnitExtension($this->doctrineHelperMock);
@@ -33,7 +35,7 @@ class ProductUnitExtensionTest extends WebTestCase
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->extension);
     }
@@ -58,9 +60,8 @@ class ProductUnitExtensionTest extends WebTestCase
             'get_product_unit_value_by_id'
         );
 
-        /** @var \Twig_SimpleFunction $function */
         foreach ($functions as $function) {
-            $this->assertInstanceOf('\Twig_SimpleFunction', $function);
+            $this->assertInstanceOf(TwigFunction::class, $function);
             $this->assertContains($function->getName(), $expectedFunctions);
         }
     }
@@ -77,9 +78,8 @@ class ProductUnitExtensionTest extends WebTestCase
             'marello_format_product_unit'
         );
 
-        /** @var \Twig_SimpleFilter $filter */
         foreach ($filters as $filter) {
-            $this->assertInstanceOf('\Twig_SimpleFilter', $filter);
+            $this->assertInstanceOf(TwigFilter::class, $filter);
             $this->assertContains($filter->getName(), $expectedFilters);
         }
     }

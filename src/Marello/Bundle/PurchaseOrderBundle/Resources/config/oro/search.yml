@@ -7,7 +7,7 @@ search:
             name:                       marello_purchaseorder_purchaseorder_view
             parameters:
                 id:                     id
-        search_template:                MarelloPurchaseOrderBundle:PurchaseOrder:searchResult.html.twig
+        search_template:                '@MarelloPurchaseOrder/PurchaseOrder/searchResult.html.twig'
         fields:
             -
                 name:                   purchaseOrderNumber

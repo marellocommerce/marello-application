@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\ProductBundle\Tests\Unit\Twig;
 
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use PHPUnit\Framework\TestCase;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
@@ -11,18 +12,24 @@ use Marello\Bundle\ProductBundle\Twig\ProductExtension;
 use Marello\Bundle\SalesBundle\Provider\ChannelProvider;
 use Marello\Bundle\CatalogBundle\Provider\CategoriesIdsProvider;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
+use Twig\TwigFunction;
 
 class ProductExtensionTest extends TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ChannelProvider
+     * @var \PHPUnit\Framework\MockObject\MockObject|ChannelProvider
      */
     protected $channelProvider;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|CategoriesIdsProvider
+     * @var \PHPUnit\Framework\MockObject\MockObject|CategoriesIdsProvider
      */
     protected $categoryIdsProvider;
+
+    /**
+     * @var \PHPUnit\Framework\MockObject\MockObject|AclHelper
+     */
+    protected $aclHelper;
 
     /**
      * @var ProductExtension
@@ -32,26 +39,23 @@ class ProductExtensionTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->channelProvider = $this->getMockBuilder(ChannelProvider::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->categoryIdsProvider = $this->getMockBuilder(CategoriesIdsProvider::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->channelProvider = $this->createMock(ChannelProvider::class);
+        $this->categoryIdsProvider = $this->createMock(CategoriesIdsProvider::class);
+        $this->aclHelper = $this->createMock(AclHelper::class);
 
         $this->extension = new ProductExtension(
             $this->channelProvider,
-            $this->categoryIdsProvider
+            $this->categoryIdsProvider,
+            $this->aclHelper
         );
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->extension);
         unset($this->channelProvider);
@@ -80,9 +84,8 @@ class ProductExtensionTest extends TestCase
             'marello_get_product_by_sku'
         );
 
-        /** @var \Twig_SimpleFunction $function */
         foreach ($functions as $function) {
-            $this->assertInstanceOf('\Twig_SimpleFunction', $function);
+            $this->assertInstanceOf(TwigFunction::class, $function);
             $this->assertContains($function->getName(), $expectedFunctions);
         }
     }
@@ -126,9 +129,9 @@ class ProductExtensionTest extends TestCase
      */
     public function testGetProductBySku()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|DoctrineHelper $doctrineHelperMock */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|DoctrineHelper $doctrineHelperMock */
         $doctrineHelperMock = $this->createMock(DoctrineHelper::class);
-        /** @var \PHPUnit_Framework_MockObject_MockObject|ProductRepository $productRepositoryMock */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|ProductRepository $productRepositoryMock */
         $productRepositoryMock = $this->createMock(ProductRepository::class);
         $this->extension->setOroEntityDoctrineHelper($doctrineHelperMock);
         $productSku = 'sku123';
@@ -152,9 +155,9 @@ class ProductExtensionTest extends TestCase
      */
     public function testDoctrineHelperNotSet()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|DoctrineHelper $doctrineHelperMock */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|DoctrineHelper $doctrineHelperMock */
         $doctrineHelperMock = $this->createMock(DoctrineHelper::class);
-        /** @var \PHPUnit_Framework_MockObject_MockObject|ProductRepository $productRepositoryMock */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|ProductRepository $productRepositoryMock */
         $productRepositoryMock = $this->createMock(ProductRepository::class);
         $productSku = 'sku123';
         $doctrineHelperMock->expects(static::never())
@@ -172,9 +175,9 @@ class ProductExtensionTest extends TestCase
      */
     public function testProductSkuIsNull()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|DoctrineHelper $doctrineHelperMock */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|DoctrineHelper $doctrineHelperMock */
         $doctrineHelperMock = $this->createMock(DoctrineHelper::class);
-        /** @var \PHPUnit_Framework_MockObject_MockObject|ProductRepository $productRepositoryMock */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|ProductRepository $productRepositoryMock */
         $productRepositoryMock = $this->createMock(ProductRepository::class);
         $this->extension->setOroEntityDoctrineHelper($doctrineHelperMock);
         $productSku = null;
@@ -193,9 +196,9 @@ class ProductExtensionTest extends TestCase
      */
     public function testProductIsNotFoundForGivenSku()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|DoctrineHelper $doctrineHelperMock */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|DoctrineHelper $doctrineHelperMock */
         $doctrineHelperMock = $this->createMock(DoctrineHelper::class);
-        /** @var \PHPUnit_Framework_MockObject_MockObject|ProductRepository $productRepositoryMock */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|ProductRepository $productRepositoryMock */
         $productRepositoryMock = $this->createMock(ProductRepository::class);
         $this->extension->setOroEntityDoctrineHelper($doctrineHelperMock);
         $productSku = 'sku123';

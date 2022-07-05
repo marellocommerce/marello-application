@@ -3,11 +3,12 @@
 namespace Marello\Bundle\PurchaseOrderBundle\Tests\Functional\Cron;
 
 use Oro\Bundle\CronBundle\Entity\Repository\ScheduleRepository;
+use Oro\Bundle\NotificationBundle\Async\Topic\SendEmailNotificationTopic;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 
 use Oro\Bundle\CronBundle\Entity\Schedule;
-use Oro\Bundle\NotificationBundle\Async\Topics;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Bundle\MessageQueueBundle\Test\Functional\MessageQueueExtension;
@@ -29,13 +30,13 @@ class PurchaseOrderAdviceCronTest extends WebTestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->initClient();
 
         $this->application = new Application($this->client->getKernel());
         $this->application->setAutoExit(false);
-        $this->application->add(new PurchaseOrderAdviceCommand());
+        $this->application->add(new PurchaseOrderAdviceCommand($this->getContainer()));
     }
 
     /**
@@ -47,7 +48,7 @@ class PurchaseOrderAdviceCronTest extends WebTestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command]);
 
-        self::assertContains(
+        self::assertStringContainsString(
             'There are no advised items for PO notification. The command will not run.',
             $commandTester->getDisplay()
         );
@@ -67,7 +68,7 @@ class PurchaseOrderAdviceCronTest extends WebTestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command]);
 
-        self::assertContains(
+        self::assertStringContainsString(
             'The PO notification feature is disabled. The command will not run.',
             $commandTester->getDisplay()
         );
@@ -90,7 +91,9 @@ class PurchaseOrderAdviceCronTest extends WebTestCase
             ->get('doctrine')
             ->getRepository(Product::class);
 
-        $results = $productRepository->getPurchaseOrderItemsCandidates();
+        /** @var AclHelper $aclHelper */
+        $aclHelper = $this->getContainer()->get('oro_security.acl_helper');
+        $results = $productRepository->getPurchaseOrderItemsCandidates($aclHelper);
         static::assertCount(1, $results);
 
         /** @var ConfigManager $configManager */
@@ -105,10 +108,10 @@ class PurchaseOrderAdviceCronTest extends WebTestCase
         self::assertEmpty($commandTester->getDisplay());
         self::assertEquals(PurchaseOrderAdviceCommand::EXIT_CODE, $commandTester->getStatusCode());
 
-        self::assertMessageSent(Topics::SEND_NOTIFICATION_EMAIL);
-        $message = self::getSentMessage(Topics::SEND_NOTIFICATION_EMAIL);
-        self::assertNotContains('{{ entity', $message['subject']);
-        self::assertNotContains('{{ entity', $message['body']);
+        self::assertMessageSent(SendEmailNotificationTopic::getName());
+        $message = self::getSentMessage(SendEmailNotificationTopic::getName());
+        self::assertStringNotContainsString('{{ entity', $message['subject']);
+        self::assertStringNotContainsString('{{ entity', $message['body']);
         self::assertEquals('text/html', $message['contentType']);
         self::assertEquals('Purchase Order advise notification', $message['subject']);
     }

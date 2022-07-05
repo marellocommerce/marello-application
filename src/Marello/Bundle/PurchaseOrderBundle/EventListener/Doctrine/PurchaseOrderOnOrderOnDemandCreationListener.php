@@ -18,6 +18,7 @@ use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class PurchaseOrderOnOrderOnDemandCreationListener
 {
@@ -27,22 +28,14 @@ class PurchaseOrderOnOrderOnDemandCreationListener
      * @var int
      */
     private $orderId;
-    
-    /**
-     * @var AvailableInventoryProvider
-     */
-    private $availableInventoryProvider;
 
     /** @var ConfigManager $configManager */
     private $configManager;
 
-    /**
-     * @param AvailableInventoryProvider $availableInventoryProvider
-     */
-    public function __construct(AvailableInventoryProvider $availableInventoryProvider)
-    {
-        $this->availableInventoryProvider = $availableInventoryProvider;
-    }
+    public function __construct(
+        private AvailableInventoryProvider $availableInventoryProvider,
+        private AclHelper $aclHelper
+    ) {}
 
     /**
      * @param LifecycleEventArgs $args
@@ -55,7 +48,7 @@ class PurchaseOrderOnOrderOnDemandCreationListener
         }
 
         if (!$this->configManager->get('marello_inventory.inventory_on_demand_enabled')
-            && !$this->configManager->get('marello_inventory.inventory_on_demand')
+            || !$this->configManager->get('marello_inventory.inventory_on_demand')
         ) {
             return;
         }
@@ -102,21 +95,20 @@ class PurchaseOrderOnOrderOnDemandCreationListener
                 /** @var OrderItem $onDemandItem */
                 foreach ($orderOnDemandItems as $onDemandItem) {
                     $product = $onDemandItem->getProduct();
-                    $product->getSuppliers();
                     $supplier = $product->getPreferredSupplier();
-                    $supplierName = $supplier->getName();
-                    $itemsBySuppliers[$supplierName][] = $onDemandItem->getId();
-                    if (!isset($poBySuppliers[$supplierName])) {
+                    $supplierCode = $supplier->getCode();
+                    $itemsBySuppliers[$supplierCode][] = $onDemandItem->getId();
+                    if (!isset($poBySuppliers[$supplierCode])) {
                         $po = new PurchaseOrder();
                         $po
                             ->setSupplier($supplier)
                             ->setOrganization($organization);
-                        $poBySuppliers[$supplierName] = $po;
+                        $poBySuppliers[$supplierCode] = $po;
                     }
                     /** @var PurchaseOrder $po */
-                    $po = $poBySuppliers[$supplierName];
+                    $po = $poBySuppliers[$supplierCode];
                     $qty = $onDemandItem->getQuantity();
-                    $price = $this->getPurchasePrice($product);
+                    $price = $this->getPurchasePrice($product, $entity);
                     $poItem = new PurchaseOrderItem();
                     $poItem
                         ->setProduct($product)
@@ -136,7 +128,7 @@ class PurchaseOrderOnOrderOnDemandCreationListener
                         ->setCreatedAt(new \DateTime())
                         ->setData([self::ORDER_ON_DEMAND => [
                             'order' => $entity->getId(),
-                            'orderItems' => $itemsBySuppliers[$po->getSupplier()->getName()]
+                            'orderItems' => $itemsBySuppliers[$po->getSupplier()->getCode()]
                         ]
                         ]);
                     $entityManager->persist($po);
@@ -148,24 +140,28 @@ class PurchaseOrderOnOrderOnDemandCreationListener
     
     /**
      * @param Product $product
+     * @param Order $order
      * @return ProductPrice|null
      */
-    private function getPurchasePrice(Product $product)
+    private function getPurchasePrice(Product $product, Order $order)
     {
         $supplier = $product->getPreferredSupplier();
+        $productPrice = new ProductPrice();
+        $productPrice
+            ->setValue(0)
+            ->setProduct($product)
+            ->setCurrency($order->getCurrency());
         foreach ($product->getSuppliers() as $productSupplierRelation) {
             if ($productSupplierRelation->getSupplier() === $supplier) {
-                $productPrice = new ProductPrice();
                 $productPrice
                     ->setValue($productSupplierRelation->getCost())
                     ->setProduct($product)
                     ->setCurrency($supplier->getCurrency());
-
                 return $productPrice;
             }
         }
 
-        return null;
+        return $productPrice;
     }
 
     /**
@@ -209,7 +205,7 @@ class PurchaseOrderOnOrderOnDemandCreationListener
     {
         /** @var WarehouseChannelGroupLink $warehouseGroupLink */
         $warehouseGroupLink = $manager->getRepository(WarehouseChannelGroupLink::class)
-            ->findLinkBySalesChannelGroup($order->getSalesChannel()->getGroup());
+            ->findLinkBySalesChannelGroup($order->getSalesChannel()->getGroup(), $this->aclHelper);
 
         if (!$warehouseGroupLink) {
             return null;

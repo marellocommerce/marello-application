@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\CoreBundle\DerivedProperty;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class DerivedPropertySetEvent extends Event
 {

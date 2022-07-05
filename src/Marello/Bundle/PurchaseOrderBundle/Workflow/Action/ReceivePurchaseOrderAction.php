@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\Workflow\Action;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
@@ -135,8 +135,8 @@ class ReceivePurchaseOrderAction extends AbstractAction
         );
 
         $this->eventDispatcher->dispatch(
-            InventoryUpdateEvent::NAME,
-            new InventoryUpdateEvent($context)
+            new InventoryUpdateEvent($context),
+            InventoryUpdateEvent::NAME
         );
     }
 

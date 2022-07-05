@@ -121,7 +121,7 @@ define(function(require) {
             mediator.trigger(self.options.events.before);
 
             $.ajax({
-                url: routing.generate(this.options.route, this.options.routeParams),
+                url: this.getUrl(),
                 type: 'POST',
                 data: $.param(data),
                 success: function(response) {
@@ -151,6 +151,23 @@ define(function(require) {
             disabled.attr('disabled', 'disabled');
 
             return data;
+        },
+
+        /**
+         * Generate url for requests
+         * @returns {string|*}
+         */
+        getUrl: function() {
+            return routing.generate(this.options.route, this._getUrlParams());
+        },
+
+        /**
+         * Prepare parameters for routes
+         * @returns {{}}
+         * @private
+         */
+        _getUrlParams: function() {
+            return this.options.routeParams;
         },
 
         /**

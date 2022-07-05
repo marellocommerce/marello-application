@@ -2,24 +2,17 @@
 
 namespace Marello\Bundle\CatalogBundle\Provider;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\CatalogBundle\Entity\Category;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class CategoriesIdsProvider
 {
-    /**
-     * @var ObjectManager
-     */
-    protected $manager;
-
-    /**
-     * @param ObjectManager $manager
-     */
-    public function __construct(ObjectManager $manager)
-    {
-        $this->manager = $manager;
-    }
+    public function __construct(
+        protected ObjectManager $manager,
+        protected AclHelper $aclHelper
+    ) {}
 
     /**
      * @param Product $product
@@ -50,7 +43,7 @@ class CategoriesIdsProvider
 
         $ids = $this->manager
             ->getRepository(Category::class)
-            ->findExcludedCategoriesIds($relatedIds);
+            ->findExcludedCategoriesIds($relatedIds, $this->aclHelper);
 
         foreach ($ids as $k => $v) {
             $excludedIds[] = $v['id'];

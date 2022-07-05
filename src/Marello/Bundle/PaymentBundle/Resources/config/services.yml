@@ -1,3 +1,6 @@
+imports:
+    - { resource: controllers.yml }
+
 parameters:
     marello_payment.rule_grid_route_name: 'marello_payment_methods_configs_rule_index'
     marello_payment.rule_grid_name: 'marello-payment-methods-configs-rule-grid'
@@ -76,7 +79,7 @@ services:
             - '@marello_payment.provider.methods_configs_rules.by_context.basic'
 
     marello_payment.methods_provider.cache:
-        parent: doctrine_cache.abstract.array
+        class: Doctrine\Common\Cache\ArrayCache
         public: false
         calls:
             - [ setNamespace, [ 'payment_methods_provider_cache' ] ]
@@ -103,19 +106,19 @@ services:
         arguments:
             - '@marello_payment.expression_language.decorated_product_line_item_factory'
 
-    marello_payment.repository.payment_methods_configs_rule:
-        class: 'Marello\Bundle\PaymentBundle\Entity\Repository\PaymentMethodsConfigsRuleRepository'
+    Marello\Bundle\PaymentBundle\Entity\Repository\PaymentMethodsConfigsRuleRepository:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\PaymentBundle\Entity\PaymentMethodsConfigsRule'
-        calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
+        tags:
+            - { name: doctrine.repository_service }
 
-    marello_payment.repository.payment_method_config:
-        class: 'Marello\Bundle\PaymentBundle\Entity\Repository\PaymentMethodConfigRepository'
+    Marello\Bundle\PaymentBundle\Entity\Repository\PaymentMethodConfigRepository:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\PaymentBundle\Entity\PaymentMethodConfig'
+        tags:
+            - { name: doctrine.repository_service }
 
     marello_payment.expression_language.decorated_product_line_item_factory:
         class: 'Marello\Bundle\PaymentBundle\ExpressionLanguage\DecoratedProductLineItemFactory'
@@ -133,7 +136,7 @@ services:
     marello_payment.method.event_listener.method_renaming:
         class: 'Marello\Bundle\PaymentBundle\Method\EventListener\MethodRenamingListener'
         arguments:
-            - '@marello_payment.repository.payment_method_config'
+            - '@Marello\Bundle\PaymentBundle\Entity\Repository\PaymentMethodConfigRepository'
         tags:
             - { name: kernel.event_listener, event: marello_payment.method_renaming, method: onMethodRename}
 
@@ -174,7 +177,8 @@ services:
         public: false
         arguments:
             - '@marello_payment.rule_filtration.basic_service'
-            - '@marello_payment.repository.payment_methods_configs_rule'
+            - '@Marello\Bundle\PaymentBundle\Entity\Repository\PaymentMethodsConfigsRuleRepository'
+            - '@oro_security.acl_helper'
 
     marello_payment.enabled_rule_filtration.basic_service:
         class: 'Marello\Bundle\PaymentBundle\RuleFiltration\Basic\BasicMethodsConfigsRulesFiltrationService'
@@ -187,7 +191,8 @@ services:
         public: false
         arguments:
             - '@marello_payment.enabled_rule_filtration.basic_service'
-            - '@marello_payment.repository.payment_methods_configs_rule'
+            - '@Marello\Bundle\PaymentBundle\Entity\Repository\PaymentMethodsConfigsRuleRepository'
+            - '@oro_security.acl_helper'
 
     marello_payment.provider.basic_payment_methods_choices:
         class: 'Marello\Bundle\PaymentBundle\Provider\BasicPaymentMethodChoicesProvider'
@@ -240,8 +245,9 @@ services:
         public: false
         arguments:
             - '@marello_payment.method_disable_handler.decorator.inner'
-            - '@marello_payment.repository.payment_methods_configs_rule'
+            - '@Marello\Bundle\PaymentBundle\Entity\Repository\PaymentMethodsConfigsRuleRepository'
             - '@marello_payment.payment_method.composite_provider'
+            - '@oro_security.acl_helper'
 
     marello_payment.action.handler.add_payment:
         class: 'Marello\Bundle\PaymentBundle\Action\Handler\AddPaymentActionHandler'
@@ -283,7 +289,8 @@ services:
     marello_payment.condition.payment_method_has_payment_rules:
         class: 'Marello\Bundle\PaymentBundle\Condition\PaymentMethodHasPaymentRules'
         arguments:
-            - '@marello_payment.repository.payment_methods_configs_rule'
+            - '@Marello\Bundle\PaymentBundle\Entity\Repository\PaymentMethodsConfigsRuleRepository'
+            - '@oro_security.acl_helper'
         tags:
             - { name: oro_workflow.condition, alias: 'marello_payment_method_has_payment_rules' }
             - { name: oro_action.condition, alias: 'marello_payment_method_has_payment_rules' }
@@ -291,7 +298,8 @@ services:
     marello_payment.condition.payment_method_has_enabled_payment_rules:
         class: 'Marello\Bundle\PaymentBundle\Condition\PaymentMethodHasEnabledPaymentRules'
         arguments:
-            - '@marello_payment.repository.payment_methods_configs_rule'
+            - '@Marello\Bundle\PaymentBundle\Entity\Repository\PaymentMethodsConfigsRuleRepository'
+            - '@oro_security.acl_helper'
         tags:
             - { name: oro_workflow.condition, alias: 'marello_payment_method_has_enabled_payment_rules' }
             - { name: oro_action.condition, alias: 'marello_payment_method_has_enabled_payment_rules' }
@@ -315,7 +323,7 @@ services:
     marello_payment.provider.form_changes.available_payment_methods:
         class: 'Marello\Bundle\PaymentBundle\Provider\FormChanges\AvailablePaymentMethodsFormChangesProvider'
         arguments:
-            - '@templating'
+            - '@twig'
             - '@form.factory'
             - '@marello_payment.provider.basic_payment_methods_choices'
         tags:

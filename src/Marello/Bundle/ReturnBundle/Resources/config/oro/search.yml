@@ -7,7 +7,7 @@ search:
             name:                       marello_return_return_view
             parameters:
                 id:                     id
-        search_template:                MarelloReturnBundle:Return:searchResult.html.twig
+        search_template:                '@MarelloReturn/Return/searchResult.html.twig'
         fields:
             -
                 name:                   returnNumber

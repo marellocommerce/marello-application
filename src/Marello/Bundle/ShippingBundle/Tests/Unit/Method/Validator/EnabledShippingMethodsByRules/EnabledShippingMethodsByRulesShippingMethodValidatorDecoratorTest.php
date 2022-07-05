@@ -2,9 +2,12 @@
 
 namespace Marello\Bundle\ShippingBundle\Tests\Unit\Method\Validator\EnabledShippingMethodsByRules;
 
+// @codingStandardsIgnoreStart
+
 use Marello\Bundle\ShippingBundle\Method\Exception\InvalidArgumentException;
 use Marello\Bundle\ShippingBundle\Method\Provider\Label\Type\MethodTypeLabelsProviderInterface;
 use Marello\Bundle\ShippingBundle\Method\Provider\Type\NonDeletable\NonDeletableMethodTypeIdentifiersProviderInterface;
+use Marello\Bundle\ShippingBundle\Method\Validator\Result\Error\Collection\Builder\Common\CommonShippingMethodValidatorResultErrorCollectionBuilderInterface;
 use Marello\Bundle\ShippingBundle\Method\ShippingMethodInterface;
 use Marello\Bundle\ShippingBundle\Method\Validator;
 use Marello\Bundle\ShippingBundle\Method\Validator\Result\Error\Factory\Common;
@@ -12,6 +15,8 @@ use Marello\Bundle\ShippingBundle\Method\Validator\Result\ShippingMethodValidato
 use Marello\Bundle\ShippingBundle\Method\Validator\ShippingMethodValidatorInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+
+// @codingStandardsIgnoreEnd
 
 class EnabledShippingMethodsByRulesShippingMethodValidatorDecoratorTest extends \PHPUnit\Framework\TestCase
 {
@@ -53,7 +58,7 @@ class EnabledShippingMethodsByRulesShippingMethodValidatorDecoratorTest extends 
     /**
      * {@inheritDoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->parentShippingMethodValidator = $this->createMock(ShippingMethodValidatorInterface::class);
         $this->errorFactory = $this->createMock(
@@ -209,7 +214,6 @@ class EnabledShippingMethodsByRulesShippingMethodValidatorDecoratorTest extends 
         );
 
         $builder = $this->createMock(
-            Validator\Result\Error\Collection\Builder\Common\
             CommonShippingMethodValidatorResultErrorCollectionBuilderInterface::class
         );
 

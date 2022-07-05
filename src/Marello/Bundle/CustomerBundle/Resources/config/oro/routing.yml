@@ -1,4 +1,3 @@
-
 marello_customer:
     resource: "@MarelloCustomerBundle/Controller/CustomerController.php"
     type:     annotation

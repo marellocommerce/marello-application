@@ -9,11 +9,13 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\Annotation\CsrfProtection;
+use Oro\Bundle\UIBundle\Route\Router;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Payment Methods Configs Rule Controller
@@ -22,7 +24,7 @@ class PaymentMethodsConfigsRuleController extends AbstractController
 {
     /**
      * @Route(path="/", name="marello_payment_methods_configs_rule_index")
-     * @Template("MarelloPaymentBundle:PaymentMethodsConfigsRule:index.html.twig")
+     * @Template("@MarelloPayment/PaymentMethodsConfigsRule/index.html.twig")
      * @AclAncestor("marello_payment_methods_configs_rule_view")
      *
      * @return array
@@ -36,7 +38,7 @@ class PaymentMethodsConfigsRuleController extends AbstractController
 
     /**
      * @Route(path="/create", name="marello_payment_methods_configs_rule_create")
-     * @Template("MarelloPaymentBundle:PaymentMethodsConfigsRule:update.html.twig")
+     * @Template("@MarelloPayment/PaymentMethodsConfigsRule/update.html.twig")
      * @Acl(
      *     id="marello_payment_methods_configs_rule_create",
      *     type="entity",
@@ -54,7 +56,7 @@ class PaymentMethodsConfigsRuleController extends AbstractController
 
     /**
      * @Route(path="/view/{id}", name="marello_payment_methods_configs_rule_view", requirements={"id"="\d+"})
-     * @Template("MarelloPaymentBundle:PaymentMethodsConfigsRule:view.html.twig")
+     * @Template("@MarelloPayment/PaymentMethodsConfigsRule/view.html.twig")
      * @Acl(
      *      id="marello_payment_methods_configs_rule_view",
      *      type="entity",
@@ -75,7 +77,7 @@ class PaymentMethodsConfigsRuleController extends AbstractController
 
     /**
      * @Route(path="/update/{id}", name="marello_payment_methods_configs_rule_update", requirements={"id"="\d+"})
-     * @Template("MarelloPaymentBundle:PaymentMethodsConfigsRule:update.html.twig")
+     * @Template("@MarelloPayment/PaymentMethodsConfigsRule/update.html.twig")
      * @Acl(
      *     id="marello_payment_methods_configs_rule_update",
      *     type="entity",
@@ -100,13 +102,14 @@ class PaymentMethodsConfigsRuleController extends AbstractController
     protected function update(PaymentMethodsConfigsRule $entity, Request $request)
     {
         $form = $this->createForm(PaymentMethodsConfigsRuleType::class);
-        if ($this->get('marello_payment.form.handler.payment_methods_configs_rule')->process($form, $entity)) {
-            $this->get('session')->getFlashBag()->add(
+        $queryParams = $request->query->all();
+        if ($this->container->get(PaymentMethodsConfigsRuleHandler::class)->process($form, $entity)) {
+            $request->getSession()->getFlashBag()->add(
                 'success',
-                $this->get('translator')->trans('marello.payment.controller.rule.saved.message')
+                $this->container->get(TranslatorInterface::class)->trans('marello.payment.controller.rule.saved.message')
             );
 
-            return $this->get('oro_ui.router')->redirect($entity);
+            return $this->container->get(Router::class)->redirect($entity);
         }
 
         if ($request->get(PaymentMethodsConfigsRuleHandler::UPDATE_FLAG, false)) {
@@ -117,6 +120,7 @@ class PaymentMethodsConfigsRuleController extends AbstractController
 
         return [
             'entity' => $entity,
+            'queryParams' => $queryParams,
             'form'   => $form->createView()
         ];
     }
@@ -140,7 +144,7 @@ class PaymentMethodsConfigsRuleController extends AbstractController
     public function markMassAction($gridName, $actionName, Request $request)
     {
         /** @var MassActionDispatcher $massActionDispatcher */
-        $massActionDispatcher = $this->get('oro_datagrid.mass_action.dispatcher');
+        $massActionDispatcher = $this->container->get(MassActionDispatcher::class);
 
         $response = $massActionDispatcher->dispatchByRequest($gridName, $actionName, $request);
 
@@ -150,5 +154,18 @@ class PaymentMethodsConfigsRuleController extends AbstractController
         ];
 
         return new JsonResponse(array_merge($data, $response->getOptions()));
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                PaymentMethodsConfigsRuleHandler::class,
+                TranslatorInterface::class,
+                Router::class,
+                MassActionDispatcher::class,
+            ]
+        );
     }
 }

@@ -3,13 +3,18 @@
 namespace Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelType;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadSalesData extends AbstractFixture
+class LoadSalesData extends AbstractFixture implements ContainerAwareInterface
 {
+    use ContainerAwareTrait;
+
     const CHANNEL_1_REF = 'channel1';
     const CHANNEL_2_REF = 'channel2';
     const CHANNEL_3_REF = 'channel3';
@@ -73,9 +78,11 @@ class LoadSalesData extends AbstractFixture
     protected function loadSalesChannels()
     {
         $organization = $this->manager->getRepository('OroOrganizationBundle:Organization')->getFirst();
+        /** @var AclHelper $aclHelper */
+        $aclHelper = $this->container->get('oro_security.acl_helper');
         $defaultSystemGroup = $this->manager
             ->getRepository(SalesChannelGroup::class)
-            ->findSystemChannelGroup();
+            ->findSystemChannelGroup($aclHelper);
 
         foreach ($this->data as $ref => $values) {
             $channel = $this->buildChannel($ref, $values);

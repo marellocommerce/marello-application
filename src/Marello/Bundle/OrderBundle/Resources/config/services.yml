@@ -1,3 +1,6 @@
+imports:
+    - { resource: controllers.yml }
+
 services:
     marello_order.listener.datagrid.order_grid_address_filter_listener:
         class: Marello\Bundle\OrderBundle\EventListener\Datagrid\OrderGridAddressFilterListener
@@ -45,6 +48,7 @@ services:
             - '@oro_entity.doctrine_helper'
             - '@marello_inventory.provider.available_inventory_provider'
             - '@event_dispatcher'
+            - '@oro_security.acl_helper'
         tags:
             - { name: doctrine.event_listener, event: postPersist }
             - { name: kernel.event_listener, event: extendable_action.order_paid, method: onOrderPaid }
@@ -76,8 +80,9 @@ services:
     marello_order.provider.order_statistic_provider:
         class: 'Marello\Bundle\OrderBundle\Provider\OrderDashboardStatisticProvider'
         arguments:
-            - '@marello_order.repository.order'
+            - '@Marello\Bundle\OrderBundle\Entity\Repository\OrderRepository'
             - '@oro_dashboard.provider.big_number.date_helper'
+            - '@oro_security.acl_helper'
         tags:
             - { name: oro_dashboard.big_number.provider, alias: marello-order }
 
@@ -98,9 +103,10 @@ services:
         class: 'Marello\Bundle\OrderBundle\Provider\OrderItem\OrderItemDashboardStatisticProvider'
         public: true
         arguments:
-            - '@marello_order.repository.order_item'
-            - '@marello_order.repository.order'
-            - '@marello_product.repository.product'
+            - '@Marello\Bundle\OrderBundle\Entity\Repository\OrderItemRepository'
+            - '@Marello\Bundle\OrderBundle\Entity\Repository\OrderRepository'
+            - '@Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository'
+            - '@oro_security.acl_helper'
 
     marello_order.provider.form_changes.items:
         class: Marello\Bundle\OrderBundle\Provider\OrderItem\OrderItemFormChangesProvider
@@ -112,13 +118,13 @@ services:
     marello_order.provider.shipping_order_items_for_notifications:
         class: Marello\Bundle\OrderBundle\Provider\OrderItem\ShippingPreparedOrderItemsForNotificationProvider
         arguments:
-            - '@marello_inventory.provider.order_warehouse'
+            - '@Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProvider'
             - '@event_dispatcher'
 
     marello_order.provider.form_changes.billing_address:
         class: Marello\Bundle\OrderBundle\Provider\OrderAddressFormChangesProvider
         arguments:
-            - '@templating'
+            - '@twig'
             - '@form.factory'
             - 'billing'
         tags:
@@ -127,11 +133,20 @@ services:
     marello_order.provider.form_changes.shipping_address:
         class: Marello\Bundle\OrderBundle\Provider\OrderAddressFormChangesProvider
         arguments:
-            - '@templating'
+            - '@twig'
             - '@form.factory'
             - 'shipping'
         tags:
             - { name: marello.form_changes_data_provider, class: 'Marello\Bundle\OrderBundle\Entity\Order', type: shippingAddress, priority: 30 }
+
+    marello_order.provider.form_changes.company_customer:
+        class: Marello\Bundle\OrderBundle\Provider\OrderCompanyCustomerFormChangesProvider
+        arguments:
+            - '@twig'
+            - '@form.factory'
+            - '@doctrine'
+        tags:
+            - { name: marello.form_changes_data_provider, class: 'Marello\Bundle\OrderBundle\Entity\Order', type: company, priority: 35 }
 
     marello_order.provider.form_changes.totals:
         class: Marello\Bundle\OrderBundle\Provider\OrderTotalsProvider
@@ -162,7 +177,7 @@ services:
         class: 'Marello\Bundle\OrderBundle\Factory\OrderPaymentContextFactory'
         public: true
         arguments:
-            - '@marello_inventory.provider.order_warehouse'
+            - '@Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProvider'
             - '@marello_order.payment_line_item.converter_basic'
             - '@event_dispatcher'
             - '@marello_payment.context.builder_factory_basic'
@@ -177,7 +192,6 @@ services:
         class: 'Marello\Bundle\OrderBundle\Factory\OrderShippingContextFactory'
         public: true
         arguments:
-            - '@marello_inventory.provider.order_warehouse'
             - '@marello_order.shipping_line_item.converter_basic'
             - '@marello_shipping.context.builder_factory_basic'
         calls:
@@ -256,22 +270,22 @@ services:
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-order-items, method: onBuildBefore }
 
-    marello_order.repository.order:
-        class: 'Marello\Bundle\OrderBundle\Entity\Repository\OrderRepository'
+    Marello\Bundle\OrderBundle\Entity\Repository\OrderRepository:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\OrderBundle\Entity\Order'
-        calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
+        tags:
+            - { name: doctrine.repository_service }
 
-    marello_order.repository.order_item:
-        class: 'Marello\Bundle\OrderBundle\Entity\Repository\OrderItemRepository'
+    Marello\Bundle\OrderBundle\Entity\Repository\OrderItemRepository:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\OrderBundle\Entity\OrderItem'
         calls:
             - [setAclHelper, ['@oro_security.acl_helper']]
             - [setDateFilterProcessor, ['@oro_dashboard.filter.date_filter_processor']]
+        tags:
+            - { name: doctrine.repository_service }
 
     marello_order.form.available_inventory_validator:
         class: 'Marello\Bundle\OrderBundle\Validator\AvailableInventoryValidator'
@@ -342,3 +356,10 @@ services:
         tags:
             - { name: doctrine.event_listener, event: postPersist }
             - { name: doctrine.event_listener, event: postFlush }
+
+    marello_order.event_listener.order_view_services:
+        class: 'Marello\Bundle\OrderBundle\EventListener\OrderViewListener'
+        arguments:
+            - '@translator'
+        tags:
+            - { name: kernel.event_subscriber }

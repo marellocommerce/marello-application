@@ -5,6 +5,7 @@ namespace Marello\Bundle\SalesBundle\Tests\Unit\EventListener\Doctrine;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -16,6 +17,11 @@ use Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelGroupRepository;
 class SalesChannelListenerTest extends TestCase
 {
     /**
+     * @var AclHelper|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected $aclHelper;
+
+    /**
      * @var SalesChannelListener
      */
     protected $salesChannelListener;
@@ -23,9 +29,10 @@ class SalesChannelListenerTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->salesChannelListener = new SalesChannelListener(true);
+        $this->aclHelper = $this->createMock(AclHelper::class);
+        $this->salesChannelListener = new SalesChannelListener(true, $this->aclHelper);
     }
 
     /**

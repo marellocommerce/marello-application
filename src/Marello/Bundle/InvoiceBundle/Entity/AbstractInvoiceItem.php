@@ -3,7 +3,6 @@
 namespace Marello\Bundle\InvoiceBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as JMS;
 use Marello\Bundle\OrderBundle\Model\QuantityAwareInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
@@ -31,7 +30,10 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
  * @ORM\Table(name="marello_invoice_invoice_item")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="invoice_item_type", type="string")
- * @ORM\DiscriminatorMap({"invoiceitem" = "InvoiceItem", "creditmemoitem" = "CreditmemoItem"})
+ * @ORM\DiscriminatorMap({
+ *     "invoiceitem"="Marello\Bundle\InvoiceBundle\Entity\InvoiceItem",
+ *     "creditmemoitem"="Marello\Bundle\InvoiceBundle\Entity\CreditmemoItem"
+ * })
  * @ORM\HasLifecycleCallbacks()
  */
 abstract class AbstractInvoiceItem implements
@@ -69,7 +71,6 @@ abstract class AbstractInvoiceItem implements
      *          }
      *      }
      * )
-     * @JMS\Expose
      */
     protected $product;
 
@@ -105,8 +106,6 @@ abstract class AbstractInvoiceItem implements
      *          }
      *      }
      * )
-     *
-     * @JMS\Expose
      */
     protected $price;
 
@@ -121,8 +120,6 @@ abstract class AbstractInvoiceItem implements
      *          }
      *      }
      * )
-     *
-     * @JMS\Expose
      */
     protected $quantity;
 
@@ -137,8 +134,6 @@ abstract class AbstractInvoiceItem implements
      *          }
      *      }
      * )
-     *
-     * @JMS\Expose
      */
     protected $tax;
 
@@ -153,8 +148,6 @@ abstract class AbstractInvoiceItem implements
      *          }
      *      }
      * )
-     *
-     * @JMS\Expose
      */
     protected $discountAmount = 0;
 
@@ -169,8 +162,6 @@ abstract class AbstractInvoiceItem implements
      *          }
      *      }
      * )
-     *
-     * @JMS\Expose
      */
     protected $rowTotalInclTax;
 
@@ -185,8 +176,6 @@ abstract class AbstractInvoiceItem implements
      *          }
      *      }
      * )
-     *
-     * @JMS\Expose
      */
     protected $rowTotalExclTax;
 

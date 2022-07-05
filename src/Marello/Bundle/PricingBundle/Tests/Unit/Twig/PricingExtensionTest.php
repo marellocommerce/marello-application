@@ -7,16 +7,17 @@ use PHPUnit\Framework\TestCase;
 use Marello\Bundle\PricingBundle\Twig\PricingExtension;
 use Marello\Bundle\PricingBundle\Provider\CurrencyProvider;
 use Marello\Bundle\PricingBundle\Formatter\LabelVATAwareFormatter;
+use Twig\TwigFunction;
 
 class PricingExtensionTest extends TestCase
 {
     /**
-     * @var CurrencyProvider|\PHPUnit_Framework_MockObject_MockObject
+     * @var CurrencyProvider|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $currencyProvider;
 
     /**
-     * @var LabelVATAwareFormatter|\PHPUnit_Framework_MockObject_MockObject
+     * @var LabelVATAwareFormatter|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $vatLabelFormatter;
 
@@ -28,7 +29,7 @@ class PricingExtensionTest extends TestCase
         'currencySymbol' => '$'
     ];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->currencyProvider = $this->getMockBuilder(CurrencyProvider::class)
             ->disableOriginalConstructor()
@@ -39,7 +40,7 @@ class PricingExtensionTest extends TestCase
         $this->extension = new PricingExtension($this->currencyProvider, $this->vatLabelFormatter);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->extension);
         unset($this->currencyProvider);
@@ -61,9 +62,8 @@ class PricingExtensionTest extends TestCase
             'marello_pricing_vat_aware_label'
         );
 
-        /** @var \Twig_SimpleFunction $function */
         foreach ($functions as $function) {
-            $this->assertInstanceOf('\Twig_SimpleFunction', $function);
+            $this->assertInstanceOf(TwigFunction::class, $function);
             $this->assertContains($function->getName(), $expectedFunctions);
         }
     }

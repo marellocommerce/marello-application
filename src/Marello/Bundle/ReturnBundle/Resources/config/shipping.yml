@@ -3,5 +3,6 @@ services:
         class: Marello\Bundle\ReturnBundle\Provider\ReturnShippingServiceDataProvider
         arguments:
             - '@doctrine.orm.entity_manager'
+            - '@oro_security.acl_helper'
         tags:
             - { name: marello.shipping.data_provider,  class: 'Marello\Bundle\ReturnBundle\Entity\ReturnEntity' }

@@ -1,6 +1,7 @@
 datagrids:
     marello-return:
         source:
+            extended_entity_name: Marello\Bundle\ReturnBundle\Entity\ReturnEntity
             type: orm
             query:
                 select:
@@ -27,7 +28,11 @@ datagrids:
                 label: marello.order.order_number.label
                 type: twig
                 frontend_type: html
-                template: MarelloOrderBundle:Order:Datagrid/Property/orderNumber.html.twig
+                template: '@MarelloOrder/Order/Datagrid/Property/orderNumber.html.twig'
+            orderReference:
+                data_name: order.orderReference
+                label: marello.order.order_reference.label
+                frontend_type:    string
             returnItems:
                 data_name: returnItemCount
                 label: marello.return.returnitem.returned_quantity.label
@@ -50,6 +55,9 @@ datagrids:
                 orderNumber:
                     type: string
                     data_name: o.orderNumber
+                orderReference:
+                    type: string
+                    data_name: o.orderReference
                 createdAt:
                     type: datetime
                     data_name: r.createdAt
@@ -62,6 +70,8 @@ datagrids:
                     data_name: r.returnNumber
                 orderNumber:
                     data_name: o.orderNumber
+                orderReference:
+                    data_name: o.orderReference
                 returnItems:
                     data_name: returnItemCount
                 createdAt:
@@ -91,6 +101,7 @@ datagrids:
 
     marello-return-customer:
         source:
+            extended_entity_name: Marello\Bundle\ReturnBundle\Entity\ReturnEntity
             type: orm
             query:
                 select:
@@ -119,7 +130,11 @@ datagrids:
                 label: marello.order.order_number.label
                 type: twig
                 frontend_type: html
-                template: MarelloOrderBundle:Order:Datagrid/Property/orderNumber.html.twig
+                template: '@MarelloOrder/Order/Datagrid/Property/orderNumber.html.twig'
+            orderReference:
+                data_name: order.orderReference
+                label: marello.order.order_reference.label
+                frontend_type:    string
             returnItems:
                 data_name: returnItemCount
                 label: marello.return.returnitem.returned_quantity.label
@@ -142,6 +157,9 @@ datagrids:
                 orderNumber:
                     type: string
                     data_name: o.orderNumber
+                orderReference:
+                    type: string
+                    data_name: o.orderReference
                 createdAt:
                     type: datetime
                     data_name: r.createdAt
@@ -154,6 +172,8 @@ datagrids:
                     data_name: r.returnNumber
                 orderNumber:
                     data_name: o.orderNumber
+                orderReference:
+                    data_name: o.orderReference
                 returnItems:
                     data_name: returnItemCount
                 createdAt:
@@ -184,6 +204,7 @@ datagrids:
 
     marello-return-items:
         source:
+            extended_entity_name: Marello\Bundle\ReturnBundle\Entity\ReturnItem
             type: orm
             query:
                 select:
@@ -204,7 +225,7 @@ datagrids:
                 label:              marello.product.sku.label
                 type:               twig
                 frontend_type:      html
-                template:           MarelloProductBundle:Product/Datagrid:productSku.html.twig
+                template:           '@MarelloProduct/Product/Datagrid/productSku.html.twig'
             product:
                 data_name: orderItem.productName
                 label: marello.product.name.label

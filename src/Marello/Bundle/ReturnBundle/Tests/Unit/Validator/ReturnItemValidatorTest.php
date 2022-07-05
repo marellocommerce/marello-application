@@ -16,10 +16,10 @@ class ReturnItemValidatorTest extends TestCase
     /** @var ReturnItemValidator */
     protected $validator;
 
-    /** @var ConstraintViolationBuilderInterface|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var ConstraintViolationBuilderInterface|\PHPUnit\Framework\MockObject\MockObject */
     protected $builder;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

@@ -5,7 +5,7 @@ namespace Marello\Bundle\ProductBundle\Migrations\Data\ORM;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class UpdateProductDatagridAttributeConfig extends AbstractFixture implements ContainerAwareInterface
 {

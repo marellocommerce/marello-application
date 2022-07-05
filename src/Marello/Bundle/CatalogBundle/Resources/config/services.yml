@@ -1,3 +1,6 @@
+imports:
+    - { resource: controllers.yml }
+
 services:
     marello_catalog.category.form.type:
         class: 'Marello\Bundle\CatalogBundle\Form\Type\CategoryType'
@@ -40,14 +43,14 @@ services:
         class: 'Marello\Bundle\CatalogBundle\Provider\CategoriesIdsProvider'
         arguments:
             - '@doctrine.orm.entity_manager'
+            - '@oro_security.acl_helper'
 
-    marello_catalog.repository.category:
-        class: 'Marello\Bundle\CatalogBundle\Entity\Repository\CategoryRepository'
+    Marello\Bundle\CatalogBundle\Entity\Repository\CategoryRepository:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\CatalogBundle\Entity\Category'
-        calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
+        tags:
+            - { name: doctrine.repository_service }
 
     marello_catalog.twig.category_extension:
         class: 'Marello\Bundle\CatalogBundle\Twig\CategoryExtension'

@@ -7,10 +7,10 @@ use Marello\Bundle\CustomerBundle\Form\Type\CompanySelectType;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Form\EventListener\CurrencySubscriber;
 use Marello\Bundle\OrderBundle\Form\EventListener\OrderTotalsSubscriber;
-use Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelRepository;
 use Marello\Bundle\SalesBundle\Form\Type\SalesChannelSelectType;
 use Oro\Bundle\CurrencyBundle\Entity\Price;
 use Oro\Bundle\CurrencyBundle\Form\Type\PriceType;
+use Oro\Bundle\FormBundle\Form\Type\CheckboxType;
 use Oro\Bundle\FormBundle\Form\Type\OroDateTimeType;
 use Oro\Bundle\LocaleBundle\Form\Type\LocalizationSelectType;
 use Symfony\Component\Form\AbstractType;
@@ -29,24 +29,18 @@ class OrderType extends AbstractType
     const BLOCK_PREFIX = 'marello_order_order';
 
     /**
-     * @var SalesChannelRepository
-     */
-    private $salesChannelRepository;
-
-    /**
-     * @param SalesChannelRepository $salesChannelRepository
-     */
-    public function __construct(SalesChannelRepository $salesChannelRepository)
-    {
-        $this->salesChannelRepository = $salesChannelRepository;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add(
+                'customer',
+                CompanyAwareCustomerSelectType::class,
+                [
+                    'required' => true
+                ]
+            )
             ->add(
                 'company',
                 CompanySelectType::class,
@@ -54,13 +48,6 @@ class OrderType extends AbstractType
                     'mapped' => false,
                     'required' => false,
                     'create_enabled' => false
-                ]
-            )
-            ->add(
-                'customer',
-                CompanyAwareCustomerSelectType::class,
-                [
-                    'required' => true
                 ]
             )
             ->add(
@@ -121,6 +108,14 @@ class OrderType extends AbstractType
                     'required' => false
                 ]
             )
+//            ->add(
+//                'consolidationEnabled',
+//                CheckboxType::class,
+//                [
+//                    'required' => false,
+//                    'label' => 'marello.order.consolidation_enabled.label'
+//                ]
+//            )
             ->add('items', OrderItemCollectionType::class);
         $this->addPaymentFields($builder);
         $this->addShippingFields($builder, $options['data']);

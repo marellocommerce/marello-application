@@ -4,7 +4,6 @@ namespace Marello\Bundle\PaymentTermBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Marello\Bundle\PaymentTermBundle\Entity\MarelloPaymentTermSettings;
-use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class MarelloPaymentTermSettingsRepository extends EntityRepository
 {

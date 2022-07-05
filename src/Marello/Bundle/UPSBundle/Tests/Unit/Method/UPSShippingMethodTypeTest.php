@@ -41,22 +41,22 @@ class UPSShippingMethodTypeTest extends TestCase
     protected $methodId = 'shipping_method';
 
     /**
-     * @var UPSSettings|\PHPUnit_Framework_MockObject_MockObject
+     * @var UPSSettings|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $transport;
 
     /**
-     * @var UPSTransportProvider|\PHPUnit_Framework_MockObject_MockObject
+     * @var UPSTransportProvider|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $transportProvider;
 
     /**
-     * @var ShippingService|\PHPUnit_Framework_MockObject_MockObject
+     * @var ShippingService|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $shippingService;
 
     /**
-     * @var PriceRequestFactory|\PHPUnit_Framework_MockObject_MockObject
+     * @var PriceRequestFactory|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $priceRequestFactory;
 
@@ -66,11 +66,11 @@ class UPSShippingMethodTypeTest extends TestCase
     protected $upsShippingMethodType;
 
     /**
-     * @var ShippingPriceCache|\PHPUnit_Framework_MockObject_MockObject
+     * @var ShippingPriceCache|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $cache;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->transport = $this->getEntity(
             UPSSettings::class,
@@ -91,7 +91,7 @@ class UPSShippingMethodTypeTest extends TestCase
 
         $this->shippingService = $this->createMock(ShippingService::class);
 
-        /** @var PriceRequestFactory | \PHPUnit_Framework_MockObject_MockObject $priceRequestFactory */
+        /** @var PriceRequestFactory | \PHPUnit\Framework\MockObject\MockObject $priceRequestFactory */
         $this->priceRequestFactory = $this->createMock(PriceRequestFactory::class);
 
         $this->cache = $this->createMock(ShippingPriceCache::class);
@@ -130,7 +130,7 @@ class UPSShippingMethodTypeTest extends TestCase
      */
     public function testCalculatePrice($methodSurcharge, $typeSurcharge, $expectedPrice)
     {
-        /** @var ShippingContextInterface|\PHPUnit_Framework_MockObject_MockObject $context **/
+        /** @var ShippingContextInterface|\PHPUnit\Framework\MockObject\MockObject $context **/
         $context = $this->createMock(ShippingContextInterface::class);
 
         $methodOptions = ['surcharge' => $methodSurcharge];
@@ -202,7 +202,7 @@ class UPSShippingMethodTypeTest extends TestCase
 
     public function testCalculatePriceCache()
     {
-        /** @var ShippingContextInterface|\PHPUnit_Framework_MockObject_MockObject $context **/
+        /** @var ShippingContextInterface|\PHPUnit\Framework\MockObject\MockObject $context **/
         $context = $this->createMock(ShippingContextInterface::class);
 
         $methodOptions = ['surcharge' => 10];

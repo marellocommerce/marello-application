@@ -14,7 +14,7 @@ use Marello\Bundle\RuleBundle\RuleFiltration\StopProcessingRuleFiltrationService
 class StopProcessingRuleFiltrationServiceTest extends TestCase
 {
     /**
-     * @var RuleFiltrationServiceInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var RuleFiltrationServiceInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $service;
 
@@ -23,7 +23,7 @@ class StopProcessingRuleFiltrationServiceTest extends TestCase
      */
     private $serviceDecorator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->service = $this->getMockBuilder(RuleFiltrationServiceInterface::class)
             ->setMethods(['getFilteredRuleOwners'])->getMockForAbstractClass();
@@ -107,7 +107,7 @@ class StopProcessingRuleFiltrationServiceTest extends TestCase
     /**
      * @param RuleInterface $rule
      *
-     * @return RuleOwnerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @return RuleOwnerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private function createRuleOwner(RuleInterface $rule)
     {

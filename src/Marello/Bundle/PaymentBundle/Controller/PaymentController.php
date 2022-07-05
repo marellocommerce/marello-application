@@ -3,19 +3,23 @@
 namespace Marello\Bundle\PaymentBundle\Controller;
 
 use Marello\Bundle\PaymentBundle\Entity\Payment;
+use Marello\Bundle\PaymentBundle\Form\Handler\PaymentCreateHandler;
+use Marello\Bundle\PaymentBundle\Form\Handler\PaymentUpdateHandler;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\UIBundle\Route\Router;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PaymentController extends AbstractController
 {
     /**
      * @Route(path="/", name="marello_payment_index")
-     * @Template("MarelloPaymentBundle:Payment:index.html.twig")
+     * @Template("@MarelloPayment/Payment/index.html.twig")
      * @AclAncestor("marello_payment_view")
      *
      * @return array
@@ -29,7 +33,7 @@ class PaymentController extends AbstractController
 
     /**
      * @Route(path="/view/{id}", name="marello_payment_view", requirements={"id"="\d+"})
-     * @Template("MarelloPaymentBundle:Payment:view.html.twig")
+     * @Template("@MarelloPayment/Payment/view.html.twig")
      * @Acl(
      *      id="marello_payment_view",
      *      type="entity",
@@ -50,7 +54,7 @@ class PaymentController extends AbstractController
 
     /**
      * @Route(path="/create", name="marello_payment_create")
-     * @Template("MarelloPaymentBundle:Payment:create.html.twig")
+     * @Template("@MarelloPayment/Payment/create.html.twig")
      * @Acl(
      *     id="marello_payment_create",
      *     type="entity",
@@ -68,7 +72,7 @@ class PaymentController extends AbstractController
 
     /**
      * @Route(path="/update/{id}", name="marello_payment_update", requirements={"id"="\d+"})
-     * @Template("MarelloPaymentBundle:Payment:update.html.twig")
+     * @Template("@MarelloPayment/Payment/update.html.twig")
      * @Acl(
      *     id="marello_payment_update",
      *     type="entity",
@@ -94,23 +98,36 @@ class PaymentController extends AbstractController
     {
         if ($entity === null) {
             $entity = new Payment();
-            $handler = $this->get('marello_payment.form.handler.payment_create');
+            $handler = $this->container->get(PaymentCreateHandler::class);
         } else {
-            $handler = $this->get('marello_payment.form.handler.payment_update');
+            $handler = $this->container->get(PaymentUpdateHandler::class);
         }
 
         if ($handler->process($entity)) {
-            $this->get('session')->getFlashBag()->add(
+            $request->getSession()->getFlashBag()->add(
                 'success',
-                $this->get('translator')->trans('marello.payment_term.ui.payment_term.saved.message')
+                $this->container->get(TranslatorInterface::class)->trans('marello.payment_term.ui.payment_term.saved.message')
             );
 
-            return $this->get('oro_ui.router')->redirect($entity);
+            return $this->container->get(Router::class)->redirect($entity);
         }
 
         return [
             'entity' => $entity,
             'form'   => $handler->getFormView(),
         ];
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                PaymentCreateHandler::class,
+                PaymentUpdateHandler::class,
+                TranslatorInterface::class,
+                Router::class,
+            ]
+        );
     }
 }

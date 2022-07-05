@@ -3,7 +3,7 @@
 namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 use Marello\Bundle\PricingBundle\Entity\AssembledPriceList;
@@ -11,9 +11,16 @@ use Marello\Bundle\PricingBundle\Entity\PriceType;
 use Marello\Bundle\PricingBundle\Model\PriceTypeInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadProductPriceData extends AbstractFixture implements DependentFixtureInterface
+class LoadProductPriceData extends AbstractFixture implements
+    DependentFixtureInterface,
+    ContainerAwareInterface
 {
+    use ContainerAwareTrait;
+
     /** @var ObjectManager $manager */
     protected $manager;
 
@@ -65,8 +72,10 @@ class LoadProductPriceData extends AbstractFixture implements DependentFixtureIn
      */
     private function createProductPrice(array $data)
     {
+        /** @var AclHelper $aclHelper */
+        $aclHelper = $this->container->get('oro_security.acl_helper');
         /** @var Product $product */
-        $product = $this->manager->getRepository(Product::class)->findOneBySku($data['sku']);
+        $product = $this->manager->getRepository(Product::class)->findOneBySku($data['sku'], $aclHelper);
         if (!$product) {
             return;
         }

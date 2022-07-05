@@ -1,4 +1,5 @@
 services:
+    ## forms
     marello_supplier.form.type.supplier:
         class: Marello\Bundle\SupplierBundle\Form\Type\SupplierType
         tags:
@@ -9,18 +10,10 @@ services:
         tags:
             - { name: form.type }
 
-    ## forms
-    marello_supplier.supplier.form:
-        class: Symfony\Component\Form\Form
-        factory: ['@form.factory', 'create']
-        arguments:
-            - Marello\Bundle\SupplierBundle\Form\Type\SupplierType
-
     ## handlers
-    marello_supplier.form.handler.supplier:
-        class: Marello\Bundle\SupplierBundle\Form\Handler\SupplierHandler
-        public: true
+    marello_supplier.supplier_form.handler:
+        class: 'Marello\Bundle\SupplierBundle\Form\Handler\SupplierHandler'
         arguments:
-            - '@marello_supplier.supplier.form'
-            - '@request_stack'
             - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: oro_form.form.handler, alias: marello_supplier.supplier_form.handler }

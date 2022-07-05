@@ -8,6 +8,7 @@ use Marello\Bundle\PaymentBundle\Provider\MethodsConfigsRule\Context\Basic\Basic
 use Marello\Bundle\PaymentBundle\RuleFiltration\MethodsConfigsRulesFiltrationServiceInterface;
 use Marello\Bundle\PaymentBundle\Tests\Unit\Context\PaymentContextMockTrait;
 use Marello\Bundle\PaymentBundle\Tests\Unit\Entity\PaymentMethodsConfigsRuleMockTrait;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class BasicMethodsConfigsRulesByContextProviderTest extends \PHPUnit\Framework\TestCase
 {
@@ -25,19 +26,25 @@ class BasicMethodsConfigsRulesByContextProviderTest extends \PHPUnit\Framework\T
     private $filtrationService;
 
     /**
+     * @var AclHelper|\PHPUnit\Framework\MockObject\MockObject
+     */
+    private $aclHelper;
+
+    /**
      * @var BasicMethodsConfigsRulesByContextProvider
      */
     private $provider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->repository = $this->createMock(PaymentMethodsConfigsRuleRepository::class);
-
         $this->filtrationService = $this->createMock(MethodsConfigsRulesFiltrationServiceInterface::class);
+        $this->aclHelper = $this->createMock(AclHelper::class);
 
         $this->provider = new BasicMethodsConfigsRulesByContextProvider(
             $this->filtrationService,
-            $this->repository
+            $this->repository,
+            $this->aclHelper
         );
     }
 

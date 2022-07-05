@@ -13,7 +13,7 @@
 
 namespace Marello\Bundle\CoreBundle\Validator;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Oro\Bundle\EntityBundle\ORM\Registry;
 use Marello\Bundle\CoreBundle\Validator\Constraints\GreaterThanDate;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -22,10 +22,10 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class GreaterThanDateValidator extends ConstraintValidator
 {
-    /** @var ManagerRegistry */
+    /** @var Registry */
     private $registry;
 
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(Registry $registry)
     {
         $this->registry = $registry;
     }
@@ -79,7 +79,7 @@ class GreaterThanDateValidator extends ConstraintValidator
         $class = $em->getClassMetadata(get_class($entity));
         $fieldValue = null;
 
-        /* @var $class \Doctrine\Common\Persistence\Mapping\ClassMetadata */
+        /* @var $class \Doctrine\Persistence\Mapping\ClassMetadata */
         if (!$class->hasField($field) && !$class->hasAssociation($field)) {
             throw new ConstraintDefinitionException(
                 sprintf(

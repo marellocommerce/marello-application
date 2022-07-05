@@ -2,34 +2,22 @@
 
 namespace Marello\Bundle\InventoryBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
-class WarehouseGroupRepository extends EntityRepository
+class WarehouseGroupRepository extends ServiceEntityRepository
 {
     /**
-     * @var AclHelper
-     */
-    private $aclHelper;
-
-    /**
      * @param AclHelper $aclHelper
-     */
-    public function setAclHelper(AclHelper $aclHelper)
-    {
-        $this->aclHelper = $aclHelper;
-    }
-
-    /**
      * @return WarehouseGroup
      */
-    public function findSystemWarehouseGroup()
+    public function findSystemWarehouseGroup(AclHelper $aclHelper)
     {
         $qb = $this->createQueryBuilder('whg');
         $qb
             ->where($qb->expr()->eq('whg.system', $qb->expr()->literal(true)));
-        $results = $this->aclHelper->apply($qb)->getResult();
+        $results = $aclHelper->apply($qb)->getResult();
         
         return reset($results);
     }

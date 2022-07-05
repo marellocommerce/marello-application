@@ -2,8 +2,8 @@
 
 namespace Marello\Bundle\PricingBundle\Provider;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Oro\Bundle\EntityBundle\ORM\Registry;
+use Doctrine\Persistence\ObjectRepository;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ProductBundle\Entity\Product;
@@ -15,21 +15,14 @@ use Marello\Bundle\PricingBundle\Entity\AssembledChannelPriceList;
 use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 use Marello\Bundle\OrderBundle\Provider\OrderItem\AbstractOrderItemFormChangesProvider;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class ChannelPriceProvider extends AbstractOrderItemFormChangesProvider
 {
-    /**
-     * @var ManagerRegistry $registry
-     */
-    protected $registry;
-
-    /**
-     * @param ManagerRegistry $registry
-     */
-    public function __construct(ManagerRegistry $registry)
-    {
-        $this->registry = $registry;
-    }
+    public function __construct(
+        protected Registry $registry,
+        protected AclHelper $aclHelper
+    ) {}
 
     /**
      * {@inheritdoc}
@@ -50,7 +43,11 @@ class ChannelPriceProvider extends AbstractOrderItemFormChangesProvider
         }
         
         $data = [];
-        $products = $this->getProductRepository()->findBySalesChannel($salesChannel->getId(), $productIds);
+        $products = $this->getProductRepository()->findBySalesChannel(
+            $salesChannel->getId(),
+            $productIds,
+            $this->aclHelper
+        );
 
         foreach ($products as $product) {
             $priceValue = $this->getDefaultPrice($salesChannel, $product);

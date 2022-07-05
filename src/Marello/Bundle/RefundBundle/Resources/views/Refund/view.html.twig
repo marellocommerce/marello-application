@@ -1,6 +1,6 @@
-{% extends 'OroUIBundle:actions:view.html.twig' %}
-{% import 'OroUIBundle::macros.html.twig' as UI %}
-{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% extends '@OroUI/actions/view.html.twig' %}
+{% import '@OroUI/macros.html.twig' as UI %}
+{% import '@OroDataGrid/macros.html.twig' as dataGrid %}
 
 {% block navButtons %}
     {% if is_granted('marello_refund_update') and marello_refund_is_pending(entity) %}
@@ -69,9 +69,6 @@
                     {% for stepLabel, stepName in steps %}
                         {{ UI.renderProperty( stepLabel|trans({}, "workflows"), stepName|trans({}, "workflows") ) }}
                     {% endfor %}
-
-                    {{ UI.renderProperty('oro.ui.created_at'|trans, entity.createdAt|date) }}
-                    {{ UI.renderProperty('oro.ui.updated_at'|trans, entity.updatedAt|date) }}
                     {{ UI.renderProperty('marello.order.payment_method.label'|trans, entity.order.paymentMethod) }}
                 </div>
                 {{ totals }}

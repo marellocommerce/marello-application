@@ -23,18 +23,18 @@ class OrderWorkflowStartListenerTest extends TestCase
 {
     const TRANSIT_TO_STEP = 'pending';
 
-    /** @var WorkflowManager|\PHPUnit_Framework_MockObject_MockObject $workflowManager */
+    /** @var WorkflowManager|\PHPUnit\Framework\MockObject\MockObject $workflowManager */
     private $workflowManagerMock;
 
     /** @var  OrderWorkflowStartListener $orderWorkflowStartListener */
     private $orderWorkflowStartListener;
 
-    /** @var DoctrineHelper|\PHPUnit_Framework_MockObject_MockObject $doctrineHelperMock */
+    /** @var DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject $doctrineHelperMock */
     private $doctrineHelperMock;
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->workflowManagerMock = $this->createMock(WorkflowManager::class);
         $this->doctrineHelperMock = $this->createMock(DoctrineHelper::class);
@@ -89,19 +89,11 @@ class OrderWorkflowStartListenerTest extends TestCase
                 )
         ];
 
-        $this->assertAttributeEquals(
-            $expectedSchedule,
-            'entitiesScheduledForWorkflowStart',
-            $this->orderWorkflowStartListener
-        );
-
         $this->workflowManagerMock->expects(static::once())
             ->method('massStartWorkflow')
             ->with($expectedSchedule);
 
         $this->orderWorkflowStartListener->postFlush($eventPostFlushArgs);
-
-        $this->assertAttributeEmpty('entitiesScheduledForWorkflowStart', $this->orderWorkflowStartListener);
     }
 
     /**
@@ -122,7 +114,6 @@ class OrderWorkflowStartListenerTest extends TestCase
             ],
             $this->workflowManagerMock
         );
-        $this->assertAttributeEmpty('entitiesScheduledForWorkflowStart', $this->orderWorkflowStartListener);
         /** @var PostFlushEventArgs|\PHPUnit\Framework\MockObject\MockObject $eventPostFlushArgs */
         $eventPostFlushArgs = $this->createPostFlushEventArgsMock($entity);
 
@@ -133,7 +124,6 @@ class OrderWorkflowStartListenerTest extends TestCase
             ->method('massStartWorkflow');
 
         $this->orderWorkflowStartListener->postFlush($eventPostFlushArgs);
-        $this->assertAttributeEmpty('entitiesScheduledForWorkflowStart', $this->orderWorkflowStartListener);
     }
 
     /**

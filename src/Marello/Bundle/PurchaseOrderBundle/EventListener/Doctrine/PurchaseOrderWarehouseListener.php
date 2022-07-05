@@ -6,21 +6,14 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Oro\Bundle\EntityBundle\ORM\Registry;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class PurchaseOrderWarehouseListener
 {
-    /**
-     * @var Registry
-     */
-    private $doctrine;
-
-    /**
-     * @param Registry $doctrine
-     */
-    public function __construct(Registry $doctrine)
-    {
-        $this->doctrine = $doctrine;
-    }
+    public function __construct(
+        private Registry $doctrine,
+        private AclHelper $aclHelper
+    ) {}
 
     public function prePersist(LifecycleEventArgs $args)
     {
@@ -35,9 +28,8 @@ class PurchaseOrderWarehouseListener
         }
 
         $defaultWarehouse = $this->doctrine
-            ->getManagerForClass(Warehouse::class)
             ->getRepository(Warehouse::class)
-            ->getDefault();
+            ->getDefault($this->aclHelper);
 
         if ($defaultWarehouse === null) {
             throw new \Exception('There is no Default Warehouse');

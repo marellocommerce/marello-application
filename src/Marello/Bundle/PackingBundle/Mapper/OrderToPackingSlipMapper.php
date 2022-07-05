@@ -4,6 +4,8 @@ namespace Marello\Bundle\PackingBundle\Mapper;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Marello\Bundle\InventoryBundle\Entity\Allocation;
+use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
@@ -19,73 +21,54 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 class OrderToPackingSlipMapper extends AbstractPackingSlipMapper
 {
     /**
-     * @var OrderWarehousesProviderInterface
-     */
-    protected $warehousesProvider;
-
-    public function __construct(
-        EntityFieldProvider $entityFieldProvider,
-        PropertyAccessorInterface $propertyAccessor,
-        OrderWarehousesProviderInterface $warehousesProvider
-    ) {
-        parent::__construct($entityFieldProvider, $propertyAccessor);
-        $this->warehousesProvider = $warehousesProvider;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function map($sourceEntity)
     {
-        if (!($sourceEntity instanceof Order)) {
+        if (!($sourceEntity instanceof Allocation)) {
             throw new \InvalidArgumentException(
                 sprintf('Wrong source entity "%s" provided to OrderToPackingSlipMapper', get_class($sourceEntity))
             );
         }
-        $packingSlips = [];
-        foreach ($this->warehousesProvider->getWarehousesForOrder($sourceEntity) as $result) {
-            /** @var Order $sourceEntity */
-            $packingSlip = new PackingSlip();
-            $data = $this->getData($sourceEntity, PackingSlip::class);
-            $data['order'] = $sourceEntity;
-            $warehouse = $result->getWarehouse();
-            $data['warehouse'] = $warehouse;
-            $data['items'] = $this->getItems($result->getOrderItems(), $warehouse);
+        /** @var Allocation $sourceEntity */
+        $packingSlip = new PackingSlip();
+        $data = $this->getData($sourceEntity->getOrder(), PackingSlip::class);
+        $data['order'] = $sourceEntity->getOrder();
+        $data['warehouse'] = $sourceEntity->getWarehouse();
+        $data['sourceEntity'] = $sourceEntity;
+        $data['items'] = $this->getItems($sourceEntity);
 
-            $this->assignData($packingSlip, $data);
-            $packingSlips[] = $packingSlip;
-        }
-        return $packingSlips;
+        $this->assignData($packingSlip, $data);
+
+        return [$packingSlip];
     }
 
     /**
      * @param Collection $items
-     * @param Warehouse $warehouse
      * @return ArrayCollection
      */
-    protected function getItems(Collection $items, Warehouse $warehouse)
+    protected function getItems(Allocation $sourceEntity)
     {
-        $orderItems = $items->toArray();
+        $allocationItems = $sourceEntity->getItems()->toArray();
         $packingSlipItems = [];
-        /** @var OrderItem $item */
-        foreach ($orderItems as $item) {
-            $packingSlipItems[] = $this->mapItem($item, $warehouse);
+        /** @var AllocationItem $item */
+        foreach ($allocationItems as $item) {
+            $packingSlipItems[] = $this->mapItem($item, $sourceEntity->getWarehouse());
         }
 
         return new ArrayCollection($packingSlipItems);
     }
 
     /**
-     * @param OrderItem $orderItem
-     * @param Warehouse $warehouse
+     * @param AllocationItem $allocationItem
      * @return PackingSlipItem
      */
-    protected function mapItem(OrderItem $orderItem, Warehouse $warehouse)
+    protected function mapItem($allocationItem, Warehouse $warehouse)
     {
         $packingSlipItem = new PackingSlipItem();
-        $packingSlipItemData = $this->getData($orderItem, PackingSlipItem::class);
+        $packingSlipItemData = $this->getData($allocationItem, PackingSlipItem::class);
         /** @var Product $product */
-        $product = $orderItem->getProduct();
+        $product = $allocationItem->getProduct();
         /** @var InventoryItem $inventoryItem */
         $inventoryItem = $product->getInventoryItems()->first();
         if ($inventoryItem) {
@@ -102,9 +85,14 @@ class OrderToPackingSlipMapper extends AbstractPackingSlipMapper
                         }
                     });
                     $data = [];
-                    $quantity = $orderItem->getQuantity();
+                    $quantity = $allocationItem->getQuantity();
                     /** @var InventoryBatch[] $inventoryBatches */
+                    $currentDateTime = new \DateTime('now', new \DateTimeZone('UTC'));
                     foreach ($inventoryBatches as $inventoryBatch) {
+                        // we cannot use expired batches
+                        if ($inventoryBatch->getExpirationDate() && $inventoryBatch->getExpirationDate() <= $currentDateTime) {
+                            continue;
+                        }
                         if ($inventoryBatch->getQuantity() >= $quantity) {
                             $data[$inventoryBatch->getBatchNumber()] = $quantity;
                             break;
@@ -117,8 +105,8 @@ class OrderToPackingSlipMapper extends AbstractPackingSlipMapper
                 }
             }
         }
-        $packingSlipItemData['weight'] = ($product->getWeight() * $orderItem->getQuantity());
-        $packingSlipItemData['orderItem'] = $orderItem;
+        $packingSlipItemData['weight'] = ($product->getWeight() * $allocationItem->getQuantity());
+        $packingSlipItemData['orderItem'] = $allocationItem->getOrderItem();
         $this->assignData($packingSlipItem, $packingSlipItemData);
 
         return $packingSlipItem;

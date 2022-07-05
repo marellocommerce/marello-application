@@ -15,6 +15,7 @@ use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
 use Oro\Component\Action\Event\ExtendableActionEvent;
@@ -22,36 +23,12 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class OrderItemStatusListener
 {
-    /**
-     * @var DoctrineHelper
-     */
-    protected $doctrineHelper;
-
-    /**
-     * @var AvailableInventoryProvider
-     */
-    protected $availableInventoryProvider;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @param DoctrineHelper $doctrineHelper
-     * @param AvailableInventoryProvider $availableInventoryProvider
-     * @param EventDispatcherInterface $eventDispatcher
-     */
     public function __construct(
-        DoctrineHelper $doctrineHelper,
-        AvailableInventoryProvider $availableInventoryProvider,
-        EventDispatcherInterface $eventDispatcher
-    ) {
-        $this->doctrineHelper = $doctrineHelper;
-        $this->availableInventoryProvider = $availableInventoryProvider;
-        $this->eventDispatcher = $eventDispatcher;
-    }
-
+        protected DoctrineHelper $doctrineHelper,
+        protected AvailableInventoryProvider $availableInventoryProvider,
+        protected EventDispatcherInterface $eventDispatcher,
+        protected AclHelper $aclHelper
+    ) {}
 
     /**
      * @param LifecycleEventArgs $args
@@ -61,25 +38,27 @@ class OrderItemStatusListener
         $entity = $args->getEntity();
         if ($entity instanceof OrderItem) {
             $product = $entity->getProduct();
-            /** @var InventoryItem $inventoryItem */
-            $inventoryItem = $product->getInventoryItems()->first();
-            $availableInventory = $this->availableInventoryProvider->getAvailableInventory(
-                $product,
-                $entity->getOrder()->getSalesChannel()
-            );
-            if ($availableInventory < $entity->getQuantity() &&
-                (
-                    ($inventoryItem->isBackorderAllowed() &&
-                        $inventoryItem->getMaxQtyToBackorder() >= $entity->getQuantity()
-                    ) || ($inventoryItem->isCanPreorder() &&
-                        $inventoryItem->getMaxQtyToPreorder() >= $entity->getQuantity())
-                    || $inventoryItem->isOrderOnDemandAllowed()
-                )
-            ) {
-                $entity->setStatus($this->findStatusByName(LoadOrderItemStatusData::WAITING_FOR_SUPPLY));
-            } else {
-                if (!$entity->getStatus()) {
-                    $entity->setStatus($this->findDefaultStatus());
+            if ($product) {
+                /** @var InventoryItem $inventoryItem */
+                $inventoryItem = $product->getInventoryItems()->first();
+                $availableInventory = $this->availableInventoryProvider->getAvailableInventory(
+                    $product,
+                    $entity->getOrder()->getSalesChannel()
+                );
+                if ($availableInventory < $entity->getQuantity() &&
+                    (
+                        ($inventoryItem->isBackorderAllowed() &&
+                            $inventoryItem->getMaxQtyToBackorder() >= $entity->getQuantity()
+                        ) || ($inventoryItem->isCanPreorder() &&
+                            $inventoryItem->getMaxQtyToPreorder() >= $entity->getQuantity())
+                        || $inventoryItem->isOrderOnDemandAllowed()
+                    )
+                ) {
+                    $entity->setStatus($this->findStatusByName(LoadOrderItemStatusData::WAITING_FOR_SUPPLY));
+                } else {
+                    if (!$entity->getStatus()) {
+                        $entity->setStatus($this->findDefaultStatus());
+                    }
                 }
             }
         }
@@ -110,8 +89,8 @@ class OrderItemStatusListener
             if ($availableInventory >= $orderItem->getQuantity()) {
                 $event = new OrderItemStatusUpdateEvent($orderItem, LoadOrderItemStatusData::PROCESSING);
                 $this->eventDispatcher->dispatch(
-                    OrderItemStatusUpdateEvent::NAME,
-                    $event
+                    $event,
+                    OrderItemStatusUpdateEvent::NAME
                 );
                 $orderItem->setStatus($this->findStatusByName($event->getStatusName()));
                 $entityManager->persist($orderItem);
@@ -142,8 +121,8 @@ class OrderItemStatusListener
                 $event = new OrderItemStatusUpdateEvent($orderItem, LoadOrderItemStatusData::COULD_NOT_ALLOCATE);
             }
             $this->eventDispatcher->dispatch(
-                OrderItemStatusUpdateEvent::NAME,
-                $event
+                $event,
+                OrderItemStatusUpdateEvent::NAME
             );
             $orderItem->setStatus($this->findStatusByName($event->getStatusName()));
             $entityManager->persist($orderItem);
@@ -212,6 +191,6 @@ class OrderItemStatusListener
         return $this->doctrineHelper
             ->getEntityManagerForClass(BalancedInventoryLevel::class)
             ->getRepository(BalancedInventoryLevel::class)
-            ->findExistingBalancedInventory($product, $salesChannelGroup);
+            ->findExistingBalancedInventory($product, $salesChannelGroup, $this->aclHelper);
     }
 }

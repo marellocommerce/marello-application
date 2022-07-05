@@ -3,6 +3,7 @@
 namespace Marello\Bundle\PricingBundle\Tests\Functional\Api;
 
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Symfony\Component\HttpFoundation\Response;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
@@ -19,7 +20,7 @@ class AssembledChannelPriceListJsonApiTest extends RestJsonApiTestCase
 {
     const TESTING_ENTITY = 'marelloassembledchannelpricelists';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->loadFixtures([
@@ -110,7 +111,9 @@ class AssembledChannelPriceListJsonApiTest extends RestJsonApiTestCase
         $responseContent = json_decode($productResponse->getContent());
         /** @var Product $product */
         $productRepo = $this->getEntityManager()->getRepository(Product::class);
-        $product = $productRepo->findOneBySku($responseContent->data->id);
+        /** @var AclHelper $aclHelper */
+        $aclHelper = $this->getContainer()->get('oro_security.acl_helper');
+        $product = $productRepo->findOneBySku($responseContent->data->id, $aclHelper);
         $this->assertCount(1, $product->getChannelPrices());
     }
 }

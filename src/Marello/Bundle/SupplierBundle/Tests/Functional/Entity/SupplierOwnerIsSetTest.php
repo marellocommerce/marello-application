@@ -12,7 +12,7 @@ use Marello\Bundle\SupplierBundle\Tests\Functional\DataFixtures\LoadSupplierData
 
 class SupplierOwnerIsSetTest extends WebTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->initClient(
             [],
@@ -54,6 +54,7 @@ class SupplierOwnerIsSetTest extends WebTestCase
         $form = $crawler->selectButton('Save and Close')->form();
         $name = 'Supplier 1';
         $form['marello_supplier_form[name]'] = $name;
+        $form['marello_supplier_form[code]'] = 'supplier1';
         $form['marello_supplier_form[address][country]'] = 'NL';
         $form['marello_supplier_form[address][street]'] = 'Street 1';
         $form['marello_supplier_form[address][city]'] = 'Eindhoven';
@@ -67,8 +68,7 @@ class SupplierOwnerIsSetTest extends WebTestCase
         $result = $this->client->getResponse();
 
         $this->assertResponseStatusCodeEquals($result, Response::HTTP_OK);
-        $this->assertContains('Supplier saved', $crawler->html());
-        $this->assertContains($name, $crawler->html());
+        $this->assertStringContainsString('Supplier saved', $crawler->html());
 
         $response = $this->client->requestGrid(
             'marello-supplier-grid',

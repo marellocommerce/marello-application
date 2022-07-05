@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\RuleBundle\Tests\Functional\DataFixtures;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\RuleBundle\Entity\Rule;
 use Oro\Bundle\TestFrameworkBundle\Test\DataFixtures\AbstractFixture;
 use Symfony\Component\Yaml\Yaml;

@@ -10,6 +10,7 @@ use Marello\Bundle\InventoryBundle\Model\InventoryBalancer\InventoryBalancerTrig
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 
 class BalancedInventoryUpdateAfterEventListener
@@ -17,30 +18,12 @@ class BalancedInventoryUpdateAfterEventListener
     const BALANCED_LEVEL_CONTEXT_KEY = 'balancedInventoryLevel';
     const SALESCHANNELGROUP_CONTEXT_KEY  = 'salesChannelGroup';
 
-    /** @var MessageProducerInterface $messageProducer */
-    private $messageProducer;
-
-    /** @var InventoryBalancerTriggerCalculator $triggerCalculator */
-    private $triggerCalculator;
-
-    /** @var BalancedInventoryRepository $repository */
-    private $repository;
-
-    /**
-     * BalancedInventoryUpdateAfterEventListener constructor.
-     * @param MessageProducerInterface $messageProducer
-     * @param InventoryBalancerTriggerCalculator $triggerCalculator
-     * @param BalancedInventoryRepository $repository
-     */
     public function __construct(
-        MessageProducerInterface $messageProducer,
-        InventoryBalancerTriggerCalculator $triggerCalculator,
-        BalancedInventoryRepository $repository
-    ) {
-        $this->messageProducer = $messageProducer;
-        $this->triggerCalculator = $triggerCalculator;
-        $this->repository = $repository;
-    }
+        private MessageProducerInterface $messageProducer,
+        private InventoryBalancerTriggerCalculator $triggerCalculator,
+        private BalancedInventoryRepository $repository,
+        private AclHelper $aclHelper
+    ) {}
 
     /**
      * Handle incoming event
@@ -118,6 +101,6 @@ class BalancedInventoryUpdateAfterEventListener
     protected function findExistingBalancedInventory(ProductInterface $product, SalesChannelGroup $group)
     {
         /** @var BalancedInventoryRepository $repository */
-        return $this->repository->findExistingBalancedInventory($product, $group);
+        return $this->repository->findExistingBalancedInventory($product, $group, $this->aclHelper);
     }
 }

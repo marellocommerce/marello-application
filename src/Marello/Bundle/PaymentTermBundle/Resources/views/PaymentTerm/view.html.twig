@@ -1,7 +1,7 @@
-{% extends 'OroUIBundle:actions:view.html.twig' %}
-{% import 'OroUIBundle::macros.html.twig' as UI %}
-{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
-{% import 'OroEntityConfigBundle::macros.html.twig' as entityConfig %}
+{% extends '@OroUI/actions/view.html.twig' %}
+{% import '@OroUI/macros.html.twig' as UI %}
+{% import '@OroDataGrid/macros.html.twig' as dataGrid %}
+{% import '@OroEntityConfig/macros.html.twig' as entityConfig %}
 
 {% oro_title_set({params : {"%label%": entity.labels|localized_value } }) %}
 {% set gridName  = 'marello-paymentterm-grid' %}

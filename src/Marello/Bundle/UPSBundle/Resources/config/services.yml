@@ -1,9 +1,12 @@
+imports:
+    - { resource: controllers.yml }
+
 parameters:
     marello_ups.integration.channel.type: 'marello_ups'
     marello_ups.integration.transport.type: 'marello_ups'
     marello_ups.api.url.production: 'https://onlinetools.ups.com'
     marello_ups.api.url.test: 'https://wwwcie.ups.com'
-    marello_ups.admin_view.method_template: 'MarelloUPSBundle::UPSMethodWithOptions.html.twig'
+    marello_ups.admin_view.method_template: '@@MarelloUPS/UPSMethodWithOptions.html.twig'
 
 services:
     # Providers
@@ -142,8 +145,10 @@ services:
             - "@marello_ups.cache.lifetime_provider"
 
     marello_ups.cache.shipping_price:
-        public: false
         parent: oro.cache.abstract
+        public: false
+        calls:
+            - [ setNamespace, [ 'marello_ups_cache_shipping_price' ] ]
 
     marello_ups.cache.lifetime_provider:
         class: 'Marello\Bundle\UPSBundle\Cache\Lifetime\UPSSettings\LifetimeByInvalidateCacheAtFieldProvider'
@@ -170,8 +175,9 @@ services:
             - '@oro_integration.transport.rest.client_factory'
             - '@marello_ups.client.url_provider_basic'
 
-    marello_ups.repository.shipping_service:
-        class: 'Marello\Bundle\UPSBundle\Entity\Repository\ShippingServiceRepository'
+    Marello\Bundle\UPSBundle\Entity\Repository\ShippingServiceRepository:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\UPSBundle\Entity\ShippingService'
+        tags:
+            - { name: doctrine.repository_service }

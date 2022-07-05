@@ -8,16 +8,17 @@ use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 use Marello\Bundle\ReturnBundle\Twig\ReturnExtension;
 use Marello\Bundle\ReturnBundle\Util\ReturnHelper;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Twig\TwigFunction;
 
 class ReturnExtensionTest extends WebTestCase
 {
     /**
-     * @var ReturnHelper|\PHPUnit_Framework_MockObject_MockObject
+     * @var ReturnHelper|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $helper;
 
     /**
-     * @var WorkflowManager|\PHPUnit_Framework_MockObject_MockObject
+     * @var WorkflowManager|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $workflowManager;
 
@@ -29,7 +30,7 @@ class ReturnExtensionTest extends WebTestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->helper = $this->getMockBuilder(ReturnHelper::class)
             ->disableOriginalConstructor()
@@ -45,7 +46,7 @@ class ReturnExtensionTest extends WebTestCase
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->extension);
         unset($this->helper);
@@ -73,9 +74,8 @@ class ReturnExtensionTest extends WebTestCase
             'marello_return_is_on_hold'
         );
 
-        /** @var \Twig_SimpleFunction $function */
         foreach ($functions as $function) {
-            $this->assertInstanceOf('\Twig_SimpleFunction', $function);
+            $this->assertInstanceOf(TwigFunction::class, $function);
             $this->assertContains($function->getName(), $expectedFunctions);
         }
     }

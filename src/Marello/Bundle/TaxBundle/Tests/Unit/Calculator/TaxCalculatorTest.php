@@ -13,11 +13,11 @@ use Marello\Bundle\PricingBundle\DependencyInjection\Configuration;
 class TaxCalculatorTest extends TestCase
 {
     /**
-     * @var ConfigManager|\PHPUnit_Framework_MockObject_MockObject
+     * @var ConfigManager|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $configManager;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->configManager = $this->getMockBuilder(ConfigManager::class)
             ->disableOriginalConstructor()->getMock();
@@ -32,10 +32,10 @@ class TaxCalculatorTest extends TestCase
      */
     public function testTaxIncluded($taxConfig, $inclCalculatorRun, $exclCalculatorRun)
     {
-        /** @var TaxCalculatorInterface|\PHPUnit_Framework_MockObject_MockObject $taxIncl */
+        /** @var TaxCalculatorInterface|\PHPUnit\Framework\MockObject\MockObject $taxIncl */
         $taxIncl = $this->createMock(TaxCalculatorInterface::class);
 
-        /** @var TaxCalculatorInterface|\PHPUnit_Framework_MockObject_MockObject $taxExcl */
+        /** @var TaxCalculatorInterface|\PHPUnit\Framework\MockObject\MockObject $taxExcl */
         $taxExcl = $this->createMock(TaxCalculatorInterface::class);
 
         $this->configManager

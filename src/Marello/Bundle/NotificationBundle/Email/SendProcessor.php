@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\NotificationBundle\Email;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\LocaleBundle\Manager\EmailTemplateManager;
 use Marello\Bundle\NotificationBundle\Entity\Notification;
 use Marello\Bundle\NotificationBundle\Exception\MarelloNotificationException;
@@ -94,7 +94,6 @@ class SendProcessor
      * @param array  $data         Empty array for possible extending of additional parameters
      * @throws MarelloNotificationException
      * @throws \Oro\Bundle\NotificationBundle\Exception\NotificationSendException
-     * @throws \Twig_Error
      */
     public function sendNotification($templateName, array $recipients, $entity, array $data = [])
     {

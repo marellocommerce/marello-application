@@ -7,11 +7,12 @@ use PHPUnit\Framework\TestCase;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SupplierBundle\Twig\SupplierExtension;
 use Marello\Bundle\SupplierBundle\Provider\SupplierProvider;
+use Twig\TwigFunction;
 
 class SupplierExtensionTest extends TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $supplierProvider;
 
@@ -20,7 +21,7 @@ class SupplierExtensionTest extends TestCase
      */
     protected $extension;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->supplierProvider = $this->getMockBuilder(SupplierProvider::class)
             ->disableOriginalConstructor()
@@ -28,7 +29,7 @@ class SupplierExtensionTest extends TestCase
         $this->extension = new SupplierExtension($this->supplierProvider);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->extension);
         unset($this->supplierProvider);
@@ -48,9 +49,8 @@ class SupplierExtensionTest extends TestCase
             'marello_supplier_get_supplier_ids'
         );
 
-        /** @var \Twig_SimpleFunction $function */
         foreach ($functions as $function) {
-            $this->assertInstanceOf('\Twig_SimpleFunction', $function);
+            $this->assertInstanceOf(TwigFunction::class, $function);
             $this->assertContains($function->getName(), $expectedFunctions);
         }
     }

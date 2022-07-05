@@ -1,2 +1,2 @@
-{% import 'MarelloPaymentBundle:PaymentMethodsConfigsRule:macros.html.twig' as PayRuleMacro %}
+{% import '@MarelloPayment/PaymentMethodsConfigsRule/macros.html.twig' as PayRuleMacro %}
 {{ PayRuleMacro.renderPaymentMethodsConfigs(record.getValue('methodConfigs').toArray(), record.getValue('currency'))}}

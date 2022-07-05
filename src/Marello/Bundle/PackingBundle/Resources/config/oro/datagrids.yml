@@ -129,7 +129,7 @@ datagrids:
                 label:            marello.packing.packingslipitem.product_sku.label
                 type:             twig
                 frontend_type:    html
-                template:         MarelloProductBundle:Product/Datagrid:productSku.html.twig
+                template:         '@MarelloProduct/Product/Datagrid/productSku.html.twig'
             productName:
                 label:            marello.packing.packingslipitem.product_name.label
             quantity:
@@ -148,7 +148,7 @@ datagrids:
                 label:            marello.packing.packingslipitem.inventory_batches.label
                 type:             twig
                 frontend_type:    html
-                template:         MarelloPackingBundle:PackingSlip/Datagrid:inventoryBatches.html.twig
+                template:         '@MarelloPacking/PackingSlip/Datagrid/inventoryBatches.html.twig'
             createdAt:
                 label:            oro.ui.created_at
                 frontend_type:    datetime

@@ -12,12 +12,12 @@ class MarelloUPSExtensionTest extends ExtensionTestCase
      */
     protected $extension;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->extension = new MarelloUPSExtension();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->extension);
     }
@@ -40,7 +40,7 @@ class MarelloUPSExtensionTest extends ExtensionTestCase
             'marello_ups.connection.validator.result.factory',
             'marello_ups.connection.validator',
             'marello_ups.handler.action.invalidate_cache',
-            'marello_ups.repository.shipping_service',
+            'Marello\Bundle\UPSBundle\Entity\Repository\ShippingServiceRepository',
         ];
         $this->assertDefinitionsLoaded($expectedDefinitions);
     }

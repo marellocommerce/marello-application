@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\PaymentTermBundle\Tests\Unit\Form\Type;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\PaymentTermBundle\Entity\PaymentTerm;
 use Marello\Bundle\PaymentTermBundle\Form\Type\PaymentTermType;
 use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
@@ -18,7 +18,7 @@ class PaymentTermTypeTest extends FormIntegrationTestCase
 {
     protected function getExtensions()
     {
-        /** @var ManagerRegistry|\PHPUnit_Framework_MockObject_MockObject $registry */
+        /** @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject $registry */
         $registry = $this->createMock(ManagerRegistry::class);
         $localizedFallbackValue = new LocalizedFallbackValueCollectionType($registry);
 

@@ -4,6 +4,7 @@ namespace Marello\Bundle\PackingBundle\Tests\Unit\EventListener;
 
 use Doctrine\ORM\EntityManagerInterface;
 
+use Marello\Bundle\InventoryBundle\Entity\Allocation;
 use PHPUnit\Framework\TestCase;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
@@ -20,17 +21,17 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class CreatePackingSlipEventListenerTest extends TestCase
 {
     /**
-     * @var MapperInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var MapperInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $mapper;
 
     /**
-     * @var EntityManagerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $entityManager;
     
     /**
-     * @var EventDispatcherInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var EventDispatcherInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $eventDispatcher;
 
@@ -39,10 +40,10 @@ class CreatePackingSlipEventListenerTest extends TestCase
      */
     protected $createPackingSlipEventListener;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->mapper = $this->createMock(MapperInterface::class);
-        /** @var DoctrineHelper|\PHPUnit_Framework_MockObject_MockObject $doctrineHelper */
+        /** @var DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject $doctrineHelper */
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
         $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $doctrineHelper = $this->getMockBuilder(DoctrineHelper::class)
@@ -63,14 +64,14 @@ class CreatePackingSlipEventListenerTest extends TestCase
     /**
      * @dataProvider onCreatePackingSlipDataProvider
      *
-     * @param bool $hasOrder
+     * @param bool $hasAllocation
      * @param array $mappedEntities
      * @param int $persistQuantity
      * @param int $flushQuantity
      */
-    public function testOnCreatePackingSlip($hasOrder, array $mappedEntities, $persistQuantity, $flushQuantity)
+    public function testOnCreatePackingSlip($hasAllocation, array $mappedEntities, $persistQuantity, $flushQuantity)
     {
-        $event = $this->prepareEvent($hasOrder);
+        $event = $this->prepareEvent($hasAllocation);
 
         $this->mapper
             ->expects(static::any())
@@ -91,19 +92,19 @@ class CreatePackingSlipEventListenerTest extends TestCase
     {
         return [
             'correctData' => [
-                'hasOrder' => true,
+                'hasAllocation' => true,
                 'mappedEntities' => [new PackingSlip(), new PackingSlip()],
                 'persistQuantity' => 2,
                 'flushQuantity' => 1
             ],
             'noOrderInContext' => [
-                'hasOrder' => false,
+                'hasAllocation' => false,
                 'mappedEntities' => [new PackingSlip(), new PackingSlip()],
                 'persistQuantity' => 0,
                 'flushQuantity' => 0
             ],
             'noMappedEntities' => [
-                'hasOrder' => true,
+                'hasAllocation' => true,
                 'mappedEntities' => [],
                 'persistQuantity' => 0,
                 'flushQuantity' => 0
@@ -112,25 +113,26 @@ class CreatePackingSlipEventListenerTest extends TestCase
     }
 
     /**
-     * @param bool $hasOrder
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @param bool $hasAllocation
+     * @return \PHPUnit\Framework\MockObject\MockObject
      */
-    protected function prepareEvent($hasOrder = true)
+    protected function prepareEvent($hasAllocation = true)
     {
         $event = $this->getMockBuilder(ExtendableActionEvent::class)
             ->disableOriginalConstructor()
             ->getMock();
         $workflowItem = $this->createMock(WorkflowItem::class);
         $workflowData = $this->createMock(WorkflowData::class);
-
+        $allocation = new Allocation();
+        $allocation->setOrder(new Order());
         $workflowData->expects($this->once())
             ->method('has')
-            ->with('order')
-            ->willReturn($hasOrder);
+            ->with('allocation')
+            ->willReturn($hasAllocation);
         $workflowData->expects($this->any())
             ->method('get')
-            ->with('order')
-            ->willReturn(new Order());
+            ->with('allocation')
+            ->willReturn($allocation);
         $workflowItem->expects($this->any())
             ->method('getData')
             ->willReturn($workflowData);

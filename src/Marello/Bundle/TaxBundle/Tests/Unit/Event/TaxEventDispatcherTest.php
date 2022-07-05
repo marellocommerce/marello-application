@@ -14,7 +14,7 @@ class TaxEventDispatcherTest extends TestCase
 {
     public function testDispatch()
     {
-        /** @var EventDispatcherInterface|\PHPUnit_Framework_MockObject_MockObject $eventDispatcher */
+        /** @var EventDispatcherInterface|\PHPUnit\Framework\MockObject\MockObject $eventDispatcher */
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
 
         $taxDispatcher = new TaxEventDispatcher($eventDispatcher);
@@ -22,9 +22,9 @@ class TaxEventDispatcherTest extends TestCase
 
         $eventDispatcher->expects($this->exactly(3))->method('dispatch')
             ->withConsecutive(
-                [ResolveTaxEvent::RESOLVE_BEFORE, $this->isInstanceOf(ResolveTaxEvent::class)],
-                [ResolveTaxEvent::RESOLVE, $this->isInstanceOf(ResolveTaxEvent::class)],
-                [ResolveTaxEvent::RESOLVE_AFTER, $this->isInstanceOf(ResolveTaxEvent::class)]
+                [$this->isInstanceOf(ResolveTaxEvent::class), ResolveTaxEvent::RESOLVE_BEFORE],
+                [$this->isInstanceOf(ResolveTaxEvent::class), ResolveTaxEvent::RESOLVE],
+                [$this->isInstanceOf(ResolveTaxEvent::class), ResolveTaxEvent::RESOLVE_AFTER]
             );
 
         $taxDispatcher->dispatch($taxable);

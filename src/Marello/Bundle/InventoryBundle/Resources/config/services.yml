@@ -1,3 +1,6 @@
+imports:
+    - { resource: controllers.yml }
+
 services:
     marello_product.widget_provider.actions.variant_mass_inventory:
         parent: oro_ui.widget_provider.action_button.abstract
@@ -11,18 +14,21 @@ services:
         class: Marello\Bundle\InventoryBundle\Logging\ChartBuilder
         public: true
         arguments:
-            - '@marello_inventory.repository.inventorylevellogrecord'
+            - '@Marello\Bundle\InventoryBundle\Entity\Repository\InventoryLevelLogRecordRepository'
             - '@marello_inventory.model.inventory_level_totals_calculator'
             - '@oro_dashboard.datetime.helper'
             - '@translator'
+            - '@oro_security.acl_helper'
 
     marello_inventory.manager.inventory_manager:
         class: 'Marello\Bundle\InventoryBundle\Manager\InventoryManager'
         public: true
-        calls:
-            - [setContextValidator, ['@marello_inventory.validator.inventory_update_context']]
-            - [setDoctrineHelper, ['@oro_entity.doctrine_helper']]
-            - [setEventDispatcher, ['@event_dispatcher']]
+        arguments:
+            - '@marello_inventory.validator.inventory_update_context'
+            - '@marello_inventory.model.inventory_level_calculator'
+            - '@oro_entity.doctrine_helper'
+            - '@oro_security.acl_helper'
+            - '@event_dispatcher'
         lazy: true
 
     marello_inventory.validator.inventory_update_context:
@@ -52,36 +58,34 @@ services:
     marello_inventory.twig.warehouse_extension:
         class: 'Marello\Bundle\InventoryBundle\Twig\WarehouseExtension'
         arguments:
-            - '@marello_inventory.repository.warehouse'
+            - '@doctrine'
         tags:
             - { name: twig.extension }
 
     marello_inventory.provider.order_warehouse:
         class: 'Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProvider'
 
-    marello_inventory.repository.warehouse:
-        class: 'Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository'
+    Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\InventoryBundle\Entity\Warehouse'
-        calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
+        tags:
+            - { name: doctrine.repository_service }
 
-    marello_inventory.repository.warehousegroup:
-        class: 'Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseGroupRepository'
+    Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseGroupRepository:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\InventoryBundle\Entity\WarehouseGroup'
-        calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
+        tags:
+            - { name: doctrine.repository_service }
 
-    marello_inventory.repository.warehousechannelgrouplink:
-        class: 'Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository'
+    Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink'
-        calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
+            - '@oro_security.acl_helper'
+        tags:
+            - { name: doctrine.repository_service }
 
     marello_inventory.balancer_strategy.registry:
         class: 'Marello\Bundle\InventoryBundle\Strategy\BalancerStrategiesRegistry'
@@ -114,6 +118,7 @@ services:
         class: 'Marello\Bundle\InventoryBundle\Provider\AvailableInventoryProvider'
         arguments:
             - '@oro_entity.doctrine_helper'
+            - '@oro_security.acl_helper'
 
     marello_inventory.provider.available_inventory_form_provider:
         class: 'Marello\Bundle\InventoryBundle\Provider\AvailableInventoryFormProvider'
@@ -127,16 +132,17 @@ services:
         arguments:
             - '@doctrine'
             - '@marello_inventory.model.balancedinventory.balanced_inventory_factory'
+            - '@oro_security.acl_helper'
 
     marello_inventory.model.balancedinventory.balanced_inventory_factory:
         class: 'Marello\Bundle\InventoryBundle\Model\BalancedInventory\BalancedInventoryFactory'
 
     marello_inventory.manager.balancedinventory_manager:
         class: 'Marello\Bundle\InventoryBundle\Manager\BalancedInventoryManager'
-        calls:
-            - [setBalancedInventoryHandler, ['@marello_inventory.model.balancedinventory.balanced_inventory_handler']]
-            - [setContextValidator, ['@marello_inventory.validator.inventory_update_context']]
-            - [setEventDispatcher, ['@event_dispatcher']]
+        arguments:
+            - '@marello_inventory.model.balancedinventory.balanced_inventory_handler'
+            - '@marello_inventory.validator.inventory_update_context'
+            - '@event_dispatcher'
         lazy: true
 
     marello_inventory.async.inventory_rebalance_products_processor:
@@ -144,7 +150,7 @@ services:
         arguments:
             - '@oro_message_queue.client.message_producer'
             - '@logger'
-            - '@marello_product.repository.product'
+            - '@Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository'
         tags:
             - { name: 'oro_message_queue.client.message_processor' }
 
@@ -166,37 +172,34 @@ services:
         tags:
             - { name: 'oro_message_queue.client.message_processor' }
 
-    marello_inventory.repository.balancedinventory:
-        class: 'Marello\Bundle\InventoryBundle\Entity\Repository\BalancedInventoryRepository'
+    Marello\Bundle\InventoryBundle\Entity\Repository\BalancedInventoryRepository:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel'
-        calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
+        tags:
+            - { name: doctrine.repository_service }
 
-    marello_inventory.repository.inventorylevellogrecord:
-        class: 'Marello\Bundle\InventoryBundle\Entity\Repository\InventoryLevelLogRecordRepository'
+    Marello\Bundle\InventoryBundle\Entity\Repository\InventoryLevelLogRecordRepository:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\InventoryBundle\Entity\InventoryLevelLogRecord'
-        calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
+        tags:
+            - { name: doctrine.repository_service }
 
-    marello_inventory.repository.inventoryitem:
-        class: 'Marello\Bundle\InventoryBundle\Entity\Repository\InventoryItemRepository'
+    Marello\Bundle\InventoryBundle\Entity\Repository\InventoryItemRepository:
+        public: true
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\InventoryBundle\Entity\InventoryItem'
-        calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
+        tags:
+            - { name: doctrine.repository_service }
 
-    marello_inventory.repository.inventorylevel:
-        class: 'Marello\Bundle\InventoryBundle\Entity\Repository\InventoryLevelRepository'
+    Marello\Bundle\InventoryBundle\Entity\Repository\InventoryLevelRepository:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\InventoryBundle\Entity\InventoryLevel'
-        calls:
-            - [setAclHelper, ['@oro_security.acl_helper']]
+        tags:
+            - { name: doctrine.repository_service }
 
     marello_inventory.form.inventory_order_on_demand_validator:
         class: 'Marello\Bundle\InventoryBundle\Validator\InventoryOrderOnDemandValidator'
@@ -205,11 +208,58 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: marello_inventory.order_on_demand_validator }
 
-    marello_inventory.command.inventory_rebalance:
-        class: 'Marello\Bundle\InventoryBundle\Command\InventoryBalanceCommand'
+    Marello\Bundle\InventoryBundle\Command\InventoryBalanceCommand:
         arguments:
             - '@doctrine'
             - '@marello_inventory.model.balancer.inventory_balancer'
             - '@oro_message_queue.client.message_producer'
         tags:
             - { name: console.command }
+
+    Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProvider:
+        arguments:
+            - '@Marello\Bundle\InventoryBundle\Strategy\WFA\WFAStrategiesRegistry'
+
+    Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider:
+        public: true
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProvider'
+            - '@event_dispatcher'
+
+    Marello\Bundle\InventoryBundle\Strategy\WFA\WFAStrategiesRegistry: ~
+
+    Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\QuantityWFAStrategy:
+        arguments:
+            - '@Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\Calculator\SingleWHCalculator'
+            ## check if we actually need to include the whgrouplink repository as a service.., maybe use oro_entity.doctrine_helper instead
+            - '@Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository'
+            - '@oro_config.manager'
+        tags:
+            - { name: marello_inventory_wfa_strategy }
+
+    Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\Calculator\SingleWHCalculator: ~
+
+    Marello\Bundle\InventoryBundle\Command\InventoryReAllocateCronCommand:
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider'
+        tags:
+            - { name: console.command }
+
+    Marello\Bundle\InventoryBundle\Model\Allocation\WarehouseNotifierRegistry: ~
+
+    Marello\Bundle\InventoryBundle\Provider\WarehouseNotifierChoicesProvider:
+        arguments:
+            - '@Marello\Bundle\InventoryBundle\Model\Allocation\WarehouseNotifierRegistry'
+            - '@translator'
+
+    Marello\Bundle\InventoryBundle\Model\Allocation\Notifier\WarehouseEmailNotifier:
+        arguments:
+            - '@marello_notification.email.send_processor'
+        tags:
+            - { name: marello_inventory_warehouse_notifier }
+
+    Marello\Bundle\InventoryBundle\Model\Allocation\Notifier\WarehouseManualNotifier:
+        tags:
+            - { name: marello_inventory_warehouse_notifier }

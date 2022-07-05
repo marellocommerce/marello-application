@@ -6,30 +6,15 @@ use Marello\Bundle\ShippingBundle\Context\ShippingContextInterface;
 use Marello\Bundle\ShippingBundle\Entity\Repository\ShippingMethodsConfigsRuleRepository;
 use Marello\Bundle\ShippingBundle\Provider\MethodsConfigsRule\Context\MethodsConfigsRulesByContextProviderInterface;
 use Marello\Bundle\ShippingBundle\RuleFiltration\MethodsConfigsRulesFiltrationServiceInterface;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class BasicMethodsConfigsRulesByContextProvider implements MethodsConfigsRulesByContextProviderInterface
 {
-    /**
-     * @var MethodsConfigsRulesFiltrationServiceInterface
-     */
-    private $filtrationService;
-
-    /**
-     * @var ShippingMethodsConfigsRuleRepository
-     */
-    private $repository;
-
-    /**
-     * @param MethodsConfigsRulesFiltrationServiceInterface $filtrationService
-     * @param ShippingMethodsConfigsRuleRepository          $repository
-     */
     public function __construct(
-        MethodsConfigsRulesFiltrationServiceInterface $filtrationService,
-        ShippingMethodsConfigsRuleRepository $repository
-    ) {
-        $this->filtrationService = $filtrationService;
-        $this->repository = $repository;
-    }
+        private MethodsConfigsRulesFiltrationServiceInterface $filtrationService,
+        private ShippingMethodsConfigsRuleRepository $repository,
+        private AclHelper $aclHelper
+    ) {}
 
     /**
      * {@inheritDoc}
@@ -39,11 +24,13 @@ class BasicMethodsConfigsRulesByContextProvider implements MethodsConfigsRulesBy
         if ($context->getShippingAddress()) {
             $methodsConfigsRules = $this->repository->getByDestinationAndCurrency(
                 $context->getShippingAddress(),
-                $context->getCurrency()
+                $context->getCurrency(),
+                $this->aclHelper
             );
         } else {
             $methodsConfigsRules = $this->repository->getByCurrencyWithoutDestination(
-                $context->getCurrency()
+                $context->getCurrency(),
+                $this->aclHelper
             );
         }
 

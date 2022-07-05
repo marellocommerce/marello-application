@@ -2,46 +2,30 @@
 
 namespace Marello\Bundle\SalesBundle\EventListener\Doctrine;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
-use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
-use Oro\Bundle\SecurityBundle\Exception\ForbiddenException;
+
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Symfony\Component\HttpFoundation\Session\Session;
+
+use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
+
+use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class SalesChannelGroupListener
 {
-    /**
-     * Installed flag
-     *
-     * @var bool
-     */
-    protected $installed;
-
-    /**
-     * @var Session
-     */
-    protected $session;
-
-    /**
-     * @param bool $installed
-     * @param Session $session
-     */
-    public function __construct($installed, Session $session)
-    {
-        $this->installed = $installed;
-        $this->session = $session;
-    }
+    public function __construct(
+        protected $installed,
+        protected Session $session,
+        protected AclHelper $aclHelper
+    ) {}
     
     /**
      * @var WarehouseChannelGroupLink
      */
     private $systemWarehouseChannelGroupLink;
 
-    /**
-     * @param LifecycleEventArgs $args
-     * @throws ForbiddenException
-     */
     public function preRemove(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
@@ -54,12 +38,12 @@ class SalesChannelGroupListener
             $this->session
                 ->getFlashBag()
                 ->add('error', $message);
-            throw new ForbiddenException($message);
+            throw new AccessDeniedException($message);
         }
         $em = $args->getEntityManager();
         $systemGroup = $em
             ->getRepository(SalesChannelGroup::class)
-            ->findSystemChannelGroup();
+            ->findSystemChannelGroup($this->aclHelper);
         $systemWarehouseChannelGroupLink = $this->getSystemWarehouseChannelGroupLink($em);
 
         if (!$systemGroup && !$systemWarehouseChannelGroupLink) {
@@ -99,15 +83,15 @@ class SalesChannelGroupListener
     }
 
     /**
-     * @param ObjectManager $entityManager
+     * @param OroEntityManager $entityManager
      * @return WarehouseChannelGroupLink|null
      */
-    private function getSystemWarehouseChannelGroupLink(ObjectManager $entityManager)
+    private function getSystemWarehouseChannelGroupLink(OroEntityManager $entityManager)
     {
         if ($this->systemWarehouseChannelGroupLink === null) {
             $this->systemWarehouseChannelGroupLink = $entityManager
                 ->getRepository(WarehouseChannelGroupLink::class)
-                ->findSystemLink();
+                ->findSystemLink($this->aclHelper);
         }
 
         return $this->systemWarehouseChannelGroupLink;

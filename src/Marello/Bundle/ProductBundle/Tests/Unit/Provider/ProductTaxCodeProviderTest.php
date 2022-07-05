@@ -2,8 +2,8 @@
 
 namespace Marello\Bundle\ProductBundle\Tests\Unit\Provider;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-
+use Oro\Bundle\EntityBundle\ORM\Registry;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Symfony\Component\Form\FormInterface;
 
 use PHPUnit\Framework\TestCase;
@@ -22,10 +22,16 @@ use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 class ProductTaxCodeProviderTest extends TestCase
 {
     use EntityTrait;
+
     /**
-     * @var ManagerRegistry|\PHPUnit_Framework_MockObject_MockObject
+     * @var Registry|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $registry;
+
+    /**
+     * @var AclHelper|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected $aclHelper;
 
     /**
      * @var FormChangeContextInterface
@@ -37,10 +43,11 @@ class ProductTaxCodeProviderTest extends TestCase
      */
     protected $productTaxCodeProvider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->registry = $this->createMock(ManagerRegistry::class);
-        $this->productTaxCodeProvider = new ProductTaxCodeProvider($this->registry);
+        $this->registry = $this->createMock(Registry::class);
+        $this->aclHelper = $this->createMock(AclHelper::class);
+        $this->productTaxCodeProvider = new ProductTaxCodeProvider($this->registry, $this->aclHelper);
     }
 
     /**
@@ -57,13 +64,13 @@ class ProductTaxCodeProviderTest extends TestCase
         /** @var Order $order */
         $order = $this->getEntity(Order::class, ['id' => 1, 'salesChannel' => $channel]);
 
-        /** @var FormInterface|\PHPUnit_Framework_MockObject_MockObject $form **/
+        /** @var FormInterface|\PHPUnit\Framework\MockObject\MockObject $form **/
         $form = $this->createMock(FormInterface::class);
         $form->expects(static::once())
             ->method('getData')
             ->willReturn($order);
 
-        /** @var Product|\PHPUnit_Framework_MockObject_MockObject $product */
+        /** @var Product|\PHPUnit\Framework\MockObject\MockObject $product */
         $product = $this->createMock(Product::class);
         $product->expects(static::any())
             ->method('getId')
@@ -84,12 +91,12 @@ class ProductTaxCodeProviderTest extends TestCase
             ->willReturn([$product]);
 
         $this->registry
-            ->expects(static::at(0))
+            ->expects(static::once())
             ->method('getManagerForClass')
             ->with(Product::class)
             ->willReturnSelf();
         $this->registry
-            ->expects(static::at(1))
+            ->expects(static::once())
             ->method('getRepository')
             ->with(Product::class)
             ->willReturn($productRepository);

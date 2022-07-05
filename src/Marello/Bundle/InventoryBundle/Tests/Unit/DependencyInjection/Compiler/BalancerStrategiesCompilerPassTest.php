@@ -17,20 +17,18 @@ class BalancerStrategiesCompilerPassTest extends TestCase
     protected $compilerPass;
 
     /**
-     * @var ContainerBuilder|\PHPUnit_Framework_MockObject_MockObject
+     * @var ContainerBuilder|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $containerBuilder;
 
-    public function setUp()
+    public function setUp(): void
     {
-        $this->containerBuilder = $this
-            ->getMockBuilder('Symfony\Component\DependencyInjection\ContainerBuilder')
-            ->getMock();
+        $this->containerBuilder = $this->createMock(ContainerBuilder::class);
 
         $this->compilerPass = new BalancerStrategiesCompilerPass();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->compilerPass, $this->containerBuilder);
     }

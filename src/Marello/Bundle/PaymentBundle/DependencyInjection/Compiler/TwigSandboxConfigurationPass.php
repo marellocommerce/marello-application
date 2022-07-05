@@ -13,7 +13,7 @@ class TwigSandboxConfigurationPass extends AbstractTwigSandboxConfigurationPass
     /**
      * {@inheritDoc}
      */
-    protected function getFunctions()
+    protected function getFunctions(): array
     {
         return [
             'get_payment_methods',
@@ -25,7 +25,7 @@ class TwigSandboxConfigurationPass extends AbstractTwigSandboxConfigurationPass
     /**
      * {@inheritDoc}
      */
-    protected function getFilters()
+    protected function getFilters(): array
     {
         return [];
     }
@@ -33,11 +33,16 @@ class TwigSandboxConfigurationPass extends AbstractTwigSandboxConfigurationPass
     /**
      * {@inheritDoc}
      */
-    protected function getExtensions()
+    protected function getExtensions(): array
     {
         return [
             'marello_payment.twig.payment_method_extension',
             'marello_payment.twig.payment_status_extension'
         ];
+    }
+
+    protected function getTags(): array
+    {
+        return [];
     }
 }

@@ -1,6 +1,6 @@
-{% extends 'OroUIBundle:actions:update.html.twig' %}
-{% import 'OroUIBundle::macros.html.twig' as UI %}
-{% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
+{% extends '@OroUI/actions/update.html.twig' %}
+{% import '@OroUI/macros.html.twig' as UI %}
+{% form_theme form with '@OroForm/Form/fields.html.twig' %}
 
 {% set entity = form.vars.value %}
 {% if entity.id %}
@@ -29,7 +29,7 @@
         {{ parent() }}
     {% else %}
         {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'marello.customer.entity_label'|trans}) %}
-        {% include 'OroUIBundle::page_title_block.html.twig' with { title: title } %}
+        {% include '@OroUI/page_title_block.html.twig' with { title: title } %}
     {% endif %}
 {% endblock pageHeader %}
 
@@ -66,8 +66,10 @@
     }] ) %}
 
     {% set additionalData = [] %}
-    {% for child in form.children if child.vars.extra_field is defined and child.vars.extra_field %}
-        {% set additionalData = additionalData|merge([form_row(child)]) %}
+    {% for child in form.children %}
+        {% if child.vars.extra_field is defined and child.vars.extra_field %}
+            {% set additionalData = additionalData|merge([form_row(child)]) %}
+        {% endif %}
     {% endfor %}
 
     {% if additionalData is not empty %}

@@ -5,6 +5,7 @@ namespace Marello\Bundle\ShippingBundle\Tests\Unit\Condition;
 use Marello\Bundle\ShippingBundle\Condition\ShippingMethodHasShippingRules;
 use Marello\Bundle\ShippingBundle\Entity\Repository\ShippingMethodsConfigsRuleRepository;
 use Marello\Bundle\ShippingBundle\Entity\ShippingMethodsConfigsRule;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Oro\Component\ConfigExpression\ContextAccessorInterface;
 use Symfony\Component\PropertyAccess\PropertyPathInterface;
 
@@ -18,6 +19,11 @@ class ShippingMethodHasShippingRulesTest extends \PHPUnit\Framework\TestCase
     protected $repository;
 
     /**
+     * @var AclHelper|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected $aclHelper;
+
+    /**
      * @var PropertyPathInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $propertyPath;
@@ -27,11 +33,10 @@ class ShippingMethodHasShippingRulesTest extends \PHPUnit\Framework\TestCase
      */
     protected $shippingMethodHasShippingRulesCondition;
 
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->repository = $this->getMockBuilder(ShippingMethodsConfigsRuleRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->repository = $this->createMock(ShippingMethodsConfigsRuleRepository::class);
+        $this->aclHelper = $this->createMock(AclHelper::class);
 
         $this->propertyPath = $this->createMock(PropertyPathInterface::class);
         $this->propertyPath->expects($this->any())
@@ -41,7 +46,10 @@ class ShippingMethodHasShippingRulesTest extends \PHPUnit\Framework\TestCase
             ->method('getElements')
             ->will($this->returnValue([self::PROPERTY_PATH_NAME]));
 
-        $this->shippingMethodHasShippingRulesCondition = new ShippingMethodHasShippingRules($this->repository);
+        $this->shippingMethodHasShippingRulesCondition = new ShippingMethodHasShippingRules(
+            $this->repository,
+            $this->aclHelper
+        );
     }
 
     public function testGetName()
@@ -52,12 +60,10 @@ class ShippingMethodHasShippingRulesTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Missing "method_identifier" option
-     */
     public function testInitializeInvalid()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Missing "method_identifier" option');
         $this->assertInstanceOf(
             ShippingMethodHasShippingRules::class,
             $this->shippingMethodHasShippingRulesCondition->initialize([])
@@ -122,7 +128,7 @@ class ShippingMethodHasShippingRulesTest extends \PHPUnit\Framework\TestCase
     {
         $result = $this->shippingMethodHasShippingRulesCondition->compile('$factoryAccessor');
 
-        $this->assertContains('$factoryAccessor->create(\'marello_shipping_method_has_shipping_rules\'', $result);
+        $this->assertStringContainsString('$factoryAccessor->create(\'marello_shipping_method_has_shipping_rules\'', $result);
     }
 
     public function testSetContextAccessor()

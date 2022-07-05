@@ -2,33 +2,22 @@
 
 namespace Marello\Bundle\InventoryBundle\Model\BalancedInventory;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Oro\Bundle\EntityBundle\ORM\Registry;
 use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\Repository\BalancedInventoryRepository;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class BalancedInventoryHandler
 {
-    /** @var BalancedInventoryFactory $balancedInventoryFactory */
-    protected $balancedInventoryFactory;
-
-    /** @var ManagerRegistry $doctrine */
-    protected $doctrine;
-
-    /**
-     * @param ManagerRegistry $doctrine
-     * @param BalancedInventoryFactory $balancedInventoryFactory
-     */
     public function __construct(
-        ManagerRegistry $doctrine,
-        BalancedInventoryFactory $balancedInventoryFactory
-    ) {
-        $this->doctrine = $doctrine;
-        $this->balancedInventoryFactory = $balancedInventoryFactory;
-    }
+        protected Registry $doctrine,
+        protected BalancedInventoryFactory $balancedInventoryFactory,
+        protected AclHelper $aclHelper
+    ) {}
 
     /**
      * @param ProductInterface $product
@@ -95,13 +84,13 @@ class BalancedInventoryHandler
     {
         /** @var BalancedInventoryRepository $repository */
         $repository = $this->doctrine->getRepository(BalancedInventoryLevel::class);
-        return $repository->findExistingBalancedInventory($product, $group);
+        return $repository->findExistingBalancedInventory($product, $group, $this->aclHelper);
     }
 
     /**
      * {@inheritdoc}
      * @param $entityClass
-     * @return \Doctrine\Common\Persistence\ObjectManager|null
+     * @return \Doctrine\Persistence\ObjectManager|null
      */
     private function getManagerForClass($entityClass = BalancedInventoryLevel::class)
     {

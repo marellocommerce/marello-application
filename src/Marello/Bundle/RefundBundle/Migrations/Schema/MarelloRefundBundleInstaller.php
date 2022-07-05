@@ -32,7 +32,7 @@ class MarelloRefundBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_3';
+        return 'v1_4_1';
     }
 
     /**
@@ -50,6 +50,7 @@ class MarelloRefundBundleInstaller implements
 
         $this->activityExtension->addActivityAssociation($schema, 'marello_notification', 'marello_refund');
         $this->activityExtension->addActivityAssociation($schema, 'oro_note', 'marello_refund');
+        $this->activityExtension->addActivityAssociation($schema, 'oro_email', 'marello_refund');
     }
 
     /**
@@ -66,10 +67,12 @@ class MarelloRefundBundleInstaller implements
         $table->addColumn('order_id', 'integer', []);
         $table->addColumn('currency', 'string', ['notnull' => false, 'length' => 10]);
         $table->addColumn('refund_number', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('refund_amount', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('created_at', 'datetime', []);
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->addColumn('localization_id', 'integer', ['notnull' => false]);
+        $table->addColumn('refund_subtotal', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+        $table->addColumn('refund_tax_total', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+        $table->addColumn('refund_amount', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['refund_number'], 'UNIQ_973FA8836E8C706D');
         $table->addIndex(['customer_id'], 'IDX_973FA8839395C3F3', []);
@@ -90,6 +93,9 @@ class MarelloRefundBundleInstaller implements
         $table->addColumn('refund_id', 'integer', []);
         $table->addColumn('name', 'string', ['length' => 255]);
         $table->addColumn('quantity', 'integer', []);
+        $table->addColumn('subtotal', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+        $table->addColumn('tax_total', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+        $table->addColumn('tax_code_id', 'integer', ['notnull' => false]);
         $table->addColumn('base_amount', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('refund_amount', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('created_at', 'datetime', []);

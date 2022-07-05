@@ -1,4 +1,4 @@
-{% spaceless %}
+{% apply spaceless %}
     {% set identifier = record.getValue('paymentMethod') %}
     {{ marello_get_payment_method_label(identifier)|trans }}
-{% endspaceless %}
+{% endapply %}
