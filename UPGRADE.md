@@ -27,7 +27,7 @@ crontab -e -uwww-data
   * Create backups of your database and source code;
   * Pull changes from the repository;
   
-####Update sequence to 3.0 additional step(s)
+#### Update sequence to 3.0 additional step(s)
 If you are going to upgrade from a Marello version lower than 2.2.x, please update to the latest 2.2.x version first!
 This allows you to transition to 3.0 more easily and prevent issues during install. This step **is** necessary for a smooth transition during the changes made from the old Customer and new Customer
 
