@@ -6,7 +6,7 @@ search:
             name:                       marelloenterprise_inventory_warehouse_update
             parameters:
                 id:                     id
-        search_template: MarelloEnterpriseInventoryBundle:Warehouse:searchResult.html.twig
+        search_template: '@MarelloEnterpriseInventory/Warehouse/searchResult.html.twig'
         fields:
             -
                 name:                   label
@@ -24,7 +24,7 @@ search:
             name:                       marelloenterprise_inventory_warehousegroup_update
             parameters:
                 id:                     id
-        search_template: MarelloEnterpriseInventoryBundle:WarehouseGroup:searchResult.html.twig
+        search_template: '@MarelloEnterpriseInventory/WarehouseGroup/searchResult.html.twig'
         fields:
             -
                 name:                   name

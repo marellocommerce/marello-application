@@ -1,0 +1,16 @@
+services:
+    _defaults:
+        public: true
+
+    MarelloEnterprise\Bundle\ReplenishmentBundle\Controller\ReplenishmentOrderConfigController:
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: marelloenterprise_replenishment.form.handler.replenishment_order_config, key: MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Handler\ReplenishmentOrderConfigHandler }
+
+    MarelloEnterprise\Bundle\ReplenishmentBundle\Controller\ReplenishmentOrderController:
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }

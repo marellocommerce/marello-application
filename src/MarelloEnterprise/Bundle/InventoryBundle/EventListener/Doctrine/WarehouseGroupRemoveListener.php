@@ -3,48 +3,28 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
-use MarelloEnterprise\Bundle\InventoryBundle\Checker\IsFixedWarehouseGroupChecker;
-use Oro\Bundle\SecurityBundle\Exception\ForbiddenException;
+
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
+
+use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
+use MarelloEnterprise\Bundle\InventoryBundle\Checker\IsFixedWarehouseGroupChecker;
 
 class WarehouseGroupRemoveListener
 {
-    /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    /**
-     * @var Session
-     */
-    protected $session;
-
-    /**
-     * @var IsFixedWarehouseGroupChecker
-     */
-    protected $checker;
-    
-    /**
-     * @param TranslatorInterface $translator
-     * @param Session $session
-     * @param IsFixedWarehouseGroupChecker $checker
-     */
     public function __construct(
-        TranslatorInterface $translator,
-        Session $session,
-        IsFixedWarehouseGroupChecker $checker
-    ) {
-        $this->translator = $translator;
-        $this->session = $session;
-        $this->checker = $checker;
-    }
+        protected TranslatorInterface $translator,
+        protected Session $session,
+        protected IsFixedWarehouseGroupChecker $checker,
+        protected AclHelper $aclHelper
+    ) {}
     
     /**
      * @param WarehouseGroup $warehouseGroup
      * @param LifecycleEventArgs $args
-     * @throws ForbiddenException
      */
     public function preRemove(WarehouseGroup $warehouseGroup, LifecycleEventArgs $args)
     {
@@ -65,12 +45,12 @@ class WarehouseGroupRemoveListener
         }
         if (isset($message)) {
             $this->session->getFlashBag()->add('error', $message);
-            throw new ForbiddenException($message);
+            throw new AccessDeniedException($message);
         }
         $em = $args->getEntityManager();
         $systemGroup = $em
             ->getRepository(WarehouseGroup::class)
-            ->findSystemWarehouseGroup();
+            ->findSystemWarehouseGroup($this->aclHelper);
 
         if ($systemGroup) {
             $warehouses = $warehouseGroup->getWarehouses();

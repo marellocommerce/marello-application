@@ -2,14 +2,16 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Controller;
 
-use FOS\RestBundle\Controller\Annotations\Route;
 use Marello\Bundle\InventoryBundle\Controller\WarehouseController as BaseController;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Form\Type\WarehouseType;
+use Oro\Bundle\FormBundle\Model\UpdateHandlerFacade;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class WarehouseController extends BaseController
 {
@@ -96,12 +98,25 @@ class WarehouseController extends BaseController
      */
     protected function update(Warehouse $warehouse, Request $request)
     {
-        return $this->get('oro_form.update_handler')->update(
+        return $this->container->get(UpdateHandlerFacade::class)->update(
             $warehouse,
             $this->createForm(WarehouseType::class, $warehouse),
-            $this->get('translator')->trans('marelloenterprise.inventory.messages.success.warehouse.saved'),
+            $this->container
+                ->get(TranslatorInterface::class)
+                ->trans('marelloenterprise.inventory.messages.success.warehouse.saved'),
             $request,
             'marelloenterprise_inventory.form_handler.warehouse'
+        );
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                UpdateHandlerFacade::class,
+                TranslatorInterface::class,
+            ]
         );
     }
 }

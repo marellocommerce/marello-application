@@ -2,48 +2,35 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
-
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
-
 use MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule;
 
-class WFARuleRepository extends EntityRepository
+class WFARuleRepository extends ServiceEntityRepository
 {
     /**
-     * @var AclHelper
-     */
-    private $aclHelper;
-
-    /**
      * @param AclHelper $aclHelper
-     */
-    public function setAclHelper(AclHelper $aclHelper)
-    {
-        $this->aclHelper = $aclHelper;
-    }
-    
-    /**
      * @return array
      */
-    public function getUsedStrategies()
+    public function getUsedStrategies(AclHelper $aclHelper)
     {
         $qb = $this
             ->createQueryBuilder('wfa')
             ->distinct(true)
             ->select('wfa.strategy');
 
-        return $this->aclHelper->apply($qb)->getArrayResult();
+        return $aclHelper->apply($qb)->getArrayResult();
     }
 
 
     /**
+     * @param AclHelper $aclHelper
      * @return WFARule[]
      */
-    public function findAllWFARules()
+    public function findAllWFARules(AclHelper $aclHelper)
     {
         $qb = $this->createQueryBuilder('wfa');
 
-        return $this->aclHelper->apply($qb)->getResult();
+        return $aclHelper->apply($qb)->getResult();
     }
 }

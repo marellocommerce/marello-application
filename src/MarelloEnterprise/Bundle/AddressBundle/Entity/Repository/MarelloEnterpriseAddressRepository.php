@@ -2,32 +2,13 @@
 
 namespace MarelloEnterprise\Bundle\AddressBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use MarelloEnterprise\Bundle\AddressBundle\Entity\MarelloEnterpriseAddress;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
-class MarelloEnterpriseAddressRepository extends EntityRepository
+class MarelloEnterpriseAddressRepository extends ServiceEntityRepository
 {
-    /**
-     * @var AclHelper
-     */
-    private $aclHelper;
-
-    /**
-     * @param AclHelper $aclHelper
-     */
-    public function setAclHelper(AclHelper $aclHelper)
-    {
-        $this->aclHelper = $aclHelper;
-    }
-    
-    /**
-     * @param MarelloAddress $address
-     *
-     * @return MarelloEnterpriseAddress[]
-     */
-    public function findByAddressParts(MarelloAddress $address)
+    public function findByAddressParts(MarelloAddress $address, AclHelper $aclHelper): array
     {
         $qb = $this->createQueryBuilder('eeaddr');
         $qb
@@ -72,6 +53,6 @@ class MarelloEnterpriseAddressRepository extends EntityRepository
                 ->setParameter('postalCode', $address->getPostalCode());
         }
 
-        return $this->aclHelper->apply($qb)->getResult();
+        return $aclHelper->apply($qb)->getResult();
     }
 }

@@ -9,22 +9,15 @@ use MarelloEnterprise\Bundle\AddressBundle\Provider\Chain\AbstractAddressCoordin
 use MarelloEnterprise\Bundle\AddressBundle\Provider\Chain\AddressCoordinatesProviderChainElementInterface;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\GeocodingApiResultFactory;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class SavedAddressCoordinatesProviderElement extends AbstractAddressCoordinatesProviderElement implements
     AddressCoordinatesProviderChainElementInterface
 {
-    /**
-     * @var DoctrineHelper
-     */
-    private $doctrineHelper;
-
-    /**
-     * @param DoctrineHelper $doctrineHelper
-     */
-    public function __construct(DoctrineHelper $doctrineHelper)
-    {
-        $this->doctrineHelper = $doctrineHelper;
-    }
+    public function __construct(
+        private DoctrineHelper $doctrineHelper,
+        private AclHelper $aclHelper
+    ) {}
 
     /**
      * @inheritDoc
@@ -35,7 +28,7 @@ class SavedAddressCoordinatesProviderElement extends AbstractAddressCoordinatesP
         $repository = $this->doctrineHelper
             ->getEntityManagerForClass(MarelloEnterpriseAddress::class)
             ->getRepository(MarelloEnterpriseAddress::class);
-        $eeAddresses = $repository->findByAddressParts($address);
+        $eeAddresses = $repository->findByAddressParts($address, $this->aclHelper);
 
         if (!empty($eeAddresses)) {
             /** @var MarelloEnterpriseAddress $eeAddress */

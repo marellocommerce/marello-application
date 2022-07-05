@@ -4,14 +4,17 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
-use Marello\Bundle\RuleBundle\Entity\Rule;
-use MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule;
-use MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumDistance\MinimumDistanceWFAStrategy;
-use MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\MinimumQuantityWFAStrategy;
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
+
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+
+use Marello\Bundle\RuleBundle\Entity\Rule;
+use MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule;
+use Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\QuantityWFAStrategy;
+use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFA\MinimumDistance\MinimumDistanceWFAStrategy;
 
 class LoadSystemWFARules extends AbstractFixture implements ContainerAwareInterface
 {
@@ -22,13 +25,13 @@ class LoadSystemWFARules extends AbstractFixture implements ContainerAwareInterf
     protected $doctrineHelper;
 
     const RULES_DATA = [
-        MinimumQuantityWFAStrategy::IDENTIFIER =>
+        QuantityWFAStrategy::IDENTIFIER =>
             [
                 'enabled'          => true,
                 'name'             => 'Minimum Quantity',
                 'sortOrder'        => 0,
                 'stopProcessing'   => false,
-                'strategy'         => MinimumQuantityWFAStrategy::IDENTIFIER
+                'strategy'         => QuantityWFAStrategy::IDENTIFIER
             ],
         MinimumDistanceWFAStrategy::IDENTIFIER =>
             [

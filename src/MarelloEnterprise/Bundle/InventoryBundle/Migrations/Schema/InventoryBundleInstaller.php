@@ -3,6 +3,12 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\Migrations\Schema;
 
 use Doctrine\DBAL\Schema\Schema;
+
+use Oro\Bundle\EntityBundle\EntityConfig\DatagridScope;
+use Oro\Bundle\EntityConfigBundle\Entity\ConfigModel;
+use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
+use Oro\Bundle\EntityExtendBundle\Migration\ExtendOptionsManager;
+use Oro\Bundle\EntityExtendBundle\Migration\OroOptions;
 use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
@@ -13,7 +19,7 @@ class InventoryBundleInstaller implements Installation
      */
     public function getMigrationVersion()
     {
-        return 'v1_0';
+        return 'v1_1';
     }
 
     /**
@@ -23,6 +29,7 @@ class InventoryBundleInstaller implements Installation
     {
         $this->createMarelloWFAStrategyRuleTable($schema);
         $this->addMarelloWFAStrategyRuleForeignKeys($schema);
+        $this->updateMarelloWarehouseTable($schema);
     }
 
     /**
@@ -57,5 +64,27 @@ class InventoryBundleInstaller implements Installation
             ['id'],
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
+    }
+
+    protected function updateMarelloWarehouseTable(Schema $schema)
+    {
+        $table = $schema->getTable('marello_inventory_warehouse');
+        if (!$table->hasColumn('is_consolidation_warehouse')) {
+            $table->addColumn(
+                'is_consolidation_warehouse',
+                'boolean',
+                [
+                    'notnull' => false,
+                    'default' => false,
+                    OroOptions::KEY => [
+                        'extend' => ['is_extend' => true, 'owner' => ExtendScope::OWNER_CUSTOM],
+                        'form' => ['is_enabled' => false],
+                        'datagrid' => ['is_visible' => DatagridScope::IS_VISIBLE_FALSE],
+                        'importexport' => ['excluded' => true],
+                        ExtendOptionsManager::MODE_OPTION => ConfigModel::MODE_READONLY,
+                    ],
+                ]
+            );
+        }
     }
 }
