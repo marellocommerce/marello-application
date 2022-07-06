@@ -8,9 +8,9 @@ using Marello.
 
 ## Requirements
 
-Marello is a Symfony 4.4 based application with the following requirements:
+Marello is a Symfony 5.4 based application with the following requirements:
 
-* PHP 7.4.14 or above with command line interface
+* PHP 8.1 or above with command line interface
 * PHP Extensions
     * ctype
     * curl
@@ -50,7 +50,7 @@ where x.y.z is the latest [release tag](https://github.com/marellocommerce/marel
 
 - Install [Composer][1] globally following the official Composer installation documentation
 
-- Make sure that you have [NodeJS][4] >=12.0, <15.0 installed
+- Make sure that you have [NodeJS][4] >=16.0, <17.0 installed
 
 - Install Marello dependencies with composer. If installation process seems too slow you can use `--prefer-dist` option. Go to marello-application folder and run composer installation:
 
@@ -132,7 +132,7 @@ Github OAuth token should be configured in package manager settings
 [2]:  https://doc.oroinc.com/backend/setup/system-requirements/database-optimization/
 [3]:  https://dev.mysql.com/doc/refman/8.0/en/optimizing-innodb-diskio.html
 [4]:  https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager
-[5]:  https://symfony.com/doc/4.4/setup/web_server_configuration.html
+[5]:  https://symfony.com/doc/5.4/setup/web_server_configuration.html
 [6]:  https://oroinc.com/orocrm/doc/current/install-upgrade/installation-quick-start-dev/crm#step-4-post-installation-environment-configuration
 [7]:  https://supervisord.org/
 [8]:  https://www.marello.com/community/
