@@ -30,5 +30,7 @@ oro:
                     label:    'Reject'
                 reallocate:
                     label:    'Reallocate'
+                resolved:
+                    label:  'Resolved'
                 complete:
                     label:    'Complete'
