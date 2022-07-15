@@ -41,8 +41,6 @@ class InventoryAllocationProvider
     /** @var array $subAllocations */
     protected $subAllocations = [];
 
-    protected $warehouseResults = [];
-
     /**
      * InventoryAllocationProvider constructor.
      * @param DoctrineHelper $doctrineHelper
@@ -67,6 +65,8 @@ class InventoryAllocationProvider
      */
     public function allocateOrderToWarehouses(Order $order, Allocation $allocation = null)
     {
+        $this->allItems = [];
+        $this->subAllocations = [];
         $this->allOrderItems = new ArrayCollection();
 
         $em = $this
@@ -257,11 +257,7 @@ class InventoryAllocationProvider
      */
     public function getWarehouseResults(Order $order, Allocation $allocation = null)
     {
-        if (empty($this->warehouseResults)) {
-            $this->warehouseResults = $this->warehousesProvider->getWarehousesForOrder($order, $allocation);
-        }
-
-        return $this->warehouseResults;
+        return $this->warehousesProvider->getWarehousesForOrder($order, $allocation);
     }
 
     /**
