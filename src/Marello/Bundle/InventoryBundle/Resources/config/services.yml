@@ -244,6 +244,7 @@ services:
         arguments:
             - '@oro_entity.doctrine_helper'
             - '@Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider'
+            - '@oro_message_queue.client.message_producer'
         tags:
             - { name: console.command }
 
