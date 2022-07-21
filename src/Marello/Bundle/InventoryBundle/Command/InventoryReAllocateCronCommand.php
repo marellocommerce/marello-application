@@ -90,7 +90,7 @@ class InventoryReAllocateCronCommand extends Command implements CronCommandInter
         $em = $this->doctrineHelper->getEntityManagerForClass(Allocation::class);
         /** @var Allocation $allocation */
         foreach ($allocations as $allocation) {
-            foreach ($this->allocationProvider->getWarehouseResults($allocation->getOrder()) as $orderWarehouseResults) {
+            foreach ($this->allocationProvider->getWarehouseResults($allocation->getOrder(), $allocation) as $orderWarehouseResults) {
                 foreach ($orderWarehouseResults as $result) {
                     if (!in_array($result->getWarehouse()->getCode(), ['no_warehouse', 'could_not_allocate'])) {
                         $this->allocationProvider->allocateOrderToWarehouses($allocation->getOrder(), $allocation);
