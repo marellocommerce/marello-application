@@ -80,6 +80,8 @@ class AllocateDelayedReplenishmentOrdersInventoryCommand extends Command impleme
                 'Replenishment Order Configs processed and Replenishment Order creation pushed to message queue'
             )
         );
+
+        return 0;
     }
     
     /**
