@@ -167,8 +167,11 @@ class InventoryAllocationProvider extends BaseAllocationProvider
      */
     protected function isAllocationExcluded(Allocation $allocation)
     {
-        return (
-            $allocation->getWarehouse()->getWarehouseType()->getName() === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL ||
+        $isExternalWhType = false;
+        if ($allocation->getWarehouse()) {
+            $isExternalWhType = ($allocation->getWarehouse()->getWarehouseType()->getName() === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL);
+        }
+        return ($isExternalWhType ||
             in_array($allocation->getState()->getName(), $this->configManager->get('marello_enterprise_inventory.inventory_allocation_consolidation_exclusion'))
         );
     }
