@@ -9,12 +9,8 @@ workflows:
             pending:
                 allowed_transitions:
                     - sent_to_warehouse
-                    - could_not_allocate
-                    - resolved
-            could_not_allocate:
-                allowed_transitions:
-                    - pending
                     - reallocate
+                    - resolved
             warehouse_notified:
                 allowed_transitions:
                     - pick_and_pack
@@ -34,11 +30,9 @@ workflows:
                 is_start: true
                 transition_definition: pending_definition
             sent_to_warehouse:
+                is_unavailable_hidden: true
                 step_to: warehouse_notified
                 transition_definition: send_definition
-            could_not_allocate:
-                step_to: could_not_allocate
-                transition_definition: could_not_allocate_definition
             pick_and_pack:
                 step_to: pick_and_pack
                 transition_definition: pick_pack_definition
@@ -46,6 +40,7 @@ workflows:
                 step_to: rejected_by_warehouse
                 transition_definition: rejected_definition
             resolved:
+                is_unavailable_hidden: true
                 step_to: resolved
                 transition_definition: close_allocation_definition
             reallocate:
@@ -75,8 +70,11 @@ workflows:
                 post_actions:
                     -  '@extendable':
                            events: [ extendable_action.send_transition_after ]
-            could_not_allocate_definition: ~
-            close_allocation_definition: ~
+            close_allocation_definition:
+                preconditions:
+                    '@and':
+                        - '@equal': [ $allocation.state.id, 'closed' ]
+                        - '@equal': [ $allocation.status.id, 'closed' ]
             pick_pack_definition:
                 post_actions:
                     - '@foreach':
@@ -100,6 +98,14 @@ workflows:
                           service: Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider
                           method: allocateOrderToWarehouses
                           method_parameters: [ $allocation.order, $allocation ]
+                    - '@request_enum_entity':
+                        enum_code: marello_allocation_state
+                        identifier: 'closed'
+                        attribute: $allocation.state
+                    - '@request_enum_entity':
+                          enum_code: marello_allocation_status
+                          identifier: 'closed'
+                          attribute: $allocation.status
             complete_definition:
                 post_actions:
                     # parent allocation and children are empty, so we need to send email to customer with 'partial' shipped email
