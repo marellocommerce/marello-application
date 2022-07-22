@@ -98,25 +98,29 @@ class InventoryAllocationProvider extends BaseAllocationProvider
             ->getEntityManagerForClass(Allocation::class);
 
         if ($this->consolidationWarehouse) {
-            // create parent allocation
-            /** @var Order $order */
-            $parentAllocation = new Allocation();
-            $parentAllocation->setOrder($order);
-            $parentAllocation->setOrganization($order->getOrganization());
-            $parentAllocation->setState(
-                $this->getEnumValue(
-                    'marello_allocation_state',
-                    AllocationStateStatusInterface::ALLOCATION_STATE_AVAILABLE
-                )
-            );
-            $parentAllocation->setStatus(
-                $this->getEnumValue(
-                    'marello_allocation_status',
-                    AllocationStateStatusInterface::ALLOCATION_STATUS_ON_HAND
-                )
-            );
-            $parentAllocation->setWarehouse($this->consolidationWarehouse);
-            $parentAllocation->setShippingAddress($order->getShippingAddress());
+            if (!$allocation) {
+                /** @var Order $order */
+                $parentAllocation = new Allocation();
+                $parentAllocation->setOrder($order);
+                $parentAllocation->setOrganization($order->getOrganization());
+                $parentAllocation->setState(
+                    $this->getEnumValue(
+                        'marello_allocation_state',
+                        AllocationStateStatusInterface::ALLOCATION_STATE_AVAILABLE
+                    )
+                );
+                $parentAllocation->setStatus(
+                    $this->getEnumValue(
+                        'marello_allocation_status',
+                        AllocationStateStatusInterface::ALLOCATION_STATUS_ON_HAND
+                    )
+                );
+                $parentAllocation->setWarehouse($this->consolidationWarehouse);
+                $parentAllocation->setShippingAddress($order->getShippingAddress());
+            } else {
+                $parentAllocation = $allocation->getParent();
+            }
+
             /** @var AllocationItem $item */
             foreach ($this->baseAllocationProvider->getAllItems() as $item) {
                 if ($this->isAllocationExcluded($item->getAllocation())) {
