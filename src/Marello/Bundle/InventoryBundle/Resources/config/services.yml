@@ -217,11 +217,13 @@ services:
             - { name: console.command }
 
     Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProvider:
+        lazy: true
         arguments:
             - '@Marello\Bundle\InventoryBundle\Strategy\WFA\WFAStrategiesRegistry'
 
     Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider:
         public: true
+        lazy: true
         arguments:
             - '@oro_entity.doctrine_helper'
             - '@Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProvider'
