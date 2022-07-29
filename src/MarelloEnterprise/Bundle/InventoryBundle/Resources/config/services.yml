@@ -91,6 +91,7 @@ services:
     marelloenterprise_inventory.provider.order_warehouse:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Provider\OrderWarehousesProvider'
         decorates: Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProvider
+        lazy: true
         arguments:
             - '@Marello\Bundle\InventoryBundle\Strategy\WFA\WFAStrategiesRegistry'
             - '@marello_rule.rule_filtration.service'
@@ -140,6 +141,7 @@ services:
 
     MarelloEnterprise\Bundle\InventoryBundle\Provider\InventoryAllocationProvider:
         decorates: Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider
+        lazy: true
         arguments:
             - '@MarelloEnterprise\Bundle\InventoryBundle\Provider\InventoryAllocationProvider.inner'
             - '@Marello\Bundle\InventoryBundle\Strategy\WFA\WFAStrategiesRegistry'
