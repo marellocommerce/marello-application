@@ -6,7 +6,7 @@ use Doctrine\ORM\Query\SqlWalker;
 
 class ProductsGridSqlWalker extends SqlWalker
 {
-    protected $excludedFields = ['serialized_data', 'data', 'warranty'];
+    protected $excludedFields = ['warranty'];
 
     /**
      * {@inheritdoc}
