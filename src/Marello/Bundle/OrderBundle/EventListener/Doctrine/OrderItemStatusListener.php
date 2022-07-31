@@ -38,25 +38,27 @@ class OrderItemStatusListener
         $entity = $args->getEntity();
         if ($entity instanceof OrderItem) {
             $product = $entity->getProduct();
-            /** @var InventoryItem $inventoryItem */
-            $inventoryItem = $product->getInventoryItems()->first();
-            $availableInventory = $this->availableInventoryProvider->getAvailableInventory(
-                $product,
-                $entity->getOrder()->getSalesChannel()
-            );
-            if ($availableInventory < $entity->getQuantity() &&
-                (
-                    ($inventoryItem->isBackorderAllowed() &&
-                        $inventoryItem->getMaxQtyToBackorder() >= $entity->getQuantity()
-                    ) || ($inventoryItem->isCanPreorder() &&
-                        $inventoryItem->getMaxQtyToPreorder() >= $entity->getQuantity())
-                    || $inventoryItem->isOrderOnDemandAllowed()
-                )
-            ) {
-                $entity->setStatus($this->findStatusByName(LoadOrderItemStatusData::WAITING_FOR_SUPPLY));
-            } else {
-                if (!$entity->getStatus()) {
-                    $entity->setStatus($this->findDefaultStatus());
+            if ($product) {
+                /** @var InventoryItem $inventoryItem */
+                $inventoryItem = $product->getInventoryItems()->first();
+                $availableInventory = $this->availableInventoryProvider->getAvailableInventory(
+                    $product,
+                    $entity->getOrder()->getSalesChannel()
+                );
+                if ($availableInventory < $entity->getQuantity() &&
+                    (
+                        ($inventoryItem->isBackorderAllowed() &&
+                            $inventoryItem->getMaxQtyToBackorder() >= $entity->getQuantity()
+                        ) || ($inventoryItem->isCanPreorder() &&
+                            $inventoryItem->getMaxQtyToPreorder() >= $entity->getQuantity())
+                        || $inventoryItem->isOrderOnDemandAllowed()
+                    )
+                ) {
+                    $entity->setStatus($this->findStatusByName(LoadOrderItemStatusData::WAITING_FOR_SUPPLY));
+                } else {
+                    if (!$entity->getStatus()) {
+                        $entity->setStatus($this->findDefaultStatus());
+                    }
                 }
             }
         }

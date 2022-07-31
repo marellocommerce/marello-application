@@ -144,7 +144,6 @@ class EmailSendProcessor
                 $emailModel->getOrganization()
             );
             $this->emailModelSender->send($emailModel, $emailModel->getOrigin());
-//            $this->emailProcessor->process($emailModel, $emailOrigin);
         } catch (\Swift_SwiftException $exception) {
             $this->logger->error('Workflow send email template action.', ['exception' => $exception]);
         }

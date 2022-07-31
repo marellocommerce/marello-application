@@ -88,6 +88,8 @@ datagrids:
 
     marello-last-integration-statuses-grid:
         extends: marello-base-integration-statuses-grid
+        columns:
+            message: ~
         sorters:
             columns:
                 date: { data_name: s.date }

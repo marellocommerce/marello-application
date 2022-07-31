@@ -31,7 +31,7 @@ class PackingSlipControllerTest extends WebTestCase
     {
         $crawler = $this->client->request(
             'GET',
-            $this->getUrl('marello_packing_packingslip_view', ['id' => $this->getReference('packing_slip.00')->getId()])
+            $this->getUrl('marello_packing_packingslip_view', ['id' => $this->getReference('packing_slip.0')->getId()])
         );
 
         $this->assertHtmlResponseStatusCodeEquals($this->client->getResponse(), Response::HTTP_OK);
