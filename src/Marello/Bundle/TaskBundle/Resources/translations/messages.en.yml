@@ -1,0 +1,17 @@
+marello:
+    task:
+        type.label: Type
+        assigned_to_user.label: Assigned To User
+        assigned_to_group.label: Assigned To Group
+        assigned_allocation_tasks_widget.title: Assigned Allocation Tasks
+        datagrid:
+            action:
+                close:
+                    label: Close
+                    message.success: Success
+
+oro:
+    task:
+        owner.label: Owner
+        assigned_to_user.label: Assigned To User
+        assigned_to_group.label: Assigned To Group

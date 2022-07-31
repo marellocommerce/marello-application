@@ -65,7 +65,7 @@ class WorkflowTransitMassActionHandler implements MassActionHandlerInterface
         $result = $args->getResults();
         if (!$result instanceof IterableResult) {
             throw new \LogicException(sprintf(
-                'Wrong result щиоусе. Instance of %s expected, got %s',
+                'Wrong result object. Instance of %s expected, got %s',
                 IterableResult::class,
                 get_class($result)
             ));
