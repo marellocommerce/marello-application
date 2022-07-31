@@ -1,0 +1,7 @@
+aliases:
+    marello/sidebar/widget/assigned_allocation_tasks$: marellotask/sidebar_widgets/assigned_allocation_tasks/js/widget
+dynamic-imports:
+    marellotask:
+        - marellotask/js/app/components/assign-to-selection-component
+    commons:
+        - marello/sidebar/widget/assigned_allocation_tasks

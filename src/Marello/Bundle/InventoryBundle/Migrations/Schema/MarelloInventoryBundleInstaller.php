@@ -324,6 +324,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
 
         $this->activityExtension->addActivityAssociation($schema, 'marello_notification', $table->getName());
         $this->activityExtension->addActivityAssociation($schema, 'oro_email', $table->getName());
+        $this->activityExtension->addActivityAssociation($schema, 'orocrm_task', $table->getName());
         $this->extendExtension->addEnumField(
             $schema,
             $table,

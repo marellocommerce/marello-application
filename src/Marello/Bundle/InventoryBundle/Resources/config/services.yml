@@ -263,3 +263,11 @@ services:
     Marello\Bundle\InventoryBundle\Model\Allocation\Notifier\WarehouseManualNotifier:
         tags:
             - { name: marello_inventory_warehouse_notifier }
+
+    Marello\Bundle\InventoryBundle\EventListener\PostAllocationCreateEventListener:
+        arguments:
+            - '@translator'
+            - '@doctrine'
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: Marello\Bundle\InventoryBundle\Entity\Allocation, event: postPersist }
+            - { name: doctrine.event_listener, event: postFlush }
