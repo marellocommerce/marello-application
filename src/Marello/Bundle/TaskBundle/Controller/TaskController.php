@@ -27,6 +27,6 @@ class TaskController extends AbstractController
         $userId = $this->getUser()->getId();
         $tasks = $taskRepository->getAllocationTasksAssignedTo($userId, $perPage);
 
-        return $this->render('@OroTask/Task/widget/tasksWidget.html.twig', ['tasks' => $tasks]);
+        return $this->render('@MarelloTask/Task/widget/allocationTasksWidget.html.twig', ['tasks' => $tasks]);
     }
 }

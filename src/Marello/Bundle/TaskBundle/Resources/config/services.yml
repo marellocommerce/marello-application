@@ -47,3 +47,7 @@ services:
         decorates: oro_organization.entity_ownership.listener
         arguments:
             - '@Marello\Bundle\TaskBundle\EventListener\RecordOwnerDataListenerDecorator.inner'
+
+    Marello\Bundle\TaskBundle\EventListener\Datagrid\TaskGridListener:
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.tasks-grid, method: onBuildAfter }

@@ -528,6 +528,16 @@ datagrids:
                 acl_recource:   marello_inventory_inventory_view
                 rowAction:      true
 
+    marello-allocation-for-context-grid:
+        extends: marello-allocation-grid
+        options:
+            entityHint: marello.inventory.allocation.entity_plural_label
+            entity_pagination: true
+            toolbarOptions:
+                pageSize:
+                    default_per_page: 10
+            routerEnabled: false
+
     marello-allocation-sub-allocation-grid:
         extends: marello-allocation-grid
         source:

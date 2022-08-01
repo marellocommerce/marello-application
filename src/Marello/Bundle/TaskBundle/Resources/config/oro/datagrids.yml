@@ -10,6 +10,13 @@ datagrids:
                 entity_name: Oro\Bundle\TaskBundle\Entity\Task
                 messages:
                     success: marello.task.datagrid.action.close.message.success
+        columns:
+            contexts:
+                renderable: false
+            createdAt:
+                order: 20
+            updatedAt:
+                order: 20
 
     groups-select-grid:
         extended_entity_name: 'Oro\Bundle\UserBundle\Entity\Group'

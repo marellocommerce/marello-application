@@ -34,13 +34,13 @@ class PostAllocationCreateEventListener
             . ' ' . $allocation->getState()
         );
         $task->setDescription(implode(PHP_EOL, [
-            $allocation->getAllocationNumber(),
-            $allocation->getState(),
-            $allocation->getStatus(),
-            PHP_EOL . $this->translator->trans('marello.inventory.allocation.order.label'),
-            $allocation->getOrder()->getOrderNumber(),
-            $allocation->getOrder()->getCustomer()->getFullName(),
-            $dueDate->format('Y-m-d H:i:s'),
+            $this->wrapParagraph($allocation->getAllocationNumber()),
+            $this->wrapParagraph($allocation->getState()),
+            $this->wrapParagraph($allocation->getStatus()),
+            $this->wrapParagraph(PHP_EOL . $this->translator->trans('marello.inventory.allocation.order.label')),
+            $this->wrapParagraph($allocation->getOrder()->getOrderNumber()),
+            $this->wrapParagraph($allocation->getOrder()->getCustomer()->getFullName()),
+            $this->wrapParagraph($dueDate->format('Y-m-d H:i:s')),
         ]));
 
         $priorityName = $allocation->getState()->__toString() == AllocationStateStatusInterface::ALLOCATION_STATE_ALERT
@@ -77,5 +77,10 @@ class PostAllocationCreateEventListener
         }
         $this->tasks = [];
         $args->getEntityManager()->flush();
+    }
+
+    private function wrapParagraph(string $string): string
+    {
+        return '<p>' . $string . '</p>';
     }
 }

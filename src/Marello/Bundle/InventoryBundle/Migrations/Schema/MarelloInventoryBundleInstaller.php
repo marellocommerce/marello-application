@@ -32,7 +32,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
      */
     public function getMigrationVersion()
     {
-        return 'v2_6_2';
+        return 'v2_6_3';
     }
 
     /**
