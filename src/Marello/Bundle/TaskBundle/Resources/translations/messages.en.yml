@@ -3,7 +3,7 @@ marello:
         type.label: Type
         assigned_to_user.label: Assigned To User
         assigned_to_group.label: Assigned To Group
-        assigned_allocation_tasks_widget.title: Assigned Allocation Tasks
+        assigned_allocation_tasks_widget.title: Allocation task list
         datagrid:
             action:
                 close:

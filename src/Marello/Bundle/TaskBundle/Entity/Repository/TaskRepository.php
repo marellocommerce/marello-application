@@ -50,7 +50,7 @@ class TaskRepository extends BaseTaskRepository
                 $queryBuilder->expr()->eq('task.type', ':type'),
                 $queryBuilder->expr()->neq('workflowStep.name', ':step')
             )
-            ->orderBy('task.dueDate', 'ASC')
+            ->orderBy('task.createdAt', 'DESC')
             ->addOrderBy('workflowStep.id', 'ASC')
             ->setFirstResult(0)
             ->setMaxResults($limit)

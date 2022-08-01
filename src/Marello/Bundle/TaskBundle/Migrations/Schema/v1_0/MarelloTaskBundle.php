@@ -39,9 +39,15 @@ class MarelloTaskBundle implements
             'task_type'
         );
 
-        $options = new OroOptions();
-        $options->set('enum', 'immutable_codes', ['general', 'allocation']);
-
+        $options = new OroOptions([
+            'enum' => [
+                'immutable_codes' => ['general', 'allocation'],
+            ],
+            'datagrid' => [
+                'is_visible' => DatagridScope::IS_VISIBLE_TRUE,
+                'show_filter' => true,
+            ],
+        ]);
         $enumTable->addOption(OroOptions::KEY, $options);
     }
 
