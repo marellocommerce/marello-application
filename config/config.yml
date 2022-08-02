@@ -112,9 +112,11 @@ oro_attachment:
         - image/png
         - image/svg
         - image/svg+xml
+        - image/webp
     upload_image_mime_types:
         - image/gif
         - image/jpeg
         - image/png
         - image/svg
         - image/svg+xml
+        - image/webp
