@@ -133,7 +133,7 @@ class PurchaseOrderItem implements
      *      }
      * )
      */
-    protected $orderedAmount;
+    protected $orderedAmount = 0;
 
     /**
      * @var int
