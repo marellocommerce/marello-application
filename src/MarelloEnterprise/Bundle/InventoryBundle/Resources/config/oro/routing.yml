@@ -18,6 +18,11 @@ marelloenterprise_inventory_wfarule:
     type:     annotation
     prefix:   /marello/inventory/wfa-rule
 
+marelloenterprise_inventory_expected_inventory_item:
+    resource: "@MarelloEnterpriseInventoryBundle/Controller/ExpectedInventoryItemController.php"
+    type:     annotation
+    prefix:   /marello/inventory/expected-inventory-item
+
 marelloenterprise_api_enable_wfa_rule:
     path: '/api/rest/{version}/wfarules/{id}/enable'
     methods: [GET]

@@ -54,3 +54,4 @@ navigation:
         marelloenterprise_inventory_wfa_rule_create:  'oro.ui.create_entity'
         marelloenterprise_inventory_wfa_rule_update:  '%wfarule.label% - oro.ui.edit'
         marelloenterprise_inventory_wfa_rule_view:    '%wfarule.label% - oro.ui.view'
+        marelloenterprise_inventory_expected_inventory_item_view: 'marello.inventory.inventorylevel.expected_inventory.label'

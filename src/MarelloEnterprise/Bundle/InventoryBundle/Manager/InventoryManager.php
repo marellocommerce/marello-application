@@ -13,6 +13,7 @@ use Marello\Bundle\InventoryBundle\Manager\InventoryManager as BaseInventoryMana
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
+use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
 
 class InventoryManager extends BaseInventoryManager
 {
@@ -105,6 +106,19 @@ class InventoryManager extends BaseInventoryManager
                 ->getEntityManagerForClass(InventoryBatch::class)
                 ->flush();
         }
+    }
+
+    public function getExpectedInventoryTotal($entity)
+    {
+        $total = 0;
+        $purchaseOrderItems = $this->doctrineHelper->getEntityRepositoryForClass(PurchaseOrderItem::class)
+            ->getNotCompletedItemsByProduct($entity->getProduct());
+        /** @var PurchaseOrderItem $purchaseOrderItem */
+        foreach ($purchaseOrderItems as $purchaseOrderItem) {
+            $total += $purchaseOrderItem->getOrderedAmount() - $purchaseOrderItem->getReceivedAmount();
+        }
+
+        return $total;
     }
 
     /**
