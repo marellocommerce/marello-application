@@ -16,3 +16,15 @@
 {{ UI.renderProperty('marello.inventory.inventorylevel.inventory.label'|trans, invTotal) }}
 {{ UI.renderProperty('marello.inventory.inventorylevel.allocated_inventory.label'|trans, allocInvTotal) }}
 {{ UI.renderProperty('marello.inventory.inventorylevel.virtual_inventory.label'|trans, virtualInvTotal) }}
+{% set expectedInventoryTotal = get_expected_inventory_total(entity) %}
+{{ UI.renderHtmlProperty(
+    'marello.inventory.inventorylevel.expected_inventory.label'|trans,
+    expectedInventoryTotal
+        ? UI.entityViewLink(
+            entity,
+            expectedInventoryTotal,
+            'marelloenterprise_inventory_expected_inventory_item_view',
+            'marello_inventory_inventory_view'
+        )
+        : expectedInventoryTotal
+) }}

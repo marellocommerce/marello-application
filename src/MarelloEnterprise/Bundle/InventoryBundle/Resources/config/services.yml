@@ -42,6 +42,7 @@ services:
         public: false
         arguments:
             - '@marelloenterprise_inventory.checker.warehousegroup.is_fixed'
+            - '@marello_inventory.manager.inventory_manager'
         tags:
             - { name: twig.extension }
 
@@ -150,3 +151,7 @@ services:
             - '@Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProvider'
             - '@event_dispatcher'
             - '@oro_config.manager'
+
+    MarelloEnterprise\Bundle\InventoryBundle\EventListener\Datagrid\ExpectedInventoryItemGridListener:
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.marelloenterprise-inventory-expected-inventory-item-grid, method: onBuildAfter }
