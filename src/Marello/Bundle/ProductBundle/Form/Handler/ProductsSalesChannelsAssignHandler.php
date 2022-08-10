@@ -126,7 +126,7 @@ class ProductsSalesChannelsAssignHandler
     private function onSuccess($addChannels, $inset, $products = null, $filters = null): array
     {
         $isAllSelected = $this->isAllSelected($inset);
-        $productIds = explode(',', $products);
+        $productIds = array_filter(explode(',', $products));
 
         if (!empty($productIds) || $isAllSelected) {
             $grid = $this->datagridManager->getDatagridByRequestParams(
