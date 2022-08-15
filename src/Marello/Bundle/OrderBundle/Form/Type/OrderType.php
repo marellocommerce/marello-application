@@ -132,6 +132,21 @@ class OrderType extends AbstractType
             $data->setPaymentMethodOptions($paymentMethodOptions);
             $event->setData($data);
         });
+
+        $builder->addEventListener(
+            FormEvents::PRE_SUBMIT,
+            function (FormEvent $event) {
+                $data = $event->getData();
+                if (!empty($data['billingAddress'])
+                    && isset($data['billingAddress']['useBillingAddressAsShipping'])
+                ) {
+                    if ($data['billingAddress']['useBillingAddressAsShipping'] === '1') {
+                        $data['shippingAddress'] = $data['billingAddress'];
+                    }
+                    $event->setData($data);
+                }
+            }
+        );
     }
 
     /**
