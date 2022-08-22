@@ -70,7 +70,7 @@ marello:
             organization.label:            Organization
             warehouse.label:               Warehouse
             backorder_allowed.label:       Backorder allowed
-            max_qty_to_backorder.label:    Max qty to backorder
+            max_qty_to_backorder.label:    Max Qty per Order
             can_preorder.label:            Pre-order allowed
             max_qty_to_preorder.label:     Max Qty per Order
             back_orders_datetime.label:    Backorders Datetime
