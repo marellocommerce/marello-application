@@ -9,10 +9,12 @@ use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
+use Marello\Bundle\InventoryBundle\Provider\AllocationStateStatusInterface;
 use Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProviderInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\PackingBundle\Entity\PackingSlipItem;
+use Marello\Bundle\ProductBundle\Migrations\Data\ORM\LoadAllocationStatusData;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Component\ConfigExpression\ContextAccessor;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -56,10 +58,22 @@ class OrderShipAction extends OrderTransitionAction
             ->findBy(['order' => $order]);
         /** @var Allocation $result */
         foreach ($allocations as $result) {
+            if ($result->getState()
+                && $result->getState()->getId() === AllocationStateStatusInterface::ALLOCATION_STATE_AVAILABLE
+            ) {
+                continue;
+            }
+
             $warehouse = $result->getWarehouse();
             $items = $result->getItems();
             $items->map(function (AllocationItem $item) use ($order, $warehouse) {
-                $this->handleInventoryUpdate($item->getOrderItem(), -$item->getQuantity(), -$item->getQuantity(), $order, $warehouse);
+                $this->handleInventoryUpdate(
+                    $item->getOrderItem(),
+                    -$item->getQuantity(),
+                    -$item->getQuantity(),
+                    $order,
+                    $warehouse
+                );
             });
         }
     }
