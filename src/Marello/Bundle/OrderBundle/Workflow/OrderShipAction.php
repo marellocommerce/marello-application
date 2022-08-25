@@ -59,7 +59,7 @@ class OrderShipAction extends OrderTransitionAction
         /** @var Allocation $result */
         foreach ($allocations as $result) {
             if ($result->getState()
-                && $result->getState()->getId() === AllocationStateStatusInterface::ALLOCATION_STATE_AVAILABLE
+                && $result->getState()->getId() !== AllocationStateStatusInterface::ALLOCATION_STATE_AVAILABLE
             ) {
                 continue;
             }
