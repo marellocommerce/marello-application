@@ -129,12 +129,5 @@ class OrderShipAction extends OrderTransitionAction
             new InventoryUpdateEvent($context),
             InventoryUpdateEvent::NAME
         );
-
-        $context->setIsVirtual(true);
-
-        $this->eventDispatcher->dispatch(
-            new InventoryUpdateEvent($context),
-            InventoryUpdateEvent::NAME
-        );
     }
 }
