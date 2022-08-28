@@ -13,3 +13,7 @@ marello_order_dashboard:
     type:     annotation
     prefix:   /marello/dashboard
 
+marello_order_shipment_label:
+    resource: "@MarelloOrderBundle/Controller/OrderShipmentLabelController.php"
+    type:     annotation
+    prefix:   /marello/order
