@@ -108,14 +108,6 @@ class OrderType extends AbstractType
                     'required' => false
                 ]
             )
-//            ->add(
-//                'consolidationEnabled',
-//                CheckboxType::class,
-//                [
-//                    'required' => false,
-//                    'label' => 'marello.order.consolidation_enabled.label'
-//                ]
-//            )
             ->add('items', OrderItemCollectionType::class);
         $this->addPaymentFields($builder);
         $this->addShippingFields($builder, $options['data']);
