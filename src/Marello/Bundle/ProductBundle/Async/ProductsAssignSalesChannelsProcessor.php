@@ -61,7 +61,6 @@ class ProductsAssignSalesChannelsProcessor implements MessageProcessorInterface,
             $productRepo = $this->entityManager->getRepository(Product::class);
             $products = $productRepo->findBy(['id' => $products]);
             try {
-                $iteration = 1;
                 $modifiedProducts = [];
                 /** @var Product $entity */
                 foreach ($products as $entity) {
@@ -77,7 +76,7 @@ class ProductsAssignSalesChannelsProcessor implements MessageProcessorInterface,
                         $modifiedProducts[] = $entity;
                     }
 
-                    if (($iteration % self::FLUSH_BATCH_SIZE) === 0) {
+                    if ((count($modifiedProducts) % self::FLUSH_BATCH_SIZE) === 0) {
                         $this->entityManager->flush();
                     }
                 }
