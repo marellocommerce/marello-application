@@ -27,7 +27,7 @@ class ProductsSalesChannelsAssignHandler
     const FLUSH_BATCH_SIZE = 100;
 
     /** @var int max size of product ids per message to prevent having a single big message */
-    const MESSAGE_PRODUCT_ID_SIZE = 1000;
+    const MESSAGE_PRODUCT_ID_SIZE = 100;
 
     /**
      * @var FormInterface
@@ -250,7 +250,7 @@ class ProductsSalesChannelsAssignHandler
             [
                 'products' => $productIds,
                 'salesChannels' => $channelIds,
-                'jobId' => md5(rand(1, 5))
+                'jobId' => md5(implode($productIds))
             ]
         );
     }
