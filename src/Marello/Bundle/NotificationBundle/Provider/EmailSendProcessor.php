@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\NotificationBundle\Provider;
 
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -125,8 +126,14 @@ class EmailSendProcessor
 
         // set type earlier otherwise it will not render correctly as html...
         $emailModel->setType($template->getType());
-        if ($this->emailTemplateManager->getLocalizedModel($template, $entity)) {
-            $template = $this->emailTemplateManager->getLocalizedModel($template, $entity);
+        if ($templateModel = $this->emailTemplateManager->getLocalizedModel($template, $entity)) {
+            $template = $templateModel;
+        }
+
+        if ($entity instanceof OrganizationAwareInterface) {
+            $emailModel->setOrganization($entity->getOrganization());
+        } elseif (isset($recipient) && $recipient instanceof OrganizationAwareInterface) {
+            $emailModel->setOrganization($recipient->getOrganization());
         }
 
         $templateData = $this->renderer->compileMessage($template, compact('entity'));
