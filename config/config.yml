@@ -113,3 +113,8 @@ oro_attachment:
         - image/svg
         - image/svg+xml
         - image/webp
+
+oro_email:
+    public_email_owners:
+        - Oro\Bundle\UserBundle\Entity\User
+        - Marello\Bundle\CustomerBundle\Entity\Customer
