@@ -132,7 +132,9 @@ class ProductsAssignSalesChannelsProcessor implements MessageProcessorInterface,
                     implode('<br>', $salesChannels),
                     implode('<br>', $products)
                 )
-            );
+            )
+            ->setOrganization($currentUser->getOrganization());
+
         $this->emailModelSender->send($emailModel);
     }
 }
