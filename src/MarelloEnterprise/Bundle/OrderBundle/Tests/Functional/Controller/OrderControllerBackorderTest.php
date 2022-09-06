@@ -48,9 +48,6 @@ class OrderControllerBackorderTest extends WebTestCase
         $this->doctrine = $this->getContainer()->get('doctrine');
     }
 
-    /**
-     * @return Order
-     */
     public function testCreateNoBackorderNoPreorder()
     {
         $crawler = $this->client->request('GET', $this->getUrl('marello_order_order_create'));
@@ -114,9 +111,6 @@ class OrderControllerBackorderTest extends WebTestCase
         $this->assertCount(count($ordersBefore), $ordersAfter);
     }
 
-    /**
-     * @return Order
-     */
     public function testCreateWithBackorderNoPreorderNoMaxQty()
     {
         $crawler = $this->client->request('GET', $this->getUrl('marello_order_order_create'));
@@ -183,9 +177,6 @@ class OrderControllerBackorderTest extends WebTestCase
         $this->assertCount(count($ordersBefore) + 1, $ordersAfter);
     }
 
-    /**
-     * @return Order
-     */
     public function testCreateNoBackorderWithPreorder()
     {
         $crawler = $this->client->request('GET', $this->getUrl('marello_order_order_create'));
@@ -253,9 +244,6 @@ class OrderControllerBackorderTest extends WebTestCase
         $this->assertCount(count($ordersBefore) + 1, $ordersAfter);
     }
 
-    /**
-     * @return Order
-     */
     public function testCreateWithBackorderWithMaxQtyNoPreorder()
     {
         $crawler = $this->client->request('GET', $this->getUrl('marello_order_order_create'));
