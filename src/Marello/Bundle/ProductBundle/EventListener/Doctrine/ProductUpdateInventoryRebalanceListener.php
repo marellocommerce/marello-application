@@ -105,6 +105,7 @@ class ProductUpdateInventoryRebalanceListener
     {
         /** @var PersistentCollection $collection */
         $collectionUpd = $this->unitOfWork->getScheduledCollectionUpdates();
+        $processedProducts = [];
         foreach ($collectionUpd as $collection) {
             if ($collection->first() instanceof SalesChannel) {
                 $unassignedSalesChannelsPerGroup = [];
@@ -125,11 +126,13 @@ class ProductUpdateInventoryRebalanceListener
                     }
                 }
 
-                if (count($collection->getInsertDiff()) > 0) {
+                if (count($collection->getInsertDiff()) > 0 && !in_array($entity->getId(), $processedProducts)) {
                     $this->triggerRebalance($entity);
+                    $processedProducts[] = $entity->getId();
                 }
             }
         }
+
     }
 
     /**
