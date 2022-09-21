@@ -124,19 +124,6 @@ class OrderOnDemandWorkflowTest extends WebTestCase
         $orderItem2 = $order->getItems()[1];
         static::assertSame($product6->getSku(), $orderItem2->getProductSku());
 
-        $afterPurchaseOrders = $this->getContainer()->get('doctrine')
-            ->getManagerForClass(PurchaseOrder::class)
-            ->getRepository(PurchaseOrder::class)
-            ->findAll();
-        $this->assertCount(1, $afterPurchaseOrders);
-        /** @var PurchaseOrder $purchaseOrder */
-        $purchaseOrder = reset($afterPurchaseOrders);
-        $this->assertCount(1, $purchaseOrder->getItems());
-        /** @var PurchaseOrderItem $poItem */
-        $poItem = $purchaseOrder->getItems()->first();
-        static::assertSame($product6->getSku(), $poItem->getProductSku());
-        static::assertSame($orderItem2->getQuantity(), $poItem->getOrderedAmount());
-
         $doctrine = $this->getContainer()->get('doctrine');
         $beforeShipment = $doctrine
             ->getManagerForClass(Shipment::class)
@@ -166,42 +153,17 @@ class OrderOnDemandWorkflowTest extends WebTestCase
         $workflowManager->transit($orderWorkflowItem, 'prepare_shipping');
         $workflowManager->transit($orderWorkflowItem, 'ship');
 
-        $afterShipment = $doctrine
-            ->getManagerForClass(Shipment::class)
-            ->getRepository(Shipment::class)
-            ->findAll();
-        $this->assertCount(1, $afterShipment);
         $afterAllocations = $doctrine
             ->getManagerForClass(Allocation::class)
             ->getRepository(Allocation::class)
             ->findAll();
-        $this->assertCount(1, $afterAllocations);
+        $this->assertCount(2, $afterAllocations);
         /** @var Allocation $allocation */
         $allocation = reset($afterAllocations);
         $this->assertCount(1, $allocation->getItems());
         /** @var AllocationItem $allocationItem */
         $allocationItem = $allocation->getItems()->first();
         static::assertSame($allocationItem->getProductSku(), $orderItem1->getProductSku());
-
-        $poWorkflowItem = $workflowManager->getWorkflowItem($purchaseOrder, 'marello_purchase_order_workflow');
-        $data = $poWorkflowItem->getData();
-        $poItem
-            ->setReceivedAmount(1)
-            ->setData([ReceivePurchaseOrderAction::LAST_PARTIALLY_RECEIVED_QTY => 1]);
-        $data->set('received_items', $purchaseOrder);
-        $poWorkflowItem->setData($data);
-        $workflowManager->transit($poWorkflowItem, 'partially_receive');
-
-        $afterPoShipment = $doctrine
-            ->getManagerForClass(Shipment::class)
-            ->getRepository(Shipment::class)
-            ->findAll();
-        $this->assertCount(2, $afterPoShipment);
-        $afterAllocations = $doctrine
-            ->getManagerForClass(Allocation::class)
-            ->getRepository(Allocation::class)
-            ->findAll();
-        $this->assertCount(2, $afterAllocations);
         
         return $order->getId();
     }
