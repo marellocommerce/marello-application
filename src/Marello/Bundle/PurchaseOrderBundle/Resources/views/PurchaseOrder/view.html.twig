@@ -38,6 +38,7 @@
                     {{ UI.renderProperty('marello.purchaseorder.purchase_order_supplier.label'|trans, entity.supplier.name) }}
                     {{ UI.renderProperty('marello.purchaseorder.expected_delivery_date.label'|trans, entity.dueDate|oro_format_date) }}
                     {{ UI.renderProperty('marello.purchaseorder.order_total.label'|trans, entity.orderTotal|oro_format_currency({'currency':entity.supplier.currency})) }}
+                    {{ UI.renderProperty('marello.purchaseorder.warehouse.label'|trans, entity.warehouse.label) }}
                     {{ UI.renderHtmlProperty('marello.purchaseorder.shipping_address.label'|trans, Address.renderAddress(entity.warehouse.address)) }}
                     {{ UI.renderProperty('marello.order.address.phone.label'|trans, entity.warehouse.address.phone) }}
 

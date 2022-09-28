@@ -4,10 +4,10 @@ namespace Marello\Bundle\WorkflowBundle\Manager;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Gaufrette\Filesystem;
-use Knp\Bundle\GaufretteBundle\FilesystemMap;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\IterableResultInterface;
 use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
+use Oro\Bundle\GaufretteBundle\FilesystemMap;
 use Oro\Bundle\NotificationBundle\Async\Topic\SendEmailNotificationTopic;
 use Oro\Bundle\NotificationBundle\Model\NotificationSettings;
 use Oro\Bundle\WorkflowBundle\Exception\WorkflowException;
@@ -18,63 +18,18 @@ use Symfony\Component\Routing\RouterInterface;
 
 class WorkflowTransitMassManager
 {
-    /**
-     * @var WorkflowManager
-     */
-    private $workflowManager;
-
-    /**
-     * @var WorkflowRegistry
-     */
-    private $workflowRegistry;
-
-    /**
-     * @var ManagerRegistry
-     */
-    private $registry;
-
-    /**
-     * @var MessageProducerInterface
-     */
-    private $messageProducer;
-
-    /**
-     * @var ConfigManager
-     */
-    private $configManager;
-
-    /**
-     * @var NotificationSettings
-     */
-    private $notificationSettings;
-
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
-     * @var Filesystem
-     */
-    private $filesystem;
+    private Filesystem $filesystem;
 
     public function __construct(
-        WorkflowManager $workflowManager,
-        WorkflowRegistry $workflowRegistry,
-        ManagerRegistry $registry,
-        MessageProducerInterface $messageProducer,
-        ConfigManager $configManager,
-        NotificationSettings $notificationSettings,
-        RouterInterface $router,
+        private WorkflowManager $workflowManager,
+        private WorkflowRegistry $workflowRegistry,
+        private ManagerRegistry $registry,
+        private MessageProducerInterface $messageProducer,
+        private ConfigManager $configManager,
+        private NotificationSettings $notificationSettings,
+        private RouterInterface $router,
         FilesystemMap $filesystemMap
     ) {
-        $this->workflowManager = $workflowManager;
-        $this->workflowRegistry = $workflowRegistry;
-        $this->registry = $registry;
-        $this->messageProducer = $messageProducer;
-        $this->configManager = $configManager;
-        $this->notificationSettings = $notificationSettings;
-        $this->router = $router;
         $this->filesystem = $filesystemMap->get('importexport');
     }
 
