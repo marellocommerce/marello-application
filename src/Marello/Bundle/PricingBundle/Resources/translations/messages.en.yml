@@ -14,6 +14,9 @@ marello:
             special_price:
                 label:                  Special Price
                 plural_label:           Special Prices
+                start.label:            Start
+                end.label:              End
+                date.label:             Available date
             msrp_price:
                 label:                  MSRP Price
                 plural_label:           MSRP Prices
@@ -31,6 +34,9 @@ marello:
             special_price:
                 label:                  Special Channel Price
                 plural_label:           Special Channel Prices
+                start.label:            Start
+                end.label:              End
+                date.label:             Available date
             product.label:              Product
             channel.label:              Channel
 
