@@ -4,6 +4,7 @@ namespace Marello\Bundle\PricingBundle\Form\Type;
 
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Oro\Bundle\CurrencyBundle\Form\DataTransformer\MoneyValueTransformer;
+use Oro\Bundle\FormBundle\Form\Type\OroDateTimeType;
 use Oro\Bundle\FormBundle\Form\Type\OroMoneyType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -22,7 +23,14 @@ class ProductPriceType extends AbstractType
         $builder
             ->add('currency', HiddenType::class, [
                 'required' => true,
+            ])
+            ->add('startDate', OroDateTimeType::class, [
+                'required' => false,
+            ])
+            ->add('endDate', OroDateTimeType::class, [
+                'required' => false
             ]);
+
         if ($options['currency'] && $options['currency_symbol']) {
             $builder
                 ->add('value', OroMoneyType::class, [
