@@ -2,15 +2,18 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Form\Extension;
 
-use Doctrine\ORM\EntityRepository;
-
-use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractTypeExtension;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
+use Oro\Bundle\FormBundle\Utils\FormUtils;
+
+use Marello\Bundle\InventoryBundle\Entity\WarehouseType as WarehouseTypeEntity;
 use Marello\Bundle\InventoryBundle\Form\Type\WarehouseType;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 
 class WarehouseExtension extends AbstractTypeExtension
 {
@@ -36,16 +39,26 @@ class WarehouseExtension extends AbstractTypeExtension
             ])
             ->add('warehouseType', EntityType::class, [
                 'label'    => 'marello.inventory.warehouse.warehouse_type.label',
-                'class'    => 'MarelloInventoryBundle:WarehouseType',
+                'class'    => WarehouseTypeEntity::class,
                 'required' => true,
-                'query_builder' => function(EntityRepository $repository) {
-                    $qb = $repository->createQueryBuilder('whtype');
-                    return $qb
-                        ->where($qb->expr()->neq('whtype.name', '?1'))
-                        ->setParameter('1', WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL)
-                        ->orderBy('whtype.name', 'ASC')
-                        ;
-                }
-            ]);
+            ])
+            ->addEventListener(
+                FormEvents::PRE_SET_DATA,
+                [$this, 'preSetDataListener']
+            );
+    }
+
+    /**
+     * @param FormEvent $event
+     */
+    public function preSetDataListener(FormEvent $event)
+    {
+        /** @var Warehouse $warehouse */
+        $warehouse = $event->getData();
+        $form = $event->getForm();
+
+        if ($warehouse->getWarehouseType() !== null) {
+            FormUtils::replaceField($form, 'warehouseType', ['disabled' => true]);
+        }
     }
 }
