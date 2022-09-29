@@ -51,6 +51,7 @@ marello:
         billing_address:
             label:                  Billing Address
             name.label:             Bill to Name
+            use_as_shipping.label:  Use Billing Address as Shipping Address
         shipping_address:
             label:                  Shipping Address
             name.label:             Ship to Name
@@ -190,6 +191,7 @@ marello:
             shipping_information: Shipping Information
             subtotals: Order Totals
             additional: Additional
+            addresses: Addresses
 
         form:
             address:
