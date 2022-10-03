@@ -19,6 +19,12 @@
             font-size:12px;
         }
     }
+
+    .fields-row {
+        input[readonly="readonly"] {
+            border: none;
+        }
+    }
 }
 
 .order-line-items .add-line-item {
