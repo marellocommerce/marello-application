@@ -25,8 +25,8 @@ class InventoryLevelLogGridListener
         $config = $event->getConfig();
         $columns = $config->offsetGetOr('columns', []);
 
-        if (array_key_exists('allocatedInventoryDiff', $columns)) {
-            $offset = array_search('allocatedInventoryDiff', array_keys($columns));
+        if (array_key_exists('batchNumber', $columns)) {
+            $offset = array_search('batchNumber', array_keys($columns));
             $warehouseColumn = [
                 'warehouseLabel' => [
                     'label' => 'marello.inventory.inventorylevel.warehouse.label',
