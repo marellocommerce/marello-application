@@ -51,6 +51,12 @@ class WorkflowTransitMassActionExtension extends MassActionExtension
     protected function createAction($actionName, array $actionConfig)
     {
         $action = parent::createAction($actionName, $actionConfig);
+
+        $configIntersect = array_intersect(array_keys($actionConfig), ['type', 'workflow', 'transition']);
+        if (empty($configIntersect)) {
+            return $action;
+        }
+
         if ($actionConfig['type'] !== self::MASS_ACTION_TYPE) {
             return $action;
         }
