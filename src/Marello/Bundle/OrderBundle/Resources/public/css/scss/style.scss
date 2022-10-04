@@ -25,10 +25,10 @@
             border: none;
         }
     }
-}
 
-.order-line-items .add-line-item {
-    margin-top: 10px;
+    .add-line-item {
+        margin-top: 10px;
+    }
 }
 
 .order-line-item-product {
@@ -54,7 +54,6 @@
 
     input[type="text"] {
         width:80px;
-        text-align:right;
         float: left;
     }
 }
