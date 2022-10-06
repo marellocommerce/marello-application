@@ -84,13 +84,6 @@ oro_message_queue:
     transport:
         '%message_queue_transport%': '%message_queue_transport_config%'
 
-oro_layout:
-    enabled_themes:
-        - blank
-        - default
-        - custom
-        - view-switcher
-
 oro_locale:
     formatting_code: en
     language: en
@@ -112,9 +105,11 @@ oro_attachment:
         - image/png
         - image/svg
         - image/svg+xml
+        - image/webp
     upload_image_mime_types:
         - image/gif
         - image/jpeg
         - image/png
         - image/svg
         - image/svg+xml
+        - image/webp
