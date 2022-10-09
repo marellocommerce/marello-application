@@ -2,14 +2,15 @@
 
 namespace Marello\Bundle\NotificationBundle\Provider;
 
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\Constraints\Email as EmailConstraints;
 
 use Oro\Bundle\EmailBundle\Form\Model\Email;
-use Oro\Bundle\EmailBundle\Mailer\Processor;
 use Oro\Bundle\EmailBundle\Provider\EmailRenderer;
 use Oro\Bundle\EmailBundle\Sender\EmailModelSender;
 use Oro\Bundle\EmailBundle\Tools\EmailOriginHelper;
@@ -122,11 +123,17 @@ class EmailSendProcessor
                 )
             );
         }
+
         // set type earlier otherwise it will not render correctly as html...
-        // see vendor/oro/platform/src/Oro/Bundle/EmailBundle/Mailer/Processor.php#438
         $emailModel->setType($template->getType());
-        if ($this->emailTemplateManager->getLocalizedModel($template, $entity)) {
-            $template = $this->emailTemplateManager->getLocalizedModel($template, $entity);
+        if ($templateModel = $this->emailTemplateManager->getLocalizedModel($template, $entity)) {
+            $template = $templateModel;
+        }
+
+        if ($entity instanceof OrganizationAwareInterface) {
+            $emailModel->setOrganization($entity->getOrganization());
+        } elseif (isset($recipient) && $recipient instanceof OrganizationAwareInterface) {
+            $emailModel->setOrganization($recipient->getOrganization());
         }
 
         $templateData = $this->renderer->compileMessage($template, compact('entity'));
@@ -137,14 +144,14 @@ class EmailSendProcessor
         $this->addAttachments($emailModel, $data);
         // set order as context to show up in activity list
         $emailModel->setContexts([$entity]);
-        $emailUser = null;
         try {
             $emailOrigin = $this->emailOriginHelper->getEmailOrigin(
                 $emailModel->getFrom(),
                 $emailModel->getOrganization()
             );
-            $this->emailModelSender->send($emailModel, $emailModel->getOrigin());
-        } catch (\Swift_SwiftException $exception) {
+
+            $this->emailModelSender->send($emailModel, $emailOrigin);
+        } catch (TransportExceptionInterface $exception) {
             $this->logger->error('Workflow send email template action.', ['exception' => $exception]);
         }
 
