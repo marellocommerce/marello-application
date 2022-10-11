@@ -12,6 +12,7 @@ marello:
 
 oro:
     task:
+        type.label: Type
         owner.label: Owner
         assigned_to_user.label: Assigned To User
         assigned_to_group.label: Assigned To Group

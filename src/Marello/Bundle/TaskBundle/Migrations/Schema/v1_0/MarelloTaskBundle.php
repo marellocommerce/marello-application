@@ -27,7 +27,7 @@ class MarelloTaskBundle implements
     {
         self::addTaskTypeField($schema, $this->extendExtension);
         self::addTaskTypeValues($queries, $this->extendExtension);
-        self::addRelationToGroup($schema, $this->extendExtension);
+        self::addAssignToRelations($schema, $this->extendExtension);
     }
 
     public static function addTaskTypeField(Schema $schema, ExtendExtension $extendExtension)
@@ -36,18 +36,24 @@ class MarelloTaskBundle implements
             $schema,
             'orocrm_task',
             'type',
-            'task_type'
+            'task_type',
+            false,
+            false,
+            [
+                'extend' => ['owner' => ExtendScope::OWNER_CUSTOM],
+                'datagrid' => [
+                    'is_visible' => DatagridScope::IS_VISIBLE_FALSE
+                ],
+            ]
         );
 
-        $options = new OroOptions([
-            'enum' => [
-                'immutable_codes' => ['general', 'allocation'],
-            ],
-            'datagrid' => [
-                'is_visible' => DatagridScope::IS_VISIBLE_TRUE,
-                'show_filter' => true,
-            ],
-        ]);
+        $options = new OroOptions();
+        $options->set(
+            'enum',
+            'immutable_codes',
+            ['general', 'allocation'],
+        );
+
         $enumTable->addOption(OroOptions::KEY, $options);
     }
 
@@ -69,8 +75,7 @@ class MarelloTaskBundle implements
                     'owner' => ExtendScope::OWNER_CUSTOM,
                 ],
                 'datagrid' => [
-                    'is_visible' => DatagridScope::IS_VISIBLE_TRUE,
-                    'show_filter' => true,
+                    'is_visible' => DatagridScope::IS_VISIBLE_FALSE
                 ],
                 'view' => [
                     'is_displayable' => true,
@@ -88,8 +93,7 @@ class MarelloTaskBundle implements
                     'owner' => ExtendScope::OWNER_CUSTOM,
                 ],
                 'datagrid' => [
-                    'is_visible' => DatagridScope::IS_VISIBLE_TRUE,
-                    'show_filter' => true,
+                    'is_visible' => DatagridScope::IS_VISIBLE_FALSE
                 ],
                 'view' => [
                     'is_displayable' => true,
