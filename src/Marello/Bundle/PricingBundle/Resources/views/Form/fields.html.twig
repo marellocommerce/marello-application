@@ -23,6 +23,7 @@
     <td class="pricing-line-item-special-date">
         <div class="fields-row">
             <span>{{ 'marello.pricing.assembledpricelist.special_price.start.label'|trans }}</span>{{ form_widget(form.specialPrice.startDate) }}
+            {{ form_errors(form.specialPrice.startDate) }}
             <span>{{ 'marello.pricing.assembledpricelist.special_price.end.label'|trans }}</span>{{ form_widget(form.specialPrice.endDate) }}
         </div>
     </td>
@@ -129,6 +130,7 @@
     <td class="pricing-line-item-special-date">
         <div class="fields-row">
             <span>{{ 'marello.pricing.assembledchannelpricelist.special_price.start.label'|trans }}</span>{{ form_widget(form.specialPrice.startDate) }}
+            {{ form_errors(form.specialPrice.startDate) }}
             <span>{{ 'marello.pricing.assembledchannelpricelist.special_price.end.label'|trans }}</span>{{ form_widget(form.specialPrice.endDate) }}
         </div>
     </td>
