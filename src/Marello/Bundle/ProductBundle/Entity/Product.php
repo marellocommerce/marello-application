@@ -1406,7 +1406,7 @@ class Product extends ExtendProduct implements
                 $categoriesCodes = substr($categoriesCodes, 0, -1);
             }
             $categoriesCodes = explode("|", $categoriesCodes);
-            $categoriesCodes = array_diff([$categoriesCodes], [$category->getCode()]);
+            $categoriesCodes = array_diff($categoriesCodes, [$category->getCode()]);
             $this->categoriesCodes = sprintf('|%s|', implode('|', $categoriesCodes));
         }
 
