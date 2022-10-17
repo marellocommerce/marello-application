@@ -4,6 +4,7 @@ namespace Marello\Bundle\ShippingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
+use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ShippingBundle\Model\ExtendShipment;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
@@ -102,6 +103,21 @@ class Shipment extends ExtendShipment implements OrganizationAwareInterface
      * @var string
      */
     protected $base64EncodedLabel;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Marello\Bundle\ShippingBundle\Entity\TrackingInfo", cascade={"persist"})
+     * @ORM\JoinColumn(name="tracking_info_id", nullable=true)
+     *
+     * @var TrackingInfo
+     */
+    protected $trackingInfo;
+
+    /**
+     * @var Order
+     *
+     * @ORM\OneToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\Order", inversedBy="shipment")
+     */
+    protected $order;
 
     /**
      * @return mixed
@@ -207,6 +223,46 @@ class Shipment extends ExtendShipment implements OrganizationAwareInterface
     public function setBase64EncodedLabel($base64EncodedLabel)
     {
         $this->base64EncodedLabel = $base64EncodedLabel;
+
+        return $this;
+    }
+
+    /**
+     * @return TrackingInfo|null
+     */
+    public function getTrackingInfo(): ?TrackingInfo
+    {
+        return $this->trackingInfo;
+    }
+
+    /**
+     * @param TrackingInfo $trackingInfo
+     *
+     * @return $this
+     */
+    public function setTrackingInfo(TrackingInfo $trackingInfo): self
+    {
+        $this->trackingInfo = $trackingInfo;
+
+        return $this;
+    }
+
+    /**
+     * @return Order|null
+     */
+    public function getOrder(): ?Order
+    {
+        return $this->order;
+    }
+
+    /**
+     * @param Order $order
+     *
+     * @return $this
+     */
+    public function setOrder(Order $order): self
+    {
+        $this->order = $order;
 
         return $this;
     }
