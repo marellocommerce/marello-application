@@ -23,6 +23,11 @@ define(function(require) {
         /**
          * @property {Object}
          */
+        $typeSelect: null,
+
+        /**
+         * @property {Object}
+         */
         $userSelect: null,
 
         /**
@@ -38,15 +43,18 @@ define(function(require) {
             this.$el = options._sourceElement;
 
             this.$assignedToContainer = this.$el.find(this.options.assignedToContainer);
+            this.$typeSelect = this.$el.find(this.options.typeSelect);
             this.$userSelect = this.$el.find(this.options.userSelect);
             this.$groupSelect = this.$el.find(this.options.groupSelect);
             this.$el.on('change', this.options.typeSelect, _.bind(this.onTypeChanged, this));
             this.$el.on('change', this.options.userSelect, _.bind(this.onUserChanged, this));
             this.$el.on('change', this.options.groupSelect, _.bind(this.onGroupChanged, this));
+
+            this.onTypeChanged();
         },
 
-        onTypeChanged: function(e) {
-            if (e.val === 'allocation') {
+        onTypeChanged: function() {
+            if (this.$typeSelect.val() === 'allocation') {
                 this.$assignedToContainer.removeClass('hide');
             } else {
                 this.$assignedToContainer.addClass('hide');

@@ -124,11 +124,13 @@ datagrids:
                     - lr
                     - (lr.inventoryAlteration) AS inventoryDiff
                     - (lr.allocatedInventoryAlteration) AS allocatedInventoryDiff
+                    - (GROUP_CONCAT(CONCAT(ib.batchNumber, ':&nbsp;', ib.quantity) SEPARATOR '<br/>')) AS batchNumber
                 from:
                     - { table: MarelloInventoryBundle:InventoryLevelLogRecord, alias: lr }
                 join:
                     left:
                         - { join: lr.inventoryLevel, alias: il }
+                        - { join: il.inventoryBatches, alias: ib }
                 where:
                     and:
                         - IDENTITY(lr.inventoryItem) = :inventoryItemId
@@ -147,6 +149,9 @@ datagrids:
                 type:           twig
                 frontend_type:  html
                 template:       '@MarelloInventory/Datagrid/InventoryLevel/diff.html.twig'
+            batchNumber:
+                data_name:      batchNumber
+                frontend_type:  html
             changeTrigger:
                 data_name:      changeTrigger
                 label:          marello.inventory.inventorylevellogrecord.change_trigger.label
