@@ -1,5 +1,17 @@
 datagrids:
     tasks-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - tt.name as taskType
+                    - tu.username as assignedToUser
+                    - tg.name as assignedToGroup
+                join:
+                    left:
+                        - { join: task.type, alias: tt }
+                        - { join: task.assignedToUser, alias: tu }
+                        - { join: task.assignedToGroup, alias: tg }
         mass_actions:
             closetask:
                 type: closetask
@@ -11,12 +23,46 @@ datagrids:
                 messages:
                     success: marello.task.datagrid.action.close.message.success
         columns:
+            taskType:
+                label: oro.task.type.label
+                inline_editing:
+                    enable: false
+            assignedToUser:
+                label: oro.task.assigned_to_user.label
+                inline_editing:
+                    enable: false
+            assignedToGroup:
+                label: oro.task.assigned_to_group.label
+                inline_editing:
+                    enable: false
             contexts:
                 renderable: false
             createdAt:
                 order: 20
             updatedAt:
                 order: 20
+        sorters:
+            columns:
+                taskType:
+                    data_name: tt.name
+                assignedToUser:
+                    data_name: tu.username
+                assignedToGroup:
+                    data_name: tg.name
+        filters:
+            columns:
+                taskType:
+                    type: string
+                    data_name: tt.name
+                    renderable: true
+                assignedToUser:
+                    type: string
+                    data_name: tu.username
+                    renderable: true
+                assignedToGroup:
+                    type: string
+                    data_name: tg.name
+                    renderable: true
 
     groups-select-grid:
         extended_entity_name: 'Oro\Bundle\UserBundle\Entity\Group'

@@ -35,7 +35,8 @@ class TaskExtension extends AbstractTypeExtension
                     'label' => 'marello.task.type.label',
                     'enum_code' => 'task_type',
                     'required' => true,
-                    'constraints' => [new Assert\NotNull()]
+                    'constraints' => [new Assert\NotNull()],
+                    'dynamic_fields_ignore_exception' => true,
                 ]
             )
             ->add(
