@@ -17,6 +17,7 @@ marello:
                 start.label:            Start
                 end.label:              End
                 date.label:             Available date
+                start.validation.error: Start date must be less than End date
             msrp_price:
                 label:                  MSRP Price
                 plural_label:           MSRP Prices
@@ -37,6 +38,7 @@ marello:
                 start.label:            Start
                 end.label:              End
                 date.label:             Available date
+                start.validation.error: Start date must be less than End date
             product.label:              Product
             channel.label:              Channel
 

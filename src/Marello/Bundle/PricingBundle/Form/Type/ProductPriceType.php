@@ -9,14 +9,22 @@ use Oro\Bundle\FormBundle\Form\Type\OroMoneyType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ProductPriceType extends AbstractType
 {
     const BLOCK_PREFIX = 'marello_product_price';
 
+    public function __construct(
+        private TranslatorInterface $translator
+    ) {}
+
     /**
-     * {@inheritdoc}
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -48,6 +56,21 @@ class ProductPriceType extends AbstractType
         }
 
         $builder->get('value')->addModelTransformer(new MoneyValueTransformer());
+        $builder->addEventListener(FormEvents::POST_SUBMIT, [$this, 'postSubmit']);
+    }
+
+    public function postSubmit(FormEvent $event)
+    {
+        $data = $event->getData();
+        if ($data instanceof ProductPrice
+            && $data->getStartDate()
+            && $data->getEndDate()
+            && $data->getStartDate() > $data->getEndDate()
+        ) {
+            $event->getForm()->get('startDate')->addError(new FormError(
+                $this->translator->trans('marello.pricing.assembledpricelist.special_price.start.validation.error')
+            ));
+        }
     }
 
     /**
