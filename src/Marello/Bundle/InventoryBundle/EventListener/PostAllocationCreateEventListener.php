@@ -12,6 +12,7 @@ use Oro\Bundle\TaskBundle\Entity\Task;
 use Oro\Bundle\TaskBundle\Entity\TaskPriority;
 use Oro\Bundle\TaskBundle\Migrations\Data\ORM\LoadTaskPriority;
 use Oro\Bundle\UserBundle\Entity\Group;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PostAllocationCreateEventListener
@@ -19,6 +20,7 @@ class PostAllocationCreateEventListener
     public function __construct(
         private TranslatorInterface $translator,
         private ManagerRegistry $registry,
+        private RouterInterface $router,
         private $tasks = []
     ) {}
 
@@ -33,13 +35,18 @@ class PostAllocationCreateEventListener
             $this->translator->trans('marello.inventory.allocation.entity_label')
             . ' ' . $allocation->getState()
         );
+        $order = $allocation->getOrder();
         $task->setDescription(implode(PHP_EOL, [
-            $this->wrapParagraph($allocation->getAllocationNumber()),
             $this->wrapParagraph($allocation->getState()),
             $this->wrapParagraph($allocation->getStatus()),
             $this->wrapParagraph(PHP_EOL . $this->translator->trans('marello.inventory.allocation.order.label')),
-            $this->wrapParagraph($allocation->getOrder()->getOrderNumber()),
-            $this->wrapParagraph($allocation->getOrder()->getCustomer()->getFullName()),
+            $this->wrapParagraph(sprintf(
+                '<a href="%s" title="%s">%s</a>',
+                $this->router->generate('marello_order_order_view', ['id' => $order->getId()]),
+                $order->getOrderNumber(),
+                $order->getOrderNumber()
+            )),
+            $this->wrapParagraph($order->getCustomer()->getFullName()),
             $this->wrapParagraph($dueDate->format('Y-m-d H:i:s')),
         ]));
 
@@ -73,6 +80,20 @@ class PostAllocationCreateEventListener
         }
 
         foreach ($this->tasks as $task) {
+            $allocation = $task->getActivityTargets()[0];
+            $description = $task->getDescription();
+            // Allocation number part was moved to the postFlush method because an allocation number assigns during
+            // the separate postFlush listener. See DerivedPropertySetter class
+            $task->setDescription(implode(PHP_EOL, [
+                $this->wrapParagraph(sprintf(
+                    '<a href="%s" title="%s">%s</a>',
+                    $this->router->generate('marello_inventory_allocation_view', ['id' => $allocation->getId()]),
+                    $allocation->getAllocationNumber(),
+                    $allocation->getAllocationNumber()
+                )),
+                $description
+            ]));
+
             $args->getEntityManager()->persist($task);
         }
         $this->tasks = [];

@@ -13,22 +13,25 @@ class TaskRepository extends BaseTaskRepository
 
     public function getTasksAssignedTo($userId, $limit)
     {
+        $user = $this->_em->getRepository(User::class)->find($userId);
         $queryBuilder = $this->createQueryBuilder('task');
         $this->joinWorkflowStep($queryBuilder);
 
         return $queryBuilder
             ->where(
-                $queryBuilder->expr()->andX(
-                    $queryBuilder->expr()->eq('task.owner', ':assignedTo'),
-                    $queryBuilder->expr()->neq('workflowStep.name', ':step'),
-                    $queryBuilder->expr()->eq('task.type', ':type'),
-                )
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->eq('task.assignedToUser', ':assignedToUser'),
+                    $queryBuilder->expr()->in('task.assignedToGroup', ':assignedToGroup'),
+                ),
+                $queryBuilder->expr()->neq('workflowStep.name', ':step'),
+                $queryBuilder->expr()->eq('task.type', ':type'),
             )
             ->orderBy('task.dueDate', 'ASC')
             ->addOrderBy('workflowStep.id', 'ASC')
             ->setFirstResult(0)
             ->setMaxResults($limit)
-            ->setParameter('assignedTo', $userId)
+            ->setParameter('assignedToUser', $userId)
+            ->setParameter('assignedToGroup', $user->getGroups()->toArray())
             ->setParameter('step', self::CLOSED_STATE)
             ->setParameter('type', 'general')
             ->getQuery()
