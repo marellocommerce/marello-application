@@ -12,6 +12,7 @@ Oro\Bundle\TaskBundle\Entity\Task:
     description: 'Non-allocation task'
     owner: '@user'
     createdBy: '@user'
+    assignedToUser: '@user'
     type: '@task_type_general'
     taskPriority: '@task_priority_normal'
     organization: '@organization'
@@ -22,6 +23,8 @@ Oro\Bundle\TaskBundle\Entity\Task:
   allocationTask:
     subject: 'Allocation task'
     description: 'Allocation task'
+    owner: '@user'
+    createdBy: '@user'
     assignedToUser: '@user'
     type: '@task_type_allocation'
     taskPriority: '@task_priority_low'
