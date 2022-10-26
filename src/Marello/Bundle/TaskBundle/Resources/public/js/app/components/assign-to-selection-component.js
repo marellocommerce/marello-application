@@ -9,7 +9,6 @@ define(function(require) {
          * @property {Object}
          */
         options: {
-            typeSelect: 'select[id^="oro_task_type-uid"]',
             assignedToContainer: '.assigned-to-container',
             userSelect: 'div[id^="oro_task_assignedToUser-uid"] input[type="hidden"]',
             groupSelect: 'div[id^="oro_task_assignedToGroup-uid"] input[type="hidden"]'
@@ -19,11 +18,6 @@ define(function(require) {
          * @property {Object}
          */
         $assignedToContainer: null,
-
-        /**
-         * @property {Object}
-         */
-        $typeSelect: null,
 
         /**
          * @property {Object}
@@ -43,24 +37,10 @@ define(function(require) {
             this.$el = options._sourceElement;
 
             this.$assignedToContainer = this.$el.find(this.options.assignedToContainer);
-            this.$typeSelect = this.$el.find(this.options.typeSelect);
             this.$userSelect = this.$el.find(this.options.userSelect);
             this.$groupSelect = this.$el.find(this.options.groupSelect);
-            this.$el.on('change', this.options.typeSelect, _.bind(this.onTypeChanged, this));
             this.$el.on('change', this.options.userSelect, _.bind(this.onUserChanged, this));
             this.$el.on('change', this.options.groupSelect, _.bind(this.onGroupChanged, this));
-
-            this.onTypeChanged();
-        },
-
-        onTypeChanged: function() {
-            if (this.$typeSelect.val() === 'allocation') {
-                this.$assignedToContainer.removeClass('hide');
-            } else {
-                this.$assignedToContainer.addClass('hide');
-                this.$userSelect.inputWidget('val', '');
-                this.$groupSelect.inputWidget('val', '');
-            }
         },
 
         onUserChanged: function(e) {
@@ -80,10 +60,6 @@ define(function(require) {
                 return;
             }
 
-            this.$el.off(
-                'change',
-                _.bind(this.onTypeChanged, this)
-            );
             this.$el.off(
                 'change',
                 _.bind(this.onUserChanged, this)
