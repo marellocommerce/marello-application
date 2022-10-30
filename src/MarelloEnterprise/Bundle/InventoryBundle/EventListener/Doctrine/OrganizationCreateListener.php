@@ -8,6 +8,7 @@ use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Marello\Bundle\RuleBundle\Entity\Rule;
 use MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule;
 use MarelloEnterprise\Bundle\InventoryBundle\Migrations\Data\ORM\LoadSystemWFARules;
+use Oro\Bundle\DistributionBundle\Handler\ApplicationState;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class OrganizationCreateListener
@@ -17,20 +18,9 @@ class OrganizationCreateListener
      */
     private $entityManager;
 
-    /**
-     * Installed flag
-     *
-     * @var bool
-     */
-    protected $installed;
-
-    /**
-     * @param bool $installed
-     */
-    public function __construct($installed)
-    {
-        $this->installed = $installed;
-    }
+    public function __construct(
+        protected ApplicationState $applicationState
+    ) {}
 
     /**
      * @param Organization $organization
@@ -38,7 +28,7 @@ class OrganizationCreateListener
      */
     public function postPersist(Organization $organization, LifecycleEventArgs $args)
     {
-        if ($this->installed) {
+        if ($this->applicationState->isInstalled()) {
             $this->entityManager = $args->getEntityManager();
             $this->createSystemWarehouseGroupForOrganization($organization);
             $this->createSystemWFARulesForOrganization($organization);

@@ -61,7 +61,7 @@ class AllocateDelayedReplenishmentOrdersInventoryCommand extends Command impleme
         
         if (empty($notAllocatedOrders)) {
             $output->writeln('<info>There are no Replenishment Orders to process</info>');
-            return;
+            return self::SUCCESS;
         }
         $ordersIds = [];
         foreach ($notAllocatedOrders as $order) {
@@ -81,7 +81,7 @@ class AllocateDelayedReplenishmentOrdersInventoryCommand extends Command impleme
             )
         );
 
-        return 0;
+        return self::SUCCESS;
     }
     
     /**
