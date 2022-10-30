@@ -4,6 +4,7 @@ namespace Marello\Bundle\SalesBundle\EventListener\Doctrine;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
+use Oro\Bundle\DistributionBundle\Handler\ApplicationState;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -16,7 +17,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class SalesChannelGroupListener
 {
     public function __construct(
-        protected $installed,
+        protected ApplicationState $applicationState,
         protected Session $session,
         protected AclHelper $aclHelper
     ) {}
@@ -69,7 +70,7 @@ class SalesChannelGroupListener
      */
     public function postPersist(SalesChannelGroup $salesChannelGroup, LifecycleEventArgs $args)
     {
-        if ($this->installed) {
+        if ($this->applicationState->isInstalled()) {
             $em = $args->getEntityManager();
             $systemWarehouseChannelGroupLink = $this->getSystemWarehouseChannelGroupLink($em);
 
