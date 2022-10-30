@@ -4,24 +4,14 @@ namespace MarelloEnterprise\Bundle\SalesBundle\EventListener\Doctrine;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
+use Oro\Bundle\DistributionBundle\Handler\ApplicationState;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class OrganizationCreateListener
 {
-    /**
-     * Installed flag
-     *
-     * @var bool
-     */
-    protected $installed;
-    
-    /**
-     * @param bool $installed
-     */
-    public function __construct($installed)
-    {
-        $this->installed = $installed;
-    }
+    public function __construct(
+        protected ApplicationState $applicationState
+    ) {}
     
     /**
      * @param Organization $organization
@@ -29,7 +19,7 @@ class OrganizationCreateListener
      */
     public function postPersist(Organization $organization, LifecycleEventArgs $args)
     {
-        if ($this->installed) {
+        if ($this->applicationState->isInstalled()) {
             $systemChannelGroup = new SalesChannelGroup();
             $systemChannelGroup
                 ->setName(sprintf('%s System Group', $organization->getName()))

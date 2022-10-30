@@ -5,7 +5,7 @@ services:
 
     MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseListener:
         arguments:
-            - '%installed%'
+            - '@oro_distribution.handler.application_status'
             - '@translator.default'
             - '@session'
             - '@oro_security.acl_helper'
@@ -39,7 +39,7 @@ services:
 
     MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\OrganizationCreateListener:
         arguments:
-            - '%installed%'
+            - '@oro_distribution.handler.application_status'
         tags:
             - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\OrganizationBundle\Entity\Organization', event: postPersist, priority: 10 }
 
