@@ -10,7 +10,6 @@ use Marello\Bundle\OrderBundle\Form\EventListener\OrderTotalsSubscriber;
 use Marello\Bundle\SalesBundle\Form\Type\SalesChannelSelectType;
 use Oro\Bundle\CurrencyBundle\Entity\Price;
 use Oro\Bundle\CurrencyBundle\Form\Type\PriceType;
-use Oro\Bundle\FormBundle\Form\Type\CheckboxType;
 use Oro\Bundle\FormBundle\Form\Type\OroDateTimeType;
 use Oro\Bundle\LocaleBundle\Form\Type\LocalizationSelectType;
 use Symfony\Component\Form\AbstractType;
@@ -108,14 +107,6 @@ class OrderType extends AbstractType
                     'required' => false
                 ]
             )
-//            ->add(
-//                'consolidationEnabled',
-//                CheckboxType::class,
-//                [
-//                    'required' => false,
-//                    'label' => 'marello.order.consolidation_enabled.label'
-//                ]
-//            )
             ->add('items', OrderItemCollectionType::class);
         $this->addPaymentFields($builder);
         $this->addShippingFields($builder, $options['data']);
@@ -132,6 +123,21 @@ class OrderType extends AbstractType
             $data->setPaymentMethodOptions($paymentMethodOptions);
             $event->setData($data);
         });
+
+        $builder->addEventListener(
+            FormEvents::PRE_SUBMIT,
+            function (FormEvent $event) {
+                $data = $event->getData();
+                if (!empty($data['billingAddress'])
+                    && isset($data['billingAddress']['useBillingAddressAsShipping'])
+                ) {
+                    if ($data['billingAddress']['useBillingAddressAsShipping'] === '1') {
+                        $data['shippingAddress'] = $data['billingAddress'];
+                    }
+                    $event->setData($data);
+                }
+            }
+        );
     }
 
     /**

@@ -5,8 +5,8 @@ namespace Marello\Bundle\PurchaseOrderBundle\Cron;
 use Marello\Bundle\NotificationBundle\Provider\EmailSendProcessor;
 use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
+use Marello\Bundle\PurchaseOrderBundle\Model\PurchaseOrder;
 use Oro\Bundle\CronBundle\Command\CronCommandInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Symfony\Component\Console\Command\Command;
@@ -95,10 +95,11 @@ class PurchaseOrderAdviceCommand extends Command implements CronCommandInterface
 
         $recipient = new Customer();
         $recipient->setEmail($configManager->get('marello_purchaseorder.purchaseorder_notification_address'));
+        $recipient->setOrganization($organization);
         /** @var EmailSendProcessor $sendProcessor */
         $sendProcessor = $this->container->get('marello_notification.email.send_processor');
         $sendProcessor->sendNotification(
-            'marello_purchase_order_advise',
+            'marello_purchase_order_model_advise',
             [$recipient],
             $entity
         );

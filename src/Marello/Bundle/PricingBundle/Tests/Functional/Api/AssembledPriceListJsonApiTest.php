@@ -73,7 +73,6 @@ class AssembledPriceListJsonApiTest extends RestJsonApiTestCase
      */
     public function testCreateNewPriceListWithDefaultPrice()
     {
-        var_dump($this->getReference('product1')->getTaxCode()->getCode());
         $productResponse =  $this->post(
             ['entity' => 'marelloproducts'],
             'product_without_prices.yml'

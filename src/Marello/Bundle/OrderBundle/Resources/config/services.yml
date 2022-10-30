@@ -52,7 +52,6 @@ services:
         tags:
             - { name: doctrine.event_listener, event: postPersist }
             - { name: kernel.event_listener, event: extendable_action.order_paid, method: onOrderPaid }
-            - { name: kernel.event_listener, event: extendable_action.order_ship, method: onOrderShipped }
 
     marello_order.listener.workflow.po_workflow_completed:
         class: Marello\Bundle\OrderBundle\EventListener\Workflow\PurchaseOrderWorkflowCompletedListener
