@@ -14,10 +14,7 @@ marello:
             special_price:
                 label:                  Special Price
                 plural_label:           Special Prices
-                start.label:            Start
-                end.label:              End
                 date.label:             Available date
-                start.validation.error: Start date must be less than End date
             msrp_price:
                 label:                  MSRP Price
                 plural_label:           MSRP Prices
@@ -35,10 +32,7 @@ marello:
             special_price:
                 label:                  Special Channel Price
                 plural_label:           Special Channel Prices
-                start.label:            Start
-                end.label:              End
                 date.label:             Available date
-                start.validation.error: Start date must be less than End date
             product.label:              Product
             channel.label:              Channel
 
@@ -52,6 +46,9 @@ marello:
             value.label:                Price
             product.label:              Product
             type.label:                 Price Type
+            start_date.label:           Start
+            end_date.label:             End
+            start.validation.error:     Start date must be less than End date
             no_channels_enabled_or_configured: >
                                     No configured channels found for the current product.
                                     Please make sure Sales Channels exist and linked.
@@ -75,7 +72,9 @@ marello:
             channel.label:              Sales Channel
             product.label:              Product
             type.label:                 Price Type
-
+            start_date.label:           Start
+            end_date.label:             End
+            start.validation.error:     Start date must be less than End date
             form:
                 pricing_enabled.label:  Enable Sales Channel Pricing
                 add_channel_price:      Add Channel Price

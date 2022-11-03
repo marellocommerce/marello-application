@@ -68,7 +68,7 @@ class ProductPriceType extends AbstractType
             && $data->getStartDate() > $data->getEndDate()
         ) {
             $event->getForm()->get('startDate')->addError(new FormError(
-                $this->translator->trans('marello.pricing.assembledpricelist.special_price.start.validation.error')
+                $this->translator->trans('marello.pricing.productprice.start.validation.error')
             ));
         }
     }
