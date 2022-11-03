@@ -112,7 +112,7 @@ class InventoryManager extends BaseInventoryManager
     {
         $total = 0;
         $purchaseOrderItems = $this->doctrineHelper->getEntityRepositoryForClass(PurchaseOrderItem::class)
-            ->getNotCompletedItemsByProduct($entity->getProduct());
+            ->getExpectedItemsByProduct($entity->getProduct());
         /** @var PurchaseOrderItem $purchaseOrderItem */
         foreach ($purchaseOrderItems as $purchaseOrderItem) {
             $total += $purchaseOrderItem->getOrderedAmount() - $purchaseOrderItem->getReceivedAmount();

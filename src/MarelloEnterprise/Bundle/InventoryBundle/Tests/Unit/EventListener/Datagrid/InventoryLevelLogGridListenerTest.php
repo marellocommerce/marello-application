@@ -55,7 +55,7 @@ class InventoryLevelLogGridListenerTest extends TestCase
      */
     public function testOnBuildBefore()
     {
-        $columns = ['allocatedInventoryDiff' => []];
+        $columns = ['batchNumber' => []];
         $addedColumn = [
             'warehouseLabel' => [
                 'label' => 'marello.inventory.inventorylevel.warehouse.label',
