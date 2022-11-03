@@ -24,10 +24,10 @@ class PurchaseOrderItemRepositoryTest extends WebTestCase
         return self::getContainer()->get('doctrine')->getRepository(PurchaseOrderItem::class);
     }
 
-    public function testGetNotCompletedItemsByProduct()
+    public function testGetExpectedItemsByProduct()
     {
         $product = $this->getReference(LoadProductData::PRODUCT_1_REF);
-        $result = $this->getRepository()->getNotCompletedItemsByProduct($product);
+        $result = $this->getRepository()->getExpectedItemsByProduct($product);
 
         $this->assertCount(1, $result);
         $this->assertEquals($product, $result[0]->getProduct());
