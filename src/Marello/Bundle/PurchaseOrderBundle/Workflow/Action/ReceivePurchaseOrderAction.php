@@ -106,7 +106,7 @@ class ReceivePurchaseOrderAction extends AbstractAction
             }
 
             if ($this->isItemFullyReceived($item)) {
-                $item->setStatus('complete');
+                $item->setStatus(PurchaseOrderItem::STATUS_COMPLETE);
             }
         }
 
