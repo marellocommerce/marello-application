@@ -48,7 +48,7 @@ marello:
             type.label:                 Price Type
             start_date.label:           Start
             end_date.label:             End
-            start.validation.error:     Start date must be less than End date
+            start.validation.error:     End date cannot be earlier than start date
             no_channels_enabled_or_configured: >
                                     No configured channels found for the current product.
                                     Please make sure Sales Channels exist and linked.
@@ -74,7 +74,7 @@ marello:
             type.label:                 Price Type
             start_date.label:           Start
             end_date.label:             End
-            start.validation.error:     Start date must be less than End date
+            start.validation.error:     End date cannot be earlier than start date
             form:
                 pricing_enabled.label:  Enable Sales Channel Pricing
                 add_channel_price:      Add Channel Price
