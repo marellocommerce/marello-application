@@ -62,7 +62,7 @@ class ProductChannelPriceType extends AbstractType
             && $data->getStartDate() > $data->getEndDate()
         ) {
             $event->getForm()->get('startDate')->addError(new FormError(
-                $this->translator->trans('marello.pricing.assembledchannelpricelist.special_price.start.validation.error')
+                $this->translator->trans('marello.pricing.productchannelprice.start.validation.error')
             ));
         }
     }
