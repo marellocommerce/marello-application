@@ -9,6 +9,7 @@ use Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelGroupRepository;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\SalesBundle\EventListener\Doctrine\SalesChannelGroupListener;
+use Oro\Bundle\DistributionBundle\Handler\ApplicationState;
 use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -39,7 +40,15 @@ class SalesChannelGroupListenerTest extends TestCase
     {
         $this->session = $this->createMock(Session::class);
         $this->aclHelper = $this->createMock(AclHelper::class);
-        $this->salesChannelGroupListener = new SalesChannelGroupListener(true, $this->session, $this->aclHelper);
+        $applicationState = $this->createMock(ApplicationState::class);
+        $applicationState->expects($this->any())
+            ->method('isInstalled')
+            ->willReturn(true);
+        $this->salesChannelGroupListener = new SalesChannelGroupListener(
+            $applicationState,
+            $this->session,
+            $this->aclHelper
+        );
     }
 
     /**

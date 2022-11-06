@@ -11,6 +11,7 @@ Retrieve a specific product record
 ### get_list
 
 Retrieve a collection of products records.
+The list of records that will be returned, could be limited by <a href="https://doc.oroinc.com/api/filters">filters</a>.
 
 {@inheritdoc}
 
@@ -23,12 +24,12 @@ The created record is returned in the response.
 {@request:json_api}
 Example:
 
-`<web_backend_prefix/api/products/{id}>`
+`<web_backend_prefix/api/marelloproducts/{id}>`
 
 ```JSON
 {
   "data": {
-    "type": "products",
+    "type": "marelloproducts",
     "id": "100909",
     "attributes": {
       "productId": 848,
@@ -48,7 +49,7 @@ Example:
       },
       "status": {
         "data": {
-          "type": "productstatuses",
+          "type": "marelloproductstatuses",
           "id": "enabled"
         }
       },
@@ -61,8 +62,16 @@ Example:
       "prices": {
         "data": [
           {
-            "type": "productprices",
+            "type": "marelloassembledpricelists",
             "id": "2542"
+          },
+          {
+            "type": "marelloassembledpricelists",
+            "id": "2543"
+          },
+          {
+            "type": "marelloassembledpricelists",
+            "id": "2544"
           }
         ]
       },
@@ -72,7 +81,7 @@ Example:
       "channels": {
         "data": [
           {
-            "type": "saleschannels",
+            "type": "marellosaleschannels",
             "id": "sales_channel_de_munchen"
           }
         ]
@@ -86,11 +95,17 @@ Example:
       "categories": {
         "data": [
           {
-            "type": "categories",
+            "type": "marellocategories",
             "id": "1"
           }
         ]
       },
+      "attributeFamily": {
+        "data": {
+          "type": "attributefamilies",
+          "id": "1"
+        }
+      },      
       "image": {
         "data": {
           "type": "files",

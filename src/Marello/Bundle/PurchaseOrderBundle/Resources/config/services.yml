@@ -23,6 +23,8 @@ services:
     marello_purchaseorder.workflow.send_purchase_order:
         class: Marello\Bundle\PurchaseOrderBundle\Workflow\Action\SendPurchaseOrderAction
         parent: marello_notification.workflow.send_notification_action
+        arguments:
+            - '@doctrine.orm.entity_manager'
         tags:
             - { name: oro_action.action, alias: marello_purchase_order_send }
 
