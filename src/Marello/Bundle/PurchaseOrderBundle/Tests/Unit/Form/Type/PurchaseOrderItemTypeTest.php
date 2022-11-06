@@ -15,6 +15,7 @@ use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\FormIntegrationTestCase;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\Validation;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PurchaseOrderItemTypeTest extends FormIntegrationTestCase
 {
@@ -178,6 +179,11 @@ class PurchaseOrderItemTypeTest extends FormIntegrationTestCase
             ->setMethods(array('isCurrencySymbolPrepend', 'getAttribute'))
             ->getMock();
 
+        $translator = $this->createMock(TranslatorInterface::class);
+        $translator->expects($this->any())
+            ->method('trans')
+            ->willReturnArgument(0);
+
         return [
             new EntitySelectOrCreateInlineFormExtension(
                 $entityManager,
@@ -192,7 +198,7 @@ class PurchaseOrderItemTypeTest extends FormIntegrationTestCase
                     $searchRegistry
                 ),
                 ProductSupplierSelectType::class => new ProductSupplierSelectType(),
-                ProductPriceType::class => new ProductPriceType(),
+                ProductPriceType::class => new ProductPriceType($translator),
                 OroMoneyType::class => new OroMoneyType($localeSettings, $numberFormatter)
             ], []),
             new ValidatorExtension(Validation::createValidator())
