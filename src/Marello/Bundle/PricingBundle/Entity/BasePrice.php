@@ -14,6 +14,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 class BasePrice implements CurrencyAwareInterface
 {
     use EntityCreatedUpdatedAtTrait;
+    use PriceDatesTrait;
 
     /**
      * @var integer
