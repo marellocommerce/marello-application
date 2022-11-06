@@ -95,6 +95,7 @@ marello:
             inventory.label:                Inventory Qty
             allocated_inventory.label:      Allocated Inventory Qty
             virtual_inventory.label:        Virtual Inventory Qty
+            expected_inventory.label:       Expected Inventory Qty
             inventory_diff.label:           Inventory Qty Change
             allocated_inventory_diff.label: Allocated Inventory Qty Change
             virtual_inventory_diff.label:   Virtual Inventory Qty Change
