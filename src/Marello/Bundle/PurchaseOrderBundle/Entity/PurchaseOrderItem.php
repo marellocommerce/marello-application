@@ -41,6 +41,11 @@ class PurchaseOrderItem implements
     use EntityCreatedUpdatedAtTrait;
     use AuditableOrganizationAwareTrait;
 
+    public const STATUS_DRAFT = 'draft';
+    public const STATUS_PENDING = 'pending';
+    public const STATUS_COMPLETE = 'complete';
+    public const STATUS_CLOSED = 'closed';
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -133,7 +138,7 @@ class PurchaseOrderItem implements
      *      }
      * )
      */
-    protected $orderedAmount;
+    protected $orderedAmount = 0;
 
     /**
      * @var int
@@ -201,7 +206,7 @@ class PurchaseOrderItem implements
      *      }
      * )
      */
-    protected $status = 'pending';
+    protected $status = self::STATUS_DRAFT;
 
     /**
      * PurchaseOrderItem constructor.
@@ -470,6 +475,8 @@ class PurchaseOrderItem implements
     public function setStatus($status)
     {
         $this->status = $status;
+
+        return $this;
     }
 
     /**

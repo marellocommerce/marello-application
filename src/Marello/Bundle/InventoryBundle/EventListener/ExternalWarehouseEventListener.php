@@ -8,6 +8,7 @@ use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
+use Marello\Bundle\InventoryBundle\Model\Allocation\Notifier\WarehouseManualNotifier;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation;
 use Marello\Bundle\ProductBundle\Event\ProductDropshipEvent;
@@ -157,7 +158,8 @@ class ExternalWarehouseEventListener
         $warehouse
             ->setAddress(clone $supplier->getAddress())
             ->setCode($supplier->getCode())
-            ->setWarehouseType($warehouseType);
+            ->setWarehouseType($warehouseType)
+            ->setNotifier(WarehouseManualNotifier::IDENTIFIER);
         if ($organization = $supplier->getOrganization()) {
             $warehouse->setOwner($organization);
         } else {
