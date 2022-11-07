@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\EntityExtendBundle\Entity\AbstractEnumValue;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
@@ -458,7 +459,7 @@ class Allocation extends ExtendAllocation implements
     /**
      * @return \Extend\Entity\EV_Marello_Allocation_State
      */
-    public function getState(): \Extend\Entity\EV_Marello_Allocation_State
+    public function getState(): AbstractEnumValue
     {
         return $this->state;
     }
