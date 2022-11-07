@@ -8,6 +8,9 @@
     </thead>
     <tbody>
     <% _.each(methods, function(method) {
+    if (selectedMethod) {
+        selectedMethod = createMethodObject(selectedMethod.method);
+    }
     var checked = areMethodsEqual(createMethodObject(method.identifier), selectedMethod);
     %>
     <tr>
