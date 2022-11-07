@@ -116,10 +116,6 @@ class SendProcessor
                 )
             );
         }
-        $emailModel = $this->emailTemplateManager->getLocalizedModel($template, $entity);
-        if (null === $emailModel) {
-            $emailModel = $this->createEmailModel($template);
-        }
 
         if ($this->recipientsNullOrEmpty($recipients)) {
             return;

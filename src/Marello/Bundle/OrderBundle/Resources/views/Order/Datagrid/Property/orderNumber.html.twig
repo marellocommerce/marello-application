@@ -1,5 +1,9 @@
 {% import '@OroUI/macros.html.twig' as UI %}
-{% set label = value %}
+{% set label = record.getValue('order.orderNumber') %}
+{% if label is null %}
+    {% set label = record.getValue('orderNumber') %}
+{% endif %}
+
 {% set orderId = record.getValue('order.id') %}
 {% if orderId is null %}
     {% set orderId = record.getValue('id') %}

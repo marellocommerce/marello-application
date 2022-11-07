@@ -100,37 +100,6 @@ class OrderItemStatusListener
     }
 
     /**
-     * @param ExtendableActionEvent $event
-     */
-    public function onOrderShipped(ExtendableActionEvent $event)
-    {
-        if (!$this->isCorrectOrderContext($event->getContext())) {
-            return;
-        }
-        $entityManager = $this->doctrineHelper->getEntityManagerForClass(OrderItem::class);
-        /** @var Order $entity */
-        $entity = $event->getContext()->getData()->get('order');
-        foreach ($entity->getItems() as $orderItem) {
-            $product = $orderItem->getProduct();
-            $salesChannel = $entity->getSalesChannel();
-            $balancedInventoryLevel = $this->getBalancedInventoryLevel($product, $salesChannel->getGroup());
-            if ($balancedInventoryLevel->getBalancedInventoryQty() >= $orderItem->getQuantity() ||
-                $balancedInventoryLevel->getReservedInventoryQty() >= $orderItem->getQuantity()) {
-                $event = new OrderItemStatusUpdateEvent($orderItem, LoadOrderItemStatusData::SHIPPED);
-            } else {
-                $event = new OrderItemStatusUpdateEvent($orderItem, LoadOrderItemStatusData::COULD_NOT_ALLOCATE);
-            }
-            $this->eventDispatcher->dispatch(
-                $event,
-                OrderItemStatusUpdateEvent::NAME
-            );
-            $orderItem->setStatus($this->findStatusByName($event->getStatusName()));
-            $entityManager->persist($orderItem);
-        }
-        $entityManager->flush();
-    }
-
-    /**
      * @param mixed $context
      * @return bool
      */

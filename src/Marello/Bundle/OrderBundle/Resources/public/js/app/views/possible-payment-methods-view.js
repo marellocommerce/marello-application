@@ -193,7 +193,7 @@ define(function(require) {
             }
             _.each(methods, function(method) {
                 if (method.identifier === expectedMethod.method) {
-                    return true;
+                    selectedFound = true;
                 }
             }, this);
 
@@ -238,7 +238,12 @@ define(function(require) {
             this.setElementsValue(method);
 
             this.removeSelectedPaymentMethod();
-            if (this.options.savedPaymentMethod && !this.areMethodsEqual(method, this.options.savedPaymentMethod)) {
+            if (this.options.savedPaymentMethod
+                && !this.areMethodsEqual(
+                    this.createMethodObject(method.method),
+                    this.createMethodObject(this.options.savedPaymentMethod.method)
+                )
+            ) {
                 this.renderPreviousSelectedPaymentMethod();
             }
         },

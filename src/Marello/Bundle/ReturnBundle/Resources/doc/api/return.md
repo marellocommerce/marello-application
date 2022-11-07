@@ -12,7 +12,7 @@ Retrieve a specific return record.
 
 Retrieve a collection of return records.
 
-The list of records that will be returned, could be limited by <a href="https://www.oroinc.com/doc/orocommerce/current/dev-guide/integration#filters">filters</a>.
+The list of records that will be returned, could be limited by <a href="https://doc.oroinc.com/api/filters">filters</a>.
 
 {@inheritdoc}
 
@@ -26,33 +26,33 @@ The created record is returned in the response.
 
 {@request:json_api}
 
-`</web_backend_prefix/api/returns>`
+`</web_backend_prefix/api/marelloreturns>`
 
 ```JSON
 {
   "data": {
-    "type": "returns",
+    "type": "marelloreturns",
     "attributes": {
       "returnReference": "2345678"
     },
     "relationships": {
       "order": {
         "data": {
-          "type": "orders",
+          "type": "marelloorders",
           "id": "1"
         }
       },
       "returnItems": {
         "data": [
           {
-            "type": "returnitems",
+            "type": "marelloreturnitems",
             "id": "8da4d8e7-6b25-4c5c-8075-nh3fpu9sca3htc3v"
           }
         ]
       },
       "salesChannel": {
         "data": {
-          "type": "saleschannels",
+          "type": "marellosaleschannels",
           "id": "chan_usd"
         }
       },
@@ -66,7 +66,7 @@ The created record is returned in the response.
   },
   "included": [
     {
-      "type": "returnitems",
+      "type": "marelloreturnitems",
       "id": "8da4d8e7-6b25-4c5c-8075-nh3fpu9sca3htc3v",
       "attributes": {
         "quantity": 1
@@ -74,7 +74,7 @@ The created record is returned in the response.
       "relationships": {
          "orderItem": {
           "data": {
-            "type": "orderitems",
+            "type": "marelloorderitems",
             "id": "1"
           }
         },

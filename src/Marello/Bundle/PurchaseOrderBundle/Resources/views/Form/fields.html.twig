@@ -90,7 +90,9 @@
         {% set disabled = widget.parent.vars.disabled %}
     {% endif %}
 
-    {% if form.vars.value.status != 'complete' and form.vars.value.status != 'closed' %}
+    {% if form.vars.value.status != constant('Marello\\Bundle\\PurchaseOrderBundle\\Entity\\PurchaseOrderItem::STATUS_COMPLETE')
+        and form.vars.value.status != constant('Marello\\Bundle\\PurchaseOrderBundle\\Entity\\PurchaseOrderItem::STATUS_CLOSED')
+    %}
     <tr data-content="{{ name }}"
         class="return-line-item display-values">
         {{ form_widget(form) }}
@@ -280,7 +282,7 @@
                 {% set completedItems = 0 %}
                 {% if form.children|length %}
                     {% for child in form.children %}
-                        {%  if child.vars.value.status == 'complete' %}
+                        {%  if child.vars.value.status == constant('Marello\\Bundle\\PurchaseOrderBundle\\Entity\\PurchaseOrderItem::STATUS_COMPLETE') %}
                             {% set completedItems = completedItems + 1 %}
                         {% endif %}
                     {% endfor %}
