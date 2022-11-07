@@ -6,6 +6,7 @@ use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\InventoryBundle\Entity\Allocation;
 use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
 use Marello\Bundle\PackingBundle\Entity\PackingSlip;
@@ -61,10 +62,10 @@ class OrderOnDemandWorkflowTest extends WebTestCase
         /** @var SalesChannel $salesChannel */
         $salesChannel = $this->getReference(LoadSalesData::CHANNEL_1_REF);
 
-        /** @var Product $product */
+        /** @var Product $product1 */
         $product1 = $this->getReference(LoadProductData::PRODUCT_1_REF);
         $price1 = $product1->getSalesChannelPrice($salesChannel)->getPrice()->getValue();
-        /** @var Product $product */
+        /** @var Product $product6 */
         $product6 = $this->getReference(LoadProductData::PRODUCT_6_REF);
         $price6 = $product6->getSalesChannelPrice($salesChannel)->getPrice()->getValue();
         
@@ -124,18 +125,9 @@ class OrderOnDemandWorkflowTest extends WebTestCase
         $orderItem2 = $order->getItems()[1];
         static::assertSame($product6->getSku(), $orderItem2->getProductSku());
 
-        $afterPurchaseOrders = $this->getContainer()->get('doctrine')
-            ->getManagerForClass(PurchaseOrder::class)
-            ->getRepository(PurchaseOrder::class)
-            ->findAll();
-        $this->assertCount(1, $afterPurchaseOrders);
-        /** @var PurchaseOrder $purchaseOrder */
-        $purchaseOrder = reset($afterPurchaseOrders);
-        $this->assertCount(1, $purchaseOrder->getItems());
-        /** @var PurchaseOrderItem $poItem */
-        $poItem = $purchaseOrder->getItems()->first();
-        static::assertSame($product6->getSku(), $poItem->getProductSku());
-        static::assertSame($orderItem2->getQuantity(), $poItem->getOrderedAmount());
+        /** @var InventoryItem $product6InventoryItem */
+        $product6InventoryItem = $product6->getInventoryItems()->first();
+        static::assertTrue($product6InventoryItem->isOrderOnDemandAllowed());
 
         $doctrine = $this->getContainer()->get('doctrine');
         $beforeShipment = $doctrine
@@ -164,6 +156,20 @@ class OrderOnDemandWorkflowTest extends WebTestCase
         $orderWorkflowItem->setData($data);
         $workflowManager->transit($orderWorkflowItem, 'payment_received');
         $workflowManager->transit($orderWorkflowItem, 'prepare_shipping');
+        // purchase orders are only created based on Allocation(s) so after prepare_shipping step
+        $afterPurchaseOrders = $this->getContainer()->get('doctrine')
+            ->getManagerForClass(PurchaseOrder::class)
+            ->getRepository(PurchaseOrder::class)
+            ->findAll();
+        $this->assertCount(1, $afterPurchaseOrders);
+        /** @var PurchaseOrder $purchaseOrder */
+        $purchaseOrder = reset($afterPurchaseOrders);
+        $this->assertCount(1, $purchaseOrder->getItems());
+        /** @var PurchaseOrderItem $poItem */
+        $poItem = $purchaseOrder->getItems()->first();
+        static::assertSame($product6->getSku(), $poItem->getProductSku());
+        static::assertSame($orderItem2->getQuantity(), $poItem->getOrderedAmount());
+
         $workflowManager->transit($orderWorkflowItem, 'ship');
 
         $afterShipment = $doctrine
@@ -175,7 +181,7 @@ class OrderOnDemandWorkflowTest extends WebTestCase
             ->getManagerForClass(Allocation::class)
             ->getRepository(Allocation::class)
             ->findAll();
-        $this->assertCount(1, $afterAllocations);
+        $this->assertCount(2, $afterAllocations);
         /** @var Allocation $allocation */
         $allocation = reset($afterAllocations);
         $this->assertCount(1, $allocation->getItems());
@@ -196,7 +202,7 @@ class OrderOnDemandWorkflowTest extends WebTestCase
             ->getManagerForClass(Shipment::class)
             ->getRepository(Shipment::class)
             ->findAll();
-        $this->assertCount(2, $afterPoShipment);
+        $this->assertCount(1, $afterPoShipment);
         $afterAllocations = $doctrine
             ->getManagerForClass(Allocation::class)
             ->getRepository(Allocation::class)

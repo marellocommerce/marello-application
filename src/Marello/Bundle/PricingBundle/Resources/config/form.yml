@@ -2,7 +2,7 @@ services:
     marello_productprice.form.type.productprice:
         class: Marello\Bundle\PricingBundle\Form\Type\ProductPriceType
         arguments:
-            - '@oro_locale.settings'
+            - '@translator'
         tags:
             - { name: form.type }
 
@@ -13,6 +13,8 @@ services:
 
     marello_productprice.form.type.productchannelprice:
         class: Marello\Bundle\PricingBundle\Form\Type\ProductChannelPriceType
+        arguments:
+            - '@translator'
         tags:
             - { name: form.type }
 
