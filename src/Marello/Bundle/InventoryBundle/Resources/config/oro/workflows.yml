@@ -108,6 +108,15 @@ workflows:
                           attribute: $allocation.status
             complete_definition:
                 post_actions:
+                    - '@call_service_method':
+                        service: marello_order.factory.shipping_context
+                        method: create
+                        method_parameters: [$allocation.order]
+                        attribute: $.result.orderShippingContext
+                    - '@marello_shipment_create':
+                        context: $.result.orderShippingContext
+                        method: $allocation.order.shippingMethod
+                        methodType: $allocation.order.shippingMethodType
                     # parent allocation and children are empty, so we need to send email to customer with 'partial' shipped email
                     - '@marello_notification_send':
                         conditions:
