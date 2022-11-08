@@ -145,9 +145,10 @@ class QuantityWFAStrategy implements WFAStrategyInterface
                 $warehouses[$warehouse->getCode()] = $warehouse;
                 $this->warehouseTypes[$warehouse->getCode()] = $warehouse->getWarehouseType()->getName();
                 $virtualInventoryQuantity = $inventoryLevel->getVirtualInventoryQty();
-                // if an allocation has been rejected, and the quantity would still be available in this warehouse (of said allocation)
-                // set the quantity (virtualInventoryQuantity to 0 to make sure this warehouse will be excluded from allocating
-                // rejections of an allocation for a warehouse will be excluded for the next allocation round (triggered by the rejection)
+                // if an allocation has been rejected, and the quantity would still be available in this warehouse
+                // (of said allocation). Set the quantity (virtualInventoryQuantity to 0 to make sure this warehouse
+                // will be excluded from allocating. Rejections of an allocation for a warehouse will be excluded for
+                // the next allocation round (triggered by the rejection).
                 if ($allocation && in_array($warehouse->getCode(), $this->excludedWarehouses)) {
                     $virtualInventoryQuantity = $inventoryLevel->getVirtualInventoryQty() - $orderItem->getQuantityRejected();
                     if (($orderItem->getQuantity() - $orderItem->getQuantityRejected()) <= 0) {
@@ -200,9 +201,11 @@ class QuantityWFAStrategy implements WFAStrategyInterface
             $productsByWh[$inventoryItem->getProduct()->getSku()]['qtyAvailable'] = $quantityAvailable;
         }
 
-        $possibleOptionsToFulfill = array_map(function($item) {
+        $possibleOptionsToFulfill = array_map(
+            function ($item) {
                 return $this->getOptions($item['selected_wh'], $item['qtyOrdered']);
-            }, $productsByWh
+            },
+            $productsByWh
         );
         $optimizedOptions = $this->getOptimizedOptions($possibleOptionsToFulfill);
         $productsWithInventoryData = [];
@@ -295,7 +298,7 @@ class QuantityWFAStrategy implements WFAStrategyInterface
         foreach ($cartesianResult as $optionId => $products) {
             $whInvolved = [];
             foreach ($products as $whs) {
-                foreach (explode(',',$whs) as $wh) {
+                foreach (explode(',', $whs) as $wh) {
                     $whInvolved[$wh] = $wh;
                 }
             }
@@ -394,8 +397,8 @@ class QuantityWFAStrategy implements WFAStrategyInterface
         foreach ($input as $key => $values) {
             $append = array();
 
-            foreach($result as $product) {
-                foreach($values as $item) {
+            foreach ($result as $product) {
+                foreach ($values as $item) {
                     $product[$key] = $item;
                     $append[] = $product;
                 }
@@ -488,7 +491,7 @@ class QuantityWFAStrategy implements WFAStrategyInterface
         // filter levels that either; have an warehouse in the linked warehouses, have virtual inventory > 0 or have an external warehouse (dropshipping)
         $filteredLevels = $inventoryItem
             ->getInventoryLevels()
-            ->filter(function(InventoryLevel $inventoryLevel) use ($warehouses) {
+            ->filter(function (InventoryLevel $inventoryLevel) use ($warehouses) {
                 if (in_array($inventoryLevel->getWarehouse()->getId(), $warehouses)) {
                     if ($inventoryLevel->getVirtualInventoryQty() > 0) {
                         return true;
@@ -508,7 +511,7 @@ class QuantityWFAStrategy implements WFAStrategyInterface
         $inventoryLevelIterator = $filteredLevels->getIterator();
         // mixed --> still relevant?
         if ($this->getInventoryLevelSortingPriorityFromConfig() === 0) {
-            $inventoryLevelIterator->uasort(function(InventoryLevel $a, InventoryLevel $b) {
+            $inventoryLevelIterator->uasort(function (InventoryLevel $a, InventoryLevel $b) {
                 return $b->getVirtualInventoryQty() <=> $a->getVirtualInventoryQty();
             });
         }
@@ -536,7 +539,7 @@ class QuantityWFAStrategy implements WFAStrategyInterface
         // in order to have some more control over the priority of the conditions of the item
         $warehouse = $inventoryLevel->getWarehouse();
         $warehouseType = $warehouse->getWarehouseType()->getName();
-        switch ($type){
+        switch ($type) {
             case 'full':
                 return ($inventoryLevel->getVirtualInventoryQty() >= $orderItem->getQuantity());
                 break;

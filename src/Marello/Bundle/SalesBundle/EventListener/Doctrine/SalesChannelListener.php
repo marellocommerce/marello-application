@@ -13,7 +13,8 @@ class SalesChannelListener
     public function __construct(
         protected ApplicationState $applicationState,
         protected AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     public function prePersist(SalesChannel $salesChannel, LifecycleEventArgs $args)
     {

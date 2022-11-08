@@ -15,7 +15,8 @@ class ShippingMethodHasShippingRules extends AbstractShippingMethodHasShippingRu
     public function __construct(
         private ShippingMethodsConfigsRuleRepository $repository,
         private AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * {@inheritDoc}

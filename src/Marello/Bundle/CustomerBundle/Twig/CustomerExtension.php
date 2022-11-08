@@ -19,7 +19,8 @@ class CustomerExtension extends AbstractExtension
 
     public function __construct(
         protected ManagerRegistry $registry
-    ) {}
+    ) {
+    }
 
     /**
      * Returns the name of the extension.

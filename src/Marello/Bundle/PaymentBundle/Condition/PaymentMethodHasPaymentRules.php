@@ -15,7 +15,8 @@ class PaymentMethodHasPaymentRules extends AbstractPaymentMethodHasPaymentRules
     public function __construct(
         private PaymentMethodsConfigsRuleRepository $repository,
         private AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * {@inheritDoc}
