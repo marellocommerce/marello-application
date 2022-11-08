@@ -48,7 +48,8 @@ class WarehouseGroupType extends AbstractType
             )
             ->add(
                 'isConsolidationWarehouse',
-                HiddenType::class, [
+                HiddenType::class,
+                [
                     'mapped' => false
                 ]
             )->addEventListener(
@@ -68,7 +69,7 @@ class WarehouseGroupType extends AbstractType
         if ($form->has('isConsolidationWarehouse')) {
             $data = $form->get('isConsolidationWarehouse')->getData();
             $consolidationData = json_decode($data, true);
-            foreach($warehouseGroup->getWarehouses() as $warehouse) {
+            foreach ($warehouseGroup->getWarehouses() as $warehouse) {
                 if (array_key_exists($warehouse->getCode(), $consolidationData)) {
                     $warehouse->setIsConsolidationWarehouse($consolidationData[$warehouse->getCode()]);
                 } else {

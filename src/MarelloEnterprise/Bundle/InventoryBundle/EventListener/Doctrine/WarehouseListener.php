@@ -20,7 +20,8 @@ class WarehouseListener
         protected TranslatorInterface $translator,
         protected Session $session,
         protected AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * @param Warehouse $warehouse
