@@ -19,6 +19,7 @@ use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\MultiCurrencyBundle\Form\Transformer\ArrayToJsonTransformer;
 
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+
 /**
  * Form type for enabled warehouse grid
  */
