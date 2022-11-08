@@ -4,6 +4,7 @@ namespace Marello\Bundle\OrderBundle\Provider;
 
 use Oro\Bundle\LocaleBundle\Formatter\NumberFormatter;
 use NumberFormatter as IntlNumberFormatter;
+
 class OrderStatisticsCurrencyNumberFormatter
 {
     /** @var NumberFormatter */

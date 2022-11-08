@@ -28,7 +28,8 @@ class OrderItemStatusListener
         protected AvailableInventoryProvider $availableInventoryProvider,
         protected EventDispatcherInterface $eventDispatcher,
         protected AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * @param LifecycleEventArgs $args

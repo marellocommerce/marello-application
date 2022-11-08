@@ -20,7 +20,8 @@ class SalesChannelGroupListener
         protected ApplicationState $applicationState,
         protected Session $session,
         protected AclHelper $aclHelper
-    ) {}
+    ) {
+    }
     
     /**
      * @var WarehouseChannelGroupLink

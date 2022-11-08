@@ -125,8 +125,8 @@ class InventoryAllocationProvider
                         )
                     );
                 }
-
-                if ($result->getWarehouse()->getWarehouseType()->getName() === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
+                $warehouseType = $result->getWarehouse()->getWarehouseType()->getName();
+                if ($warehouseType === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
                     $newAllocation->setStatus(
                         $this->getEnumValue(
                             'marello_allocation_status',
@@ -134,8 +134,8 @@ class InventoryAllocationProvider
                         )
                     );
                 }
-
-                if (!in_array($result->getWarehouse()->getCode(), [QuantityWFAStrategy::CNA_WAREHOUSE_CODE, QuantityWFAStrategy::EMPTY_WAREHOUSE_CODE])) {
+                $tmpWarehouses = [QuantityWFAStrategy::CNA_WAREHOUSE_CODE, QuantityWFAStrategy::EMPTY_WAREHOUSE_CODE];
+                if (!in_array($result->getWarehouse()->getCode(), $tmpWarehouses)) {
                     $newAllocation->setWarehouse($result->getWarehouse());
                 }
 

@@ -14,7 +14,8 @@ class RegardlessDestinationMethodsConfigsRulesByContextProvider implements Metho
         private MethodsConfigsRulesFiltrationServiceInterface $filtrationService,
         private PaymentMethodsConfigsRuleRepository $repository,
         private AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * {@inheritDoc}

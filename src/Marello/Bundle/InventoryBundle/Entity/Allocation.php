@@ -62,7 +62,11 @@ class Allocation extends ExtendAllocation implements
     /**
      * @var Collection|AllocationItem[]
      *
-     * @ORM\OneToMany(targetEntity="Marello\Bundle\InventoryBundle\Entity\AllocationItem", mappedBy="allocation", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OneToMany(
+     *     targetEntity="Marello\Bundle\InventoryBundle\Entity\AllocationItem",
+     *     mappedBy="allocation",
+     *     cascade={"persist"}, orphanRemoval=true
+     * )
      * @ORM\OrderBy({"id" = "ASC"})
      * @Oro\ConfigField(
      *      defaultValues={

@@ -14,7 +14,8 @@ class BasicMethodsConfigsRulesByContextProvider implements MethodsConfigsRulesBy
         private MethodsConfigsRulesFiltrationServiceInterface $filtrationService,
         private PaymentMethodsConfigsRuleRepository $repository,
         private AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * {@inheritDoc}

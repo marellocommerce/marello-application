@@ -14,7 +14,8 @@ class RulesPaymentMethodDisableHandlerDecorator implements PaymentMethodDisableH
         private PaymentMethodsConfigsRuleRepository $repository,
         private PaymentMethodProviderInterface $paymentMethodProvider,
         private AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * {@inheritDoc}
