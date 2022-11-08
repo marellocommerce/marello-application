@@ -7,6 +7,7 @@ use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\InventoryBundle\Entity\Allocation;
 use Marello\Bundle\InventoryBundle\Provider\AllocationStateStatusInterface;
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\TaskBundle\Entity\Task;
 use Oro\Bundle\TaskBundle\Entity\TaskPriority;
@@ -21,11 +22,17 @@ class PostAllocationCreateEventListener
         private TranslatorInterface $translator,
         private ManagerRegistry $registry,
         private RouterInterface $router,
+        private ConfigManager $configManager,
         private $tasks = []
     ) {}
 
     public function postPersist(Allocation $allocation, LifecycleEventArgs $args): void
     {
+        $availableStates = $this->configManager->get('marello_inventory.inventory_allocation_states_to_select');
+        if (!\in_array($allocation->getState()->getId(), $availableStates)) {
+            return;
+        }
+
         $task = new Task();
         $task->setOrganization($allocation->getOrganization());
         $dueDate = new \DateTime('+1 day');
