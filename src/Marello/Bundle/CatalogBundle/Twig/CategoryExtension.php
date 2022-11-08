@@ -13,7 +13,8 @@ class CategoryExtension extends AbstractExtension
 
     public function __construct(
         private Registry $doctrine
-    ) {}
+    ) {
+    }
 
     /**
      * Returns the name of the extension.

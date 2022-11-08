@@ -34,7 +34,8 @@ class PurchaseOrderOnOrderOnDemandCreationListener
 
     public function __construct(
         private AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * @param LifecycleEventArgs $args

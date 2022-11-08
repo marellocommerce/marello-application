@@ -29,7 +29,8 @@ class SalesChannelGroupInventoryRebalanceListener
     public function __construct(
         private MessageProducerInterface $messageProducer,
         private AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * {@inheritdoc}

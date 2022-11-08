@@ -13,7 +13,8 @@ class OrderDashboardStatisticProvider
         protected OrderRepository $orderRepository,
         protected BigNumberDateHelper $dateHelper,
         protected AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * @param array $dateRange
@@ -40,7 +41,12 @@ class OrderDashboardStatisticProvider
     public function getTotalOrdersNumberValues($dateRange, WidgetOptionBag $widgetOptions)
     {
         list($start, $end) = $this->dateHelper->getPeriod($dateRange, 'MarelloOrderBundle:Order', 'createdAt');
-        return $this->orderRepository->getTotalOrdersNumberValue($this->aclHelper, $start, $end, $widgetOptions->get('salesChannel'));
+        return $this->orderRepository->getTotalOrdersNumberValue(
+            $this->aclHelper,
+            $start,
+            $end,
+            $widgetOptions->get('salesChannel')
+        );
     }
 
     /**
@@ -52,6 +58,11 @@ class OrderDashboardStatisticProvider
     {
         list($start, $end) = $this->dateHelper->getPeriod($dateRange, 'MarelloOrderBundle:Order', 'createdAt');
 
-        return $this->orderRepository->getAverageOrderValue($this->aclHelper, $start, $end, $widgetOptions->get('salesChannel'));
+        return $this->orderRepository->getAverageOrderValue(
+            $this->aclHelper,
+            $start,
+            $end,
+            $widgetOptions->get('salesChannel')
+        );
     }
 }

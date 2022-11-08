@@ -21,7 +21,8 @@ class SalesExtension extends AbstractExtension
     public function __construct(
         private ManagerRegistry $registry,
         private AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * @return array
