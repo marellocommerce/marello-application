@@ -21,7 +21,8 @@ class GeocodingApiAddressCoordinatesProviderElement extends AbstractAddressCoord
         private DoctrineHelper $doctrineHelper,
         private GoogleApiResultsProviderInterface $geocodingApiResultsProvider,
         private AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * @inheritDoc
