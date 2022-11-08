@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\InventoryBundle\DependencyInjection;
 
+use Marello\Bundle\InventoryBundle\Provider\AllocationStateStatusInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -45,7 +46,13 @@ class Configuration implements ConfigurationInterface
                 ],
                 'inventory_allocation_priority' => [
                     'value' => 0
-                ]
+                ],
+                'inventory_allocation_states_to_select' => [
+                    'value' => [
+                        AllocationStateStatusInterface::ALLOCATION_STATE_ALERT,
+                        AllocationStateStatusInterface::ALLOCATION_STATE_WFS,
+                    ],
+                ],
             ]
         );
 
