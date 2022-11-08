@@ -11,7 +11,8 @@ class OrganizationCreateListener
 {
     public function __construct(
         protected ApplicationState $applicationState
-    ) {}
+    ) {
+    }
     
     /**
      * @param Organization $organization

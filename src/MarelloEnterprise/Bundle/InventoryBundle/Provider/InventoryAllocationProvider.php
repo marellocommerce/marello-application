@@ -154,9 +154,16 @@ class InventoryAllocationProvider extends BaseAllocationProvider
             return false;
         }
 
+        $salesChannelConsolidationEnabled = $this->configManager->get(
+            'marello_enterprise_order.enable_order_consolidation',
+            false,
+            false,
+            $order->getSalesChannel()
+        );
+
         return (
             $order->getConsolidationEnabled() ||
-            $this->configManager->get('marello_enterprise_order.enable_order_consolidation', false, false, $order->getSalesChannel()) ||
+            $salesChannelConsolidationEnabled ||
             $this->configManager->get('marello_enterprise_order.set_global_consolidation')
         );
     }
@@ -169,10 +176,15 @@ class InventoryAllocationProvider extends BaseAllocationProvider
     {
         $isExternalWhType = false;
         if ($allocation->getWarehouse()) {
-            $isExternalWhType = ($allocation->getWarehouse()->getWarehouseType()->getName() === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL);
+            $whType = $allocation->getWarehouse()->getWarehouseType()->getName();
+            $isExternalWhType = ($whType === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL);
         }
+
+        $excludedStates = $this->configManager->get(
+            'marello_enterprise_inventory.inventory_allocation_consolidation_exclusion'
+        );
         return ($isExternalWhType ||
-            in_array($allocation->getState()->getName(), $this->configManager->get('marello_enterprise_inventory.inventory_allocation_consolidation_exclusion'))
+            in_array($allocation->getState()->getName(), $excludedStates)
         );
     }
 
@@ -231,7 +243,7 @@ class InventoryAllocationProvider extends BaseAllocationProvider
         }
 
         // DISTANCE WFA rule cannot be used because Google Integration settings and Geoding have not been configured
-        // need backup for when WFA rule cannot be used to determine consolidation WH, priority in the group might help? :thinking:?
+        // need backup for when WFA rule cannot be used to determine consolidation WH, priority in the group might help?
         // for now just give us the first that is being added from the eligible warehouses....
         return $consolidationWHs->first();
     }

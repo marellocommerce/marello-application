@@ -31,7 +31,8 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
         protected RuleFiltrationServiceInterface $rulesFiltrationService,
         protected WFARuleRepository $wfaRuleRepository,
         protected AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * {@inheritdoc}
