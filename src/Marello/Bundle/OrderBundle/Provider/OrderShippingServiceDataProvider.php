@@ -21,7 +21,8 @@ class OrderShippingServiceDataProvider implements ShippingServiceDataProviderInt
     public function __construct(
         protected EntityManager $entityManager,
         protected AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * {@inheritdoc}

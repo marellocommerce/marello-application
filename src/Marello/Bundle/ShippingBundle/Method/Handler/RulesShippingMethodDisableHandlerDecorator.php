@@ -14,7 +14,8 @@ class RulesShippingMethodDisableHandlerDecorator implements ShippingMethodDisabl
         private ShippingMethodsConfigsRuleRepository $repository,
         private ShippingMethodProviderInterface $shippingMethodProvider,
         private AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * {@inheritDoc}
