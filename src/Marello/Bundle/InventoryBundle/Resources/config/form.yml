@@ -38,6 +38,12 @@ services:
         tags:
             - { name: form.type }
 
+    Marello\Bundle\InventoryBundle\Form\Type\AllocationStatesToSelectType:
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: form.type }
+
     marello_inventory.form.type.inventory_inventorylevel:
         class: 'Marello\Bundle\InventoryBundle\Form\Type\InventoryLevelType'
         arguments:
