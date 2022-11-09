@@ -20,6 +20,13 @@
         </div>
         {{ form_errors(form.specialPrice) }}
     </td>
+    <td class="pricing-line-item-special-date">
+        <div class="fields-row">
+            <span>{{ 'marello.pricing.productprice.start_date.label'|trans }}</span>{{ form_widget(form.specialPrice.startDate) }}
+            {{ form_errors(form.specialPrice.startDate) }}
+            <span>{{ 'marello.pricing.productprice.end_date.label'|trans }}</span>{{ form_widget(form.specialPrice.endDate) }}
+        </div>
+    </td>
     <td class="pricing-line-item-msrp-value">
         <div class="fields-row">
             {{ form_widget(form.msrpPrice.value) }}
@@ -70,6 +77,7 @@
                         <th class="pricing-line-item-currency"><span>{{ 'marello.pricing.productprice.currency.label'|trans }}</span></th>
                         <th class="pricing-line-item-default-value"><span>{{ marello_pricing_vat_aware_label('marello.pricing.assembledpricelist.default_price.label') }}</span></th>
                         <th class="pricing-line-item-special-value"><span>{{ marello_pricing_vat_aware_label('marello.pricing.assembledpricelist.special_price.label') }}</span></th>
+                        <th class="pricing-line-item-special-date"><span>{{ 'marello.pricing.assembledpricelist.special_price.date.label'|trans }}</span></th>
                         <th class="pricing-line-item-msrp-value"><span>{{ marello_pricing_vat_aware_label('marello.pricing.assembledpricelist.msrp_price.label') }}</span></th>
                     </tr>
                     </thead>
@@ -118,6 +126,13 @@
             {{ form_widget(form.specialPrice.value) }}
         </div>
         {{ form_errors(form.specialPrice.value) }}
+    </td>
+    <td class="pricing-line-item-special-date">
+        <div class="fields-row">
+            <span>{{ 'marello.pricing.productchannelprice.start_date.label'|trans }}</span>{{ form_widget(form.specialPrice.startDate) }}
+            {{ form_errors(form.specialPrice.startDate) }}
+            <span>{{ 'marello.pricing.productchannelprice.end_date.label'|trans }}</span>{{ form_widget(form.specialPrice.endDate) }}
+        </div>
     </td>
 {% endblock %}
 
@@ -172,6 +187,7 @@
                         <th class="pricing-line-item-currency"><span>{{ 'marello.pricing.productchannelprice.currency.label'|trans }}</span></th>
                         <th class="pricing-line-item-default-value"><span>{{ marello_pricing_vat_aware_label('marello.pricing.assembledchannelpricelist.default_price.label') }}</span></th>
                         <th class="pricing-line-item-special-value"><span>{{ marello_pricing_vat_aware_label('marello.pricing.assembledchannelpricelist.special_price.label') }}</span></th>
+                        <th class="pricing-line-item-special-date"><span>{{ 'marello.pricing.assembledchannelpricelist.special_price.date.label'|trans }}</span></th>
                         {% if form.vars.allow_delete %}
                             <th class="pricing-row-item-actions"></th>
                         {% endif %}

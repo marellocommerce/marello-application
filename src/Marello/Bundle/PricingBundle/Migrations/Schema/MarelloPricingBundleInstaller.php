@@ -17,7 +17,7 @@ class MarelloPricingBundleInstaller implements Installation
      */
     public function getMigrationVersion()
     {
-        return 'v1_1';
+        return 'v1_2';
     }
 
     /**
@@ -66,6 +66,8 @@ class MarelloPricingBundleInstaller implements Installation
         $table->addColumn('value', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('currency', 'string', ['length' => 3]);
         $table->addColumn('type', 'string', ['notnull' => true]);
+        $table->addColumn('start_date', 'datetime', ['notnull' => false]);
+        $table->addColumn('end_date', 'datetime', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
@@ -89,6 +91,8 @@ class MarelloPricingBundleInstaller implements Installation
         $table->addColumn('type', 'string', ['notnull' => true]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
+        $table->addColumn('start_date', 'datetime', ['notnull' => false]);
+        $table->addColumn('end_date', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['product_id', 'currency', 'type'], 'marello_product_price_uidx');
         $table->addIndex(['product_id']);

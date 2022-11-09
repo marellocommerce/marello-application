@@ -30,7 +30,7 @@ class PurchaseOrderItemReceiveCollectionType extends AbstractType
             $collection->map(
                 function (PurchaseOrderItem $item) {
                     if ($item->getReceivedAmount() === $item->getOrderedAmount()) {
-                        $item->setStatus('complete');
+                        $item->setStatus(PurchaseOrderItem::STATUS_COMPLETE);
                     }
                 }
             );
