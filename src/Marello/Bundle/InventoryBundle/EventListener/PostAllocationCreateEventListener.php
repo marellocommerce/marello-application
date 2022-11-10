@@ -24,8 +24,14 @@ class PostAllocationCreateEventListener
         private RouterInterface $router,
         private ConfigManager $configManager,
         private $tasks = []
-    ) {}
+    ) {
+    }
 
+    /**
+     * @param Allocation $allocation
+     * @param LifecycleEventArgs $args
+     * @return void
+     */
     public function postPersist(Allocation $allocation, LifecycleEventArgs $args): void
     {
         $availableStates = $this->configManager->get('marello_inventory.inventory_allocation_states_to_select');
@@ -38,15 +44,25 @@ class PostAllocationCreateEventListener
         $dueDate = new \DateTime('+1 day');
         $dueDate->setTime('23', '59', '59');
         $task->setDueDate($dueDate);
-        $task->setSubject(
-            $this->translator->trans('marello.inventory.allocation.entity_label')
-            . ' ' . $allocation->getState()
-        );
+
+        $subjectName = $this->translator->trans('marello.inventory.allocation.entity_label');
+        $priorityName = LoadTaskPriority::PRIORITY_NAME_LOW;
+        if ($allocation->getState()->getId() === AllocationStateStatusInterface::ALLOCATION_STATE_ALERT) {
+            $subjectName = sprintf('%s %s', $subjectName, $allocation->getState());
+            $priorityName = LoadTaskPriority::PRIORITY_NAME_HIGH;
+        }
+
+        $task->setSubject($subjectName);
         $order = $allocation->getOrder();
         $task->setDescription(implode(PHP_EOL, [
             $this->wrapParagraph($allocation->getState()),
-            $this->wrapParagraph($allocation->getStatus()),
-            $this->wrapParagraph(PHP_EOL . $this->translator->trans('marello.inventory.allocation.order.label')),
+            $this->wrapParagraph(
+                sprintf('%s<br/>', $allocation->getStatus())
+            ),
+            $this->wrapParagraph(sprintf(
+                '<b>%s</b>',
+                PHP_EOL . $this->translator->trans('marello.inventory.allocation.order.label')
+            )),
             $this->wrapParagraph(sprintf(
                 '<a href="%s" title="%s">%s</a>',
                 $this->router->generate('marello_order_order_view', ['id' => $order->getId()]),
@@ -54,12 +70,8 @@ class PostAllocationCreateEventListener
                 $order->getOrderNumber()
             )),
             $this->wrapParagraph($order->getCustomer()->getFullName()),
-            $this->wrapParagraph($dueDate->format('Y-m-d H:i:s')),
         ]));
 
-        $priorityName = $allocation->getState()->__toString() == AllocationStateStatusInterface::ALLOCATION_STATE_ALERT
-            ? LoadTaskPriority::PRIORITY_NAME_HIGH
-            : LoadTaskPriority::PRIORITY_NAME_LOW;
         $priority = $this->registry
             ->getRepository(TaskPriority::class)
             ->findOneBy(['name' => $priorityName]);
@@ -80,6 +92,12 @@ class PostAllocationCreateEventListener
         $this->tasks[] = $task;
     }
 
+    /**
+     * @param PostFlushEventArgs $args
+     * @return void
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     public function postFlush(PostFlushEventArgs $args)
     {
         if (!$this->tasks) {
