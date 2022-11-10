@@ -1,0 +1,34 @@
+dependencies:
+  - Oro\Bundle\UserBundle\Tests\Functional\DataFixtures\LoadUserData
+  - Oro\Bundle\TestFrameworkBundle\Tests\Functional\DataFixtures\LoadUser
+  - Oro\Bundle\TestFrameworkBundle\Tests\Functional\DataFixtures\LoadOrganization
+  - Oro\Bundle\TaskBundle\Tests\Functional\DataFixtures\LoadTaskPriorityData
+  - Oro\Bundle\TaskBundle\Tests\Functional\DataFixtures\LoadTaskStatusData
+  - Marello\Bundle\TaskBundle\Tests\Functional\DataFixtures\LoadTaskTypeData
+
+Oro\Bundle\TaskBundle\Entity\Task:
+  nonAllocationTask:
+    subject: 'Non-allocation task'
+    description: 'Non-allocation task'
+    owner: '@user'
+    createdBy: '@user'
+    assignedToUser: '@user'
+    type: '@task_type_general'
+    taskPriority: '@task_priority_normal'
+    organization: '@organization'
+    createdAt: '<dateTimeBetween("-200 days", "now")>'
+    updatedAt: '<dateTimeBetween($createdAt, "now")>'
+    dueDate: '<dateTimeBetween($updatedAt, "now")>'
+
+  allocationTask:
+    subject: 'Allocation task'
+    description: 'Allocation task'
+    owner: '@user'
+    createdBy: '@user'
+    assignedToUser: '@user'
+    type: '@task_type_allocation'
+    taskPriority: '@task_priority_low'
+    organization: '@organization'
+    createdAt: '<dateTimeBetween("-200 days", "now")>'
+    updatedAt: '<dateTimeBetween($createdAt, "now")>'
+    dueDate: '<dateTimeBetween($updatedAt, "now")>'

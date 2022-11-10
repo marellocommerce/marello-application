@@ -37,6 +37,9 @@ use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
  *          },
  *          "dataaudit"={
  *              "auditable"=true
+ *          },
+ *          "grid"={
+ *              "context"="marello-allocation-for-context-grid"
  *          }
  *      }
  * )

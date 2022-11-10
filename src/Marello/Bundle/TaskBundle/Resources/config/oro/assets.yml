@@ -1,0 +1,3 @@
+css:
+    inputs:
+        - 'bundles/marellotask/sidebar_widgets/assigned_allocation_tasks/css/styles.scss'
