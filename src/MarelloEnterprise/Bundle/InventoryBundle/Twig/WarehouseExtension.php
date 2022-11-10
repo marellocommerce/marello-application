@@ -14,7 +14,8 @@ class WarehouseExtension extends AbstractExtension
     public function __construct(
         protected IsFixedWarehouseGroupChecker $isFixedWarehouseGroupChecker,
         protected InventoryManager $inventoryManager
-    ) {}
+    ) {
+    }
 
     /**
      * {@inheritdoc}
