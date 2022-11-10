@@ -1,0 +1,4 @@
+marello_task_bundle:
+    resource:     "@MarelloTaskBundle/Controller"
+    type:         annotation
+    prefix:       /marellotask

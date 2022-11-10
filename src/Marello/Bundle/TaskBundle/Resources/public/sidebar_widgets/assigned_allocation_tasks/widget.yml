@@ -1,0 +1,10 @@
+title: marello.task.assigned_allocation_tasks_widget.title
+iconClass: 'fa-tasks'
+dialogIcon: 'bundles/mareooltask/sidebar_widgets/assigned_allocation_tasks/img/icon-task.png'
+module:    'marello/sidebar/widget/assigned_allocation_tasks'
+placement: 'both'
+cssClass:  'sidebar-widget-assigned-tasks'
+description: marello.task.assigned_allocation_tasks_widget.description
+isNew: true
+settings:
+    perPage: 5

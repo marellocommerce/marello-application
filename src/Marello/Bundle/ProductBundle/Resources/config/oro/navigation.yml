@@ -47,10 +47,9 @@ navigation:
                     description: 'marello.product.menu.shortcut_list_products.description'
                     isCustomAction: true
 
-            # disable activities tab and it's children
             activities_tab:
-                display: false
-                display_children: false
+                extras:
+                    position: 45
         tree:
             application_menu:
                 children:
