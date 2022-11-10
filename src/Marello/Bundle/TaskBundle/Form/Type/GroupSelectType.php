@@ -8,6 +8,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class GroupSelectType extends AbstractType
 {
+    /**
+     * @param OptionsResolver $resolver
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
@@ -19,16 +23,25 @@ class GroupSelectType extends AbstractType
         );
     }
 
+    /**
+     * @return string
+     */
     public function getParent()
     {
         return OroEntitySelectOrCreateInlineType::class;
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return $this->getBlockPrefix();
     }
 
+    /**
+     * @return string
+     */
     public function getBlockPrefix()
     {
         return 'marello_group_select';

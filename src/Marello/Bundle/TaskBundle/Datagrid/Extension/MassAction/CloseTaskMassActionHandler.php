@@ -18,7 +18,8 @@ class CloseTaskMassActionHandler implements MassActionHandlerInterface
     public function __construct(
         protected ManagerRegistry $registry,
         protected TranslatorInterface $translator
-    ) {}
+    ) {
+    }
 
     public function handle(MassActionHandlerArgs $args)
     {

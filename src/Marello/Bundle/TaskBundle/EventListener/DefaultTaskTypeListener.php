@@ -10,8 +10,13 @@ class DefaultTaskTypeListener
 {
     public function __construct(
         private ManagerRegistry $registry
-    ) {}
+    ) {
+    }
 
+    /**
+     * @param Task $task
+     * @return void
+     */
     public function prePersist(Task $task)
     {
         if ($task->getType()) {
