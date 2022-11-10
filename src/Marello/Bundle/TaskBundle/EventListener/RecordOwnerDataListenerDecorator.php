@@ -10,8 +10,13 @@ class RecordOwnerDataListenerDecorator
 {
     public function __construct(
         private RecordOwnerDataListener $innerListener
-    ) {}
+    ) {
+    }
 
+    /**
+     * @param LifecycleEventArgs $args
+     * @return void
+     */
     public function prePersist(LifecycleEventArgs $args): void
     {
         if ($args->getEntity() instanceof Task) {

@@ -23,7 +23,8 @@ class AllocationStatesToSelectType extends AbstractType
 
     public function __construct(
         protected DoctrineHelper $doctrineHelper
-    ) {}
+    ) {
+    }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -41,7 +42,7 @@ class AllocationStatesToSelectType extends AbstractType
             [
                 'enum_code' => AllocationStateStatusInterface::ALLOCATION_STATE_ENUM_CODE,
                 'multiple' => true,
-                'query_builder' => function(EntityRepository $repository) {
+                'query_builder' => function (EntityRepository $repository) {
                     return $repository->createQueryBuilder('enum')
                         ->orderBy('enum.name', 'ASC');
                 }
