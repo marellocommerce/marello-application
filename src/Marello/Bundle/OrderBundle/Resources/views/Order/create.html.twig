@@ -109,10 +109,17 @@
         <div
                 data-page-component-module="oroui/js/app/components/view-component"
                 data-page-component-options="{{ {
-                    view: 'marelloorder/js/app/views/order-address-view',
+                    view: 'marelloorder/js/app/views/order-billing-address-view',
                     type: 'billing',
                     selectors: {
-                        address: idAddressBlock
+                        address: idAddressBlock,
+                        useBillingAsShipping: '#' ~ form.billingAddress.useBillingAddressAsShipping.vars.id,
+                        shippingAddressBlock: '#' ~ form.shippingAddress.vars.id,
+                        subtotalsFields: [
+                            '#' ~ form.billingAddress.country.vars.id,
+                            '#' ~ form.billingAddress.region.vars.id,
+                            '#' ~ form.billingAddress.postalCode.vars.id
+                        ]
                     }
                 }|json_encode }}"
                 data-layout="separate">
@@ -198,24 +205,22 @@
             }]
         },
         {
-            'title': 'marello.order.billing_address.label'|trans,
+            'title': 'marello.order.sections.addresses'|trans,
             'class': 'active',
-            'subblocks': [{
-                'title': '',
-                'data': [
-                    billingAddress
-                ]
-            }]
-        },
-        {
-            'title': 'marello.order.shipping_address.label'|trans,
-            'class': 'active',
-            'subblocks': [{
-                'title': '',
-                'data': [
-                    shippingAddress
-                ]
-            }]
+            'subblocks': [
+                {
+                    'title': 'marello.order.billing_address.label'|trans,
+                    'data': [
+                        billingAddress
+                    ]
+                },
+                {
+                    'title': 'marello.order.shipping_address.label'|trans,
+                    'data': [
+                        shippingAddress
+                    ]
+                }
+            ]
         },
         {
             'title': 'marello.order.sections.payment_information'|trans,

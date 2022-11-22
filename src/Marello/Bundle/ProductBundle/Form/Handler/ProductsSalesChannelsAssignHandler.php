@@ -27,7 +27,7 @@ class ProductsSalesChannelsAssignHandler
     const FLUSH_BATCH_SIZE = 100;
 
     /** @var int max size of product ids per message to prevent having a single big message */
-    const MESSAGE_PRODUCT_ID_SIZE = 1000;
+    const MESSAGE_PRODUCT_ID_SIZE = 100;
 
     /**
      * @var FormInterface
@@ -126,7 +126,7 @@ class ProductsSalesChannelsAssignHandler
     private function onSuccess($addChannels, $inset, $products = null, $filters = null): array
     {
         $isAllSelected = $this->isAllSelected($inset);
-        $productIds = explode(',', $products);
+        $productIds = array_filter(explode(',', $products));
 
         if (!empty($productIds) || $isAllSelected) {
             $grid = $this->datagridManager->getDatagridByRequestParams(
@@ -250,7 +250,7 @@ class ProductsSalesChannelsAssignHandler
             [
                 'products' => $productIds,
                 'salesChannels' => $channelIds,
-                'jobId' => md5(rand(1, 5))
+                'jobId' => md5(implode($productIds))
             ]
         );
     }
