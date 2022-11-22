@@ -98,25 +98,29 @@ class InventoryAllocationProvider extends BaseAllocationProvider
             ->getEntityManagerForClass(Allocation::class);
 
         if ($this->consolidationWarehouse) {
-            // create parent allocation
-            /** @var Order $order */
-            $parentAllocation = new Allocation();
-            $parentAllocation->setOrder($order);
-            $parentAllocation->setOrganization($order->getOrganization());
-            $parentAllocation->setState(
-                $this->getEnumValue(
-                    'marello_allocation_state',
-                    AllocationStateStatusInterface::ALLOCATION_STATE_AVAILABLE
-                )
-            );
-            $parentAllocation->setStatus(
-                $this->getEnumValue(
-                    'marello_allocation_status',
-                    AllocationStateStatusInterface::ALLOCATION_STATUS_ON_HAND
-                )
-            );
-            $parentAllocation->setWarehouse($this->consolidationWarehouse);
-            $parentAllocation->setShippingAddress($order->getShippingAddress());
+            if (!$allocation) {
+                /** @var Order $order */
+                $parentAllocation = new Allocation();
+                $parentAllocation->setOrder($order);
+                $parentAllocation->setOrganization($order->getOrganization());
+                $parentAllocation->setState(
+                    $this->getEnumValue(
+                        'marello_allocation_state',
+                        AllocationStateStatusInterface::ALLOCATION_STATE_AVAILABLE
+                    )
+                );
+                $parentAllocation->setStatus(
+                    $this->getEnumValue(
+                        'marello_allocation_status',
+                        AllocationStateStatusInterface::ALLOCATION_STATUS_ON_HAND
+                    )
+                );
+                $parentAllocation->setWarehouse($this->consolidationWarehouse);
+                $parentAllocation->setShippingAddress($order->getShippingAddress());
+            } else {
+                $parentAllocation = $allocation->getParent();
+            }
+
             /** @var AllocationItem $item */
             foreach ($this->baseAllocationProvider->getAllItems() as $item) {
                 if ($this->isAllocationExcluded($item->getAllocation())) {
@@ -163,8 +167,11 @@ class InventoryAllocationProvider extends BaseAllocationProvider
      */
     protected function isAllocationExcluded(Allocation $allocation)
     {
-        return (
-            $allocation->getWarehouse()->getWarehouseType()->getName() === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL ||
+        $isExternalWhType = false;
+        if ($allocation->getWarehouse()) {
+            $isExternalWhType = ($allocation->getWarehouse()->getWarehouseType()->getName() === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL);
+        }
+        return ($isExternalWhType ||
             in_array($allocation->getState()->getName(), $this->configManager->get('marello_enterprise_inventory.inventory_allocation_consolidation_exclusion'))
         );
     }

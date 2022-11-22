@@ -10,6 +10,8 @@ use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
 use Marello\Bundle\InventoryBundle\Migrations\Data\ORM\LoadWarehouseData as BaseWarehouseData;
+use Marello\Bundle\InventoryBundle\Model\Allocation\Notifier\WarehouseEmailNotifier;
+use Marello\Bundle\InventoryBundle\Model\Allocation\Notifier\WarehouseManualNotifier;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Oro\Bundle\AddressBundle\Entity\Country;
 use Oro\Bundle\AddressBundle\Entity\Region;
@@ -59,6 +61,7 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
                 'phone' => '000-000-000',
                 'company' => 'Goodwaves Berlin'
             ],
+            'notifier'      => WarehouseManualNotifier::IDENTIFIER,
             'type'          => 'global',
             'group'         => 'Europe'
         ],
@@ -67,6 +70,8 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
             'code'          => 'warehouse_fr_1',
             'default'       => false,
             'is_consolidation_warehouse' => false,
+            'notifier'      => WarehouseEmailNotifier::IDENTIFIER,
+            'email'         => 'warehouse_fr_1@fr_1.fr',
             'address'       => [
                 'country' => 'FR',
                 'street' => '22 Av. des Champs-Élysées',
@@ -84,6 +89,8 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
             'code'          => 'warehouse_fr_2',
             'default'       => false,
             'is_consolidation_warehouse' => true,
+            'notifier'      => WarehouseEmailNotifier::IDENTIFIER,
+            'email'         => 'warehouse_fr_2@fr_2.fr',
             'address'       => [
                 'country' => 'FR',
                 'street' => '120 Cours de la Marne',
@@ -100,6 +107,7 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
             'name'          => 'Warehouse US 1',
             'code'          => 'warehouse_us_1',
             'default'       => false,
+            'notifier'      => WarehouseEmailNotifier::IDENTIFIER,
             'address'       => [
                 'country' => 'US',
                 'street' => 'Rusk 2714',
@@ -116,6 +124,7 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
             'name'          => 'Store Warehouse DE München',
             'code'          => 'store_warehouse_de_munchen',
             'default'       => false,
+            'notifier'      => WarehouseManualNotifier::IDENTIFIER,
             'address'       => [
                 'country' => 'DE',
                 'street' => 'Nordallee 25',
@@ -132,6 +141,7 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
             'name'          => 'Store Warehouse DE Frankfurt',
             'code'          => 'store_warehouse_de_frankfurt',
             'default'       => false,
+            'notifier'      => WarehouseManualNotifier::IDENTIFIER,
             'address'       => [
                 'country' => 'DE',
                 'street' => 'Flughafen Frankfurt am Main 200',
@@ -148,6 +158,7 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
             'name'          => 'Store Warehouse DE Berlin',
             'code'          => 'store_warehouse_de_berlin',
             'default'       => false,
+            'notifier'      => WarehouseManualNotifier::IDENTIFIER,
             'address'       => [
                 'country' => 'DE',
                 'street' => 'Grunerstraße 20',
@@ -164,6 +175,7 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
             'name'          => 'Store Warehouse DE Dortmund',
             'code'          => 'store_warehouse_de_dortmund',
             'default'       => false,
+            'notifier'      => WarehouseManualNotifier::IDENTIFIER,
             'address'       => [
                 'country' => 'DE',
                 'street' => 'Straße der Pariser Kommune 23',
@@ -180,6 +192,7 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
             'name'          => 'Warehouse UK 1',
             'code'          => 'warehouse_uk_1',
             'default'       => false,
+            'notifier'      => WarehouseManualNotifier::IDENTIFIER,
             'address'       => [
                 'country' => 'GB',
                 'street' => '71 Harehills Lane',
@@ -196,6 +209,7 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
             'name'          => 'Warehouse UK 2',
             'code'          => 'warehouse_uk_2',
             'default'       => false,
+            'notifier'      => WarehouseManualNotifier::IDENTIFIER,
             'address'       => [
                 'country' => 'GB',
                 'street' => '49 St James Boulevard',
@@ -279,6 +293,14 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
             $warehouse->setCode($data['code']);
             if (isset($data['is_consolidation_warehouse'])) {
                 $warehouse->setIsConsolidationWarehouse($data['is_consolidation_warehouse']);
+            }
+
+            if (isset($data['email'])) {
+                $warehouse->setEmail($data['email']);
+            }
+
+            if (isset($data['notifier'])) {
+                $warehouse->setNotifier($data['notifier']);
             }
             $address = $this->createAddress($data['address']);
             $warehouse->setAddress($address);
