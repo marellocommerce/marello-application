@@ -46,7 +46,6 @@ operations:
                         required: true
                         constraints:
                             - NotBlank: ~
-                            - DateTime: ~
                 payment_reference:
                     form_type: Symfony\Component\Form\Extension\Core\Type\TextType
                     options:

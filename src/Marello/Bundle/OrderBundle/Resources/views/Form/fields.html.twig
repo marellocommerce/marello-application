@@ -157,15 +157,9 @@
 {% block marello_order_address_widget %}
     {% if form.parent is not empty %}
         <div {{ block('widget_container_attributes') }}>
-            {% if form.customerAddress is defined %}
-                {{ form_row(form.customerAddress) }}
-            {% endif %}
             {{ form_rest(form) }}
         </div>
     {% else %}
-        {% if form.customerAddress is defined %}
-            {{ form_row(form.customerAddress) }}
-        {% endif %}
         {{ form_rest(form) }}
     {% endif %}
 {% endblock %}

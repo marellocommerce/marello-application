@@ -7,6 +7,7 @@ use Doctrine\Persistence\ManagerRegistry;
 
 use Liip\ImagineBundle\Binary\MimeTypeGuesserInterface;
 use Oro\Bundle\EmailBundle\Sender\EmailModelSender;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Validator\Constraints\Email as EmailConstraints;
 use Symfony\Component\Validator\Exception\ValidatorException;
@@ -142,6 +143,7 @@ class SendEmailTemplateAttachmentAction extends AbstractSendEmail
         $entity = $this->contextAccessor->getValue($context, $this->options['entity']);
         $template = $this->contextAccessor->getValue($context, $this->options['template']);
 
+        /** @var EmailTemplate $emailTemplate */
         $emailTemplate = $this
             ->registry
             ->getManagerForClass(\get_class($entity))
@@ -161,6 +163,12 @@ class SendEmailTemplateAttachmentAction extends AbstractSendEmail
         $emailModel->setBody($templateRendered);
         $emailModel->setType($emailTemplate->getType());
         $emailModel->setBcc($this->getBcc($context));
+
+        if ($entity instanceof OrganizationAwareInterface) {
+            $emailModel->setOrganization($entity->getOrganization());
+        } else {
+            $emailModel->setOrganization($emailTemplate->getOrganization());
+        }
 
         $this->addAttachments($emailModel, $context);
 
