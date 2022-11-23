@@ -57,7 +57,6 @@ services:
     marello_purchaseorder.listener.doctrine.po_on_demand_creation:
         class: Marello\Bundle\PurchaseOrderBundle\EventListener\Doctrine\PurchaseOrderOnOrderOnDemandCreationListener
         arguments:
-            - '@marello_inventory.provider.available_inventory_provider'
             - '@oro_security.acl_helper'
         calls:
             - ['setConfigManager', ['@oro_config.manager']]

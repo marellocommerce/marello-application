@@ -6,19 +6,19 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 
+use Marello\Bundle\InventoryBundle\Provider\AllocationStateStatusInterface;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
-use Marello\Bundle\InventoryBundle\Provider\AvailableInventoryProvider;
 use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\PricingBundle\Entity\ProductPrice;
+use Marello\Bundle\InventoryBundle\Entity\Allocation;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 
 class PurchaseOrderOnOrderOnDemandCreationListener
 {
@@ -27,13 +27,12 @@ class PurchaseOrderOnOrderOnDemandCreationListener
     /**
      * @var int
      */
-    private $orderId;
+    private $allocationId;
 
     /** @var ConfigManager $configManager */
     private $configManager;
 
     public function __construct(
-        private AvailableInventoryProvider $availableInventoryProvider,
         private AclHelper $aclHelper
     ) {}
 
@@ -43,7 +42,7 @@ class PurchaseOrderOnOrderOnDemandCreationListener
     public function postPersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        if (!$entity instanceof Order) {
+        if (!$entity instanceof Allocation) {
             return;
         }
 
@@ -54,14 +53,15 @@ class PurchaseOrderOnOrderOnDemandCreationListener
         }
 
         $orderOnDemandItems = [];
-        $salesChannel = $entity->getSalesChannel();
         foreach ($entity->getItems() as $item) {
-            if ($this->isOrderOnDemandItem($item, $salesChannel)) {
+            if ($this->isOrderOnDemandItem($item->getProduct()) &&
+                $entity->getState()->getId() === AllocationStateStatusInterface::ALLOCATION_STATE_WFS
+            ) {
                 $orderOnDemandItems[] = $item;
             }
         }
         if (!empty($orderOnDemandItems)) {
-            $this->orderId = $entity->getId();
+            $this->allocationId = $entity->getId();
         }
     }
     
@@ -70,22 +70,21 @@ class PurchaseOrderOnOrderOnDemandCreationListener
      */
     public function postFlush(PostFlushEventArgs $args)
     {
-        if ($this->orderId) {
+        if ($this->allocationId) {
             $entityManager = $args->getEntityManager();
-            /** @var Order $entity */
+            /** @var Allocation $entity */
             $entity = $entityManager
-                ->getRepository(Order::class)
-                ->find($this->orderId);
+                ->getRepository(Allocation::class)
+                ->find($this->allocationId);
             if ($entity) {
-                $this->orderId = null;
-                $warehouse = $this->getLinkedWarehouse($entity, $entityManager);
+                $this->allocationId = null;
+                $warehouse = $this->getLinkedWarehouse($entity->getOrder(), $entityManager);
                 if (!$warehouse) {
                     return;
                 }
                 $orderOnDemandItems = [];
-                $salesChannel = $entity->getSalesChannel();
                 foreach ($entity->getItems() as $item) {
-                    if ($this->isOrderOnDemandItem($item, $salesChannel)) {
+                    if ($this->isOrderOnDemandItem($item->getProduct())) {
                         $orderOnDemandItems[] = $item;
                     }
                 }
@@ -108,7 +107,7 @@ class PurchaseOrderOnOrderOnDemandCreationListener
                     /** @var PurchaseOrder $po */
                     $po = $poBySuppliers[$supplierCode];
                     $qty = $onDemandItem->getQuantity();
-                    $price = $this->getPurchasePrice($product, $entity);
+                    $price = $this->getPurchasePrice($product, $entity->getOrder());
                     $poItem = new PurchaseOrderItem();
                     $poItem
                         ->setProduct($product)
@@ -126,11 +125,15 @@ class PurchaseOrderOnOrderOnDemandCreationListener
                         ->setOrderTotal($orderTotal)
                         ->setWarehouse($warehouse)
                         ->setCreatedAt(new \DateTime())
-                        ->setData([self::ORDER_ON_DEMAND => [
-                            'order' => $entity->getId(),
-                            'orderItems' => $itemsBySuppliers[$po->getSupplier()->getCode()]
-                        ]
-                        ]);
+                        ->setData(
+                            [
+                                self::ORDER_ON_DEMAND =>
+                                    [
+                                        'order' => $entity->getOrder()->getId(),
+                                        'orderItems' => $itemsBySuppliers[$po->getSupplier()->getCode()]
+                                    ]
+                            ]
+                        );
                     $entityManager->persist($po);
                 }
                 $entityManager->flush();
@@ -165,27 +168,10 @@ class PurchaseOrderOnOrderOnDemandCreationListener
     }
 
     /**
-     * @param OrderItem $orderItem
-     * @param SalesChannel $salesChannel
-     * @return bool
-     */
-    private function isOrderOnDemandItem(OrderItem $orderItem, SalesChannel $salesChannel)
-    {
-        $product = $orderItem->getProduct();
-        $orderedQty = $orderItem->getQuantity();
-        $result = $this->availableInventoryProvider->getAvailableInventory($product, $salesChannel);
-        if ($orderedQty > $result && $this->isOrderOnDemandAllowed($product)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * @param Product $product
      * @return bool
      */
-    private function isOrderOnDemandAllowed(Product $product)
+    private function isOrderOnDemandItem(Product $product)
     {
         foreach ($product->getInventoryItems() as $inventoryItem) {
             if ($inventoryItem->isOrderOnDemandAllowed()) {

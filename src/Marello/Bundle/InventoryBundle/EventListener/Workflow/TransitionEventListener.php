@@ -2,11 +2,6 @@
 
 namespace Marello\Bundle\InventoryBundle\EventListener\Workflow;
 
-use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
-use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
@@ -18,7 +13,13 @@ use Oro\Component\MessageQueue\Client\MessagePriority;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 
 use Marello\Bundle\WorkflowBundle\Async\Topics;
+use Marello\Bundle\InventoryBundle\Async\Topics as InventoryTopics;
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\Allocation;
+use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
+use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 
 class TransitionEventListener
 {
@@ -131,6 +132,15 @@ class TransitionEventListener
         $this->eventDispatcher->dispatch(
             new InventoryUpdateEvent($context),
             InventoryUpdateEvent::NAME
+        );
+
+        $this->messageProducer->send(
+            InventoryTopics::RESOLVE_REBALANCE_INVENTORY,
+            [
+                'product_id' => $item->getProduct()->getId(),
+                'jobId' => md5($item->getProduct()->getId()),
+                'priority' => MessagePriority::NORMAL
+            ]
         );
     }
 
