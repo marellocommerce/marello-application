@@ -180,7 +180,6 @@ services:
         arguments:
             - '@logger'
             - '@doctrine.orm.entity_manager'
-            - '@oro_datagrid.datagrid.manager'
             - '@security.token_storage'
             - '@oro_email.form.factory'
             - '@oro_email.sender.email_model_sender'
