@@ -23,7 +23,8 @@ class BalancedInventoryUpdateAfterEventListener
         private InventoryBalancerTriggerCalculator $triggerCalculator,
         private BalancedInventoryRepository $repository,
         private AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * Handle incoming event

@@ -13,7 +13,8 @@ class PurchaseOrderWarehouseListener
     public function __construct(
         private Registry $doctrine,
         private AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     public function prePersist(LifecycleEventArgs $args)
     {

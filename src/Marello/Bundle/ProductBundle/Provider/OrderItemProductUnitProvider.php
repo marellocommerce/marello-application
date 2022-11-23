@@ -17,7 +17,8 @@ class OrderItemProductUnitProvider extends AbstractOrderItemFormChangesProvider
     public function __construct(
         protected DoctrineHelper $doctrineHelper,
         protected AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * {@inheritdoc}

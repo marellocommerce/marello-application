@@ -21,7 +21,8 @@ class ReturnShippingServiceDataProvider implements ShippingServiceDataProviderIn
     public function __construct(
         protected EntityManager $entityManager,
         protected AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * {@inheritdoc}

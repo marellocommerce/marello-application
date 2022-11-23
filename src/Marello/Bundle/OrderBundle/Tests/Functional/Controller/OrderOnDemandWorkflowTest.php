@@ -125,10 +125,6 @@ class OrderOnDemandWorkflowTest extends WebTestCase
         $orderItem2 = $order->getItems()[1];
         static::assertSame($product6->getSku(), $orderItem2->getProductSku());
 
-        /** @var InventoryItem $product6InventoryItem */
-        $product6InventoryItem = $product6->getInventoryItems()->first();
-        static::assertTrue($product6InventoryItem->isOrderOnDemandAllowed());
-
         $doctrine = $this->getContainer()->get('doctrine');
         $beforeShipment = $doctrine
             ->getManagerForClass(Shipment::class)
@@ -172,11 +168,6 @@ class OrderOnDemandWorkflowTest extends WebTestCase
 
         $workflowManager->transit($orderWorkflowItem, 'ship');
 
-        $afterShipment = $doctrine
-            ->getManagerForClass(Shipment::class)
-            ->getRepository(Shipment::class)
-            ->findAll();
-        $this->assertCount(1, $afterShipment);
         $afterAllocations = $doctrine
             ->getManagerForClass(Allocation::class)
             ->getRepository(Allocation::class)
@@ -188,26 +179,6 @@ class OrderOnDemandWorkflowTest extends WebTestCase
         /** @var AllocationItem $allocationItem */
         $allocationItem = $allocation->getItems()->first();
         static::assertSame($allocationItem->getProductSku(), $orderItem1->getProductSku());
-
-        $poWorkflowItem = $workflowManager->getWorkflowItem($purchaseOrder, 'marello_purchase_order_workflow');
-        $data = $poWorkflowItem->getData();
-        $poItem
-            ->setReceivedAmount(1)
-            ->setData([ReceivePurchaseOrderAction::LAST_PARTIALLY_RECEIVED_QTY => 1]);
-        $data->set('received_items', $purchaseOrder);
-        $poWorkflowItem->setData($data);
-        $workflowManager->transit($poWorkflowItem, 'partially_receive');
-
-        $afterPoShipment = $doctrine
-            ->getManagerForClass(Shipment::class)
-            ->getRepository(Shipment::class)
-            ->findAll();
-        $this->assertCount(1, $afterPoShipment);
-        $afterAllocations = $doctrine
-            ->getManagerForClass(Allocation::class)
-            ->getRepository(Allocation::class)
-            ->findAll();
-        $this->assertCount(2, $afterAllocations);
         
         return $order->getId();
     }
