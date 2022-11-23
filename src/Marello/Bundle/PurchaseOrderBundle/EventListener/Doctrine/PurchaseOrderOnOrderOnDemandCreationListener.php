@@ -6,19 +6,19 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
 use Marello\Bundle\InventoryBundle\Provider\AllocationStateStatusInterface;
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
-use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\InventoryBundle\Entity\Allocation;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 
 class PurchaseOrderOnOrderOnDemandCreationListener
 {
@@ -29,12 +29,10 @@ class PurchaseOrderOnOrderOnDemandCreationListener
      */
     private $allocationId;
 
-    /** @var ConfigManager $configManager */
+    /**
+     * @var ConfigManager $configManager
+     */
     private $configManager;
-
-    public function __construct(
-        private AclHelper $aclHelper
-    ) {}
 
     /**
      * @param LifecycleEventArgs $args
@@ -70,73 +68,129 @@ class PurchaseOrderOnOrderOnDemandCreationListener
      */
     public function postFlush(PostFlushEventArgs $args)
     {
-        if ($this->allocationId) {
-            $entityManager = $args->getEntityManager();
-            /** @var Allocation $entity */
-            $entity = $entityManager
-                ->getRepository(Allocation::class)
-                ->find($this->allocationId);
-            if ($entity) {
-                $this->allocationId = null;
-                $warehouse = $this->getLinkedWarehouse($entity->getOrder(), $entityManager);
-                if (!$warehouse) {
-                    return;
-                }
-                $orderOnDemandItems = [];
-                foreach ($entity->getItems() as $item) {
-                    if ($this->isOrderOnDemandItem($item->getProduct())) {
-                        $orderOnDemandItems[] = $item;
-                    }
-                }
-                $poBySuppliers = [];
-                $itemsBySuppliers = [];
-                $organization = $entity->getOrganization();
-                /** @var OrderItem $onDemandItem */
-                foreach ($orderOnDemandItems as $onDemandItem) {
-                    $product = $onDemandItem->getProduct();
-                    $supplier = $product->getPreferredSupplier();
-                    $supplierCode = $supplier->getCode();
-                    $itemsBySuppliers[$supplierCode][] = $onDemandItem->getId();
-                    if (!isset($poBySuppliers[$supplierCode])) {
-                        $po = new PurchaseOrder();
-                        $po
-                            ->setSupplier($supplier)
-                            ->setOrganization($organization);
-                        $poBySuppliers[$supplierCode] = $po;
-                    }
-                    /** @var PurchaseOrder $po */
-                    $po = $poBySuppliers[$supplierCode];
-                    $qty = $onDemandItem->getQuantity();
-                    $price = $this->getPurchasePrice($product, $entity->getOrder());
-                    $poItem = new PurchaseOrderItem();
-                    $poItem
-                        ->setProduct($product)
-                        ->setOrderedAmount($onDemandItem->getQuantity())
-                        ->setRowTotal($price->getValue() * $qty)
-                        ->setPurchasePrice($price);
-                    $po->addItem($poItem);
-                }
-                foreach ($poBySuppliers as $po) {
-                    $orderTotal = 0.00;
-                    foreach ($po->getItems() as $poi) {
-                        $orderTotal += $poi->getRowTotal();
-                    }
-                    $po
-                        ->setOrderTotal($orderTotal)
-                        ->setWarehouse($warehouse)
-                        ->setCreatedAt(new \DateTime())
-                        ->setData(
+        if (!$this->allocationId) {
+            return;
+        }
+
+        $this->allocationId = null;
+        $entityManager = $args->getEntityManager();
+        /** @var Allocation $allocation */
+        $allocation = $entityManager
+            ->getRepository(Allocation::class)
+            ->find($this->allocationId);
+        if (!$allocation) {
+            return;
+        }
+
+        [$poBySupplier, $itemsBySupplier] = $this->createPurchaseOrdersFromAllocation(
+            $allocation,
+            $entityManager
+        );
+        $this->updatePurchaseOrdersTotal($poBySupplier, $itemsBySupplier, $allocation->getOrder());
+        $entityManager->flush();
+
+        $this->createTemporaryWarehouses($poBySupplier, $entityManager);
+        $entityManager->flush();
+    }
+
+    private function createPurchaseOrdersFromAllocation(
+        Allocation $allocation,
+        EntityManager $entityManager
+    ): array {
+        $poBySupplier = [];
+        $itemsBySupplier = [];
+
+        $organization = $allocation->getOrganization();
+        foreach ($allocation->getItems() as $onDemandItem) {
+            if (!$this->isOrderOnDemandItem($onDemandItem->getProduct())) {
+                continue;
+            }
+
+            $product = $onDemandItem->getProduct();
+            $supplier = $product->getPreferredSupplier();
+            $supplierCode = $supplier->getCode();
+            $itemsBySupplier[$supplierCode][] = $onDemandItem->getId();
+            if (!isset($poBySupplier[$supplierCode])) {
+                $po = new PurchaseOrder();
+                $po
+                    ->setSupplier($supplier)
+                    ->setOrganization($organization);
+
+                $entityManager->persist($po);
+                $poBySupplier[$supplierCode] = $po;
+            }
+
+            /** @var PurchaseOrder $po */
+            $po = $poBySupplier[$supplierCode];
+            $qty = $onDemandItem->getQuantity();
+            $price = $this->getPurchasePrice($product, $allocation->getOrder());
+            $poItem = new PurchaseOrderItem();
+            $poItem
+                ->setProduct($product)
+                ->setOrderedAmount($onDemandItem->getQuantity())
+                ->setRowTotal($price->getValue() * $qty)
+                ->setPurchasePrice($price);
+            $poItem->setData([
+                self::ORDER_ON_DEMAND =>
+                    [
+                        'order' => $allocation->getOrder()->getId(),
+                        'orderItem' => $onDemandItem->getId(),
+                    ]
+            ]);
+            $po->addItem($poItem);
+            $entityManager->persist($poItem);
+        }
+
+        return [$poBySupplier, $itemsBySupplier];
+    }
+
+    private function updatePurchaseOrdersTotal(array $poBySupplier, array $itemsBySupplier, Order $order): void
+    {
+        foreach ($poBySupplier as $po) {
+            $orderTotal = 0.00;
+            foreach ($po->getItems() as $poi) {
+                $orderTotal += $poi->getRowTotal();
+            }
+
+            $po
+                ->setOrderTotal($orderTotal)
+                ->setData(
+                    [
+                        self::ORDER_ON_DEMAND =>
                             [
-                                self::ORDER_ON_DEMAND =>
-                                    [
-                                        'order' => $entity->getOrder()->getId(),
-                                        'orderItems' => $itemsBySuppliers[$po->getSupplier()->getCode()]
-                                    ]
+                                'order' => $order->getId(),
+                                'orderItems' => $itemsBySupplier[$po->getSupplier()->getCode()]
                             ]
-                        );
-                    $entityManager->persist($po);
-                }
-                $entityManager->flush();
+                    ]
+                );
+        }
+    }
+
+    private function createTemporaryWarehouses(array $poBySupplier, EntityManager $entityManager): void
+    {
+        $warehouseType = $entityManager
+            ->getRepository(WarehouseType::class)
+            ->findOneBy(['name' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_VIRTUAL]);
+
+        /** @var PurchaseOrder $po */
+        foreach ($poBySupplier as $po) {
+            $code = $po->getTemporaryWarehouseCode();
+            $warehouse = new Warehouse();
+            $warehouse->setWarehouseType($warehouseType);
+            $warehouse->setDefault(false);
+            $warehouse->setOwner($po->getOrganization());
+            $warehouse->setCode($code);
+            $warehouse->setLabel($code);
+            $po->setWarehouse($warehouse);
+            $entityManager->persist($warehouse);
+
+            foreach ($po->getItems() as $poItem) {
+                $inventoryItem = $poItem->getProduct()->getInventoryItems()->first();
+                $inventoryLevel = new InventoryLevel();
+                $inventoryLevel->setInventoryItem($inventoryItem);
+                $inventoryLevel->setWarehouse($warehouse);
+                $inventoryLevel->setOrganization($po->getOrganization());
+                $entityManager->persist($inventoryLevel);
             }
         }
     }
@@ -180,30 +234,6 @@ class PurchaseOrderOnOrderOnDemandCreationListener
         }
 
         return false;
-    }
-
-    /**
-     * @param Order $order
-     * @param EntityManager $manager
-     * @return Warehouse|null
-     */
-    private function getLinkedWarehouse(Order $order, EntityManager $manager)
-    {
-        /** @var WarehouseChannelGroupLink $warehouseGroupLink */
-        $warehouseGroupLink = $manager->getRepository(WarehouseChannelGroupLink::class)
-            ->findLinkBySalesChannelGroup($order->getSalesChannel()->getGroup(), $this->aclHelper);
-
-        if (!$warehouseGroupLink) {
-            return null;
-        }
-
-        /** @var Warehouse[] $linkedWarehouses */
-        $linkedWarehouses = $warehouseGroupLink
-            ->getWarehouseGroup()
-            ->getWarehouses()
-            ->toArray();
-
-        return !empty($linkedWarehouses) ? reset($linkedWarehouses) : null;
     }
 
     /**

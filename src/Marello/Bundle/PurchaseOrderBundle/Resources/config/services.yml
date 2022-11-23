@@ -58,13 +58,15 @@ services:
 
     marello_purchaseorder.listener.doctrine.po_on_demand_creation:
         class: Marello\Bundle\PurchaseOrderBundle\EventListener\Doctrine\PurchaseOrderOnOrderOnDemandCreationListener
-        arguments:
-            - '@oro_security.acl_helper'
         calls:
             - ['setConfigManager', ['@oro_config.manager']]
         tags:
             - { name: doctrine.event_listener, event: postPersist }
             - { name: doctrine.event_listener, event: postFlush }
+
+    Marello\Bundle\PurchaseOrderBundle\EventListener\Doctrine\RemoveTemporaryInventoryLevelListener:
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\InventoryBundle\Entity\InventoryLevel', event: postUpdate }
 
     marello_purchaseorder.listener.doctrine.warehouse_listener:
         class: Marello\Bundle\PurchaseOrderBundle\EventListener\Doctrine\PurchaseOrderWarehouseListener

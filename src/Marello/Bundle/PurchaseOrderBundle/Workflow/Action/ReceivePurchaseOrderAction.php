@@ -34,6 +34,9 @@ class ReceivePurchaseOrderAction extends AbstractAction
     /** @var PropertyPathInterface|bool $isPartial */
     protected $isPartial;
 
+    /** @var PropertyPathInterface|bool $pickupLocation */
+    protected $pickupLocation;
+
     /**
      * ReceivePurchaseOrderAction constructor.
      * @param ContextAccessor $contextAccessor
@@ -69,6 +72,7 @@ class ReceivePurchaseOrderAction extends AbstractAction
         }
 
         $isPartial = $this->contextAccessor->getValue($context, $this->isPartial);
+        $pickupLocation = $this->contextAccessor->getValue($context, $this->pickupLocation);
         $items = $purchaseOrder->getItems();
         $updatedItems = [];
         /** @var PurchaseOrderItem $item */
@@ -108,6 +112,10 @@ class ReceivePurchaseOrderAction extends AbstractAction
             if ($this->isItemFullyReceived($item)) {
                 $item->setStatus(PurchaseOrderItem::STATUS_COMPLETE);
             }
+
+            if ($pickupLocation) {
+                $this->setPickupLocation($item, $pickupLocation);
+            }
         }
 
         if (!empty($updatedItems)) {
@@ -140,6 +148,22 @@ class ReceivePurchaseOrderAction extends AbstractAction
         );
     }
 
+    protected function setPickupLocation(PurchaseOrderItem $item, string $pickupLocation): void
+    {
+        /** @var InventoryItem $inventoryItem */
+        $inventoryItem = $item->getProduct()->getInventoryItems()->first();
+        foreach ($inventoryItem->getInventoryLevels() as $inventoryLevel) {
+            if (!str_starts_with(
+                $inventoryLevel->getWarehouse()->getCode(),
+                PurchaseOrder::TEMPORARY_WAREHOUSE_PREFIX
+            )) {
+                continue;
+            }
+
+            $inventoryLevel->setPickLocation($pickupLocation);
+        }
+    }
+
     /**
      * Initialize action based on passed options.
      *
@@ -160,6 +184,10 @@ class ReceivePurchaseOrderAction extends AbstractAction
 
         if (array_key_exists('is_partial', $options)) {
             $this->isPartial = $this->getOption($options, 'is_partial');
+        }
+
+        if (array_key_exists('pickup_location', $options)) {
+            $this->pickupLocation = $this->getOption($options, 'pickup_location');
         }
 
         $this->options = $options;

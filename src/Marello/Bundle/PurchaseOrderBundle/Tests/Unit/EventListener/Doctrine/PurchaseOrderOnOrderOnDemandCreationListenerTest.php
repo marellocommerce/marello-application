@@ -13,6 +13,7 @@ use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRe
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
 use Marello\Bundle\InventoryBundle\Provider\AllocationStateStatusInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
@@ -91,20 +92,30 @@ class PurchaseOrderOnOrderOnDemandCreationListenerTest extends TestCase
             ->expects(static::once())
             ->method('findLinkBySalesChannelGroup')
             ->willReturn($this->getWarehouseChannelGroupLing());
+        $warehouseTypeRepository = $this->createMock(EntityRepository::class);
+        $warehouseTypeRepository
+            ->expects(static::once())
+            ->method('findOneBy')
+            ->willReturn(new WarehouseType('test'));
         $manager
             ->expects(static::any())
             ->method('getRepository')
-            ->withConsecutive([Allocation::class], [WarehouseChannelGroupLink::class])
-            ->willReturnOnConsecutiveCalls($orderRepository, $whchgrlinkRepository);
+            ->withConsecutive([Allocation::class], [WarehouseChannelGroupLink::class], [WarehouseType::class])
+            ->willReturnOnConsecutiveCalls($orderRepository, $whchgrlinkRepository, $warehouseTypeRepository);
         $postFlushArgs
             ->expects(static::once())
             ->method('getEntityManager')
             ->willReturn($manager);
         $manager
-            ->expects(static::exactly(1))
-            ->method('persist');
+            ->expects(static::any())
+            ->method('persist')
+            ->willReturnCallback(function ($entity) {
+                $reflectionProperty = new \ReflectionProperty(get_class($entity), 'id');
+                $reflectionProperty->setAccessible(true);
+                $reflectionProperty->setValue($entity, random_int(0, 10));
+            });
         $manager
-            ->expects(static::exactly(1))
+            ->expects(static::exactly(3))
             ->method('flush');
 
         $this->purchaseOrderOnOrderOnDemandCreationListener->postPersist($postPersistArgs);

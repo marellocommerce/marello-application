@@ -5,6 +5,8 @@ oro:
             attribute:
                 received_items:
                     label: 'Received Items'
+                pickup_location:
+                    label: 'Pickup location'
             step:
                 not_sent:
                     label: 'Ready to be sent'
