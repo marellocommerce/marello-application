@@ -8,6 +8,8 @@ datagrids:
                     - apl.currency
                     - dp.value as defaultPrice
                     - sp.value as specialPrice
+                    - sp.startDate as specialPriceStart
+                    - sp.endDate as specialPriceEnd
                     - mp.value as msrpPrice
                 from:
                     - { table: MarelloPricingBundle:AssembledPriceList, alias: apl }
@@ -34,6 +36,11 @@ datagrids:
                 type:             localized_number
                 method:           formatCurrency
                 context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
+            specialPriceTiming:
+                label:            marello.pricing.assembledpricelist.special_price.date.label
+                type:             twig
+                frontend_type:    html
+                template:         '@MarelloPricing/Datagrid/Property/specialPriceTiming.html.twig'
             msrpPrice:
                 label:            marello.pricing.assembledpricelist.msrp_price.label
                 type:             localized_number
@@ -62,6 +69,8 @@ datagrids:
                     - acpl.currency
                     - dp.value as defaultPrice
                     - sp.value as specialPrice
+                    - sp.startDate as specialPriceStart
+                    - sp.endDate as specialPriceEnd
                 from:
                     - { table: MarelloPricingBundle:AssembledChannelPriceList, alias: acpl }
                 join:
@@ -87,6 +96,11 @@ datagrids:
                 type:             localized_number
                 method:           formatCurrency
                 context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
+            specialPriceTiming:
+                label:            marello.pricing.assembledchannelpricelist.special_price.date.label
+                type:             twig
+                frontend_type:    html
+                template:         '@MarelloPricing/Datagrid/Property/specialChannelPriceTiming.html.twig'
         sorters:
             columns:
                 channelName:    { data_name: sc.name }
