@@ -22,9 +22,9 @@
     </td>
     <td class="pricing-line-item-special-date">
         <div class="fields-row">
-            <span>{{ 'marello.pricing.productprice.start_date.label'|trans }}</span>{{ form_widget(form.specialPrice.startDate) }}
+            {{ form_row(form.specialPrice.startDate, {'label': 'marello.pricing.productprice.start_date.label'|trans }) }}
             {{ form_errors(form.specialPrice.startDate) }}
-            <span>{{ 'marello.pricing.productprice.end_date.label'|trans }}</span>{{ form_widget(form.specialPrice.endDate) }}
+            {{ form_row(form.specialPrice.endDate, {'label': 'marello.pricing.productprice.end_date.label'|trans }) }}
         </div>
     </td>
     <td class="pricing-line-item-msrp-value">
@@ -129,9 +129,9 @@
     </td>
     <td class="pricing-line-item-special-date">
         <div class="fields-row">
-            <span>{{ 'marello.pricing.productchannelprice.start_date.label'|trans }}</span>{{ form_widget(form.specialPrice.startDate) }}
+            {{ form_row(form.specialPrice.startDate, { 'label' : 'marello.pricing.productchannelprice.start_date.label'|trans }) }}
             {{ form_errors(form.specialPrice.startDate) }}
-            <span>{{ 'marello.pricing.productchannelprice.end_date.label'|trans }}</span>{{ form_widget(form.specialPrice.endDate) }}
+            {{ form_row(form.specialPrice.endDate, { 'label' : 'marello.pricing.productchannelprice.end_date.label'|trans }) }}
         </div>
     </td>
 {% endblock %}

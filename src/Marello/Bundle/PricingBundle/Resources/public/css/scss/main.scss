@@ -9,3 +9,14 @@
         display: block;
     }
 }
+
+.marello-line-item .pricing-line-item-special-date {
+    .fields-row {
+        .datepicker-input, .timepicker-input {
+            width: 100px;
+        }
+        .control-label {
+            width: 25px;
+        }
+    }
+}
