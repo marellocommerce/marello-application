@@ -36,14 +36,15 @@ datagrids:
                 type: twig
                 template: '@MarelloHealthCheck/IntegrationStatus/Datagrid/code.html.twig'
                 frontend_type: html
-            message:
-                label: oro.integration.integration_status.message.label
             date:
                 label: marello.healthcheck.integration_status.date.label
                 frontend_type: datetime
 
     marello-integration-statuses-grid:
         extends: marello-base-integration-statuses-grid
+        columns:
+            message:
+                label: oro.integration.integration_status.message.label
         sorters:
             columns:
                 name: { data_name: c.name }
@@ -88,8 +89,6 @@ datagrids:
 
     marello-last-integration-statuses-grid:
         extends: marello-base-integration-statuses-grid
-        columns:
-            message: ~
         sorters:
             columns:
                 date: { data_name: s.date }
