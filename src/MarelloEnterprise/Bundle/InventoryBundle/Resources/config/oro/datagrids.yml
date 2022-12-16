@@ -387,7 +387,7 @@ datagrids:
                         - { join: po.warehouse, alias: w }
                 where:
                     and:
-                        - poi.status != 'completed'
+                        - poi.status = 'pending'
         columns:
             productSku:
                 label: marello.purchaseorder.purchaseorderitem.product_sku.label
