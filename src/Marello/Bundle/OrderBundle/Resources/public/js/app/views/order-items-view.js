@@ -8,6 +8,7 @@ define(function(require) {
         routing = require('routing'),
         mediator = require('oroui/js/mediator'),
         layout = require('oroui/js/layout'),
+        DialogWidget = require('oro/dialog-widget'),
         AbstractItemsView = require('marellolayout/js/app/views/abstract-items-view');
 
     /**
@@ -21,8 +22,19 @@ define(function(require) {
          */
         options: {
             data: {},
-            route: 'marello_order_item_data'
+            route: 'marello_order_item_data',
+            selectionUrl: '',
+            selectorWindowTitle: '',
         },
+
+        events: {
+            'click .add-btn': 'addEntities'
+        },
+
+        /**
+         * @property DialogWidget
+         */
+        selectorDialog: null,
 
         /**
          * @property {jQuery}
@@ -205,6 +217,54 @@ define(function(require) {
             });
 
             return items;
+        },
+
+        addEntities: function(e) {
+            if (!this.selectorDialog) {
+                let url = this.options.selectionUrl;
+                const routeAdditionalParams = {channelId: this._getSalesChannel()};
+                if (routeAdditionalParams) {
+                    url = url + (url.indexOf('?') === -1 ? '?' : '&') + $.param(routeAdditionalParams);
+                }
+
+                this.selectorDialog = new DialogWidget({
+                    url: url,
+                    title: this.options.selectorWindowTitle,
+                    stateEnabled: false,
+                    dialogOptions: {
+                        modal: true,
+                        width: 1024,
+                        height: 500,
+                        close: _.bind(function() {
+                            this.selectorDialog = null;
+                        }, this)
+                    }
+                });
+                this.selectorDialog.on('completeSelection', _.bind(this.processSelectedEntities, this));
+                this.selectorDialog.render();
+            }
+        },
+
+        processSelectedEntities: function(added, addedModels) {
+            if (added.length > 0) {
+                _.each(addedModels, _.bind(function(model) {
+                    this.addRow();
+
+                    // This part was taken from abstract-items-view.js and it's related
+                    // to the original 'Add product' button to get an appropriate container
+                    var _self = this.$el.find('.marello-add-line-item');
+                    var containerSelector = $(_self).data('container') || '.collection-fields-list';
+                    var $listContainer = this.$el.find('.row-oro').find(containerSelector).first();
+                    // Last index means for a next item, so we need to get lastIndex-1 for the current row
+                    var currentIndex = $listContainer.data('last-index') - 1;
+                    var productField = $listContainer.find('[name$="[items][' + currentIndex + '][product]"]').first();
+                    productField.inputWidget('val', model.id);
+                }, this));
+
+                mediator.trigger('order:form-changes:trigger', {updateFields: ['items', 'totals', 'inventory', 'possible_shipping_methods', 'possible_payment_methods']});
+            }
+
+            this.selectorDialog.remove();
         },
 
         /**

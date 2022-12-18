@@ -73,6 +73,7 @@ services:
             - '@marello_datagrid.datagridhelper'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-product-saleschannel-extended-grid, method: buildBefore }
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-products-sales-channel-aware-selection-grid, method: buildBefore }
 
     marello_product.listener.datagrid.product_supplier_grid_listener:
         class: Marello\Bundle\ProductBundle\EventListener\Datagrid\ProductSupplierGridListener
