@@ -178,6 +178,34 @@ datagrids:
             export: false
             entity_pagination: false
 
+    marello-products-sales-channel-aware-selection-grid:
+        extends: marello-products-sales-channel-aware-grid
+        inline_editing:
+            enable: false
+        source:
+            query:
+                select:
+                    - >
+                        (CASE WHEN p.id IN (:data_in) AND p.id NOT IN (:data_not_in)
+                          THEN true ELSE false
+                        END) as hasChannel
+        columns:
+            hasChannel:
+                label:         'Select'
+                editable:      true
+                frontend_type: boolean
+                add_before:    true
+        properties:
+            id: ~
+        options:
+            entityHint: products
+            rowSelection:
+                dataField: id
+                columnName: hasChannel
+                selectors:
+                    included: '#appendProducts'
+                    excluded: '#removeProducts'
+
     marello-products-supplier-no-actions-grid:
         extends: marello-products-grid
         actions: ~

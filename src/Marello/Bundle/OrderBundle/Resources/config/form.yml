@@ -27,6 +27,8 @@ services:
 
     marello_order.form.type.order_item_collection:
         class: Marello\Bundle\OrderBundle\Form\Type\OrderItemCollectionType
+        arguments:
+            - '@router'
         tags:
             - { name: form.type }
 

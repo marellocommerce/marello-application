@@ -10,6 +10,8 @@ use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\OrderBundle\Form\Type\OrderType;
 use Marello\Bundle\OrderBundle\Form\Type\OrderUpdateType;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Oro\Bundle\CurrencyBundle\Utils\CurrencyNameHelper;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\UIBundle\Route\Router;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -211,6 +213,39 @@ class OrderController extends AbstractController
         return $responseData;
     }
 
+    /**
+     * @Route(
+     *      path="/widget/products",
+     *      name="marello_order_widget_products_by_channel",
+     *      requirements={"id"="\d+"},
+     *      defaults={"id"=0}
+     * )
+     * @AclAncestor("marello_product_view")
+     * @Template("@MarelloOrder/Order/widget/productsByChannel.html.twig")
+     * @return array
+     */
+    public function productsByChannelAction(Request $request)
+    {
+        $channel = $this->container->get(ManagerRegistry::class)
+            ->getManagerForClass(SalesChannel::class)
+            ->getRepository(SalesChannel::class)
+            ->find($request->get('channelId'));
+
+        if ($channel) {
+            return [
+                'channelId' => $channel->getId(),
+                'currency' => $this->container
+                    ->get(CurrencyNameHelper::class)
+                    ->getCurrencyName($channel->getCurrency()),
+            ];
+        }
+
+        return [
+            'channelId' => null,
+            'currency' => null,
+        ];
+    }
+
     public static function getSubscribedServices()
     {
         return array_merge(
@@ -219,6 +254,7 @@ class OrderController extends AbstractController
                 TranslatorInterface::class,
                 Router::class,
                 ManagerRegistry::class,
+                CurrencyNameHelper::class,
             ]
         );
     }

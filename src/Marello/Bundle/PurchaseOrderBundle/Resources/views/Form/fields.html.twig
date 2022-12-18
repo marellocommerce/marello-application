@@ -367,7 +367,7 @@
                     });
 
                     {% if form.vars.extra_config is defined and form.vars.extra_config %}
-                    {{ block('oro_multiple_entity_js_' ~ form.vars.extra_config) }}
+                        {{ block('oro_multiple_entity_js_' ~ form.vars.extra_config) }}
                     {% endif %}
                 });
     </script>
