@@ -413,6 +413,8 @@ datagrids:
                 supplier: { data_name: poi.supplier }
                 dueDate: { data_name: po.dueDate }
                 label: { data_name: w.label }
+            default:
+                dueDate: 'ASC'
         filters:
             columns:
                 productSku:
@@ -430,8 +432,6 @@ datagrids:
                 label:
                     type: string
                     data_name: w.label
-            default:
-                dueDate: 'ASC'
         options:
             entityHint: marello.inventory.inventorylevel.expected_inventory.label
             gridViews:
