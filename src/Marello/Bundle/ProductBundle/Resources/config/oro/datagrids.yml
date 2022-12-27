@@ -19,7 +19,6 @@ datagrids:
                     - p.updatedAt
                 from:
                     - { table: MarelloProductBundle:Product, alias: p }
-                groupBy: p.id
         columns:
             sku:
                 label:              marello.product.sku.label
