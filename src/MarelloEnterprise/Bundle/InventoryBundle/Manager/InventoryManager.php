@@ -53,8 +53,15 @@ class InventoryManager extends BaseInventoryManager
                 $batch = InventoryBatchFromInventoryLevelFactory::createInventoryBatch($level);
                 $batch->setQuantity(0);
                 $batchInventory = ($batch->getQuantity() + $context->getInventory());
+                $isNewBatch = !$batch->getId();
                 $updatedBatch = $this->updateInventoryBatch($batch, $batchInventory);
-                $context->setInventoryBatches([$updatedBatch]);
+                $context->setInventoryBatches(
+                    [[
+                        'batch' => $updatedBatch,
+                        'qty' => $batchInventory,
+                        'isNew' => $isNewBatch
+                    ]]
+                );
             } else {
                 $updatedBatches = [];
                 foreach ($context->getInventoryBatches() as $batchData) {
@@ -63,7 +70,12 @@ class InventoryManager extends BaseInventoryManager
                     $batch->setInventoryLevel($level);
                     $qty = $batchData['qty'];
                     $batchInventory = ($batch->getQuantity() + $qty);
-                    $updatedBatches[] = $this->updateInventoryBatch($batch, $batchInventory);
+                    $isNewBatch = !$batch->getId();
+                    $updatedBatches[] = [
+                        'batch'=> $this->updateInventoryBatch($batch, $batchInventory),
+                        'qty' => $batchData['qty'],
+                        'isNew' => $isNewBatch
+                    ];
                 }
                 $context->setInventoryBatches($updatedBatches);
             }
@@ -78,6 +90,14 @@ class InventoryManager extends BaseInventoryManager
         if ($level->getInventoryItem()->isEnableBatchInventory()) {
             $batches = $level->getInventoryBatches()->toArray();
             $inventory = $this->inventoryLevelCalculator->calculateBatchInventoryLevelQty($batches);
+            $updatedBatchInventoryTotal = $this
+                ->inventoryLevelCalculator
+                ->calculateBatchInventoryLevelQty($context->getInventoryBatches());
+            foreach ($context->getInventoryBatches() as $batch) {
+                if ($batch['isNew']) {
+                    $inventory += $updatedBatchInventoryTotal;
+                }
+            }
         }
 
         if ($context->getAllocatedInventory()) {
@@ -89,8 +109,8 @@ class InventoryManager extends BaseInventoryManager
         }
         /** @var InventoryBatch[] $updatedBatches */
         $updatedBatches = $context->getInventoryBatches();
-        if (count($updatedBatches) === 1) {
-            $level->addInventoryBatch($updatedBatches[0]);
+        if (count($updatedBatches) === 1 && $updatedBatches[0]['batch']->getId() === null) {
+            $level->addInventoryBatch($updatedBatches[0]['batch']);
         }
         $updatedLevel = $this->updateInventory($level, $inventory, $allocatedInventory);
         $context->setInventoryLevel($updatedLevel);
@@ -108,6 +128,10 @@ class InventoryManager extends BaseInventoryManager
         }
     }
 
+    /**
+     * @param $entity
+     * @return int
+     */
     public function getExpectedInventoryTotal($entity)
     {
         $total = 0;
