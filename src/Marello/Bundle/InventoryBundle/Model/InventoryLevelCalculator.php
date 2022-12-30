@@ -52,14 +52,15 @@ class InventoryLevelCalculator
         $expiredInventory = 0;
         $batchInventoryTotal = 0;
         foreach ($batches as $inventoryBatch) {
-            if (!$inventoryBatch instanceof InventoryBatch) {
+            $batch = is_array($inventoryBatch) ? $inventoryBatch['batch'] : $inventoryBatch;
+            if (!$batch instanceof InventoryBatch) {
                 continue;
             }
             // we cannot use expired batches
-            if ($inventoryBatch->getExpirationDate() && $inventoryBatch->getExpirationDate() <= $currentDateTime) {
-                $expiredInventory += $inventoryBatch->getQuantity();
+            if ($batch->getExpirationDate() && $batch->getExpirationDate() <= $currentDateTime) {
+                $expiredInventory += $batch->getQuantity();
             }
-            $batchInventoryTotal += $inventoryBatch->getQuantity();
+            $batchInventoryTotal += $batch->getQuantity();
         }
 
         if ($expiredInventory > 0) {

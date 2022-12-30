@@ -124,13 +124,11 @@ datagrids:
                     - lr
                     - (lr.inventoryAlteration) AS inventoryDiff
                     - (lr.allocatedInventoryAlteration) AS allocatedInventoryDiff
-                    - (GROUP_CONCAT(CONCAT(ib.batchNumber, ':&nbsp;', ib.quantity) SEPARATOR '<br/>')) AS batchNumber
                 from:
                     - { table: MarelloInventoryBundle:InventoryLevelLogRecord, alias: lr }
                 join:
                     left:
                         - { join: lr.inventoryLevel, alias: il }
-                        - { join: il.inventoryBatches, alias: ib }
                 where:
                     and:
                         - IDENTITY(lr.inventoryItem) = :inventoryItemId
@@ -143,32 +141,39 @@ datagrids:
                 type:           twig
                 frontend_type:  html
                 template:       '@MarelloInventory/Datagrid/InventoryLevel/diff.html.twig'
+                order:          10
             allocatedInventoryDiff:
                 data_name:      allocatedInventoryDiff
                 label:          marello.inventory.inventorylevellogrecord.allocated_inventory_alteration.label
                 type:           twig
                 frontend_type:  html
                 template:       '@MarelloInventory/Datagrid/InventoryLevel/diff.html.twig'
-            batchNumber:
-                data_name:      batchNumber
-                frontend_type:  html
+                order:          15
+            inventoryBatch:
+                data_name:      inventoryBatch
+                frontend_type:  string
+                order:          20
             changeTrigger:
                 data_name:      changeTrigger
                 label:          marello.inventory.inventorylevellogrecord.change_trigger.label
                 type:           translatable
                 domain:         MarelloInventoryLevelChangeTrigger
                 frontend_type:  string
+                order:          30
             user:
                 label:          marello.inventory.inventorylevellogrecord.user.label
                 frontend_type:  string
+                order:          35
             subject:
                 label:          marello.inventory.inventorylevellogrecord.subject_type.label
                 type:           twig
                 frontend_type:  html
                 template:       '@MarelloInventory/Datagrid/InventoryLevel/subject.html.twig'
+                order:          40
             createdAt:
                 label:          oro.ui.created_at
                 frontend_type:  datetime
+                order:          45
         sorters:
             columns:
                 createdAt:
