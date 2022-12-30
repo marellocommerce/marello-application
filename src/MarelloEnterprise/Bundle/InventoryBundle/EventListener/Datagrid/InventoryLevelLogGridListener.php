@@ -25,17 +25,14 @@ class InventoryLevelLogGridListener
         $config = $event->getConfig();
         $columns = $config->offsetGetOr('columns', []);
 
-        if (array_key_exists('batchNumber', $columns)) {
-            $offset = array_search('batchNumber', array_keys($columns));
-            $warehouseColumn = [
-                'warehouseLabel' => [
-                    'label' => 'marello.inventory.inventorylevel.warehouse.label',
-                    'frontend_type' => 'string'
-                ]
-            ];
-            $spliced = array_splice($columns, 0, $offset+1);
-            $finalColumns = array_merge($spliced, $warehouseColumn, $columns);
-            $config->offsetSet('columns', $finalColumns);
-        }
+        $warehouseColumn = [
+            'warehouseLabel' => [
+                'label' => 'marello.inventory.inventorylevel.warehouse.label',
+                'frontend_type' => 'string',
+                'order' => 25
+            ]
+        ];
+        $columns = array_merge($warehouseColumn, $columns);
+        $config->offsetSet('columns', $columns);
     }
 }
