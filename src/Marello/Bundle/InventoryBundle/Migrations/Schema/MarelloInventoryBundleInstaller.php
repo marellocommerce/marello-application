@@ -32,7 +32,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
      */
     public function getMigrationVersion()
     {
-        return 'v2_6_3';
+        return 'v2_6_4';
     }
 
     /**
@@ -187,6 +187,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addColumn('inventory_level_id', 'integer', ['notnull' => false]);
         $table->addColumn('inventory_item_id', 'integer', ['notnull' => true]);
         $table->addColumn('warehouse_name', 'string', ['notnull' => true, 'length' => 255]);
+        $table->addColumn('inventory_batch', 'string', ['notnull' => false, 'length' => 255]);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['inventory_item_id']);
         $table->addIndex(['inventory_level_id']);
