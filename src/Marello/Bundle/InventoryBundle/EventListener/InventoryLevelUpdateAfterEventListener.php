@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\InventoryBundle\EventListener;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 
@@ -44,7 +45,8 @@ class InventoryLevelUpdateAfterEventListener
             $context->getAllocatedInventory(),
             $context->getChangeTrigger(),
             $context->getUser(),
-            $context->getRelatedEntity()
+            $context->getRelatedEntity(),
+            $context->getInventoryBatches()
         );
 
         if ($context->getValue('forceFlush')) {
@@ -63,6 +65,7 @@ class InventoryLevelUpdateAfterEventListener
      * @param User|null         $user                   User who triggered the change, if left null,
      *                                                  it is automatically assigned to current one
      * @param mixed|null        $subject                Any entity that should be associated to this operation
+     * @param array|null        $batches                Inventory Batches to be logged
      */
     private function createLogRecord(
         InventoryLevel $level,
@@ -70,7 +73,8 @@ class InventoryLevelUpdateAfterEventListener
         $allocatedInventoryAlt,
         $trigger,
         $user,
-        $subject
+        $subject,
+        $batches
     ) {
         if ($inventoryAlt === null) {
             $inventoryAlt = 0;
@@ -85,17 +89,33 @@ class InventoryLevelUpdateAfterEventListener
             return;
         }
 
-        $record = new InventoryLevelLogRecord(
-            $level,
-            $inventoryAlt,
-            $allocatedInventoryAlt,
-            $trigger,
-            $user,
-            $subject
-        );
-
         $em = $this->doctrineHelper->getEntityManagerForClass(InventoryLevelLogRecord::class);
+
+        if ($batches) {
+            foreach ($batches as $batch) {
+                $batchRecord = new InventoryLevelLogRecord(
+                    $level,
+                    $batch['qty'],
+                    $batch['qty'],
+                    $trigger,
+                    $user,
+                    $subject,
+                    $batch['batch']->getBatchNumber()
+                );
+                $em->persist($batchRecord);
+            }
+        } else {
+            $record = new InventoryLevelLogRecord(
+                $level,
+                $inventoryAlt,
+                $allocatedInventoryAlt,
+                $trigger,
+                $user,
+                $subject
+            );
+            $em->persist($record);
+        }
+
         $em->persist($level);
-        $em->persist($record);
     }
 }
