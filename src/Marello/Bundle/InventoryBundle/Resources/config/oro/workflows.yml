@@ -148,17 +148,24 @@ workflows:
                         recipient: $allocation.parent.warehouse
                         template: marello_warehouse_allocation
                     - '@tree':
-                        conditions:
-                            '@equal': [$.result.value.quantityConfirmed, $.result.value.orderItem.quantity]
                         actions:
                             - '@foreach':
                                 array: $allocation.items
                                 value: $.result.value
                                 actions:
-                                    - '@request_enum_entity':
-                                        enum_code: marello_item_status
-                                        identifier: 'shipped'
-                                        attribute: $.result.value.orderItem.status
+                                    - '@call_service_method':
+                                          service: marello_inventory.model.inventory_level_totals_calculator
+                                          method: getTotalAllocationQtyConfirmed
+                                          method_parameters: [$.result.value]
+                                          attribute: $.result.totalQtyConfirmed
+                                    - '@tree':
+                                        conditions:
+                                            '@equal': [$.result.totalQtyConfirmed, $.result.value.orderItem.quantity]
+                                        actions:
+                                            - '@request_enum_entity':
+                                                enum_code: marello_item_status
+                                                identifier: 'shipped'
+                                                attribute: $.result.value.orderItem.status
                     -   '@extendable':
                             events: [ extendable_action.allocation_complete ]
             rejected_definition:

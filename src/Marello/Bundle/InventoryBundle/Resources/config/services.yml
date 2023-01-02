@@ -47,6 +47,8 @@ services:
     marello_inventory.model.inventory_level_totals_calculator:
         class: 'Marello\Bundle\InventoryBundle\Model\InventoryTotalCalculator'
         public: true
+        calls:
+            - [setDoctrineHelper, ['@oro_entity.doctrine_helper']]
 
     marello_inventory.twig.inventory_total_extension:
         class: 'Marello\Bundle\InventoryBundle\Twig\InventoryTotalExtension'
