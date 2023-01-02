@@ -308,7 +308,6 @@ class OrderItem extends ExtendOrderItem implements
      */
     protected $status;
 
-
     /**
      * @var \Extend\Entity\EV_Marello_Product_Unit
      * @Oro\ConfigField(

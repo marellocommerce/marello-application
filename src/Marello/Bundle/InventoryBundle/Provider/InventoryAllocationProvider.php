@@ -23,15 +23,6 @@ use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 
 class InventoryAllocationProvider
 {
-    /** @var DoctrineHelper $doctrineHelper */
-    protected $doctrineHelper;
-
-    /** @var OrderWarehousesProviderInterface $warehousesProvider */
-    protected $warehousesProvider;
-
-    /** @var EventDispatcherInterface $eventDispatcher */
-    protected $eventDispatcher;
-
     /** @var ArrayCollection $allOrderItems */
     protected $allOrderItems;
 
@@ -41,30 +32,20 @@ class InventoryAllocationProvider
     /** @var array $subAllocations */
     protected $subAllocations = [];
 
-    /**
-     * InventoryAllocationProvider constructor.
-     * @param DoctrineHelper $doctrineHelper
-     * @param OrderWarehousesProviderInterface $warehousesProvider
-     * @param EventDispatcherInterface $eventDispatcher
-     */
-    public function __construct(
-        DoctrineHelper $doctrineHelper,
-        OrderWarehousesProviderInterface $warehousesProvider,
-        EventDispatcherInterface $eventDispatcher
-    ) {
-        $this->doctrineHelper = $doctrineHelper;
-        $this->warehousesProvider = $warehousesProvider;
-        $this->eventDispatcher = $eventDispatcher;
-    }
+    /** @var array $newAllocations */
+    protected $newAllocations = [];
 
-    /**
-     * @param Order $order
-     * @param Allocation|null $allocation
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function allocateOrderToWarehouses(Order $order, Allocation $allocation = null)
-    {
+    public function __construct(
+        protected DoctrineHelper $doctrineHelper,
+        protected OrderWarehousesProviderInterface $warehousesProvider,
+        protected EventDispatcherInterface $eventDispatcher
+    ) {}
+
+    public function allocateOrderToWarehouses(
+        Order $order,
+        Allocation $allocation = null,
+        callable $callback = null
+    ) {
         $this->allItems = [];
         $this->subAllocations = [];
         $this->allOrderItems = new ArrayCollection();
@@ -79,7 +60,6 @@ class InventoryAllocationProvider
 
             /** @var OrderWarehouseResult $result */
             foreach ($orderWarehouseResults as $result) {
-                /** @var Order $order */
                 $newAllocation = new Allocation();
                 $newAllocation->setOrder($order);
                 $newAllocation->setOrganization($order->getOrganization());
@@ -149,11 +129,7 @@ class InventoryAllocationProvider
                     $newAllocation->setSourceEntity($allocation);
                 }
                 $em->persist($newAllocation);
-                $em->flush($newAllocation);
-
-                if ($newAllocation->getWarehouse()) {
-                    $this->handleAllocationInventory($newAllocation);
-                }
+                $this->newAllocations[] = $newAllocation;
             }
         }
 
@@ -192,6 +168,20 @@ class InventoryAllocationProvider
                 $em->persist($diffAllocation);
             }
         }
+
+        if ($this->newAllocations) {
+            if ($callback) {
+                $callback($order);
+            }
+            $em->flush($this->newAllocations);
+
+            foreach ($this->newAllocations as $newAllocation) {
+                if ($newAllocation->getWarehouse()) {
+                    $this->handleAllocationInventory($newAllocation);
+                }
+            }
+        }
+        $this->newAllocations = [];
 
         $em->flush();
     }
@@ -266,7 +256,7 @@ class InventoryAllocationProvider
      */
     protected function getShippingAddress(Order $order)
     {
-        return $order->getShippingAddress();
+        return clone $order->getShippingAddress();
     }
 
     /**

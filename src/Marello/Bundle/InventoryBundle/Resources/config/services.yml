@@ -276,3 +276,14 @@ services:
         tags:
             - { name: doctrine.orm.entity_listener, entity: Marello\Bundle\InventoryBundle\Entity\Allocation, event: postPersist }
             - { name: doctrine.event_listener, event: postFlush }
+
+    Marello\Bundle\InventoryBundle\Form\Handler\ReshipmentHandler:
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider'
+        tags:
+            - { name: oro_form.form.handler, alias: marello_inventory.reshipment_form.handler }
+
+    Marello\Bundle\InventoryBundle\EventListener\Action\Condition\ReshipmentActionListener:
+        tags:
+            - { name: kernel.event_listener, event: extendable_condition.reshipment_allowed, method: isReshipmentAllowed }

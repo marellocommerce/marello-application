@@ -86,7 +86,6 @@ class InventoryItemController extends AbstractController
         return $result;
     }
 
-
     /**
      * @Route(
      *     path="/widget/info/{id}",

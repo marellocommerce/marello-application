@@ -25,3 +25,23 @@ operations:
                 dblclick: maximize
                 maximizedHeightDecreaseBy: minimize-bar
                 width: 500
+
+    marello_inventory_reshipment_create:
+        label: marello.inventory.reshipment.button.label
+        enabled: true
+        button_options:
+            class: btn-primary icons-holder-text
+        routes:
+            - marello_order_order_view
+        acl_resource: marello_inventory_inventory_view
+        applications: [default]
+        preconditions:
+            '@and':
+                - '@extendable':
+                    events: [ extendable_condition.reshipment_allowed ]
+        actions:
+            - '@redirect':
+                  parameters:
+                      route: marello_inventory_reshipment_create
+                      route_parameters:
+                          id: $id

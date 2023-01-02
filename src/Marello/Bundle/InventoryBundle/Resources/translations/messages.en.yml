@@ -205,6 +205,10 @@ marello:
             organization.label:             Organization
             warehouse.label:                Warehouse
 
+        reshipment:
+            label:                          Create Shipment
+            quantity.validation_error:      Quantity must be equal to or less than ordered
+            button.label:                   Reship
         information.label:                  Inventory Information
         movements.label:                    Inventory Movements
         balancing:
@@ -254,6 +258,7 @@ marello:
                 warehouse.saved:        Warehouse has been saved successfully
                 inventoryitem.saved:    Inventory Item has been saved successfully
                 inventorybatches.saved:    Inventory Batches have been saved successfully
+                reshipment.saved: Reshipment has been saved successfully
                 inventory_rebalance.started: Rebalance started successfully. You will receive email notification upon completion.
             error:
                 warehouse.not_found:    No warehouse found, cannot update a new level without existing warehouse

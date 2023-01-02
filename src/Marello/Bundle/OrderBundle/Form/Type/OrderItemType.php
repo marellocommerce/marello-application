@@ -67,8 +67,8 @@ class OrderItemType extends AbstractType
             ])
             ->add('price', TextType::class, [
                 'attr' => [
-                        'readonly' => true
-                    ]
+                    'readonly' => true
+                ]
             ])
             ->add('tax', TextType::class, [
                 'attr' => [
