@@ -28,12 +28,6 @@ use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFA\MinimumDistance\Minimu
 
 class InventoryAllocationProvider extends BaseAllocationProvider
 {
-    /** @var WFAStrategiesRegistry $strategiesRegistry */
-    protected $strategiesRegistry;
-
-    /** @var RuleFiltrationServiceInterface $rulesFiltrationService */
-    protected $rulesFiltrationService;
-
     /** @var ArrayCollection $allOrderItems */
     protected $allOrderItems;
 
@@ -46,51 +40,34 @@ class InventoryAllocationProvider extends BaseAllocationProvider
     /** @var array $subAllocations */
     protected $subAllocations = [];
 
-    /** @var BaseAllocationProvider $baseAllocationProvider */
-    protected $baseAllocationProvider;
-
-    /** @var ConfigManager $configManager */
-    private $configManager;
-
-    /**
-     * InventoryAllocationProvider constructor.
-     * @param InventoryAllocationProvider $allocationProvider
-     * @param WFAStrategiesRegistry $strategiesRegistry
-     * @param RuleFiltrationServiceInterface $rulesFiltrationService
-     */
     public function __construct(
-        BaseAllocationProvider $allocationProvider,
-        WFAStrategiesRegistry $strategiesRegistry,
-        RuleFiltrationServiceInterface $rulesFiltrationService,
+        protected BaseAllocationProvider $baseAllocationProvider,
+        protected WFAStrategiesRegistry $strategiesRegistry,
+        protected RuleFiltrationServiceInterface $rulesFiltrationService,
         DoctrineHelper $doctrineHelper,
         OrderWarehousesProviderInterface $warehousesProvider,
         EventDispatcherInterface $eventDispatcher,
-        ConfigManager $configManager
+        protected ConfigManager $configManager
     ) {
         parent::__construct($doctrineHelper, $warehousesProvider, $eventDispatcher);
-        $this->baseAllocationProvider = $allocationProvider;
-        $this->strategiesRegistry = $strategiesRegistry;
-        $this->rulesFiltrationService = $rulesFiltrationService;
-        $this->configManager = $configManager;
     }
 
-    /**
-     * @param Order $order
-     * @param Allocation|null $allocation
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function allocateOrderToWarehouses(Order $order, Allocation $allocation = null)
-    {
+    public function allocateOrderToWarehouses(
+        Order $order,
+        Allocation $allocation = null,
+        callable $callback = null
+    ) {
         $this->consolidationWarehouse = null;
+        $shippingAddress = null;
         // check if order needs to be consolidated
         if ($this->isConsolidationEnabled($order)) {
             $this->consolidationWarehouse = $this->getConsolidationWarehouse($order);
+            $shippingAddress = clone $order->getShippingAddress();
         }
         // consolidation is not enabled, so we just run the 'normal' WFA rules (all of them)
         // the result of the WFA rules is also the input for the Allocation/AllocationItems
         // create all allocation/allocation items
-        $this->baseAllocationProvider->allocateOrderToWarehouses($order, $allocation);
+        $this->baseAllocationProvider->allocateOrderToWarehouses($order, $allocation, $callback);
 
         $em = $this
             ->baseAllocationProvider
@@ -116,7 +93,7 @@ class InventoryAllocationProvider extends BaseAllocationProvider
                     )
                 );
                 $parentAllocation->setWarehouse($this->consolidationWarehouse);
-                $parentAllocation->setShippingAddress($order->getShippingAddress());
+                $parentAllocation->setShippingAddress($shippingAddress ?? $order->getShippingAddress());
             } else {
                 $parentAllocation = $allocation->getParent();
             }
@@ -194,7 +171,7 @@ class InventoryAllocationProvider extends BaseAllocationProvider
      */
     protected function getShippingAddress(Order $order)
     {
-        $shippingAddress =  $order->getShippingAddress();
+        $shippingAddress = clone $order->getShippingAddress();
         if ($this->consolidationWarehouse) {
             // this is a question mark...
             $shippingAddress = $this->consolidationWarehouse->getAddress();

@@ -151,3 +151,15 @@
         {{ form_widget(form) }}
     </div>
 {% endblock %}
+
+{% block marello_inventory_consolidation_enabled_row %}
+    <div class="consolidation-enabled-attribute">
+        {{ block('form_row') }}
+    </div>
+{% endblock %}
+
+{% block marello_inventory_consolidation_enabled_widget %}
+    <div class="consolidation-enabled-attribute-field">
+        {{ block('oro_checkbox_widget') }}
+    </div>
+{% endblock %}

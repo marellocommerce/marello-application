@@ -1,3 +1,4 @@
 css:
     inputs:
         - 'bundles/marelloenterpriseinventory/css/scss/warehousegrid.scss'
+        - 'bundles/marelloenterpriseinventory/css/scss/main.scss'
