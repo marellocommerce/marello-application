@@ -200,3 +200,57 @@
         </div>
     {% endapply %}
 {% endblock %}
+
+{% block marello_inventory_reshipment_item_widget %}
+    <td class="order-line-item-product">
+        <div class="fields-row">
+            {{ form_widget(form.productSku) }}
+        </div>
+    </td>
+    <td class="order-line-item-product">
+        <div class="fields-row">
+            {{ form_widget(form.productName) }}
+        </div>
+    </td>
+    <td class="order-line-item-quantity">
+        <div class="fields-row">
+            {{ form_widget(form.quantity) }}
+        </div>
+    </td>
+    <td class="order-line-item-quantity">
+        <div class="fields-row">
+            {{ form_widget(form.newQuantity) }}
+        </div>
+        {{ form_errors(form.newQuantity) }}
+    </td>
+    <td class="order-line-item-product-unit">
+        <div class="fields-row">
+            {{ form.vars.value.productUnit }}
+        </div>
+    </td>
+{% endblock %}
+
+{% block marello_inventory_reshipment_item_collection_widget %}
+    {% apply spaceless %}
+        <div class="row-oro">
+            <div {{ block('widget_container_attributes') }}>
+                <table class="grid table-hover table table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th class="order-line-item-product"><span>{{ 'marello.product.sku.label'|trans }}</span></th>
+                            <th class="order-line-item-product"><span>{{ 'marello.product.entity_label'|trans }}</span></th>
+                            <th class="order-line-item-quantity"><span>{{ 'marello.order.orderitem.ordered.label'|trans }}</span></th>
+                            <th class="order-line-item-quantity"><span>{{ 'marello.order.orderitem.quantity.label'|trans }}</span></th>
+                            <th class="order-line-item-product-unit"><span>{{ 'marello.order.orderitem.product_unit.label'|trans }}</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for child in form.children %}
+                            {{ form_widget(child) }}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endapply %}
+{% endblock %}

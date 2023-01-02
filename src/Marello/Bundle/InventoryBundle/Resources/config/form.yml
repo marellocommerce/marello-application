@@ -87,3 +87,9 @@ services:
             - '@Marello\Bundle\InventoryBundle\Provider\WarehouseNotifierChoicesProvider'
         tags:
             - { name: form.type }
+
+    Marello\Bundle\InventoryBundle\Form\Type\ReshipmentItemType:
+        arguments:
+            - '@translator'
+        tags:
+            - { name: form.type }
