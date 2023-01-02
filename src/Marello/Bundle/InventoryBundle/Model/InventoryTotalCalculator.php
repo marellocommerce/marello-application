@@ -2,11 +2,19 @@
 
 namespace Marello\Bundle\InventoryBundle\Model;
 
+use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 
 class InventoryTotalCalculator
 {
+    /**
+     * @var DoctrineHelper
+     */
+    protected $doctrineHelper;
+
     /**
      * {@inheritdoc}
      * @param InventoryItem $item
@@ -35,6 +43,27 @@ class InventoryTotalCalculator
     public function getTotalVirtualInventoryQty(InventoryItem $item)
     {
         return $this->calculateTotalVirtualInventoryQuantity($item);
+    }
+
+    /**
+     * {@inheritdoc}
+     * @param AllocationItem $currentItem
+     * @return int
+     */
+    public function getTotalAllocationQtyConfirmed(AllocationItem $currentItem)
+    {
+        $allAllocationItems = $this
+            ->doctrineHelper
+            ->getEntityRepositoryForClass(AllocationItem::class)
+            ->findBy(['orderItem' => $currentItem->getOrderItem()]);
+
+        $totalInventoryQty = 0;
+        /** @var AllocationItem $allocationItem */
+        foreach ($allAllocationItems as $allocationItem) {
+            $totalInventoryQty += $allocationItem->getQuantityConfirmed();
+        }
+
+        return $totalInventoryQty;
     }
 
     /**
@@ -89,5 +118,13 @@ class InventoryTotalCalculator
         $totalVirtualQty = ($totalInventoryQty - $totalAllocatedInventoryQty);
 
         return $totalVirtualQty;
+    }
+
+    /**
+     * @param DoctrineHelper $doctrineHelper
+     */
+    public function setDoctrineHelper(DoctrineHelper $doctrineHelper)
+    {
+        $this->doctrineHelper   = $doctrineHelper;
     }
 }
