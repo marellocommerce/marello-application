@@ -113,6 +113,12 @@ services:
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-inventory-levels, method: onBuildBefore }
 
+    Marello\Bundle\InventoryBundle\EventListener\Datagrid\InventoryLevelLogGridListener:
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-inventory-log, method: onBuildBefore }
+
     marello_inventory.event_listener.workflow.pending_transition_listener:
         class: 'Marello\Bundle\InventoryBundle\EventListener\Workflow\TransitionEventListener'
         arguments:
