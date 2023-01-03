@@ -149,10 +149,6 @@ datagrids:
                 frontend_type:  html
                 template:       '@MarelloInventory/Datagrid/InventoryLevel/diff.html.twig'
                 order:          15
-            inventoryBatch:
-                data_name:      inventoryBatch
-                frontend_type:  string
-                order:          20
             changeTrigger:
                 data_name:      changeTrigger
                 label:          marello.inventory.inventorylevellogrecord.change_trigger.label
