@@ -56,6 +56,7 @@ class OrderToInvoiceMapper extends AbstractInvoiceMapper
         $data['items'] = $this->getItems($sourceEntity->getItems());
         $data['payment_term'] = $paymentTerm;
         $data['invoice_due_date'] = $this->getInvoiceDueDate($sourceEntity, $paymentTerm);
+        $data['total_due'] = $sourceEntity->getGrandTotal();
         if ($data['invoicedAt'] === null) {
             $data['invoicedAt'] = new \DateTime('now', new \DateTimeZone('UTC'));
         }
