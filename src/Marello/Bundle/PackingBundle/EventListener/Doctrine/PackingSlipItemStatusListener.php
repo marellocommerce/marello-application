@@ -58,6 +58,8 @@ class PackingSlipItemStatusListener
                     }
                 }
             }
+            // tmp status update for packingslip item
+            $entity->setStatus($this->findStatus(LoadOrderItemStatusData::PROCESSING));
         }
     }
 

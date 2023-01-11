@@ -93,12 +93,6 @@ action_groups:
                 type: object
             status:
                 type: string
-#            overrideExistingStatus:
-#                type: boolean
-#                default: true
-#        conditions:
-#            '@and':
-#                - '@equal': [$.overrideExistingStatus, true]
         actions:
             - '@request_enum_entity':
                 enum_code: 'marello_order_status'

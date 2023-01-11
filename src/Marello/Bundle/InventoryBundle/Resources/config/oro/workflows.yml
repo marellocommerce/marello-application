@@ -164,7 +164,7 @@ workflows:
                                         actions:
                                             - '@request_enum_entity':
                                                 enum_code: marello_item_status
-                                                identifier: 'shipped'
+                                                identifier: 'complete'
                                                 attribute: $.result.value.orderItem.status
                     -   '@extendable':
                             events: [ extendable_action.allocation_complete ]

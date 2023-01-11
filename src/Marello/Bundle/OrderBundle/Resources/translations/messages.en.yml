@@ -112,6 +112,7 @@ marello:
             return_items.label:     Returned items
             inventory.label:     Inventory Available
             status.label:        Status
+            allocation_exclusion.label: Exclude from Allocation Process
             organization.label: Organization
 
             messages:

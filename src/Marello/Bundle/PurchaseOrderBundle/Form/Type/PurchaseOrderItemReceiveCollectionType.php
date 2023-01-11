@@ -49,9 +49,7 @@ class PurchaseOrderItemReceiveCollectionType extends AbstractType
             'constraints'           => [new Valid()],
             'prototype_name'        => '__namepurchaseorderitemreceive__',
             'prototype'             => true,
-            'handle_primary'        => false,
-            'allow_add'             => false,
-            'allow_delete'          => false,
+            'handle_primary'        => false
         ]);
     }
 
