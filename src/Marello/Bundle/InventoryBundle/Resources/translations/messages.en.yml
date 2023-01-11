@@ -237,7 +237,6 @@ marello:
                     allocation:
                         title:              Allocations
                         general.label:      General
-                        states.label:       Allocation Task settings
             fields:
                 balancing_strategy.label:                     Strategy
                 balance_threshold_percentage.label:           Threshold Percentage
@@ -248,7 +247,6 @@ marello:
                     mixed:          Mixed
                     internal:       Internal First
                     external:       External First
-                inventory_allocation_states.label: Allocation states
         messages:
             success:
                 warehouse.saved:        Warehouse has been saved successfully
