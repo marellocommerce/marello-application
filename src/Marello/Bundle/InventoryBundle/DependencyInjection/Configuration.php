@@ -46,13 +46,7 @@ class Configuration implements ConfigurationInterface
                 ],
                 'inventory_allocation_priority' => [
                     'value' => 0
-                ],
-                'inventory_allocation_states_to_select' => [
-                    'value' => [
-                        AllocationStateStatusInterface::ALLOCATION_STATE_ALERT,
-                        AllocationStateStatusInterface::ALLOCATION_STATE_WFS,
-                    ],
-                ],
+                ]
             ]
         );
 
