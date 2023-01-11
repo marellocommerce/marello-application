@@ -69,13 +69,7 @@
     {% set addressSubblocks = addressSubblocks|merge([{'data' : [addressWidget] }]) %}
 
     {% set linkedProductsGrid %}
-        <div class="widget-content">
-            <div class="row-fluid form-horizontal">
-                <div class="responsive-block">
-                    {{ dataGrid.renderGrid('marello-supplier-products-grid', {'supplierId': entity.id}) }}
-                </div>
-            </div>
-        </div>
+        {{ dataGrid.renderGrid('marello-supplier-products-grid', {'supplierId': entity.id}) }}
     {% endset %}
 
     {% set dataBlocks = [

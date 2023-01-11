@@ -14,7 +14,9 @@ use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\WorkflowBundle\Async\Topics;
 use Marello\Bundle\InventoryBundle\Entity\Allocation;
-use Marello\Bundle\OrderBundle\Migrations\Data\ORM\LoadOrderItemStatusData;
+use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
+use Marello\Bundle\OrderBundle\Model\OrderItemStatusesInterface;
+use Marello\Bundle\InventoryBundle\Model\InventoryTotalCalculator;
 
 class AllocationCompleteListener
 {
@@ -31,6 +33,9 @@ class AllocationCompleteListener
     /** @var MessageProducerInterface $messageProducer */
     protected $messageProducer;
 
+    /** @var InventoryTotalCalculator $totalCalculator */
+    protected $totalCalculator;
+
     /**
      * AllocationCompleteListener constructor.
      * @param DoctrineHelper $doctrineHelper
@@ -40,11 +45,13 @@ class AllocationCompleteListener
     public function __construct(
         DoctrineHelper $doctrineHelper,
         WorkflowManager $workflowManager,
-        MessageProducerInterface $messageProducer
+        MessageProducerInterface $messageProducer,
+        InventoryTotalCalculator $totalCalculator
     ) {
         $this->doctrineHelper = $doctrineHelper;
         $this->workflowManager = $workflowManager;
         $this->messageProducer = $messageProducer;
+        $this->totalCalculator = $totalCalculator;
     }
 
     /**
@@ -61,11 +68,36 @@ class AllocationCompleteListener
         $order = $entity->getOrder();
         $shippedItems = [];
         foreach ($order->getItems() as $item) {
-            if ($item->getStatus() && $item->getStatus()->getId() === LoadOrderItemStatusData::SHIPPED) {
-                $shippedItems[] = $item->getId();
+            // all items which have complete or shipped status
+            $orderStatuses = [
+                OrderItemStatusesInterface::OIS_PROCESSING,
+                OrderItemStatusesInterface::OIS_SHIPPED,
+                OrderItemStatusesInterface::OIS_COMPLETE,
+            ];
+            if ($item->getStatus() && in_array($item->getStatus()->getId(), $orderStatuses)) {
+                // use the InventoryTotalCalculator::getTotalAllocationQtyConfirmed for a more coherent calculation of
+                // allocation item totals, this is meant for this specific purpose
+                // don't reinvent the wheel.
+
+
+                // all allocation items
+                $allocationItems = $this->doctrineHelper
+                    ->getEntityRepositoryForClass(AllocationItem::class)
+                    ->findBy(['orderItem' => $item->getId()]);
+                // total qty of the item for complete items is the quantity of the order item
+                $orderItemQty = (empty($allocationItems)) ? $item->getQuantity() : 0;
+                /** @var AllocationItem $allocationItem */
+                foreach ($allocationItems as $allocationItem) {
+                    $orderItemQty += $allocationItem->getQuantityConfirmed();
+                }
+
+                if ($orderItemQty == $item->getQuantity()) {
+                    $shippedItems[] = $item->getId();
+                }
             }
         }
 
+        // shipped items take quantities in account from above
         if (count($shippedItems) === $order->getItems()->count()) {
             // order is considered complete
             if ($this->getApplicableWorkflow($order)) {

@@ -28,7 +28,9 @@ class OrderInventoryAllocationListener
         }
 
         $entity->getItems()->map(function (OrderItem $item) use ($entity) {
-            $this->handleInventoryUpdate($item, $item->getQuantity(), $entity);
+            if (!$item->isAllocationExclusion()) {
+                $this->handleInventoryUpdate($item, $item->getQuantity(), $entity);
+            }
         });
     }
 

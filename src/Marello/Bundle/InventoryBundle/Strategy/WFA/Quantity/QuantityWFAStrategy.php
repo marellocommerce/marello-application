@@ -18,6 +18,7 @@ use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\Calculator\QtyWHCalculatorInterface;
 use Marello\Bundle\InventoryBundle\Strategy\WFA\WFAStrategyInterface;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+use Marello\Bundle\InventoryBundle\Provider\AllocationExclusionInterface;
 
 class QuantityWFAStrategy implements WFAStrategyInterface
 {
@@ -39,6 +40,9 @@ class QuantityWFAStrategy implements WFAStrategyInterface
 
     /** @var ConfigManager $configManager */
     private $configManager;
+
+    /** @var AllocationExclusionInterface $exclusionProvider */
+    private $exclusionProvider;
 
     /**
      * @var Warehouse[]
@@ -95,7 +99,7 @@ class QuantityWFAStrategy implements WFAStrategyInterface
     {
         $productsByWh = [];
         $warehouses = [];
-        $orderItems = ($allocation) ? $allocation->getItems() : $order->getItems();
+        $orderItems = $this->exclusionProvider->getItems($order, $allocation);
         $orderItemsByProducts = [];
         $emptyWarehouse = new Warehouse();
         $emptyWarehouse->setWarehouseType(new WarehouseType('virtual'));
@@ -652,5 +656,14 @@ class QuantityWFAStrategy implements WFAStrategyInterface
         }
 
         return $this->linkedWarehouses;
+    }
+
+    /**
+     * @param AllocationExclusionInterface $provider
+     * @return void
+     */
+    public function setAllocationExclusionProvider(AllocationExclusionInterface $provider)
+    {
+        $this->exclusionProvider = $provider;
     }
 }

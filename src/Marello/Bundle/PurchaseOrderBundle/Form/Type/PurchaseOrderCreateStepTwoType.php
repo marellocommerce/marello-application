@@ -18,6 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Constraints\GreaterThan;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class PurchaseOrderCreateStepTwoType extends AbstractType
 {
@@ -71,6 +72,14 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
                             ]
                         )
                     ]
+                ]
+            )
+            ->add(
+                'purchaseOrderReference',
+                TextType::class,
+                [
+                    'required' => false,
+                    'label' => 'marello.purchaseorder.purchase_order_reference.label'
                 ]
             )
             ->add(

@@ -50,17 +50,22 @@ class InventoryTotalCalculator
      * @param AllocationItem $currentItem
      * @return int
      */
-    public function getTotalAllocationQtyConfirmed(AllocationItem $currentItem)
+    public function getTotalAllocationQtyConfirmed($currentItem)
     {
-        $allAllocationItems = $this
-            ->doctrineHelper
-            ->getEntityRepositoryForClass(AllocationItem::class)
-            ->findBy(['orderItem' => $currentItem->getOrderItem()]);
-
         $totalInventoryQty = 0;
-        /** @var AllocationItem $allocationItem */
-        foreach ($allAllocationItems as $allocationItem) {
-            $totalInventoryQty += $allocationItem->getQuantityConfirmed();
+        if ($currentItem instanceof OrderItem || $currentItem instanceof AllocationItem) {
+            $orderItem = ($currentItem instanceof OrderItem) ? $currentItem : $currentItem->getOrderItem();
+            $allAllocationItems = $this
+                ->doctrineHelper
+                ->getEntityRepositoryForClass(AllocationItem::class)
+                ->findBy(['orderItem' => $orderItem]);
+
+            /** @var AllocationItem $allocationItem */
+            foreach ($allAllocationItems as $allocationItem) {
+                $totalInventoryQty += $allocationItem->getQuantityConfirmed();
+            }
+
+            return $totalInventoryQty;
         }
 
         return $totalInventoryQty;

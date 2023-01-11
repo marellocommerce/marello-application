@@ -4,8 +4,11 @@ namespace Marello\Bundle\OrderBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
-use Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository;
+
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
+use Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository;
+
+use Marello\Bundle\OrderBundle\Model\OrderItemStatusesInterface;
 
 class LoadOrderItemStatusData extends AbstractFixture
 {
@@ -26,6 +29,7 @@ class LoadOrderItemStatusData extends AbstractFixture
         'Dropshipping' => false,
         'Could Not Allocate' => false,
         'Waiting For Supply' => false,
+        'Complete' => false
     ];
 
     /**
@@ -33,7 +37,7 @@ class LoadOrderItemStatusData extends AbstractFixture
      */
     public function load(ObjectManager $manager)
     {
-        $className = ExtendHelper::buildEnumValueClassName(self::ITEM_STATUS_ENUM_CLASS);
+        $className = ExtendHelper::buildEnumValueClassName(OrderItemStatusesInterface::ITEM_STATUS_ENUM_CLASS);
 
         /** @var EnumValueRepository $enumRepo */
         $enumRepo = $manager->getRepository($className);

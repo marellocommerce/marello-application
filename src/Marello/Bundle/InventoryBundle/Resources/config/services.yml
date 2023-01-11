@@ -230,6 +230,8 @@ services:
             - '@oro_entity.doctrine_helper'
             - '@Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProvider'
             - '@event_dispatcher'
+        calls:
+            - [setAllocationExclusionProvider, ['@Marello\Bundle\InventoryBundle\Provider\AllocationExclusionProvider']]
 
     Marello\Bundle\InventoryBundle\Strategy\WFA\WFAStrategiesRegistry: ~
 
@@ -239,6 +241,8 @@ services:
             ## check if we actually need to include the whgrouplink repository as a service.., maybe use oro_entity.doctrine_helper instead
             - '@Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository'
             - '@oro_config.manager'
+        calls:
+            - [setAllocationExclusionProvider, ['@Marello\Bundle\InventoryBundle\Provider\AllocationExclusionProvider']]
         tags:
             - { name: marello_inventory_wfa_strategy }
 
@@ -278,3 +282,5 @@ services:
         tags:
             - { name: doctrine.orm.entity_listener, entity: Marello\Bundle\InventoryBundle\Entity\Allocation, event: postPersist }
             - { name: doctrine.event_listener, event: postFlush }
+
+    Marello\Bundle\InventoryBundle\Provider\AllocationExclusionProvider: ~
