@@ -9,7 +9,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class PurchaseOrderFormViewListener
 {
     const WAREHOUSE_BLOCK_NAME = 'warehouse';
-    const BILLING_SHIPPING_BLOCK_NAME = 'billing_shipping';
+    const PURCHASE_ORDER_BLOCK_NAME = 'general';
 
     /**
      * @var TranslatorInterface
@@ -42,8 +42,8 @@ class PurchaseOrderFormViewListener
      */
     protected function addWarehouseBlock(ScrollData $scrollData, $html)
     {
-        if ($scrollData->hasBlock(self::BILLING_SHIPPING_BLOCK_NAME)) {
-            $scrollData->addSubBlockData(self::BILLING_SHIPPING_BLOCK_NAME, 0, $html, 'warehouse');
+        if ($scrollData->hasBlock(self::PURCHASE_ORDER_BLOCK_NAME)) {
+            $scrollData->addSubBlockData(self::PURCHASE_ORDER_BLOCK_NAME, 0, $html, 'warehouse');
         }
     }
 }
