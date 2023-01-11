@@ -7,10 +7,11 @@ use Doctrine\Persistence\ObjectManager;
 
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository;
+use Oro\Bundle\MigrationBundle\Fixture\VersionedFixtureInterface;
 
 use Marello\Bundle\OrderBundle\Model\OrderItemStatusesInterface;
 
-class LoadOrderItemStatusData extends AbstractFixture
+class LoadOrderItemStatusData extends AbstractFixture implements VersionedFixtureInterface
 {
     const ITEM_STATUS_ENUM_CLASS = 'marello_item_status';
     
@@ -23,13 +24,41 @@ class LoadOrderItemStatusData extends AbstractFixture
 
     /** @var array */
     protected $data = [
-        'Pending' => true,
-        'Processing' => false,
-        'Shipped' => false,
-        'Dropshipping' => false,
-        'Could Not Allocate' => false,
-        'Waiting For Supply' => false,
-        'Complete' => false
+        [
+            'id' => OrderItemStatusesInterface::OIS_PENDING,
+            'name' => 'Pending',
+            'isDefaut'=> true
+        ],
+        [
+            'id' => OrderItemStatusesInterface::OIS_PROCESSING,
+            'name' => 'Processing',
+            'isDefaut'=> false
+        ],
+        [
+            'id' => OrderItemStatusesInterface::OIS_SHIPPED,
+            'name' => 'Shipped',
+            'isDefaut'=> false
+        ],
+        [
+            'id' => OrderItemStatusesInterface::OIS_COMPLETE,
+            'name' => 'Complete',
+            'isDefaut'=> false
+        ],
+        [
+            'id' => self::DROPSHIPPING,
+            'name' => 'Dropshipping',
+            'isDefaut'=> false
+        ],
+        [
+            'id' => self::COULD_NOT_ALLOCATE,
+            'name' => 'Could Not Allocate',
+            'isDefaut'=> false
+        ],
+        [
+            'id' => self::WAITING_FOR_SUPPLY,
+            'name' => 'Waiting For Supply',
+            'isDefaut'=> false
+        ]
     ];
 
     /**
@@ -43,11 +72,23 @@ class LoadOrderItemStatusData extends AbstractFixture
         $enumRepo = $manager->getRepository($className);
 
         $priority = 1;
-        foreach ($this->data as $name => $isDefault) {
-            $enumOption = $enumRepo->createEnumValue($name, $priority++, $isDefault);
-            $manager->persist($enumOption);
+        foreach ($this->data as $data) {
+            $existingEnum = $enumRepo->find($data['id']);
+            if (!$existingEnum) {
+                $enumOption = $enumRepo->createEnumValue($data['name'], $priority++, $data['isDefault']);
+                $manager->persist($enumOption);
+            }
         }
 
         $manager->flush();
+    }
+
+    /**
+     * {@inheritDoc}
+     * @return string
+     */
+    public function getVersion()
+    {
+        return '1.0';
     }
 }
