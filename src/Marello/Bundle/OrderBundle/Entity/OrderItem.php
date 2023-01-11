@@ -339,7 +339,7 @@ class OrderItem extends ExtendOrderItem implements
      *
      * @var boolean
      */
-    protected $allocationExclusion;
+    protected $allocationExclusion = false;
 
     /**
      * OrderItem constructor.
@@ -780,9 +780,12 @@ class OrderItem extends ExtendOrderItem implements
 
     /**
      * @param bool $allocationExclusion
+     * @return $this
      */
-    public function setAllocationExclusion(bool $allocationExclusion): void
+    public function setAllocationExclusion(bool $allocationExclusion = false): self
     {
         $this->allocationExclusion = $allocationExclusion;
+
+        return $this;
     }
 }
