@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\NotificationBundle\Provider;
 
+use Marello\Bundle\InventoryBundle\Entity\Allocation;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
@@ -27,6 +28,7 @@ class EmailSendProcessor
     use LoggerAwareTrait;
 
     const OPTION_ATTACHMENTS = 'attachments';
+    const OPTION_ADDITIONAL_CONTEXTS = 'additionalContexts';
 
     /** @var EmailConstraints $emailConstraint */
     protected $emailConstraint;
@@ -142,8 +144,8 @@ class EmailSendProcessor
         $emailModel->setSubject($subjectRendered);
         $emailModel->setBody($templateRendered);
         $this->addAttachments($emailModel, $data);
-        // set order as context to show up in activity list
-        $emailModel->setContexts([$entity]);
+        $contexts = $this->getAdditionalContexts($entity, $data);
+        $emailModel->setContexts($contexts);
         try {
             $emailOrigin = $this->emailOriginHelper->getEmailOrigin(
                 $emailModel->getFrom(),
@@ -156,6 +158,23 @@ class EmailSendProcessor
         }
 
         $this->logger->info('Workflow send email template successful .', []);
+    }
+
+    /**
+     * @param $entity
+     * @param $data
+     * @return array
+     */
+    protected function getAdditionalContexts($entity, $data)
+    {
+        $contexts = [$entity];
+        if (isset($data[self::OPTION_ADDITIONAL_CONTEXTS]) || !empty($data[self::OPTION_ADDITIONAL_CONTEXTS])) {
+            foreach ($data[self::OPTION_ADDITIONAL_CONTEXTS] as $additionalContext) {
+                $contexts[] = $additionalContext;
+            }
+        }
+
+        return $contexts;
     }
 
     /**

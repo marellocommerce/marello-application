@@ -27,6 +27,9 @@ class SendNotificationAction extends AbstractAction
     /** @var PropertyPathInterface|string */
     protected $attachments;
 
+    /** @var PropertyPathInterface|string */
+    protected $additionalContexts;
+
     /** @var EmailSendProcessor */
     protected $sendProcessor;
 
@@ -95,6 +98,15 @@ class SendNotificationAction extends AbstractAction
                 : $this->getOption($options, 'recipient');
         }
 
+        if (array_key_exists(EmailSendProcessor::OPTION_ADDITIONAL_CONTEXTS, $options)) {
+            $additionalContexts = $this->getOption($options, EmailSendProcessor::OPTION_ADDITIONAL_CONTEXTS);
+            if (!is_array($additionalContexts)) {
+                throw new InvalidParameterException('Parameter "additionalContexts" should be array');
+            }
+
+            $this->additionalContexts = $additionalContexts;
+        }
+
         if (array_key_exists('attachments', $options)) {
             $attachments = $this->getOption($options, 'attachments');
 
@@ -136,6 +148,18 @@ class SendNotificationAction extends AbstractAction
             }
 
             $data[NotificationAttachmentProvider::KEY_ATTACHMENTS] = $attachments;
+        }
+
+        if ($this->additionalContexts !== null) {
+            foreach ($this->additionalContexts as $additionalContextPaths) {
+                $additionalContext = $this
+                    ->contextAccessor
+                    ->getValue(
+                        $context,
+                        $additionalContextPaths
+                    );
+                $data[EmailSendProcessor::OPTION_ADDITIONAL_CONTEXTS][] = $additionalContext;
+            }
         }
 
         return $data;

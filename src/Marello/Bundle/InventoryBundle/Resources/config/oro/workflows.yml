@@ -127,6 +127,7 @@ workflows:
                         entity: $allocation
                         recipient: $allocation.order.customer
                         template: marello_order_shipped_allocation_confirmation
+                        additionalContexts: [$allocation.order]
                     # parent allocation is empty, so we need to send email to customer with 'full' shipped email
                     - '@marello_notification_send':
                         conditions:
@@ -137,6 +138,7 @@ workflows:
                         entity: $allocation.order
                         recipient: $allocation.order.customer
                         template: marello_order_shipped_confirmation
+                        additionalContexts: [$allocation.order]
                     # parent allocation is not empty, so we need to send email to parent allocation warehouse to inform
                     # them a shipment is underway.
                     - '@marello_notification_send':
@@ -147,6 +149,7 @@ workflows:
                         entity: $allocation
                         recipient: $allocation.parent.warehouse
                         template: marello_warehouse_allocation
+                        additionalContexts: [$allocation.order]
                     - '@tree':
                         actions:
                             - '@foreach':

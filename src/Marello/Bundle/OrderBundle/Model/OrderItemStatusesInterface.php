@@ -10,5 +10,4 @@ interface OrderItemStatusesInterface
     const OIS_PROCESSING = 'processing';
     const OIS_SHIPPED = 'shipped';
     const OIS_COMPLETE = 'complete';
-
 }
