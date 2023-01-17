@@ -55,22 +55,26 @@ class EmailAddressVisibilityListener implements OptionalListenerInterface
     private function updateEmailAddressVisibilities(EmailHolderInterface $entity): void
     {
         if ($entity instanceof OrganizationAwareInterface) {
-            $this->emailAddressVisibilityManager
-                ->updateEmailAddressVisibility(
-                    $entity->getEmail(),
-                    $entity->getOrganization()->getId(),
-                    true
-                );
+            if ($entity->getOrganization()) {
+                $this->emailAddressVisibilityManager
+                    ->updateEmailAddressVisibility(
+                        $entity->getEmail(),
+                        $entity->getOrganization()->getId(),
+                        true
+                    );
+            }
         }
 
         if (method_exists($entity, 'getOrganizations')) {
             foreach ($entity->getOrganizations(true) as $organization) {
-                $this->emailAddressVisibilityManager
-                    ->updateEmailAddressVisibility(
-                        $entity->getEmail(),
-                        $organization->getId(),
-                        true
-                    );
+                if ($organization->getId()) {
+                    $this->emailAddressVisibilityManager
+                        ->updateEmailAddressVisibility(
+                            $entity->getEmail(),
+                            $organization->getId(),
+                            true
+                        );
+                }
             }
         }
     }
