@@ -110,7 +110,7 @@ marello:
             discount_percent.label: Discount Percent
             tax_percent.label:      Tax Percent
             return_items.label:     Returned items
-            inventory.label:     Inventory Available
+            inventory.label:     Available
             status.label:        Status
             allocation_exclusion.label: Exclude from Allocation Process
             organization.label: Organization

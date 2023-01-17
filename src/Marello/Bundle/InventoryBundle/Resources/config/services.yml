@@ -11,7 +11,7 @@ services:
             - { name: oro_ui.view_action_provider, group: product }
 
     marello_inventory.logging.chart_builder:
-        class: Marello\Bundle\InventoryBundle\Logging\ChartBuilder
+        class: 'Marello\Bundle\InventoryBundle\Logging\ChartBuilder'
         public: true
         arguments:
             - '@Marello\Bundle\InventoryBundle\Entity\Repository\InventoryLevelLogRecordRepository'
@@ -238,7 +238,6 @@ services:
     Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\QuantityWFAStrategy:
         arguments:
             - '@Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\Calculator\SingleWHCalculator'
-            ## check if we actually need to include the whgrouplink repository as a service.., maybe use oro_entity.doctrine_helper instead
             - '@Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository'
             - '@oro_config.manager'
         calls:
