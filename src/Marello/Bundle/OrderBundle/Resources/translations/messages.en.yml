@@ -202,6 +202,7 @@ marello:
             payment_options.label: Payment Options
             shipping_options.label: Shipping Options
             override_shipping_cost.label: Override Shipping Cost
+            orderitem.allocation_exclusion.label: Excl Allocation
 
         subtotals:
             discount.label: Discount Amount

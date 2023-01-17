@@ -15,6 +15,9 @@
             {% if marello_entity_has_attribute(product, 'manufacturingCode') %}
                 {{ UI.renderProperty('marello.product.manufacturing_code.label'|trans, product.manufacturingCode) }}
             {% endif %}
+            {% if marello_entity_has_attribute(product, 'barcode') %}
+                {{ UI.renderProperty('marello.product.barcode.label'|trans, product.barcode) }}
+            {% endif %}
         </div>
     </div>
 </div>
