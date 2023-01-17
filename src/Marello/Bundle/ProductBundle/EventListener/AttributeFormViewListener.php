@@ -28,7 +28,8 @@ class AttributeFormViewListener
         'warranty',
         'suppliers',
         'categories',
-        'image'
+        'image',
+        'barcode'
     ];
     /**
      * @var AttributeManager

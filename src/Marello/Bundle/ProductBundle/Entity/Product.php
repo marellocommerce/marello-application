@@ -178,6 +178,29 @@ class Product extends ExtendProduct implements
     /**
      * @var string
      *
+     * @ORM\Column(name="barcode", type="string", nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
+     *          "importexport"={
+     *              "excluded"=true
+     *          },
+     *          "attribute"={
+     *              "is_attribute"=true
+     *          },
+     *          "extend"={
+     *              "owner"="Custom"
+     *          }
+     *      }
+     * )
+     */
+    protected $barcode;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="manufacturing_code", type="string", nullable=true)
      * @ConfigField(
      *      defaultValues={
@@ -751,6 +774,25 @@ class Product extends ExtendProduct implements
     public function setSku($sku)
     {
         $this->sku = $sku;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getBarcode(): ?string
+    {
+        return $this->barcode;
+    }
+
+    /**
+     * @param string|null $barcode
+     * @return $this
+     */
+    public function setBarcode(string $barcode = null): self
+    {
+        $this->barcode = $barcode;
 
         return $this;
     }
