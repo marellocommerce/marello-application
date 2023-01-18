@@ -32,7 +32,8 @@
         "oro/platform-serialised-fields": "5.0.*",
         "oro/calendar-bundle": "5.0.*",
         "oro/oauth2-server": "5.0.*",
-        "marellocommerce/marello": "4.0.x-dev"
+        "oro/crm-task-bundle": "5.0.*",
+        "marellocommerce/marello": "4.1.x-dev"
     },
     "require-dev": {
         "behat/behat": "~3.10.0",
@@ -73,6 +74,7 @@
             "rm -rf var/cache/*",
             "rm -rf var/attachment/*",
             "rm -rf public/media/cache/*",
+            "sed -i -e 's/installed:.*/installed: ~/g' config/parameters.yml",
             "bin/console oro:install --timeout 3600 --sample-data=y --drop-database --env=prod --user-name=admin --user-firstname=John --user-lastname=Doe --user-password=marello123 --user-email=johndoe@example.com  --organization-name=Marello --formatting-code=en_US --language=en"
         ],
         "test": [
@@ -89,6 +91,7 @@
         "test-install": [
             "rm -rf var/cache/*",
             "rm -rf var/logs/*",
+            "sed -i -e 's/installed:.*/installed: ~/g' config/parameters_test.yml",
             "bin/console oro:install --env test --organization-name Oro --user-name admin --user-email admin@example.com --user-firstname John --user-lastname Doe --user-password admin --sample-data n --application-url http://localhost --drop-database --timeout 3600 --skip-translations --skip-assets --formatting-code=en_US --language=en"
         ],
         "test-extended": [
