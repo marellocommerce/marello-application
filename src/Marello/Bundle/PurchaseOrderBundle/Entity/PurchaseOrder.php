@@ -147,6 +147,20 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
     protected $orderTotal;
 
     /**
+     * @ORM\Column(name="purchase_order_reference", type="string", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var string
+     */
+    protected $purchaseOrderReference;
+
+    /**
      * @var array $data
      *
      * @ORM\Column(name="data", type="json_array", nullable=true)
@@ -168,7 +182,7 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
      *
      * @return self
      */
-    public static function usingProducts(array $products, Organization $organization)
+    public static function usingProducts(array $products, Organization $organization): self
     {
         $order = new self($organization);
 
@@ -193,7 +207,6 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
         return $order;
     }
 
-
     /**
      * PurchaseOrder constructor.
      */
@@ -203,35 +216,34 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getPurchaseOrderNumber()
+    public function getPurchaseOrderNumber(): ?string
     {
         return $this->purchaseOrderNumber;
     }
 
     /**
-     * @return Collection|PurchaseOrderItem[]
+     * @return Collection
      */
-    public function getItems()
+    public function getItems(): Collection
     {
         return $this->items;
     }
 
     /**
-     * @param string $purchaseOrderNumber
-     *
+     * @param $purchaseOrderNumber
      * @return $this
      */
-    public function setPurchaseOrderNumber($purchaseOrderNumber)
+    public function setPurchaseOrderNumber(string $purchaseOrderNumber): self
     {
         $this->purchaseOrderNumber = $purchaseOrderNumber;
 
@@ -240,10 +252,9 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
 
     /**
      * @param PurchaseOrderItem $item
-     *
      * @return $this
      */
-    public function addItem(PurchaseOrderItem $item)
+    public function addItem(PurchaseOrderItem $item): self
     {
         $this->items->add($item->setOrder($this));
 
@@ -252,10 +263,9 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
 
     /**
      * @param PurchaseOrderItem $item
-     *
      * @return $this
      */
-    public function removeItem(PurchaseOrderItem $item)
+    public function removeItem(PurchaseOrderItem $item): self
     {
         $this->items->removeElement($item);
 
@@ -263,19 +273,18 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
     }
 
     /**
-     * @return Supplier
+     * @return Supplier|null
      */
-    public function getSupplier()
+    public function getSupplier(): ?Supplier
     {
         return $this->supplier;
     }
 
     /**
      * @param Supplier $supplier
-     *
      * @return $this
      */
-    public function setSupplier(Supplier $supplier)
+    public function setSupplier(Supplier $supplier): self
     {
         $this->supplier = $supplier;
 
@@ -285,7 +294,7 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
     /**
      * @param $id
      */
-    public function setDerivedProperty($id)
+    public function setDerivedProperty($id): void
     {
         if (!$this->purchaseOrderNumber) {
             $this->setPurchaseOrderNumber(sprintf('%09d', $id));
@@ -293,13 +302,10 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
     }
 
     /**
-     * Set createdAt
-     *
-     * @param \DateTime $dueDate
-     *
-     * @return mixed
+     * @param \DateTime|null $dueDate
+     * @return $this
      */
-    public function setDueDate($dueDate)
+    public function setDueDate(\DateTime $dueDate = null): self
     {
         $this->dueDate = $dueDate;
 
@@ -307,17 +313,17 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
     }
 
     /**
-     * @return \Datetime
+     * @return \DateTime|null
      */
-    public function getDueDate()
+    public function getDueDate(): ?\DateTime
     {
         return $this->dueDate;
     }
 
     /**
-     * @return Warehouse
+     * @return Warehouse|null
      */
-    public function getWarehouse()
+    public function getWarehouse(): ?Warehouse
     {
         return $this->warehouse;
     }
@@ -326,7 +332,7 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
      * @param Warehouse $warehouse
      * @return $this
      */
-    public function setWarehouse($warehouse)
+    public function setWarehouse(Warehouse $warehouse): self
     {
         $this->warehouse = $warehouse;
 
@@ -336,7 +342,7 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
     /**
      * @return float
      */
-    public function getOrderTotal()
+    public function getOrderTotal(): float
     {
         return $this->orderTotal;
     }
@@ -345,10 +351,29 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
      * @param float $orderTotal
      * @return $this
      */
-    public function setOrderTotal($orderTotal)
+    public function setOrderTotal(float $orderTotal): self
     {
         $this->orderTotal = $orderTotal;
         
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPurchaseOrderReference(): ?string
+    {
+        return $this->purchaseOrderReference;
+    }
+
+    /**
+     * @param string|null $purchaseOrderReference
+     * @return $this
+     */
+    public function setPurchaseOrderReference(string $purchaseOrderReference = null): self
+    {
+        $this->purchaseOrderReference = $purchaseOrderReference;
+
         return $this;
     }
 
@@ -357,7 +382,7 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
      *
      * @return $this
      */
-    public function setData(array $data)
+    public function setData(array $data): self
     {
         $this->data = $data;
 
@@ -367,7 +392,7 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
     /**
      * @return array
      */
-    public function getData()
+    public function getData(): array
     {
         return $this->data;
     }
@@ -375,7 +400,7 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('#%s', $this->purchaseOrderNumber);
     }

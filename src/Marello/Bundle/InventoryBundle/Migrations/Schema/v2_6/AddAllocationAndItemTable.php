@@ -222,5 +222,6 @@ class AddAllocationAndItemTable implements Migration, ActivityExtensionAwareInte
         $table = $schema->getTable('marello_inventory_allocation');
         $this->activityExtension->addActivityAssociation($schema, 'marello_notification', $table->getName());
         $this->activityExtension->addActivityAssociation($schema, 'oro_email', $table->getName());
+        $this->activityExtension->addActivityAssociation($schema, 'orocrm_task', $table->getName());
     }
 }

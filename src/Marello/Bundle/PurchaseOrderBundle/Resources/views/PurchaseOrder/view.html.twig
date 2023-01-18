@@ -41,6 +41,7 @@
                     {{ UI.renderProperty('marello.purchaseorder.warehouse.label'|trans, entity.warehouse.label) }}
                     {{ UI.renderHtmlProperty('marello.purchaseorder.shipping_address.label'|trans, Address.renderAddress(entity.warehouse.address)) }}
                     {{ UI.renderProperty('marello.order.address.phone.label'|trans, entity.warehouse.address.phone) }}
+                    {{ UI.renderProperty('marello.purchaseorder.purchase_order_reference.label'|trans, entity.purchaseOrderReference) }}
 
                     {% set steps = marello_core_get_current_workflow_steps(entity) %}
                     {% for stepLabel, stepName in steps %}

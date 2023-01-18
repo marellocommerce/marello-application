@@ -29,7 +29,8 @@ class WarehouseGroupLinkRebalanceListener
     public function __construct(
         private MessageProducerInterface $messageProducer,
         private AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * Handle incoming event

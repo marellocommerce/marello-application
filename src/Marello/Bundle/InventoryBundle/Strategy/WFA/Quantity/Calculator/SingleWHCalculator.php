@@ -28,7 +28,7 @@ class SingleWHCalculator extends AbstractWHCalculator
         $itemsWithQuantity = [];
         foreach ($productsByWh as $id => $whProducts) {
             $totalAllocatedQty = 0;
-             foreach ($whProducts as $product) {
+            foreach ($whProducts as $product) {
                 if (isset($wh[$product['sku']])) {
                     $totalAllocatedQty = $wh[$product['sku']]['totalAllocatedQty'];
                 }
@@ -40,7 +40,7 @@ class SingleWHCalculator extends AbstractWHCalculator
                     'totalQtyOrdered' => $product['qtyOrdered'],
                     'qtyGtq' => (bool)($product['qty'] >= $product['qtyOrdered'])
                 ];
-             }
+            }
         }
 
         foreach ($wh as $warehouseCode => $result) {

@@ -19,7 +19,6 @@ datagrids:
                     - p.updatedAt
                 from:
                     - { table: MarelloProductBundle:Product, alias: p }
-                groupBy: p.id
         columns:
             sku:
                 label:              marello.product.sku.label
@@ -487,7 +486,7 @@ datagrids:
             type: orm
             acl_resource: marello_product_view
             query:
-                select: [ psr, supplier.name ]
+                select: [ psr, supplier.name, supplier.currency ]
                 from:
                     - { table: MarelloProductBundle:ProductSupplierRelation, alias: psr }
                 join:
@@ -510,7 +509,9 @@ datagrids:
                 frontend_type:        string
             cost:
                 label:                marello.supplier.cost.label
-                frontend_type:        currency
+                type:                 localized_number
+                method:               formatCurrency
+                context_resolver:     Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
             priority:
                 label:                marello.supplier.priority.label
                 frontend_type:        number

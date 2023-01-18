@@ -14,7 +14,8 @@ class DefaultSalesChannelSubscriber implements EventSubscriberInterface
     public function __construct(
         protected EntityManager $em,
         protected AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * Get subscribed events
