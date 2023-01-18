@@ -25,3 +25,9 @@ services:
             - [setContainer, ['@Psr\Container\ContainerInterface']]
         tags:
             - { name: container.service_subscriber }
+
+    MarelloEnterprise\Bundle\InventoryBundle\Controller\ExpectedInventoryItemController:
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }

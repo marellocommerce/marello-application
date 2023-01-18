@@ -7,6 +7,7 @@ use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
+use Oro\Bundle\DistributionBundle\Handler\ApplicationState;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -15,11 +16,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class WarehouseListener
 {
     public function __construct(
-        protected $installed,
+        protected ApplicationState $applicationState,
         protected TranslatorInterface $translator,
         protected Session $session,
         protected AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * @param Warehouse $warehouse
@@ -27,7 +29,7 @@ class WarehouseListener
      */
     public function prePersist(Warehouse $warehouse, LifecycleEventArgs $args)
     {
-        if ($this->installed && !$warehouse->getGroup()) {
+        if ($this->applicationState->isInstalled() && !$warehouse->getGroup()) {
             $em = $args->getEntityManager();
             $whType = $warehouse->getWarehouseType();
             if ($whType && $whType->getName() === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED) {

@@ -17,7 +17,8 @@ class SavedAddressCoordinatesProviderElement extends AbstractAddressCoordinatesP
     public function __construct(
         private DoctrineHelper $doctrineHelper,
         private AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * @inheritDoc
