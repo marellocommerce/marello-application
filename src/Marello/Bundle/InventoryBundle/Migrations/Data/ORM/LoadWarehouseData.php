@@ -5,6 +5,7 @@ namespace Marello\Bundle\InventoryBundle\Migrations\Data\ORM;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
+use Marello\Bundle\InventoryBundle\Model\Allocation\Notifier\WarehouseManualNotifier;
 use Oro\Bundle\AddressBundle\Entity\Country;
 use Oro\Bundle\AddressBundle\Entity\Region;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
@@ -48,6 +49,7 @@ class LoadWarehouseData implements FixtureInterface
         $defaultWarehouse = new Warehouse('Warehouse DE 1', true);
         $defaultWarehouse->setOwner($organization);
         $defaultWarehouse->setCode('warehouse_de_1');
+        $defaultWarehouse->setNotifier(WarehouseManualNotifier::IDENTIFIER);
         $warehouseAddress = $this->createAddress($this->data);
         $defaultWarehouse->setAddress($warehouseAddress);
 

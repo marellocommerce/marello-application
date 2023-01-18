@@ -48,6 +48,7 @@ services:
             - [initDoctrinePropertiesByManagerRegistry, ["@doctrine"]]
             - [setAclHelper,["@oro_security.acl_helper"]]
             - [setLogger,["@logger"]]
+            - [setPropertyAccessor, ["@property_accessor"]]
         arguments:
             - 'Marello\Bundle\SalesBundle\Entity\SalesChannelGroup'
             - ['name']
