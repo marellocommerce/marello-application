@@ -13,7 +13,8 @@ class SalesChannelGroupListener
     public function __construct(
         protected Session $session,
         protected AclHelper $aclHelper
-    ) {}
+    ) {
+    }
     
     /**
      * @param LifecycleEventArgs $args

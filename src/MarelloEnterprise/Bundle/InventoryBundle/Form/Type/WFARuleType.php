@@ -24,7 +24,8 @@ class WFARuleType extends AbstractType
         protected WFAStrategyChoicesProvider $choicesProvider,
         private WFARuleRepository $wfaRuleRepository,
         private AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * {@inheritdoc}

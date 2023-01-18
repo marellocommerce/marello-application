@@ -18,7 +18,8 @@ class DefaultWarehouseExistsValidator extends ConstraintValidator
     public function __construct(
         protected WarehouseRepository $warehouseRepository,
         protected AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * @param mixed $value

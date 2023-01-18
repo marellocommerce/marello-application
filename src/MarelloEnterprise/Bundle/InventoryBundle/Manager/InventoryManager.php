@@ -13,6 +13,7 @@ use Marello\Bundle\InventoryBundle\Manager\InventoryManager as BaseInventoryMana
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
+use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
 
 class InventoryManager extends BaseInventoryManager
 {
@@ -52,8 +53,15 @@ class InventoryManager extends BaseInventoryManager
                 $batch = InventoryBatchFromInventoryLevelFactory::createInventoryBatch($level);
                 $batch->setQuantity(0);
                 $batchInventory = ($batch->getQuantity() + $context->getInventory());
+                $isNewBatch = !$batch->getId();
                 $updatedBatch = $this->updateInventoryBatch($batch, $batchInventory);
-                $context->setInventoryBatches([$updatedBatch]);
+                $context->setInventoryBatches(
+                    [[
+                        'batch' => $updatedBatch,
+                        'qty' => $batchInventory,
+                        'isNew' => $isNewBatch
+                    ]]
+                );
             } else {
                 $updatedBatches = [];
                 foreach ($context->getInventoryBatches() as $batchData) {
@@ -62,7 +70,12 @@ class InventoryManager extends BaseInventoryManager
                     $batch->setInventoryLevel($level);
                     $qty = $batchData['qty'];
                     $batchInventory = ($batch->getQuantity() + $qty);
-                    $updatedBatches[] = $this->updateInventoryBatch($batch, $batchInventory);
+                    $isNewBatch = !$batch->getId();
+                    $updatedBatches[] = [
+                        'batch'=> $this->updateInventoryBatch($batch, $batchInventory),
+                        'qty' => $batchData['qty'],
+                        'isNew' => $isNewBatch
+                    ];
                 }
                 $context->setInventoryBatches($updatedBatches);
             }
@@ -77,6 +90,14 @@ class InventoryManager extends BaseInventoryManager
         if ($level->getInventoryItem()->isEnableBatchInventory()) {
             $batches = $level->getInventoryBatches()->toArray();
             $inventory = $this->inventoryLevelCalculator->calculateBatchInventoryLevelQty($batches);
+            $updatedBatchInventoryTotal = $this
+                ->inventoryLevelCalculator
+                ->calculateBatchInventoryLevelQty($context->getInventoryBatches());
+            foreach ($context->getInventoryBatches() as $batch) {
+                if ($batch['isNew']) {
+                    $inventory += $updatedBatchInventoryTotal;
+                }
+            }
         }
 
         if ($context->getAllocatedInventory()) {
@@ -89,7 +110,7 @@ class InventoryManager extends BaseInventoryManager
         /** @var InventoryBatch[] $updatedBatches */
         $updatedBatches = $context->getInventoryBatches();
         if (count($updatedBatches) === 1) {
-            $level->addInventoryBatch($updatedBatches[0]);
+            $level->addInventoryBatch($updatedBatches[0]['batch']);
         }
         $updatedLevel = $this->updateInventory($level, $inventory, $allocatedInventory);
         $context->setInventoryLevel($updatedLevel);
@@ -105,6 +126,23 @@ class InventoryManager extends BaseInventoryManager
                 ->getEntityManagerForClass(InventoryBatch::class)
                 ->flush();
         }
+    }
+
+    /**
+     * @param $entity
+     * @return int
+     */
+    public function getExpectedInventoryTotal($entity)
+    {
+        $total = 0;
+        $purchaseOrderItems = $this->doctrineHelper->getEntityRepositoryForClass(PurchaseOrderItem::class)
+            ->getExpectedItemsByProduct($entity->getProduct());
+        /** @var PurchaseOrderItem $purchaseOrderItem */
+        foreach ($purchaseOrderItems as $purchaseOrderItem) {
+            $total += $purchaseOrderItem->getOrderedAmount() - $purchaseOrderItem->getReceivedAmount();
+        }
+
+        return $total;
     }
 
     /**
