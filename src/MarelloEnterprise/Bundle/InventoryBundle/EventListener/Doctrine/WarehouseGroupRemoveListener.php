@@ -20,7 +20,8 @@ class WarehouseGroupRemoveListener
         protected Session $session,
         protected IsFixedWarehouseGroupChecker $checker,
         protected AclHelper $aclHelper
-    ) {}
+    ) {
+    }
     
     /**
      * @param WarehouseGroup $warehouseGroup

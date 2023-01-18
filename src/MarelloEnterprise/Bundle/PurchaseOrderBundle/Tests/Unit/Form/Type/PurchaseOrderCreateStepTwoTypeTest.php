@@ -39,6 +39,7 @@ use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\Validation;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PurchaseOrderCreateStepTwoTypeTest extends FormIntegrationTestCase
 {
@@ -226,6 +227,10 @@ class PurchaseOrderCreateStepTwoTypeTest extends FormIntegrationTestCase
 
         /** @var Router|\PHPUnit\Framework\MockObject\MockObject $router */
         $router = $this->createMock(Router::class);
+        $translator = $this->createMock(TranslatorInterface::class);
+        $translator->expects($this->any())
+            ->method('trans')
+            ->willReturnArgument(0);
 
         return [
             new EntitySelectOrCreateInlineFormExtension(
@@ -251,7 +256,7 @@ class PurchaseOrderCreateStepTwoTypeTest extends FormIntegrationTestCase
                     CollectionType::class => new CollectionType(),
                     PurchaseOrderItemType::class => new PurchaseOrderItemType(),
                     ProductSupplierSelectType::class => new ProductSupplierSelectType(),
-                    ProductPriceType::class => new ProductPriceType(),
+                    ProductPriceType::class => new ProductPriceType($translator),
                     OroMoneyType::class => new OroMoneyType($localeSettings, $numberFormatter),
                     PurchaseOrderCreateStepTwoType::class =>
                         new PurchaseOrderCreateStepTwoType(
