@@ -13,3 +13,6 @@ marello:
             due_date:
                 type:
                     message: 'This value is not a valid date.'
+
+            purchase_order_reference:
+                message: 'Purchase Order Reference should not contain spaces.'

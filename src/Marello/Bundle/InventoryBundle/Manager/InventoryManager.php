@@ -79,6 +79,7 @@ class InventoryManager implements InventoryManagerInterface
             $item->addInventoryLevel($level);
         }
         $warehouseType = $level->getWarehouse()->getWarehouseType()->getName();
+
         if ($item && $item->isEnableBatchInventory() &&
             $warehouseType !== WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
             if (empty($context->getInventoryBatches()) && (
@@ -88,8 +89,15 @@ class InventoryManager implements InventoryManagerInterface
                 $batch = InventoryBatchFromInventoryLevelFactory::createInventoryBatch($level);
                 $batch->setQuantity(0);
                 $batchInventory = ($batch->getQuantity() + $context->getInventory());
+                $isNewBatch = !$batch->getId();
                 $updatedBatch = $this->updateInventoryBatch($batch, $batchInventory);
-                $context->setInventoryBatches([$updatedBatch]);
+                $context->setInventoryBatches(
+                    [[
+                        'batch' => $updatedBatch,
+                        'qty' => $batchInventory,
+                        'isNew' => $isNewBatch
+                    ]]
+                );
             } else {
                 $updatedBatches = [];
                 foreach ($context->getInventoryBatches() as $batchData) {
@@ -97,8 +105,14 @@ class InventoryManager implements InventoryManagerInterface
                     $batch = $batchData['batch'];
                     $qty = $batchData['qty'];
                     $batchInventory = ($batch->getQuantity() + $qty);
-                    $updatedBatches[] = $this->updateInventoryBatch($batch, $batchInventory);
+                    $isNewBatch = !$batch->getId();
+                    $updatedBatches[] = [
+                        'batch'=> $this->updateInventoryBatch($batch, $batchInventory),
+                        'qty' => $batchData['qty'],
+                        'isNew' => $isNewBatch
+                    ];
                 }
+
                 $context->setInventoryBatches($updatedBatches);
             }
         }
@@ -112,6 +126,14 @@ class InventoryManager implements InventoryManagerInterface
         if ($level->getInventoryItem()->isEnableBatchInventory()) {
             $batches = $level->getInventoryBatches()->toArray();
             $inventory = $this->inventoryLevelCalculator->calculateBatchInventoryLevelQty($batches);
+            $updatedBatchInventoryTotal = $this
+                ->inventoryLevelCalculator
+                ->calculateBatchInventoryLevelQty($context->getInventoryBatches());
+            foreach ($context->getInventoryBatches() as $batch) {
+                if ($batch['isNew']) {
+                    $inventory += $updatedBatchInventoryTotal;
+                }
+            }
         }
 
         if ($context->getAllocatedInventory()) {
@@ -120,8 +142,9 @@ class InventoryManager implements InventoryManagerInterface
         $level->setManagedInventory($context->getValue('isInventoryManaged'));
         /** @var InventoryBatch[] $updatedBatches */
         $updatedBatches = $context->getInventoryBatches();
-        if (count($updatedBatches) === 1 && $updatedBatches[0]->getId() === null) {
-            $level->addInventoryBatch($updatedBatches[0]);
+        // checken of dit nodig is of niet...
+        if (count($updatedBatches) === 1 && $updatedBatches[0]['batch']->getId() === null) {
+            $level->addInventoryBatch($updatedBatches[0]['batch']);
         }
         $updatedLevel = $this->updateInventory($level, $inventory, $allocatedInventory);
         $context->setInventoryLevel($updatedLevel);

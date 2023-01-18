@@ -120,8 +120,8 @@ class AvailableInventoryValidator extends ConstraintValidator
                 if ($this->isProductCanDropship(
                     $values[self::PRODUCT_FIELD],
                     $values[self::SALES_CHANNEL_FIELD],
-                    $values[self::QUANTITY_FIELD])
-                ) {
+                    $values[self::QUANTITY_FIELD]
+                )) {
                     $violation = false;
                 } elseif ($this->isProductCanBackorder($values[self::PRODUCT_FIELD]) &&
                     $this->compareValues(
@@ -184,7 +184,7 @@ class AvailableInventoryValidator extends ConstraintValidator
     {
         $filteredSupplierRelations = $product
             ->getSuppliers()
-            ->filter(function(ProductSupplierRelation $productSupplierRelation) {
+            ->filter(function (ProductSupplierRelation $productSupplierRelation) {
                 return $productSupplierRelation->getSupplier()->getCanDropship() &&
                     $productSupplierRelation->getCanDropship();
             });
@@ -226,7 +226,6 @@ class AvailableInventoryValidator extends ConstraintValidator
         $inventoryItem = $product->getInventoryItems()->first();
         $availableWarehouses = [];
         foreach ($filteredSupplierRelations as $supplierRelation) {
-
             if (!$supplierRelation) {
                 continue;
             }
@@ -250,7 +249,8 @@ class AvailableInventoryValidator extends ConstraintValidator
             /** @var InventoryLevel $inventoryLevel */
             foreach ($inventoryItem->getInventoryLevels() as $inventoryLevel) {
                 if ($inventoryLevel->getWarehouse()->getCode() === $warehouse->getCode()) {
-                    if (($inventoryLevel->isManagedInventory() && $this->compareValues($inventoryLevel->getVirtualInventoryQty(), $qty))
+                    $comparison = $this->compareValues($inventoryLevel->getVirtualInventoryQty(), $qty);
+                    if (($inventoryLevel->isManagedInventory() && $comparison)
                         || !$inventoryLevel->isManagedInventory()
                     ) {
                         if (in_array($inventoryLevel->getWarehouse()->getId(), $warehousesIds)) {

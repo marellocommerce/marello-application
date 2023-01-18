@@ -132,7 +132,6 @@ class ProductUpdateInventoryRebalanceListener
                 }
             }
         }
-
     }
 
     /**

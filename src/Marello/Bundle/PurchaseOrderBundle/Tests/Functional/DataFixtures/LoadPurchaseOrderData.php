@@ -116,6 +116,7 @@ class LoadPurchaseOrderData extends AbstractFixture implements DependentFixtureI
             /** @var AssembledPriceList $assembledPriceList */
             $assembledPriceList = $product->getPrices()->first();
             $purchaseOrderItem
+                ->setStatus(PurchaseOrderItem::STATUS_PENDING)
                 ->setProduct($product)
                 ->setOrderedAmount($item['orderedAmount'])
                 ->setRowTotal($item['rowTotal'])

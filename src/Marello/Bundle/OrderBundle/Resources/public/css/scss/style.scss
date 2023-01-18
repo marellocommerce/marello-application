@@ -19,10 +19,16 @@
             font-size:12px;
         }
     }
-}
 
-.order-line-items .add-line-item {
-    margin-top: 10px;
+    .fields-row {
+        input[readonly="readonly"] {
+            border: none;
+        }
+    }
+
+    .add-line-item {
+        margin-top: 10px;
+    }
 }
 
 .order-line-item-product {
@@ -48,7 +54,6 @@
 
     input[type="text"] {
         width:80px;
-        text-align:right;
         float: left;
     }
 }

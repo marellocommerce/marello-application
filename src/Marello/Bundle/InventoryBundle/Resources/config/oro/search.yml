@@ -1,0 +1,23 @@
+search:
+    Marello\Bundle\InventoryBundle\Entity\Allocation:
+        alias:                          marello_allocation
+        label:                          marello.inventory.allocation.entity_plural_label
+        title_fields:                   [allocationNumber]
+        route:
+            name:                       marello_inventory_allocation_view
+            parameters:
+                id:                     id
+        search_template:                '@MarelloInventory/Allocation/searchResult.html.twig'
+        fields:
+            -
+                name:                   allocationNumber
+                target_type:            text
+                target_fields:          [allocationNumber]
+            -
+                name:                   order
+                relation_type:          many-to-one
+                relation_fields:
+                    -
+                        name:           orderNumber
+                        target_type:    text
+                        target_fields:  [orderNumber]

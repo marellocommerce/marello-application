@@ -22,7 +22,8 @@ class ChannelPriceProvider extends AbstractOrderItemFormChangesProvider
     public function __construct(
         protected Registry $registry,
         protected AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * {@inheritdoc}
@@ -81,6 +82,7 @@ class ChannelPriceProvider extends AbstractOrderItemFormChangesProvider
     public function getChannelPrice($channel, $product)
     {
         $data = ['hasPrice' => false];
+        /** @var AssembledChannelPriceList $assembledChannelPriceList */
         $assembledChannelPriceList = $this->getAssembledChannelPriceListRepository()->findOneBy(
             [
                 'channel' => $channel->getId(),
@@ -91,7 +93,11 @@ class ChannelPriceProvider extends AbstractOrderItemFormChangesProvider
 
         if ($assembledChannelPriceList) {
             /** @var ProductChannelPrice $price */
-            $price = $assembledChannelPriceList->getSpecialPrice() ?: $assembledChannelPriceList->getDefaultPrice();
+            $dateTime = new \DateTime('now', new \DateTimeZone('UTC'));
+            $price = $assembledChannelPriceList->getSpecialPrice()
+                    && $assembledChannelPriceList->getSpecialPrice()->isDateAvailable($dateTime)
+                ? $assembledChannelPriceList->getSpecialPrice()
+                : $assembledChannelPriceList->getDefaultPrice();
 
             if ($price instanceof BasePrice) {
                 $data['hasPrice'] = true;
@@ -120,7 +126,11 @@ class ChannelPriceProvider extends AbstractOrderItemFormChangesProvider
             return null;
         }
 
-        $price = $assembledPriceList->getSpecialPrice() ? : $assembledPriceList->getDefaultPrice();
+        $dateTime = new \DateTime('now', new \DateTimeZone('UTC'));
+        $price = $assembledPriceList->getSpecialPrice()
+                && $assembledPriceList->getSpecialPrice()->isDateAvailable($dateTime)
+            ? $assembledPriceList->getSpecialPrice()
+            : $assembledPriceList->getDefaultPrice();
 
         return $price instanceof BasePrice ? (float)$price->getValue() : null;
     }

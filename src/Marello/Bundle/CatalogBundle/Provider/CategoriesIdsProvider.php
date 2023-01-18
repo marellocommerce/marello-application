@@ -12,7 +12,8 @@ class CategoriesIdsProvider
     public function __construct(
         protected ObjectManager $manager,
         protected AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * @param Product $product

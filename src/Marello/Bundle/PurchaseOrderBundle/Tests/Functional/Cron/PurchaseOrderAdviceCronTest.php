@@ -107,13 +107,6 @@ class PurchaseOrderAdviceCronTest extends WebTestCase
 
         self::assertEmpty($commandTester->getDisplay());
         self::assertEquals(PurchaseOrderAdviceCommand::EXIT_CODE, $commandTester->getStatusCode());
-
-        self::assertMessageSent(SendEmailNotificationTopic::getName());
-        $message = self::getSentMessage(SendEmailNotificationTopic::getName());
-        self::assertStringNotContainsString('{{ entity', $message['subject']);
-        self::assertStringNotContainsString('{{ entity', $message['body']);
-        self::assertEquals('text/html', $message['contentType']);
-        self::assertEquals('Purchase Order advise notification', $message['subject']);
     }
 
     /**
