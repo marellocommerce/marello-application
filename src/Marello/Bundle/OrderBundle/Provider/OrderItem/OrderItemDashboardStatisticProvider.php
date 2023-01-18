@@ -21,7 +21,8 @@ class OrderItemDashboardStatisticProvider
         protected OrderRepository $orderRepository,
         protected ProductRepository $productRepository,
         protected AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * @param WidgetOptionBag $widgetOptions

@@ -34,7 +34,7 @@ class ProductFamilyBuilder
                 'warranty',
                 'suppliers',
                 'categories',
-                'image',
+                'image'
             ],
             'groupVisibility' => true,
         ]

@@ -95,8 +95,8 @@ class TaxCodeDatagridListener
     protected function addSelect(DatagridConfiguration $config)
     {
         $config->getOrmQuery()->addSelect(
-            sprintf('%s.code AS %s', $this->getJoinAlias(), $this->getDataName())
-        )->addGroupBy(sprintf('%s.code', $this->getJoinAlias()));
+            sprintf('IDENTITY(%s.taxCode) AS %s', $this->getAlias($config), $this->getDataName())
+        );
     }
 
     /**

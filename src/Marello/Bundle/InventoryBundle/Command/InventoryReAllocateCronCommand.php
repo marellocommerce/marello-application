@@ -90,12 +90,23 @@ class InventoryReAllocateCronCommand extends Command implements CronCommandInter
         $em = $this->doctrineHelper->getEntityManagerForClass(Allocation::class);
         /** @var Allocation $allocation */
         foreach ($allocations as $allocation) {
-            foreach ($this->allocationProvider->getWarehouseResults($allocation->getOrder(), $allocation) as $orderWarehouseResults) {
+            $whResults = $this->allocationProvider->getWarehouseResults($allocation->getOrder(), $allocation);
+            foreach ($whResults as $orderWarehouseResults) {
                 foreach ($orderWarehouseResults as $result) {
                     if (!in_array($result->getWarehouse()->getCode(), ['no_warehouse', 'could_not_allocate'])) {
                         $this->allocationProvider->allocateOrderToWarehouses($allocation->getOrder(), $allocation);
-                        $allocation->setState($this->getEnumValue('marello_allocation_state', AllocationStateStatusInterface::ALLOCATION_STATE_CLOSED));
-                        $allocation->setStatus($this->getEnumValue('marello_allocation_status', AllocationStateStatusInterface::ALLOCATION_STATUS_CLOSED));
+                        $allocation->setState(
+                            $this->getEnumValue(
+                                'marello_allocation_state',
+                                AllocationStateStatusInterface::ALLOCATION_STATE_CLOSED
+                            )
+                        );
+                        $allocation->setStatus(
+                            $this->getEnumValue(
+                                'marello_allocation_status',
+                                AllocationStateStatusInterface::ALLOCATION_STATUS_CLOSED
+                            )
+                        );
                         $em->persist($allocation);
                         $this->updateAllocationWorkflow($allocation);
                     }

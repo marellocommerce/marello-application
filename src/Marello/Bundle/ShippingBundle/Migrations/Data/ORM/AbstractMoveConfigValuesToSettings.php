@@ -7,6 +7,7 @@ use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\ShippingBundle\Method\Event\MethodRenamingEventDispatcherInterface;
 use Oro\Bundle\ConfigBundle\Entity\ConfigValue;
 use Oro\Bundle\ConfigBundle\Entity\Repository\ConfigValueRepository;
+use Oro\Bundle\DistributionBundle\Handler\ApplicationState;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
@@ -44,7 +45,7 @@ abstract class AbstractMoveConfigValuesToSettings extends AbstractFixture implem
     {
         $this->container = $container;
         $this->doctrine = $container->get('doctrine');
-        $this->installed = $container->hasParameter('installed') && $container->getParameter('installed');
+        $this->installed = $container->get(ApplicationState::class)->isInstalled();
         $this->dispatcher = $container->get('marello_shipping.method.event.dispatcher.method_renaming');
     }
 

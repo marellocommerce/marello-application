@@ -9,6 +9,7 @@ use Oro\Bundle\FormBundle\Form\Type\OroDateType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class PurchaseOrderType extends AbstractType
 {
@@ -40,6 +41,14 @@ class PurchaseOrderType extends AbstractType
                 [
                     'required' => false,
                     'label' => 'marello.purchaseorder.expected_delivery_date.label',
+                ]
+            )
+            ->add(
+                'purchaseOrderReference',
+                TextType::class,
+                [
+                    'required' => false,
+                    'label' => 'marello.purchaseorder.purchase_order_reference.label'
                 ]
             )
         ;
