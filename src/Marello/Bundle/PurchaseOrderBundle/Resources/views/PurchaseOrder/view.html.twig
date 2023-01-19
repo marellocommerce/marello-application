@@ -52,13 +52,7 @@
         </div>
     {% endset %}
     {% set items %}
-        <div class="widget-content">
-            <div class="row-fluid form-horizontal">
-                <div class="responsive-block">
-                    {{ dataGrid.renderGrid('marello-purchase-order-items', {'order_id': entity.id}) }}
-                </div>
-            </div>
-        </div>
+        {{ dataGrid.renderGrid('marello-purchase-order-items', {'order_id': entity.id}) }}
     {% endset %}
 
     {% set dataBlocks = [
