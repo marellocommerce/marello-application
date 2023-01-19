@@ -76,22 +76,10 @@
         </div>
     {% endset %}
     {% set items %}
-        <div class="widget-content">
-            <div class="row-fluid form-horizontal">
-                <div class="responsive-block">
-                    {{ dataGrid.renderGrid('marello-refund-ordered-items', {'refundId': entity.id}) }}
-                </div>
-            </div>
-        </div>
+        {{ dataGrid.renderGrid('marello-refund-ordered-items', {'refundId': entity.id}) }}
     {% endset %}
     {% set additionalItems %}
-        <div class="widget-content">
-            <div class="row-fluid form-horizontal">
-                <div class="responsive-block">
-                    {{ dataGrid.renderGrid('marello-refund-additional-items', {'refundId': entity.id}) }}
-                </div>
-            </div>
-        </div>
+        {{ dataGrid.renderGrid('marello-refund-additional-items', {'refundId': entity.id}) }}
     {% endset %}
     {% set dataBlocks = [
         {

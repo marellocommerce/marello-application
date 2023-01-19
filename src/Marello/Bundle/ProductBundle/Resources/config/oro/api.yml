@@ -23,10 +23,6 @@ api:
                     exclude: true
                 categoriesCodes:
                     exclude: true
-                createdAt:
-                    exclude: true
-                updatedAt:
-                    exclude: true
             filters:
                 exclusion_policy: all
                 fields:
@@ -35,10 +31,19 @@ api:
                         allow_array: true
                         property_path: sku
                         description: 'Filter by sku'
+                    saleschannels:
+                        data_type: string
+                        allow_array: true
+                        property_path: channels.code
+                        description: 'Filter products by SalesChannel'
                     createdAt:
-                        exclude: true
+                        data_type: datetime
+                        property_path: createdAt
+                        description: 'Filter products by created at'
                     updatedAt:
-                        exclude: true
+                        data_type: datetime
+                        property_path: updatedAt
+                        description: 'Filter products by updated at'
             actions:
                 create:
                     fields:
