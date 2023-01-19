@@ -27,37 +27,37 @@ class LoadOrderItemStatusData extends AbstractFixture implements VersionedFixtur
         [
             'id' => OrderItemStatusesInterface::OIS_PENDING,
             'name' => 'Pending',
-            'isDefaut'=> true
+            'isDefault'=> true
         ],
         [
             'id' => OrderItemStatusesInterface::OIS_PROCESSING,
             'name' => 'Processing',
-            'isDefaut'=> false
+            'isDefault'=> false
         ],
         [
             'id' => OrderItemStatusesInterface::OIS_SHIPPED,
             'name' => 'Shipped',
-            'isDefaut'=> false
+            'isDefault'=> false
         ],
         [
             'id' => OrderItemStatusesInterface::OIS_COMPLETE,
             'name' => 'Complete',
-            'isDefaut'=> false
+            'isDefault'=> false
         ],
         [
             'id' => self::DROPSHIPPING,
             'name' => 'Dropshipping',
-            'isDefaut'=> false
+            'isDefault'=> false
         ],
         [
             'id' => self::COULD_NOT_ALLOCATE,
             'name' => 'Could Not Allocate',
-            'isDefaut'=> false
+            'isDefault'=> false
         ],
         [
             'id' => self::WAITING_FOR_SUPPLY,
             'name' => 'Waiting For Supply',
-            'isDefaut'=> false
+            'isDefault'=> false
         ]
     ];
 

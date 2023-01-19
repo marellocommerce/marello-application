@@ -144,13 +144,7 @@
 
     {% set items %}
         {% set itemGridName = 'marello-'~ entity.invoiceType ~'-items' %}
-        <div class="widget-content">
-            <div class="row-fluid form-horizontal">
-                <div class="responsive-block">
-                    {{ dataGrid.renderGrid(itemGridName, {'entityId': entity.id}) }}
-                </div>
-            </div>
-        </div>
+        {{ dataGrid.renderGrid(itemGridName, {'entityId': entity.id}) }}
     {% endset %}
 
     {% set payments %}
