@@ -73,20 +73,6 @@ services:
         tags:
             - { name: oro.api.processor, action: customize_loaded_data, class: Marello\Bundle\ReturnBundle\Entity\ReturnEntity }
 
-#    marello_return.api.add_workflow_step_config:
-#        class: 'Marello\Bundle\WorkflowBundle\Api\Processor\ProcessWorkflowStepConfig'
-#        tags:
-#            - { name: oro.api.processor, action: get_config, class: Marello\Bundle\ReturnBundle\Entity\ReturnEntity }
-#
-#    marello_return.api.add_workflow_step:
-#        class: 'Marello\Bundle\WorkflowBundle\Api\Processor\ProcessWorkflowStep'
-#        arguments:
-#            - '@oro_workflow.manager'
-#            - '@oro_entity.doctrine_helper'
-#            - '@translator.default'
-#        tags:
-#            - { name: oro.api.processor, action: customize_loaded_data, class: Marello\Bundle\ReturnBundle\Entity\ReturnEntity }
-
     Marello\Bundle\ReturnBundle\Entity\Repository\ReturnItemRepository:
         parent: oro_entity.abstract_repository
         arguments:

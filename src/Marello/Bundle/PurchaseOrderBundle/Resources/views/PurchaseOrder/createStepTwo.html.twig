@@ -67,9 +67,10 @@
             'title': 'marello.core.ui.sections.general'|trans,
             'class': 'active',
             'subblocks': [{
-                'title': 'marello.purchaseorder.select_supplier'|trans,
                 'data': [
-                    form_row(form.supplier)
+                    form_row(form.supplier),
+                    form_row(form.purchaseOrderReference),
+                    form_row(form.dueDate)
                 ]
             }]
         },
@@ -101,17 +102,7 @@
                     totals
                 ]
             }]
-        },
-        'billing_shipping': {
-            'title': 'marello.purchaseorder.billing_and_shipping.label'|trans,
-            'class': '',
-            'subblocks': [{
-                'title': '',
-                'data': [
-                    form_row(form.dueDate),
-                ]
-            }]
-        },
+        }
     } %}
     {% set data = {
         'formErrors': form_errors(form)? form_errors(form) : null,

@@ -10,17 +10,28 @@
 
 {% block navButtons %}
     {{ UI.cancelButton(path('marello_supplier_supplier_index')) }}
-    {% set html = UI.saveAndCloseButton() %}
+    {% set html = UI.saveAndCloseButton({
+        'route': 'marello_supplier_supplier_view',
+        'params': {
+            'id': '$id'
+        }
+    }) %}
+    {% set html = html ~ UI.saveAndStayButton({
+        'route': 'marello_supplier_supplier_update',
+        'params': {
+            'id': '$id'
+        }
+    }) %}
     {{ UI.dropdownSaveButton({ 'html': html }) }}
 {% endblock navButtons %}
 
 {% block pageHeader %}
     {% if form.vars.value.id %}
         {% set breadcrumbs = {
-        'entity':      form.vars.value,
-        'indexPath':   path('marello_supplier_supplier_index'),
-        'indexLabel': 'marello.supplier.entity_plural_label'|trans,
-        'entityTitle': form.vars.value.name
+            'entity':      form.vars.value,
+            'indexPath':   path('marello_supplier_supplier_index'),
+            'indexLabel': 'marello.supplier.entity_plural_label'|trans,
+            'entityTitle': form.vars.value.name
         } %}
         {{ parent() }}
     {% else %}

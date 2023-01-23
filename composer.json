@@ -29,7 +29,7 @@
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-main": "4.0-dev"
+            "dev-main": "4.1-dev"
         }
     },
     "autoload": {

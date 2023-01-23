@@ -79,6 +79,7 @@ class InventoryManager implements InventoryManagerInterface
             $item->addInventoryLevel($level);
         }
         $warehouseType = $level->getWarehouse()->getWarehouseType()->getName();
+
         if ($item && $item->isEnableBatchInventory() &&
             $warehouseType !== WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
             if (empty($context->getInventoryBatches()) && (
@@ -141,6 +142,7 @@ class InventoryManager implements InventoryManagerInterface
         $level->setManagedInventory($context->getValue('isInventoryManaged'));
         /** @var InventoryBatch[] $updatedBatches */
         $updatedBatches = $context->getInventoryBatches();
+        // checken of dit nodig is of niet...
         if (count($updatedBatches) === 1 && $updatedBatches[0]['batch']->getId() === null) {
             $level->addInventoryBatch($updatedBatches[0]['batch']);
         }
