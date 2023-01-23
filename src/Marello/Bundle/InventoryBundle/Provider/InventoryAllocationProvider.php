@@ -4,7 +4,6 @@ namespace Marello\Bundle\InventoryBundle\Provider;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\QuantityWFAStrategy;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
@@ -20,6 +19,8 @@ use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
 use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
+use Marello\Bundle\InventoryBundle\Provider\AllocationExclusionInterface;
+use Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\QuantityWFAStrategy;
 
 class InventoryAllocationProvider
 {
@@ -38,7 +39,8 @@ class InventoryAllocationProvider
     public function __construct(
         protected DoctrineHelper $doctrineHelper,
         protected OrderWarehousesProviderInterface $warehousesProvider,
-        protected EventDispatcherInterface $eventDispatcher
+        protected EventDispatcherInterface $eventDispatcher,
+        protected AllocationExclusionInterface $exclusionProvider
     ) {}
 
     public function allocateOrderToWarehouses(
@@ -135,7 +137,8 @@ class InventoryAllocationProvider
 
         if (!$allocation) {
             $diff = [];
-            foreach ($order->getItems() as $orderItem) {
+            $orderItems = $this->exclusionProvider->getItems($order, $allocation);
+            foreach ($orderItems as $orderItem) {
                 if ($this->allOrderItems->contains($orderItem)) {
                     continue;
                 }
@@ -343,5 +346,14 @@ class InventoryAllocationProvider
             new InventoryUpdateEvent($context),
             InventoryUpdateEvent::NAME
         );
+    }
+
+    /**
+     * @param AllocationExclusionInterface $provider
+     * @return void
+     */
+    public function setAllocationExclusionProvider(AllocationExclusionInterface $provider)
+    {
+        $this->exclusionProvider = $provider;
     }
 }

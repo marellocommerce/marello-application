@@ -101,8 +101,6 @@ datagrids:
 
     marello-supplier-products-grid:
         extended_entity_name: Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation
-        inline_editing:
-            enable: true
         source:
             type: orm
             query:
@@ -112,11 +110,13 @@ datagrids:
                     - p.sku
                     - psr.quantityOfUnit
                     - psr.cost
+                    - supplier.currency
                 from:
                     - { table: MarelloProductBundle:ProductSupplierRelation, alias: psr }
                 join:
                     inner:
                         - { join: psr.product, alias: p }
+                        - { join: psr.supplier, alias: supplier }
                 where:
                     and:
                         - psr.product = p.id
@@ -136,14 +136,12 @@ datagrids:
                 data_name:        quantityOfUnit
                 label:            marello.supplier.quantity_of_unit.label
                 frontend_type:    string
-                inline_editing:
-                    enable: false
             cost:
                 data_name:        cost
                 label:            marello.supplier.cost.label
-                frontend_type:    currency
-                inline_editing:
-                    enable: true
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
         sorters:
             columns:
                 sku:

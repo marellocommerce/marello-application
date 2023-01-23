@@ -7,6 +7,7 @@ use Marello\Bundle\InvoiceBundle\Entity\AbstractInvoice;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\OrderBundle\Migrations\Data\ORM\LoadOrderItemStatusData;
+use Marello\Bundle\OrderBundle\Model\OrderItemStatusesInterface;
 use Marello\Bundle\OrderBundle\Provider\OrderItem\ShippingPreparedOrderItemsForNotificationProvider;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Twig\Extension\AbstractExtension;
@@ -114,7 +115,8 @@ class OrderExtension extends AbstractExtension
     {
         return [
             LoadOrderItemStatusData::DROPSHIPPING,
-            LoadOrderItemStatusData::SHIPPED
+            OrderItemStatusesInterface::OIS_SHIPPED,
+            OrderItemStatusesInterface::OIS_COMPLETE
         ];
     }
 

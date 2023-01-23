@@ -112,8 +112,9 @@ marello:
             discount_percent.label: Discount Percent
             tax_percent.label:      Tax Percent
             return_items.label:     Returned items
-            inventory.label:     Inventory Available
+            inventory.label:     Available
             status.label:        Status
+            allocation_exclusion.label: Exclude from Allocation Process
             organization.label: Organization
 
             messages:
@@ -203,6 +204,7 @@ marello:
             payment_options.label: Payment Options
             shipping_options.label: Shipping Options
             override_shipping_cost.label: Override Shipping Cost
+            orderitem.allocation_exclusion.label: Excl Allocation
 
         subtotals:
             discount.label: Discount Amount
