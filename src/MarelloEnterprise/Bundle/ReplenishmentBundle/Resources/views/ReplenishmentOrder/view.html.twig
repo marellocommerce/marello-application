@@ -34,13 +34,7 @@
         </div>
     {% endset %}
     {% set items %}
-        <div class="widget-content">
-            <div class="row-fluid form-horizontal">
-                <div class="responsive-block">
-                    {{ dataGrid.renderGrid('marello-replenishment-order-items-grid', {'replOrderId': entity.id}) }}
-                </div>
-            </div>
-        </div>
+        {{ dataGrid.renderGrid('marello-replenishment-order-items-grid', {'replOrderId': entity.id}) }}
     {% endset %}
 
     {% set dataBlocks = [
