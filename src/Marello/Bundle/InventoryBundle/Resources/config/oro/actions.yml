@@ -1,4 +1,7 @@
 operations:
+    DELETE:
+        exclude_entities: ['MarelloInventoryBundle:Allocation']
+
     marello_inventory_item_enable_batches:
         label: marello.inventory.inventoryitem.enable_batch_inventory.label
         enabled: true

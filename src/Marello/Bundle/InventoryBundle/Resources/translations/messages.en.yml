@@ -208,7 +208,7 @@ marello:
         reshipment:
             label:                          Create Shipment
             quantity.validation_error:      Quantity must be equal to or less than ordered
-            button.label:                   Reship
+            button.label:                   Reship Order
         information.label:                  Inventory Information
         movements.label:                    Inventory Movements
         balancing:
