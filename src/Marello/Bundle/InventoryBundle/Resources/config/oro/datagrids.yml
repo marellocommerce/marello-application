@@ -533,6 +533,8 @@ datagrids:
                 icon:           eye
                 acl_recource:   marello_inventory_inventory_view
                 rowAction:      true
+        action_configuration:
+            delete: false
 
     marello-allocation-for-context-grid:
         extends: marello-allocation-grid

@@ -78,8 +78,6 @@ class AllocationCompleteListener
                 // use the InventoryTotalCalculator::getTotalAllocationQtyConfirmed for a more coherent calculation of
                 // allocation item totals, this is meant for this specific purpose
                 // don't reinvent the wheel.
-
-
                 // all allocation items
                 $allocationItems = $this->doctrineHelper
                     ->getEntityRepositoryForClass(AllocationItem::class)

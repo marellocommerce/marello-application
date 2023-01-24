@@ -24,6 +24,9 @@ use Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\QuantityWFAStrategy;
 
 class InventoryAllocationProvider
 {
+    /** @var AllocationExclusionInterface $exclusionProvider */
+    protected $exclusionProvider;
+
     /** @var ArrayCollection $allOrderItems */
     protected $allOrderItems;
 
@@ -39,8 +42,7 @@ class InventoryAllocationProvider
     public function __construct(
         protected DoctrineHelper $doctrineHelper,
         protected OrderWarehousesProviderInterface $warehousesProvider,
-        protected EventDispatcherInterface $eventDispatcher,
-        protected AllocationExclusionInterface $exclusionProvider
+        protected EventDispatcherInterface $eventDispatcher
     ) {}
 
     public function allocateOrderToWarehouses(
