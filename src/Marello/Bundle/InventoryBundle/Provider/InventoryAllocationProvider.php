@@ -127,10 +127,15 @@ class InventoryAllocationProvider
                 $newAllocation->setShippingAddress($shippingAddress);
 
                 $this->createAllocationItems($result, $newAllocation);
+                $allocationContext = AllocationContextInterface::ALLOCATION_CONTEXT_ORDER;
+                if ($callback) {
+                    $allocationContext = AllocationContextInterface::ALLOCATION_CONTEXT_RESHIPMENT;
+                }
+                
                 $newAllocation->setAllocationContext(
                     $this->getEnumValue(
                         AllocationContextInterface::ALLOCATION_CONTEXT_ENUM_CODE,
-                        AllocationContextInterface::ALLOCATION_CONTEXT_ORDER
+                        $allocationContext
                     )
                 );
 
