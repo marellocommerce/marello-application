@@ -4,6 +4,7 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Provider;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Marello\Bundle\InventoryBundle\Provider\AllocationContextInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
@@ -82,14 +83,20 @@ class InventoryAllocationProvider extends BaseAllocationProvider
                 $parentAllocation->setOrganization($order->getOrganization());
                 $parentAllocation->setState(
                     $this->getEnumValue(
-                        'marello_allocation_state',
+                        AllocationStateStatusInterface::ALLOCATION_STATE_ENUM_CODE,
                         AllocationStateStatusInterface::ALLOCATION_STATE_AVAILABLE
                     )
                 );
                 $parentAllocation->setStatus(
                     $this->getEnumValue(
-                        'marello_allocation_status',
+                        AllocationStateStatusInterface::ALLOCATION_STATUS_ENUM_CODE,
                         AllocationStateStatusInterface::ALLOCATION_STATUS_ON_HAND
+                    )
+                );
+                $parentAllocation->setAllocationContext(
+                    $this->getEnumValue(
+                        AllocationContextInterface::ALLOCATION_CONTEXT_ENUM_CODE,
+                        AllocationContextInterface::ALLOCATION_CONTEXT_CONSOLIDATION
                     )
                 );
                 $parentAllocation->setWarehouse($this->consolidationWarehouse);
