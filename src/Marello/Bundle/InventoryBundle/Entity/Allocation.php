@@ -186,20 +186,6 @@ class Allocation extends ExtendAllocation implements
     protected $sourceEntity;
 
     /**
-     * @ORM\Column(name="comment", type="text", nullable=true)
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "dataaudit"={
-     *              "auditable"=true
-     *          }
-     *      }
-     * )
-     *
-     * @var string
-     */
-    protected $comment;
-
-    /**
      * @ORM\Column(name="allocation_number", type="string", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
@@ -236,6 +222,18 @@ class Allocation extends ExtendAllocation implements
      * )
      */
     protected $status;
+
+    /**
+     * @var \Extend\Entity\EV_Marello_Allocation_AllocationContext
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $allocationContext;
 
     /**
      * Allocation constructor.
@@ -446,26 +444,6 @@ class Allocation extends ExtendAllocation implements
     }
 
     /**
-     * @return string
-     */
-    public function getComment()
-    {
-        return $this->comment;
-    }
-
-    /**
-     * @param string $comment
-     *
-     * @return $this
-     */
-    public function setComment($comment)
-    {
-        $this->comment = $comment;
-
-        return $this;
-    }
-
-    /**
      * @return \Extend\Entity\EV_Marello_Allocation_State
      */
     public function getState(): AbstractEnumValue
@@ -499,6 +477,25 @@ class Allocation extends ExtendAllocation implements
     public function setStatus($status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return \Extend\Entity\EV_Marello_Allocation_AllocationContext
+     */
+    public function getAllocationContext(): AbstractEnumValue
+    {
+        return $this->allocationContext;
+    }
+
+    /**
+     * @param \Extend\Entity\EV_Marello_Allocation_AllocationContext $allocationContext
+     * @return $this
+     */
+    public function setAllocationContext($allocationContext): self
+    {
+        $this->allocationContext = $allocationContext;
 
         return $this;
     }
