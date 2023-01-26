@@ -69,13 +69,13 @@ class InventoryAllocationProvider
                 $newAllocation->setOrganization($order->getOrganization());
                 $newAllocation->setState(
                     $this->getEnumValue(
-                        'marello_allocation_state',
+                        AllocationStateStatusInterface::ALLOCATION_STATE_ENUM_CODE,
                         AllocationStateStatusInterface::ALLOCATION_STATE_AVAILABLE
                     )
                 );
                 $newAllocation->setStatus(
                     $this->getEnumValue(
-                        'marello_allocation_status',
+                        AllocationStateStatusInterface::ALLOCATION_STATUS_ENUM_CODE,
                         AllocationStateStatusInterface::ALLOCATION_STATUS_ON_HAND
                     )
                 );
@@ -84,13 +84,13 @@ class InventoryAllocationProvider
                 if ($result->getWarehouse()->getCode() === QuantityWFAStrategy::EMPTY_WAREHOUSE_CODE) {
                     $newAllocation->setState(
                         $this->getEnumValue(
-                            'marello_allocation_state',
+                            AllocationStateStatusInterface::ALLOCATION_STATE_ENUM_CODE,
                             AllocationStateStatusInterface::ALLOCATION_STATE_WFS
                         )
                     );
                     $newAllocation->setStatus(
                         $this->getEnumValue(
-                            'marello_allocation_status',
+                            AllocationStateStatusInterface::ALLOCATION_STATUS_ENUM_CODE,
                             AllocationStateStatusInterface::ALLOCATION_STATUS_CNA
                         )
                     );
@@ -98,13 +98,13 @@ class InventoryAllocationProvider
                 if ($result->getWarehouse()->getCode() === AllocationStateStatusInterface::ALLOCATION_STATUS_CNA) {
                     $newAllocation->setState(
                         $this->getEnumValue(
-                            'marello_allocation_state',
+                            AllocationStateStatusInterface::ALLOCATION_STATE_ENUM_CODE,
                             AllocationStateStatusInterface::ALLOCATION_STATE_ALERT
                         )
                     );
                     $newAllocation->setStatus(
                         $this->getEnumValue(
-                            'marello_allocation_status',
+                            AllocationStateStatusInterface::ALLOCATION_STATUS_ENUM_CODE,
                             AllocationStateStatusInterface::ALLOCATION_STATUS_CNA
                         )
                     );
@@ -113,7 +113,7 @@ class InventoryAllocationProvider
                 if ($warehouseType === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
                     $newAllocation->setStatus(
                         $this->getEnumValue(
-                            'marello_allocation_status',
+                            AllocationStateStatusInterface::ALLOCATION_STATUS_ENUM_CODE,
                             AllocationStateStatusInterface::ALLOCATION_STATUS_DROPSHIP
                         )
                     );
@@ -127,10 +127,23 @@ class InventoryAllocationProvider
                 $newAllocation->setShippingAddress($shippingAddress);
 
                 $this->createAllocationItems($result, $newAllocation);
+                $newAllocation->setAllocationContext(
+                    $this->getEnumValue(
+                        AllocationContextInterface::ALLOCATION_CONTEXT_ENUM_CODE,
+                        AllocationContextInterface::ALLOCATION_CONTEXT_ORDER
+                    )
+                );
+
                 // allocation has been rejected or needs to be reallocated
                 // set allocation as the source for the new allocation for reference
                 if ($allocation) {
                     $newAllocation->setSourceEntity($allocation);
+                    $newAllocation->setAllocationContext(
+                        $this->getEnumValue(
+                            AllocationContextInterface::ALLOCATION_CONTEXT_ENUM_CODE,
+                            AllocationContextInterface::ALLOCATION_CONTEXT_REALLOCATION
+                        )
+                    );
                 }
                 $em->persist($newAllocation);
                 $this->newAllocations[] = $newAllocation;
@@ -153,14 +166,20 @@ class InventoryAllocationProvider
                 $diffAllocation->setOrder($order);
                 $diffAllocation->setState(
                     $this->getEnumValue(
-                        'marello_allocation_state',
+                        AllocationStateStatusInterface::ALLOCATION_STATE_ENUM_CODE,
                         AllocationStateStatusInterface::ALLOCATION_STATE_ALERT
                     )
                 );
                 $diffAllocation->setStatus(
                     $this->getEnumValue(
-                        'marello_allocation_status',
+                        AllocationStateStatusInterface::ALLOCATION_STATUS_ENUM_CODE,
                         AllocationStateStatusInterface::ALLOCATION_STATUS_CNA
+                    )
+                );
+                $diffAllocation->setAllocationContext(
+                    $this->getEnumValue(
+                        AllocationContextInterface::ALLOCATION_CONTEXT_ENUM_CODE,
+                        AllocationContextInterface::ALLOCATION_CONTEXT_ORDER
                     )
                 );
                 $allocationItem = new AllocationItem();
