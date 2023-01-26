@@ -24,6 +24,7 @@ marello:
         prices.label:               Product Prices
         replenishment.label:        Replenishment
         manufacturing_code.label:   Manufacturing Code
+        barcode.label:              Barcode
         image.label:                Image
         categories.label:           Categories
         suppliers.label:            Suppliers

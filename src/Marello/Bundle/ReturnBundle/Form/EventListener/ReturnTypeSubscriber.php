@@ -4,6 +4,7 @@ namespace Marello\Bundle\ReturnBundle\Form\EventListener;
 
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\OrderBundle\Migrations\Data\ORM\LoadOrderItemStatusData;
+use Marello\Bundle\OrderBundle\Model\OrderItemStatusesInterface;
 use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
 use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -35,7 +36,11 @@ class ReturnTypeSubscriber implements EventSubscriberInterface
             ->getItems()
             ->map(function (OrderItem $orderItem) use ($return) {
                 $status = $orderItem->getStatus();
-                $statuses = [LoadOrderItemStatusData::DROPSHIPPING, LoadOrderItemStatusData::SHIPPED];
+                $statuses = [
+                    LoadOrderItemStatusData::DROPSHIPPING,
+                    OrderItemStatusesInterface::OIS_SHIPPED,
+                    OrderItemStatusesInterface::OIS_COMPLETE
+                ];
                 if (in_array($status->getId(), $statuses)) {
                     $return->addReturnItem(new ReturnItem($orderItem));
                 }

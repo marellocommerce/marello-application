@@ -124,13 +124,11 @@ datagrids:
                     - lr
                     - (lr.inventoryAlteration) AS inventoryDiff
                     - (lr.allocatedInventoryAlteration) AS allocatedInventoryDiff
-                    - (GROUP_CONCAT(CONCAT(ib.batchNumber, ':&nbsp;', ib.quantity) SEPARATOR '<br/>')) AS batchNumber
                 from:
                     - { table: MarelloInventoryBundle:InventoryLevelLogRecord, alias: lr }
                 join:
                     left:
                         - { join: lr.inventoryLevel, alias: il }
-                        - { join: il.inventoryBatches, alias: ib }
                 where:
                     and:
                         - IDENTITY(lr.inventoryItem) = :inventoryItemId
@@ -143,32 +141,35 @@ datagrids:
                 type:           twig
                 frontend_type:  html
                 template:       '@MarelloInventory/Datagrid/InventoryLevel/diff.html.twig'
+                order:          10
             allocatedInventoryDiff:
                 data_name:      allocatedInventoryDiff
                 label:          marello.inventory.inventorylevellogrecord.allocated_inventory_alteration.label
                 type:           twig
                 frontend_type:  html
                 template:       '@MarelloInventory/Datagrid/InventoryLevel/diff.html.twig'
-            batchNumber:
-                data_name:      batchNumber
-                frontend_type:  html
+                order:          15
             changeTrigger:
                 data_name:      changeTrigger
                 label:          marello.inventory.inventorylevellogrecord.change_trigger.label
                 type:           translatable
                 domain:         MarelloInventoryLevelChangeTrigger
                 frontend_type:  string
+                order:          30
             user:
                 label:          marello.inventory.inventorylevellogrecord.user.label
                 frontend_type:  string
+                order:          35
             subject:
                 label:          marello.inventory.inventorylevellogrecord.subject_type.label
                 type:           twig
                 frontend_type:  html
                 template:       '@MarelloInventory/Datagrid/InventoryLevel/subject.html.twig'
+                order:          40
             createdAt:
                 label:          oro.ui.created_at
                 frontend_type:  datetime
+                order:          45
         sorters:
             columns:
                 createdAt:
@@ -419,6 +420,7 @@ datagrids:
                     - parent.allocationNumber as parentAllocation
                     - sourceEntity.allocationNumber as allocationSource
                     - wh.label as warehouse
+                    - IDENTITY(allocation.allocationContext) as allocationContextId
                     - IDENTITY(allocation.state) as allocationStateId
                     - IDENTITY(allocation.status) as allocationStatusId
                 from:
@@ -453,6 +455,10 @@ datagrids:
             warehouse:
                 label:          marello.inventory.allocation.warehouse.label
                 frontend_type:  string
+            allocationContextId:
+                label:          marello.inventory.allocation.allocationContext.label
+                choices:        "@oro_entity_extend.enum_value_provider->getEnumChoicesByCode('marello_allocation_allocationcontext')"
+                frontend_type:  select
             allocationStateId:
                 label:          marello.inventory.allocation.state.label
                 choices:        "@oro_entity_extend.enum_value_provider->getEnumChoicesByCode('marello_allocation_state')"
@@ -484,6 +490,10 @@ datagrids:
                 warehouse:
                     type:       string
                     data_name:  warehouse
+                allocationContextId:
+                    type:      enum
+                    data_name: allocationContextId
+                    enum_code: marello_allocation_allocationcontext
                 allocationStateId:
                     type:      enum
                     data_name: allocationStateId

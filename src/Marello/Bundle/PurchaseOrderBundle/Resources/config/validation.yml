@@ -9,6 +9,9 @@ Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder:
             - Type:
                   type: \DateTimeInterface
                   message: marello.purchaseorder.purchaseorder.due_date.type.message
+        purchaseOrderReference:
+            - Marello\Bundle\CoreBundle\Validator\Constraints\CodeRegex:
+                  message: marello.purchaseorder.purchaseorder.purchase_order_reference.message
 
 Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem:
     properties:
