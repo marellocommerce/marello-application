@@ -2,11 +2,19 @@
 
 namespace Marello\Bundle\InventoryBundle\Model;
 
+use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 
 class InventoryTotalCalculator
 {
+    /**
+     * @var DoctrineHelper
+     */
+    protected $doctrineHelper;
+
     /**
      * {@inheritdoc}
      * @param InventoryItem $item
@@ -35,6 +43,32 @@ class InventoryTotalCalculator
     public function getTotalVirtualInventoryQty(InventoryItem $item)
     {
         return $this->calculateTotalVirtualInventoryQuantity($item);
+    }
+
+    /**
+     * {@inheritdoc}
+     * @param AllocationItem $currentItem
+     * @return int
+     */
+    public function getTotalAllocationQtyConfirmed($currentItem)
+    {
+        $totalInventoryQty = 0;
+        if ($currentItem instanceof OrderItem || $currentItem instanceof AllocationItem) {
+            $orderItem = ($currentItem instanceof OrderItem) ? $currentItem : $currentItem->getOrderItem();
+            $allAllocationItems = $this
+                ->doctrineHelper
+                ->getEntityRepositoryForClass(AllocationItem::class)
+                ->findBy(['orderItem' => $orderItem]);
+
+            /** @var AllocationItem $allocationItem */
+            foreach ($allAllocationItems as $allocationItem) {
+                $totalInventoryQty += $allocationItem->getQuantityConfirmed();
+            }
+
+            return $totalInventoryQty;
+        }
+
+        return $totalInventoryQty;
     }
 
     /**
@@ -89,5 +123,13 @@ class InventoryTotalCalculator
         $totalVirtualQty = ($totalInventoryQty - $totalAllocatedInventoryQty);
 
         return $totalVirtualQty;
+    }
+
+    /**
+     * @param DoctrineHelper $doctrineHelper
+     */
+    public function setDoctrineHelper(DoctrineHelper $doctrineHelper)
+    {
+        $this->doctrineHelper   = $doctrineHelper;
     }
 }

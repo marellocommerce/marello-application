@@ -13,6 +13,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
 
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use Marello\Bundle\OrderBundle\Entity\OrderAwareInterface;
 use Marello\Bundle\InventoryBundle\Model\ExtendAllocation;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
@@ -48,7 +49,8 @@ use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
  */
 class Allocation extends ExtendAllocation implements
     DerivedPropertyAwareInterface,
-    OrganizationAwareInterface
+    OrganizationAwareInterface,
+    OrderAwareInterface
 {
     use EntityCreatedUpdatedAtTrait;
     use AuditableOrganizationAwareTrait;
@@ -184,20 +186,6 @@ class Allocation extends ExtendAllocation implements
     protected $sourceEntity;
 
     /**
-     * @ORM\Column(name="comment", type="text", nullable=true)
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "dataaudit"={
-     *              "auditable"=true
-     *          }
-     *      }
-     * )
-     *
-     * @var string
-     */
-    protected $comment;
-
-    /**
      * @ORM\Column(name="allocation_number", type="string", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
@@ -234,6 +222,18 @@ class Allocation extends ExtendAllocation implements
      * )
      */
     protected $status;
+
+    /**
+     * @var \Extend\Entity\EV_Marello_Allocation_AllocationContext
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $allocationContext;
 
     /**
      * Allocation constructor.
@@ -294,7 +294,7 @@ class Allocation extends ExtendAllocation implements
     /**
      * @return Order
      */
-    public function getOrder()
+    public function getOrder(): Order
     {
         return $this->order;
     }
@@ -304,7 +304,7 @@ class Allocation extends ExtendAllocation implements
      *
      * @return $this
      */
-    public function setOrder(Order $order)
+    public function setOrder(Order $order): self
     {
         $this->order = $order;
 
@@ -354,7 +354,7 @@ class Allocation extends ExtendAllocation implements
      * @param Allocation|null $parent
      * @return $this
      */
-    public function setParent(Allocation $parent = null)
+    public function setParent(Allocation $parent = null): self
     {
         $this->parent = $parent;
 
@@ -373,7 +373,7 @@ class Allocation extends ExtendAllocation implements
      * @param Allocation $child
      * @return $this
      */
-    public function addChild(Allocation $child)
+    public function addChild(Allocation $child): self
     {
         if (!$this->hasChild($child)) {
             $child->setParent($this);
@@ -388,7 +388,7 @@ class Allocation extends ExtendAllocation implements
      *
      * @return $this
      */
-    public function removeChild(Allocation $child)
+    public function removeChild(Allocation $child): self
     {
         if ($this->hasChild($child)) {
             $child->setParent(null);
@@ -444,26 +444,6 @@ class Allocation extends ExtendAllocation implements
     }
 
     /**
-     * @return string
-     */
-    public function getComment()
-    {
-        return $this->comment;
-    }
-
-    /**
-     * @param string $comment
-     *
-     * @return $this
-     */
-    public function setComment($comment)
-    {
-        $this->comment = $comment;
-
-        return $this;
-    }
-
-    /**
      * @return \Extend\Entity\EV_Marello_Allocation_State
      */
     public function getState(): AbstractEnumValue
@@ -497,6 +477,25 @@ class Allocation extends ExtendAllocation implements
     public function setStatus($status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return \Extend\Entity\EV_Marello_Allocation_AllocationContext
+     */
+    public function getAllocationContext(): AbstractEnumValue
+    {
+        return $this->allocationContext;
+    }
+
+    /**
+     * @param \Extend\Entity\EV_Marello_Allocation_AllocationContext $allocationContext
+     * @return $this
+     */
+    public function setAllocationContext($allocationContext): self
+    {
+        $this->allocationContext = $allocationContext;
 
         return $this;
     }

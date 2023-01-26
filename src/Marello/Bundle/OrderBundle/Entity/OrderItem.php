@@ -325,6 +325,23 @@ class OrderItem extends ExtendOrderItem implements
     protected $productUnit;
 
     /**
+     * @ORM\Column(name="allocation_exclusion", type="boolean", nullable=true, options={"default"=false})
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=false
+     *          },
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var boolean
+     */
+    protected $allocationExclusion = false;
+
+    /**
      * OrderItem constructor.
      */
     public function __construct()
@@ -749,6 +766,25 @@ class OrderItem extends ExtendOrderItem implements
     public function setProductUnit($productUnit)
     {
         $this->productUnit = $productUnit;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAllocationExclusion(): bool
+    {
+        return $this->allocationExclusion;
+    }
+
+    /**
+     * @param bool $allocationExclusion
+     * @return $this
+     */
+    public function setAllocationExclusion(bool $allocationExclusion = false): self
+    {
+        $this->allocationExclusion = $allocationExclusion;
 
         return $this;
     }

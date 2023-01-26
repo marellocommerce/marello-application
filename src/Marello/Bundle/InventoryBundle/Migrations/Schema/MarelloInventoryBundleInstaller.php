@@ -32,7 +32,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
      */
     public function getMigrationVersion()
     {
-        return 'v2_6_3';
+        return 'v2_6_5';
     }
 
     /**
@@ -187,6 +187,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addColumn('inventory_level_id', 'integer', ['notnull' => false]);
         $table->addColumn('inventory_item_id', 'integer', ['notnull' => true]);
         $table->addColumn('warehouse_name', 'string', ['notnull' => true, 'length' => 255]);
+        $table->addColumn('inventory_batch', 'string', ['notnull' => false, 'length' => 255]);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['inventory_item_id']);
         $table->addIndex(['inventory_level_id']);
@@ -314,8 +315,6 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addColumn('warehouse_id', 'integer', ['notnull' => false]);
         $table->addColumn('parent_id', 'integer', ['notnull' => false]);
         $table->addColumn('source_entity_id', 'integer', ['notnull' => false]);
-        $table->addColumn('type', 'string', ['notnull' => false]);
-        $table->addColumn('comment', 'text', ['notnull' => false]);
         $table->addColumn('allocation_number', 'string', ['length' => 255, 'notnull' => false]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
@@ -341,6 +340,17 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
             $table,
             'state',
             'marello_allocation_state',
+            false,
+            false,
+            [
+                'extend' => ['owner' => ExtendScope::OWNER_SYSTEM],
+            ]
+        );
+        $this->extendExtension->addEnumField(
+            $schema,
+            $table,
+            'allocationContext',
+            'marello_allocation_allocationcontext',
             false,
             false,
             [
