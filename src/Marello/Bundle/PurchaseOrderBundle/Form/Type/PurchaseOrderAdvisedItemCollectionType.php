@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\Form\Type;
 
+use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
 use Oro\Bundle\FormBundle\Form\Type\MultipleEntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -17,7 +18,7 @@ class PurchaseOrderAdvisedItemCollectionType extends AbstractType
     {
         $resolver->setDefaults([
             'add_acl_resource'      => 'marello_purchase_order_view',
-            'class'                 => 'MarelloPurchaseOrderBundle:PurchaseOrderItem',
+            'class'                 => PurchaseOrderItem::class,
             'default_element'       => 'default_purchase_order_item',
             'required'              => false,
             'selector_window_title' => 'marello.product.entity_label',
