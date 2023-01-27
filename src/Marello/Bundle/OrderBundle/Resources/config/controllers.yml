@@ -14,6 +14,7 @@ services:
             - [setContainer, ['@Psr\Container\ContainerInterface']]
         tags:
             - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: oro_currency.helper.currency_name, key: Oro\Bundle\CurrencyBundle\Utils\CurrencyNameHelper }
 
     Marello\Bundle\OrderBundle\Controller\OrderDashboardController:
         calls:
