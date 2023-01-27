@@ -1,5 +1,11 @@
 {% import '@OroDataGrid/macros.html.twig' as dataGrid %}
 
 {% if item and item is defined %}
-    {{ dataGrid.renderGrid('marello-inventory-log', {'inventoryItemId': item.id}) }}
+    <div class="widget-content">
+        <div class="row-fluid form-horizontal">
+            <div class="responsive-block">
+                {{ dataGrid.renderGrid('marello-inventory-log', {'inventoryItemId': item.id}) }}
+            </div>
+        </div>
+    </div>
 {% endif %}
