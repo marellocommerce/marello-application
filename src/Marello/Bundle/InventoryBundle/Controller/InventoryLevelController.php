@@ -37,6 +37,7 @@ class InventoryLevelController extends AbstractController
     }
 
     /**
+     * @deprecated Chart has been removed from inventory item view
      * @Route(
      *     path="/chart/{id}",
      *     requirements={"id"="\d+"},
