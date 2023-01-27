@@ -8,13 +8,6 @@
         'channelId': channelId,
     } %}
 
-    <style type="text/css">
-        .grid-widget-content .grid,
-        .grid-widget-content .table {
-            margin-bottom: 0;
-        }
-    </style>
-
     {% block content %}
         {{ dataGrid.renderGrid(gridName, params) }}
         <input type="hidden" name="appendProducts" id="appendProducts" value="{{ app.request.get('added') }}" />
