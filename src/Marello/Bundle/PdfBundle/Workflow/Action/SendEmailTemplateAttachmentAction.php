@@ -164,6 +164,11 @@ class SendEmailTemplateAttachmentAction extends AbstractSendEmail
         $emailModel->setType($emailTemplate->getType());
         $emailModel->setBcc($this->getBcc($context));
 
+        $emailContext = $this->contextAccessor->getValue($context, $this->options['context']);
+        if ($emailContext) {
+            $emailModel->setContexts([$emailContext]);
+        }
+
         if ($entity instanceof OrganizationAwareInterface) {
             $emailModel->setOrganization($entity->getOrganization());
         } else {

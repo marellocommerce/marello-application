@@ -21,7 +21,8 @@ class ProductPriceType extends AbstractType
 
     public function __construct(
         private TranslatorInterface $translator
-    ) {}
+    ) {
+    }
 
     /**
      * {@inheritdoc}

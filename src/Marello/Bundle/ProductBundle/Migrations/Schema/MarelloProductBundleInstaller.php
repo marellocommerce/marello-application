@@ -29,7 +29,7 @@ class MarelloProductBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_12';
+        return 'v1_13';
     }
 
     /**
@@ -75,6 +75,7 @@ class MarelloProductBundleInstaller implements
         $table->addColumn('name', 'string', ['length' => 255]);
         $table->addColumn('sku', 'string', ['length' => 255]);
         $table->addColumn('manufacturing_code', 'string', ['length' => 255, 'notnull' => false]);
+        $table->addColumn('barcode', 'string', ['length' => 255, 'notnull' => false]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->addColumn('type', 'string', ['notnull' => false, 'length' => 255]);

@@ -4,7 +4,6 @@ namespace Marello\Bundle\InventoryBundle\Provider;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\QuantityWFAStrategy;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
@@ -20,6 +19,8 @@ use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
 use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
+use Marello\Bundle\InventoryBundle\Provider\AllocationExclusionInterface;
+use Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\QuantityWFAStrategy;
 
 class InventoryAllocationProvider
 {
@@ -31,6 +32,9 @@ class InventoryAllocationProvider
 
     /** @var EventDispatcherInterface $eventDispatcher */
     protected $eventDispatcher;
+
+    /** @var AllocationExclusionInterface $exclusionProvider */
+    protected $exclusionProvider;
 
     /** @var ArrayCollection $allOrderItems */
     protected $allOrderItems;
@@ -85,13 +89,13 @@ class InventoryAllocationProvider
                 $newAllocation->setOrganization($order->getOrganization());
                 $newAllocation->setState(
                     $this->getEnumValue(
-                        'marello_allocation_state',
+                        AllocationStateStatusInterface::ALLOCATION_STATE_ENUM_CODE,
                         AllocationStateStatusInterface::ALLOCATION_STATE_AVAILABLE
                     )
                 );
                 $newAllocation->setStatus(
                     $this->getEnumValue(
-                        'marello_allocation_status',
+                        AllocationStateStatusInterface::ALLOCATION_STATUS_ENUM_CODE,
                         AllocationStateStatusInterface::ALLOCATION_STATUS_ON_HAND
                     )
                 );
@@ -100,13 +104,13 @@ class InventoryAllocationProvider
                 if ($result->getWarehouse()->getCode() === QuantityWFAStrategy::EMPTY_WAREHOUSE_CODE) {
                     $newAllocation->setState(
                         $this->getEnumValue(
-                            'marello_allocation_state',
+                            AllocationStateStatusInterface::ALLOCATION_STATE_ENUM_CODE,
                             AllocationStateStatusInterface::ALLOCATION_STATE_WFS
                         )
                     );
                     $newAllocation->setStatus(
                         $this->getEnumValue(
-                            'marello_allocation_status',
+                            AllocationStateStatusInterface::ALLOCATION_STATUS_ENUM_CODE,
                             AllocationStateStatusInterface::ALLOCATION_STATUS_CNA
                         )
                     );
@@ -114,28 +118,28 @@ class InventoryAllocationProvider
                 if ($result->getWarehouse()->getCode() === AllocationStateStatusInterface::ALLOCATION_STATUS_CNA) {
                     $newAllocation->setState(
                         $this->getEnumValue(
-                            'marello_allocation_state',
+                            AllocationStateStatusInterface::ALLOCATION_STATE_ENUM_CODE,
                             AllocationStateStatusInterface::ALLOCATION_STATE_ALERT
                         )
                     );
                     $newAllocation->setStatus(
                         $this->getEnumValue(
-                            'marello_allocation_status',
+                            AllocationStateStatusInterface::ALLOCATION_STATUS_ENUM_CODE,
                             AllocationStateStatusInterface::ALLOCATION_STATUS_CNA
                         )
                     );
                 }
-
-                if ($result->getWarehouse()->getWarehouseType()->getName() === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
+                $warehouseType = $result->getWarehouse()->getWarehouseType()->getName();
+                if ($warehouseType === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
                     $newAllocation->setStatus(
                         $this->getEnumValue(
-                            'marello_allocation_status',
+                            AllocationStateStatusInterface::ALLOCATION_STATUS_ENUM_CODE,
                             AllocationStateStatusInterface::ALLOCATION_STATUS_DROPSHIP
                         )
                     );
                 }
-
-                if (!in_array($result->getWarehouse()->getCode(), [QuantityWFAStrategy::CNA_WAREHOUSE_CODE, QuantityWFAStrategy::EMPTY_WAREHOUSE_CODE])) {
+                $tmpWarehouses = [QuantityWFAStrategy::CNA_WAREHOUSE_CODE, QuantityWFAStrategy::EMPTY_WAREHOUSE_CODE];
+                if (!in_array($result->getWarehouse()->getCode(), $tmpWarehouses)) {
                     $newAllocation->setWarehouse($result->getWarehouse());
                 }
 
@@ -143,10 +147,23 @@ class InventoryAllocationProvider
                 $newAllocation->setShippingAddress($shippingAddress);
 
                 $this->createAllocationItems($result, $newAllocation);
+                $newAllocation->setAllocationContext(
+                    $this->getEnumValue(
+                        AllocationContextInterface::ALLOCATION_CONTEXT_ENUM_CODE,
+                        AllocationContextInterface::ALLOCATION_CONTEXT_ORDER
+                    )
+                );
+
                 // allocation has been rejected or needs to be reallocated
                 // set allocation as the source for the new allocation for reference
                 if ($allocation) {
                     $newAllocation->setSourceEntity($allocation);
+                    $newAllocation->setAllocationContext(
+                        $this->getEnumValue(
+                            AllocationContextInterface::ALLOCATION_CONTEXT_ENUM_CODE,
+                            AllocationContextInterface::ALLOCATION_CONTEXT_REALLOCATION
+                        )
+                    );
                 }
                 $em->persist($newAllocation);
                 $em->flush($newAllocation);
@@ -159,7 +176,8 @@ class InventoryAllocationProvider
 
         if (!$allocation) {
             $diff = [];
-            foreach ($order->getItems() as $orderItem) {
+            $orderItems = $this->exclusionProvider->getItems($order, $allocation);
+            foreach ($orderItems as $orderItem) {
                 if ($this->allOrderItems->contains($orderItem)) {
                     continue;
                 }
@@ -172,14 +190,20 @@ class InventoryAllocationProvider
                 $diffAllocation->setOrder($order);
                 $diffAllocation->setState(
                     $this->getEnumValue(
-                        'marello_allocation_state',
+                        AllocationStateStatusInterface::ALLOCATION_STATE_ENUM_CODE,
                         AllocationStateStatusInterface::ALLOCATION_STATE_ALERT
                     )
                 );
                 $diffAllocation->setStatus(
                     $this->getEnumValue(
-                        'marello_allocation_status',
+                        AllocationStateStatusInterface::ALLOCATION_STATUS_ENUM_CODE,
                         AllocationStateStatusInterface::ALLOCATION_STATUS_CNA
+                    )
+                );
+                $diffAllocation->setAllocationContext(
+                    $this->getEnumValue(
+                        AllocationContextInterface::ALLOCATION_CONTEXT_ENUM_CODE,
+                        AllocationContextInterface::ALLOCATION_CONTEXT_ORDER
                     )
                 );
                 $allocationItem = new AllocationItem();
@@ -353,5 +377,14 @@ class InventoryAllocationProvider
             new InventoryUpdateEvent($context),
             InventoryUpdateEvent::NAME
         );
+    }
+
+    /**
+     * @param AllocationExclusionInterface $provider
+     * @return void
+     */
+    public function setAllocationExclusionProvider(AllocationExclusionInterface $provider)
+    {
+        $this->exclusionProvider = $provider;
     }
 }

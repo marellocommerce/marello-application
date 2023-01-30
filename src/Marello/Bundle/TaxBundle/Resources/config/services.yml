@@ -138,4 +138,4 @@ services:
         arguments:
             - 'Marello\Bundle\ProductBundle\Entity\Product'
         tags:
-            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-products-grid, method: onBuildBefore }
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-products-grid, method: onBuildBefore, priority: 250 }

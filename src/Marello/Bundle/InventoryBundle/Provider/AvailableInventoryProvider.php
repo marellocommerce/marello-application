@@ -16,7 +16,8 @@ class AvailableInventoryProvider
     public function __construct(
         protected DoctrineHelper $doctrineHelper,
         protected AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * Get available inventory for a product in a certain saleschannel

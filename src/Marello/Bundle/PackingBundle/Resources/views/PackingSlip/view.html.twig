@@ -55,13 +55,7 @@
         </div>
     {% endset %}
     {% set items %}
-        <div class="widget-content">
-            <div class="row-fluid form-horizontal">
-                <div class="responsive-block">
-                    {{ dataGrid.renderGrid('marello-packingslip-items', {id: entity.id}) }}
-                </div>
-            </div>
-        </div>
+        {{ dataGrid.renderGrid('marello-packingslip-items', {id: entity.id}) }}
     {% endset %}
     {% set generalSubblocks = generalSubblocks|merge([{'data' : [generalInformation] }]) %}
 

@@ -110,13 +110,7 @@
     {% endset %}
     {% set generalSubblocks = generalSubblocks|merge([{'data' : [generalInformation] }]) %}
     {% set items %}
-        <div class="widget-content">
-            <div class="row-fluid form-horizontal">
-                <div class="responsive-block">
-                    {{ dataGrid.renderGrid('marello-return-items', {'returnId': entity.id}) }}
-                </div>
-            </div>
-        </div>
+        {{ dataGrid.renderGrid('marello-return-items', {'returnId': entity.id}) }}
     {% endset %}
 
     {% set dataBlocks = [
