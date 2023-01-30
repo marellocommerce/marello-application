@@ -90,21 +90,13 @@ class OrderItemStatusListener
             ) {
                 continue;
             }
-            $product = $orderItem->getProduct();
-            /** @var InventoryItem $inventoryItem */
-            $availableInventory = $this->availableInventoryProvider->getAvailableInventory(
-                $product,
-                $entity->getSalesChannel()
+            $event = new OrderItemStatusUpdateEvent($orderItem, OrderItemStatusesInterface::OIS_PROCESSING);
+            $this->eventDispatcher->dispatch(
+                $event,
+                OrderItemStatusUpdateEvent::NAME
             );
-            if ($availableInventory >= $orderItem->getQuantity()) {
-                $event = new OrderItemStatusUpdateEvent($orderItem, OrderItemStatusesInterface::OIS_PROCESSING);
-                $this->eventDispatcher->dispatch(
-                    $event,
-                    OrderItemStatusUpdateEvent::NAME
-                );
-                $orderItem->setStatus($this->findStatusByName($event->getStatusName()));
-                $entityManager->persist($orderItem);
-            }
+            $orderItem->setStatus($this->findStatusByName($event->getStatusName()));
+            $entityManager->persist($orderItem);
         }
         $entityManager->flush();
     }
