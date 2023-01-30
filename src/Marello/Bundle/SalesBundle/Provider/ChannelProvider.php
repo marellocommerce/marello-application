@@ -13,7 +13,8 @@ class ChannelProvider
     public function __construct(
         protected ObjectManager $manager,
         protected AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * Returns ids of all related sales channels for a product.

@@ -19,7 +19,6 @@ datagrids:
                     - p.updatedAt
                 from:
                     - { table: MarelloProductBundle:Product, alias: p }
-                groupBy: p.id
         columns:
             sku:
                 label:              marello.product.sku.label
@@ -177,6 +176,34 @@ datagrids:
             entityHint: marello.product.entity_plural_label
             export: false
             entity_pagination: false
+
+    marello-products-sales-channel-aware-selection-grid:
+        extends: marello-products-sales-channel-aware-grid
+        inline_editing:
+            enable: false
+        source:
+            query:
+                select:
+                    - >
+                        (CASE WHEN p.id IN (:data_in) AND p.id NOT IN (:data_not_in)
+                          THEN true ELSE false
+                        END) as hasChannel
+        columns:
+            hasChannel:
+                label:         'Select'
+                editable:      true
+                frontend_type: boolean
+                add_before:    true
+        properties:
+            id: ~
+        options:
+            entityHint: products
+            rowSelection:
+                dataField: id
+                columnName: hasChannel
+                selectors:
+                    included: '#appendProducts'
+                    excluded: '#removeProducts'
 
     marello-products-supplier-no-actions-grid:
         extends: marello-products-grid
@@ -487,7 +514,7 @@ datagrids:
             type: orm
             acl_resource: marello_product_view
             query:
-                select: [ psr, supplier.name ]
+                select: [ psr, supplier.name, supplier.currency ]
                 from:
                     - { table: MarelloProductBundle:ProductSupplierRelation, alias: psr }
                 join:
@@ -510,7 +537,9 @@ datagrids:
                 frontend_type:        string
             cost:
                 label:                marello.supplier.cost.label
-                frontend_type:        currency
+                type:                 localized_number
+                method:               formatCurrency
+                context_resolver:     Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
             priority:
                 label:                marello.supplier.priority.label
                 frontend_type:        number

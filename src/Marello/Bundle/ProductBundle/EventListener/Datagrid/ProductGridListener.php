@@ -29,8 +29,7 @@ class ProductGridListener
             ->addSelect('i.id as image')
             ->addSelect('(CASE WHEN p.image IS NOT NULL THEN true ELSE false END) as hasImage')
             ->addSelect('IDENTITY(p.status) as status')
-            ->addLeftJoin('p.image', 'i')
-            ->addGroupBy('i.id');
+            ->addLeftJoin('p.image', 'i');
         $columns = $config->offsetGetByPath('[columns]');
         $columns = array_merge(
             [
@@ -84,86 +83,5 @@ class ProductGridListener
     public function onResultBefore(OrmResultBefore $event)
     {
         $event->getQuery()->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, ProductsGridSqlWalker::class);
-    }
-    
-    /**
-     *
-     * @param BuildAfter $event
-     */
-    public function buildAfter(BuildAfter $event)
-    {
-        $grid = $event->getDatagrid();
-        /** @var OrmDatasource $dataSource */
-        $dataSource = $grid->getDatasource();
-        /** @var GroupBy[] $groupByParts */
-        $groupByParts = $dataSource->getQueryBuilder()->getDQLPart('groupBy');
-        $newGroupByParts = [];
-        foreach ($groupByParts as $key => $groupByPart) {
-            $newGroupByParts[$key] = $this->formatGroupByParts($groupByPart->getParts());
-        }
-        $dataSource->getQueryBuilder()->resetDQLPart('groupBy');
-        $dataSource->getQueryBuilder()->add('groupBy', $newGroupByParts);
-
-        $config = $grid->getConfig();
-        $columnsConfig = $this->switchColumns($config, 'createdAt', 'tags');
-        $config->offsetSetByPath('[columns]', $columnsConfig);
-    }
-
-    /**
-     * @param array $groupByParts
-     * @return GroupBy
-     */
-    protected function formatGroupByParts(array $groupByParts)
-    {
-        $parts = [];
-        foreach ($groupByParts as $k => $part) {
-            $parts[$k] = $this->removeFieldsFromGroupBy($this->excludedGroupByFields, $part);
-        }
-
-        return new GroupBy($parts);
-    }
-
-    /**
-     * @param array $fields
-     * @param $part
-     * @return mixed
-     */
-    protected function removeFieldsFromGroupBy(array $fields, $part)
-    {
-        foreach ($fields as $field) {
-            $part = str_replace($field, '', $part);
-            $part = str_replace(',,', ',', $part);
-        }
-
-        return $part;
-    }
-
-    /**
-     * @param DatagridConfiguration $datagridConfig
-     * @param $firstColumnName
-     * @param $secondColumnName
-     * @return array
-     */
-    private function switchColumns(DatagridConfiguration $datagridConfig, $firstColumnName, $secondColumnName)
-    {
-        $columns = $datagridConfig->offsetGetByPath('[columns]');
-        if (array_key_exists($firstColumnName, $columns)) {
-            $firstColumnConfig = $columns[$firstColumnName];
-            if (array_key_exists($secondColumnName, $columns)) {
-                $secondColumnConfig = $columns[$secondColumnName];
-                unset($columns[$firstColumnName]);
-                unset($columns[$secondColumnName]);
-                $columns = array_merge(
-                    $columns,
-                    [
-                        $secondColumnName => $secondColumnConfig,
-                        $firstColumnName => $firstColumnConfig
-                    ]
-                );
-
-                return $columns;
-            }
-        }
-        return $columns;
     }
 }

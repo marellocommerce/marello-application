@@ -14,11 +14,6 @@ Marello\Bundle\OrderBundle\Entity\OrderItem:
             - NotBlank: { groups: [api, Default] }
         quantity:
             - GreaterThanOrEqual: { groups: [api, Default], value: 1 }
-#    constraints:
-#        - Marello\Bundle\OrderBundle\Validator\Constraints\AvailableInventoryConstraint:
-#            fields: [quantity, order, product]
-#            errorPath: quantity
-#            groups: [api, Default]
 
 Marello\Bundle\OrderBundle\Entity\Order:
     properties:
@@ -43,10 +38,3 @@ Marello\Bundle\OrderBundle\Entity\Order:
                 message: 'marello.order.discount_amount.validation.discount_lower_than_subtotal'
         items:
             - Valid: ~
-    constraints:
-        - Marello\Bundle\CoreBundle\Validator\Constraints\GreaterThanDate:
-            field: 'deliveryDate'
-            greaterThan: 'today'
-            nullable: true
-            errorPath: deliveryDate
-            message: 'marello.order.delivery_date.messages.error.greater_than_date'

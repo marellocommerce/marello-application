@@ -84,6 +84,13 @@ services:
             - { name: twig.extension }
 
     marello_core.event_listener.refresh_context:
-        class: Marello\Bundle\CoreBundle\EventListener\RefreshContextListener
+        class: 'Marello\Bundle\CoreBundle\EventListener\RefreshContextListener'
         decorates: oro_security.listener.refresh_context_listener
         parent: oro_security.listener.refresh_context_listener
+
+    marello_core.event_listener.email_address_visibility:
+        class: 'Marello\Bundle\CoreBundle\EventListener\EmailAddressVisibilityListener'
+        arguments:
+            - '@oro_email.email_address_visibility.manager'
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }

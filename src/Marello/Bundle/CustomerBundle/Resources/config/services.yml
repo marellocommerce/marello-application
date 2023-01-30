@@ -37,6 +37,17 @@ services:
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.before_query.marello-company-customers-select-grid, method: onResultBeforeQuery }
 
+#    marello_customer.listener.entity_listener:
+#        class: Marello\Bundle\CustomerBundle\EventListener\EntityListener
+#        arguments:
+#            - '@oro_message_queue.client.message_producer'
+#            - '@Psr\Container\ContainerInterface'
+#        tags:
+#            - { name: doctrine.event_listener, event: onFlush }
+##            - { name: doctrine.event_listener, event: postFlush }
+##            - { name: doctrine.event_listener, event: postRemove }
+#            - { name: container.service_subscriber, id: oro_email.email_address_visibility.manager }
+
     marello_customer.form.autocomplete.company.search_handler:
         public: false
         parent: oro_form.autocomplete.search_handler

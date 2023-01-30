@@ -17,7 +17,8 @@ class ChartBuilder
         protected DateHelper $dateHelper,
         protected TranslatorInterface $translator,
         protected AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * Returns data in format ready for inventory chart.

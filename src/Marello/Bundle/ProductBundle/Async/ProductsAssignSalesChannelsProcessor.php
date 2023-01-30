@@ -33,7 +33,8 @@ class ProductsAssignSalesChannelsProcessor implements MessageProcessorInterface,
         private TokenStorageInterface $tokenStorage,
         private Factory $emailModelFactory,
         private EmailModelSender $emailModelSender
-    ) {}
+    ) {
+    }
 
     /**
      * {@inheritdoc}

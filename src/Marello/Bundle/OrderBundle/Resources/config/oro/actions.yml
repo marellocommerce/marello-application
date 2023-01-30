@@ -73,7 +73,7 @@ action_groups:
                                         service: marello_pdf.renderer.twig
                                         method: renderBase64
                                         method_parameters:
-                                            - 'MarelloInvoice/Pdf/invoice.html.twig'
+                                            - '@MarelloInvoice/Pdf/invoice.html.twig'
                                             - '$.render_parameters'
                                         attribute: '$.invoice_pdf'
                                     - '@send_email_template_attachment':
@@ -87,18 +87,19 @@ action_groups:
                                                 - filename: '$.filename'
                                                   body: '$.invoice_pdf'
                                                   mimetype: 'application/pdf'
+                            - '@tree':
+                                  conditions:
+                                      '@empty': [ '$.sender_email' ]
+                                  actions:
+                                      - '@flash_message':
+                                            type: 'error'
+                                            message: marello.invoice.action.send_invoice_email.error
     marello_order_status_change:
         parameters:
             order:
                 type: object
             status:
                 type: string
-#            overrideExistingStatus:
-#                type: boolean
-#                default: true
-#        conditions:
-#            '@and':
-#                - '@equal': [$.overrideExistingStatus, true]
         actions:
             - '@request_enum_entity':
                 enum_code: 'marello_order_status'

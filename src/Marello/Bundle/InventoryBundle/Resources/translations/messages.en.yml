@@ -182,8 +182,8 @@ marello:
             shipping_address.label:         Shipping Address
             state.label:                    State
             status.label:                   Status
+            allocationContext.label:        Context
             warehouse.label:                Warehouse
-
             quantity_allocated.label:       Allocated Quantity
             total_quantity_allocated.label: '%allocatedQty% of %totalQty% allocated'
             page_title.view:                '%entity_label% #%id%'

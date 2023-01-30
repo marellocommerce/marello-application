@@ -47,7 +47,7 @@
     </td>
     <td class="purchase-order-line-item-purchase-price">
         <div class="fields-row">
-            {{ form_widget(form.purchasePrice) }}
+            {{ form_widget(form.purchasePrice.value) }}
         </div>
         {{ form_errors(form.purchasePrice) }}
     </td>
@@ -70,7 +70,7 @@
     </td>
     <td class="purchase-order-line-item-purchase-price">
         <div class="fields-row">
-            {{ form_widget(form.purchasePrice) }}
+            {{ form_widget(form.purchasePrice.value) }}
         </div>
         {{ form_errors(form.purchasePrice) }}
     </td>
@@ -367,7 +367,7 @@
                     });
 
                     {% if form.vars.extra_config is defined and form.vars.extra_config %}
-                    {{ block('oro_multiple_entity_js_' ~ form.vars.extra_config) }}
+                        {{ block('oro_multiple_entity_js_' ~ form.vars.extra_config) }}
                     {% endif %}
                 });
     </script>

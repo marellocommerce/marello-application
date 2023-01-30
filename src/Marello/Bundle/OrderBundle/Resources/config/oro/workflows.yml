@@ -254,15 +254,6 @@ workflows:
                         - '@not_empty': $order.shippingAddress.street
                 post_actions:
                     - '@call_service_method':
-                          service: marello_order.factory.shipping_context
-                          method: create
-                          method_parameters: [$order]
-                          attribute: $.result.orderShippingContext
-                    - '@marello_shipment_create':
-                          context: $.result.orderShippingContext
-                          method: $order.shippingMethod
-                          methodType: $order.shippingMethodType
-                    - '@call_service_method':
                           service: Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider
                           method: allocateOrderToWarehouses
                           method_parameters: [ $order ]
@@ -554,15 +545,6 @@ workflows:
                         - '@not_empty': $order.shippingAddress.city
                         - '@not_empty': $order.shippingAddress.street
                 post_actions:
-                    - '@call_service_method':
-                          service: marello_order.factory.shipping_context
-                          method: create
-                          method_parameters: [$order]
-                          attribute: $.result.orderShippingContext
-                    - '@marello_shipment_create':
-                          context: $.result.orderShippingContext
-                          method: $order.shippingMethod
-                          methodType: $order.shippingMethodType
                     - '@call_service_method':
                           service: Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider
                           method: allocateOrderToWarehouses
