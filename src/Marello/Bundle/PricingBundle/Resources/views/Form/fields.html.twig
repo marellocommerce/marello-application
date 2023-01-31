@@ -23,7 +23,6 @@
     <td class="pricing-line-item-special-date">
         <div class="fields-row">
             {{ form_row(form.specialPrice.startDate, {'label': 'marello.pricing.productprice.start_date.label'|trans }) }}
-            {{ form_errors(form.specialPrice.startDate) }}
             {{ form_row(form.specialPrice.endDate, {'label': 'marello.pricing.productprice.end_date.label'|trans }) }}
         </div>
     </td>
@@ -130,7 +129,6 @@
     <td class="pricing-line-item-special-date">
         <div class="fields-row">
             {{ form_row(form.specialPrice.startDate, { 'label' : 'marello.pricing.productchannelprice.start_date.label'|trans }) }}
-            {{ form_errors(form.specialPrice.startDate) }}
             {{ form_row(form.specialPrice.endDate, { 'label' : 'marello.pricing.productchannelprice.end_date.label'|trans }) }}
         </div>
     </td>
