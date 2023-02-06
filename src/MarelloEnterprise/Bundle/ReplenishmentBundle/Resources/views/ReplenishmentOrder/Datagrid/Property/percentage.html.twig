@@ -1,1 +1,1 @@
-{{ (record.getValue('percentage')/100)| oro_format_percent }}
+{{ record.getValue('percentage') ? ((record.getValue('percentage')/100)|oro_format_percent) : 'N/A'|trans }}

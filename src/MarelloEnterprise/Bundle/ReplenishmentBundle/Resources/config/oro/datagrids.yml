@@ -7,12 +7,15 @@ datagrids:
                     - ro
                     - o.label as originLabel
                     - d.label as destinationLabel
+                    - c.percentage as percentage
                 from:
                     - { table: MarelloEnterpriseReplenishmentBundle:ReplenishmentOrder, alias: ro }
                 join:
                     inner:
                         - { join: ro.origin, alias: o }
                         - { join: ro.destination, alias: d }
+                    left:
+                        - { join: ro.replOrderConfig, alias: c }
         columns:
             replOrderNumber:
                 label: marelloenterprise.replenishment.replenishmentorder.repl_order_number.label
@@ -27,7 +30,7 @@ datagrids:
                 label: marelloenterprise.replenishment.replenishmentorder.execution_date_time.label
                 frontend_type: datetime
             percentage:
-                label: marelloenterprise.replenishment.replenishmentorder.percentage.label
+                label: marelloenterprise.replenishment.replenishmentorderconfig.percentage.label
                 type: twig
                 frontend_type: html
                 template: '@MarelloEnterpriseReplenishment/ReplenishmentOrder/Datagrid/Property/percentage.html.twig'
@@ -43,7 +46,7 @@ datagrids:
                 destinationLabel:
                     data_name: d.label
                 percentage:
-                    data_name: ro.percentage
+                    data_name: c.percentage
             default:
                 replOrderNumber: 'DESC'
         properties:
@@ -87,6 +90,9 @@ datagrids:
             totalInventoryQty:
                 label: marelloenterprise.replenishment.replenishmentorderitem.total_inventory_qty.label
                 frontend_type: integer
+            allQuantity:
+                label: marelloenterprise.replenishment.replenishmentorderitem.all.label
+                frontend_type: boolean
             note:
                 label: marelloenterprise.replenishment.replenishmentorderitem.note.label
                 frontend_type: string

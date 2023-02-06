@@ -1,0 +1,3 @@
+css:
+    inputs:
+        - 'bundles/marelloenterprisereplenishment/css/scss/main.scss'

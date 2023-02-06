@@ -7,11 +7,9 @@
 {% set formAction = path('marello_replenishment_order_config_create') %}
 
 {% block navButtons %}
-    {{ UI.cancelButton(path('marelloenterprise_replenishmentorder_index')) }}
+    {{ UI.cancelButton(path('marello_replenishment_order_config_create_step_one')) }}
     {% if is_granted('marello_replenishment_order_config_create') %}
-        {% set html = UI.saveAndStayButton({
-        'route': 'marelloenterprise_replenishmentorder_index'
-        }) %}
+        {% set html = UI.saveAndCloseButton() %}
 
         {{ UI.dropdownSaveButton({'html': html}) }}
     {% endif %}
@@ -21,6 +19,36 @@
     {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'marelloenterprise.replenishment.replenishmentorder.entity_label'|trans}) %}
     {% include '@OroUI/page_title_block.html.twig' with { title: title } %}
 {% endblock pageHeader %}
+
+{% set manualStrategy = (form.vars.value.strategy == constant('MarelloEnterprise\\Bundle\\ReplenishmentBundle\\Strategy\\ManualReplenishmentStrategy::IDENTIFIER')) %}
+{% if manualStrategy %}
+    {% set generalData = [
+        form_row(form.executionDateTime),
+        form_row(form.description)
+    ] %}
+    {% set productsData = [
+        form_widget(form.manualItems)
+    ] %}
+
+    {% set options = form.vars.options|default({})|merge({
+        'route': 'marello_replenishment_form_changes',
+        'prefix': 'replenishment',
+        'organization': form.vars.value and form.vars.value.organization is defined and form.vars.value.organization ? form.vars.value.organization.id : null,
+    }) %}
+    {% set pageComponent = {module: 'marellolayout/js/app/components/form-changes-component', options} %}
+{% else %}
+    {% set generalData = [
+        form_row(form.origins),
+        form_row(form.destinations),
+        form_row(form.strategy),
+        form_row(form.percentage),
+        form_row(form.executionDateTime),
+        form_row(form.description)
+    ] %}
+    {% set productsData = [
+        form_widget(form.products)
+    ] %}
+{% endif %}
 
 {% block content_data %}
     {% set id = 'marello-replenishment-order-config-create' %}
@@ -33,14 +61,7 @@
                 {
                     'title': '',
                     'formErrors': form_errors(form)? form_errors(form) : null,
-                    'data': [
-                        form_row(form.origins),
-                        form_row(form.destinations),
-                        form_row(form.strategy),
-                        form_row(form.percentage),
-                        form_row(form.executionDateTime),
-                        form_row(form.description)
-                    ]
+                    'data': generalData
                 }
             ]
         },
@@ -49,9 +70,7 @@
             'class': '',
             'subblocks': [
                 {
-                    'data': [
-                        form_widget(form.products),
-                    ]
+                    'data': productsData
                 }
             ]
         }

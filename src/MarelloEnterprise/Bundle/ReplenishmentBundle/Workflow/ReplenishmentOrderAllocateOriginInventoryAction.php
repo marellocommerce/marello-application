@@ -70,6 +70,7 @@ class ReplenishmentOrderAllocateOriginInventoryAction extends ReplenishmentOrder
                             $orderItem
                                 ->setInventoryQty($calcOrderItem->getInventoryQty())
                                 ->setTotalInventoryQty($calcOrderItem->getTotalInventoryQty())
+                                ->setAllQuantity($calcOrderItem->isAllQuantity())
                                 ->setInventoryBatches($calcOrderItem->getInventoryBatches());
                             $em = $this->registry->getManagerForClass(ReplenishmentOrderItem::class);
                             $em->persist($orderItem);
@@ -79,7 +80,7 @@ class ReplenishmentOrderAllocateOriginInventoryAction extends ReplenishmentOrder
                 }
             }
         }
-        
+
         $warehouse = $order->getOrigin();
         $items = $order->getReplOrderItems();
             $items->map(function (ReplenishmentOrderItem $item) use ($order, $warehouse) {
