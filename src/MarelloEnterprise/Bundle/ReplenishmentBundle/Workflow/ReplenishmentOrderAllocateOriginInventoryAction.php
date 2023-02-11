@@ -18,32 +18,13 @@ use MarelloEnterprise\Bundle\ReplenishmentBundle\Provider\ReplenishmentOrdersFro
 
 class ReplenishmentOrderAllocateOriginInventoryAction extends ReplenishmentOrderTransitionAction
 {
-    /**
-     * @var ReplenishmentOrdersFromConfigProvider
-     */
-    protected $replenishmentOrdersProvider;
-
-    /**
-     * @var Registry
-     */
-    protected $registry;
-
-    /**
-     * @param ContextAccessor $contextAccessor
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param ReplenishmentOrdersFromConfigProvider $replenishmentOrdersProvider
-     * @param Registry $registry
-     */
     public function __construct(
         ContextAccessor $contextAccessor,
         EventDispatcherInterface $eventDispatcher,
-        ReplenishmentOrdersFromConfigProvider $replenishmentOrdersProvider,
-        Registry $registry
+        protected ReplenishmentOrdersFromConfigProvider $replenishmentOrdersProvider,
+        protected Registry $registry
     ) {
         parent::__construct($contextAccessor, $eventDispatcher);
-
-        $this->replenishmentOrdersProvider = $replenishmentOrdersProvider;
-        $this->registry = $registry;
     }
 
     /**
@@ -60,23 +41,29 @@ class ReplenishmentOrderAllocateOriginInventoryAction extends ReplenishmentOrder
                 true
             );
         foreach ($calculatedOrders as $calculatedOrder) {
-            if ($order->getOrigin()->getCode() === $calculatedOrder->getOrigin()->getCode() &&
-                $order->getDestination()->getCode() === $calculatedOrder->getDestination()->getCode()) {
-                /** @var ReplenishmentOrderItem $orderItem */
-                foreach ($order->getReplOrderItems()->toArray() as $orderItem) {
-                    /** @var ReplenishmentOrderItem $calcOrderItem */
-                    foreach ($calculatedOrder->getReplOrderItems()->toArray() as $calcOrderItem) {
-                        if ($orderItem->getProductSku() === $calcOrderItem->getProductSku()) {
-                            $orderItem
-                                ->setInventoryQty($calcOrderItem->getInventoryQty())
-                                ->setTotalInventoryQty($calcOrderItem->getTotalInventoryQty())
-                                ->setAllQuantity($calcOrderItem->isAllQuantity())
-                                ->setInventoryBatches($calcOrderItem->getInventoryBatches());
-                            $em = $this->registry->getManagerForClass(ReplenishmentOrderItem::class);
-                            $em->persist($orderItem);
-                            $em->flush($orderItem);
-                        }
+            if ($order->getOrigin()->getCode() !== $calculatedOrder->getOrigin()->getCode() ||
+                $order->getDestination()->getCode() !== $calculatedOrder->getDestination()->getCode()
+            ) {
+                continue;
+            }
+
+            /** @var ReplenishmentOrderItem $orderItem */
+            foreach ($order->getReplOrderItems()->toArray() as $orderItem) {
+                /** @var ReplenishmentOrderItem $calcOrderItem */
+                foreach ($calculatedOrder->getReplOrderItems()->toArray() as $calcOrderItem) {
+                    if ($orderItem->getProductSku() !== $calcOrderItem->getProductSku()) {
+                        continue;
                     }
+
+                    [$inventoryQty, $totalInventoryQty] = $this->getQuantities($calcOrderItem);
+                    $orderItem
+                        ->setInventoryQty($inventoryQty)
+                        ->setTotalInventoryQty($totalInventoryQty)
+                        ->setAllQuantity($calcOrderItem->isAllQuantity())
+                        ->setInventoryBatches($calcOrderItem->getInventoryBatches());
+                    $em = $this->registry->getManagerForClass(ReplenishmentOrderItem::class);
+                    $em->persist($orderItem);
+                    $em->flush($orderItem);
                 }
             }
         }
@@ -92,6 +79,26 @@ class ReplenishmentOrderAllocateOriginInventoryAction extends ReplenishmentOrder
                     $order
                 );
             });
+    }
+
+    protected function getQuantities(ReplenishmentOrderItem $orderItem): array
+    {
+        if ($orderItem->isAllQuantity()) {
+            $inventoryItem = $orderItem->getProduct()->getInventoryItems()->first();
+            $qty = 0;
+            foreach ($inventoryItem->getInventoryLevels() as $inventoryLevel) {
+                if ($inventoryLevel->getWarehouse() === $orderItem->getOrder()->getOrigin()) {
+                    $qty = $inventoryLevel->getInventoryQty();
+                    break;
+                }
+            }
+            $inventoryQty = $totalInventoryQty = $qty;
+        } else {
+            $inventoryQty = $orderItem->getInventoryQty();
+            $totalInventoryQty = $orderItem->getTotalInventoryQty();
+        }
+
+        return [$inventoryQty, $totalInventoryQty];
     }
 
     /**

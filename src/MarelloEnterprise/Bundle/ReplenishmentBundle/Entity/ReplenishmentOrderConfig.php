@@ -52,7 +52,7 @@ class ReplenishmentOrderConfig extends ExtendReplenishmentOrderConfig implements
      *
      * @var array
      */
-    protected $origins;
+    protected $origins = [];
 
     /**
      * @ORM\Column(name="destinations", nullable=true, type="json_array")
@@ -66,7 +66,7 @@ class ReplenishmentOrderConfig extends ExtendReplenishmentOrderConfig implements
      *
      * @var array
      */
-    protected $destinations;
+    protected $destinations = [];
 
     /**
      * @ORM\Column(name="products", type="json_array")
@@ -80,7 +80,7 @@ class ReplenishmentOrderConfig extends ExtendReplenishmentOrderConfig implements
      *
      * @var array
      */
-    protected $products;
+    protected $products = [];
 
     /**
      * @ORM\OneToMany(targetEntity="ReplenishmentOrderManualItemConfig", mappedBy="orderConfig", cascade={"all"})

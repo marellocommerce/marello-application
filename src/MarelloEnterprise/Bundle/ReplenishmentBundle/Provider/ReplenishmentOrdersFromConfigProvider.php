@@ -66,13 +66,13 @@ class ReplenishmentOrdersFromConfigProvider
             $orderItem
                 ->setProduct($product)
                 ->setOrder($order);
+            if (!empty($result['allQuantity'])) {
+                $orderItem->setAllQuantity((bool) $result['allQuantity']);
+            }
             if ($calculateQuantities) {
                 $orderItem
                     ->setInventoryQty($result['quantity'])
                     ->setTotalInventoryQty($result['total_quantity']);
-                if (!empty($result['allQuantity'])) {
-                    $orderItem->setAllQuantity((bool) $result['allQuantity']);
-                }
                 /** @var InventoryItem $inventoryItem */
                 $inventoryItem = $product->getInventoryItems()->first();
                 if ($inventoryItem && $inventoryItem->isEnableBatchInventory()) {
