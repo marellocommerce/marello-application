@@ -64,57 +64,33 @@
     {% endset %}
 
     {% set productTaxes %}
-        <div class="widget-content">
-            <div class="row-fluid form-horizontal">
-                <div class="responsive-block">
-                    <div class="box-type1">
-                        <div class="title">
-                            <span class="widget-title">{{ 'marello.tax.taxcode.widget_title'|trans }}</span>
-                        </div>
-                        {{ UI.renderProperty('marello.tax.taxcode.entity_label'|trans, entity.taxCode) }}
-                    </div>
-                    <div class="box-type1">
-                        <div class="title">
-                            <span class="widget-title">{{ 'marello.product.productchanneltaxrelation.widget_title'|trans }}</span>
-                        </div>
-                        {{ dataGrid.renderGrid('marello-product-saleschannel-tax-grid', {'productId': entity.id }) }}
-                    </div>
-                </div>
+        <div class="box-type1">
+            <div class="title">
+                <span class="widget-title">{{ 'marello.tax.taxcode.widget_title'|trans }}</span>
             </div>
+            {{ UI.renderProperty('marello.tax.taxcode.entity_label'|trans, entity.taxCode) }}
+        </div>
+        <div class="box-type1">
+            <div class="title">
+                <span class="widget-title">{{ 'marello.product.productchanneltaxrelation.widget_title'|trans }}</span>
+            </div>
+            {{ dataGrid.renderGrid('marello-product-saleschannel-tax-grid', {'productId': entity.id }) }}
         </div>
     {% endset %}
 
     {% set productSalesChannelWidget %}
-        <div class="widget-content">
-            <div class="row-fluid form-horizontal">
-                <div class="responsive-block">
-                    {{ dataGrid.renderGrid('marello-product-saleschannel-grid', {'channels': marello_sales_get_saleschannel_ids(entity)}) }}
-                </div>
-            </div>
-        </div>
+        {{ dataGrid.renderGrid('marello-product-saleschannel-grid', {'channels': marello_sales_get_saleschannel_ids(entity)}) }}
     {% endset %}
 
     {% if marello_entity_has_attribute(entity, 'suppliers') %}
         {% set productSupplierWidget %}
-            <div class="widget-content">
-                <div class="row-fluid form-horizontal">
-                    <div class="responsive-block">
-                        {{ dataGrid.renderGrid('marello-product-suppliers-grid', {'suppliers': marello_supplier_get_supplier_ids(entity)}) }}
-                    </div>
-                </div>
-            </div>
+            {{ dataGrid.renderGrid('marello-product-suppliers-grid', {'suppliers': marello_supplier_get_supplier_ids(entity)}) }}
         {% endset %}
     {% endif %}
 
     {% if marello_entity_has_attribute(entity, 'categories') %}
         {% set productCategoriesWidget %}
-            <div class="widget-content">
-                <div class="row-fluid form-horizontal">
-                    <div class="responsive-block">
-                        {{ dataGrid.renderGrid('marello-product-categories-grid', {'categories': marello_product_get_categories_ids(entity)}) }}
-                    </div>
-                </div>
-            </div>
+            {{ dataGrid.renderGrid('marello-product-categories-grid', {'categories': marello_product_get_categories_ids(entity)}) }}
         {% endset %}
     {% endif %}
 

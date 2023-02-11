@@ -64,6 +64,12 @@
     margin: 10px 0;
 }
 
+.add-line-item-btn-group {
+    .btn {
+        margin-right: 8px;
+    }
+}
+
 .row-divider {
     min-height: 2.5em;
 }
@@ -73,7 +79,7 @@
 }
 
 .form-horizontal .control-group {
-    margin-bottom:16px !important;
+    margin-bottom:16px;
 
     .controls [data-name*="field__region-text"] {
         margin-top:16px;

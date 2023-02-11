@@ -131,6 +131,9 @@
     {% if marello_entity_has_attribute(entity, 'warranty') %}
         {% set generalData = generalData|merge([form_row(form.warranty)]) %}
     {% endif %}
+    {% if marello_entity_has_attribute(entity, 'barcode') %}
+        {% set generalData = generalData|merge([form_row(form.barcode)]) %}
+    {% endif %}
     {% if marello_entity_has_attribute(entity, 'manufacturingCode') %}
         {% set generalData = generalData|merge([form_row(form.manufacturingCode)]) %}
     {% endif %}

@@ -182,6 +182,20 @@ class InventoryLevelLogRecord
     protected $subjectId = null;
 
     /**
+     * @ORM\Column(name="inventory_batch", type="string", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var string
+     */
+    protected $inventoryBatch;
+
+    /**
      * @ORM\Column(name="created_at", type="datetime")
      * @Oro\ConfigField(
      *      defaultValues={
@@ -230,7 +244,8 @@ class InventoryLevelLogRecord
         $allocatedInventoryAlt,
         $changeTrigger,
         User $user = null,
-        $subject = null
+        $subject = null,
+        $inventoryBatch = null
     ) {
         $this->inventoryLevel               = $inventoryLevel;
         $this->inventoryAlteration          = $inventoryAlt;
@@ -240,6 +255,7 @@ class InventoryLevelLogRecord
         $this->subject                      = $subject;
         $this->inventoryItem                = $inventoryLevel->getInventoryItem();
         $this->warehouseName                = $inventoryLevel->getWarehouse()->getLabel();
+        $this->inventoryBatch               = $inventoryBatch;
     }
 
     /**
@@ -369,6 +385,24 @@ class InventoryLevelLogRecord
     public function setWarehouseName(string $warehouseName)
     {
         $this->warehouseName = $warehouseName;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInventoryBatch(): ?string
+    {
+        return $this->inventoryBatch;
+    }
+
+    /**
+     * @param string $inventoryBatch
+     */
+    public function setInventoryBatch(string $inventoryBatch): self
+    {
+        $this->inventoryBatch = $inventoryBatch;
 
         return $this;
     }

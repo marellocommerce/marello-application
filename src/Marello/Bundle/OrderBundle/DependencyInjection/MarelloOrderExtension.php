@@ -25,6 +25,7 @@ class MarelloOrderExtension extends Extension
         $loader->load('form.yml');
         $loader->load('shipping.yml');
         $loader->load('controllers.yml');
+        $loader->load('eventlisteners.yml');
 
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);

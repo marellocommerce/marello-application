@@ -1,0 +1,8 @@
+marello:
+    invoice:
+        action:
+            send_invoice_email:
+                label: Email Invoice
+                description: "<p>Email the Invoice including an Invoice PDF to:</p>
+                    <p><b>Customer:</b> {{ name }}<br/>
+                    <b>Email Address:</b> {{ email }}</p>"

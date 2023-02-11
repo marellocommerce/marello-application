@@ -24,7 +24,7 @@ class MarelloPurchaseOrderBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_3_4';
+        return 'v1_3_5';
     }
 
     /**
@@ -55,6 +55,7 @@ class MarelloPurchaseOrderBundleInstaller implements
         $table->addColumn('purchase_order_number', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('warehouse_id', 'integer', []);
         $table->addColumn('order_total', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+        $table->addColumn('purchase_order_reference', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('data', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
         $table->addColumn('due_date', 'datetime', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime');

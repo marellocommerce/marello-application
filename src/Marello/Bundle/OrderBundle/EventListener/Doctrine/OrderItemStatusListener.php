@@ -20,6 +20,7 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
 use Oro\Component\Action\Event\ExtendableActionEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Marello\Bundle\OrderBundle\Model\OrderItemStatusesInterface;
 
 class OrderItemStatusListener
 {
@@ -56,6 +57,8 @@ class OrderItemStatusListener
                     )
                 ) {
                     $entity->setStatus($this->findStatusByName(LoadOrderItemStatusData::WAITING_FOR_SUPPLY));
+                } elseif ($entity->isAllocationExclusion()) {
+                    $entity->setStatus($this->findStatusByName(OrderItemStatusesInterface::OIS_COMPLETE));
                 } else {
                     if (!$entity->getStatus()) {
                         $entity->setStatus($this->findDefaultStatus());
@@ -81,21 +84,19 @@ class OrderItemStatusListener
         /** @var Order $entity */
         $entity = $event->getContext()->getData()->get('order');
         foreach ($entity->getItems() as $orderItem) {
-            $product = $orderItem->getProduct();
-            /** @var InventoryItem $inventoryItem */
-            $availableInventory = $this->availableInventoryProvider->getAvailableInventory(
-                $product,
-                $entity->getSalesChannel()
-            );
-            if ($availableInventory >= $orderItem->getQuantity()) {
-                $event = new OrderItemStatusUpdateEvent($orderItem, LoadOrderItemStatusData::PROCESSING);
-                $this->eventDispatcher->dispatch(
-                    $event,
-                    OrderItemStatusUpdateEvent::NAME
-                );
-                $orderItem->setStatus($this->findStatusByName($event->getStatusName()));
-                $entityManager->persist($orderItem);
+            // skip items that are complete
+            if ($orderItem->getStatus() &&
+                $orderItem->getStatus()->getId() === OrderItemStatusesInterface::OIS_COMPLETE
+            ) {
+                continue;
             }
+            $event = new OrderItemStatusUpdateEvent($orderItem, OrderItemStatusesInterface::OIS_PROCESSING);
+            $this->eventDispatcher->dispatch(
+                $event,
+                OrderItemStatusUpdateEvent::NAME
+            );
+            $orderItem->setStatus($this->findStatusByName($event->getStatusName()));
+            $entityManager->persist($orderItem);
         }
         $entityManager->flush();
     }
@@ -118,7 +119,7 @@ class OrderItemStatusListener
      */
     private function findDefaultStatus()
     {
-        $statusClass = ExtendHelper::buildEnumValueClassName(LoadOrderItemStatusData::ITEM_STATUS_ENUM_CLASS);
+        $statusClass = ExtendHelper::buildEnumValueClassName(OrderItemStatusesInterface::ITEM_STATUS_ENUM_CLASS);
         $status = $this->doctrineHelper
             ->getEntityManagerForClass($statusClass)
             ->getRepository($statusClass)
@@ -137,7 +138,7 @@ class OrderItemStatusListener
      */
     private function findStatusByName($name)
     {
-        $statusClass = ExtendHelper::buildEnumValueClassName(LoadOrderItemStatusData::ITEM_STATUS_ENUM_CLASS);
+        $statusClass = ExtendHelper::buildEnumValueClassName(OrderItemStatusesInterface::ITEM_STATUS_ENUM_CLASS);
         $status = $this->doctrineHelper
             ->getEntityManagerForClass($statusClass)
             ->getRepository($statusClass)

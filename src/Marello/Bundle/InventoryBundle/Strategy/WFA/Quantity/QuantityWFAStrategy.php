@@ -3,21 +3,24 @@
 namespace Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Marello\Bundle\InventoryBundle\Entity\Allocation;
-use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
-use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
-use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
+
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\Calculator\QtyWHCalculatorInterface;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Entity\Allocation;
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
+use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 use Marello\Bundle\InventoryBundle\Strategy\WFA\WFAStrategyInterface;
-use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+use Marello\Bundle\InventoryBundle\Provider\AllocationExclusionInterface;
+use Marello\Bundle\InventoryBundle\Provider\AllocationStateStatusInterface;
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
+use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository;
+use Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\Calculator\QtyWHCalculatorInterface;
 
 class QuantityWFAStrategy implements WFAStrategyInterface
 {
@@ -39,6 +42,9 @@ class QuantityWFAStrategy implements WFAStrategyInterface
 
     /** @var ConfigManager $configManager */
     private $configManager;
+
+    /** @var AllocationExclusionInterface $exclusionProvider */
+    private $exclusionProvider;
 
     /**
      * @var Warehouse[]
@@ -95,7 +101,7 @@ class QuantityWFAStrategy implements WFAStrategyInterface
     {
         $productsByWh = [];
         $warehouses = [];
-        $orderItems = ($allocation) ? $allocation->getItems() : $order->getItems();
+        $orderItems = $this->exclusionProvider->getItems($order, $allocation);
         $orderItemsByProducts = [];
         $emptyWarehouse = new Warehouse();
         $emptyWarehouse->setWarehouseType(new WarehouseType('virtual'));
@@ -136,7 +142,9 @@ class QuantityWFAStrategy implements WFAStrategyInterface
             $inventoryLevels = $this->getInventoryLevelCandidates($inventoryItem, $warehousesIds);
             $quantityAvailable = 0;
 
-            if ($allocation) {
+            if ($allocation &&
+                $allocation->getState()->getId() !== AllocationStateStatusInterface::ALLOCATION_STATE_WFS
+            ) {
                 $this->getExcludedWarehouses($allocation);
             }
 
@@ -652,5 +660,14 @@ class QuantityWFAStrategy implements WFAStrategyInterface
         }
 
         return $this->linkedWarehouses;
+    }
+
+    /**
+     * @param AllocationExclusionInterface $provider
+     * @return void
+     */
+    public function setAllocationExclusionProvider(AllocationExclusionInterface $provider)
+    {
+        $this->exclusionProvider = $provider;
     }
 }

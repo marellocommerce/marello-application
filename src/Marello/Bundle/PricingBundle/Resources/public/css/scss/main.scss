@@ -9,3 +9,60 @@
         display: block;
     }
 }
+
+.marello-line-item {
+    .pricing-line-item-special-date {
+        .fields-row {
+            .datepicker-input, .timepicker-input {
+                width: 100px !important;
+            }
+
+            .control-label {
+                width: 25px;
+            }
+
+            .control-group-datetime {
+                float: left;
+                max-width: 300px;
+                margin-bottom: 0;
+                padding: 1px 0;
+            }
+        }
+    }
+    .pricing-line-item-default-value, .pricing-line-item-msrp-value {
+        .fields-row {
+            [data-name*="field__value"] {
+                float: left;
+                max-width: 100px;
+            }
+        }
+    }
+
+    .pricing-line-item-special-value {
+        .fields-row {
+            [data-name*="field__value"] {
+                float: left;
+                max-width: 100px;
+            }
+
+            .control-group {
+                float: left;
+                max-width: 100px;
+                margin-bottom: 0 !important;
+
+                .control-label {
+                    width:40px;
+                    margin-left:15px;
+                }
+
+                .controls {
+                    margin-left:10px;
+
+                    input[type="text"] {
+                        max-width:100px;
+                    }
+                }
+            }
+        }
+    }
+}

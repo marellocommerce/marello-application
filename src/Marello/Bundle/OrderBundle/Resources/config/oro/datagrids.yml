@@ -371,6 +371,10 @@ datagrids:
                 label:            marello.order.orderitem.status.label
                 frontend_type:    string
                 data_name:        status
+            allocationExclusion:
+                label:            marello.order.orderitem.allocation_exclusion.label
+                frontend_type:    boolean
+                data_name:        allocationExclusion
 
     marello-allocation-order-base-grid:
         extends: marello-allocation-grid

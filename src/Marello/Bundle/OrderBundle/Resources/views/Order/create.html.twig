@@ -155,7 +155,9 @@
              data-page-component-module="oroui/js/app/components/view-component"
              data-page-component-options="{{ {
                  view: 'marelloorder/js/app/views/order-items-view',
-                 data: data|default({})
+                 data: data|default({}),
+                 selectionUrl: form.items.vars.grid_url,
+                 selectorWindowTitle: form.items.vars.selector_window_title|trans
              }|json_encode }}"
              data-layout="separate">
             {{ form_widget(form.items) }}

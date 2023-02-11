@@ -1,5 +1,6 @@
 dynamic-imports:
     marelloorder:
+        - marelloorder/js/app/components/order-product-component
         - marelloorder/js/app/views/order-items-view
         - marelloorder/js/app/views/order-item-view
         - marelloorder/js/app/views/order-billing-address-view

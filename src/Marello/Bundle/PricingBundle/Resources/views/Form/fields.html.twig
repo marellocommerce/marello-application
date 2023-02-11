@@ -22,9 +22,8 @@
     </td>
     <td class="pricing-line-item-special-date">
         <div class="fields-row">
-            <span>{{ 'marello.pricing.productprice.start_date.label'|trans }}</span>{{ form_widget(form.specialPrice.startDate) }}
-            {{ form_errors(form.specialPrice.startDate) }}
-            <span>{{ 'marello.pricing.productprice.end_date.label'|trans }}</span>{{ form_widget(form.specialPrice.endDate) }}
+            {{ form_row(form.specialPrice.startDate, {'label': 'marello.pricing.productprice.start_date.label'|trans }) }}
+            {{ form_row(form.specialPrice.endDate, {'label': 'marello.pricing.productprice.end_date.label'|trans }) }}
         </div>
     </td>
     <td class="pricing-line-item-msrp-value">
@@ -50,7 +49,7 @@
         {% set allow_add_after = widget.parent.vars.allow_add_after %}
     {% endif %}
     <tr data-content="{{ name }}"
-        class="marello-line-item display-values"
+        class="marello-line-item"
         data-page-component-module="oroui/js/app/components/view-component"
         data-page-component-options="{{ {view: 'marellolayout/js/app/views/abstract-item-view'}|json_encode }}"
         data-layout="separate">
@@ -129,9 +128,8 @@
     </td>
     <td class="pricing-line-item-special-date">
         <div class="fields-row">
-            <span>{{ 'marello.pricing.productchannelprice.start_date.label'|trans }}</span>{{ form_widget(form.specialPrice.startDate) }}
-            {{ form_errors(form.specialPrice.startDate) }}
-            <span>{{ 'marello.pricing.productchannelprice.end_date.label'|trans }}</span>{{ form_widget(form.specialPrice.endDate) }}
+            {{ form_row(form.specialPrice.startDate, { 'label' : 'marello.pricing.productchannelprice.start_date.label'|trans }) }}
+            {{ form_row(form.specialPrice.endDate, { 'label' : 'marello.pricing.productchannelprice.end_date.label'|trans }) }}
         </div>
     </td>
 {% endblock %}
@@ -151,7 +149,7 @@
         {% set allow_add_after = widget.parent.vars.allow_add_after %}
     {% endif %}
     <tr data-content="{{ name }}"
-        class="marello-line-item display-values"
+        class="marello-line-item"
         data-page-component-module="oroui/js/app/components/view-component"
         data-page-component-options="{{ {view: 'marellopricing/js/app/views/channel-pricing-item-view'}|json_encode }}"
         data-layout="separate">
