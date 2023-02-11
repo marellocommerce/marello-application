@@ -72,12 +72,12 @@ class PurchaseOrderOnOrderOnDemandCreationListener
             return;
         }
 
-        $this->allocationId = null;
         $entityManager = $args->getEntityManager();
         /** @var Allocation $allocation */
         $allocation = $entityManager
             ->getRepository(Allocation::class)
             ->find($this->allocationId);
+        $this->allocationId = null;
         if (!$allocation) {
             return;
         }
