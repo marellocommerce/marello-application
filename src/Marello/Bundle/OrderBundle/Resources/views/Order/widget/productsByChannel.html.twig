@@ -1,0 +1,33 @@
+{% import '@OroDataGrid/macros.html.twig' as dataGrid %}
+{% import '@OroUI/macros.html.twig' as UI %}
+
+<div class="widget-content grid-widget-content">
+    {% set gridName = 'marello-products-sales-channel-aware-selection-grid' %}
+
+    {% set params = {
+        'channelId': channelId,
+    } %}
+
+    {% block content %}
+        {{ dataGrid.renderGrid(gridName, params) }}
+        <input type="hidden" name="appendProducts" id="appendProducts" value="{{ app.request.get('added') }}" />
+        <input type="hidden" name="removeProducts" id="removeProducts" value="{{ app.request.get('removed') }}" />
+    {% endblock %}
+
+    <div {{ UI.renderPageComponentAttributes({
+            module: 'marelloorder/js/app/components/order-product-component',
+            options: {
+                wid: app.request.get('_wid'),
+                gridName: gridName,
+                addedVal: '#appendProducts',
+                removedVal: '#removeProducts',
+                columnName: 'hasChannel',
+                currency: currency
+            }
+        }) }}></div>
+
+    <div class="widget-actions">
+        <button type="reset" class="btn">{{ 'Cancel'|trans }}</button>
+        <button type="button" class="btn btn-primary" data-action-name="select">{{ 'Select'|trans }}</button>
+    </div>
+</div>

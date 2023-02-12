@@ -184,6 +184,7 @@ datagrids:
             toolbarOptions:
                 pageSize:
                     default_per_page: 10
+            export: true
 
     marello-inventory-log-extended:
         extends: marello-inventory-log

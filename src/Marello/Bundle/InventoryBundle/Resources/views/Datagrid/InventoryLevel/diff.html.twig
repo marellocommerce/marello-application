@@ -2,9 +2,9 @@
     {% set textColor = 'text-success' %}
     {% set caret = 'up' %}
 {% elseif value < 0 %}
-    {% set textColor = 'text-error' %}
+    {% set textColor = 'text-danger' %}
     {% set caret = 'down' %}
-    {% set value = -value %}
+    {% set value = value %}
 {% else %}
     {% set caret = 'right' %}
 {% endif %}

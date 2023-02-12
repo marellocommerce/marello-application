@@ -3,6 +3,7 @@ define(function(require) {
 
     const $ = require('jquery');
     const _ = require('underscore');
+    const mediator = require('oroui/js/mediator');
     const OrderAddressView = require('marelloorder/js/app/views/order-address-view');
 
     const OrderBillingAddressView = OrderAddressView.extend({
@@ -26,7 +27,6 @@ define(function(require) {
                 .find(this.options.selectors.shippingAddressBlock)
                 .closest('.responsive-cell');
 
-            this.onUseBillingAsShippingChange();
             this.$el.on(
                 'change',
                 this.options.selectors.useBillingAsShipping,
@@ -40,6 +40,8 @@ define(function(require) {
             } else {
                 this.$shippingAddressBlock.removeClass('hide');
             }
+
+            mediator.trigger('order:form-changes:trigger', {updateFields: ['items', 'totals', 'possible_shipping_methods', 'possible_payment_methods']});
         },
 
         dispose: function() {
