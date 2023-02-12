@@ -84,6 +84,7 @@ marello:
 
         form.choose_product:        Select Product
         form.add_product:           Add Product
+        form.add_products:          Add Multiple Products
         form.add_variant:           Add Variant
         form.add_supplier:          Add Supplier
         product_information:        Product Information

@@ -141,7 +141,10 @@
             </div>
 
             {% if allow_add %}
-                <a class="btn marello-add-line-item" data-container=".marello-item-collection tbody" href="javascript: void(0);"><i class="fa-plus"></i>{{ form.vars.add_label|default('marello.product.form.add_product')|trans }}</a>
+                <div class="add-line-item-btn-group">
+                    <a class="btn marello-add-line-item" data-container=".marello-item-collection tbody" href="javascript: void(0);"><i class="fa-plus"></i>{{ form.vars.add_label|default('marello.product.form.add_product')|trans }}</a>
+                    <a class="btn btn-medium add-btn" data-purpose="open-dialog-widget"><i class="fa-bars"></i>{{ 'marello.product.form.add_products'|trans }}</a>
+                </div>
             {% endif %}
         </div>
     {% endapply %}

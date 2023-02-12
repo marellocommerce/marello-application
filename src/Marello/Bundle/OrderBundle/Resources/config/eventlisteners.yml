@@ -78,7 +78,6 @@ services:
         arguments:
             - '@doctrine'
             - '@oro_workflow.manager'
-            - '@marello_inventory.provider.available_inventory_provider'
             - '@marello_order.factory.shipping_context'
             - '@marello_shipping.shipping_method_provider'
             - '@event_dispatcher'

@@ -85,7 +85,7 @@ class InventoryReAllocateCronCommand extends Command implements CronCommandInter
         $allocations = $this
             ->doctrineHelper
             ->getEntityRepositoryForClass(Allocation::class)
-            ->findBy(['state' => 'waiting']);
+            ->findBy(['state' => AllocationStateStatusInterface::ALLOCATION_STATE_WFS]);
 
         $em = $this->doctrineHelper->getEntityManagerForClass(Allocation::class);
         /** @var Allocation $allocation */
@@ -97,13 +97,13 @@ class InventoryReAllocateCronCommand extends Command implements CronCommandInter
                         $this->allocationProvider->allocateOrderToWarehouses($allocation->getOrder(), $allocation);
                         $allocation->setState(
                             $this->getEnumValue(
-                                'marello_allocation_state',
+                                AllocationStateStatusInterface::ALLOCATION_STATE_ENUM_CODE,
                                 AllocationStateStatusInterface::ALLOCATION_STATE_CLOSED
                             )
                         );
                         $allocation->setStatus(
                             $this->getEnumValue(
-                                'marello_allocation_status',
+                                AllocationStateStatusInterface::ALLOCATION_STATUS_ENUM_CODE,
                                 AllocationStateStatusInterface::ALLOCATION_STATUS_CLOSED
                             )
                         );
