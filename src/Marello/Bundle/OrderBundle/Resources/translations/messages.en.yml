@@ -97,6 +97,7 @@ marello:
                 per_unit.label:     Price Per Unit
             quantity.label:         Quantity
             ordered.label:          Ordered
+            available_quantity.label: Available
             product_unit.label:     Unit
             original_price_excl_tax.label:   Original Price Excl. Tax
             original_price_incl_tax.label:   Original Price Incl. Tax
