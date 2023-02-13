@@ -214,6 +214,11 @@
     </td>
     <td class="order-line-item-quantity">
         <div class="fields-row">
+            {{ form_widget(form.availableQuantity) }}
+        </div>
+    </td>
+    <td class="order-line-item-quantity">
+        <div class="fields-row">
             {{ form_widget(form.quantity) }}
         </div>
     </td>
@@ -239,6 +244,7 @@
                         <tr>
                             <th class="order-line-item-product"><span>{{ 'marello.product.sku.label'|trans }}</span></th>
                             <th class="order-line-item-product"><span>{{ 'marello.product.entity_label'|trans }}</span></th>
+                            <th class="order-line-item-quantity"><span>{{ 'marello.order.orderitem.available_quantity.label'|trans }}</span></th>
                             <th class="order-line-item-quantity"><span>{{ 'marello.order.orderitem.ordered.label'|trans }}</span></th>
                             <th class="order-line-item-quantity"><span>{{ 'marello.order.orderitem.quantity.label'|trans }}</span></th>
                             <th class="order-line-item-product-unit"><span>{{ 'marello.order.orderitem.product_unit.label'|trans }}</span></th>
