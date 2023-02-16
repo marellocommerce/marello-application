@@ -1,8 +1,10 @@
 <?php
 
-namespace Marello\Bundle\OrderBundle\Factory;
+namespace Marello\Bundle\InventoryBundle\Factory;
 
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use Marello\Bundle\InventoryBundle\Entity\Allocation;
+use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
 use Marello\Bundle\OrderBundle\Converter\OrderShippingLineItemConverterInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
@@ -13,10 +15,7 @@ use Marello\Bundle\ShippingBundle\Context\ShippingContextInterface;
 use Oro\Bundle\CurrencyBundle\Entity\Price;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-/**
- * @deprecated will be removed in 5.0
- */
-class OrderShippingContextFactory implements ShippingContextFactoryInterface
+class AllocationShippingContextFactory implements ShippingContextFactoryInterface
 {
     /**
      * @var OrderShippingLineItemConverterInterface
@@ -47,28 +46,29 @@ class OrderShippingContextFactory implements ShippingContextFactoryInterface
     }
 
     /**
-     * @param Order $order
+     * @param Allocation $allocation
      * @return ShippingContextInterface[]
      */
-    public function create($order)
+    public function create($allocation)
     {
-        $this->ensureApplicable($order);
+        $this->ensureApplicable($allocation);
 
         if (null === $this->shippingContextBuilderFactory) {
             return null;
         }
 
         $shippingContextBuilder = $this->shippingContextBuilderFactory->createShippingContextBuilder(
-            $order,
-            (string)$order->getId()
+            $allocation,
+            (string)$allocation->getId()
         );
 
         $results = [];
-        $orderItems = $order->getItems();
+        $allocationItems = $allocation->getItems();
         $subtotal = 0.00;
-        /** @var OrderItem $orderItem */
-        foreach ($orderItems as $orderItem) {
-            $subtotal += $orderItem->getPrice() * $orderItem->getQuantity();
+        $order = $allocation->getOrder();
+        /** @var AllocationItem $allocationItem */
+        foreach ($allocationItems as $allocationItem) {
+            $subtotal += $allocationItem->getOrderItem()->getPrice() * $allocationItem->getQuantityConfirmed();
         }
         $subtotal = Price::create(
             $subtotal,
@@ -79,14 +79,14 @@ class OrderShippingContextFactory implements ShippingContextFactoryInterface
             ->setSubTotal($subtotal)
             ->setCurrency($order->getCurrency());
 
-        $convertedLineItems = $this->shippingLineItemConverter->convertLineItems($orderItems);
+        $convertedLineItems = $this->shippingLineItemConverter->convertLineItems($order->getItems());
 
-        $shippingOrigin = $this->getShippingOrigin($order);
+        $shippingOrigin = $this->getShippingOrigin($allocation);
         if (null !== $shippingOrigin) {
             $shippingContextBuilder->setShippingOrigin($shippingOrigin);
         }
-        if (null !== $order->getShippingAddress()) {
-            $shippingContextBuilder->setShippingAddress($order->getShippingAddress());
+        if (null !== $allocation->getShippingAddress()) {
+            $shippingContextBuilder->setShippingAddress($allocation->getShippingAddress());
         }
 
         if (null !== $order->getBillingAddress()) {
@@ -114,7 +114,7 @@ class OrderShippingContextFactory implements ShippingContextFactoryInterface
      */
     protected function ensureApplicable($entity)
     {
-        if (!is_a($entity, Order::class)) {
+        if (!is_a($entity, Allocation::class)) {
             throw new \InvalidArgumentException(sprintf(
                 '"%s" expected, "%s" given',
                 Order::class,
@@ -124,12 +124,15 @@ class OrderShippingContextFactory implements ShippingContextFactoryInterface
     }
 
     /**
-     * @param Order $order
+     * @param Allocation $allocation
      * @return MarelloAddress|null
      */
-    protected function getShippingOrigin(Order $order)
+    protected function getShippingOrigin(Allocation $allocation)
     {
-        // keep method just in case we need to get the address from the default warehouse
+        if ($warehouse = $allocation->getWarehouse()) {
+            return $warehouse->getAddress();
+        }
+
         return null;
     }
 

@@ -48,7 +48,6 @@ class MarelloShippingBundleInstaller implements Installation, AttachmentExtensio
         $this->addMarelloShipMethodPostalCodeForeignKeys($schema);
         $this->addMarelloShipMethodTypeConfigForeignKeys($schema);
         $this->addMarelloShippingRuleDestinationForeignKeys($schema);
-        $this->addMarelloTrackingInfoForeignKeys($schema);
 
         $this->attachmentExtension->addImageRelation(
             $schema,
@@ -178,8 +177,6 @@ class MarelloShippingBundleInstaller implements Installation, AttachmentExtensio
         $table->addColumn('tracking_code', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('provider', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('provider_name', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('order_id', 'integer', ['notnull' => false]);
-        $table->addColumn('return_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
     }
 
@@ -298,23 +295,6 @@ class MarelloShippingBundleInstaller implements Installation, AttachmentExtensio
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_tracking_info'),
             ['tracking_info_id'],
-            ['id'],
-            ['onDelete' => 'SET NULL', 'onUpdate' => null]
-        );
-    }
-
-    protected function addMarelloTrackingInfoForeignKeys(Schema $schema)
-    {
-        $table = $schema->getTable('marello_tracking_info');
-        $table->addForeignKeyConstraint(
-            $schema->getTable('marello_order_order'),
-            ['order_id'],
-            ['id'],
-            ['onDelete' => 'SET NULL', 'onUpdate' => null]
-        );
-        $table->addForeignKeyConstraint(
-            $schema->getTable('marello_return_return'),
-            ['return_id'],
             ['id'],
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
