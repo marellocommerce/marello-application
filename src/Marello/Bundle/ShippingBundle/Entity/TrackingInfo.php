@@ -3,11 +3,11 @@
 namespace Marello\Bundle\ShippingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
-use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
-use Marello\Bundle\ShippingBundle\Model\ExtendTrackingInfo;
+
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+
+use Marello\Bundle\ShippingBundle\Model\ExtendTrackingInfo;
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 
 /**
  * @ORM\Entity
@@ -119,34 +119,6 @@ class TrackingInfo extends ExtendTrackingInfo
      * @var Shipment
      */
     protected $shipment;
-
-    /**
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\Order")
-     * @ORM\JoinColumn(name="order_id", nullable=true)
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "dataaudit"={
-     *              "auditable"=true
-     *          }
-     *      }
-     * )
-     * @var Order
-     */
-    protected $order;
-
-    /**
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\ReturnBundle\Entity\ReturnEntity")
-     * @ORM\JoinColumn(name="return_id", nullable=true)
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "dataaudit"={
-     *              "auditable"=true
-     *          }
-     *      }
-     * )
-     * @var ReturnEntity
-     */
-    protected $return;
 
     /**
      * @return mixed
@@ -266,44 +238,6 @@ class TrackingInfo extends ExtendTrackingInfo
     public function setShipment(Shipment $shipment): self
     {
         $this->shipment = $shipment;
-
-        return $this;
-    }
-
-    /**
-     * @return Order|null
-     */
-    public function getOrder(): ?Order
-    {
-        return $this->order;
-    }
-
-    /**
-     * @param Order $order
-     * @return $this
-     */
-    public function setOrder(Order $order): self
-    {
-        $this->order = $order;
-
-        return $this;
-    }
-
-    /**
-     * @return ReturnEntity|null
-     */
-    public function getReturn(): ?ReturnEntity
-    {
-        return $this->return;
-    }
-
-    /**
-     * @param ReturnEntity $return
-     * @return $this
-     */
-    public function setReturn(ReturnEntity $return): self
-    {
-        $this->return = $return;
 
         return $this;
     }

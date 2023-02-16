@@ -14,7 +14,6 @@ class MarelloShippingBundle implements Migration
         $this->updateMarelloShipmentTable($schema);
 
         $this->addMarelloShipmentForeignKeys($schema);
-        $this->addMarelloTrackingInfoForeignKeys($schema);
     }
 
     protected function createMarelloTrackingInfoTable(Schema $schema)
@@ -26,40 +25,31 @@ class MarelloShippingBundle implements Migration
         $table->addColumn('tracking_code', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('provider', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('provider_name', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('order_id', 'integer', ['notnull' => false]);
-        $table->addColumn('return_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
     }
 
+    /**
+     * @param Schema $schema
+     * @return void
+     * @throws \Doctrine\DBAL\Schema\SchemaException
+     */
     protected function updateMarelloShipmentTable(Schema $schema)
     {
         $table = $schema->getTable('marello_shipment');
         $table->addColumn('tracking_info_id', 'integer', ['notnull' => false]);
     }
 
+    /**
+     * @param Schema $schema
+     * @return void
+     * @throws \Doctrine\DBAL\Schema\SchemaException
+     */
     protected function addMarelloShipmentForeignKeys(Schema $schema)
     {
         $table = $schema->getTable('marello_shipment');
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_tracking_info'),
             ['tracking_info_id'],
-            ['id'],
-            ['onDelete' => 'SET NULL', 'onUpdate' => null]
-        );
-    }
-
-    protected function addMarelloTrackingInfoForeignKeys(Schema $schema)
-    {
-        $table = $schema->getTable('marello_tracking_info');
-        $table->addForeignKeyConstraint(
-            $schema->getTable('marello_order_order'),
-            ['order_id'],
-            ['id'],
-            ['onDelete' => 'SET NULL', 'onUpdate' => null]
-        );
-        $table->addForeignKeyConstraint(
-            $schema->getTable('marello_return_return'),
-            ['return_id'],
             ['id'],
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );

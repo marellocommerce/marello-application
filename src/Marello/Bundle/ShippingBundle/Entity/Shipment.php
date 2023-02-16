@@ -3,12 +3,13 @@
 namespace Marello\Bundle\ShippingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
-use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\ShippingBundle\Model\ExtendShipment;
+
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
+
+use Marello\Bundle\ShippingBundle\Model\ExtendShipment;
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 
 /**
  * @ORM\Entity
@@ -111,13 +112,6 @@ class Shipment extends ExtendShipment implements OrganizationAwareInterface
      * @var TrackingInfo
      */
     protected $trackingInfo;
-
-    /**
-     * @var Order
-     *
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\Order", inversedBy="shipment")
-     */
-    protected $order;
 
     /**
      * @return mixed
@@ -236,33 +230,13 @@ class Shipment extends ExtendShipment implements OrganizationAwareInterface
     }
 
     /**
-     * @param TrackingInfo $trackingInfo
+     * @param TrackingInfo|null $trackingInfo
      *
      * @return $this
      */
-    public function setTrackingInfo(TrackingInfo $trackingInfo): self
+    public function setTrackingInfo(TrackingInfo $trackingInfo = null): self
     {
         $this->trackingInfo = $trackingInfo;
-
-        return $this;
-    }
-
-    /**
-     * @return Order|null
-     */
-    public function getOrder(): ?Order
-    {
-        return $this->order;
-    }
-
-    /**
-     * @param Order $order
-     *
-     * @return $this
-     */
-    public function setOrder(Order $order): self
-    {
-        $this->order = $order;
 
         return $this;
     }

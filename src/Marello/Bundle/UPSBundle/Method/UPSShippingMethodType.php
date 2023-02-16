@@ -219,7 +219,7 @@ class UPSShippingMethodType implements ShippingMethodTypeInterface
         $trackingInfo->setTrackTraceUrl(UPSShippingMethod::TRACKING_URL . $shipmentAcceptResponse->getTrackingNumber());
 
         $shipment
-            ->setShippingService(sprintf('%s/%s', $method, $type))
+            ->setShippingService($method)
             ->setUpsPackageTrackingNumber($shipmentAcceptResponse->getTrackingNumber())
             ->setIdentificationNumber($shipmentAcceptResponse->getShipmentIdentificationNumber())
             ->setBase64EncodedLabel($shipmentAcceptResponse->getGraphicImage());
