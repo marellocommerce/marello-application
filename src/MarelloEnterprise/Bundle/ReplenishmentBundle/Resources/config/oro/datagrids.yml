@@ -93,6 +93,11 @@ datagrids:
             allQuantity:
                 label: marelloenterprise.replenishment.replenishmentorderitem.all.label
                 frontend_type: boolean
+            inventoryBatches:
+                label: marelloenterprise.replenishment.replenishmentorderitem.inventory_batches.label
+                type: twig
+                frontend_type: html
+                template: '@MarelloEnterpriseReplenishment/ReplenishmentOrder/Datagrid/Property/inventoryBatches.html.twig'
             note:
                 label: marelloenterprise.replenishment.replenishmentorderitem.note.label
                 frontend_type: string
