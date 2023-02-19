@@ -202,37 +202,39 @@
 {% endblock %}
 
 {% block marello_inventory_reshipment_item_widget %}
-    <td class="order-line-item-product">
-        <div class="fields-row">
-            {{ form_widget(form.productSku) }}
-        </div>
-    </td>
-    <td class="order-line-item-product">
-        <div class="fields-row">
-            {{ form_widget(form.productName) }}
-        </div>
-    </td>
-    <td class="order-line-item-quantity">
-        <div class="fields-row">
-            {{ form_widget(form.availableQuantity) }}
-        </div>
-    </td>
-    <td class="order-line-item-quantity">
-        <div class="fields-row">
-            {{ form_widget(form.quantity) }}
-        </div>
-    </td>
-    <td class="order-line-item-quantity">
-        <div class="fields-row">
-            {{ form_widget(form.newQuantity) }}
-        </div>
-        {{ form_errors(form.newQuantity) }}
-    </td>
-    <td class="order-line-item-product-unit">
-        <div class="fields-row">
-            {{ form.vars.value.productUnit }}
-        </div>
-    </td>
+    <tr>
+        <td class="order-line-item-product">
+            <div class="fields-row">
+                {{ form_widget(form.productSku) }}
+            </div>
+        </td>
+        <td class="order-line-item-product">
+            <div class="fields-row">
+                {{ form_widget(form.productName) }}
+            </div>
+        </td>
+        <td class="order-line-item-quantity">
+            <div class="fields-row">
+                {{ form_widget(form.availableQuantity) }}
+            </div>
+        </td>
+        <td class="order-line-item-quantity">
+            <div class="fields-row">
+                {{ form_widget(form.quantity) }}
+            </div>
+        </td>
+        <td class="order-line-item-quantity">
+            <div class="fields-row">
+                {{ form_widget(form.newQuantity) }}
+            </div>
+            {{ form_errors(form.newQuantity) }}
+        </td>
+        <td class="order-line-item-product-unit">
+            <div class="fields-row">
+                {{ form.vars.value.productUnit }}
+            </div>
+        </td>
+    </tr>
 {% endblock %}
 
 {% block marello_inventory_reshipment_item_collection_widget %}

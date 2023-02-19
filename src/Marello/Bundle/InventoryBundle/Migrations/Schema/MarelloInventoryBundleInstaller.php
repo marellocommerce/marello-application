@@ -32,7 +32,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
      */
     public function getMigrationVersion()
     {
-        return 'v2_6_5';
+        return 'v2_6_6';
     }
 
     /**
@@ -374,6 +374,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addColumn('order_item_id', 'integer', ['notnull' => false]);
         $table->addColumn('warehouse_id', 'integer', ['notnull' => false]);
         $table->addColumn('quantity', 'float', ['notnull' => true]);
+        $table->addColumn('total_quantity', 'float', ['notnull' => false]);
         $table->addColumn('quantity_confirmed', 'float', ['notnull' => false]);
         $table->addColumn('quantity_rejected', 'float', ['notnull' => false]);
         $table->addColumn('comment', 'text', ['notnull' => false]);
