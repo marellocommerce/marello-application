@@ -17,13 +17,10 @@ class ReshipmentHandler implements FormHandlerInterface
 {
     use RequestHandlerTrait;
 
-    /**
-     * @param EntityManagerInterface $manager
-     * @param InventoryAllocationProvider $allocationProvider
-     */
     public function __construct(
         protected EntityManagerInterface $manager,
-        protected InventoryAllocationProvider $allocationProvider
+        protected InventoryAllocationProvider $allocationProvider,
+        protected array $removedItems = []
     ) {}
 
     /**
@@ -63,8 +60,20 @@ class ReshipmentHandler implements FormHandlerInterface
      */
     protected function onSuccess(Order $entity)
     {
+        // Temporary remove items with quantity = 0
+        foreach ($entity->getItems() as $item) {
+            if (!$item->getQuantity()) {
+                $entity->getItems()->removeElement($item);
+                $this->removedItems[] = $item;
+            }
+        }
+
         $this->allocationProvider->allocateOrderToWarehouses($entity, null, function (Order $order) {
             // Revert all order changes back
+            foreach ($this->removedItems as $item) {
+                $order->getItems()->add($item);
+            }
+            $this->removedItems = [];
             foreach ($order->getItems() as $item) {
                 $this->manager->refresh($item);
             }

@@ -165,6 +165,7 @@ class InventoryAllocationProvider
                 $diff[] = $orderItem;
             }
 
+            /** @var OrderItem $orderItem */
             foreach ($diff as $orderItem) {
                 /** @var Order $order */
                 $diffAllocation = new Allocation();
@@ -193,6 +194,7 @@ class InventoryAllocationProvider
                 $allocationItem->setProductSku($orderItem->getProductSku());
                 $allocationItem->setProductName($orderItem->getProductName());
                 $allocationItem->setQuantity($orderItem->getQuantity());
+                $allocationItem->setTotalQuantity($orderItem->getQuantity());
                 $diffAllocation->addItem($allocationItem);
                 $em->persist($diffAllocation);
             }
@@ -238,6 +240,7 @@ class InventoryAllocationProvider
                 $allocationItem->setWarehouse($allocation->getWarehouse());
             }
             $allocationItem->setQuantity($itemWithQty[$item->getProductSku()]);
+            $allocationItem->setTotalQuantity($orderItem->getQuantity());
             $allocation->addItem($allocationItem);
             $this->allOrderItems->add($orderItem);
             $this->allItems[] = clone $allocationItem;
