@@ -109,7 +109,7 @@ class InventoryManager extends BaseInventoryManager
         }
         /** @var InventoryBatch[] $updatedBatches */
         $updatedBatches = $context->getInventoryBatches();
-        if (count($updatedBatches) === 1 && $updatedBatches[0]['batch']->getId() === null) {
+        if (count($updatedBatches) === 1) {
             $level->addInventoryBatch($updatedBatches[0]['batch']);
         }
         $updatedLevel = $this->updateInventory($level, $inventory, $allocatedInventory);
