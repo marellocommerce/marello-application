@@ -83,3 +83,7 @@ services:
             - '@oro_entity.doctrine_helper'
         tags:
             - { name: marello.form_changes_data_provider, class: 'MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderConfig', type: manualItems, priority: 0 }
+
+    MarelloEnterprise\Bundle\ReplenishmentBundle\EventListener\Datagrid\ReplenishmentOrderItemInventoryBatchesColumnListener:
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.marello-replenishment-order-items-grid, method: onBuildAfter }
