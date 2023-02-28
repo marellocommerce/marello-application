@@ -119,7 +119,7 @@ class VariantController extends AbstractController
     }
 
     /**
-     * @deprecated rendering of widget is obsolete and done directly in product template. see @MarelloProduct/Product/view.html.twig#121
+     * @deprecated rendering of widget is obsolete and done directly in product template. see MarelloProduct/Product/view.html.twig#121
      * @Route(path="/widget/info/{id}", name="marello_product_variant_widget_info", requirements={"id"="\d+"})
      * @AclAncestor("marello_product_view")
      * @Template
