@@ -6,6 +6,8 @@ datagrids:
             query:
                 select:
                     - o
+                    - ba.company as billingAddressCompany
+                    - sa.company as shippingAddressCompany
                 from:
                     - { table: MarelloOrderBundle:Order, alias: o }
                 join:
@@ -39,10 +41,20 @@ datagrids:
                 frontend_type:    string
                 data_name:        billingName # This alias is generated using OrderGridAddressFilterListener
                 label:            marello.order.billing_address.name.label
+            billingAddressCompany:
+                frontend_type:    string
+                data_name:        billingAddressCompany
+                label:            marello.order.billing_address.company.label
+                renderable:       false
             shippingAddress:
                 frontend_type:    string
                 data_name:        shippingName # This alias is generated using OrderGridAddressFilterListener
                 label:            marello.order.shipping_address.name.label
+            shippingAddressCompany:
+                frontend_type:    string
+                data_name:        shippingAddressCompany
+                label:            marello.order.shipping_address.company.label
+                renderable:       false
             grandTotal:
                 label:            marello.order.grand_total.label
                 type:             localized_number
@@ -79,8 +91,12 @@ datagrids:
                     data_name: o.orderReference
                 billingAddress:
                     data_name: billingName
+                billingAddressCompany:
+                    data_name: billingAddressCompany
                 shippingAddress:
                     data_name: shippingName
+                shippingAddressCompany:
+                    data_name: shippingAddressCompany
                 grandTotal:
                     data_name: o.grandTotal
                 poNumber:
@@ -112,9 +128,17 @@ datagrids:
                 billingAddress:
                     type: string
                     data_name: billingName              # This alias is generated using OrderGrdiAddressFilterListener
+                billingAddressCompany:
+                    type: string
+                    data_name: billingAddressCompany
+                    renderable: false
                 shippingAddress:
                     type: string
                     data_name: shippingName             # This alias is generated using OrderGrdiAddressFilterListener
+                shippingAddressCompany:
+                    type: string
+                    data_name: shippingAddressCompany
+                    renderable: false
                 poNumber:
                     type: string
                     data_name: o.poNumber
