@@ -4,5 +4,5 @@ namespace Marello\Bundle\WebhookBundle\Model;
 
 interface WebhookEventInterface
 {
-    const ORDER_STATUS_ENUM_CLASS = 'marello_webhook_event';
+    const WEBHOOK_EVENT_ENUM_CLASS = 'marello_webhook_event';
 }
