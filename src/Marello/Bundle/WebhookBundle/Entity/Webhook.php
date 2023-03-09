@@ -165,7 +165,7 @@ class Webhook extends ExtendWebhook implements OrganizationAwareInterface
     /**
      * @return \Extend\Entity\EV_Marello_Webhook_Event
      */
-    public function getEvent(): ?\Extend\Entity\EV_Marello_Webhook_Event
+    public function getEvent()
     {
         return $this->event;
     }
@@ -174,7 +174,7 @@ class Webhook extends ExtendWebhook implements OrganizationAwareInterface
      * @param \Extend\Entity\EV_Marello_Webhook_Event $event
      * @return Webhook
      */
-    public function setEvent(\Extend\Entity\EV_Marello_Webhook_Event $event): self
+    public function setEvent($event): self
     {
         $this->event = $event;
 
