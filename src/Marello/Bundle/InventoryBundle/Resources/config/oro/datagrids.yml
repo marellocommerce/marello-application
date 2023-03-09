@@ -12,6 +12,9 @@ datagrids:
                     - COALESCE(SUM(il.inventory), 0) AS inventoryQty
                     - COALESCE(SUM(il.allocatedInventory), 0) AS allocatedInventoryQty
                     - COALESCE(SUM(il.inventory - il.allocatedInventory), 0) AS virtualInventoryQty
+                    - i.backorderAllowed as backorderAllowed
+                    - i.canPreorder as canPreorder
+                    - i.orderOnDemandAllowed as orderOnDemandAllowed
                 from:
                     - { table: MarelloInventoryBundle:InventoryItem, alias: i }
                 join:
@@ -49,6 +52,18 @@ datagrids:
                 label:              marello.inventory.inventorylevel.virtual_inventory.grid.label
                 frontend_type:      number
                 data_name:          virtualInventoryQty
+            backorderAllowed:
+                label:              marello.inventory.inventoryitem.backorder_allowed.grid.label
+                frontend_type:      boolean
+                data_name:          backorderAllowed
+            canPreorder:
+                label:              marello.inventory.inventoryitem.can_preorder.grid.label
+                frontend_type:      boolean
+                data_name:          canPreorder
+            orderOnDemandAllowed:
+                label:              marello.inventory.inventoryitem.order_on_demand_allowed.grid.label
+                frontend_type:      boolean
+                data_name:          orderOnDemandAllowed
         sorters:
             columns:
                 productSku:             { data_name: p.sku }
@@ -87,6 +102,16 @@ datagrids:
                     type:             number
                     data_name:        virtualInventoryQty
                     filter_by_having: true
+                    enabled:          false
+                backorderAllowed:
+                    type:             boolean
+                    data_name:        backorderAllowed
+                canPreorder:
+                    type:             boolean
+                    data_name:        canPreorder
+                orderOnDemandAllowed:
+                    type:             boolean
+                    data_name:        orderOnDemandAllowed
         properties:
             id: ~
             productName:
@@ -222,20 +247,16 @@ datagrids:
                     - COALESCE(il.inventory, 0) AS inventoryQty
                     - COALESCE(il.allocatedInventory, 0) AS allocatedInventoryQty
                     - COALESCE(il.inventory - il.allocatedInventory, 0) AS virtualInventoryQty
-                    - ii.backorderAllowed as backorderAllowed
-                    - ii.canPreorder as canPreorder
-                    - ii.orderOnDemandAllowed as orderOnDemandAllowed
                 from:
                     - { table: MarelloInventoryBundle:InventoryLevel, alias: il }
                 join:
                     left:
                         - { join: il.warehouse, alias: wh }
                         - { join: wh.warehouseType, alias: wht }
-                        - { join: il.inventoryItem, alias: ii }
                 where:
                     and:
                         - IDENTITY(il.inventoryItem) = :inventoryItemId
-                groupBy: il.id, wh.code, wh.label, wht.label, ii.backorderAllowed, ii.canPreorder, ii.orderOnDemandAllowed
+                groupBy: il.id, wh.code, wh.label, wht.label
             bind_parameters:
                 inventoryItemId: inventoryItemId
         columns:
@@ -265,18 +286,6 @@ datagrids:
                 label:              marello.inventory.inventorylevel.virtual_inventory.grid.label
                 frontend_type:      number
                 data_name:          virtualInventoryQty
-            backorderAllowed:
-                label:              marello.inventory.inventoryitem.backorder_allowed.grid.label
-                frontend_type:      boolean
-                data_name:          backorderAllowed
-            canPreorder:
-                label:              marello.inventory.inventoryitem.can_preorder.grid.label
-                frontend_type:      boolean
-                data_name:          canPreorder
-            orderOnDemandAllowed:
-                label:              marello.inventory.inventoryitem.order_on_demand_allowed.grid.label
-                frontend_type:      boolean
-                data_name:          orderOnDemandAllowed
         filters:
             columns:
                 warehouse:
@@ -289,16 +298,6 @@ datagrids:
                 warehouseTypeLabel:
                     type:             string
                     data_name:        warehouseTypeLabel
-                    enabled:          false
-                backorderAllowed:
-                    type:             boolean
-                    data_name:        backorderAllowed
-                canPreorder:
-                    type:             boolean
-                    data_name:        canPreorder
-                orderOnDemandAllowed:
-                    type:             boolean
-                    data_name:        orderOnDemandAllowed
 
     marello-balanced-inventory-levels-grid:
         extended_entity_name: Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel
