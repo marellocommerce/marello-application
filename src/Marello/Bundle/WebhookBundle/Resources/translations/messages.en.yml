@@ -1,0 +1,13 @@
+marello:
+  webhook:
+    id.label: ID
+    name.label: Name
+    callback_url.label: Callback URL
+    event.label: Event
+    enable.label: Enable
+    created_at.label: Created At
+    updated_at.label: Updated At
+    entity_grid_all_view_label: View all webhook
+    entity_label: Webhook
+    menu.label: Webhook
+    entity_plural_label: Webhooks

@@ -1,0 +1,75 @@
+datagrids:
+  marello_webhook_grid:
+    extended_entity_name: Marello\Bundle\WebhookBundle\Entity\Webhook
+    inline_editing:
+      enable: true
+    source:
+      type: orm
+      query:
+        select:
+          - p
+        from:
+          - { table: MarelloWebhookBundle:Webhook, alias: p }
+    columns:
+      id:
+        label: marello.webhook.id.label
+        frontend_type: integer
+      name:
+        label:            marello.webhook.name.label
+        frontend_type:    string
+        data_name:        name
+      callbackUrl:
+        label:            marello.webhook.callback_url.label
+        frontend_type:    string
+        data_name:        callback_url
+      event:
+        label:            marello.webhook.event.label
+        frontend_type:    string
+      enable:
+        label:            marello.webhook.enable.label
+        frontend_type:    string
+      createdAt:
+        label:            marello.webhook.created_at.label
+        type:             callback
+        callable:         ['@oro_locale.twig.date_time', 'dateTimeMediumFormat']
+        params:           {fieldName: createdAt}
+      updatedAt:
+        label:            marello.webhook.updated_at.label
+        type:             callback
+        callable:         ['@oro_locale.twig.date_time', 'dateTimeMediumFormat']
+        params:           {fieldName: updatedAt}
+    sorters:
+      columns:
+        id: { data_name: p.id }
+        createdAt: { data_name: p.createdAt }
+        updatedAt: { data_name: p.updatedAt }
+      default:
+        id: DESC
+    filters:
+      columns:
+        createdAt:
+          type:      datetime
+          data_name: p.createdAt
+        updateddAt:
+          type:      datetime
+          data_name: p.updatedAt
+    properties:
+      id: ~
+    actions:
+      view:
+        type:           navigate
+        label:          oro.grid.action.view
+        link:           view_link
+        icon:           eye
+        acl_recource:   marello_webhook_view
+        rowAction:      true
+      update:
+        type:           navigate
+        label:          oro.grid.action.update
+        icon:           edit
+        link:           update_link
+        acl_resource:   marello_webhook_update
+        options:
+          entityHint: webhook
+          export: true
+          entity_pagination: true
