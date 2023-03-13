@@ -12,6 +12,9 @@ datagrids:
                     - COALESCE(SUM(il.inventory), 0) AS inventoryQty
                     - COALESCE(SUM(il.allocatedInventory), 0) AS allocatedInventoryQty
                     - COALESCE(SUM(il.inventory - il.allocatedInventory), 0) AS virtualInventoryQty
+                    - i.backorderAllowed as backorderAllowed
+                    - i.canPreorder as canPreorder
+                    - i.orderOnDemandAllowed as orderOnDemandAllowed
                 from:
                     - { table: MarelloInventoryBundle:InventoryItem, alias: i }
                 join:
@@ -38,17 +41,29 @@ datagrids:
                 frontend_type:      boolean
                 data_name:          enableBatchInventory
             inventoryQty:
-                label:              marello.inventory.inventorylevel.inventory.label
+                label:              marello.inventory.inventorylevel.inventory.grid.label
                 frontend_type:      number
                 data_name:          inventoryQty
             allocatedInventoryQty:
-                label:              marello.inventory.inventorylevel.allocated_inventory.label
+                label:              marello.inventory.inventorylevel.allocated_inventory.grid.label
                 frontend_type:      number
                 data_name:          allocatedInventoryQty
             virtualInventoryQty:
-                label:              marello.inventory.inventorylevel.virtual_inventory.label
+                label:              marello.inventory.inventorylevel.virtual_inventory.grid.label
                 frontend_type:      number
                 data_name:          virtualInventoryQty
+            backorderAllowed:
+                label:              marello.inventory.inventoryitem.backorder_allowed.grid.label
+                frontend_type:      boolean
+                data_name:          backorderAllowed
+            canPreorder:
+                label:              marello.inventory.inventoryitem.can_preorder.grid.label
+                frontend_type:      boolean
+                data_name:          canPreorder
+            orderOnDemandAllowed:
+                label:              marello.inventory.inventoryitem.order_on_demand_allowed.grid.label
+                frontend_type:      boolean
+                data_name:          orderOnDemandAllowed
         sorters:
             columns:
                 productSku:             { data_name: p.sku }
@@ -87,6 +102,16 @@ datagrids:
                     type:             number
                     data_name:        virtualInventoryQty
                     filter_by_having: true
+                    enabled:          false
+                backorderAllowed:
+                    type:             boolean
+                    data_name:        backorderAllowed
+                canPreorder:
+                    type:             boolean
+                    data_name:        canPreorder
+                orderOnDemandAllowed:
+                    type:             boolean
+                    data_name:        orderOnDemandAllowed
         properties:
             id: ~
             productName:
@@ -241,6 +266,7 @@ datagrids:
             warehouseCode:
                 label:              marello.inventory.inventorylevel.grid.warehouse_code.label
                 frontend_type:      string
+                renderable:         false
             pickLocation:
                 label:              marello.inventory.inventorylevel.pick_location.label
                 frontend_type:      string
@@ -249,15 +275,15 @@ datagrids:
                 frontend_type:      string
                 renderable:         false
             inventoryQty:
-                label:              marello.inventory.inventorylevel.inventory.label
+                label:              marello.inventory.inventorylevel.inventory.grid.label
                 frontend_type:      number
                 data_name:          inventoryQty
             allocatedInventoryQty:
-                label:              marello.inventory.inventorylevel.allocated_inventory.label
+                label:              marello.inventory.inventorylevel.allocated_inventory.grid.label
                 frontend_type:      number
                 data_name:          allocatedInventoryQty
             virtualInventoryQty:
-                label:              marello.inventory.inventorylevel.virtual_inventory.label
+                label:              marello.inventory.inventorylevel.virtual_inventory.grid.label
                 frontend_type:      number
                 data_name:          virtualInventoryQty
         filters:
@@ -268,10 +294,10 @@ datagrids:
                 warehouseCode:
                     type:             string
                     data_name:        warehouseCode
+                    renderable:       false
                 warehouseTypeLabel:
                     type:             string
                     data_name:        warehouseTypeLabel
-                    enabled:          false
 
     marello-balanced-inventory-levels-grid:
         extended_entity_name: Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel
