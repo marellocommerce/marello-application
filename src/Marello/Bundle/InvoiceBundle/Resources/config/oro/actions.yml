@@ -137,14 +137,14 @@ operations:
                                 - 'marello_pdf.email_bcc'
                                 - false
                                 - false
-                                - '$.order.order.salesChannel'
+                                - '$.data.order.salesChannel'
                             attribute: '$.bcc'
                       - '@call_service_method':
                             service: translator
                             method: trans
                             method_parameters:
-                                - 'marello.pdf.filename.invoice'
-                                - { '%%entityNumber%%': '$.data.invoiceNumber' }
+                                - 'marello.invoice.pdf.filename.label'
+                                - { '%%entityNumber%%': '$.data.invoiceNumber', '%%invoiceType%%': '$.data.invoiceType' }
                             attribute: '$.filename'
                       - '@call_service_method':
                             service: marello_pdf.provider.render_parameters
