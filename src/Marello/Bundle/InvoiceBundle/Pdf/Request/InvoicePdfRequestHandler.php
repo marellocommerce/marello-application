@@ -97,13 +97,13 @@ class InvoicePdfRequestHandler implements PdfRequestHandlerInterface
             $disposition = ResponseHeaderBag::DISPOSITION_INLINE;
         }
 
-        $filename = sprintf('%s.pdf', $this->translator->trans(
+        $filename = $this->translator->trans(
             'marello.invoice.pdf.filename.label',
             [
                 '%invoiceType%' => $entity->getInvoiceType(),
                 '%entityNumber%' => $entity->getInvoiceNumber()
             ]
-        ));
+        );
 
         $params = $this->parametersProvider
             ->getParams($entity, [ConfigValuesProvider::SCOPE_IDENTIFIER_KEY => $entity->getSalesChannel()])

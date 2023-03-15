@@ -36,7 +36,7 @@ marello:
         invoice_type.label:         Invoice Type
         pdf:
             download.label:         Download PDF
-            filename.label:         "%invoiceType%_%entityNumber%"
+            filename.label:         "%invoiceType%_%entityNumber%.pdf"
         action:
             send_invoice_email:
                 label: Email Invoice

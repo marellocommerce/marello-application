@@ -107,7 +107,7 @@ class ManualShippingMethodType implements ShippingMethodTypeInterface
     {
         $shipment = new Shipment();
 
-        $shipment->setShippingService(sprintf('%s/%s', $method, $type));
+        $shipment->setShippingService($method);
         $context->getSourceEntity()->setShipment($shipment);
         
         return $shipment;
