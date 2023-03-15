@@ -60,7 +60,7 @@ action_groups:
                                         method: trans
                                         method_parameters:
                                             - 'marello.invoice.pdf.filename.label'
-                                            - { '%%entityNumber%%': '$.invoice.invoiceNumber', '%%invoiceType%%': '$.invoice.invoiceType' }
+                                            - { '%%invoiceType%%': '$.invoice.invoiceType', '%%entityNumber%%': '$.invoice.invoiceNumber' }
                                         attribute: '$.filename'
                                     - '@call_service_method':
                                         service: marello_pdf.provider.render_parameters

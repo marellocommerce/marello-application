@@ -13,9 +13,11 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
 
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use Marello\Bundle\ShippingBundle\Entity\HasShipmentTrait;
 use Marello\Bundle\OrderBundle\Entity\OrderAwareInterface;
 use Marello\Bundle\InventoryBundle\Model\ExtendAllocation;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
+use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 
 /**
@@ -50,8 +52,10 @@ use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 class Allocation extends ExtendAllocation implements
     DerivedPropertyAwareInterface,
     OrganizationAwareInterface,
-    OrderAwareInterface
+    OrderAwareInterface,
+    ShippingAwareInterface
 {
+    use HasShipmentTrait;
     use EntityCreatedUpdatedAtTrait;
     use AuditableOrganizationAwareTrait;
     

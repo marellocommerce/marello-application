@@ -144,7 +144,7 @@ operations:
                             method: trans
                             method_parameters:
                                 - 'marello.invoice.pdf.filename.label'
-                                - { '%%entityNumber%%': '$.data.invoiceNumber', '%%invoiceType%%': '$.data.invoiceType' }
+                                - { '%%invoiceType%%': '$.data.invoiceType', '%%entityNumber%%': '$.data.invoiceNumber' }
                             attribute: '$.filename'
                       - '@call_service_method':
                             service: marello_pdf.provider.render_parameters
