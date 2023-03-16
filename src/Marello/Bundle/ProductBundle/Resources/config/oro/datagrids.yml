@@ -230,7 +230,7 @@ datagrids:
                         - { join: i.replenishment, alias: repl }
                 where:
                     and:
-                        - p.variant = :variantId
+                        - IDENTITY(p.variant) = :variantId
                         - p.id != :productId
                 groupBy: p.id, p.sku, s.label
             bind_parameters:

@@ -274,6 +274,14 @@ services:
 
     Marello\Bundle\InventoryBundle\Provider\AllocationExclusionProvider: ~
 
+    Marello\Bundle\InventoryBundle\Factory\AllocationShippingContextFactory:
+        public: true
+        arguments:
+            - '@marello_order.shipping_line_item.converter_basic'
+            - '@marello_shipping.context.builder_factory_basic'
+        calls:
+            - [setEventDispatcher, ['@event_dispatcher']]
+
     Marello\Bundle\InventoryBundle\Form\Handler\ReshipmentHandler:
         arguments:
             - '@doctrine.orm.entity_manager'

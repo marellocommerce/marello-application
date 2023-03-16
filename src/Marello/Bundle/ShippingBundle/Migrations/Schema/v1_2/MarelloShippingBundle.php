@@ -10,7 +10,7 @@ use Oro\Bundle\MigrationBundle\Migration\QueryBag;
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class MarelloShippingBundleInstaller implements Migration
+class MarelloShippingBundle implements Migration
 {
     /**
      * {@inheritdoc}

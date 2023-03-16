@@ -253,3 +253,28 @@ datagrids:
                 method:           formatCurrency
                 context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
                 align:            right
+
+    marello-return-shipments:
+        source:
+            extended_entity_name: Marello\Bundle\ShippingBundle\Entity\Shipment
+            type: orm
+            query:
+                select:
+                    - s
+                from:
+                    - { table: MarelloShippingBundle:Shipment, alias: s }
+                join:
+                    left:
+                        - { join: s.trackingInfo, alias: ti }
+                where:
+                    and:
+                        - s.id = :shipmentId
+            bind_parameters:
+                shipmentId: shipmentId
+        columns:
+            quantityReturned:
+                data_name: quantity
+                label: marello.return.returnitem.returned_quantity.label
+                frontend_type: number
+        options:
+            export: false

@@ -52,10 +52,12 @@ marello:
         billing_address:
             label:                  Billing Address
             name.label:             Bill to Name
+            company.label:          Bill to Company
             use_as_shipping.label:  Use Billing Address as Shipping Address
         shipping_address:
             label:                  Shipping Address
             name.label:             Ship to Name
+            company.label:          Ship to Company
         address:
             email.label:            E-Mail
             phone.label:            Phone
