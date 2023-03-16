@@ -318,8 +318,10 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addColumn('allocation_number', 'string', ['length' => 255, 'notnull' => false]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
+        $table->addColumn('shipment_id', 'integer', ['notnull' => false]);
 
         $table->setPrimaryKey(['id']);
+        $table->addUniqueIndex(['shipment_id'], 'marello_allocation_shipment_idx');
 
         $this->activityExtension->addActivityAssociation($schema, 'marello_notification', $table->getName());
         $this->activityExtension->addActivityAssociation($schema, 'oro_email', $table->getName());
@@ -636,6 +638,12 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
             ['warehouse_id'],
             ['id'],
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_shipment'),
+            ['shipment_id'],
+            ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
         );
     }
 

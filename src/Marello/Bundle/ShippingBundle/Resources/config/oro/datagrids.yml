@@ -111,3 +111,37 @@ datagrids:
                 icon:         close
                 entity_name:  'Marello\Bundle\ShippingBundle\Entity\ShippingMethodsConfigsRule'
                 data_identifier: shipping_methods_configs_rule.id
+
+    marello-shipment-grid:
+        source:
+            extended_entity_name: Marello\Bundle\ShippingBundle\Entity\Shipment
+            type: orm
+            query:
+                select:
+                    - shipment.shippingService
+                    - trackingInfo.providerName
+                    - trackingInfo.trackingCode
+                    - trackingInfo.trackTraceUrl
+                from:
+                    - { table: MarelloShippingBundle:Shipment, alias: shipment }
+                join:
+                    left:
+                        - { join: shipment.trackingInfo, alias: trackingInfo }
+                where:
+                    and:
+                        - shipment.id = :shipmentId
+            bind_parameters:
+                shipmentId: shipmentId
+        columns:
+            shippingService:
+                label:          marello.shipping.shipment.shipping_service.label
+                frontend_type:  string
+            providerName:
+                label:          marello.shipping.trackinginfo.provider_name.label
+                frontend_type:  string
+            trackingCode:
+                label:          marello.shipping.trackinginfo.tracking_code.label
+                frontend_type:  string
+            trackTraceUrl:
+                label:          marello.shipping.trackinginfo.track_trace_url.label
+                frontend_type:  string

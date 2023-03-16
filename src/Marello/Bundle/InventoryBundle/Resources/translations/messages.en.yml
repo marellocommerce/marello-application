@@ -69,13 +69,19 @@ marello:
             inventory_levels.label:        Inventory Levels
             organization.label:            Organization
             warehouse.label:               Warehouse
-            backorder_allowed.label:       Backorder allowed
+            backorder_allowed:
+                label:                     Backorder allowed
+                grid.label:                Backorder
             max_qty_to_backorder.label:    Max Qty per Order
-            can_preorder.label:            Pre-order allowed
+            can_preorder:
+                label:                     Pre-order allowed
+                grid.label:                Pre-order
             max_qty_to_preorder.label:     Max Qty per Order
             back_orders_datetime.label:    Backorders Datetime
             pre_orders_datetime.label:     Pre-orders Datetime
-            order_on_demand_allowed.label: Order on demand allowed
+            order_on_demand_allowed:
+                label:                     Order on demand allowed
+                grid.label:                Order on Demand
             enable_batch_inventory.label:  Enable Batch Inventory
             product_unit.label:            Unit
 
@@ -92,9 +98,15 @@ marello:
             entity_plural_label:            Inventory Levels
             entity_grid_all_view_label:     All %entity_plural_label%
             id.label:                       Id
-            inventory.label:                Inventory Qty
-            allocated_inventory.label:      Allocated Inventory Qty
-            virtual_inventory.label:        Virtual Inventory Qty
+            inventory:
+                label:                      Inventory Qty
+                grid.label:                 On Hand Qty
+            allocated_inventory:
+                label:                      Allocated Inventory Qty
+                grid.label:                 Allocated Qty
+            virtual_inventory:
+                label:                      Virtual Inventory Qty
+                grid.label:                 Virtual Qty
             expected_inventory.label:       Expected Inventory Qty
             inventory_diff.label:           Inventory Qty Change
             allocated_inventory_diff.label: Allocated Inventory Qty Change

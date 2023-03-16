@@ -118,17 +118,14 @@
 
     {% if entity.variant %}
         {% set productVariantWidget %}
-            {{ oro_widget_render({
-                'widgetType': 'block',
-                'url': path('marello_product_variant_widget_info', {id: entity.id}),
-            }) }}
+            {{ dataGrid.renderGrid('marello-product-variant-grid', { variantId: entity.variant.id, productId: entity.id }, { cssClass: 'inner-grid' }) }}
         {% endset %}
         {% set dataBlocks = dataBlocks|merge([{
             'title' : 'marello.product.variant.entity_plural_label'|trans,
             'subblocks': [{
                 'title' : null,
                 'useSpan': false,
-                'data' : [ productVariantWidget]
+                'data' : [productVariantWidget]
             }]
         }]) %}
     {% endif %}

@@ -24,7 +24,7 @@ class MarelloShippingBundleInstaller implements Installation, AttachmentExtensio
      */
     public function getMigrationVersion()
     {
-        return 'v1_2';
+        return 'v1_3';
     }
 
     /**
@@ -39,6 +39,7 @@ class MarelloShippingBundleInstaller implements Installation, AttachmentExtensio
         $this->createMarelloShipMethodPostalCodeTable($schema);
         $this->createMarelloShipMethodTypeConfigTable($schema);
         $this->createMarelloShippingRuleDestinationTable($schema);
+        $this->createMarelloTrackingInfoTable($schema);
 
         /** Foreign keys generation **/
         $this->addMarelloShipmentForeignKeys($schema);
@@ -74,6 +75,7 @@ class MarelloShippingBundleInstaller implements Installation, AttachmentExtensio
         $table->addColumn('identification_number', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('ups_package_tracking_number', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);
+        $table->addColumn('tracking_info_id', 'integer', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime', []);
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
@@ -161,6 +163,21 @@ class MarelloShippingBundleInstaller implements Installation, AttachmentExtensio
         $table->addIndex(['region_code'], 'idx_778290c2aeb327af');
         $table->addIndex(['country_code'], 'idx_778290c2f026bb7c');
         $table->addIndex(['rule_id'], 'idx_778290c2744e0351');
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    protected function createMarelloTrackingInfoTable(Schema $schema)
+    {
+        $table = $schema->createTable('marello_tracking_info');
+        $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('tracking_url', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('track_trace_url', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('tracking_code', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('provider', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('provider_name', 'string', ['notnull' => false, 'length' => 255]);
+        $table->setPrimaryKey(['id']);
     }
 
     /**
@@ -272,6 +289,12 @@ class MarelloShippingBundleInstaller implements Installation, AttachmentExtensio
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_organization'),
             ['organization_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_tracking_info'),
+            ['tracking_info_id'],
             ['id'],
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
