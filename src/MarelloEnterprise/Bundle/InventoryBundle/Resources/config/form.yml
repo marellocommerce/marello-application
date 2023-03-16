@@ -135,5 +135,7 @@ services:
         arguments:
             - '@oro_entity.doctrine_helper'
             - '@marelloenterprise_inventory.form.data_transformer.warehouse'
+        calls:
+            - [setAclHelper, ['@oro_security.acl_helper']]
         tags:
             - { name: form.type, alias: marello_warehouse_grid }

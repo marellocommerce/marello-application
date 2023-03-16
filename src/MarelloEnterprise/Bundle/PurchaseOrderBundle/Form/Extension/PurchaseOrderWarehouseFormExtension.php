@@ -2,11 +2,12 @@
 
 namespace MarelloEnterprise\Bundle\PurchaseOrderBundle\Form\Extension;
 
-use Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderCreateStepTwoType;
-use MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseSelectType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotNull;
+
+use Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderCreateStepTwoType;
+use MarelloEnterprise\Bundle\InventoryBundle\Form\Type\InventoryLevelWarehouseSelectType;
 
 class PurchaseOrderWarehouseFormExtension extends AbstractTypeExtension
 {
@@ -19,7 +20,7 @@ class PurchaseOrderWarehouseFormExtension extends AbstractTypeExtension
 
         $builder->add(
             'warehouse',
-            WarehouseSelectType::class,
+            InventoryLevelWarehouseSelectType::class,
             [
                 'label' => 'marello.purchaseorder.warehouse.label',
                 'required' => true,
