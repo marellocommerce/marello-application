@@ -74,3 +74,12 @@
 .fa-caret-right:before {
   content: "\f0da";
 }
+
+.reshipment-reason-attribute {
+    margin-left: 18px;
+    margin-top: -10px;
+
+    .reshipment-reason-attribute-field {
+        margin-left: -10px;
+    }
+}

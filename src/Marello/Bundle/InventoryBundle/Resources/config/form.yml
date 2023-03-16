@@ -88,3 +88,8 @@ services:
             - '@marello_inventory.provider.available_inventory_provider'
         tags:
             - { name: form.type }
+
+    Marello\Bundle\InventoryBundle\Form\Type\ReshipmentReasonSelectType:
+        parent: oro_entity_extend.type.enum_select
+        tags:
+            - { name: form.type, alias: marello_inventory_reshipment_reason_select }

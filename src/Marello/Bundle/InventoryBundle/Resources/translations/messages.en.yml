@@ -199,6 +199,7 @@ marello:
             quantity_allocated.label:       Allocated Quantity
             total_quantity_allocated.label: '%allocatedQty% of %totalQty% allocated'
             page_title.view:                '%entity_label% #%id%'
+            reshipment_reason.label:        Reshipment reason
         allocationitem:
             id.label:                       Id
             entity_label:                   Allocation Item

@@ -32,7 +32,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
      */
     public function getMigrationVersion()
     {
-        return 'v2_6_6';
+        return 'v2_6_7';
     }
 
     /**
@@ -353,6 +353,17 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
             $table,
             'allocationContext',
             'marello_allocation_allocationcontext',
+            false,
+            false,
+            [
+                'extend' => ['owner' => ExtendScope::OWNER_SYSTEM],
+            ]
+        );
+        $this->extendExtension->addEnumField(
+            $schema,
+            $table,
+            'reshipmentReason',
+            'marello_allocation_reshipmentreason',
             false,
             false,
             [
