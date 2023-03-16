@@ -4,11 +4,14 @@ namespace Marello\Bundle\ShippingBundle\Integration\UPS;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Persistence\ObjectManager;
+use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ShippingBundle\Entity\Shipment;
+use Marello\Bundle\ShippingBundle\Entity\TrackingInfo;
 use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
 use Marello\Bundle\ShippingBundle\Integration\ShippingServiceIntegrationInterface;
 use Marello\Bundle\ShippingBundle\Integration\UPS\RequestBuilder\ShipmentAcceptRequestBuilder;
 use Marello\Bundle\ShippingBundle\Integration\UPS\RequestBuilder\ShipmentConfirmRequestBuilder;
+use Marello\Bundle\UPSBundle\Method\UPSShippingMethod;
 use Oro\Bundle\AttachmentBundle\Entity\File;
 use Oro\Bundle\AttachmentBundle\Manager\AttachmentManager;
 use SimpleXMLElement;
@@ -68,6 +71,8 @@ class UPSShippingServiceIntegration implements ShippingServiceIntegrationInterfa
         $this->confirmShipment($shipment, $shippingAwareInterface, $data);
 
         $this->acceptShipment($shipment);
+
+        $this->createTrackingInfo($shipment);
 
         $this->getShipmentManager()->persist($shipment);
         $this->getShipmentManager()->flush();
@@ -187,6 +192,20 @@ class UPSShippingServiceIntegration implements ShippingServiceIntegrationInterfa
         $file = $this->prepareLabelFile($image);
 
         $shipment->setShippingLabel($file);
+    }
+
+    private function createTrackingInfo(Shipment $shipment): void
+    {
+        $trackingInfo = new TrackingInfo();
+        $shipment->setTrackingInfo($trackingInfo);
+        $trackingInfo->setShipment($shipment);
+        $trackingInfo->setOrder($shipment->getOrder());
+        $trackingInfo->setProvider('ups');
+        $trackingInfo->setProviderName('ups'); // TODO: check where we can get it from provider
+        $trackingInfo->setTrackingCode($shipment->getUpsPackageTrackingNumber());
+        // TODO find the way how to use UPSShippingMethod
+        $trackingInfo->setTrackingUrl(UPSShippingMethod::TRACKING_URL);
+        $trackingInfo->setTrackTraceUrl(UPSShippingMethod::TRACKING_URL . $shipment->getUpsPackageTrackingNumber());
     }
 
     /**
