@@ -8,9 +8,6 @@ processes:
             exclude_definitions: [marello_return_apply_business_rules]
             actions_configuration:
                 - '@tree':
-    #                conditions:
-    #                    @and:
-    #                        - @gt: []
                     actions:
                         - '@call_service_method':
                             attribute: $.businessRuleManager

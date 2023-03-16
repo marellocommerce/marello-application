@@ -38,15 +38,7 @@ class ReturnType extends AbstractType
     {
         $builder
             ->add('salesChannel', SalesChannelSelectType::class)
-            ->add('returnItems', ReturnItemCollectionType::class)
-            ->add(
-                'trackTraceCode',
-                TextType::class,
-                [
-                    'label' => 'marello.return.returnentity.track_trace_code.label',
-                    'required' => false
-                ]
-            );
+            ->add('returnItems', ReturnItemCollectionType::class);
 
         $builder->addEventSubscriber($this->returnTypeSubscriber);
     }

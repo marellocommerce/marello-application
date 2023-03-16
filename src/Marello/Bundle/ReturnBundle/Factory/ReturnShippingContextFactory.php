@@ -1,22 +1,23 @@
 <?php
 
-namespace Marello\Bundle\OrderBundle\Factory;
+namespace Marello\Bundle\ReturnBundle\Factory;
 
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use Marello\Bundle\InventoryBundle\Entity\Allocation;
+use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
 use Marello\Bundle\OrderBundle\Converter\OrderShippingLineItemConverterInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\OrderBundle\Event\OrderShippingContextBuildingEvent;
+use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
+use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
 use Marello\Bundle\ShippingBundle\Context\Builder\Factory\ShippingContextBuilderFactoryInterface;
 use Marello\Bundle\ShippingBundle\Context\ShippingContextFactoryInterface;
 use Marello\Bundle\ShippingBundle\Context\ShippingContextInterface;
 use Oro\Bundle\CurrencyBundle\Entity\Price;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-/**
- * @deprecated will be removed in 5.0
- */
-class OrderShippingContextFactory implements ShippingContextFactoryInterface
+class ReturnShippingContextFactory implements ShippingContextFactoryInterface
 {
     /**
      * @var OrderShippingLineItemConverterInterface
@@ -47,28 +48,29 @@ class OrderShippingContextFactory implements ShippingContextFactoryInterface
     }
 
     /**
-     * @param Order $order
+     * @param ReturnEntity $return
      * @return ShippingContextInterface[]
      */
-    public function create($order)
+    public function create($return)
     {
-        $this->ensureApplicable($order);
+        $this->ensureApplicable($return);
 
         if (null === $this->shippingContextBuilderFactory) {
             return null;
         }
 
         $shippingContextBuilder = $this->shippingContextBuilderFactory->createShippingContextBuilder(
-            $order,
-            (string)$order->getId()
+            $return,
+            (string)$return->getId()
         );
 
         $results = [];
-        $orderItems = $order->getItems();
+        $returnItems = $return->getReturnItems();
         $subtotal = 0.00;
-        /** @var OrderItem $orderItem */
-        foreach ($orderItems as $orderItem) {
-            $subtotal += $orderItem->getPrice() * $orderItem->getQuantity();
+        $order = $return->getOrder();
+        /** @var ReturnItem $returnItem */
+        foreach ($returnItems as $returnItem) {
+            $subtotal += $returnItem->getOrderItem()->getPrice() * $returnItem->getQuantity();
         }
         $subtotal = Price::create(
             $subtotal,
@@ -79,12 +81,13 @@ class OrderShippingContextFactory implements ShippingContextFactoryInterface
             ->setSubTotal($subtotal)
             ->setCurrency($order->getCurrency());
 
-        $convertedLineItems = $this->shippingLineItemConverter->convertLineItems($orderItems);
+        $convertedLineItems = $this->shippingLineItemConverter->convertLineItems($order->getItems());
 
-        $shippingOrigin = $this->getShippingOrigin($order);
+        $shippingOrigin = $this->getShippingOrigin($return);
         if (null !== $shippingOrigin) {
             $shippingContextBuilder->setShippingOrigin($shippingOrigin);
         }
+        // address of merchant
         if (null !== $order->getShippingAddress()) {
             $shippingContextBuilder->setShippingAddress($order->getShippingAddress());
         }
@@ -114,7 +117,7 @@ class OrderShippingContextFactory implements ShippingContextFactoryInterface
      */
     protected function ensureApplicable($entity)
     {
-        if (!is_a($entity, Order::class)) {
+        if (!is_a($entity, ReturnEntity::class)) {
             throw new \InvalidArgumentException(sprintf(
                 '"%s" expected, "%s" given',
                 Order::class,
@@ -124,12 +127,15 @@ class OrderShippingContextFactory implements ShippingContextFactoryInterface
     }
 
     /**
-     * @param Order $order
+     * @param Allocation $allocation
      * @return MarelloAddress|null
      */
-    protected function getShippingOrigin(Order $order)
+    protected function getShippingOrigin(ReturnEntity $return)
     {
-        // keep method just in case we need to get the address from the default warehouse
+        if ($return->getOrder()) {
+            return $return->getOrder()->getShippingAddress();
+        }
+
         return null;
     }
 

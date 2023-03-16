@@ -70,6 +70,10 @@
         {{ dataGrid.renderGrid('marello-allocation-sub-allocation-grid', {'allocationParentId': entity.id}) }}
     {% endset %}
 
+    {% set shippingInfoWidget %}
+        {{ dataGrid.renderGrid('marello-shipment-grid', {'shipmentId': entity.shipment.id}) }}
+    {% endset %}
+
     {% set dataBlocks = [
         {
             'title': 'marello.core.ui.sections.general'|trans,
@@ -90,6 +94,13 @@
             'useSpan': false,
             'subblocks': [
                 { 'data' : [infoWidget] }
+            ]
+        },
+        {
+            'title': 'marello.shipping.sections.shipments'|trans,
+            'useSpan': false,
+            'subblocks': [
+                { 'data' : [shippingInfoWidget] }
             ]
         }
     ]
