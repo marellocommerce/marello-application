@@ -2,8 +2,10 @@
 
 namespace Marello\Bundle\UPSBundle\Method;
 
+use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ShippingBundle\Context\ShippingContextInterface;
 use Marello\Bundle\ShippingBundle\Entity\Shipment;
+use Marello\Bundle\ShippingBundle\Entity\TrackingInfo;
 use Marello\Bundle\ShippingBundle\Method\ShippingMethodTypeInterface;
 use Marello\Bundle\UPSBundle\Cache\ShippingPriceCache;
 use Marello\Bundle\UPSBundle\Entity\ShippingService;
@@ -203,8 +205,21 @@ class UPSShippingMethodType implements ShippingMethodTypeInterface
 
         $shipment = new Shipment();
 
+        $trackingInfo = new TrackingInfo();
+        $shipment->setTrackingInfo($trackingInfo);
+        $trackingInfo->setShipment($shipment);
+        if ($context->getSourceEntity() instanceof Order) {
+            $trackingInfo->setOrder($context->getSourceEntity());
+        }
+        $trackingInfo->setProvider($this->transport->getChannel()->getName());
+        $trackingInfo->setProviderName($this->transport->getChannel()->getName());
+        $trackingInfo->setTrackingCode($shipmentAcceptResponse->getTrackingNumber());
+        // TODO find the way how to use UPSShippingMethod
+        $trackingInfo->setTrackingUrl(UPSShippingMethod::TRACKING_URL);
+        $trackingInfo->setTrackTraceUrl(UPSShippingMethod::TRACKING_URL . $shipmentAcceptResponse->getTrackingNumber());
+
         $shipment
-            ->setShippingService(sprintf('%s/%s', $method, $type))
+            ->setShippingService($method)
             ->setUpsPackageTrackingNumber($shipmentAcceptResponse->getTrackingNumber())
             ->setIdentificationNumber($shipmentAcceptResponse->getShipmentIdentificationNumber())
             ->setBase64EncodedLabel($shipmentAcceptResponse->getGraphicImage());

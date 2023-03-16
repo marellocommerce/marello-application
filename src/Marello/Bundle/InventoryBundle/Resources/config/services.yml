@@ -273,3 +273,11 @@ services:
             - { name: marello_inventory_warehouse_notifier }
 
     Marello\Bundle\InventoryBundle\Provider\AllocationExclusionProvider: ~
+
+    Marello\Bundle\InventoryBundle\Factory\AllocationShippingContextFactory:
+        public: true
+        arguments:
+            - '@marello_order.shipping_line_item.converter_basic'
+            - '@marello_shipping.context.builder_factory_basic'
+        calls:
+            - [setEventDispatcher, ['@event_dispatcher']]

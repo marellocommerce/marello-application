@@ -6,3 +6,11 @@ services:
             - '@oro_security.acl_helper'
         tags:
             - { name: marello.shipping.data_provider,  class: 'Marello\Bundle\ReturnBundle\Entity\ReturnEntity' }
+
+    Marello\Bundle\ReturnBundle\Factory\ReturnShippingContextFactory:
+        public: true
+        arguments:
+            - '@marello_order.shipping_line_item.converter_basic'
+            - '@marello_shipping.context.builder_factory_basic'
+        calls:
+            - [setEventDispatcher, ['@event_dispatcher']]
