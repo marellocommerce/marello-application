@@ -262,3 +262,15 @@
         </div>
     {% endapply %}
 {% endblock %}
+
+{% block marello_inventory_reshipment_reason_select_row %}
+    <div class="reshipment-reason-attribute">
+        {{ block('form_row') }}
+    </div>
+{% endblock %}
+
+{% block marello_inventory_reshipment_reason_select_widget %}
+    <div class="reshipment-reason-attribute-field">
+        {{ block('oro_select2_widget') }}
+    </div>
+{% endblock %}

@@ -4,6 +4,7 @@ namespace Marello\Bundle\InventoryBundle\Provider;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Oro\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
@@ -19,13 +20,16 @@ use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
 use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
-use Marello\Bundle\InventoryBundle\Provider\AllocationExclusionInterface;
 use Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\QuantityWFAStrategy;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class InventoryAllocationProvider
 {
     /** @var AllocationExclusionInterface $exclusionProvider */
     protected $exclusionProvider;
+
+    /** @var PropertyAccessor */
+    protected $propertyAccessor;
 
     /** @var ArrayCollection $allOrderItems */
     protected $allOrderItems;
@@ -43,7 +47,9 @@ class InventoryAllocationProvider
         protected DoctrineHelper $doctrineHelper,
         protected OrderWarehousesProviderInterface $warehousesProvider,
         protected EventDispatcherInterface $eventDispatcher
-    ) {}
+    ) {
+        $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
+    }
 
     public function allocateOrderToWarehouses(
         Order $order,
@@ -130,6 +136,7 @@ class InventoryAllocationProvider
                 $allocationContext = AllocationContextInterface::ALLOCATION_CONTEXT_ORDER;
                 if ($callback) {
                     $allocationContext = AllocationContextInterface::ALLOCATION_CONTEXT_RESHIPMENT;
+                    $this->assignDataProperties($newAllocation, $order);
                 }
                 
                 $newAllocation->setAllocationContext(
@@ -375,6 +382,15 @@ class InventoryAllocationProvider
             new InventoryUpdateEvent($context),
             InventoryUpdateEvent::NAME
         );
+    }
+
+    protected function assignDataProperties(Allocation $allocation, Order $order): void
+    {
+        foreach ($order->getData() as $key => $value) {
+            try {
+                $this->propertyAccessor->setValue($allocation, $key, $value);
+            } catch (\Exception $e) {}
+        }
     }
 
     /**
