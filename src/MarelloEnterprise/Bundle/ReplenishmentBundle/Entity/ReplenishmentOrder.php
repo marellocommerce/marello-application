@@ -35,6 +35,7 @@ class ReplenishmentOrder extends ExtendReplenishmentOrder implements
 {
     use AuditableOrganizationAwareTrait;
     use EntityCreatedUpdatedAtTrait;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -60,7 +61,7 @@ class ReplenishmentOrder extends ExtendReplenishmentOrder implements
 
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\Warehouse")
-     * @ORM\JoinColumn(name="origin_id", nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(name="origin_id", nullable=true, onDelete="SET NULL")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -75,7 +76,7 @@ class ReplenishmentOrder extends ExtendReplenishmentOrder implements
 
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\Warehouse")
-     * @ORM\JoinColumn(name="destination_id", nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(name="destination_id", nullable=true, onDelete="SET NULL")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -101,20 +102,6 @@ class ReplenishmentOrder extends ExtendReplenishmentOrder implements
      * @var \DateTime
      */
     protected $executionDateTime;
-
-    /**
-     * @ORM\Column(name="percentage", type="float")
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "dataaudit"={
-     *              "auditable"=true
-     *          }
-     *      }
-     * )
-     *
-     * @var float
-     */
-    protected $percentage;
 
     /**
      * @ORM\Column(name="description", type="text", nullable=true)
@@ -164,7 +151,7 @@ class ReplenishmentOrder extends ExtendReplenishmentOrder implements
 
     /**
      * @ORM\ManyToOne(targetEntity="ReplenishmentOrderConfig")
-     * @ORM\JoinColumn(name="repl_order_config_id", nullable=false)
+     * @ORM\JoinColumn(name="repl_order_config_id", nullable=true, onDelete="SET NULL")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -276,25 +263,6 @@ class ReplenishmentOrder extends ExtendReplenishmentOrder implements
     public function setExecutionDateTime(\DateTime $executionDateTime)
     {
         $this->executionDateTime = $executionDateTime;
-
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getPercentage()
-    {
-        return $this->percentage;
-    }
-
-    /**
-     * @param float $percentage
-     * @return ReplenishmentOrder
-     */
-    public function setPercentage($percentage)
-    {
-        $this->percentage = $percentage;
 
         return $this;
     }

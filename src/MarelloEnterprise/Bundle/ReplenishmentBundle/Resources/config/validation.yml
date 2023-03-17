@@ -1,18 +1,3 @@
-MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderConfig:
-    properties:
-        origins:
-            - NotBlank: ~
-        destinations:
-            - NotBlank: ~
-        products:
-            - NotBlank: ~
-        percentage:
-            - Type:
-                type: numeric
-            - NotBlank: ~
-            - Range:
-                min: 1
-                max: 100
 MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderItem:
     properties:
         inventoryQty:

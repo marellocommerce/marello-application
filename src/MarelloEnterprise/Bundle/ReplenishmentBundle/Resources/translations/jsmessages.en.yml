@@ -4,3 +4,7 @@ marelloenterprise:
             form:
                 products:
                     add.label:  Add Products
+                validation:
+                    origin:
+                        already_selected: Such Origin for the same Product is already selected
+
