@@ -7,7 +7,7 @@
 {% block navButtons %}
     {% if is_granted('marello_replenishment_order_config_create') %}
         {{ UI.addButton({
-            'path': path('marello_replenishment_order_config_create'),
+            'path': path('marello_replenishment_order_config_create_step_one'),
             'entity_label': 'marelloenterprise.replenishment.replenishmentorder.entity_label'|trans
         }) }}
     {% endif %}

@@ -12,6 +12,13 @@ services:
         tags:
             - { name: marello_replenishment_strategy }
 
+    marelloenterprise_replenishment.replenishment_strategy.manual:
+        class: 'MarelloEnterprise\Bundle\ReplenishmentBundle\Strategy\ManualReplenishmentStrategy'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: marello_replenishment_strategy }
+
     marelloenterprise_replenishment.provider.replenishment_strategies_choices_provider:
         class: 'MarelloEnterprise\Bundle\ReplenishmentBundle\Provider\ReplenishmentStrategyChoicesProvider'
         arguments:
@@ -70,3 +77,13 @@ services:
             - '@oro_message_queue.client.message_producer'
         tags:
             - { name: console.command }
+
+    MarelloEnterprise\Bundle\ReplenishmentBundle\Provider\ReplenishmentManualItemFormChangesProvider:
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: marello.form_changes_data_provider, class: 'MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderConfig', type: manualItems, priority: 0 }
+
+    MarelloEnterprise\Bundle\ReplenishmentBundle\EventListener\Datagrid\ReplenishmentOrderItemInventoryBatchesColumnListener:
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.marello-replenishment-order-items-grid, method: onBuildAfter }

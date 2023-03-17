@@ -19,6 +19,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Range;
 
 class ReplenishmentOrderConfigType extends AbstractType
 {
@@ -102,7 +103,8 @@ class ReplenishmentOrderConfigType extends AbstractType
                     'required' => true,
                     'label' => 'marelloenterprise.replenishment.replenishmentorderconfig.percentage.label',
                     'tooltip'
-                        => 'marelloenterprise.replenishment.form.replenishmentorderconfig.percentage.tooltip'
+                        => 'marelloenterprise.replenishment.form.replenishmentorderconfig.percentage.tooltip',
+                    'constraints' => new Range(['min' => 1, 'max' => 100]),
                 ]
             )
             ->add(

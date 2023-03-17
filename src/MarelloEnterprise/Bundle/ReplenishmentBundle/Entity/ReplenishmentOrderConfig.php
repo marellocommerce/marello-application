@@ -2,6 +2,8 @@
 
 namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Model\ExtendReplenishmentOrderConfig;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
@@ -39,7 +41,7 @@ class ReplenishmentOrderConfig extends ExtendReplenishmentOrderConfig implements
     protected $id;
 
     /**
-     * @ORM\Column(name="origins", nullable=false, type="json_array")
+     * @ORM\Column(name="origins", nullable=true, type="json_array")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -50,10 +52,10 @@ class ReplenishmentOrderConfig extends ExtendReplenishmentOrderConfig implements
      *
      * @var array
      */
-    protected $origins;
+    protected $origins = [];
 
     /**
-     * @ORM\Column(name="destinations", nullable=false, type="json_array")
+     * @ORM\Column(name="destinations", nullable=true, type="json_array")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -64,7 +66,7 @@ class ReplenishmentOrderConfig extends ExtendReplenishmentOrderConfig implements
      *
      * @var array
      */
-    protected $destinations;
+    protected $destinations = [];
 
     /**
      * @ORM\Column(name="products", type="json_array")
@@ -78,7 +80,14 @@ class ReplenishmentOrderConfig extends ExtendReplenishmentOrderConfig implements
      *
      * @var array
      */
-    protected $products;
+    protected $products = [];
+
+    /**
+     * @ORM\OneToMany(targetEntity="ReplenishmentOrderManualItemConfig", mappedBy="orderConfig", cascade={"all"})
+     *
+     * @var Collection|ReplenishmentOrderManualItemConfig[]
+     */
+    protected $manualItems;
 
     /**
      * @ORM\Column(name="strategy", type="string", nullable=false, length=50)
@@ -135,6 +144,12 @@ class ReplenishmentOrderConfig extends ExtendReplenishmentOrderConfig implements
      * @var string
      */
     protected $description;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->manualItems = new ArrayCollection();
+    }
 
     /**
      * @return int
@@ -273,6 +288,41 @@ class ReplenishmentOrderConfig extends ExtendReplenishmentOrderConfig implements
     public function setDescription($description)
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ReplenishmentOrderManualItemConfig[]
+     */
+    public function getManualItems(): Collection
+    {
+        return $this->manualItems;
+    }
+
+    /**
+     * @param ReplenishmentOrderManualItemConfig $manualItem
+     * @return self
+     */
+    public function addManualItem(ReplenishmentOrderManualItemConfig $manualItem): self
+    {
+        if (!$this->manualItems->contains($manualItem)) {
+            $manualItem->setOrderConfig($this);
+            $this->manualItems->add($manualItem);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ReplenishmentOrderManualItemConfig $manualItem
+     * @return self
+     */
+    public function removeManualItem(ReplenishmentOrderManualItemConfig $manualItem): self
+    {
+        if ($this->manualItems->contains($manualItem)) {
+            $this->manualItems->remove($manualItem);
+        }
 
         return $this;
     }

@@ -8,3 +8,7 @@ marelloenterprise_replenishment_order:
     type:     annotation
     prefix:   /marello/replenishment-order
 
+marelloenterprise_replenishment_order_config_ajax:
+    resource: "@MarelloEnterpriseReplenishmentBundle/Controller/ReplenishmentOrderConfigAjaxController.php"
+    type:     annotation
+    prefix:   /marello/replenishment-order-config
