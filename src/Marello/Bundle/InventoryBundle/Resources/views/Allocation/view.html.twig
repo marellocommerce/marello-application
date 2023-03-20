@@ -43,6 +43,11 @@
                     </div>
                     {{ UI.renderProperty('marello.inventory.allocation.state.label'|trans, entity.state) }}
                     {{ UI.renderProperty('marello.inventory.allocation.status.label'|trans, entity.status) }}
+                    {% if entity.allocationContext is not null
+                        and entity.allocationContext.id == constant('Marello\\Bundle\\InventoryBundle\\Provider\\AllocationContextInterface::ALLOCATION_CONTEXT_RESHIPMENT')
+                    %}
+                        {{ UI.renderProperty('marello.inventory.allocation.reshipment_reason.label'|trans, entity.reshipmentReason.name) }}
+                    {% endif %}
                 </div>
                 <div class="responsive-block">
                     {{ UI.renderHtmlProperty(
@@ -71,7 +76,7 @@
     {% endset %}
 
     {% set shippingInfoWidget %}
-        {{ dataGrid.renderGrid('marello-shipment-grid', {'shipmentId': entity.shipment.id}) }}
+        {{ dataGrid.renderGrid('marello-shipment-grid', {'shipmentId': entity.shipment is not null ? entity.shipment.id : null}) }}
     {% endset %}
 
     {% set dataBlocks = [

@@ -15,18 +15,6 @@
     {{ parent() }}
 {% endblock pageHeader %}
 
-{% block navButtons %}
-    {% if marello_order_can_return(entity)  %}
-        {{ UI.addButton({
-            'path': path('marello_return_return_create', {'id': entity.id}),
-            'entity_label': 'marello.return.returnentity.entity_label'|trans,
-            'aCss': 'pull-left'
-        }) }}
-
-        {{ UI.buttonSeparator() }}
-    {% endif %}
-{% endblock navButtons %}
-
 {% block content_data %}
     {% set id = 'marello-order-view' %}
     {% set generalSubblocks = [] %}

@@ -13,7 +13,7 @@ Marello\Bundle\OrderBundle\Entity\OrderItem:
         rowTotalExclTax:
             - NotBlank: { groups: [api, Default] }
         quantity:
-            - GreaterThanOrEqual: { groups: [api, Default], value: 1 }
+            - GreaterThanOrEqual: { groups: [api], value: 1 }
 
 Marello\Bundle\OrderBundle\Entity\Order:
     properties:

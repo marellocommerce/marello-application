@@ -2,8 +2,11 @@
 {% set label = value %}
 {% set orderItem = record.getValue('orderItem') %}
 {% set qtyAllocated = record.getValue('quantity') %}
+{% set qtyTotal = record.getValue('totalQuantity') %}
 
-{% if orderItem is not null %}
+{% if qtyTotal is not null %}
+    {% set result =  'marello.inventory.allocation.total_quantity_allocated.label'|trans({'%allocatedQty%': qtyAllocated, '%totalQty%': qtyTotal}) %}
+{% elseif orderItem is not null %}
     {% set result =  'marello.inventory.allocation.total_quantity_allocated.label'|trans({'%allocatedQty%': qtyAllocated, '%totalQty%': orderItem.quantity}) %}
 {% else %}
     {% set result = qtyAllocated %}

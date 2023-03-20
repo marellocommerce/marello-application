@@ -3,9 +3,7 @@
 namespace Marello\Bundle\InventoryBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as JMS;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
-use Marello\Bundle\InventoryBundle\Entity\Allocation;
 use Marello\Bundle\InventoryBundle\Model\ExtendAllocationItem;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
@@ -121,6 +119,20 @@ class AllocationItem extends ExtendAllocationItem implements OrganizationAwareIn
      * )
      */
     protected $quantity;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="total_quantity", type="float", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $totalQuantity;
 
     /**
      * @var float
@@ -315,6 +327,26 @@ class AllocationItem extends ExtendAllocationItem implements OrganizationAwareIn
     public function setQuantity($quantity)
     {
         $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getTotalQuantity()
+    {
+        return $this->totalQuantity;
+    }
+
+    /**
+     * @param float $totalQuantity
+     *
+     * @return $this
+     */
+    public function setTotalQuantity($totalQuantity)
+    {
+        $this->totalQuantity = $totalQuantity;
 
         return $this;
     }
