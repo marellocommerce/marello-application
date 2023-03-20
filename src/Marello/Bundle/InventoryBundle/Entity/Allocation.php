@@ -240,6 +240,18 @@ class Allocation extends ExtendAllocation implements
     protected $allocationContext;
 
     /**
+     * @var \Extend\Entity\EV_Marello_Allocation_ReshipmentReason
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $reshipmentReason;
+
+    /**
      * Allocation constructor.
      */
     public function __construct()
@@ -531,6 +543,25 @@ class Allocation extends ExtendAllocation implements
         if (!$this->allocationNumber) {
             $this->setAllocationNumber(sprintf('%09d', $id));
         }
+    }
+
+    /**
+     * @return \Extend\Entity\EV_Marello_Allocation_ReshipmentReason
+     */
+    public function getReshipmentReason(): AbstractEnumValue
+    {
+        return $this->reshipmentReason;
+    }
+
+    /**
+     * @param \Extend\Entity\EV_Marello_Allocation_ReshipmentReason $reshipmentReason
+     * @return $this
+     */
+    public function setReshipmentReason($reshipmentReason): self
+    {
+        $this->reshipmentReason = $reshipmentReason;
+
+        return $this;
     }
 
     /**

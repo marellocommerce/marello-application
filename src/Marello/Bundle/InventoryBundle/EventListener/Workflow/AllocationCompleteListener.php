@@ -2,6 +2,8 @@
 
 namespace Marello\Bundle\InventoryBundle\EventListener\Workflow;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
@@ -13,10 +15,18 @@ use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\WorkflowBundle\Async\Topics;
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\Allocation;
+use Marello\Bundle\PackingBundle\Entity\PackingSlipItem;
+use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
 use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
+use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\OrderBundle\Model\OrderItemStatusesInterface;
 use Marello\Bundle\InventoryBundle\Model\InventoryTotalCalculator;
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
+use Marello\Bundle\InventoryBundle\Provider\AllocationContextInterface;
+use Marello\Bundle\InventoryBundle\Provider\AllocationStateStatusInterface;
 
 class AllocationCompleteListener
 {
@@ -35,6 +45,9 @@ class AllocationCompleteListener
 
     /** @var InventoryTotalCalculator $totalCalculator */
     protected $totalCalculator;
+
+    /** @var EventDispatcherInterface $eventDispatcher */
+    protected $eventDispatcher;
 
     /**
      * AllocationCompleteListener constructor.
@@ -78,8 +91,6 @@ class AllocationCompleteListener
                 // use the InventoryTotalCalculator::getTotalAllocationQtyConfirmed for a more coherent calculation of
                 // allocation item totals, this is meant for this specific purpose
                 // don't reinvent the wheel.
-
-
                 // all allocation items
                 $allocationItems = $this->doctrineHelper
                     ->getEntityRepositoryForClass(AllocationItem::class)
@@ -91,7 +102,11 @@ class AllocationCompleteListener
                     $orderItemQty += $allocationItem->getQuantityConfirmed();
                 }
 
-                if ($orderItemQty == $item->getQuantity()) {
+                if ($orderItemQty == $item->getQuantity() ||
+                    ($entity->getAllocationContext() &&
+                    $entity->getAllocationContext()->getId() ===
+                    AllocationContextInterface::ALLOCATION_CONTEXT_RESHIPMENT)
+                ) {
                     $shippedItems[] = $item->getId();
                 }
             }
@@ -99,6 +114,29 @@ class AllocationCompleteListener
 
         // shipped items take quantities in account from above
         if (count($shippedItems) === $order->getItems()->count()) {
+            if ($entity->getAllocationContext() &&
+                $entity->getAllocationContext()->getId() === AllocationContextInterface::ALLOCATION_CONTEXT_RESHIPMENT
+            ) {
+                /** @var Allocation $entity */
+                if ($entity->getState()
+                    && $entity->getState()->getId() !== AllocationStateStatusInterface::ALLOCATION_STATE_AVAILABLE
+                ) {
+                    return;
+                }
+
+                $warehouse = $entity->getWarehouse();
+                $items = $entity->getItems();
+                $items->map(function (AllocationItem $item) use ($order, $warehouse) {
+                    $this->handleInventoryUpdate(
+                        $item->getOrderItem(),
+                        -$item->getQuantity(),
+                        -$item->getQuantity(),
+                        $order,
+                        $warehouse
+                    );
+                });
+            }
+
             // order is considered complete
             if ($this->getApplicableWorkflow($order)) {
                 /** @var WorkflowItem $workflowItem */
@@ -174,5 +212,67 @@ class AllocationCompleteListener
             self::WORKFLOW_NAME_B2C_1,
             self::WORKFLOW_NAME_B2C_2
         ];
+    }
+
+    /**
+     * handle the inventory update for items which have been shipped
+     * @param OrderItem $item
+     * @param $inventoryUpdateQty
+     * @param $allocatedInventoryQty
+     * @param Order $entity
+     * @param Warehouse $warehouse
+     */
+    protected function handleInventoryUpdate($item, $inventoryUpdateQty, $allocatedInventoryQty, $entity, $warehouse)
+    {
+        $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
+            $item,
+            null,
+            $inventoryUpdateQty,
+            $allocatedInventoryQty,
+            'order_workflow.shipped',
+            $entity
+        );
+        $packingSlipItem = $this->doctrineHelper
+            ->getEntityManagerForClass(PackingSlipItem::class)
+            ->getRepository(PackingSlipItem::class)
+            ->findOneBy(['orderItem' => $item]);
+        if ($packingSlipItem) {
+            if (!empty($packingSlipItem->getInventoryBatches())) {
+                $contextBranches = [];
+                foreach ($packingSlipItem->getInventoryBatches() as $batchNumber => $qty) {
+                    /** @var InventoryBatch[] $inventoryBatches */
+                    $inventoryBatches = $this->doctrineHelper
+                        ->getEntityManagerForClass(InventoryBatch::class)
+                        ->getRepository(InventoryBatch::class)
+                        ->findBy(['batchNumber' => $batchNumber]);
+                    $inventoryBatch = null;
+                    foreach ($inventoryBatches as $batch) {
+                        $inventoryLevel = $batch->getInventoryLevel();
+                        if ($inventoryLevel && $inventoryLevel->getWarehouse() === $warehouse) {
+                            $inventoryBatch = $batch;
+                        }
+                    }
+                    if ($inventoryBatch) {
+                        $contextBranches[] = ['batch' => $inventoryBatch, 'qty' => -$qty];
+                    }
+                }
+                $context->setInventoryBatches($contextBranches);
+            }
+        }
+        $context->setValue('warehouse', $warehouse);
+
+        $this->eventDispatcher->dispatch(
+            new InventoryUpdateEvent($context),
+            InventoryUpdateEvent::NAME
+        );
+    }
+
+    /**
+     * @param EventDispatcherInterface $eventDispatcher
+     * @return void
+     */
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
     }
 }
