@@ -22,3 +22,8 @@ marello_inventory_allocation:
     resource: "@MarelloInventoryBundle/Controller/AllocationController.php"
     type:     annotation
     prefix:   /marello/inventory/allocation
+
+marello_inventory_reshipment:
+    resource: "@MarelloInventoryBundle/Controller/ReshipmentController.php"
+    type:     annotation
+    prefix:   /marello/reshipment

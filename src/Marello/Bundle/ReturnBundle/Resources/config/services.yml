@@ -79,3 +79,7 @@ services:
             - 'Marello\Bundle\ReturnBundle\Entity\ReturnItem'
         tags:
             - { name: doctrine.repository_service }
+
+    Marello\Bundle\ReturnBundle\EventListener\Action\Condition\ReturnAllowedActionListener:
+        tags:
+            - { name: kernel.event_listener, event: extendable_condition.return_allowed, method: isReturnAllowed }

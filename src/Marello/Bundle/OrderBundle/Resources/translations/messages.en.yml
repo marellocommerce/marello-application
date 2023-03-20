@@ -47,6 +47,7 @@ marello:
         status.label:               Order Status
         order_status.label:               Order Status
         consolidation_enabled.label: Consolidate Order
+        consolidation.label:         Consolidate
         action.order.allocate:        Allocate Order
         billing_address:
             label:                  Billing Address
@@ -97,6 +98,8 @@ marello:
                 label:              Price
                 per_unit.label:     Price Per Unit
             quantity.label:         Quantity
+            ordered.label:          Ordered
+            available_quantity.label: Available
             product_unit.label:     Unit
             original_price_excl_tax.label:   Original Price Excl. Tax
             original_price_incl_tax.label:   Original Price Incl. Tax

@@ -199,6 +199,7 @@ marello:
             quantity_allocated.label:       Allocated Quantity
             total_quantity_allocated.label: '%allocatedQty% of %totalQty% allocated'
             page_title.view:                '%entity_label% #%id%'
+            reshipment_reason.label:        Reshipment reason
         allocationitem:
             id.label:                       Id
             entity_label:                   Allocation Item
@@ -217,6 +218,11 @@ marello:
             organization.label:             Organization
             warehouse.label:                Warehouse
 
+        reshipment:
+            label:                          Create Shipment
+            quantity.validation_error:      Quantity must be equal to or less than ordered
+            available_quantity.validation_error: Quantity must be equal to or less than available
+            button.label:                   Reship Order
         information.label:                  Inventory Information
         movements.label:                    Inventory Movements
         balancing:
@@ -264,6 +270,7 @@ marello:
                 warehouse.saved:        Warehouse has been saved successfully
                 inventoryitem.saved:    Inventory Item has been saved successfully
                 inventorybatches.saved:    Inventory Batches have been saved successfully
+                reshipment.saved: Reshipment has been saved successfully
                 inventory_rebalance.started: Rebalance started successfully. You will receive email notification upon completion.
             error:
                 warehouse.not_found:    No warehouse found, cannot update a new level without existing warehouse
