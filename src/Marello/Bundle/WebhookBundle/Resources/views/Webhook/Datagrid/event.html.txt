@@ -1,0 +1,11 @@
+{% block content %}
+    {{ marello_get_webhook_event_by_name(record.getValue('event')) }}
+{#    {{ dump(record.getValue('event_id')) }}#}
+{#    {% if record.getValue('eventId') %}#}
+{#        {{ record.getValue('event').id }}#}
+{#    {% else %}#}
+{#        {{ 'N.A'|trans }}#}
+{#    {% endif %}#}
+{% endblock %}
+
+

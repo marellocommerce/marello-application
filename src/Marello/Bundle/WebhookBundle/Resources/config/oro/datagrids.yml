@@ -24,10 +24,8 @@ datagrids:
         data_name:        callback_url
       event:
         label:            marello.webhook.event.label
-#        type:             twig
-        frontend_type:    select
-        data_name:        event_id
-#        template:         '@MarelloWebhook/Webhook/Datagrid/event.html.twig'
+        frontend_type:    string
+        data_name:        event
       enabled:
         label:            marello.webhook.enable.label
         frontend_type:    select

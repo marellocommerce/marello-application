@@ -1,0 +1,15 @@
+services:
+#  Marello\Bundle\WebhookBundle\Twig\WebhookExtension:
+#    arguments:
+#      - '@doctrine'
+#      - '@oro_security.acl_helper'
+#    tags:
+#      - { name: twig.extension }
+
+  Marello\Bundle\WebhookBundle\Entity\Repository\WebhookRepository:
+    parent: oro_entity.abstract_repository
+    arguments:
+      - 'Marello\Bundle\WebhookBundle\Entity\Webhook'
+    tags:
+      - { name: doctrine.repository_service }
+
