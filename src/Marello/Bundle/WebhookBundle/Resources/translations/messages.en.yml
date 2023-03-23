@@ -1,8 +1,14 @@
 marello:
   webhook:
+    enabled.label: Enabled
+    datablock:
+      general.title: General
+      additional.title: Additional Information
+      webhook_information: Webhook General Info
     id.label: ID
     name.label: Name
     callback_url.label: Callback URL
+    organization.label: Organization
     event.label: Event
     enable.label: Enable
     created_at.label: Created At

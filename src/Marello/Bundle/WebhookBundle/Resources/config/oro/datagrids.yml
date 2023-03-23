@@ -24,10 +24,14 @@ datagrids:
         data_name:        callback_url
       event:
         label:            marello.webhook.event.label
-        frontend_type:    string
+        type:             twig
+        frontend_type:    html
+        template:         '@MarelloWebhook/Webhook/Datagrid/event.html.twig'
       enable:
         label:            marello.webhook.enable.label
-        frontend_type:    string
+        type:             twig
+        frontend_type:    html
+        template:         '@MarelloWebhook/Webhook/Datagrid/enable.html.twig'
       createdAt:
         label:            marello.webhook.created_at.label
         type:             callback
@@ -55,6 +59,14 @@ datagrids:
           data_name: p.updatedAt
     properties:
       id: ~
+      view_link:
+        type:       url
+        route:      marello_webhook_view
+        params:     [ id ]
+#      update_link:
+#        type:       url
+#        route:      marello_webhook_update
+#        params:     [ id ]
     actions:
       view:
         type:           navigate

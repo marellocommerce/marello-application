@@ -1,0 +1,9 @@
+{% block content %}
+    {% if record.getValue('event') %}
+        {{ record.getValue('event').id }}
+    {% else %}
+        {{ 'N.A'|trans }}
+    {% endif %}
+{% endblock %}
+
+

@@ -5,6 +5,7 @@ namespace Marello\Bundle\WebhookBundle\Entity;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\WebhookBundle\Model\ExtendWebhook;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
@@ -72,6 +73,8 @@ class Webhook extends ExtendWebhook implements OrganizationAwareInterface
 
     /**
      * @var \Extend\Entity\EV_Marello_Webhook_Event
+     *
+     * @ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="SET NULL")
      * @ConfigField(
      *      defaultValues={
      *          "dataaudit"={
