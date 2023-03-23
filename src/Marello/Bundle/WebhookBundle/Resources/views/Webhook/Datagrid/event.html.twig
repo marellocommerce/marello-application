@@ -1,5 +1,6 @@
 {% block content %}
-    {% if record.getValue('event') %}
+    {{ dump(record.getValue('event_id')) }}
+    {% if record.getValue('eventId') %}
         {{ record.getValue('event').id }}
     {% else %}
         {{ 'N.A'|trans }}

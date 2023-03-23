@@ -1,5 +1,8 @@
 marello:
   webhook:
+    enabled:
+      active.label: Enabled
+      inactive.label: Disabled
     enabled.label: Enabled
     datablock:
       general.title: General

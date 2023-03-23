@@ -223,18 +223,18 @@ class Webhook extends ExtendWebhook implements OrganizationAwareInterface
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getEnabled(): string
+    public function getEnabled(): bool
     {
         return $this->enabled;
     }
 
     /**
-     * @param string $enabled
+     * @param bool $enabled
      * @return Webhook
      */
-    public function setEnabled(string $enabled): self
+    public function setEnabled(bool $enabled): self
     {
         $this->enabled = $enabled;
 

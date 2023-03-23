@@ -24,24 +24,22 @@ datagrids:
         data_name:        callback_url
       event:
         label:            marello.webhook.event.label
-        type:             twig
-        frontend_type:    html
-        template:         '@MarelloWebhook/Webhook/Datagrid/event.html.twig'
-      enable:
+#        type:             twig
+        frontend_type:    select
+        data_name:        event_id
+#        template:         '@MarelloWebhook/Webhook/Datagrid/event.html.twig'
+      enabled:
         label:            marello.webhook.enable.label
-        type:             twig
-        frontend_type:    html
-        template:         '@MarelloWebhook/Webhook/Datagrid/enable.html.twig'
+        frontend_type:    select
+        choices:
+          marello.webhook.enabled.active.label: 1
+          marello.webhook.enabled.inactive.label: 0
       createdAt:
-        label:            marello.webhook.created_at.label
-        type:             callback
-        callable:         ['@oro_locale.twig.date_time', 'dateTimeMediumFormat']
-        params:           {fieldName: createdAt}
+        label:            oro.ui.created_at
+        frontend_type:    datetime
       updatedAt:
-        label:            marello.webhook.updated_at.label
-        type:             callback
-        callable:         ['@oro_locale.twig.date_time', 'dateTimeMediumFormat']
-        params:           {fieldName: updatedAt}
+        label:            oro.ui.updated_at
+        frontend_type:    datetime
     sorters:
       columns:
         id: { data_name: p.id }
