@@ -20,7 +20,7 @@ marello:
     enable.label: Enable
     created_at.label: Created At
     updated_at.label: Updated At
-    entity_grid_all_view_label: View all webhook
+    entity_grid_all_view_label: View all webhooks
     entity_label: Webhook
     menu.label: Webhook
     entity_plural_label: Webhooks
