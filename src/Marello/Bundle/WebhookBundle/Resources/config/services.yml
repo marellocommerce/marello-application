@@ -13,3 +13,12 @@ services:
     tags:
       - { name: doctrine.repository_service }
 
+  Marello\Bundle\WebhookBundle\Form\Type\WebhookType:
+    tags:
+      - { name: form.type }
+
+  Marello\Bundle\WebhookBundle\Form\Type\EventSelectType:
+    arguments:
+      - '@oro_entity_extend.enum_value_provider'
+    tags:
+      - { name: form.type }

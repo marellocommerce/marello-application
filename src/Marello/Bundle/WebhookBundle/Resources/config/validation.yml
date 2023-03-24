@@ -1,0 +1,10 @@
+Marello\Bundle\WebhookBundle\Entity\Webhook:
+    properties:
+        name:
+            - NotBlank: ~
+        event:
+            - NotBlank: ~
+        secret:
+            - NotBlank: ~
+        callbackUrl:
+            - NotBlank: ~

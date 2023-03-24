@@ -59,10 +59,10 @@ datagrids:
         type:       url
         route:      marello_webhook_view
         params:     [ id ]
-#      update_link:
-#        type:       url
-#        route:      marello_webhook_update
-#        params:     [ id ]
+      update_link:
+        type:       url
+        route:      marello_webhook_update
+        params:     [ id ]
     actions:
       view:
         type:           navigate

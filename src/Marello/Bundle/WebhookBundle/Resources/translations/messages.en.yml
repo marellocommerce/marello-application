@@ -1,5 +1,9 @@
 marello:
   webhook:
+    messages:
+      success:
+        webhook:
+          saved: Webhook saved
     enabled:
       active.label: Enabled
       inactive.label: Disabled
