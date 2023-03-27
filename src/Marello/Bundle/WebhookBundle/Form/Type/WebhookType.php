@@ -15,8 +15,8 @@ class WebhookType extends AbstractType
 {
     public const BLOCK_PREFIX = 'marello_webhook_webhook';
 
-    public const ENABLE_STATUS = '1';
-    public const DISABLE_STATUS = '0';
+    public const ENABLE_STATUS = 1;
+    public const DISABLE_STATUS = 0;
 
     /**
      * {@inheritdoc}
@@ -55,13 +55,11 @@ class WebhookType extends AbstractType
             'enabled',
             ChoiceType::class,
             [
-            'choices' => [
-                'disable' => self::DISABLE_STATUS,
-                'enable' => self::ENABLE_STATUS,
-            ],
-            'translation_domain' => 'MarelloInventoryChangeDirection',
-            'mapped' => false
-        ]
+                'choices' => [
+                    'disable' => self::DISABLE_STATUS,
+                    'enable' => self::ENABLE_STATUS,
+                ],
+            ]
         );
 
         $builder->add(

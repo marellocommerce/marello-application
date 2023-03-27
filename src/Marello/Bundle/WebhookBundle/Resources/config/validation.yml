@@ -8,3 +8,4 @@ Marello\Bundle\WebhookBundle\Entity\Webhook:
             - NotBlank: ~
         callbackUrl:
             - NotBlank: ~
+            - Url: ~
