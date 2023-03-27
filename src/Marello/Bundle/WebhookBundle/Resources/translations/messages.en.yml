@@ -1,10 +1,17 @@
 marello:
   webhook:
+    callback_url.description: The webhook URL that needs to called
+    secret.description: Secret / Token
+    secret.label: Secret / Token
+    name:
+      label.description: Name of the webhook
     messages:
       success:
         webhook:
           saved: Webhook saved
     enabled:
+      true.label: Enable
+      false.label: Disable
       active.label: Enabled
       inactive.label: Disabled
     enabled.label: Enabled

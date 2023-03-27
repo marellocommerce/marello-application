@@ -38,7 +38,7 @@
                         </div>
                         {{ UI.renderProperty('marello.webhook.name.label'|trans, entity.name) }}
                         {{ UI.renderProperty('marello.webhook.event.label'|trans, entity.event) }}
-                        {{ UI.renderProperty('marello.webhook.enabled.label'|trans, entity.enabled ? 'Yes'|trans : 'No'|trans) }}
+                        {{ UI.renderProperty('marello.webhook.enabled.label'|trans, entity.enabled ? 'marello.webhook.enabled.true.label'|trans : 'marello.webhook.enabled.false.label'|trans) }}
                         {{ UI.renderProperty('marello.webhook.callback_url.label'|trans, entity.callbackUrl) }}
                         {{ UI.renderProperty('oro.ui.created_at'|trans, entity.createdAt|date) }}
                         {{ UI.renderProperty('oro.ui.updated_at'|trans, entity.updatedAt|date|default('N/A'|trans)) }}
