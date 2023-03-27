@@ -56,3 +56,4 @@ marello:
 
         pdf:
             filename.label: "PackingSlip_%entityNumber%"
+            download.label: Download PDF
