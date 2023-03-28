@@ -5,13 +5,13 @@ datagrids:
             query:
                 select:
                     - ps
+                    - ps.salesChannelName as salesChannel
                     - o.orderNumber
                 from:
                     - { table: MarelloPackingBundle:PackingSlip, alias: ps }
                 join:
                     left:
                         - { join: ps.order, alias: o }
-                        - { join: ps.salesChannel, alias: sc}
                         - { join: ps.warehouse, alias: wh}
                         - { join: ps.billingAddress, alias: ba }
                         - { join: ps.shippingAddress, alias: sa }
@@ -23,6 +23,8 @@ datagrids:
                 label:            marello.packing.packingslip.order.label
             salesChannel:
                 label:            marello.packing.packingslip.sales_channel.label
+                frontend_type:    string
+                data_name:        salesChannel
             warehouse:
                 label:            marello.packing.packingslip.warehouse.label
             billingAddress:
@@ -46,7 +48,7 @@ datagrids:
                 orderNumber:
                     data_name: o.orderNumber
                 salesChannel:
-                    data_name: sc.name
+                    data_name: ps.salesChannel
                 warehouse:
                     data_name: wh.label
                 billingAddress:
@@ -69,7 +71,7 @@ datagrids:
                     data_name: o.orderNumber
                 salesChannel:
                     type: string
-                    data_name: sc.name
+                    data_name: salesChannelName
                 warehouse:
                     type: string
                     data_name: wh.label
