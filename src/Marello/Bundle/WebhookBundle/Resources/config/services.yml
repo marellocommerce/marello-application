@@ -1,11 +1,4 @@
 services:
-#  Marello\Bundle\WebhookBundle\Twig\WebhookExtension:
-#    arguments:
-#      - '@doctrine'
-#      - '@oro_security.acl_helper'
-#    tags:
-#      - { name: twig.extension }
-
   Marello\Bundle\WebhookBundle\Entity\Repository\WebhookRepository:
     parent: oro_entity.abstract_repository
     arguments:
@@ -22,3 +15,14 @@ services:
       - '@oro_entity_extend.enum_value_provider'
     tags:
       - { name: form.type }
+
+  Marello\Bundle\WebhookBundle\EventListener\WebhookEventListener:
+    arguments:
+      - '@Marello\Bundle\WebhookBundle\Model\WebhookProvider'
+      - '@oro_message_queue.client.message_producer'
+    tags:
+      - { name: kernel.event_subscriber }
+
+  Marello\Bundle\WebhookBundle\Model\WebhookProvider:
+    arguments:
+      - '@doctrine.orm.entity_manager'
