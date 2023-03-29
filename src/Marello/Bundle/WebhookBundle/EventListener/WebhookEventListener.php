@@ -25,14 +25,13 @@ class WebhookEventListener implements EventSubscriberInterface
     public function __construct(
         WebhookProvider $webhookProvider,
         MessageProducerInterface $messageProducer
-    ){
+    ) {
         $this->webhookProvider = $webhookProvider;
         $this->messageProducer = $messageProducer;
     }
 
     public static function getSubscribedEvents()
     {
-        //TODO: support more advanced && dynamic/run-time event lists currently not from the enum-lists
         return [
             InventoryUpdateEvent::NAME => "webhookInventoryProcess",
             BalancedInventoryUpdateEvent::BALANCED_UPDATE_AFTER => "webhookInventoryProcess",
@@ -40,7 +39,9 @@ class WebhookEventListener implements EventSubscriberInterface
     }
 
     /**
+     * Handle Inventory events webhook messages
      * @param $event
+     * @return WebhookEventListener
      * @throws Exception
      */
     public function webhookInventoryProcess($event): WebhookEventListener

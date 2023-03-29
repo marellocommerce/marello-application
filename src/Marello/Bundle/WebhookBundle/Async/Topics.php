@@ -1,4 +1,5 @@
 <?php
+
 namespace Marello\Bundle\WebhookBundle\Async;
 
 class Topics
