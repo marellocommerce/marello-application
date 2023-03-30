@@ -3,6 +3,7 @@
 namespace Marello\Bundle\WebhookBundle\Migrations\Schema;
 
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Schema\SchemaException;
 use Marello\Bundle\WebhookBundle\Model\WebhookEventInterface;
 use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension;
@@ -15,7 +16,7 @@ class MarelloWebhookBundleInstaller implements Installation, ExtendExtensionAwar
     /**
      * @var ExtendExtension
      */
-    public $extendExtension;
+    public ExtendExtension $extendExtension;
 
     /**
      * {@inheritdoc}
@@ -27,10 +28,12 @@ class MarelloWebhookBundleInstaller implements Installation, ExtendExtensionAwar
 
     /**
      * {@inheritdoc}
+     * @throws SchemaException
      */
     public function up(Schema $schema, QueryBag $queries)
     {
         $this->addMarelloWebhookTable($schema);
+        $this->updateOroIntegrationTransportTable($schema);
     }
 
     /**
@@ -70,5 +73,16 @@ class MarelloWebhookBundleInstaller implements Installation, ExtendExtensionAwar
         );
         $table->setPrimaryKey(['id']);
         $table->addIndex(['organization_id']);
+    }
+
+    /**
+     * @param Schema $schema
+     * @throws SchemaException
+     */
+    public function updateOroIntegrationTransportTable(Schema $schema): void
+    {
+        $table = $schema->getTable('oro_integration_transport');
+
+        $table->addColumn('webhook_signature_algo', 'string', ['notnull' => false, 'length' => 1024]);
     }
 }
