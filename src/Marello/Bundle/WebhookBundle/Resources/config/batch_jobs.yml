@@ -1,0 +1,16 @@
+connector:
+  name: oro_importexport
+  jobs:
+    marello_webhook_notification:
+      title: "Process all webhooks"
+      type:  import
+      steps:
+        clean_up_product:
+          title: import
+          class: Oro\Bundle\AkeneoBundle\ImportExport\Step\ItemStep
+          services:
+            reader: marello_webhook.importexport.reader.notification_connector
+            processor: marello_webhook.importexport.processor.process
+            writer: marello_webhook.importexport.writer.webhook_export_writer
+          parameters:
+            batch_size: 1

@@ -7,6 +7,9 @@ use Marello\Bundle\WebhookBundle\Model\WebhookProvider;
 use Marello\Bundle\InventoryBundle\Event\BalancedInventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
+use Oro\Bundle\MessageQueueBundle\Client\BufferedMessageProducer;
+use Oro\Component\MessageQueue\Client\Message;
+use Oro\Component\MessageQueue\Client\MessagePriority;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Oro\Component\MessageQueue\Transport\Exception\Exception;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -78,11 +81,24 @@ class WebhookEventListener implements EventSubscriberInterface
      * @param array $data
      * @throws Exception
      */
-    public function sendMessage(array $data): void
+    private function sendMessage(array $data): void
     {
+        $channelId = 1; //TODO get one based on on TYPE
         $this->messageProducer->send(
             Topics::WEBHOOK_NOTIFY,
-            $data
+            new Message(
+                [
+                    'integrationId' => $channelId,
+                    'connector' => null,
+                    'connector_parameters' => $data,
+                ],
+                MessagePriority::HIGH
+            )
         );
+
+        if ($this->messageProducer instanceof BufferedMessageProducer
+            && $this->messageProducer->isBufferingEnabled()) {
+            $this->messageProducer->flushBuffer();
+        }
     }
 }

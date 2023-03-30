@@ -1,5 +1,12 @@
 marello:
   webhook:
+    connector:
+      notification.label: Webhook Notification
+    notification:
+      integration.label: Webhook Integration
+    signature_algo:
+      form.description: Encryption Algorithm default sha256
+      form.label: Encryption Algorithm
     callback_url.description: The webhook URL that needs to called
     secret.description: Secret / Token
     secret.label: Secret / Token
