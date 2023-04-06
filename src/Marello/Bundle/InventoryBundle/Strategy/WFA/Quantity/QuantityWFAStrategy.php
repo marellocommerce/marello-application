@@ -421,19 +421,32 @@ class QuantityWFAStrategy implements WFAStrategyInterface
      */
     private function cartesian($input): array
     {
-        $result = array(array());
-        foreach ($input as $key => $values) {
-            $append = array();
-
-            foreach ($result as $product) {
-                foreach ($values as $item) {
-                    $product[$key] = $item;
-                    $append[] = $product;
+        $uniqueWhs = [];
+        foreach ($input as $v) {
+            $uniqueWhs = array_merge($uniqueWhs, array_values($v));
+        }
+        $uniqueWhs = array_unique($uniqueWhs);
+        $whOptions[] = $uniqueWhs;
+        for ($i = 1; $i < count($uniqueWhs); $i++) {
+            $element = array_shift($uniqueWhs);
+            $uniqueWhs[] = $element;
+            $whOptions[] = $uniqueWhs;
+        }
+        $product = [];
+        $result = [];
+        foreach ($whOptions as $whOption) {
+            foreach ($whOption as $wh) {
+                foreach ($input as $key => $values) {
+                    if (array_search($wh, $values, true) ) {
+                        $product[$key] = $wh;
+                    }
                 }
             }
-
-            $result = $append;
+            $result[] = $product;
         }
+        uasort($result, function ($resultA, $resultB) {
+            return (count(array_unique($resultA)) <=> count(array_unique($resultB)));
+        });
 
         return $result;
     }
