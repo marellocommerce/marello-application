@@ -25,6 +25,8 @@ datagrids:
       event:
         label:            marello.webhook.event.label
         frontend_type:    string
+        inline_editing:
+          enable: false
         data_name:        event
       enabled:
         label:            marello.webhook.enable.label
