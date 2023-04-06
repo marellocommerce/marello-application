@@ -2,8 +2,7 @@
 
 namespace Marello\Bundle\WebhookBundle\Form\Type;
 
-use Marello\Bundle\WebhookBundle\Model\WebhookEventInterface;
-use Oro\Bundle\EntityExtendBundle\Provider\EnumValueProvider;
+use Marello\Bundle\WebhookBundle\Provider\WebhookEventProvider;
 use Oro\Bundle\FormBundle\Form\Type\Select2ChoiceType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -14,16 +13,16 @@ class EventSelectType extends AbstractType
 
 
     /**
-     * @var EnumValueProvider
+     * @var WebhookEventProvider
      */
-    protected $enumValueProvider;
+    protected WebhookEventProvider $provider;
 
     /**
-     * @param EnumValueProvider $enumValueProvider
+     * @param WebhookEventProvider $provider
      */
-    public function __construct(EnumValueProvider $enumValueProvider)
+    public function __construct(WebhookEventProvider $provider)
     {
-        $this->enumValueProvider = $enumValueProvider;
+        $this->provider = $provider;
     }
 
     /**
@@ -33,8 +32,7 @@ class EventSelectType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'choices'  => $this->enumValueProvider
-                    ->getEnumChoicesByCode(WebhookEventInterface::WEBHOOK_EVENT_ENUM_CLASS),
+                'choices'  => $this->getChoices(),
                 'multiple' => false,
                 'configs'  => [
                     'width'      => '400px',
@@ -58,5 +56,18 @@ class EventSelectType extends AbstractType
     public function getParent()
     {
         return Select2ChoiceType::class;
+    }
+
+    /**
+     * @return array
+     */
+    private function getChoices()
+    {
+        $choices = [];
+        foreach ($this->provider->getEvents() as $event) {
+            $choices[$event->getLabel()] = $event->getName();
+        }
+
+        return $choices;
     }
 }

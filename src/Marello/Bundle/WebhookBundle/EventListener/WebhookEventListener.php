@@ -83,12 +83,13 @@ class WebhookEventListener implements EventSubscriberInterface
      */
     private function sendMessage(array $data): void
     {
-        $channelId = 1; //TODO get one based on on TYPE
+        $channelId = 3; //TODO get one based on on TYPE
         $this->messageProducer->send(
             Topics::WEBHOOK_NOTIFY,
             new Message(
                 [
-                    'integrationId' => $channelId,
+                    'integration_id' => $channelId,
+                    'transport_batch_size' => 1,
                     'connector' => null,
                     'connector_parameters' => $data,
                 ],

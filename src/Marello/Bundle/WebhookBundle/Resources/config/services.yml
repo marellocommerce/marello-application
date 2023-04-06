@@ -12,7 +12,7 @@ services:
 
   Marello\Bundle\WebhookBundle\Form\Type\EventSelectType:
     arguments:
-      - '@oro_entity_extend.enum_value_provider'
+      - '@Marello\Bundle\WebhookBundle\Provider\WebhookEventProvider'
     tags:
       - { name: form.type }
 
@@ -26,3 +26,25 @@ services:
   Marello\Bundle\WebhookBundle\Model\WebhookProvider:
     arguments:
       - '@doctrine.orm.entity_manager'
+
+  Marello\Bundle\WebhookBundle\Provider\WebhookEventProvider:
+    public: true
+
+
+  marello_webhook.inventory.update:
+    class: Marello\Bundle\WebhookBundle\Event\WebhookEventType
+    arguments:
+      - name: 'marello_inventory.inventory.update'
+        label: 'Inventory Update'
+    tags:
+      - {name: marello_webhook.event}
+  marello_webhook.balancedinventory.update_after:
+    class: Marello\Bundle\WebhookBundle\Event\WebhookEventType
+    arguments:
+      - name: 'marello_inventory.balancedinventory.update_after'
+        label: 'Balanced Inventory Update After'
+    tags:
+      - {name: marello_webhook.event}
+
+  marello_webhook.importexport.cache:
+    parent: oro.cache.provider.memory_cache

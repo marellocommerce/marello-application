@@ -7,10 +7,11 @@ connector:
       steps:
         clean_up_product:
           title: import
-          class: Oro\Bundle\AkeneoBundle\ImportExport\Step\ItemStep
+          class: Oro\Bundle\BatchBundle\Step\ItemStep
           services:
-            reader: marello_webhook.importexport.reader.notification_connector
-            processor: marello_webhook.importexport.processor.process
-            writer: marello_webhook.importexport.writer.webhook_export_writer
+            reader: Marello\Bundle\WebhookBundle\Integration\Connector\WebhookNotificationConnector
+            processor: Marello\Bundle\WebhookBundle\ImportExport\Processor\AsyncProcessor
+            writer: oro_importexport.writer.csv
+#            writer: marello_webhook.importexport.writer.webhook_export_writer
           parameters:
             batch_size: 1

@@ -9,11 +9,14 @@ services:
         tags:
             - { name: oro_integration.transport, type: marello_webhook, channel_type: marello_webhook }
 
-    marello_webhook.integration.connector.notification:
-        class: Marello\Bundle\WebhookBundle\Integration\Connector\WebhookNotificationConnector
+    Marello\Bundle\WebhookBundle\Integration\Connector\WebhookNotificationConnector:
         arguments:
             - "@oro_importexport.context_registry"
             - "@oro_integration.logger.strategy"
             - "@oro_integration.provider.connector_context_mediator"
         tags:
             - { name: oro_integration.connector, type: marello_webhook, channel_type: marello_webhook }
+
+    # Import processors
+    Marello\Bundle\WebhookBundle\ImportExport\Processor\AsyncProcessor: ~
+
