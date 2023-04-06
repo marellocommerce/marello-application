@@ -55,22 +55,12 @@ class MarelloWebhookBundleInstaller implements Installation, ExtendExtensionAwar
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('name', 'string', ['notnull' => false]);
+        $table->addColumn('event', 'string', ['notnull' => false]);
         $table->addColumn('callback_url', 'string', ['notnull' => false]);
         $table->addColumn('secret', 'string', ['notnull' => false]);
         $table->addColumn('enabled', 'boolean', ['notnull' => false, 'default' => true]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
-        $this->extendExtension->addEnumField(
-            $schema,
-            $table,
-            'event',
-            WebhookEventInterface::WEBHOOK_EVENT_ENUM_CLASS,
-            false,
-            false,
-            [
-                'extend' => ['owner' => ExtendScope::OWNER_SYSTEM],
-            ]
-        );
         $table->setPrimaryKey(['id']);
         $table->addIndex(['organization_id']);
     }
