@@ -52,6 +52,21 @@ class WebhookController extends AbstractController
         ];
     }
 
+    /**
+     * @Route(
+     *     path="/create",
+     *     methods={"GET", "POST"},
+     *     name="marello_webhook_create"
+     * )
+     * @Template("@MarelloWebhook/Webhook/update.html.twig")
+     * @AclAncestor("marello_webhook_create")
+     *
+     * @return array
+     */
+    public function createAction(Request $request, Webhook $webhook = null)
+    {
+        return $this->update($request, $webhook);
+    }
 
     /**
      * @Route(
@@ -100,9 +115,6 @@ class WebhookController extends AbstractController
             );
             $manager = $this->container->get(ManagerRegistry::class)->getManager();
 
-            //convert event-id string to enum obj
-            $webhook->setEvent($this->getWebhookEvent($webhook));
-
             $manager->persist($webhook);
             $manager->flush();
 
@@ -130,6 +142,7 @@ class WebhookController extends AbstractController
     }
 
     /**
+     * @deprecated
      * @param Webhook $webhook
      * @return \Extend\Entity\EV_Marello_Webhook_Event
      * @throws ContainerExceptionInterface

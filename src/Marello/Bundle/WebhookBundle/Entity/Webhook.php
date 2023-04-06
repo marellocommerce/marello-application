@@ -71,12 +71,16 @@ class Webhook extends ExtendWebhook implements OrganizationAwareInterface
     protected $name;
 
     /**
-     * @var \Extend\Entity\EV_Marello_Webhook_Event
+     * @var string
      *
+     * @ORM\Column(name="event", type="string", length=255, nullable=true)
      * @ConfigField(
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
+     *          },
+     *          "importexport"={
+     *              "excluded"=true
      *          }
      *      }
      * )
@@ -128,7 +132,7 @@ class Webhook extends ExtendWebhook implements OrganizationAwareInterface
     /**
      * @return int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -164,7 +168,7 @@ class Webhook extends ExtendWebhook implements OrganizationAwareInterface
     }
 
     /**
-     * @return \Extend\Entity\EV_Marello_Webhook_Event
+     * @return string
      */
     public function getEvent()
     {
@@ -172,7 +176,7 @@ class Webhook extends ExtendWebhook implements OrganizationAwareInterface
     }
 
     /**
-     * @param \Extend\Entity\EV_Marello_Webhook_Event $event
+     * @param string $event
      * @return Webhook
      */
     public function setEvent($event): self
@@ -185,7 +189,7 @@ class Webhook extends ExtendWebhook implements OrganizationAwareInterface
     /**
      * @return string
      */
-    public function getCallbackUrl(): string
+    public function getCallbackUrl(): ?string
     {
         return $this->callbackUrl;
     }
@@ -204,7 +208,7 @@ class Webhook extends ExtendWebhook implements OrganizationAwareInterface
     /**
      * @return string
      */
-    public function getSecret(): string
+    public function getSecret(): ?string
     {
         return $this->secret;
     }
