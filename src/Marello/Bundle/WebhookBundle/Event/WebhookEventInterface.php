@@ -7,10 +7,10 @@ interface WebhookEventInterface
     /**
      * @return string
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * @return string
      */
-    public function getLabel();
+    public function getLabel(): string;
 }

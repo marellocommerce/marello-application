@@ -20,11 +20,12 @@ class WebhookProvider
     }
 
     /**
-     * @param int $status
-     * @return array|object[]
+     * @param $eventName
+     * @param boolean $status
+     * @return array
      */
-    public function getActiveWebhooks(int $status = WebhookType::ENABLE_STATUS)
+    public function getActiveWebhooks($eventName, bool $status = true): array
     {
-        return $this->entityManager->getRepository(Webhook::class)->findBy(['enabled' => $status]);
+        return $this->entityManager->getRepository(Webhook::class)->findBy(['enabled' => $status, 'event' => $eventName]);
     }
 }

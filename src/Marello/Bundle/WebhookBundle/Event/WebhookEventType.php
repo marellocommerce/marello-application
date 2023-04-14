@@ -9,12 +9,12 @@ class WebhookEventType extends ParameterBag implements WebhookEventInterface
     public const NAME_FIELD = 'name';
     public const LABEL_FIELD = 'label';
 
-    public function getName()
+    public function getName(): string
     {
         return $this->get(self::NAME_FIELD);
     }
 
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->get(self::LABEL_FIELD);
     }

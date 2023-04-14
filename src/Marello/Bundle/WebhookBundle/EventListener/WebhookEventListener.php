@@ -3,10 +3,9 @@
 namespace Marello\Bundle\WebhookBundle\EventListener;
 
 use Marello\Bundle\WebhookBundle\Async\Topics;
+use Marello\Bundle\WebhookBundle\Event\WebhookContext;
+use Marello\Bundle\WebhookBundle\Event\WebhookEvent;
 use Marello\Bundle\WebhookBundle\Model\WebhookProvider;
-use Marello\Bundle\InventoryBundle\Event\BalancedInventoryUpdateEvent;
-use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 use Oro\Bundle\MessageQueueBundle\Client\BufferedMessageProducer;
 use Oro\Component\MessageQueue\Client\Message;
 use Oro\Component\MessageQueue\Client\MessagePriority;
@@ -17,14 +16,17 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class WebhookEventListener implements EventSubscriberInterface
 {
     /** @var WebhookProvider */
-    private $webhookProvider;
+    private WebhookProvider $webhookProvider;
 
     /**
      * @var MessageProducerInterface
      */
-    private $messageProducer;
+    private MessageProducerInterface $messageProducer;
 
-
+    /**
+     * @param WebhookProvider $webhookProvider
+     * @param MessageProducerInterface $messageProducer
+     */
     public function __construct(
         WebhookProvider $webhookProvider,
         MessageProducerInterface $messageProducer
@@ -36,8 +38,7 @@ class WebhookEventListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            InventoryUpdateEvent::NAME => "webhookInventoryProcess",
-            BalancedInventoryUpdateEvent::BALANCED_UPDATE_AFTER => "webhookInventoryProcess",
+            WebhookEvent::NAME => 'webhookProcess'
         ];
     }
 
@@ -47,30 +48,25 @@ class WebhookEventListener implements EventSubscriberInterface
      * @return WebhookEventListener
      * @throws Exception
      */
-    public function webhookInventoryProcess($event): WebhookEventListener
+    public function webhookProcess($event): WebhookEventListener
     {
-        /** @var InventoryUpdateContext $context */
+        /** @var WebhookContext $context */
         $context = null;
-        if ($event instanceof InventoryUpdateEvent || $event instanceof BalancedInventoryUpdateEvent) {
-            $context = $event->getInventoryUpdateContext();
+        if ($event instanceof WebhookEvent) {
+            $context = $event->getWebhookContext();
         }
 
         //get active inventory webhooks
-        $activeWebhookEventLists = $this->webhookProvider->getActiveWebhooks();
+        $activeWebhookEventLists =  $context->getWebhooks();
+        if (count($activeWebhookEventLists) <= 0) {
+            $activeWebhookEventLists = $this->webhookProvider->getActiveWebhooks($context->getEventName());
+        }
 
-        //create messages to process those inventory webhooks
-        $subscribedEvents = self::getSubscribedEvents();
+        //create messages for further processing
         foreach ($activeWebhookEventLists as $activeWebhookEventList) {
-            $webhookEventName = $activeWebhookEventList->getEvent()->getName();
-            if (array_key_exists($webhookEventName, $subscribedEvents) && $context) {
-                $data = [
-                    'inventory' => $context->getInventory(),
-                    'inventory_level' => $context->getInventoryLevel()->getInventoryQty(),
-                    'allocated_inventory_qty' => $context->getValue('allocated_inventory_qty'),
-                    'sku' => $context->getInventoryItem()->getProduct()->getSku(),
-                    'webhook_id' => $activeWebhookEventList->getId()
-                    ];
-                $this->sendMessage($data);
+            $webhookEventName = $activeWebhookEventList->getEvent();
+            if ($context->getEventName() === $webhookEventName) {
+                $this->sendWebhookMessage($context);
             }
         }
         return $this;
@@ -78,10 +74,10 @@ class WebhookEventListener implements EventSubscriberInterface
 
     /**
      * send a message to process the webhook vars $context, $activeWebhookEventListId
-     * @param array $data
+     * @param WebhookContext $webhookContext
      * @throws Exception
      */
-    private function sendMessage(array $data): void
+    public function sendWebhookMessage(WebhookContext $webhookContext)
     {
         $channelId = 3; //TODO get one based on on TYPE
         $this->messageProducer->send(
@@ -91,7 +87,7 @@ class WebhookEventListener implements EventSubscriberInterface
                     'integration_id' => $channelId,
                     'transport_batch_size' => 1,
                     'connector' => null,
-                    'connector_parameters' => $data,
+                    'connector_parameters' => $webhookContext->getWebhookDataContext()
                 ],
                 MessagePriority::HIGH
             )

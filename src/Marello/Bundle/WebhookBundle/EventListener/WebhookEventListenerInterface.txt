@@ -1,8 +1,0 @@
-<?php
-
-namespace Marello\Bundle\WebhookBundle\EventListener;
-
-interface WebhookEventListenerInterface
-{
-    public function getRegisteredWebhook(): string;
-}

@@ -30,7 +30,6 @@ services:
   Marello\Bundle\WebhookBundle\Provider\WebhookEventProvider:
     public: true
 
-
   marello_webhook.inventory.update:
     class: Marello\Bundle\WebhookBundle\Event\WebhookEventType
     arguments:
@@ -45,6 +44,13 @@ services:
         label: 'Balanced Inventory Update After'
     tags:
       - {name: marello_webhook.event}
+
+  marello_webhook.webhook_listeners.manager:
+    class: Marello\Bundle\WebhookBundle\Manager\WebhookListenerManager
+    public: true
+    arguments:
+      - []
+      - '@service_container'
 
   marello_webhook.importexport.cache:
     parent: oro.cache.provider.memory_cache
