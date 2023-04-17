@@ -1,0 +1,22 @@
+marello:
+    notificationalert:
+        order:
+            no_sku:
+                message: Can’t create an Order, product SKU can’t be found
+        purchaseorder:
+            no_sku:
+                message: Can’t create a Purchase Order, product SKU can’t be found
+        allocation:
+            no_sku:
+                message: Can’t Allocated, product SKU can’t be found
+                solution: Create the product in Marello and add availability option(s) to the Inventory item or consult the customer about next steps.
+            no_available:
+                message: Can’t Allocated, there is no product availability
+                solution: Possible solutions are; create an allocation option by adding product availability, credit the products or consult the customer about next steps.
+        webhook:
+            cant_update:
+                message: After several attempts Marello has not been able to send an update to an external application through a Webhook.
+                solution: |
+                    Possible solutions are;<br/>
+                    - The external application might be down, bring the external application back up.<br/>
+                    - The Webhook settings/credentials are not valid. Check the correct values and update the Webhook.

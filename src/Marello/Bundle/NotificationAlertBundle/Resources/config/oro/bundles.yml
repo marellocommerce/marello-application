@@ -1,0 +1,2 @@
+bundles:
+    - { name: Marello\Bundle\NotificationAlertBundle\MarelloNotificationAlertBundle, priority: 60 }
