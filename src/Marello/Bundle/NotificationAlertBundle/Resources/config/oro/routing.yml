@@ -1,0 +1,9 @@
+marello_notification_alert:
+    resource: "@MarelloNotificationAlertBundle/Controller/NotificationAlertController.php"
+    type:     annotation
+    prefix:   /marello/notification-alert
+
+marello_notification_alert_ajax:
+    resource: "@MarelloNotificationAlertBundle/Controller/AjaxNotificationAlertController.php"
+    type:     annotation
+    prefix:   /marello/notification-alert/ajax

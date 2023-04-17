@@ -1,0 +1,5 @@
+marello:
+    notificationalert:
+        actions:
+            resolve:
+                success: Notification Alert was successfully resolved

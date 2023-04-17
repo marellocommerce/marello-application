@@ -1,0 +1,23 @@
+.marello-notification-alert-type {
+    border-radius: 12px;
+    display: inline-flex;
+    line-height: 1.0;
+    padding: 4px 12px;
+
+    &.alert-type-error {
+        background-color: #ff4444;
+    }
+    &.alert-type-warning {
+        background-color: #ffbb33;
+    }
+    &.alert-type-success {
+        background-color: #00c851;
+    }
+    &.alert-type-info {
+        background-color: #33b5e5;
+    }
+}
+
+.marello-notification-alert-activity-body {
+    padding: 5px 10px;
+}

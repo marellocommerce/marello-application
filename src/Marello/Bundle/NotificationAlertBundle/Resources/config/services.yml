@@ -1,0 +1,45 @@
+imports:
+    - { resource: controllers.yml }
+
+services:
+    Marello\Bundle\NotificationAlertBundle\Cron\NotificationAlertCleanupCommand:
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: console.command }
+
+    Marello\Bundle\NotificationAlertBundle\EventListener\CreateNotificationAlertEventListener:
+        arguments:
+            - '@doctrine'
+            - '@translator'
+        tags:
+            - { name: kernel.event_listener, event: marello_notificationalert.create_notification_alert, method: onCreate }
+
+    marello_notification_alert.datagrid.action_permission_provider:
+        class: Marello\Bundle\NotificationAlertBundle\Datagrid\ActionPermissionProvider
+        public: true
+
+    Marello\Bundle\NotificationAlertBundle\Datagrid\Extension\MassAction\ResolveMassAction:
+        shared: false
+        public: true
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: notificationalert_resolve }
+
+    Marello\Bundle\NotificationAlertBundle\Datagrid\Extension\MassAction\ResolveMassActionHandler:
+        public: true
+        arguments:
+            - '@doctrine'
+            - '@translator'
+
+    Marello\Bundle\NotificationAlertBundle\Provider\NotificationAlertActivityListProvider:
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@oro_activity.association_helper'
+            - '@oro_security.owner.entity_owner_accessor.link'
+        tags:
+            - { name: oro_activity_list.provider, class: Marello\Bundle\NotificationAlertBundle\Entity\NotificationAlert, priority: 80 }
+
+    Marello\Bundle\NotificationAlertBundle\Provider\NotificationAlertEntityNameProvider:
+        public: false
+        tags:
+            - { name: oro_entity.name_provider, priority: 100 }

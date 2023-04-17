@@ -1,0 +1,41 @@
+{% extends '@OroActivityList/ActivityList/js/activityItemTemplate.html.twig' %}
+{% import '@OroEmail/actions.html.twig' as AC %}
+
+{% set entityClass = 'Marello\\Bundle\\NotificationAlertBundle\\Entity\\NotificationAlert' %}
+{% set entityName = oro_entity_config_value(entityClass, 'label')|trans %}
+
+{% block activityDetails %}
+    {{ entityName|raw }}
+{% endblock %}
+
+{% block activityActions %}
+    {% import '@OroActivity/macros.html.twig' as AC %}
+
+    {% set actions = [] %}
+    {% set action %}
+        <a href="<%- routing.generate('marello_notificationalert_view', {'id': relatedActivityId}) %>"
+           class="dropdown-item"
+           title="{{ 'marello.notificationalert.view_alert'|trans }}">
+                <span class="fa-eye hide-text" aria-hidden="true">{{ 'marello.notificationalert.view_alert'|trans }}</span>
+            {{ 'marello.notificationalert.view_alert'|trans }}
+        </a>
+    {% endset %}
+    {% set actions = actions|merge([action]) %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block activityShortMessage %}
+    <div class="activity-short-message">
+        <span class="marello-notification-alert-type message-subject alert-type-<%- data.alertType %>">
+            <%- data.alertTypeName %>
+        </span>
+    </div>
+    {{ parent() }}
+{% endblock %}
+
+{% block activityContent %}
+    <div class="marello-notification-alert-activity-body">
+        {{ parent() }}
+    </div>
+{% endblock %}
