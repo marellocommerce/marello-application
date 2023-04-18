@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\PackingBundle\Migrations\Schema\v1_4_1;
+namespace Marello\Bundle\PackingBundle\Migrations\Schema\v1_4_2;
 
 use Doctrine\DBAL\Schema\Schema;
 
@@ -28,15 +28,8 @@ class UpdatePackingSlipTable implements Migration
     protected function updatePackingSlipTable(Schema $schema)
     {
         $table = $schema->getTable(self::MARELLO_PACKING_SLIP_TABLE);
-        if (!$table->hasColumn('source_id')) {
-            $table->addColumn('source_id', 'integer', ['notnull' => false]);
+        if (!$table->hasColumn('saleschannel_name')) {
+            $table->addColumn('saleschannel_name', 'string', ['notnull' => false, 'length' => 255]);
         }
-
-        $table->addForeignKeyConstraint(
-            $schema->getTable('marello_inventory_allocation'),
-            ['source_id'],
-            ['id'],
-            ['onDelete' => null, 'onUpdate' => null]
-        );
     }
 }

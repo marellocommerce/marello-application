@@ -39,7 +39,7 @@ class MarelloPackingBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_4_1';
+        return 'v1_4_2';
     }
 
     /**
@@ -70,6 +70,7 @@ class MarelloPackingBundleInstaller implements
         $table->addColumn('billing_address_id', 'integer', ['notnull' => false]);
         $table->addColumn('shipping_address_id', 'integer', ['notnull' => false]);
         $table->addColumn('salesChannel_id', 'integer', ['notnull' => false]);
+        $table->addColumn('saleschannel_name', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('warehouse_id', 'integer', ['notnull' => false]);
         $table->addColumn('comment', 'text', ['notnull' => false]);
         $table->addColumn('packing_slip_number', 'string', ['length' => 255, 'notnull' => false]);

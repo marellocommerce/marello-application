@@ -72,7 +72,7 @@ class MarelloRorWarranty implements BusinessRuleInterface
      */
     protected function validateConditions(ReturnEntity $return, ReturnItem $returnItem)
     {
-        if (!$return->getOrder()->getShipment()) {
+        if (!$return->getOrder()->getPurchaseDate()) {
             return false;
         }
 
@@ -94,12 +94,10 @@ class MarelloRorWarranty implements BusinessRuleInterface
      */
     protected function validateProductRorWarranty(ReturnEntity $return)
     {
-        /** @var Shipment $shipment */
-        $shipment           = $return->getOrder()->getShipment();
-        $shipmentCreatedAt  = $shipment->getCreatedAt();
-        $currentDate        = new \DateTime(date('Y-m-d'));
+        $purchaseDate  = $return->getOrder()->getPurchaseDate();
+        $currentDate   = new \DateTime(date('Y-m-d'));
 
-        $interval           = $currentDate->diff($shipmentCreatedAt);
+        $interval           = $currentDate->diff($purchaseDate);
         $intervalInDays     = (int) $interval->format('%a');
         $rorPeriodInDays    = $this->configManager->get('marello_return.ror_period');
 
