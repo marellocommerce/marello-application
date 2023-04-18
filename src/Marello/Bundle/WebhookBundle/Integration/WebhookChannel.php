@@ -10,7 +10,7 @@ use Oro\Bundle\IntegrationBundle\Provider\IconAwareIntegrationInterface;
  */
 class WebhookChannel implements ChannelInterface, IconAwareIntegrationInterface
 {
-    public const TYPE = 'marello_webhook_notification';
+    public const TYPE = 'marello_webhook';
 
     /**
      * @return string

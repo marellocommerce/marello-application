@@ -79,23 +79,25 @@ class WebhookEventListener implements EventSubscriberInterface
      */
     public function sendWebhookMessage(WebhookContext $webhookContext)
     {
-        $channelId = 3; //TODO get one based on on TYPE
-        $this->messageProducer->send(
-            Topics::WEBHOOK_NOTIFY,
-            new Message(
-                [
-                    'integration_id' => $channelId,
-                    'transport_batch_size' => 1,
-                    'connector' => null,
-                    'connector_parameters' => $webhookContext->getWebhookDataContext()
-                ],
-                MessagePriority::HIGH
-            )
-        );
+        $integrationChannels = $this->webhookProvider->getWebhookIntergrations();
+        foreach ($integrationChannels as $integrationChannel) {
+            $this->messageProducer->send(
+                Topics::WEBHOOK_NOTIFY,
+                new Message(
+                    [
+                        'integration_id' => $integrationChannel->getId(),
+                        'transport_batch_size' => 1,
+                        'connector' => null,
+                        'connector_parameters' => $webhookContext->getWebhookDataContext()
+                    ],
+                    MessagePriority::NORMAL
+                )
+            );
 
-        if ($this->messageProducer instanceof BufferedMessageProducer
-            && $this->messageProducer->isBufferingEnabled()) {
-            $this->messageProducer->flushBuffer();
+            if ($this->messageProducer instanceof BufferedMessageProducer
+                && $this->messageProducer->isBufferingEnabled()) {
+                $this->messageProducer->flushBuffer();
+            }
         }
     }
 }
