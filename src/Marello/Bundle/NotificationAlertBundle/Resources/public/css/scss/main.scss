@@ -5,16 +5,20 @@
     padding: 4px 12px;
 
     &.alert-type-error {
-        background-color: #ff4444;
+        background-color: #ffc0b3;
+        color: #570e00;
     }
     &.alert-type-warning {
-        background-color: #ffbb33;
+        background-color: #fef1cc;
+        color: #815f00;
     }
     &.alert-type-success {
-        background-color: #00c851;
+        background-color: #dafbb9;
+        color: #465f2d;
     }
     &.alert-type-info {
-        background-color: #33b5e5;
+        background-color: #e8f5f9;
+        color: #20687a;
     }
 }
 
