@@ -66,10 +66,14 @@
                             {{ UI.renderProperty( stepLabel|trans({}, "workflows"), stepName|trans({}, "workflows") ) }}
                         {% endfor %}
 
-                        {{ UI.renderHtmlProperty(
-                            'marello.order.sales_channel.label'|trans,
-                            UI.entityViewLink(entity.salesChannel, entity.salesChannelName, 'marello_sales_saleschannel_view')
-                        )}}
+                        {% if entity.salesChannel %}
+                            {{ UI.renderHtmlProperty(
+                                'marello.order.sales_channel.label'|trans,
+                                UI.entityViewLink(entity.salesChannel, entity.salesChannelName, 'marello_sales_saleschannel_view')
+                            )}}
+                        {% else %}
+                            {{ UI.renderProperty('marello.order.sales_channel.label'|trans, entity.salesChannelName) }}
+                        {% endif %}
                         {{ UI.renderProperty('marello.order.localization.label'|trans, entity.localization) }}
                     </div>
                     {{ customerInformation }}
