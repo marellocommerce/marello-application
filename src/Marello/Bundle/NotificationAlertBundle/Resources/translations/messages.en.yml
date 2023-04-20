@@ -9,7 +9,7 @@ marello:
         related_item_id.label:  Related Item Id
         related_item_class.label: Related Item Class
         message.label:          Message
-        count.label:            Number of cases
+        count.label:            "# Cases"
         solution.label:         Solution
         resolved:
             label:              Resolved
