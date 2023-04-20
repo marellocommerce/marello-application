@@ -67,7 +67,6 @@ class InventoryUpdateEventListener implements  WebhookListenerInterface
 
         $data = [
             'inventory' => $inventoryContext->getInventory(),
-            'inventory_level' => $inventoryContext->getInventoryLevel(),
             'allocated_inventory_qty' => $inventoryContext->getAllocatedInventory(),
             'sku' => $inventoryContext->getInventoryItem()->getProduct()->getSku(),
         ];
