@@ -45,6 +45,9 @@ datagrids:
             createdAt:
                 label:            oro.ui.created_at
                 frontend_type:    datetime
+            updatedAt:
+                label:            oro.ui.updated_at
+                frontend_type:    datetime
         sorters:
             columns:
                 id:
@@ -56,6 +59,8 @@ datagrids:
                 resolved:
                     data_name: resolved
                 createdAt:
+                    data_name: na.createdAt
+                updatedAt:
                     data_name: na.createdAt
             default:
                 createdAt: 'DESC'
@@ -78,7 +83,10 @@ datagrids:
                     enum_code: marello_notificationalert_resolved
                 createdAt:
                     type: datetime
-                    data_name: o.createdAt
+                    data_name: na.createdAt
+                updatedAt:
+                    type: datetime
+                    data_name: na.updatedAt
         properties:
             id: ~
             view_link:
