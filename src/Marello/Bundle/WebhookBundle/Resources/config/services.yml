@@ -52,5 +52,16 @@ services:
       - []
       - '@service_container'
 
+  Marello\Bundle\WebhookBundle\Async\WebhookSyncProcessor:
+    arguments:
+      - '@oro_entity.doctrine_helper'
+      - '@oro_integration.reverse_sync.processor'
+      - '@oro_integration.manager.types_registry'
+      - '@oro_message_queue.job.runner'
+      - '@security.token_storage'
+      - '@logger'
+    tags:
+      - { name: 'oro_message_queue.client.message_processor', topicName: !php/const Marello\Bundle\WebhookBundle\Async\Topics::WEBHOOK_NOTIFY }
+
   marello_webhook.importexport.cache:
     parent: oro.cache.provider.memory_cache

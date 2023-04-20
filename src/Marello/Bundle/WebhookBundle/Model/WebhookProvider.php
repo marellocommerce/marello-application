@@ -2,18 +2,17 @@
 
 namespace Marello\Bundle\WebhookBundle\Model;
 
-use Doctrine\ORM\EntityManager;
 use Marello\Bundle\WebhookBundle\Entity\Webhook;
-use Marello\Bundle\WebhookBundle\Form\Type\WebhookType;
 use Marello\Bundle\WebhookBundle\Integration\WebhookChannel;
-use Oro\Bundle\AkeneoBundle\Integration\AkeneoChannel;
+
+use Doctrine\ORM\EntityManager;
 use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
 use Oro\Bundle\IntegrationBundle\Entity\Repository\ChannelRepository;
 
 class WebhookProvider
 {
     /** @var EntityManager */
-    protected $entityManager;
+    protected EntityManager $entityManager;
 
     /**
      * @param EntityManager $entityManager
@@ -30,7 +29,8 @@ class WebhookProvider
      */
     public function getActiveWebhooks($eventName, bool $status = true): array
     {
-        return $this->entityManager->getRepository(Webhook::class)->findBy(['enabled' => $status, 'event' => $eventName]);
+        $criteria = ['enabled' => $status, 'event' => $eventName];
+        return $this->entityManager->getRepository(Webhook::class)->findBy($criteria);
     }
 
     /**
@@ -43,5 +43,23 @@ class WebhookProvider
         $integrationRepository = $this->entityManager->getRepository(Integration::class);
 
         return $integrationRepository->getConfiguredChannelsForSync($type, true);
+    }
+
+    /**
+     * @param $id
+     * @return Webhook
+     */
+    public function getWebhookById($id): Webhook
+    {
+        return $this->entityManager->getRepository(Webhook::class)->find($id);
+    }
+
+    /**
+     * @param $id
+     * @return Integration
+     */
+    public function getWebhookIntergrationById($id): Integration
+    {
+        return $this->entityManager->getRepository(Integration::class)->find($id);
     }
 }

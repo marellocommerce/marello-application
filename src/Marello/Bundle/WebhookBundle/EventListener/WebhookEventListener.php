@@ -3,8 +3,10 @@
 namespace Marello\Bundle\WebhookBundle\EventListener;
 
 use Marello\Bundle\WebhookBundle\Async\Topics;
+use Marello\Bundle\WebhookBundle\Entity\Webhook;
 use Marello\Bundle\WebhookBundle\Event\WebhookContext;
 use Marello\Bundle\WebhookBundle\Event\WebhookEvent;
+use Marello\Bundle\WebhookBundle\Integration\Connector\WebhookNotificationConnector;
 use Marello\Bundle\WebhookBundle\Model\WebhookProvider;
 use Oro\Bundle\MessageQueueBundle\Client\BufferedMessageProducer;
 use Oro\Component\MessageQueue\Client\Message;
@@ -66,7 +68,7 @@ class WebhookEventListener implements EventSubscriberInterface
         foreach ($activeWebhookEventLists as $activeWebhookEventList) {
             $webhookEventName = $activeWebhookEventList->getEvent();
             if ($context->getEventName() === $webhookEventName) {
-                $this->sendWebhookMessage($context);
+                $this->sendWebhookMessage($context, $activeWebhookEventList);
             }
         }
         return $this;
@@ -75,11 +77,16 @@ class WebhookEventListener implements EventSubscriberInterface
     /**
      * send a message to process the webhook vars $context, $activeWebhookEventListId
      * @param WebhookContext $webhookContext
+     * @param Webhook $webhook
      * @throws Exception
      */
-    public function sendWebhookMessage(WebhookContext $webhookContext)
+    public function sendWebhookMessage(WebhookContext $webhookContext, Webhook $webhook)
     {
         $integrationChannels = $this->webhookProvider->getWebhookIntergrations();
+        $items = [
+            'items' => $webhookContext->getWebhookDataContext(),
+            'webhook_id' => $webhook->getId()
+        ];
         foreach ($integrationChannels as $integrationChannel) {
             $this->messageProducer->send(
                 Topics::WEBHOOK_NOTIFY,
@@ -87,8 +94,8 @@ class WebhookEventListener implements EventSubscriberInterface
                     [
                         'integration_id' => $integrationChannel->getId(),
                         'transport_batch_size' => 1,
-                        'connector' => null,
-                        'connector_parameters' => $webhookContext->getWebhookDataContext()
+                        'connector' => WebhookNotificationConnector::TYPE,
+                        'connector_parameters' => $items
                     ],
                     MessagePriority::NORMAL
                 )

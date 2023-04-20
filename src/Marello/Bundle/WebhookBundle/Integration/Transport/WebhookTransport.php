@@ -5,7 +5,10 @@ namespace Marello\Bundle\WebhookBundle\Integration\Transport;
 use Marello\Bundle\WebhookBundle\Entity\Webhook;
 use Marello\Bundle\WebhookBundle\Entity\WebhookNotificationSettings;
 use Marello\Bundle\WebhookBundle\Form\Type\WebhookSettingsType;
+use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestResponseInterface;
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Transport\AbstractRestTransport;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
@@ -13,13 +16,24 @@ use Symfony\Component\HttpFoundation\ParameterBag;
  */
 class WebhookTransport extends AbstractRestTransport
 {
+    use LoggerAwareTrait;
+
     public const DEFAULT_ALGO = 'sha256';
 
     /** @var ParameterBag $settings */
-    protected $settings;
+    protected ParameterBag $settings;
 
     /** @var Webhook */
     protected Webhook $webhook;
+
+    /**
+     * @param LoggerInterface $logger
+     */
+    public function __construct(
+        LoggerInterface $logger
+    ) {
+        $this->logger = $logger;
+    }
 
     /**
      * {@inheritdoc}
@@ -72,6 +86,31 @@ class WebhookTransport extends AbstractRestTransport
         $algorithm = $parameterBag->get('webhook_signature_algo') ?? self::DEFAULT_ALGO;
         return hash_hmac($algorithm, $eventName.$body, $secret);
     }
+
+    /**
+     * @throws \JsonException
+     */
+    public function sendRequest($item): ?RestResponseInterface
+    {
+        $response = null;
+
+        //LOG
+        $this->logger->notice('CALL: '.$this->getClientBaseUrl($this->settings) .' REQUEST: ' . json_encode($item, JSON_THROW_ON_ERROR));
+
+        try {
+            $response = $this->client->post(
+                $this->getClientBaseUrl($this->settings),
+                $item,
+                $this->getClientOptions($this->settings)
+            );
+            //TODO: handle response here
+        } catch (\Exception $exception) {
+            $this->logger->error($exception->getMessage());
+        }
+
+        return $response;
+    }
+
 
     /**
      * @return Webhook
