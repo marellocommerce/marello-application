@@ -8,7 +8,7 @@ use Oro\Bundle\IntegrationBundle\Provider\IconAwareIntegrationInterface;
 /**
  * Activates webhook integration
  */
-class WebhookChannel implements ChannelInterface, IconAwareIntegrationInterface
+class WebhookChannel implements ChannelInterface
 {
     public const TYPE = 'marello_webhook';
 
@@ -18,13 +18,5 @@ class WebhookChannel implements ChannelInterface, IconAwareIntegrationInterface
     public function getLabel(): string
     {
         return 'marello.webhook.notification.integration.label';
-    }
-
-    /**
-     * @return string
-     */
-    public function getIcon(): string
-    {
-        return 'bundles/marellowebhook/img/webhook.ico';
     }
 }
