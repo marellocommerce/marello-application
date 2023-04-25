@@ -22,9 +22,6 @@ class WebhookTransport extends AbstractRestTransport
 
     public const DEFAULT_ALGO = 'sha256';
 
-    /** @var ParameterBag $settings */
-    protected ParameterBag $settings;
-
     /** @var Webhook */
     protected Webhook $webhook;
 

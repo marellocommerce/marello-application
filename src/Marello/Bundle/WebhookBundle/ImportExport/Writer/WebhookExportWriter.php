@@ -25,10 +25,6 @@ class WebhookExportWriter extends PersistentBatchWriter implements
 
     protected ConnectorContextMediator $connectorContextMediator;
 
-    protected ContextRegistry $contextRegistry;
-
-    protected LoggerInterface $logger;
-
     protected ContextInterface $context;
 
     protected $contextData;
