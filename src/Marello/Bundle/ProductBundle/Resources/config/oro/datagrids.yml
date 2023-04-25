@@ -158,6 +158,7 @@ datagrids:
     marello-products-extended-no-actions-grid:
         extends: marello-products-grid
         actions: ~
+        mass_actions: ~
 
     marello-products-sales-channel-aware-grid:
         extends: marello-products-extended-no-actions-grid
@@ -171,7 +172,6 @@ datagrids:
                         - ch.id = :channelId
             bind_parameters:
                 - channelId
-        mass_actions: ~
         options:
             entityHint: marello.product.entity_plural_label
             export: false

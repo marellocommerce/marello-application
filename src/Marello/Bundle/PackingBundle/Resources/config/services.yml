@@ -35,4 +35,3 @@ services:
             - '@oro_entity.doctrine_helper'
         tags:
             - { name: doctrine.event_listener, event: prePersist }
-#            - { name: kernel.event_listener, event: extendable_action.order_ship, method: onOrderShipped }

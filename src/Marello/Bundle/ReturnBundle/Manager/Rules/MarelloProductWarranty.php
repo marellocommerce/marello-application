@@ -72,7 +72,7 @@ class MarelloProductWarranty implements BusinessRuleInterface
      */
     protected function validateConditions(ReturnEntity $return, ReturnItem $returnItem)
     {
-        if (!$return->getOrder()->getShipment()) {
+        if (!$return->getOrder()->getPurchaseDate()) {
             return false;
         }
 
@@ -94,16 +94,14 @@ class MarelloProductWarranty implements BusinessRuleInterface
      */
     protected function validateProductWarranty(ReturnEntity $return, ReturnItem $returnItem)
     {
-        /** @var Shipment $shipment */
-        $shipment           = $return->getOrder()->getShipment();
-        $shipmentCreatedAt  = $shipment->getCreatedAt();
-        $currentDate        = new \DateTime(date('Y-m-d'));
+        $purchaseDate  = $return->getOrder()->getPurchaseDate();
+        $currentDate   = new \DateTime(date('Y-m-d'));
 
         /**
          * interval in days
          * @var \DateInterval $interval
          */
-        $interval           = $currentDate->diff($shipmentCreatedAt);
+        $interval           = $currentDate->diff($purchaseDate);
         // take in account that months portion of interval cannot be greater than 12
         // so add the year into the equation
         $intervalInMonths   = ($interval->m + ($interval->y * 12));

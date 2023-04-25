@@ -5,13 +5,12 @@ datagrids:
             query:
                 select:
                     - i
-                    - sc.name as salesChannelName
+                    - i.salesChannelName as salesChannel
                     - o.orderNumber as orderNumber
                 from:
                     - { table: MarelloInvoiceBundle:AbstractInvoice, alias: i }
                 join:
                     left:
-                        - { join: i.salesChannel, alias: sc }
                         - { join: i.billingAddress, alias: ba }
                         - { join: i.shippingAddress, alias: sa }
                         - { join: i.order, alias: o }
@@ -27,7 +26,7 @@ datagrids:
             salesChannel:
                 label:            marello.invoice.sales_channel.label
                 frontend_type:    string
-                data_name:        salesChannelName
+                data_name:        salesChannel
             billingAddress:
                 frontend_type:    string
                 data_name:        billingName # This alias is generated using InvoiceGridAddressFilterListener
@@ -68,7 +67,7 @@ datagrids:
                 orderNumber:
                     data_name: o.orderNumber
                 salesChannel:
-                    data_name: i.salesChannel
+                    data_name: i.salesChannelName
                 billingAddress:
                     data_name: billingName
                 grandTotal:

@@ -171,7 +171,7 @@ class OrderType extends AbstractType
                 'shippingAddress',
                 OrderShippingAddressType::class,
                 [
-                    'label' => 'oro.order.shipping_address.label',
+                    'label' => 'marello.order.shipping_address.label',
                     'object' => $options['data'],
                     'required' => false,
                     'addressType' => 'shipping',

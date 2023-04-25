@@ -53,7 +53,10 @@ workflows:
             pending_definition:
                 post_actions:
                     -  '@extendable':
-                            events: [ extendable_action.pending_transition_after ]
+                           conditions:
+                               '@and':
+                                   -   '@not_equal': [ $allocation.allocationContext.id, 'reshipment' ]
+                           events: [ extendable_action.pending_transition_after ]
             send_definition:
                 conditions:
                     '@and':
