@@ -56,7 +56,6 @@ services:
     arguments:
       - '@oro_entity.doctrine_helper'
       - '@oro_integration.reverse_sync.processor'
-      - '@oro_integration.manager.types_registry'
       - '@oro_message_queue.job.runner'
       - '@security.token_storage'
       - '@logger'

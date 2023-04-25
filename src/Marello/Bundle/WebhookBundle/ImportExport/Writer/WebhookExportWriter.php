@@ -5,21 +5,18 @@ namespace Marello\Bundle\WebhookBundle\ImportExport\Writer;
 use Marello\Bundle\WebhookBundle\Integration\Transport\WebhookTransport;
 use Marello\Bundle\WebhookBundle\Model\WebhookProvider;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
-use Oro\Bundle\BatchBundle\Item\ItemWriterInterface;
-use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Oro\Bundle\ImportExportBundle\Context\ContextAwareInterface;
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
 use Oro\Bundle\IntegrationBundle\ImportExport\Writer\PersistentBatchWriter;
 use Oro\Bundle\IntegrationBundle\Provider\ConnectorContextMediator;
+use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestResponseInterface;
 use Oro\Bundle\IntegrationBundle\Provider\TransportInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class WebhookExportWriter extends PersistentBatchWriter implements
-    ItemWriterInterface,
-    StepExecutionAwareInterface,
     ContextAwareInterface
 {
     protected WebhookProvider $webhookProvider;
@@ -90,7 +87,15 @@ class WebhookExportWriter extends PersistentBatchWriter implements
 
         foreach ($items as $item) {
             try {
-                $this->transport->sendRequest($item);
+                $response  = $this->transport->sendRequest($item);
+                if ($response instanceof RestResponseInterface) {
+                    if ($response->getStatusCode() !== 200) {
+                        $errorMessage = "Did not receive correct response. #Data : "
+                                        . json_encode($item). ' #URL: '
+                                        . $this->transport->getWebhook()->getCallbackUrl();
+                        throw new \RuntimeException($errorMessage);
+                    }
+                }
                 $importContext->incrementUpdateCount();
             } catch (\Exception $e) {
                 //increment

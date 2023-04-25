@@ -7,7 +7,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\IntegrationBundle\Authentication\Token\IntegrationTokenAwareTrait;
 use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
-use Oro\Bundle\IntegrationBundle\Exception\LogicException;
 use Oro\Bundle\IntegrationBundle\Manager\TypesRegistry;
 use Oro\Bundle\IntegrationBundle\Provider\ReverseSyncProcessor;
 use Oro\Component\MessageQueue\Client\TopicSubscriberInterface;
@@ -42,11 +41,6 @@ class WebhookSyncProcessor implements
     private ReverseSyncProcessor $reverseSyncProcessor;
 
     /**
-     * @var TypesRegistry
-     */
-    private TypesRegistry $typesRegistry;
-
-    /**
      * @var JobRunner
      */
     private JobRunner $jobRunner;
@@ -59,14 +53,12 @@ class WebhookSyncProcessor implements
     public function __construct(
         DoctrineHelper $doctrineHelper,
         ReverseSyncProcessor $reverseSyncProcessor,
-        TypesRegistry $typesRegistry,
         JobRunner $jobRunner,
         TokenStorageInterface $tokenStorage,
         LoggerInterface $logger
     ) {
         $this->doctrineHelper = $doctrineHelper;
         $this->reverseSyncProcessor = $reverseSyncProcessor;
-        $this->typesRegistry = $typesRegistry;
         $this->jobRunner = $jobRunner;
         $this->tokenStorage = $tokenStorage;
         $this->logger = $logger;
@@ -99,46 +91,16 @@ class WebhookSyncProcessor implements
             return self::REJECT;
         }
 
-//        $em->getConnection()->getConfiguration()->setSQLLogger(null);
-
-//        $connector = !is_null($messageBody['connector']) ? $messageBody['connector']: WebhookNotificationConnector::TYPE;
-
-//        try {
-//            $connector = $this->typesRegistry->getConnectorType($integration->getType(), $connectorType);
-//        } catch (LogicException $e) {
-//            // Can't find the connector
-//            $this->logger->critical(
-//                sprintf('Connector not found: %s', $messageBody['connector']),
-//                ['exception' => $e]
-//            );
-//
-//            return self::REJECT;
-//        }
-
-//        if (!$connector instanceof TwoWaySyncConnectorInterface) {
-//            $this->logger->critical(
-//                sprintf(
-//                    'Unable to perform reverse sync for integration "%s" and connector type "%s"',
-//                    $integration->getId(),
-//                    $messageBody['connector']
-//                )
-//            );
-//
-//            return self::REJECT;
-//        }
-
         $result = $this->jobRunner->runUnique(
             $message->getMessageId(),
             Topics::WEBHOOK_NOTIFY . ':'. $messageBody['integration_id']. '_'. uniqid('', true),
             function () use ($integration, $messageBody) {
                 $this->setTemporaryIntegrationToken($integration);
-                $this->reverseSyncProcessor->process(
+                return $this->reverseSyncProcessor->process(
                     $integration,
                     $messageBody['connector'] ?? WebhookNotificationConnector::TYPE,
                     $messageBody['connector_parameters']
                 );
-
-                return true;
             }
         );
 

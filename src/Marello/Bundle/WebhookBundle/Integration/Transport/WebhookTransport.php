@@ -6,10 +6,12 @@ use Marello\Bundle\WebhookBundle\Entity\Webhook;
 use Marello\Bundle\WebhookBundle\Entity\WebhookNotificationSettings;
 use Marello\Bundle\WebhookBundle\Form\Type\WebhookSettingsType;
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestResponseInterface;
+use Oro\Bundle\IntegrationBundle\Provider\Rest\Exception\RestException;
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Transport\AbstractRestTransport;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
+use JsonException;
 
 /**
  * Class responsible for creating and making requests to Remote API
@@ -78,7 +80,7 @@ class WebhookTransport extends AbstractRestTransport
      * @param ParameterBag $parameterBag
      * @return false|string
      */
-    public function getMarelloWebhookSignature(ParameterBag $parameterBag)
+    public function getMarelloWebhookSignature(ParameterBag $parameterBag): bool|string
     {
         $body = ''; //TODO: add real data here
         $eventName = $this->getWebhook()->getName();
@@ -88,27 +90,18 @@ class WebhookTransport extends AbstractRestTransport
     }
 
     /**
-     * @throws \JsonException
+     * @throws RestException|JsonException
      */
     public function sendRequest($item): ?RestResponseInterface
     {
-        $response = null;
-
         //LOG
         $this->logger->notice('CALL: '.$this->getClientBaseUrl($this->settings) .' REQUEST: ' . json_encode($item, JSON_THROW_ON_ERROR));
 
-        try {
-            $response = $this->client->post(
-                $this->getClientBaseUrl($this->settings),
-                $item,
-                $this->getClientOptions($this->settings)
-            );
-            //TODO: handle response here
-        } catch (\Exception $exception) {
-            $this->logger->error($exception->getMessage());
-        }
-
-        return $response;
+        return $this->client->post(
+            $this->getClientBaseUrl($this->settings),
+            $item,
+            $this->getClientOptions($this->settings)
+        );
     }
 
 
