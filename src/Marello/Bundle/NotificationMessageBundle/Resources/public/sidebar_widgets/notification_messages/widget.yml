@@ -1,0 +1,14 @@
+title: marello.notificationmessage.widget.title
+iconClass: 'fa-envelope-open-o'
+dialogIcon: 'bundles/marellonotificationmessage/sidebar_widgets/notification_messages/img/icon-notification-message.png'
+module:    'marello/sidebar/widget/notification_messages'
+placement: 'both'
+cssClass:  'sidebar-widget-notification-messages'
+description: marello.notificationmessage.widget.description
+settings:
+  perPage: 5
+  types:
+    - error
+    - warning
+    - success
+    - info

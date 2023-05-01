@@ -1,0 +1,60 @@
+imports:
+    - { resource: controllers.yml }
+
+services:
+    Marello\Bundle\NotificationMessageBundle\Cron\NotificationMessageCleanupCommand:
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: console.command }
+
+    Marello\Bundle\NotificationMessageBundle\EventListener\CreateNotificationMessageEventListener:
+        arguments:
+            - '@doctrine'
+            - '@oro_config.manager'
+            - '@translator'
+        tags:
+            - { name: kernel.event_listener, event: marello_notificationmessage.create_notification_message, method: onCreate }
+
+    marello_notification_message.datagrid.action_permission_provider:
+        class: Marello\Bundle\NotificationMessageBundle\Datagrid\ActionPermissionProvider
+        public: true
+
+    Marello\Bundle\NotificationMessageBundle\Datagrid\Extension\MassAction\ResolveMassAction:
+        shared: false
+        public: true
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: notificationmessage_resolve }
+
+    Marello\Bundle\NotificationMessageBundle\Datagrid\Extension\MassAction\ResolveMassActionHandler:
+        public: true
+        arguments:
+            - '@doctrine'
+            - '@translator'
+
+    Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageActivityListProvider:
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@oro_activity.association_helper'
+            - '@oro_security.owner.entity_owner_accessor.link'
+        tags:
+            - { name: oro_activity_list.provider, class: Marello\Bundle\NotificationMessageBundle\Entity\NotificationMessage, priority: 80 }
+
+    Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageEntityNameProvider:
+        public: false
+        tags:
+            - { name: oro_entity.name_provider, priority: 100 }
+
+    marello_notification_message.autocomplete.group.search_handler:
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - 'Oro\Bundle\UserBundle\Entity\Group'
+            - ["name"]
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: user_group, acl_resource: oro_user_group_view }
+
+    Marello\Bundle\NotificationMessageBundle\Form\Type\NotificationMessageGroupConfigType:
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: form.type, alias: marello_notificationmessage_group_config }
