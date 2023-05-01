@@ -1,5 +1,0 @@
-oro_entity:
-    entity_aliases:
-        Marello\Bundle\NotificationAlertBundle\Entity\NotificationAlert:
-            alias:        marellonotificationalert
-            plural_alias: marellonotificationalerts

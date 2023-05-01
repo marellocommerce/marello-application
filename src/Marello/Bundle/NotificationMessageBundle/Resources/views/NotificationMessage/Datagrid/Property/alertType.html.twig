@@ -1,0 +1,6 @@
+{% set alertTypeName = record.getValue('alertTypeName') %}
+{% set alertType = record.getValue('alertType') %}
+
+<span class="marello-notification-message-type message-type-{{ alertType }}">
+    {{ alertTypeName }}
+</span>

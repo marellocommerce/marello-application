@@ -1,9 +1,0 @@
-acls:
-    marello_notificationalert_view:
-        type:       entity
-        class:      MarelloNotificationAlertBundle:NotificationAlert
-        permission: VIEW
-    marello_notificationalert_update:
-        type:       entity
-        class:      MarelloNotificationAlertBundle:NotificationAlert
-        permission: EDIT

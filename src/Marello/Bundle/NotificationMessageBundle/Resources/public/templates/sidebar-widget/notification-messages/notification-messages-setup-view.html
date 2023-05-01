@@ -1,0 +1,41 @@
+<fieldset>
+    <div class="control-group">
+        <div class="control-label wrap">
+            <label class="required"><%- _.__("marello.notificationmessage.widget.number_of_notification_messages") %><em>*</em></label>
+        </div>
+        <div class="controls"><input type="text" name="perPage" value="<%- settings.perPage %>"/></div>
+    </div>
+    <div class="control-group">
+        <div class="control-label wrap">
+            <label class="required"><%- _.__("marello.notificationmessage.widget.alert_types.label") %><em>*</em></label>
+        </div>
+        <div class="controls">
+            <div data-name="field__groups" class="horizontal horizontal choice-widget-expanded">
+                <div class="choice-widget-expanded__item">
+                    <span class="checkbox-view">
+                        <input id="notification-messages-types-settings-error" type="checkbox" name="types[error]" value="1" <%- settings.types.error ? 'checked' : '' %> class="checkbox-view__input input-widget">
+                    </span>
+                    <label for="notification-messages-types-settings-error"><%- _.__("marello.notificationmessage.widget.alert_types.error") %><em>&nbsp;</em></label>
+                </div>
+                <div class="choice-widget-expanded__item">
+                    <span class="checkbox-view">
+                        <input id="notification-messages-types-settings-warning" type="checkbox" name="types[warning]" value="1" <%- settings.types.warning ? 'checked' : '' %> class="checkbox-view__input input-widget">
+                    </span>
+                    <label for="notification-messages-types-settings-warning"><%- _.__("marello.notificationmessage.widget.alert_types.warning") %><em>&nbsp;</em></label>
+                </div>
+                <div class="choice-widget-expanded__item">
+                    <span class="checkbox-view">
+                        <input id="notification-messages-types-settings-success" type="checkbox" name="types[success]" value="1" <%- settings.types.success ? 'checked' : '' %> class="checkbox-view__input input-widget">
+                    </span>
+                    <label for="notification-messages-types-settings-success"><%- _.__("marello.notificationmessage.widget.alert_types.success") %><em>&nbsp;</em></label>
+                </div>
+                <div class="choice-widget-expanded__item">
+                    <span class="checkbox-view">
+                        <input id="notification-messages-types-settings-info" type="checkbox" name="types[info]" value="1" <%- settings.types.info ? 'checked' : '' %> class="checkbox-view__input input-widget">
+                    </span>
+                    <label for="notification-messages-types-settings-info"><%- _.__("marello.notificationmessage.widget.alert_types.info") %><em>&nbsp;</em></label>
+                </div>
+            </div>
+        </div>
+    </div>
+</fieldset>

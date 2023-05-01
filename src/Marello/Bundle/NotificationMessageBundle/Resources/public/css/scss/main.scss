@@ -1,0 +1,39 @@
+.table thead th > span.marello-notification-message-type,
+span.marello-notification-message-type {
+    border-radius: 12px;
+    display: inline-flex;
+    line-height: 1.0;
+    padding: 4px 12px;
+    text-transform: none;
+
+    &.message-type-error {
+        background-color: #ffc0b3;
+        color: #570e00;
+    }
+    &.message-type-warning {
+        background-color: #fef1cc;
+        color: #815f00;
+    }
+    &.message-type-success {
+        background-color: #dafbb9;
+        color: #465f2d;
+    }
+    &.message-type-info {
+        background-color: #e8f5f9;
+        color: #20687a;
+    }
+
+    &.message-subject {
+        margin-bottom: 3px;
+    }
+}
+
+.marello-notification-message-activity-body {
+    padding: 5px 10px;
+}
+
+.marelo-notificationmessage-group-config-table {
+    .selector {
+        width: 150px;
+    }
+}
