@@ -275,6 +275,20 @@ abstract class AbstractInvoice implements
     protected $salesChannel;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="saleschannel_name", type="string", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $salesChannelName;
+
+    /**
      * @var Collection|AbstractInvoiceItem[]
      */
     protected $items;
@@ -685,7 +699,9 @@ abstract class AbstractInvoice implements
     public function setSalesChannel(SalesChannel $salesChannel)
     {
         $this->salesChannel = $salesChannel;
-
+        if ($this->salesChannel) {
+            $this->salesChannelName = $this->salesChannel->getName();
+        }
         return $this;
     }
 
