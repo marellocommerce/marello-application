@@ -32,7 +32,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
      */
     public function getMigrationVersion()
     {
-        return 'v2_6_7';
+        return 'v2_6_8';
     }
 
     /**
@@ -603,7 +603,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
             $schema->getTable('marello_sales_channel_group'),
             ['channel_group_id'],
             ['id'],
-            ['onDelete' => null, 'onUpdate' => null]
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
 
         $table->addForeignKeyConstraint(

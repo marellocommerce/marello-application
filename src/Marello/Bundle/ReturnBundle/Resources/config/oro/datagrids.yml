@@ -23,6 +23,10 @@ datagrids:
                 data_name: returnnumber
                 label: marello.return.returnentity.return_number.label
                 frontend_type: string
+            salesChannel:
+                label:            marello.order.sales_channel.label
+                frontend_type:    string
+                data_name:        salesChannelName
             orderNumber:
                 data_name: order.orderNumber
                 label: marello.order.order_number.label
@@ -52,6 +56,9 @@ datagrids:
                 returnNumber:
                     type: string
                     data_name: r.returnNumber
+                salesChannel:
+                    type: string
+                    data_name: r.salesChannelName
                 orderNumber:
                     type: string
                     data_name: o.orderNumber
@@ -68,6 +75,8 @@ datagrids:
             columns:
                 returnNumber:
                     data_name: r.returnNumber
+                salesChannel:
+                    data_name: r.salesChannel
                 orderNumber:
                     data_name: o.orderNumber
                 orderReference:
