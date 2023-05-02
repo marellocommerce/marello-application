@@ -85,13 +85,6 @@ class PurchaseOrderOnOrderOnDemandCreationListenerTest extends TestCase
             ->expects(static::once())
             ->method('find')
             ->willReturn($this->getAllocation());
-        $whchgrlinkRepository = $this->getMockBuilder(WarehouseChannelGroupLinkRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $whchgrlinkRepository
-            ->expects(static::once())
-            ->method('findLinkBySalesChannelGroup')
-            ->willReturn($this->getWarehouseChannelGroupLing());
         $warehouseTypeRepository = $this->createMock(EntityRepository::class);
         $warehouseTypeRepository
             ->expects(static::once())
@@ -100,8 +93,8 @@ class PurchaseOrderOnOrderOnDemandCreationListenerTest extends TestCase
         $manager
             ->expects(static::any())
             ->method('getRepository')
-            ->withConsecutive([Allocation::class], [WarehouseChannelGroupLink::class], [WarehouseType::class])
-            ->willReturnOnConsecutiveCalls($orderRepository, $whchgrlinkRepository, $warehouseTypeRepository);
+            ->withConsecutive([Allocation::class], [WarehouseType::class])
+            ->willReturnOnConsecutiveCalls($orderRepository, $warehouseTypeRepository);
         $postFlushArgs
             ->expects(static::once())
             ->method('getEntityManager')
@@ -115,27 +108,11 @@ class PurchaseOrderOnOrderOnDemandCreationListenerTest extends TestCase
                 $reflectionProperty->setValue($entity, random_int(0, 10));
             });
         $manager
-            ->expects(static::exactly(3))
+            ->expects(static::exactly(2))
             ->method('flush');
 
         $this->purchaseOrderOnOrderOnDemandCreationListener->postPersist($postPersistArgs);
         $this->purchaseOrderOnOrderOnDemandCreationListener->postFlush($postFlushArgs);
-    }
-
-    /**
-     * @return WarehouseChannelGroupLink
-     */
-    private function getWarehouseChannelGroupLing()
-    {
-        /** @var Warehouse $warehouse */
-        $warehouse = $this->getEntity(Warehouse::class, ['id' => 1]);
-        /** @var WarehouseGroup $warehouseGroup */
-        $warehouseGroup = $this->getEntity(WarehouseGroup::class, ['id' => 1]);
-        $warehouseGroup->addWarehouse($warehouse);
-        /** @var WarehouseChannelGroupLink $link */
-        $link = $this->getEntity(WarehouseChannelGroupLink::class, ['id' => 1, 'warehouseGroup' => $warehouseGroup]);
-
-        return $link;
     }
 
     private function getAllocation(): Allocation
@@ -159,12 +136,28 @@ class PurchaseOrderOnOrderOnDemandCreationListenerTest extends TestCase
         );
 
         $product1 = $this->getProduct(1);
-        /** @var OrderItem $orderItem1 */
-        $item1 = $this->getEntity(AllocationItem::class, ['product' => $product1, 'quantity' => 10]);
+        $orderItem1 = $this->getEntity(OrderItem::class, ['product' => $product1]);
+        /** @var AllocationItem $item1 */
+        $item1 = $this->getEntity(
+            AllocationItem::class,
+            [
+                'product' => $product1,
+                'quantity' => 10,
+                'orderItem' => $orderItem1,
+            ]
+        );
 
         $product2 = $this->getProduct(2);
-        /** @var OrderItem $orderItem2 */
-        $item2 = $this->getEntity(AllocationItem::class, ['product' => $product2, 'quantity' => 10]);
+        $orderItem2 = $this->getEntity(OrderItem::class, ['product' => $product2]);
+        /** @var AllocationItem $item2 */
+        $item2 = $this->getEntity(
+            AllocationItem::class,
+            [
+                'product' => $product2,
+                'quantity' => 10,
+                'orderItem' => $orderItem2,
+            ]
+        );
 
         $allocation
             ->addItem($item1)
@@ -199,7 +192,7 @@ class PurchaseOrderOnOrderOnDemandCreationListenerTest extends TestCase
         /** @var InventoryItem $inventoryItem */
         $inventoryItem = $this->getEntity(
             InventoryItem::class,
-            ['id' => $id, 'orderOnDemandAllowed' => true],
+            ['id' => $id, 'orderOnDemandAllowed' => true, 'enableBatchInventory' => true],
             [$product]
         );
         $product->addInventoryItem($inventoryItem);
