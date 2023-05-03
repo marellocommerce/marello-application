@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
 use Marello\Bundle\InventoryBundle\Provider\AllocationStateStatusInterface;
@@ -52,8 +53,11 @@ class PurchaseOrderOnOrderOnDemandCreationListener
 
         $orderOnDemandItems = [];
         foreach ($entity->getItems() as $item) {
-            if ($this->isOrderOnDemandItem($item->getProduct()) &&
-                $entity->getState()->getId() === AllocationStateStatusInterface::ALLOCATION_STATE_WFS
+            /** @var InventoryItem $inventoryItem */
+            $inventoryItem = $item->getOrderItem()->getInventoryItems()->first();
+            if ($inventoryItem->isEnableBatchInventory()
+                && $this->isOrderOnDemandItem($item->getProduct())
+                && $entity->getState()->getId() === AllocationStateStatusInterface::ALLOCATION_STATE_WFS
             ) {
                 $orderOnDemandItems[] = $item;
             }
