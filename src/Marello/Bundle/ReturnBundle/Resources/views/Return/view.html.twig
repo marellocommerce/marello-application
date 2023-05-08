@@ -55,10 +55,14 @@
                         UI.entityViewLink(entity.order, entity.order.orderNumber, 'marello_order_order_view')
                     )}}
                     {{ UI.renderProperty('marello.order.currency.label'|trans, entity.order.currency) }}
-                    {{ UI.renderHtmlProperty(
-                        'marello.order.sales_channel.label'|trans,
-                        UI.entityViewLink(entity.order.salesChannel, entity.order.salesChannelName, 'marello_sales_saleschannel_view')
-                    )}}
+                    {% if entity.order.salesChannel %}
+                        {{ UI.renderHtmlProperty(
+                            'marello.order.sales_channel.label'|trans,
+                            UI.entityViewLink(entity.order.salesChannel, entity.order.salesChannelName, 'marello_sales_saleschannel_view')
+                        )}}
+                    {% else %}
+                        {{ UI.renderProperty('marello.order.sales_channel.label'|trans, entity.order.salesChannelName) }}
+                    {% endif %}
                     {{ UI.renderProperty('marello.order.order_reference.label'|trans, entity.order.orderReference) }}
                     {{ UI.renderProperty('marello.order.create_date.label'|trans, entity.order.createdAt|oro_format_datetime) }}
                     {{ UI.renderProperty('marello.order.purchase_date.label'|trans, entity.order.purchaseDate|oro_format_datetime) }}
