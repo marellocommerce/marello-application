@@ -141,7 +141,6 @@ services:
         class: 'Marello\Bundle\SalesBundle\EventListener\Doctrine\SalesChannelGroupInventoryRebalanceListener'
         arguments:
             - '@oro_message_queue.client.message_producer'
-            - '@oro_security.acl_helper'
         lazy:  true
         tags:
             - { name: doctrine.event_listener, event: onFlush }
@@ -197,3 +196,13 @@ services:
             - [setClassName, ['Marello\Bundle\SalesBundle\Entity\SalesChannelGroup']]
         tags:
             - { name: security.voter }
+
+    marello_sales.async.rebalance_saleschannel_group_processor:
+        class: 'Marello\Bundle\SalesBundle\Async\RebalanceSalesChannelGroupProcessor'
+        arguments:
+            - '@logger'
+            - '@doctrine.orm.entity_manager'
+            - '@oro_message_queue.client.message_producer'
+            - '@oro_security.acl_helper'
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }

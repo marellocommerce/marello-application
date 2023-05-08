@@ -80,7 +80,7 @@ class BalancedInventoryLevel implements OrganizationAwareInterface, BalancedInve
 
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\SalesBundle\Entity\SalesChannelGroup")
-     * @ORM\JoinColumn(name="channel_group_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="channel_group_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={
