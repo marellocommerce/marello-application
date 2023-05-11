@@ -53,6 +53,7 @@ system_configuration:
                 label: marello.pdf.config.fields.logo.label
                 tooltip: marello.pdf.config.fields.logo.tooltip
                 fileConstraints:
+                    - Oro\Bundle\AttachmentBundle\Validator\Constraints\FileConstraintFromSystemConfig: ~
                     - Image: ~
 
         marello_pdf.logo_width:
