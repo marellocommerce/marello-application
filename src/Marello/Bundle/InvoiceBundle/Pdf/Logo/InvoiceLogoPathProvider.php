@@ -112,7 +112,7 @@ class InvoiceLogoPathProvider
         }
 
         if ($absolute) {
-            return $path = $absolutePath;
+            return $absolutePath;
         }
 
         return $path;
