@@ -21,7 +21,8 @@ class SkuIncrementor implements SkuIncrementorInterface
         protected DoctrineHelper $doctrineHelper,
         protected string $productClass,
         protected AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * {@inheritdoc}

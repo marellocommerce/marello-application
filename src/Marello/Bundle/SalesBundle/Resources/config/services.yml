@@ -122,7 +122,7 @@ services:
     marello_sales.event_listener.doctrine.sales_channel:
         class: 'Marello\Bundle\SalesBundle\EventListener\Doctrine\SalesChannelListener'
         arguments:
-            - '%installed%'
+            - '@oro_distribution.handler.application_status'
             - '@oro_security.acl_helper'
         tags:
             - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\SalesBundle\Entity\SalesChannel', event: prePersist }
@@ -130,7 +130,7 @@ services:
     marello_sales.event_listener.doctrine.sales_channel_group:
         class: 'Marello\Bundle\SalesBundle\EventListener\Doctrine\SalesChannelGroupListener'
         arguments:
-            - '%installed%'
+            - '@oro_distribution.handler.application_status'
             - '@session'
             - '@oro_security.acl_helper'
         tags:

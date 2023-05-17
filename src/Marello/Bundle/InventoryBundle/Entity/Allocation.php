@@ -7,11 +7,13 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\EntityExtendBundle\Entity\AbstractEnumValue;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use Marello\Bundle\OrderBundle\Entity\OrderAwareInterface;
 use Marello\Bundle\InventoryBundle\Model\ExtendAllocation;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
@@ -36,6 +38,9 @@ use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
  *          },
  *          "dataaudit"={
  *              "auditable"=true
+ *          },
+ *          "grid"={
+ *              "context"="marello-allocation-for-context-grid"
  *          }
  *      }
  * )
@@ -44,7 +49,8 @@ use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
  */
 class Allocation extends ExtendAllocation implements
     DerivedPropertyAwareInterface,
-    OrganizationAwareInterface
+    OrganizationAwareInterface,
+    OrderAwareInterface
 {
     use EntityCreatedUpdatedAtTrait;
     use AuditableOrganizationAwareTrait;
@@ -61,7 +67,11 @@ class Allocation extends ExtendAllocation implements
     /**
      * @var Collection|AllocationItem[]
      *
-     * @ORM\OneToMany(targetEntity="Marello\Bundle\InventoryBundle\Entity\AllocationItem", mappedBy="allocation", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OneToMany(
+     *     targetEntity="Marello\Bundle\InventoryBundle\Entity\AllocationItem",
+     *     mappedBy="allocation",
+     *     cascade={"persist"}, orphanRemoval=true
+     * )
      * @ORM\OrderBy({"id" = "ASC"})
      * @Oro\ConfigField(
      *      defaultValues={
@@ -286,7 +296,7 @@ class Allocation extends ExtendAllocation implements
     /**
      * @return Order
      */
-    public function getOrder()
+    public function getOrder(): Order
     {
         return $this->order;
     }
@@ -296,7 +306,7 @@ class Allocation extends ExtendAllocation implements
      *
      * @return $this
      */
-    public function setOrder(Order $order)
+    public function setOrder(Order $order): self
     {
         $this->order = $order;
 
@@ -346,7 +356,7 @@ class Allocation extends ExtendAllocation implements
      * @param Allocation|null $parent
      * @return $this
      */
-    public function setParent(Allocation $parent = null)
+    public function setParent(Allocation $parent = null): self
     {
         $this->parent = $parent;
 
@@ -365,7 +375,7 @@ class Allocation extends ExtendAllocation implements
      * @param Allocation $child
      * @return $this
      */
-    public function addChild(Allocation $child)
+    public function addChild(Allocation $child): self
     {
         if (!$this->hasChild($child)) {
             $child->setParent($this);
@@ -380,7 +390,7 @@ class Allocation extends ExtendAllocation implements
      *
      * @return $this
      */
-    public function removeChild(Allocation $child)
+    public function removeChild(Allocation $child): self
     {
         if ($this->hasChild($child)) {
             $child->setParent(null);
@@ -458,7 +468,7 @@ class Allocation extends ExtendAllocation implements
     /**
      * @return \Extend\Entity\EV_Marello_Allocation_State
      */
-    public function getState(): \Extend\Entity\EV_Marello_Allocation_State
+    public function getState(): AbstractEnumValue
     {
         return $this->state;
     }

@@ -1,0 +1,11 @@
+{% set start = record.getValue('specialPriceStart') %}
+{% set end = record.getValue('specialPriceEnd') %}
+{% if start is not empty %}
+    <span><b>{{ 'marello.pricing.productchannelprice.start_date.label'|trans ~ ': '}}</b></span>{{ start|oro_format_datetime }}
+{% endif %}
+{% if start is not empty and end is not empty %}
+    <br/>
+{% endif %}
+{% if end is not empty %}
+    <span><b>{{ 'marello.pricing.productchannelprice.end_date.label'|trans ~ ': '}}</b></span>{{ end|oro_format_datetime }}
+{% endif %}

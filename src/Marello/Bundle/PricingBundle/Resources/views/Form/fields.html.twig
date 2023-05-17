@@ -20,6 +20,13 @@
         </div>
         {{ form_errors(form.specialPrice) }}
     </td>
+    <td class="pricing-line-item-special-date">
+        <div class="fields-row">
+            {{ form_row(form.specialPrice.startDate, {'label': 'marello.pricing.productprice.start_date.label'|trans }) }}
+            {{ form_errors(form.specialPrice.startDate) }}
+            {{ form_row(form.specialPrice.endDate, {'label': 'marello.pricing.productprice.end_date.label'|trans }) }}
+        </div>
+    </td>
     <td class="pricing-line-item-msrp-value">
         <div class="fields-row">
             {{ form_widget(form.msrpPrice.value) }}
@@ -43,7 +50,7 @@
         {% set allow_add_after = widget.parent.vars.allow_add_after %}
     {% endif %}
     <tr data-content="{{ name }}"
-        class="marello-line-item display-values"
+        class="marello-line-item"
         data-page-component-module="oroui/js/app/components/view-component"
         data-page-component-options="{{ {view: 'marellolayout/js/app/views/abstract-item-view'}|json_encode }}"
         data-layout="separate">
@@ -70,6 +77,7 @@
                         <th class="pricing-line-item-currency"><span>{{ 'marello.pricing.productprice.currency.label'|trans }}</span></th>
                         <th class="pricing-line-item-default-value"><span>{{ marello_pricing_vat_aware_label('marello.pricing.assembledpricelist.default_price.label') }}</span></th>
                         <th class="pricing-line-item-special-value"><span>{{ marello_pricing_vat_aware_label('marello.pricing.assembledpricelist.special_price.label') }}</span></th>
+                        <th class="pricing-line-item-special-date"><span>{{ 'marello.pricing.assembledpricelist.special_price.date.label'|trans }}</span></th>
                         <th class="pricing-line-item-msrp-value"><span>{{ marello_pricing_vat_aware_label('marello.pricing.assembledpricelist.msrp_price.label') }}</span></th>
                     </tr>
                     </thead>
@@ -119,6 +127,13 @@
         </div>
         {{ form_errors(form.specialPrice.value) }}
     </td>
+    <td class="pricing-line-item-special-date">
+        <div class="fields-row">
+            {{ form_row(form.specialPrice.startDate, { 'label' : 'marello.pricing.productchannelprice.start_date.label'|trans }) }}
+            {{ form_errors(form.specialPrice.startDate) }}
+            {{ form_row(form.specialPrice.endDate, { 'label' : 'marello.pricing.productchannelprice.end_date.label'|trans }) }}
+        </div>
+    </td>
 {% endblock %}
 
 {% macro marello_assembled_channel_price_list_collection_item_prototype(widget, attributes) %}
@@ -136,7 +151,7 @@
         {% set allow_add_after = widget.parent.vars.allow_add_after %}
     {% endif %}
     <tr data-content="{{ name }}"
-        class="marello-line-item display-values"
+        class="marello-line-item"
         data-page-component-module="oroui/js/app/components/view-component"
         data-page-component-options="{{ {view: 'marellopricing/js/app/views/channel-pricing-item-view'}|json_encode }}"
         data-layout="separate">
@@ -172,6 +187,7 @@
                         <th class="pricing-line-item-currency"><span>{{ 'marello.pricing.productchannelprice.currency.label'|trans }}</span></th>
                         <th class="pricing-line-item-default-value"><span>{{ marello_pricing_vat_aware_label('marello.pricing.assembledchannelpricelist.default_price.label') }}</span></th>
                         <th class="pricing-line-item-special-value"><span>{{ marello_pricing_vat_aware_label('marello.pricing.assembledchannelpricelist.special_price.label') }}</span></th>
+                        <th class="pricing-line-item-special-date"><span>{{ 'marello.pricing.assembledchannelpricelist.special_price.date.label'|trans }}</span></th>
                         {% if form.vars.allow_delete %}
                             <th class="pricing-row-item-actions"></th>
                         {% endif %}

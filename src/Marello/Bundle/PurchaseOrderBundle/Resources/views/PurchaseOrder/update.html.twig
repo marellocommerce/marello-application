@@ -46,20 +46,10 @@
             'title': 'General'|trans,
             'class': 'active',
             'subblocks': [{
-                'title': 'marello.supplier.entity_label'|trans,
                 'data': [
                     form_row(form.supplier),
-                ]
-                }
-            ]
-        },
-        {
-            'title': 'marello.purchaseorder.billing_and_shipping.label'|trans,
-            'class': '',
-            'subblocks': [{
-                'title': '',
-                'data': [
-                    form_row(form.dueDate),
+                    form_row(form.purchaseOrderReference),
+                    form_row(form.dueDate)
                 ]
             }]
         },

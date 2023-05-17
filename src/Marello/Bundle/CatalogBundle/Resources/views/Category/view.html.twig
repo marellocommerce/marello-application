@@ -41,13 +41,7 @@
     }] %}
 
     {% set categoryProductsWidget %}
-        <div class="widget-content">
-            <div class="row-fluid form-horizontal">
-                <div class="responsive-block">
-                    {{ dataGrid.renderGrid('marello-category-products-grid', {'products': entity.products}) }}
-                </div>
-            </div>
-        </div>
+        {{ dataGrid.renderGrid('marello-category-products-grid', {'products': entity.products}) }}
     {% endset %}
 
     {% set dataBlocks = dataBlocks|merge([{

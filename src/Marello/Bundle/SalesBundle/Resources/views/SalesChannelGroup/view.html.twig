@@ -30,13 +30,7 @@
         </div>
     {% endset %}
     {% set sales_channels %}
-        <div class="widget-content">
-            <div class="row-fluid form-horizontal">
-                <div class="responsive-block">
-                    {{ dataGrid.renderGrid('marello-group-sales-channels', {id: entity.id}) }}
-                </div>
-            </div>
-        </div>
+        {{ dataGrid.renderGrid('marello-group-sales-channels', {id: entity.id}) }}
     {% endset %}
     {% set generalSubblocks = generalSubblocks|merge([{'data' : [generalInformation] }]) %}
 

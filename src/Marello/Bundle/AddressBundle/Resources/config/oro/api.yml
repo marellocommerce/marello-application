@@ -14,6 +14,7 @@ api:
 
     entities:
         Marello\Bundle\AddressBundle\Entity\MarelloAddress:
+            documentation_resource: '@MarelloAddressBundle/Resources/doc/api/address.md'
             fields:
                 createdAt:
                     exclude: true

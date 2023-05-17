@@ -108,6 +108,15 @@ workflows:
                           attribute: $allocation.status
             complete_definition:
                 post_actions:
+                    - '@call_service_method':
+                        service: marello_order.factory.shipping_context
+                        method: create
+                        method_parameters: [$allocation.order]
+                        attribute: $.result.orderShippingContext
+                    - '@marello_shipment_create':
+                        context: $.result.orderShippingContext
+                        method: $allocation.order.shippingMethod
+                        methodType: $allocation.order.shippingMethodType
                     # parent allocation and children are empty, so we need to send email to customer with 'partial' shipped email
                     - '@marello_notification_send':
                         conditions:
@@ -118,6 +127,7 @@ workflows:
                         entity: $allocation
                         recipient: $allocation.order.customer
                         template: marello_order_shipped_allocation_confirmation
+                        additionalContexts: [$allocation.order]
                     # parent allocation is empty, so we need to send email to customer with 'full' shipped email
                     - '@marello_notification_send':
                         conditions:
@@ -128,6 +138,7 @@ workflows:
                         entity: $allocation.order
                         recipient: $allocation.order.customer
                         template: marello_order_shipped_confirmation
+                        additionalContexts: [$allocation.order]
                     # parent allocation is not empty, so we need to send email to parent allocation warehouse to inform
                     # them a shipment is underway.
                     - '@marello_notification_send':
@@ -138,18 +149,26 @@ workflows:
                         entity: $allocation
                         recipient: $allocation.parent.warehouse
                         template: marello_warehouse_allocation
+                        additionalContexts: [$allocation.order]
                     - '@tree':
-                        conditions:
-                            '@equal': [$.result.value.quantityConfirmed, $.result.value.orderItem.quantity]
                         actions:
                             - '@foreach':
                                 array: $allocation.items
                                 value: $.result.value
                                 actions:
-                                    - '@request_enum_entity':
-                                        enum_code: marello_item_status
-                                        identifier: 'shipped'
-                                        attribute: $.result.value.orderItem.status
+                                    - '@call_service_method':
+                                          service: marello_inventory.model.inventory_level_totals_calculator
+                                          method: getTotalAllocationQtyConfirmed
+                                          method_parameters: [$.result.value]
+                                          attribute: $.result.totalQtyConfirmed
+                                    - '@tree':
+                                        conditions:
+                                            '@equal': [$.result.totalQtyConfirmed, $.result.value.orderItem.quantity]
+                                        actions:
+                                            - '@request_enum_entity':
+                                                enum_code: marello_item_status
+                                                identifier: 'complete'
+                                                attribute: $.result.value.orderItem.status
                     -   '@extendable':
                             events: [ extendable_action.allocation_complete ]
             rejected_definition:

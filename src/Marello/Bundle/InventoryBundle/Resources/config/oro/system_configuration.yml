@@ -19,6 +19,7 @@ system_configuration:
             icon: fa-cog
         inventory_allocation_general:
             title: marello.inventory.system_configuration.groups.inventory.allocation.general.label
+
     fields:
         marello_inventory.balance_threshold_percentage:
             data_type: percent

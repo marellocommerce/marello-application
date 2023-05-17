@@ -26,7 +26,8 @@ class ProductExtension extends AbstractExtension
         protected ChannelProvider $channelProvider,
         protected CategoriesIdsProvider $categoriesIdsProvider,
         protected AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * Returns the name of the extension.
