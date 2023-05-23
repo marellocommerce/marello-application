@@ -59,7 +59,8 @@ class InventoryLevelLogGridListenerTest extends TestCase
         $addedColumn = [
             'warehouseLabel' => [
                 'label' => 'marello.inventory.inventorylevel.warehouse.label',
-                'frontend_type' => 'string'
+                'frontend_type' => 'string',
+                'order' => 25
             ]
         ];
 
@@ -96,7 +97,7 @@ class InventoryLevelLogGridListenerTest extends TestCase
             ->method('offsetGetOr')
             ->with('columns', [])
             ->willReturn($columns);
-        $config->expects(static::never())
+        $config->expects(static::once())
             ->method('offsetSet');
 
         /** @var BuildBefore|\PHPUnit\Framework\MockObject\MockObject $event **/
