@@ -1,6 +1,7 @@
 {% extends '@OroUI/actions/view.html.twig' %}
 {% import '@OroUI/macros.html.twig' as UI %}
 {% import '@OroDataGrid/macros.html.twig' as dataGrid %}
+{% import '@OroEntityConfig/macros.html.twig' as entityConfig %}
 
 {% oro_title_set({params : {"%id%": entity.id }}) %}
 
@@ -76,14 +77,17 @@
         {
             'title': 'marello.supplier.datablock.general'|trans,
             'class': 'active',
+            'priority': 10,
             'subblocks': generalSubblocks
         },
         {
             'title': 'marello.supplier.datablock.address'|trans,
+            'priority': 20,
             'subblocks': addressSubblocks
         },
         {
             'title': 'marello.supplier.datablock.linked_products'|trans,
+            'priority': 30,
             'subblocks': [{
                 'title' : null,
                 'useSpan': false,
@@ -93,6 +97,22 @@
             }]
         }
     ] %}
+
+    {% set additionalData %}
+        {{ entityConfig.renderDynamicFields(entity) }}
+    {% endset %}
+
+    {% set dataBlocks = dataBlocks|merge([{
+        'title' : 'marello.supplier.sections.additional'|trans,
+        'priority' : 40,
+        'subblocks': [{
+            'title' : null,
+            'useSpan': false,
+            'data' : [
+                additionalData
+            ]
+        }]
+    }]) %}
 
     {%- set additionalInfoPlaceholders = marello_get_additional_placeholder_data('supplier') -%}
     {% for additionalInfo in additionalInfoPlaceholders %}
@@ -105,6 +125,7 @@
                 {
                     'title': additionalInfo.label|trans,
                     'class': 'active',
+                    'priority': 50,
                     'subblocks': [
                         { 'data': [supplierAdditionalInfoSection] }
                     ]
