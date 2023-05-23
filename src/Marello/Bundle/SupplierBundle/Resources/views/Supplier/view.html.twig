@@ -59,6 +59,11 @@
     {% endset %}
     {% set generalSubblocks = generalSubblocks|merge([{'data' : [generalInformation] }]) %}
 
+    {% set additionalData %}
+        {{ entityConfig.renderDynamicFields(entity) }}
+    {% endset %}
+    {% set generalSubblocks = generalSubblocks|merge([{'data' : [additionalData] }]) %}
+
     {% set addressSubblocks = [] %}
     {% set addressWidget %}
         {{ oro_widget_render({
