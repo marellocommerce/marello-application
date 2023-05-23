@@ -51,7 +51,8 @@ class PurchaseOrderWorkflowCompletedListener
         private ShippingMethodProviderInterface $shippingMethodProvider,
         private EventDispatcherInterface $eventDispatcher,
         protected ServiceLink $emailSendProcessorLink
-    ) {}
+    ) {
+    }
 
     /**
      * @param InventoryUpdateEvent $event
