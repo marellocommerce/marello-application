@@ -36,8 +36,12 @@ marello:
         invoice_type.label:         Invoice Type
         pdf:
             download.label:         Download PDF
-            filename.label:         "%invoiceType%_%entityNumber%"
-
+            filename.label:         "%invoiceType%_%entityNumber%.pdf"
+        action:
+            send_invoice_email:
+                label: Email Invoice
+                success: "Email Invoice was successfully sent to %%email%%"
+                error: You can perform the action. Please, provide the sender's name in the configuration
 
         creditmemo:
             id.label:                   Id

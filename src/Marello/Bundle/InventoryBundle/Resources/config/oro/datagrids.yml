@@ -184,6 +184,7 @@ datagrids:
             toolbarOptions:
                 pageSize:
                     default_per_page: 10
+            export: true
 
     marello-inventory-log-extended:
         extends: marello-inventory-log
@@ -420,6 +421,7 @@ datagrids:
                     - parent.allocationNumber as parentAllocation
                     - sourceEntity.allocationNumber as allocationSource
                     - wh.label as warehouse
+                    - IDENTITY(allocation.allocationContext) as allocationContextId
                     - IDENTITY(allocation.state) as allocationStateId
                     - IDENTITY(allocation.status) as allocationStatusId
                 from:
@@ -454,6 +456,10 @@ datagrids:
             warehouse:
                 label:          marello.inventory.allocation.warehouse.label
                 frontend_type:  string
+            allocationContextId:
+                label:          marello.inventory.allocation.allocationContext.label
+                choices:        "@oro_entity_extend.enum_value_provider->getEnumChoicesByCode('marello_allocation_allocationcontext')"
+                frontend_type:  select
             allocationStateId:
                 label:          marello.inventory.allocation.state.label
                 choices:        "@oro_entity_extend.enum_value_provider->getEnumChoicesByCode('marello_allocation_state')"
@@ -485,6 +491,10 @@ datagrids:
                 warehouse:
                     type:       string
                     data_name:  warehouse
+                allocationContextId:
+                    type:      enum
+                    data_name: allocationContextId
+                    enum_code: marello_allocation_allocationcontext
                 allocationStateId:
                     type:      enum
                     data_name: allocationStateId
