@@ -51,7 +51,14 @@
             'subblocks': [{
                 'title': '',
                 'data': [
-                    form_rest(form)
+                    form_row(form.name),
+                    form_row(form.code),
+                    form_row(form.email),
+                    form_row(form.priority),
+                    form_row(form.canDropship),
+                    form_row(form.isActive),
+                    form_row(form.currency),
+                    form_row(form.poSendBy)
                 ]
             }]
         },
@@ -66,6 +73,25 @@
             }]
         },
     ] %}
+
+    {% set additionalData = [] %}
+    {% for child in form.children %}
+        {% if child.vars.extra_field is defined and child.vars.extra_field %}
+            {% set additionalData = additionalData|merge([form_row(child)]) %}
+        {% endif %}
+    {% endfor %}
+
+    {% if additionalData is not empty %}
+        {% set dataBlocks = dataBlocks|merge([{
+            'title': 'marello.supplier.sections.additional'|trans,
+            'subblocks': [{
+                'title': '',
+                'useSpan': false,
+                'data' : additionalData
+            }]
+        }]) %}
+    {% endif %}
+
     {% set data = {
         'formErrors': form_errors(form)? form_errors(form) : null,
         'dataBlocks': dataBlocks,
