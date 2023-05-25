@@ -41,7 +41,7 @@ marello:
             send_invoice_email:
                 label: Email Invoice
                 success: "Email Invoice was successfully sent to %%email%%"
-                error: You can perform the action. Please, provide the sender's name in the configuration
+                error: You cannot perform the action. Please, provide the sender's email in the configuration (Marello -> Documents -> Workflow)
 
         creditmemo:
             id.label:                   Id
