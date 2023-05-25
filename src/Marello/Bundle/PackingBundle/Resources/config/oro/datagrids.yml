@@ -157,6 +157,7 @@ datagrids:
             updatedAt:
                 label:            oro.ui.updated_at
                 frontend_type:    datetime
+                renderable: false
         sorters:
             columns:
                 productSku:
