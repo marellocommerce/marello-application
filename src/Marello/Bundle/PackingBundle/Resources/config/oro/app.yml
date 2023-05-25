@@ -1,6 +1,6 @@
 liip_imagine:
     filter_sets:
-        invoice_logo:
+        pdf_logo:
             quality: 100
             filters:
                 relative_resize:

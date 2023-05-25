@@ -16,6 +16,16 @@
     {{ parent() }}
 {% endblock pageHeader %}
 
+{% block navButtons %}
+    {% if is_granted('VIEW', entity) %}
+        <div class="pull-left btn-group icons-holder">
+            <a href="{{ path('marello_pdf_download', {'entity': constant('Marello\\Bundle\\PackingBundle\\Pdf\\Request\\PackingSlipPdfRequestHandler::ENTITY_ALIAS'), 'id': entity.id}) }}" target="_blank" class="btn operation-button action-button">
+                <i class="fa fa-download"></i> {{ 'marello.packing.pdf.download.label'|trans }}
+            </a>
+        </div>
+    {% endif %}
+{% endblock %}
+
 {% block content_data %}
     {% set id = 'marello-packingslip-view' %}
     {% set generalSubblocks = [] %}

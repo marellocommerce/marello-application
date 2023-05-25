@@ -1,0 +1,295 @@
+{% use '@MarelloPdf/Download/util.html.twig' %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ 'marello.pdf.packingslip.entity.label'|trans({}, 'pdf', language) }} {{ entity }}</title>
+        <style type="text/css">
+            .clearfix:after {
+                content: "";
+                display: table;
+                clear: both;
+            }
+            body {
+                font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+                font-weight: 300;
+                font-size: 11px;
+                line-height: 1.5em;
+                background-color: #fff;
+            }
+            .company-logo {
+                text-align: right;
+                margin-bottom: 60px;
+            }
+            .info {
+                padding-top: 5px;
+            }
+            .company-info {
+                width: 40%;
+                text-align: right;
+                float: right;
+                margin-top: 25px;
+            }
+            .company-info a {
+                text-decoration: none;
+                color: #000;
+            }
+            .customer-info {
+                width: 60%;
+                float: left;
+                text-align: left;
+                margin-top: 0px;
+            }
+            .packing-slip-dl .dt,
+            .customer-vat-dl .dt {
+                width: 40%;
+                margin: 0;
+                float: left;
+            }
+            .packing-slip-dl .dd,
+            .customer-vat-dl .dd {
+                width: 60%;
+                margin: 0;
+                float: left;
+            }
+            .packing-slip-dl {
+                margin-top: 30px;
+                margin-bottom: 25px;
+            }
+            .customer-vat-dl {
+                margin-bottom: 20px;
+                margin-top: 15px;
+            }
+            table.packing-slip-lines {
+                min-height: 600px;
+            }
+            table.packing-slip-lines thead,
+            table.packing-slip-lines thead th {
+                background-color: #000;
+                color: #fff;
+                text-align: left;
+                font-weight: 400;
+            }
+            table.packing-slip-lines td {
+                padding-top: 3px;
+                padding-bottom: 3px;
+            }
+            table.packing-slip-lines td.times {
+                width: 20px;
+                padding-left: 0;
+                padding-right: 0;
+                margin-left: 0;
+                margin-right: 0;
+            }
+            table.packing-slip-lines td.quantity {
+                width: 30px;
+                padding-right: 0;
+                margin-right: 0;
+            }
+            table.packing-slip-lines td.price {
+                width: 80px;
+                padding-left: 0;
+                margin-left: 0;
+            }
+            table.packing-slip-lines th.amount,
+            table.packing-slip-totals td {
+                width: 90px;
+            }
+            table.packing-slip-lines tbody,
+            table.packing-slip-lines tbody td {
+                background-color: #f4f4f4;
+            }
+            table.packing-slip-lines .description {
+                font-style: italic;
+            }
+            table.packing-slip-lines tr.line-bottom,
+            table.packing-slip-lines tr.line-bottom td {
+                border-bottom: 1px solid #fff;
+            }
+            table.packing-slip-totals th {
+                text-align: right;
+                font-weight: normal;
+            }
+            table.packing-slip-lines td.total,
+            table.packing-slip-totals .packing-slip-total,
+            table.packing-slip-totals .packing-slip-total th,
+            table.packing-slip-totals .packing-slip-total td {
+                font-weight: bold;
+            }
+            .r {
+                text-align: right;
+            }
+            .c {
+                text-align: center;
+            }
+            table {
+                width: 100%;
+                border-spacing: 0;
+                border-collapse: collapse;
+            }
+            table th, table td {
+                vertical-align : top;
+                padding: 6px 12px;
+            }
+            p.company-phone, p.company-email {
+                margin-top: 0;
+            }
+            p.company-phone, p.company-address {
+                margin-bottom: 0;
+            }
+            .customer-address {
+                margin-top: 40px;
+                font-size: 13px;
+            }
+            table.packing-slip-totals {
+                border-right: 2px solid #f4f4f4;
+            }
+            table.packing-slip-totals th,
+            table.packing-slip-totals td {
+                padding-top: 3px;
+                padding-bottom: 3px;
+            }
+            table.packing-slip-totals th:first-child {
+                margin-top: 5px;
+            }
+            .page-number {
+                text-align: right;
+                font-size: 11px;
+            }
+            @page :first {
+                header: html_default_header;
+                margin-top: 140px;
+                margin-header: 60px;
+            }
+            @page {
+                sheet-size: {{ paper_size }};
+                footer: html_default_footer;
+                margin-top: 60px;
+                margin-bottom: 60px;
+                margin-footer: 50px;
+            }
+        </style>
+    </head>
+    <body>
+        <htmlpageheader name="default_header">
+            {{ block('header') }}
+        </htmlpageheader>
+        <htmlpagefooter name="default_footer">
+            {{ block('footer') }}
+        </htmlpagefooter>
+        <div class="info clearfix">
+            <div class="company-info">
+
+                {# Company details #}
+                <div class="company-details">
+                    <p class="company-address">
+                        {{ company_address|nl2br }}
+                    </p>
+                    <p class="company-phone">
+                        <a href="tel:{{ company_phone }}">{{ company_phone }}</a>
+                    </p>
+                    <p class="company-email">
+                        <a href="mailto:{{ company_email }}">{{ company_email }}</a>
+                    </p>
+                    <p class="company-business">
+                        {{ company_coc|nl2br }}
+                    </p>
+                </div>
+            </div>
+
+            <div class="customer-info">
+                <p class="customer-address">
+                    {% set address = entity.billingAddress %}
+                    {% set name = address|oro_format_name(locale) %}
+                    {% if name is empty %}
+                        &nbsp;<br>
+                    {% endif %}
+                    {% if address.street2 is empty %}
+                        &nbsp;<br>
+                    {% endif %}
+                    {% if address.organization is not empty %}
+                        {{ address.organization }}<br>
+                    {% else %}
+                        &nbsp;<br>
+                    {% endif %}
+                    {% if address.company is not empty %}
+                        {{ address.company }}<br>
+                    {% endif %}
+                    {% if name is not empty %}
+                        {{ name }}<br>
+                    {% endif %}
+                    {{ address.street }}<br>
+                    {% if address.street2 is not empty %}
+                        {{ address.street2 }}<br>
+                    {% endif %}
+                    {{ address.postalCode }} {{ address.city }}<br>
+                    {{ ('country.' ~ address.country.iso2code)|trans({}, 'entities', language) }}
+                </p>
+
+                <div class="packing-slip-details">
+                    <div class="packing-slip-dl clearfix">
+                        <div class="dt">{{ 'marello.pdf.packingslip.created_at.label'|trans({}, 'pdf', language) }}:</div>
+                        <div class="dd">{{ entity.createdAt|date('d-m-Y') }}</div>
+                        <div class="dt">{{ 'marello.pdf.packingslip.packing_slip_number.label'|trans({}, 'pdf', language) }}:</div>
+                        <div class="dd">{% if entity.packingSlipNumber is not empty %}{{ entity.packingSlipNumber }}{% else %}&nbsp;{% endif %}</div>
+                        {% if entity.customer.company and entity.customer.company.companyNumber %}
+                            <div class="dt">{{ 'marello.customer.company.pdf.company_number.label'|trans({}, 'pdf', language) }}:</div>
+                            <div class="dd">{{ entity.customer.company.companyNumber }}</div>
+                        {% endif %}
+                        {% if entity.customer.company and entity.customer.company.taxIdentificationNumber %}
+                            <div class="dt">{{ 'marello.customer.company.pdf.tax_identification_number.label'|trans({}, 'pdf', language) }}:</div>
+                            <div class="dd">{{ entity.customer.company.taxIdentificationNumber }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="contents clearfix">
+            {% set tables = get_document_tables(entity) %}
+            {% for table in tables %}
+                <table class="packing-slip-lines" autosize="0">
+                    <thead>
+                        <tr>
+                            <th>{{ 'marello.pdf.packingslip.product_sku.label'|trans({}, 'pdf', language) }}</th>
+                            <th>{{ 'marello.pdf.packingslip.product_name.label'|trans({}, 'pdf', language) }}</th>
+                            <th class="quantity c">{{ 'marello.pdf.packingslip.quantity.label'|trans({}, 'pdf', language) }}</th>
+                            <th class="unit c">{{ 'marello.pdf.packingslip.product_unit.label'|trans({}, 'pdf', language) }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {%- for invoiceLine in table.lines %}
+                        {% for line in invoiceLine.getDisplayLines() %}
+                            <tr{% if loop.last and not invoiceLine.isEmpty() %} class="line-bottom"{% endif %}>
+                                <td class="productSku">
+                                    {{- line['productSku'] -}}
+                                </td>
+                                <td class="productName">
+                                    {{- line['productName'] -}}
+                                </td>
+                                <td class="quantity c">
+                                    {%- if line['quantity'] is not empty -%}
+                                        {{- line['quantity'] -}}
+                                    {%- else -%}
+                                        &nbsp;
+                                    {%- endif -%}
+                                </td>
+                                <td class="unit c">
+                                    {%- if line['productUnit'] is not empty -%}
+                                        {{- line['productUnit'].name -}}
+                                    {%- else -%}
+
+                                    {%- endif -%}
+                                </td>
+                            </tr>
+                        {% endfor -%}
+                    {% endfor -%}
+                    </tbody>
+                </table>
+
+                {% if not loop.last %}
+                    <pagebreak/>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </body>
+</html>
