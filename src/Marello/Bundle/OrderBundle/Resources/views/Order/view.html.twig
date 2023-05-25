@@ -140,7 +140,12 @@
                     {{ UI.renderProperty('marello.order.shipping_method.label'|trans, marello_shipping_method_with_type_label(entity.shippingMethod, entity.shippingMethodType)|trans) }}
                     {{ UI.renderProperty('marello.order.shipping_amount_incl_tax.label'|trans, entity.shippingAmountInclTax|oro_format_currency({'currency':entity.currency})) }}
                     {{ UI.renderHtmlProperty('marello.order.shipping_method_details.label'|trans, entity.shippingMethodDetails|nl2br) }}
-                    {{ UI.renderProperty('marello.shipping.shipment.shipping_service.label'|trans, entity.shipment.shippingService) }}
+                    {{ UI.renderProperty(
+                        'marello.shipping.shipment.shipping_service.label'|trans,
+                        entity.shipment and entity.shipment.shippingService
+                            ? entity.shipment.shippingService
+                            : 'oro.ui.empty'|trans
+                    ) }}
                     {{ UI.renderHtmlProperty(
                         'marello.shipping.shipment.shipping_label.label'|trans,
                         entity.shipment and entity.shipment.base64EncodedLabel
