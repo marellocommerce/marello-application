@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class OrderItemType extends AbstractType
 {
@@ -92,6 +93,7 @@ class OrderItemType extends AbstractType
                     'readonly' => true
                 ]
             ])
+            ->add('allocationExclusion', CheckboxType::class, [])
         ;
 
         $builder->get('taxCode')->addModelTransformer($this->taxCodeModelTransformer);
