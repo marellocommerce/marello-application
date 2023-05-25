@@ -2,6 +2,3 @@ liip_imagine:
     filter_sets:
         pdf_logo:
             quality: 100
-            filters:
-                relative_resize:
-                    heighten: 59
