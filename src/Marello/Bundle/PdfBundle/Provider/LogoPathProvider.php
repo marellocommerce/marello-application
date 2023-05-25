@@ -112,7 +112,7 @@ class LogoPathProvider
         }
 
         if ($absolute) {
-            return $path = $absolutePath;
+            return $absolutePath;
         }
 
         return $path;
