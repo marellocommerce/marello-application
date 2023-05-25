@@ -5,6 +5,9 @@ marello:
                 warranty: Warranty in number of days
 
     inventory:
+        allocation:
+            tooltip:
+                context: Context describes what triggered the creation of the Allocation. For example the original Order, a Reshipment or a Re-Allocation.
         system_configuration:
             fields:
                 balance_threshold_percentage: Threshold for when the balancer should rebalance the inventory for a product. This threshold is used in the calculation between the current inventory and the original balanced inventory quantity.
