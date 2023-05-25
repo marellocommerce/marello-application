@@ -190,6 +190,9 @@
                     <p class="company-email">
                         <a href="mailto:{{ company_email }}">{{ company_email }}</a>
                     </p>
+                    <p class="company-bank">
+                        {{ company_bank|nl2br }}
+                    </p>
                     <p class="company-business">
                         {{ company_coc|nl2br }}
                     </p>
@@ -224,7 +227,7 @@
                     {{ address.postalCode }} {{ address.city }}<br>
                     {{ ('country.' ~ address.country.iso2code)|trans({}, 'entities', language) }}
                 </p>
-
+                {% set paymentTerm = marello_get_payment_term_for_customer(entity.customer) %}
                 <div class="packing-slip-details">
                     <div class="packing-slip-dl clearfix">
                         <div class="dt">{{ 'marello.pdf.packingslip.created_at.label'|trans({}, 'pdf', language) }}:</div>
@@ -239,6 +242,10 @@
                             <div class="dt">{{ 'marello.customer.company.pdf.tax_identification_number.label'|trans({}, 'pdf', language) }}:</div>
                             <div class="dd">{{ entity.customer.company.taxIdentificationNumber }}</div>
                         {% endif %}
+                        {% if paymentTerm %}
+                            <div class="dt">{{ 'marello.pdf.packingslip.payment_term.label'|trans({}, 'pdf', language) }}:</div>
+                            <div class="dd">{{ 'marello.payment_term.ui.payment_term.term_days'|trans({'%days%': paymentTerm.term }) }}</div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -249,12 +256,12 @@
             {% for table in tables %}
                 <table class="packing-slip-lines" autosize="0">
                     <thead>
-                        <tr>
-                            <th>{{ 'marello.pdf.packingslip.product_sku.label'|trans({}, 'pdf', language) }}</th>
-                            <th>{{ 'marello.pdf.packingslip.product_name.label'|trans({}, 'pdf', language) }}</th>
-                            <th class="quantity c">{{ 'marello.pdf.packingslip.quantity.label'|trans({}, 'pdf', language) }}</th>
-                            <th class="unit c">{{ 'marello.pdf.packingslip.product_unit.label'|trans({}, 'pdf', language) }}</th>
-                        </tr>
+                    <tr>
+                        <th>{{ 'marello.pdf.packingslip.product_sku.label'|trans({}, 'pdf', language) }}</th>
+                        <th>{{ 'marello.pdf.packingslip.product_name.label'|trans({}, 'pdf', language) }}</th>
+                        <th class="quantity c">{{ 'marello.pdf.packingslip.quantity.label'|trans({}, 'pdf', language) }}</th>
+                        <th class="unit c">{{ 'marello.pdf.packingslip.product_unit.label'|trans({}, 'pdf', language) }}</th>
+                    </tr>
                     </thead>
                     <tbody>
                     {%- for invoiceLine in table.lines %}
