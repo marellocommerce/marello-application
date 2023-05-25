@@ -1,0 +1,11 @@
+marello:
+    pdf:
+        packingslip:
+            entity.label: Packing Slip
+            created_at.label: Created At
+            packing_slip_number.label: Packing Slip Number
+            payment_term.label: Payment Term
+            product_sku.label: SKU
+            product_name.label: Product
+            quantity.label: Quantity
+            product_unit.label: Unit

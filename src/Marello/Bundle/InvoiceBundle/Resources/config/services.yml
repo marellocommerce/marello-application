@@ -87,22 +87,6 @@ services:
             - '%marello_invoice.pdf.document.header_rows%'
             - '%marello_invoice.pdf.document.footer_rows%'
 
-    marello_invoice.pdf.provider.logo_path:
-        class: 'Marello\Bundle\InvoiceBundle\Pdf\Logo\InvoiceLogoPathProvider'
-        arguments:
-            - '@oro_config.manager'
-            - '@oro_entity.doctrine_helper'
-            - '@oro_attachment.manager'
-            - '@oro_attachment.manager.image_resize'
-            - '%kernel.project_dir%'
-
-    marello_invoice.pdf.provider.logo_render_parameter:
-        class: 'Marello\Bundle\InvoiceBundle\Pdf\Logo\InvoiceLogoRenderParameterProvider'
-        arguments:
-            - '@marello_invoice.pdf.provider.logo_path'
-        tags:
-            - { name: marello_pdf.render_parameter_provider }
-
     marello_invoice.pdf.invoice.request_handler:
         class: 'Marello\Bundle\InvoiceBundle\Pdf\Request\InvoicePdfRequestHandler'
         arguments:

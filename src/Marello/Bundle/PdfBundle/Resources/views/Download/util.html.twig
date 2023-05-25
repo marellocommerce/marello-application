@@ -1,7 +1,7 @@
 {% block header %}
 <div class="header">
     <div class="company-logo">
-        {% if logo is not null %}
+        {% if logo is defined and logo is not null %}
             <img src="{{ logo }}" {% if logo_width is not null %} width="{{ logo_width }}"{% endif %}>
         {% endif %}
     </div>

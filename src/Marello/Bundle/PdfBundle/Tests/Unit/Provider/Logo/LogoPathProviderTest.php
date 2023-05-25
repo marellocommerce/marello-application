@@ -1,10 +1,10 @@
 <?php
 
-namespace Marello\Bundle\InvoiceBundle\Tests\Unit\Pdf\Logo;
+namespace Marello\Bundle\PdfBundle\Tests\Unit\Provider\Logo;
 
 use Doctrine\ORM\EntityRepository;
 use Liip\ImagineBundle\Binary\BinaryInterface;
-use Marello\Bundle\InvoiceBundle\Pdf\Logo\InvoiceLogoPathProvider;
+use Marello\Bundle\PdfBundle\Provider\LogoPathProvider;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\AttachmentBundle\Entity\File;
 use Oro\Bundle\AttachmentBundle\Manager\AttachmentManager;
@@ -14,7 +14,7 @@ use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Component\Testing\Unit\EntityTrait;
 use PHPUnit\Framework\TestCase;
 
-class InvoiceLogoPathProviderTest extends TestCase
+class LogoPathProviderTest extends TestCase
 {
     use EntityTrait;
 
@@ -26,9 +26,9 @@ class InvoiceLogoPathProviderTest extends TestCase
      * @param $resizedPath
      * @param $returnPath
      *
-     * @dataProvider getInvoiceLogoProvider
+     * @dataProvider getLogoProvider
      */
-    public function testGetInvoiceLogo(
+    public function testGetLogo(
         $salesChannel,
         $absolute,
         $configId,
@@ -69,7 +69,7 @@ class InvoiceLogoPathProviderTest extends TestCase
         if ($logoEntity !== null) {
             $attachmentManager->expects($this->once())
                 ->method('getFilteredImageUrl')
-                ->with($logoEntity, InvoiceLogoPathProvider::IMAGE_FILTER)
+                ->with($logoEntity, LogoPathProvider::IMAGE_FILTER)
                 ->willReturn($resizedPath)
             ;
 
@@ -79,13 +79,13 @@ class InvoiceLogoPathProviderTest extends TestCase
 
                 $imageResizer->expects($this->once())
                     ->method('applyFilter')
-                    ->with($logoEntity, InvoiceLogoPathProvider::IMAGE_FILTER)
+                    ->with($logoEntity, LogoPathProvider::IMAGE_FILTER)
                     ->willReturn($resizedImage)
                 ;
             }
         }
 
-        $provider = new InvoiceLogoPathProvider(
+        $provider = new LogoPathProvider(
             $configManager,
             $doctrineHelper,
             $attachmentManager,
@@ -93,10 +93,10 @@ class InvoiceLogoPathProviderTest extends TestCase
             __DIR__.'/data'
         );
 
-        $this->assertEquals($returnPath, $provider->getInvoiceLogo($salesChannel, $absolute));
+        $this->assertEquals($returnPath, $provider->getLogo($salesChannel, $absolute));
     }
 
-    public function getInvoiceLogoProvider()
+    public function getLogoProvider()
     {
         $salesChannel = $this->getEntity(SalesChannel::class, ['name' => 'Sales Channel 1', 'code' => 'test-1']);
         $logoEntity = $this->getEntity(File::class, []);
