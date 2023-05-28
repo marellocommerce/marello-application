@@ -10,6 +10,7 @@ marello:
             page_number.label: "Page %pageNumber% of %totalPages%"
             entity.label: "Invoice"
             tax.label: "Tax"
+            shipping_amount_incl_tax.label: "Shipping"
         invoice_line:
             productSku.label: "SKU"
             productName.label: "Product"
