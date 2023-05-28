@@ -55,20 +55,12 @@ class WarehouseGridType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
-        $warehousesOnForm = $form->getData();
-        if (!$warehousesOnForm instanceof Collection) {
-            $warehousesOnForm = new ArrayCollection();
-        }
         $whGroup = null;
         if ($form->getParent()->getData() instanceof WarehouseGroup) {
             $whGroup = ($form->getParent()->getData()) ? $form->getParent()->getData()->getId() : null;
         }
 
-        $view->vars['warehouseCollection'] = $this->getWarehouseCollection(
-            $options,
-            $warehousesOnForm,
-            $whGroup
-        );
+        $view->vars['warehouseCollection'] = $this->getWarehouseCollection($whGroup);
     }
 
     /**
@@ -97,13 +89,7 @@ class WarehouseGridType extends AbstractType
         return 'marello_warehouse_grid';
     }
 
-    /**
-     * @param array $options
-     * @param Collection $warehousesOnForm
-     * @param int|null $groupId
-     * @return array
-     */
-    protected function getWarehouseCollection(array $options, Collection $warehousesOnForm, ?int $groupId): array
+    protected function getWarehouseCollection(?int $groupId): array
     {
         $qb = $this->getWarehouseCollectionQb($groupId);
         $warehouses = $this->aclHelper->apply($qb)->getResult();
@@ -114,7 +100,9 @@ class WarehouseGridType extends AbstractType
                 'id' => $warehouse->getId(),
                 'code' => $warehouse->getCode(),
                 'name' => $warehouse->getLabel(),
-                'isConsolidationWarehouse' => $warehouse->getIsConsolidationWarehouse()
+                'isConsolidationWarehouse' => $warehouse->getIsConsolidationWarehouse(),
+                'isOrderOnDemandLocation' => $warehouse->isOrderOnDemandLocation(),
+                'sortOrder' => $warehouse->getSortOrder(),
             ];
         }
 

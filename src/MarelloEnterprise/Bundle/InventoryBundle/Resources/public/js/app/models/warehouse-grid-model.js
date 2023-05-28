@@ -25,12 +25,26 @@ define(function(require) {
             code: '',
             name: '',
             isConsolidationWarehouse: false,
+            isOrderOnDemandLocation: false,
+            sortOrder: 0,
             onlyAdded: false
         },
 
         getConsolidationWarehouseData: function() {
             const data = [];
             data[this.get('code')] = this.get('isConsolidationWarehouse');
+            return data;
+        },
+
+        getOrderOnDemandLocationData: function() {
+            const data = [];
+            data[this.get('code')] = this.get('isOrderOnDemandLocation');
+            return data;
+        },
+
+        getSortOrderData: function() {
+            const data = [];
+            data[this.get('code')] = this.get('sortOrder');
             return data;
         },
 

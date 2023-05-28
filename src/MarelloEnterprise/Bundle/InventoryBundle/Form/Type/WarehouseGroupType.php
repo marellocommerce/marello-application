@@ -52,6 +52,20 @@ class WarehouseGroupType extends AbstractType
                 [
                     'mapped' => false
                 ]
+            )
+            ->add(
+                'isOrderOnDemandLocation',
+                HiddenType::class,
+                [
+                    'mapped' => false
+                ]
+            )
+            ->add(
+                'sortOrder',
+                HiddenType::class,
+                [
+                    'mapped' => false
+                ]
             )->addEventListener(
                 FormEvents::POST_SUBMIT,
                 [$this, 'postSubmitDataListener']
@@ -63,17 +77,25 @@ class WarehouseGroupType extends AbstractType
      */
     public function postSubmitDataListener(FormEvent $event)
     {
+        $this->assignDataToWarehouses($event, 'isConsolidationWarehouse', 'setIsConsolidationWarehouse', false);
+        $this->assignDataToWarehouses($event, 'isOrderOnDemandLocation', 'setOrderOnDemandLocation', false);
+        $this->assignDataToWarehouses($event, 'sortOrder', 'setSortOrder', 0);
+    }
+
+    private function assignDataToWarehouses(FormEvent $event, string $fieldName, string $setter, $defaultValue): void
+    {
         /** @var WarehouseGroup $warehouseGroup */
         $warehouseGroup = $event->getData();
         $form = $event->getForm();
-        if ($form->has('isConsolidationWarehouse')) {
-            $data = $form->get('isConsolidationWarehouse')->getData();
+
+        if ($form->has($fieldName)) {
+            $data = $form->get($fieldName)->getData();
             $consolidationData = json_decode($data, true);
             foreach ($warehouseGroup->getWarehouses() as $warehouse) {
                 if (array_key_exists($warehouse->getCode(), $consolidationData)) {
-                    $warehouse->setIsConsolidationWarehouse($consolidationData[$warehouse->getCode()]);
+                    $warehouse->$setter($consolidationData[$warehouse->getCode()]);
                 } else {
-                    $warehouse->setIsConsolidationWarehouse(false);
+                    $warehouse->$setter($defaultValue);
                 }
             }
         }

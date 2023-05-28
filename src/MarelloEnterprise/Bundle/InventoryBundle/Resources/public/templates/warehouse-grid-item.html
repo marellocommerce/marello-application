@@ -4,6 +4,12 @@
     <td class="consolidation-warehouse">
         <input type="checkbox" data-name="field__consolidation-warehouse" value="<%- isConsolidationWarehouse %>" <% if (isConsolidationWarehouse) { %> checked="checked"<% } %>>
     </td>
+    <td class="warehouse-sort-order">
+        <input type="number" data-name="field__sort-order-warehouse" value="<%- sortOrder %>">
+    </td>
+    <td class="warehouse-order-on-demand-location">
+        <input type="checkbox" data-name="field__order-on-demand-location-warehouse" value="<%- isOrderOnDemandLocation %>" <% if (isOrderOnDemandLocation) { %> checked="checked"<% } %>>
+    </td>
     <td class="action-cell">
         <a href="#" class="action no-hash delete-button removeRow btn btn-icon btn-square-lighter"
            title="<%- _.__('marelloenterprise.inventory.warehouse.form.grid.delete_action') %>" data-collection-action="delete">
