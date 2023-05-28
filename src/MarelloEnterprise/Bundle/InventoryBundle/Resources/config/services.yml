@@ -155,3 +155,7 @@ services:
     MarelloEnterprise\Bundle\InventoryBundle\EventListener\Datagrid\ExpectedInventoryItemGridListener:
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.marelloenterprise-inventory-expected-inventory-item-grid, method: onBuildAfter }
+
+    MarelloEnterprise\Bundle\InventoryBundle\EventListener\Datagrid\ExpectedInventoryForAllocationItemsGrid:
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-allocation-items-grid, method: onBuildBefore }
