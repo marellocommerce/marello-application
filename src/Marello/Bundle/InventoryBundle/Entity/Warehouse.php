@@ -177,6 +177,34 @@ class Warehouse extends ExtendWarehouse implements EmailHolderInterface
     protected $notifier;
 
     /**
+     * @ORM\Column(name="sort_order", type="integer", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var int
+     */
+    protected $sortOrder;
+
+    /**
+     * @ORM\Column(name="order_on_demand_location", type="boolean", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var bool
+     */
+    protected $orderOnDemandLocation;
+
+    /**
      * @param string $label
      * @param bool   $default
      */
@@ -377,6 +405,44 @@ class Warehouse extends ExtendWarehouse implements EmailHolderInterface
     public function setNotifier(string $notifier = null): self
     {
         $this->notifier = $notifier;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getSortOrder(): ?int
+    {
+        return $this->sortOrder;
+    }
+
+    /**
+     * @param int|null $sortOrder
+     * @return $this
+     */
+    public function setSortOrder(int $sortOrder = null): self
+    {
+        $this->sortOrder = $sortOrder;
+
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function isOrderOnDemandLocation(): ?bool
+    {
+        return $this->orderOnDemandLocation;
+    }
+
+    /**
+     * @param bool|null $orderOnDemandLocation
+     * @return $this
+     */
+    public function setOrderOnDemandLocation(bool $orderOnDemandLocation = null): self
+    {
+        $this->orderOnDemandLocation = $orderOnDemandLocation;
 
         return $this;
     }

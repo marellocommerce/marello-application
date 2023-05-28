@@ -16,6 +16,8 @@ marello:
             owner.label:                Owner
             warehouse_type.label:       Type
             notifier.label:             Notifier
+            sort_order.label:           Sort order
+            order_on_demand_location.label: Order on Demand location
             group.label:                Warehouse Group
             create_group.label:         Create Group
 
@@ -145,6 +147,7 @@ marello:
             total_price.label:              Total Price
             organization.label:             Organization
             delivery_date.label:            Delivery Date
+            order_on_demand_ref.label:      Order on Demand reference
 
         inventorylevellogrecord:
             id.label:                       Id

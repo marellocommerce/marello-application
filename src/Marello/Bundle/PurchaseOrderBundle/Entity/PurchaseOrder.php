@@ -44,8 +44,6 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
     use EntityCreatedUpdatedAtTrait;
     use AuditableOrganizationAwareTrait;
 
-    public const TEMPORARY_WAREHOUSE_PREFIX = 'poItem_';
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -397,15 +395,6 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
     public function getData(): array
     {
         return $this->data;
-    }
-
-    public function getTemporaryWarehouseCode(): string
-    {
-        if (!$this->id) {
-            throw new \LogicException('Temporary warehouse code can be created only for an order with id');
-        }
-
-        return self::TEMPORARY_WAREHOUSE_PREFIX . $this->id;
     }
 
     /**

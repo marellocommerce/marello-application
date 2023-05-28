@@ -152,11 +152,9 @@ class ReceivePurchaseOrderAction extends AbstractAction
     {
         /** @var InventoryItem $inventoryItem */
         $inventoryItem = $item->getProduct()->getInventoryItems()->first();
+        $purchaseOrder = $item->getOrder();
         foreach ($inventoryItem->getInventoryLevels() as $inventoryLevel) {
-            if (!str_starts_with(
-                $inventoryLevel->getWarehouse()->getCode(),
-                PurchaseOrder::TEMPORARY_WAREHOUSE_PREFIX
-            )) {
+            if ($inventoryLevel->getWarehouse() !== $purchaseOrder->getWarehouse()) {
                 continue;
             }
 
