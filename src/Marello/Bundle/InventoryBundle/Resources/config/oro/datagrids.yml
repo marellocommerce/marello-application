@@ -422,10 +422,10 @@ datagrids:
                 label:              marello.inventory.inventorybatch.date_received.label
                 frontend_type:      datetime
                 data_name:          deliveryDate
-            expirationDate:
-                label:              marello.inventory.inventorybatch.expiration_date.label
+            sellByDate:
+                label:              marello.inventory.inventorybatch.sell_by_date.label
                 frontend_type:      datetime
-                data_name:          expirationDate
+                data_name:          sellByDate
             purchasePrice:
                 label:              marello.inventory.inventorybatch.purchase_price.label
                 frontend_type:      currency

@@ -107,6 +107,7 @@ marello:
             virtual_inventory:
                 label:                      Virtual Inventory Qty
                 grid.label:                 Virtual Qty
+            expired_sell_by_date.label:     Expired Sell-by Date Qty
             expected_inventory.label:       Expected Inventory Qty
             inventory_diff.label:           Inventory Qty Change
             allocated_inventory_diff.label: Allocated Inventory Qty Change
@@ -140,6 +141,7 @@ marello:
             purchase_reference.label:       Purchase Reference
             quantity.label:                 Quantity
             date_received.label:            Date Received
+            sell_by_date.label:             Sell by Date
             expiration_date.label:          Expiration Date
             purchase_price.label:           Purchase Price
             total_price.label:              Total Price
