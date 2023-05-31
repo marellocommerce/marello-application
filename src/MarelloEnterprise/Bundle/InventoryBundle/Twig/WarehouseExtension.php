@@ -2,6 +2,7 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Twig;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use MarelloEnterprise\Bundle\InventoryBundle\Checker\IsFixedWarehouseGroupChecker;
 use MarelloEnterprise\Bundle\InventoryBundle\Manager\InventoryManager;
 use Twig\Extension\AbstractExtension;
@@ -39,11 +40,20 @@ class WarehouseExtension extends AbstractExtension
                 'get_expected_inventory_total',
                 [$this, 'getExpectedInventoryTotal']
             ),
+            new TwigFunction(
+                'get_expired_sell_by_date_total',
+                [$this, 'getExpiredSellByDateTotal']
+            ),
         ];
     }
 
     public function getExpectedInventoryTotal($entity)
     {
         return $this->inventoryManager->getExpectedInventoryTotal($entity);
+    }
+
+    public function getExpiredSellByDateTotal(InventoryItem $entity)
+    {
+        return $this->inventoryManager->getExpiredSellByDateTotal($entity);
     }
 }

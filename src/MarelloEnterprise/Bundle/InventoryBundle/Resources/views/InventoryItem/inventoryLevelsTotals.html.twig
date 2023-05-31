@@ -16,6 +16,7 @@
 {{ UI.renderProperty('marello.inventory.inventorylevel.inventory.label'|trans, invTotal) }}
 {{ UI.renderProperty('marello.inventory.inventorylevel.allocated_inventory.label'|trans, allocInvTotal) }}
 {{ UI.renderProperty('marello.inventory.inventorylevel.virtual_inventory.label'|trans, virtualInvTotal) }}
+{{ UI.renderProperty('marello.inventory.inventorylevel.expired_sell_by_date.label'|trans, get_expired_sell_by_date_total(entity)) }}
 {% set expectedInventoryTotal = get_expected_inventory_total(entity) %}
 {{ UI.renderHtmlProperty(
     'marello.inventory.inventorylevel.expected_inventory.label'|trans,

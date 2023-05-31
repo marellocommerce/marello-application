@@ -145,6 +145,21 @@ class InventoryManager extends BaseInventoryManager
         return $total;
     }
 
+    public function getExpiredSellByDateTotal(InventoryItem $entity): int
+    {
+        $total = 0;
+        $currentDateTime = new \DateTime('now', new \DateTimeZone('UTC'));
+        foreach ($entity->getInventoryLevels() as $inventoryLevel) {
+            foreach ($inventoryLevel->getInventoryBatches() as $batch) {
+                if ($batch->getSellByDate() && $batch->getSellByDate() < $currentDateTime) {
+                    $total += $batch->getQuantity();
+                }
+            }
+        }
+
+        return $total;
+    }
+
     /**
      * Get warehouse from context or get default
      * @param InventoryUpdateContext $context
