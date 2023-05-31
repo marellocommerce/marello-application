@@ -24,7 +24,7 @@ class LoadNotificationMessageSourceData extends AbstractFixture
         ],
         [
             'id' => NotificationMessageSourceInterface::NOTIFICATION_MESSAGE_SOURCE_ALLOCATION,
-            'name' => 'Allocation',
+            'name' => 'Allocation Engine',
             'isDefault'=> false
         ],
         [
