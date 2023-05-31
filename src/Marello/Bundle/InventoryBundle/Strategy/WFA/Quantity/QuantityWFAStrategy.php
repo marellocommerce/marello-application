@@ -4,6 +4,8 @@ namespace Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
@@ -21,6 +23,9 @@ use Marello\Bundle\InventoryBundle\Provider\AllocationStateStatusInterface;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository;
 use Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\Calculator\QtyWHCalculatorInterface;
+use Marello\Bundle\NotificationMessageBundle\Event\CreateNotificationMessageEvent;
+use Marello\Bundle\NotificationMessageBundle\Factory\NotificationMessageContextFactory;
+use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageSourceInterface;
 
 class QuantityWFAStrategy implements WFAStrategyInterface
 {
@@ -45,6 +50,9 @@ class QuantityWFAStrategy implements WFAStrategyInterface
 
     /** @var AllocationExclusionInterface $exclusionProvider */
     private $exclusionProvider;
+
+    /** @var EventDispatcherInterface $eventDispatcher */
+    private $eventDispatcher;
 
     /**
      * @var Warehouse[]
@@ -123,6 +131,29 @@ class QuantityWFAStrategy implements WFAStrategyInterface
         }, $linkedWarehouses);
 
         foreach ($orderItems as $key => $orderItem) {
+            if (!$orderItem->getProduct()) {
+                // so the question now is do we remove the order item from the items and continue
+                // or do we stop the allocation all together..
+//                unset($orderItems[$key]);
+//                continue;
+                $errorContext = NotificationMessageContextFactory::createError(                   // There are 4 main alert types: error, warning, info, success
+                    NotificationMessageSourceInterface::NOTIFICATION_MESSAGE_SOURCE_ALLOCATION,     // You must specify the source, i.e. area of an alert
+                    'marello.notificationmessage.allocation.no_sku.title',
+                    'marello.notificationmessage.allocation.no_sku.message',
+                    'marello.notificationmessage.allocation.no_sku.solution',
+                    $order,
+                    null,
+                    'allocating',
+                    null,
+                    null,
+                    false
+                );
+                $this->eventDispatcher->dispatch(
+                    new CreateNotificationMessageEvent($errorContext),
+                    CreateNotificationMessageEvent::NAME
+                );
+                return [];
+            }
             $orderItemsByProducts[sprintf(
                 '%s_|_%s',
                 $orderItem->getProduct()->getSku(),
@@ -215,7 +246,11 @@ class QuantityWFAStrategy implements WFAStrategyInterface
             $productsByWh[$inventoryItem->getProduct()->getSku()]['qtyOrdered'] = $orderItem->getQuantity();
             $productsByWh[$inventoryItem->getProduct()->getSku()]['qtyAvailable'] = $quantityAvailable;
         }
-
+        file_put_contents(
+            '/app/var/logs/allocations.log',
+            __METHOD__ . " " . __LINE__ . " " . print_r('hello...?', true) . "\r\n",
+            FILE_APPEND
+        );
         $possibleOptionsToFulfill = array_map(
             function ($item) {
                 return $this->getOptions($item['selected_wh'], $item['qtyOrdered']);
@@ -255,7 +290,11 @@ class QuantityWFAStrategy implements WFAStrategyInterface
                 }
             }
         }
-
+        file_put_contents(
+            '/app/var/logs/allocations.log',
+            __METHOD__ . " " . __LINE__ . " " . print_r('hello...?', true) . "\r\n",
+            FILE_APPEND
+        );
         return $this->minQtyWHCalculator->calculate(
             $productsWithInventoryData,
             $orderItemsByProducts,
@@ -682,5 +721,14 @@ class QuantityWFAStrategy implements WFAStrategyInterface
     public function setAllocationExclusionProvider(AllocationExclusionInterface $provider)
     {
         $this->exclusionProvider = $provider;
+    }
+
+    /**
+     * @param EventDispatcherInterface $eventDispatcher
+     * @return void
+     */
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
     }
 }

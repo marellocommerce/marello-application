@@ -1,0 +1,29 @@
+{% block marello_notificationmessage_group_config_widget %}
+    <table class="grid marelo-notificationmessage-group-config-table table-hover table table-bordered table-condensed">
+        <thead>
+        <tr>
+            <th>{{ 'marello.notificationmessage.source.label'|trans }}</th>
+            {% for type in form.vars.types %}
+                <th>
+                    <span class="marello-notification-message-type message-type-{{ type.id }}">
+                        {{ type.name }}
+                    </span>
+                </th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for source in form.vars.sources %}
+            <tr>
+                <td>{{ source.name }}</td>
+                {% for type in form.vars.types %}
+                    <td>
+                        {% set fieldName = source.id ~ '_' ~ type.id %}
+                        {{ form_widget(form[fieldName]) }}
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

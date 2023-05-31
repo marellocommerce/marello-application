@@ -1,0 +1,15 @@
+{% if notificationMessages|length > 0 %}
+    {% for notificationMessage in notificationMessages %}
+        <div class="notification-message-widget-row {{ loop.first ? 'first' : '' }} {{ loop.last ? 'last' : '' }}"
+             data-url="{{ path("marello_notificationmessage_view", {'id':notificationMessage.id}) }}">
+            <span class="marello-notification-message-type message-type-{{ notificationMessage.alertType.id }}">
+                {{ notificationMessage.alertType }}
+            </span>
+            <span class="notification-title">{{ notificationMessage.title }}</span>
+        </div>
+    {% endfor %}
+{% else %}
+    <p class="no-messages">
+        {{ 'marello.notificationmessage.widget.no_messages'|trans }}
+    </p>
+{% endif %}
