@@ -242,6 +242,7 @@ services:
             - '@oro_config.manager'
         calls:
             - [setAllocationExclusionProvider, ['@Marello\Bundle\InventoryBundle\Provider\AllocationExclusionProvider']]
+            - [setEventDispatcher, ['@event_dispatcher']]
         tags:
             - { name: marello_inventory_wfa_strategy }
 

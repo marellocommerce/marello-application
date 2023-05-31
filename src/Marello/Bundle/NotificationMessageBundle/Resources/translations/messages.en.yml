@@ -1,0 +1,59 @@
+marello:
+    notificationmessage:
+        entity_label:           Notification Message
+        entity_plural_label:    Notification Messages
+        entity_grid_all_view_label: All %entity_plural_label%
+        id.label:               Id
+        alert_type.label:       Alert Type
+        source.label:           Source
+        related_item_id.label:  Related Item Id
+        related_item_class.label: Related Item Class
+        title.label:            Title
+        message.label:          Message
+        count.label:            "# Cases"
+        solution.label:         Solution
+        operation.label:        Operation
+        step.label:             Step
+        external_id.label:      External ID
+        log.label:              Log
+        resolved:
+            label:              Resolved
+            yes.label:          Yes
+            no.label:           No
+        organization.label:     Organization
+        user_group.label:       User Group
+        created_at.label:       Created At
+        updated_at.label:       Updated At
+
+        actions:
+            resolve:
+                label:          Resolve
+                success:        Notification Message was successfully resolved
+
+        mass_actions:
+            resolve:
+                label:          Resolve
+
+                success:        "Action completed successfully. Total records: %total%"
+                no_items:       "Action completed successfully. But no items have changed"
+
+        datablock:
+            general:            General
+            technical:          Technical
+
+        view_message:           View
+
+        widget:
+            title:              Notification Messages
+            no_messages:        No Notification Messages
+
+        system_configuration:
+            groups:
+                notification_messages:
+                    title:      Notification Messages
+                notification_message_groups:
+                    title:      Groups
+            fields:
+                assigned_groups:
+                    label:      Assigned Groups
+                    empty:      Empty

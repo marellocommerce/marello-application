@@ -1,0 +1,94 @@
+{% extends '@OroUI/actions/view.html.twig' %}
+{% import '@OroUI/macros.html.twig' as UI %}
+
+{% oro_title_set({params : {"%id%": entity.id }}) %}
+
+{% block navButtons %}
+    {% import '@OroActivity/macros.html.twig' as AC %}
+
+    {% placeholder view_navButtons with {entity: entity} %}
+    {% if is_granted('EDIT', entity) %}
+        {{ AC.addContextButton(entity) }}
+    {% endif %}
+{% endblock navButtons %}
+
+{% block stats %}
+    {% import '@OroActivity/macros.html.twig' as AC %}
+
+    <li class="context-data activity-context-activity-block">
+        {{ AC.activity_contexts(entity) }}
+    </li>
+{% endblock %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity':      entity,
+        'indexPath':   path('marello_notificationmessage_index'),
+        'indexLabel': 'marello.notificationmessage.entity_plural_label'|trans,
+        'entityTitle': entity.title
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set id = 'marello-notificationmessage-view' %}
+    {% set generalSubblocks = [] %}
+    {% set generalInformation %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    <div class="box-type1">
+                        {% set alertType %}
+                            <span class="marello-notification-message-type message-type-{{ entity.alertType.id }}">
+                                {{ entity.alertType }}
+                            </span>
+                        {% endset %}
+                        {{ UI.renderHtmlProperty('marello.notificationmessage.alert_type.label'|trans, alertType) }}
+                        {{ UI.renderProperty('marello.notificationmessage.source.label'|trans, entity.source) }}
+                        {{ UI.renderProperty('marello.notificationmessage.message.label'|trans, entity.message) }}
+                        {{ UI.renderHtmlProperty('marello.notificationmessage.solution.label'|trans, entity.solution|default('N/A'|trans)) }}
+                        {{ UI.renderProperty('marello.notificationmessage.count.label'|trans, entity.count) }}
+                        {{ UI.renderProperty('marello.notificationmessage.resolved.label'|trans, entity.resolved) }}
+                        {{ UI.renderProperty('marello.notificationmessage.user_group.label'|trans, entity.userGroup|default('N/A'|trans)) }}
+                        {{ UI.renderProperty('marello.notificationmessage.related_item_id.label'|trans, entity.relatedItemId|default('N/A'|trans)) }}
+                        {{ UI.renderProperty('marello.notificationmessage.related_item_class.label'|trans, entity.relatedItemClass|default('N/A'|trans)) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endset %}
+    {% set generalSubblocks = generalSubblocks|merge([{'data' : [generalInformation] }]) %}
+
+    {% set technicalSubblocks = [] %}
+    {% set technicalInformation %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    <div class="box-type1">
+                        {{ UI.renderProperty('marello.notificationmessage.operation.label'|trans, entity.operation|default('N/A'|trans)) }}
+                        {{ UI.renderProperty('marello.notificationmessage.step.label'|trans, entity.step|default('N/A'|trans)) }}
+                        {{ UI.renderProperty('marello.notificationmessage.external_id.label'|trans, entity.externalId|default('N/A'|trans)) }}
+                        {{ UI.renderProperty('marello.notificationmessage.log.label'|trans, entity.log|default('N/A'|trans)) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endset %}
+    {% set technicalSubblocks = technicalSubblocks|merge([{'data' : [technicalInformation] }]) %}
+
+    {% set dataBlocks = [
+        {
+            'title': 'marello.notificationmessage.datablock.general'|trans,
+            'class': 'active',
+            'subblocks': generalSubblocks
+        },
+        {
+            'title': 'marello.notificationmessage.datablock.technical'|trans,
+            'class': '',
+            'subblocks': technicalSubblocks
+        }
+    ] %}
+
+    {% set data = { 'dataBlocks': dataBlocks } %}
+    {{ parent() }}
+{% endblock content_data %}
