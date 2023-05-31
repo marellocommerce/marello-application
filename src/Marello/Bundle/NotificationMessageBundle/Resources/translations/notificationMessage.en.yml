@@ -10,12 +10,12 @@ marello:
                 message: Can’t create a Purchase Order, product SKU can’t be found
         allocation:
             no_sku:
-                title: Product SKU can’t be found
-                message: Can’t Allocated, product SKU can’t be found
-                solution: Create the product in Marello and add availability option(s) to the Inventory item or consult the customer about next steps.
+                title: Missing Product
+                message: During the Allocation process Marello has unsuccessfully tried to allocate the product. The product has probably been removed.
+                solution: Create the product in Marello and add availability option(s) to the Inventory item.
             no_available:
                 title: There is no product availability
-                message: Can’t Allocated, there is no product availability
+                message: Can’t be Allocated, there is no product availability
                 solution: Possible solutions are; create an allocation option by adding product availability, credit the products or consult the customer about next steps.
         webhook:
             cant_update:
