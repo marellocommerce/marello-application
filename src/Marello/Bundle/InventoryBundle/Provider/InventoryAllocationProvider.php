@@ -67,11 +67,6 @@ class InventoryAllocationProvider
             if ($allocation && $allocation->getWarehouse()) {
                 $this->handleAllocationInventory($allocation, $order, true);
             }
-            file_put_contents(
-                '/app/var/logs/allocations.log',
-                __METHOD__ . " " . __LINE__ . " " . print_r(count($orderWarehouseResults), true) . "\r\n",
-                FILE_APPEND
-            );
             /** @var OrderWarehouseResult $result */
             foreach ($orderWarehouseResults as $result) {
                 $newAllocation = new Allocation();

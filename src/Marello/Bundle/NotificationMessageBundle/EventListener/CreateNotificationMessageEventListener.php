@@ -105,6 +105,9 @@ class CreateNotificationMessageEventListener
         if ($context->log) {
             $notificationMessage->setLog($context->log);
         }
+        if ($context->organization) {
+            $notificationMessage->setOrganization($context->organization);
+        }
 
         $groupConfiguration = $this->configManager->get(Configuration::SYSTEM_CONFIG_PATH_ASSIGNED_GROUPS);
         $configKey = sprintf('%s_%s', $context->source, $context->alertType);

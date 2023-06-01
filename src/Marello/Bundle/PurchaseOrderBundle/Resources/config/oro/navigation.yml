@@ -45,3 +45,4 @@ navigation:
     titles:
         marello_purchaseorder_purchaseorder_index: 'marello.purchaseorder.entity_plural_label'
         marello_purchaseorder_purchaseorder_selectproducts: 'Create Purchase Order - Select Products'
+        marello_purchase_order_widget_purchase_order_candidates_grid: 'marello.purchaseorder.purchaseorderitem.candidates.label'
