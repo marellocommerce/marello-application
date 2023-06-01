@@ -23,9 +23,6 @@ class InventorySellByDateRecalculateCronCommand extends Command implements CronC
         parent::__construct();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configure()
     {
         $this
@@ -33,43 +30,30 @@ class InventorySellByDateRecalculateCronCommand extends Command implements CronC
             ->setDescription('Recalculate inventory levels according to a sell-by-date value for inventory batches');
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getDefaultDefinition()
     {
         return '0 5 * * *';
     }
 
-    /**
-     * @inheritDoc
-     */
     public function isActive()
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('Started');
         $inventoryLevels = $this
             ->doctrineHelper
             ->getEntityRepositoryForClass(InventoryLevel::class)
             ->findWithExpiredSellByDateBatch();
 
         foreach ($inventoryLevels as $inventoryLevel) {
-            $output->writeln('One more level go');
             $batches = $inventoryLevel->getInventoryBatches()->toArray();
             $batchInventory = $this->inventoryLevelCalculator->calculateBatchInventoryLevelQty($batches);
             $this->inventoryManager->updateInventory($inventoryLevel, $batchInventory);
         }
 
-        $output->writeln('Pre flush');
         $this->doctrineHelper->getEntityManagerForClass(InventoryLevel::class)->flush();
-        $output->writeln('Flush');
 
         return self::SUCCESS;
     }
