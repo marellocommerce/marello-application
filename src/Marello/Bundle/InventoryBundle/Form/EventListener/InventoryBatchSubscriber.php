@@ -72,8 +72,8 @@ class InventoryBatchSubscriber implements EventSubscriberInterface
         $operator = $this->getAdjustmentOperator($form);
         $quantity = $this->getAdjustmentQuantity($form);
         $adjustment = $this->levelCalculator->calculateAdjustment($operator, $quantity);
-        $isSellByDateChanged = $this->previousSellByDate[spl_object_id($event->getForm())]
-            != $event->getData()->getSellByDate();
+        $isSellByDateChanged = array_key_exists(spl_object_id($event->getForm()), $this->previousSellByDate)
+            && $this->previousSellByDate[spl_object_id($event->getForm())] != $event->getData()->getSellByDate();
         if ($adjustment === 0 && !$isSellByDateChanged) {
             return;
         }

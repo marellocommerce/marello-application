@@ -255,6 +255,14 @@ services:
         tags:
             - { name: console.command }
 
+    Marello\Bundle\InventoryBundle\Command\InventorySellByDateRecalculateCronCommand:
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@marello_inventory.model.inventory_level_calculator'
+            - '@marello_inventory.manager.inventory_manager'
+        tags:
+            - { name: console.command }
+
     Marello\Bundle\InventoryBundle\Model\Allocation\WarehouseNotifierRegistry: ~
 
     Marello\Bundle\InventoryBundle\Provider\WarehouseNotifierChoicesProvider:

@@ -225,7 +225,7 @@ class InventoryLevel extends ExtendInventoryLevel implements OrganizationAwareIn
      *      }
      * )
      *
-     * @var InventoryLevel[]|Collection
+     * @var InventoryBatch[]|Collection
      */
     protected $inventoryBatches;
     

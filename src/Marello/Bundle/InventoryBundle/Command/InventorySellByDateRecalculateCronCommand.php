@@ -1,0 +1,76 @@
+<?php
+
+namespace Marello\Bundle\InventoryBundle\Command;
+
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
+use Marello\Bundle\InventoryBundle\Manager\InventoryManagerInterface;
+use Marello\Bundle\InventoryBundle\Model\InventoryLevelCalculator;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+use Oro\Bundle\CronBundle\Command\CronCommandInterface;
+
+class InventorySellByDateRecalculateCronCommand extends Command implements CronCommandInterface
+{
+    const COMMAND_NAME = 'oro:cron:marello:inventory:sell-by-date-recalculate';
+
+    public function __construct(
+        protected DoctrineHelper $doctrineHelper,
+        protected InventoryLevelCalculator $inventoryLevelCalculator,
+        protected InventoryManagerInterface $inventoryManager
+    ) {
+        parent::__construct();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function configure()
+    {
+        $this
+            ->setName(self::COMMAND_NAME)
+            ->setDescription('Recalculate inventory levels according to a sell-by-date value for inventory batches');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getDefaultDefinition()
+    {
+        return '0 5 * * *';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isActive()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $output->writeln('Started');
+        $inventoryLevels = $this
+            ->doctrineHelper
+            ->getEntityRepositoryForClass(InventoryLevel::class)
+            ->findWithExpiredSellByDateBatch();
+
+        foreach ($inventoryLevels as $inventoryLevel) {
+            $output->writeln('One more level go');
+            $batches = $inventoryLevel->getInventoryBatches()->toArray();
+            $batchInventory = $this->inventoryLevelCalculator->calculateBatchInventoryLevelQty($batches);
+            $this->inventoryManager->updateInventory($inventoryLevel, $batchInventory);
+        }
+
+        $output->writeln('Pre flush');
+        $this->doctrineHelper->getEntityManagerForClass(InventoryLevel::class)->flush();
+        $output->writeln('Flush');
+
+        return self::SUCCESS;
+    }
+}
