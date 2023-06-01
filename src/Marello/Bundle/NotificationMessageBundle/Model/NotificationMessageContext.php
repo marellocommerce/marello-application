@@ -2,6 +2,8 @@
 
 namespace Marello\Bundle\NotificationMessageBundle\Model;
 
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
+
 class NotificationMessageContext
 {
     public string $alertType;
@@ -27,4 +29,6 @@ class NotificationMessageContext
     public ?string $externalId = null;
 
     public ?string $log = null;
+
+    public ?OrganizationInterface $organization = null;
 }

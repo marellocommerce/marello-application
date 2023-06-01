@@ -31,6 +31,11 @@ class LoadNotificationMessageSourceData extends AbstractFixture
             'id' => NotificationMessageSourceInterface::NOTIFICATION_MESSAGE_SOURCE_WEBHOOK,
             'name' => 'Webhook',
             'isDefault'=> false
+        ],
+        [
+            'id' => NotificationMessageSourceInterface::NOTIFICATION_MESSAGE_SOURCE_SYSTEM,
+            'name' => 'System Process',
+            'isDefault'=> false
         ]
     ];
 

@@ -60,7 +60,7 @@ marello:
             organization.label:                         Organization
             validation:
                 received_amount:                        Total amount received can only be as many items as ordered amount.
-
+            candidates.label:                           Purchase Order Item Candidates
         navigation:
             purchasing.label:                           Purchasing
 

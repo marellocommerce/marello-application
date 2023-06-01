@@ -246,11 +246,6 @@ class QuantityWFAStrategy implements WFAStrategyInterface
             $productsByWh[$inventoryItem->getProduct()->getSku()]['qtyOrdered'] = $orderItem->getQuantity();
             $productsByWh[$inventoryItem->getProduct()->getSku()]['qtyAvailable'] = $quantityAvailable;
         }
-        file_put_contents(
-            '/app/var/logs/allocations.log',
-            __METHOD__ . " " . __LINE__ . " " . print_r('hello...?', true) . "\r\n",
-            FILE_APPEND
-        );
         $possibleOptionsToFulfill = array_map(
             function ($item) {
                 return $this->getOptions($item['selected_wh'], $item['qtyOrdered']);
@@ -290,11 +285,7 @@ class QuantityWFAStrategy implements WFAStrategyInterface
                 }
             }
         }
-        file_put_contents(
-            '/app/var/logs/allocations.log',
-            __METHOD__ . " " . __LINE__ . " " . print_r('hello...?', true) . "\r\n",
-            FILE_APPEND
-        );
+
         return $this->minQtyWHCalculator->calculate(
             $productsWithInventoryData,
             $orderItemsByProducts,

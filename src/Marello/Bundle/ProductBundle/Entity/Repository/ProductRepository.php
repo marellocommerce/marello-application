@@ -159,6 +159,10 @@ class ProductRepository extends ServiceEntityRepository
         return $aclHelper->apply($qb->getQuery())->getResult();
     }
 
+    /**
+     * @param AclHelper $aclHelper
+     * @return array
+     */
     public function getPurchaseOrderItemsCandidates(AclHelper $aclHelper): array
     {
         $qb = $this

@@ -2,6 +2,8 @@
 
 namespace Marello\Bundle\NotificationMessageBundle\Factory;
 
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
+
 use Marello\Bundle\NotificationMessageBundle\Model\NotificationMessageContext;
 use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageResolvedInterface;
 use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageTypeInterface;
@@ -18,6 +20,7 @@ class NotificationMessageContextFactory
         ?string $step = null,
         ?string $externalId = null,
         ?string $log = null,
+        ?OrganizationInterface $organization = null,
         bool $flush = true,
     ): NotificationMessageContext {
         return self::create(
@@ -32,6 +35,7 @@ class NotificationMessageContextFactory
             $step,
             $externalId,
             $log,
+            $organization,
             $flush
         );
     }
@@ -46,6 +50,7 @@ class NotificationMessageContextFactory
         ?string $step = null,
         ?string $externalId = null,
         ?string $log = null,
+        ?OrganizationInterface $organization = null,
         bool $flush = true,
     ): NotificationMessageContext {
         return self::create(
@@ -60,6 +65,7 @@ class NotificationMessageContextFactory
             $step,
             $externalId,
             $log,
+            $organization,
             $flush
         );
     }
@@ -74,6 +80,7 @@ class NotificationMessageContextFactory
         ?string $step = null,
         ?string $externalId = null,
         ?string $log = null,
+        ?OrganizationInterface $organization = null,
         bool $flush = true,
     ): NotificationMessageContext {
         return self::create(
@@ -88,6 +95,7 @@ class NotificationMessageContextFactory
             $step,
             $externalId,
             $log,
+            $organization,
             $flush
         );
     }
@@ -102,6 +110,7 @@ class NotificationMessageContextFactory
         ?string $step = null,
         ?string $externalId = null,
         ?string $log = null,
+        ?OrganizationInterface $organization = null,
         bool $flush = true,
     ): NotificationMessageContext {
         return self::create(
@@ -116,6 +125,7 @@ class NotificationMessageContextFactory
             $step,
             $externalId,
             $log,
+            $organization,
             $flush
         );
     }
@@ -132,6 +142,7 @@ class NotificationMessageContextFactory
         ?string $step = null,
         ?string $externalId = null,
         ?string $log = null,
+        ?OrganizationInterface $organization = null,
         bool $flush = true,
     ): NotificationMessageContext {
         $context = new NotificationMessageContext();
@@ -157,6 +168,9 @@ class NotificationMessageContextFactory
         }
         if ($log) {
             $context->log = $log;
+        }
+        if ($organization) {
+            $context->organization = $organization;
         }
 
         $context->flush = $flush;

@@ -2,17 +2,22 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\Cron;
 
-use Marello\Bundle\NotificationBundle\Provider\EmailSendProcessor;
-use Marello\Bundle\CustomerBundle\Entity\Customer;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
-use Marello\Bundle\PurchaseOrderBundle\Model\PurchaseOrder;
-use Oro\Bundle\CronBundle\Command\CronCommandInterface;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\CronBundle\Command\CronCommandInterface;
+
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\CustomerBundle\Entity\Customer;
+use Marello\Bundle\PurchaseOrderBundle\Model\PurchaseOrder;
+use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
+use Marello\Bundle\NotificationBundle\Provider\EmailSendProcessor;
+use Marello\Bundle\NotificationMessageBundle\Event\CreateNotificationMessageEvent;
+use Marello\Bundle\NotificationMessageBundle\Factory\NotificationMessageContextFactory;
+use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageSourceInterface;
 
 class PurchaseOrderAdviceCommand extends Command implements CronCommandInterface
 {
@@ -91,6 +96,39 @@ class PurchaseOrderAdviceCommand extends Command implements CronCommandInterface
                 ->setProductSku($advisedItem['sku'])
                 ->setOrderedAmount((double)$advisedItem['orderAmount']);
             $entity->addItem($poItem);
+        }
+
+        if ($entity->getItems()->count() > 0) {
+            $url = $this
+                ->container
+                ->get('router')
+                ->generate('marello_purchase_order_widget_purchase_order_candidates_grid', [], 302);
+            $translation = $this
+                ->container
+                ->get('translator')
+                ->trans(
+                    'marello.notificationmessage.purchaseorder.candidates.solution',
+                    ['%url%' => $url],
+                    'notificationMessage'
+                );
+            $context = NotificationMessageContextFactory::createInfo(
+                NotificationMessageSourceInterface::NOTIFICATION_MESSAGE_SOURCE_SYSTEM,
+                'marello.notificationmessage.purchaseorder.candidates.title',
+                'marello.notificationmessage.purchaseorder.candidates.message',
+                $translation,
+                null,
+                null,
+                null,
+                null,
+                null,
+                $organization
+            );
+            $this->container
+                ->get('event_dispatcher')
+                ->dispatch(
+                    new CreateNotificationMessageEvent($context),
+                    CreateNotificationMessageEvent::NAME
+                );
         }
 
         $recipient = new Customer();

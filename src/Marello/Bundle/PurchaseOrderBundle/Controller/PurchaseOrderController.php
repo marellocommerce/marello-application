@@ -299,6 +299,20 @@ class PurchaseOrderController extends AbstractController
         return new JsonResponse(['purchasePrice' => null]);
     }
 
+    /**
+     * @Route(
+     *      path="/widget/purchase-order-candidates-grid",
+     *      name="marello_purchase_order_widget_purchase_order_candidates_grid"
+     * )
+     * @AclAncestor("marello_product_view")
+     * @Config\Template("@MarelloPurchaseOrder/PurchaseOrder/widget/purchaseOrderCandidatesGrid.html.twig")
+     * @return array
+     */
+    public function purchaseOrderCandidatesGridAction()
+    {
+        return [];
+    }
+
     public static function getSubscribedServices()
     {
         return array_merge(
