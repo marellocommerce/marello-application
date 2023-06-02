@@ -58,6 +58,7 @@ services:
       - '@oro_integration.reverse_sync.processor'
       - '@oro_message_queue.job.runner'
       - '@security.token_storage'
+      - '@oro_config.manager'
       - '@logger'
     tags:
       - { name: 'oro_message_queue.client.message_processor', topicName: !php/const Marello\Bundle\WebhookBundle\Async\Topics::WEBHOOK_NOTIFY }

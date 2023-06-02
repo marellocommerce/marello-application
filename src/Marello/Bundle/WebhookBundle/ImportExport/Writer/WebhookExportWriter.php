@@ -76,7 +76,6 @@ class WebhookExportWriter extends PersistentBatchWriter implements
         } catch (\LogicException $e) {
             $this->logger->error($e->getMessage());
             throw $e;
-            return $this;
         }
 
         $importContext = $this->contextRegistry->getByStepExecution($this->stepExecution);

@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\WebhookBundle\DependencyInjection\Compiler;
 
-use Marello\Bundle\WebhookBundle\EventListener\WebhookListenerInterface;
 use Marello\Bundle\WebhookBundle\Provider\WebhookEventProvider;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

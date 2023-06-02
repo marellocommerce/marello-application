@@ -4,10 +4,13 @@ namespace Marello\Bundle\WebhookBundle\Async;
 use Marello\Bundle\WebhookBundle\Integration\Connector\WebhookNotificationConnector;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\IntegrationBundle\Authentication\Token\IntegrationTokenAwareTrait;
 use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
+use Oro\Bundle\IntegrationBundle\Logger\LoggerStrategy;
 use Oro\Bundle\IntegrationBundle\Provider\ReverseSyncProcessor;
+use Oro\Bundle\MessageQueueBundle\Consumption\Extension\RedeliveryMessageExtension;
 use Oro\Component\MessageQueue\Client\TopicSubscriberInterface;
 use Oro\Component\MessageQueue\Consumption\MessageProcessorInterface;
 use Oro\Component\MessageQueue\Job\JobRunner;
@@ -29,9 +32,7 @@ class WebhookSyncProcessor implements
     use ContainerAwareTrait;
     use IntegrationTokenAwareTrait;
 
-    /**
-     * @var DoctrineHelper
-     */
+    /** @var DoctrineHelper  */
     private DoctrineHelper $doctrineHelper;
 
     /**
@@ -39,29 +40,41 @@ class WebhookSyncProcessor implements
      */
     private ReverseSyncProcessor $reverseSyncProcessor;
 
-    /**
-     * @var JobRunner
-     */
+    /** @var JobRunner */
     private JobRunner $jobRunner;
 
-    /**
-     * @var LoggerInterface
-     */
+    /** @var ConfigManager  */
+    private ConfigManager $configManager;
+
+    /** @var LoggerInterface */
     private LoggerInterface $logger;
 
+    /**
+     * @param DoctrineHelper $doctrineHelper
+     * @param ReverseSyncProcessor $reverseSyncProcessor
+     * @param JobRunner $jobRunner
+     * @param TokenStorageInterface $tokenStorage
+     * @param ConfigManager $configManager
+     * @param LoggerInterface $logger
+     */
     public function __construct(
         DoctrineHelper $doctrineHelper,
         ReverseSyncProcessor $reverseSyncProcessor,
         JobRunner $jobRunner,
         TokenStorageInterface $tokenStorage,
+        ConfigManager $configManager,
         LoggerInterface $logger
     ) {
         $this->doctrineHelper = $doctrineHelper;
         $this->reverseSyncProcessor = $reverseSyncProcessor;
         $this->jobRunner = $jobRunner;
         $this->tokenStorage = $tokenStorage;
+        $this->configManager = $configManager;
         $this->logger = $logger;
-        $this->reverseSyncProcessor->getLoggerStrategy()->setLogger($logger);
+        $strategyLogger = $this->reverseSyncProcessor->getLoggerStrategy();
+        if ($strategyLogger instanceof LoggerStrategy) {
+            $strategyLogger->setLogger($logger);
+        }
     }
 
     /**
@@ -77,6 +90,12 @@ class WebhookSyncProcessor implements
      */
     public function process(MessageInterface $message, SessionInterface $session)
     {
+        $maxRedeliverCount = (int)$this->configManager->get('marello_webhook.notification_redelivery');
+        $redeliverCount = (int)$message->getProperty(RedeliveryMessageExtension::PROPERTY_REDELIVER_COUNT, '0');
+        if($redeliverCount > $maxRedeliverCount) {
+            $this->logger->critical('Re-deliver count exceeded.');
+            return self::REJECT;
+        }
         $messageBody = $message->getBody();
 
         /** @var EntityManagerInterface $em */
