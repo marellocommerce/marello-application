@@ -3,10 +3,7 @@
 namespace Marello\Bundle\WebhookBundle\Migrations\Schema\v1_0;
 
 use Doctrine\DBAL\Schema\SchemaException;
-use Marello\Bundle\WebhookBundle\Model\WebhookEventInterface;
-
 use Doctrine\DBAL\Schema\Schema;
-use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
 use Oro\Bundle\MigrationBundle\Migration\Migration;

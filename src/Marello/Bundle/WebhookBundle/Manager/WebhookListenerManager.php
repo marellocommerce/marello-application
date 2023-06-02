@@ -13,18 +13,22 @@ class WebhookListenerManager
     /**
      * @var WebhookListenerInterface[]
      */
-    protected $webhookListeners = [];
+    protected array $webhookListeners = [];
 
     /**
      * @var WebhookListenerInterface[]
      */
-    protected $disabledListeners = [];
+    protected array $disabledListeners = [];
 
     /**
      * @var ContainerInterface
      */
-    protected $container;
+    protected ContainerInterface $container;
 
+    /**
+     * @param array $webhookListeners
+     * @param ContainerInterface $container
+     */
     public function __construct(array $webhookListeners, ContainerInterface $container)
     {
         $this->webhookListeners = $webhookListeners;
@@ -46,7 +50,7 @@ class WebhookListenerManager
      *
      * @throws \InvalidArgumentException When given listener doesn't exist
      */
-    public function disableListener($listenerId)
+    public function disableListener($listenerId): void
     {
         if (in_array($listenerId, $this->webhookListeners)) {
             $this->container->get($listenerId)->setEnabled(false);
@@ -62,7 +66,7 @@ class WebhookListenerManager
     /**
      * Disable specified listeners
      */
-    public function disableListeners(array $listeners)
+    public function disableListeners(array $listeners): void
     {
         foreach ($listeners as $listener) {
             $this->disableListener($listener);
@@ -76,7 +80,7 @@ class WebhookListenerManager
      *
      * @throws \InvalidArgumentException When given listener doesn't exist
      */
-    public function enableListener($listenerId)
+    public function enableListener($listenerId): void
     {
         if (in_array($listenerId, $this->webhookListeners)) {
             $this->container->get($listenerId)->setEnabled(true);
@@ -92,7 +96,7 @@ class WebhookListenerManager
     /**
      * Enable specified listeners
      */
-    public function enableListeners(array $listeners)
+    public function enableListeners(array $listeners): void
     {
         foreach ($listeners as $listener) {
             $this->enableListener($listener);
