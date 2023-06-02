@@ -70,6 +70,7 @@ class InventoryUpdateEventListener implements  WebhookListenerInterface
             'inventory_level_qty' => $inventoryContext->getInventoryLevel()->getInventoryQty(),
             'change_trigger' => $inventoryContext->getChangeTrigger(),
             'sku' => $inventoryContext->getInventoryItem()->getProduct()->getSku(),
+            'warehouse' => $inventoryContext->getInventoryLevel()->getWarehouse()->getCode(),
         ];
 
         return new WebhookContext($data, $this->getRegisteredWebhook());
