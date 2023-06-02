@@ -84,7 +84,7 @@ class WebhookExportWriter extends PersistentBatchWriter implements
             try {
                 $response  = $this->transport->sendRequest($item);
                 if ($response instanceof RestResponseInterface) {
-                    if ($response->getStatusCode() !== 200) {
+                    if (!in_array($response->getStatusCode(), [200,201,202])) {
                         $errorMessage = "Did not receive correct response. #Data : "
                                         . json_encode($item). ' #URL: '
                                         . $this->transport->getWebhook()->getCallbackUrl();
