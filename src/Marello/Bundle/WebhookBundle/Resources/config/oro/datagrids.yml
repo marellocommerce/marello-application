@@ -65,6 +65,11 @@ datagrids:
         type:       url
         route:      marello_webhook_update
         params:     [ id ]
+      delete_link:
+        type:       url
+        route:      marello_webhook_delete
+        params:     [ id ]
+
     actions:
       view:
         type:           navigate
@@ -83,3 +88,9 @@ datagrids:
           entityHint: webhook
           export: true
           entity_pagination: true
+      delete:
+        type:          delete
+        label:         oro.grid.action.delete
+        link:          delete_link
+        icon:          trash-o
+        acl_resource:  marello_webhook_delete

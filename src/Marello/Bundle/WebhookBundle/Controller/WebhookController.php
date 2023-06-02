@@ -5,16 +5,19 @@ namespace Marello\Bundle\WebhookBundle\Controller;
 use Marello\Bundle\WebhookBundle\Entity\Webhook;
 use Marello\Bundle\WebhookBundle\Form\Type\WebhookType;
 use Marello\Bundle\WebhookBundle\Model\WebhookEventInterface;
-use Doctrine\Persistence\ManagerRegistry;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation\CsrfProtection;
+use Oro\Bundle\EntityBundle\Handler\EntityDeleteHandlerRegistry;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\UIBundle\Route\Router;
+use Doctrine\Persistence\ManagerRegistry;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class WebhookController extends AbstractController
@@ -85,6 +88,46 @@ class WebhookController extends AbstractController
     public function updateAction(Request $request, Webhook $webhook = null)
     {
         return $this->update($request, $webhook);
+    }
+
+    /**
+     * @Route(
+     *     path="/delete/{id}",
+     *     requirements={"id"="\d+"},
+     *     name="marello_webhook_delete",
+     *     methods={"DELETE"}
+     * )
+     * @CsrfProtection()
+     * @AclAncestor("marello_webhook_delete")
+     *
+     * @param Webhook $webhook
+     *
+     * @return JsonResponse
+     */
+    public function deleteAction(Webhook $webhook)
+    {
+        $translator = $this->container->get(TranslatorInterface::class);
+        if ($this->isGranted('delete', $webhook)) {
+            /** @var EntityDeleteHandlerRegistry $deleteHandlerRegistry */
+            try {
+                $deleteHandlerRegistry = $this->container->get(EntityDeleteHandlerRegistry::class);
+            } catch (NotFoundExceptionInterface $e) {
+                //
+            } catch (ContainerExceptionInterface $e) {
+                //
+            }
+
+            $deleteHandlerRegistry->getHandler(Webhook::class)
+                ->delete($webhook, true, []);
+
+            $successful = true;
+            $message = $translator->trans('marello.webhook.webhook_entity.message.deleted');
+        } else {
+            $successful = false;
+            $message = $translator->trans('marello.webhook.webhook_entity.message.cant_delete');
+        }
+
+        return new JsonResponse(['message' => $message, 'successful' => $successful]);
     }
 
     /**
@@ -166,6 +209,7 @@ class WebhookController extends AbstractController
                 TranslatorInterface::class,
                 Router::class,
                 ManagerRegistry::class,
+                EntityDeleteHandlerRegistry::class,
             ]
         );
     }
