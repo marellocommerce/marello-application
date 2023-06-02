@@ -1,4 +1,5 @@
 <?php
+
 namespace Marello\Bundle\WebhookBundle\Async;
 
 use Marello\Bundle\WebhookBundle\Integration\Connector\WebhookNotificationConnector;
@@ -92,7 +93,7 @@ class WebhookSyncProcessor implements
     {
         $maxRedeliverCount = (int)$this->configManager->get('marello_webhook.notification_redelivery');
         $redeliverCount = (int)$message->getProperty(RedeliveryMessageExtension::PROPERTY_REDELIVER_COUNT, '0');
-        if($redeliverCount > $maxRedeliverCount) {
+        if ($redeliverCount > $maxRedeliverCount) {
             $this->logger->critical('Re-deliver count exceeded.');
             return self::REJECT;
         }

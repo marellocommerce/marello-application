@@ -45,7 +45,7 @@ class WebhookListenersCompilerPass implements CompilerPassInterface
                 $listenerDefinition->setPublic(true);
 
                 foreach ($listenerDefinition->getTags() as $name => $tags) {
-                    foreach($tags as $tag) {
+                    foreach ($tags as $tag) {
                         $attributes = ['event' => $tag['event'], 'method' => 'triggerWebhookNotificationEvent'];
                         $listenerDefinition->addTag($name, $attributes);
                     }

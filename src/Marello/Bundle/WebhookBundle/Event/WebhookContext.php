@@ -23,7 +23,7 @@ class WebhookContext
         array|string $data,
         string       $eventName,
         array        $webhooks = [] //if empty notify all active webhooks related to this event
-    ){
+    ) {
         $this->data = $data;
         $this->webhooks = $webhooks;
         $this->eventName = $eventName;
