@@ -1,14 +1,8 @@
 {% import '@OroUI/macros.html.twig' as UI %}
-{% import "@OroActivity/macros.html.twig" as AC %}
 {% import '@OroUser/macros.html.twig' as U %}
 
 <div class="widget-content form-horizontal box-content row-fluid">
     <div class="responsive-block">
-        {% if renderContexts is defined and renderContexts %}
-            <div class="activity-context-activity-list">
-                {{ AC.activity_contexts(entity, target, true) }}
-            </div>
-        {% endif %}
         {{ UI.renderProperty('marello.notificationmessage.source.label'|trans, entity.source) }}
         {{ UI.renderProperty('marello.notificationmessage.message.label'|trans, entity.message) }}
         {{ UI.renderHtmlProperty('marello.notificationmessage.solution.label'|trans, entity.solution|default('N/A'|trans)) }}

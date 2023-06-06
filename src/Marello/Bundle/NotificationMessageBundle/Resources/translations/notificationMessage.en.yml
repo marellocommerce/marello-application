@@ -18,7 +18,7 @@ marello:
                 message: During the Allocation process Marello has unsuccessfully tried to allocate the product. The product has probably been removed.
                 solution: Create the product in Marello and add availability option(s) to the Inventory item.
             no_available:
-                title: There is no product availability
+                title: There is no product availability # dynamische title inclusief de id van de related entity.
                 message: Can’t be Allocated, there is no product availability
                 solution: Possible solutions are; create an allocation option by adding product availability, credit the products or consult the customer about next steps.
         webhook:

@@ -5,6 +5,7 @@ namespace Marello\Bundle\InventoryBundle\EventListener\Workflow;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 
+use Marello\Bundle\InventoryBundle\Provider\AllocationStateStatusInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
@@ -76,19 +77,24 @@ class AllocationWorkflowStartListener
         if (!empty($this->entities)) {
             $entities = $this->entities;
             unset($this->entities);
+            /** @var Allocation $entity */
             foreach($entities as $entity) {
-                $context = NotificationMessageContextFactory::createWarning(
-                    NotificationMessageSourceInterface::NOTIFICATION_MESSAGE_SOURCE_ALLOCATION,
-                    'marello.notificationmessage.allocation.no_available.title',
-                    'marello.notificationmessage.allocation.no_available.message',
-                    'marello.notificationmessage.allocation.no_available.solution',
-                    $entity,
-                    'allocating'
-                );
-                $this->eventDispatcher->dispatch(
-                    new CreateNotificationMessageEvent($context),
-                    CreateNotificationMessageEvent::NAME
-                );
+                if ($entity->getStatus() &&
+                    $entity->getStatus()->getId() === AllocationStateStatusInterface::ALLOCATION_STATUS_CNA
+                ) {
+                    $context = NotificationMessageContextFactory::createWarning(
+                        NotificationMessageSourceInterface::NOTIFICATION_MESSAGE_SOURCE_ALLOCATION,
+                        'marello.notificationmessage.allocation.no_available.title',
+                        'marello.notificationmessage.allocation.no_available.message',
+                        'marello.notificationmessage.allocation.no_available.solution',
+                        $entity,
+                        'allocating'
+                    );
+                    $this->eventDispatcher->dispatch(
+                        new CreateNotificationMessageEvent($context),
+                        CreateNotificationMessageEvent::NAME
+                    );
+                }
             }
         }
     }
