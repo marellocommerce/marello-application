@@ -87,11 +87,6 @@ class CreateNotificationMessageEventListener
             NotificationMessageSourceInterface::NOTIFICATION_MESSAGE_SOURCE_ENUM_CODE,
             $context->source
         ));
-        if ($attributes['relatedItemClass']
-            && $notificationMessage->supportActivityTarget($attributes['relatedItemClass'])
-        ) {
-            $notificationMessage->addActivityTarget($context->relatedEntity);
-        }
 
         if ($context->operation) {
             $notificationMessage->setOperation($context->operation);

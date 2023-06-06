@@ -6,6 +6,7 @@ marello:
         id.label:               Id
         alert_type.label:       Alert Type
         source.label:           Source
+        related_item.label:  Related Item
         related_item_id.label:  Related Item Id
         related_item_class.label: Related Item Class
         title.label:            Title

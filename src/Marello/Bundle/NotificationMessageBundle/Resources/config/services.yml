@@ -32,14 +32,6 @@ services:
             - '@doctrine'
             - '@translator'
 
-    Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageActivityListProvider:
-        arguments:
-            - '@oro_entity.doctrine_helper'
-            - '@oro_activity.association_helper'
-            - '@oro_security.owner.entity_owner_accessor.link'
-        tags:
-            - { name: oro_activity_list.provider, class: Marello\Bundle\NotificationMessageBundle\Entity\NotificationMessage, priority: 80 }
-
     Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageEntityNameProvider:
         public: false
         tags:

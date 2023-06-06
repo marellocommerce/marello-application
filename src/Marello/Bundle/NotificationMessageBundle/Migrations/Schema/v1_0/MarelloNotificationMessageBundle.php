@@ -57,9 +57,6 @@ class MarelloNotificationMessageBundle implements Migration, ActivityExtensionAw
         $name = $table->getName();
         $this->activityExtension->addActivityAssociation($schema, 'orocrm_task', $name);
         $this->activityExtension->addActivityAssociation($schema, $name, 'orocrm_task');
-        $this->activityExtension->addActivityAssociation($schema, $name, 'marello_order_order');
-        $this->activityExtension->addActivityAssociation($schema, $name, 'marello_purchase_order');
-        $this->activityExtension->addActivityAssociation($schema, $name, 'marello_inventory_allocation');
 
         $this->extendExtension->addEnumField(
             $schema,

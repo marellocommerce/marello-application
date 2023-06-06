@@ -7,25 +7,16 @@
     {% import '@OroActivity/macros.html.twig' as AC %}
 
     {% placeholder view_navButtons with {entity: entity} %}
-    {% if is_granted('EDIT', entity) %}
-        {{ AC.addContextButton(entity) }}
-    {% endif %}
 {% endblock navButtons %}
 
-{% block stats %}
-    {% import '@OroActivity/macros.html.twig' as AC %}
-
-    <li class="context-data activity-context-activity-block">
-        {{ AC.activity_contexts(entity) }}
-    </li>
-{% endblock %}
-
 {% block pageHeader %}
+    {% set label = oro_entity_config(entity.relatedItemClass).label|trans ~ ' ' ~ entity.relatedItemId %}
+
     {% set breadcrumbs = {
         'entity':      entity,
         'indexPath':   path('marello_notificationmessage_index'),
         'indexLabel': 'marello.notificationmessage.entity_plural_label'|trans,
-        'entityTitle': entity.title
+        'entityTitle': label ? entity.title ~ ' ' ~ label : entity.title
     } %}
     {{ parent() }}
 {% endblock pageHeader %}
@@ -48,10 +39,13 @@
                         {{ UI.renderProperty('marello.notificationmessage.message.label'|trans, entity.message) }}
                         {{ UI.renderHtmlProperty('marello.notificationmessage.solution.label'|trans, entity.solution|default('N/A'|trans)) }}
                         {{ UI.renderProperty('marello.notificationmessage.count.label'|trans, entity.count) }}
+                        {% set route = oro_entity_route(entity.relatedItemClass) %}
+                        {% if route %}
+                            {% set label = oro_entity_config(entity.relatedItemClass).label|trans ~ ' ' ~ entity.relatedItemId %}
+                            {{ UI.renderHtmlProperty('marello.notificationmessage.related_item.label'|trans, UI.renderUrl(path(route, {'id': entity.relatedItemId}), label)) }}
+                        {% endif %}
                         {{ UI.renderProperty('marello.notificationmessage.resolved.label'|trans, entity.resolved) }}
                         {{ UI.renderProperty('marello.notificationmessage.user_group.label'|trans, entity.userGroup|default('N/A'|trans)) }}
-                        {{ UI.renderProperty('marello.notificationmessage.related_item_id.label'|trans, entity.relatedItemId|default('N/A'|trans)) }}
-                        {{ UI.renderProperty('marello.notificationmessage.related_item_class.label'|trans, entity.relatedItemClass|default('N/A'|trans)) }}
                     </div>
                 </div>
             </div>
@@ -65,6 +59,8 @@
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
                     <div class="box-type1">
+                        {{ UI.renderProperty('marello.notificationmessage.related_item_id.label'|trans, entity.relatedItemId|default('N/A'|trans)) }}
+                        {{ UI.renderProperty('marello.notificationmessage.related_item_class.label'|trans, entity.relatedItemClass|default('N/A'|trans)) }}
                         {{ UI.renderProperty('marello.notificationmessage.operation.label'|trans, entity.operation|default('N/A'|trans)) }}
                         {{ UI.renderProperty('marello.notificationmessage.step.label'|trans, entity.step|default('N/A'|trans)) }}
                         {{ UI.renderProperty('marello.notificationmessage.external_id.label'|trans, entity.externalId|default('N/A'|trans)) }}
