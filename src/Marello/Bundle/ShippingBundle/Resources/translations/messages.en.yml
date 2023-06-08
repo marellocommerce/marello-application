@@ -12,6 +12,7 @@ marello:
             ups_shipment_digest.label:         UPS Shipment Digest
             shipping_label.label:              Shipping Label
             organization.label:                Organization
+            tracking_info.label:               Tracking Info
             create_shipment:
                 button.label:   Create Shipment
                 message.success:   Shipment Created
