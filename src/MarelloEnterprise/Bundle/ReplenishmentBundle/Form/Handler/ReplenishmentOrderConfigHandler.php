@@ -17,7 +17,8 @@ class ReplenishmentOrderConfigHandler
     public function __construct(
         protected ObjectManager $manager,
         protected ReplenishmentOrdersFromConfigProvider $replenishmentOrdersProvider
-    ) {}
+    ) {
+    }
 
     public function process(FormInterface $form, Request $request): array
     {
