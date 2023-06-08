@@ -10,6 +10,7 @@ marello:
             customer.label:         Customer
             organization.label:     Organization
             sales_channel.label:    Sales Channel
+            sales_channel_name.label: Sales Channel
             billing_address:
                 label:                  Billing Address
                 name.label:             Bill to Name

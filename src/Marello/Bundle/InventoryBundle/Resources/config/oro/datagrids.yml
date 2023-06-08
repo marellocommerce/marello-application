@@ -483,7 +483,7 @@ datagrids:
                 label:          marello.inventory.allocation.warehouse.label
                 frontend_type:  string
             allocationContextId:
-                label:          marello.inventory.allocation.allocationContext.label
+                label:          marello.inventory.allocation.allocation_context.label
                 choices:        "@oro_entity_extend.enum_value_provider->getEnumChoicesByCode('marello_allocation_allocationcontext')"
                 frontend_type:  select
             allocationStateId:
