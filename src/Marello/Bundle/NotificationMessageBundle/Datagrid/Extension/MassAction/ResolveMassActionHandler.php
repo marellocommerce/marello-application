@@ -18,7 +18,8 @@ class ResolveMassActionHandler implements MassActionHandlerInterface
     public function __construct(
         private ManagerRegistry $registry,
         private TranslatorInterface $translator
-    ) {}
+    ) {
+    }
 
     /**
      * {@inheritdoc}

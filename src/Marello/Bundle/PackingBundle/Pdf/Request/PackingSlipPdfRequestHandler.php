@@ -23,7 +23,8 @@ class PackingSlipPdfRequestHandler implements PdfRequestHandlerInterface
         private TranslatorInterface $translator,
         private RenderParametersProvider $parametersProvider,
         private TwigRenderer $renderer
-    ) {}
+    ) {
+    }
 
     /**
      * @inheritDoc
