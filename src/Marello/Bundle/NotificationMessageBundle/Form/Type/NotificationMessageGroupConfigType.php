@@ -25,7 +25,8 @@ class NotificationMessageGroupConfigType extends AbstractType
 
     public function __construct(
         private ManagerRegistry $registry
-    ) {}
+    ) {
+    }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

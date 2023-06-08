@@ -28,7 +28,8 @@ class CreateNotificationMessageEventListener
         private ManagerRegistry $registry,
         private ConfigManager $configManager,
         private TranslatorInterface $translator
-    ) {}
+    ) {
+    }
 
     public function onCreate(CreateNotificationMessageEvent $event): void
     {

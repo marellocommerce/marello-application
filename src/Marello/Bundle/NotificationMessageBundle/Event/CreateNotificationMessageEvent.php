@@ -11,7 +11,8 @@ class CreateNotificationMessageEvent extends Event
 
     public function __construct(
         private NotificationMessageContext $context
-    ) {}
+    ) {
+    }
 
     public function getContext(): NotificationMessageContext
     {

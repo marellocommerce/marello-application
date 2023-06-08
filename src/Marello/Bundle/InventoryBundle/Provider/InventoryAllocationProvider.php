@@ -388,7 +388,8 @@ class InventoryAllocationProvider
         foreach ($order->getData() as $key => $value) {
             try {
                 $this->propertyAccessor->setValue($allocation, $key, $value);
-            } catch (\Exception $e) {}
+            } catch (\Exception $e) {
+            }
         }
     }
 

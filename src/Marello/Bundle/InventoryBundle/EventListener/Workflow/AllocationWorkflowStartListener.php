@@ -78,7 +78,7 @@ class AllocationWorkflowStartListener
             $entities = $this->entities;
             unset($this->entities);
             /** @var Allocation $entity */
-            foreach($entities as $entity) {
+            foreach ($entities as $entity) {
                 if ($entity->getStatus() &&
                     $entity->getStatus()->getId() === AllocationStateStatusInterface::ALLOCATION_STATUS_CNA
                 ) {

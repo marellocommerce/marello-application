@@ -132,18 +132,15 @@ class QuantityWFAStrategy implements WFAStrategyInterface
 
         foreach ($orderItems as $key => $orderItem) {
             if (!$orderItem->getProduct()) {
-                // so the question now is do we remove the order item from the items and continue
-                // or do we stop the allocation all together..
-//                unset($orderItems[$key]);
-//                continue;
-                $errorContext = NotificationMessageContextFactory::createError(                   // There are 4 main alert types: error, warning, info, success
-                    NotificationMessageSourceInterface::NOTIFICATION_MESSAGE_SOURCE_ALLOCATION,     // You must specify the source, i.e. area of an alert
+                $errorContext = NotificationMessageContextFactory::createError(
+                    NotificationMessageSourceInterface::NOTIFICATION_MESSAGE_SOURCE_ALLOCATION,
                     'marello.notificationmessage.allocation.no_sku.title',
                     'marello.notificationmessage.allocation.no_sku.message',
                     'marello.notificationmessage.allocation.no_sku.solution',
                     $order,
                     null,
                     'allocating',
+                    null,
                     null,
                     null,
                     false
@@ -467,7 +464,7 @@ class QuantityWFAStrategy implements WFAStrategyInterface
         foreach ($whOptions as $whOption) {
             foreach ($whOption as $wh) {
                 foreach ($input as $key => $values) {
-                    if (array_search($wh, $values, true) ) {
+                    if (array_search($wh, $values, true)) {
                         $product[$key] = $wh;
                     }
                 }
