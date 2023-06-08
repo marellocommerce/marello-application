@@ -67,7 +67,8 @@
             "enabled": false
         },
         "allow-plugins": {
-            "composer/package-versions-deprecated": false
+            "composer/package-versions-deprecated": false,
+            "php-http/discovery": false
         }
     },
     "scripts": {
