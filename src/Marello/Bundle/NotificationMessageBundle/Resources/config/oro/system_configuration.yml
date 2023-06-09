@@ -1,0 +1,27 @@
+system_configuration:
+    groups:
+        notification_messages:
+            title: marello.notificationmessage.system_configuration.groups.notification_messages.title
+            icon: fa-envelope-open-o
+        notification_message_groups:
+            title: marello.notificationmessage.system_configuration.groups.notification_message_groups.title
+
+    fields:
+        marello_notification_message.assigned_groups:
+            data_type: array
+            type: Marello\Bundle\NotificationMessageBundle\Form\Type\NotificationMessageGroupConfigType
+            options:
+                label: marello.notificationmessage.system_configuration.fields.assigned_groups.label
+                required: false
+
+    tree:
+        system_configuration:
+            marello:
+                children:
+                    notification:
+                        children:
+                            notification_messages:
+                                children:
+                                    notification_message_groups:
+                                        children:
+                                            - marello_notification_message.assigned_groups

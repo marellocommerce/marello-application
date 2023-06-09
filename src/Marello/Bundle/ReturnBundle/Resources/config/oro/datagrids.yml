@@ -23,6 +23,10 @@ datagrids:
                 data_name: returnnumber
                 label: marello.return.returnentity.return_number.label
                 frontend_type: string
+            salesChannel:
+                label:            marello.order.sales_channel.label
+                frontend_type:    string
+                data_name:        salesChannelName
             orderNumber:
                 data_name: order.orderNumber
                 label: marello.order.order_number.label
@@ -52,6 +56,9 @@ datagrids:
                 returnNumber:
                     type: string
                     data_name: r.returnNumber
+                salesChannel:
+                    type: string
+                    data_name: r.salesChannelName
                 orderNumber:
                     type: string
                     data_name: o.orderNumber
@@ -68,6 +75,8 @@ datagrids:
             columns:
                 returnNumber:
                     data_name: r.returnNumber
+                salesChannel:
+                    data_name: r.salesChannel
                 orderNumber:
                     data_name: o.orderNumber
                 orderReference:
@@ -253,3 +262,28 @@ datagrids:
                 method:           formatCurrency
                 context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
                 align:            right
+
+    marello-return-shipments:
+        source:
+            extended_entity_name: Marello\Bundle\ShippingBundle\Entity\Shipment
+            type: orm
+            query:
+                select:
+                    - s
+                from:
+                    - { table: MarelloShippingBundle:Shipment, alias: s }
+                join:
+                    left:
+                        - { join: s.trackingInfo, alias: ti }
+                where:
+                    and:
+                        - s.id = :shipmentId
+            bind_parameters:
+                shipmentId: shipmentId
+        columns:
+            quantityReturned:
+                data_name: quantity
+                label: marello.return.returnitem.returned_quantity.label
+                frontend_type: number
+        options:
+            export: false

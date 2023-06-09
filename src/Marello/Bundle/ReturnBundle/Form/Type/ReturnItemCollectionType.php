@@ -37,7 +37,7 @@ class ReturnItemCollectionType extends AbstractType
             'prototype'            => true,
             'handle_primary'       => false,
             'by_reference'         => false,
-            'update'               => false,
+            'update'               => false
         ]);
     }
 

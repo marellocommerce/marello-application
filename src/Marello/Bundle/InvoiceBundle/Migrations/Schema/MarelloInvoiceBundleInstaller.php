@@ -18,7 +18,7 @@ class MarelloInvoiceBundleInstaller implements Installation
      */
     public function getMigrationVersion()
     {
-        return 'v3_0';
+        return 'v3_1';
     }
 
     /**
@@ -63,6 +63,7 @@ class MarelloInvoiceBundleInstaller implements Installation
         $table->addColumn('status', 'string', ['notnull' => false, 'length' => 10]);
         $table->addColumn('customer_id', 'integer', ['notnull' => false]);
         $table->addColumn('salesChannel_id', 'integer', ['notnull' => false]);
+        $table->addColumn('saleschannel_name', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('subtotal', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('total_tax', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('grand_total', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);

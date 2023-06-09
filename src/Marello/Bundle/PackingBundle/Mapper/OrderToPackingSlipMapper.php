@@ -9,14 +9,9 @@ use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProviderInterface;
-use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\PackingBundle\Entity\PackingSlip;
 use Marello\Bundle\PackingBundle\Entity\PackingSlipItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Oro\Bundle\EntityBundle\Provider\EntityFieldProvider;
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 class OrderToPackingSlipMapper extends AbstractPackingSlipMapper
 {
@@ -107,6 +102,7 @@ class OrderToPackingSlipMapper extends AbstractPackingSlipMapper
         }
         $packingSlipItemData['weight'] = ($product->getWeight() * $allocationItem->getQuantity());
         $packingSlipItemData['orderItem'] = $allocationItem->getOrderItem();
+        $packingSlipItemData['productUnit'] = $allocationItem->getOrderItem()->getProductUnit();
         $this->assignData($packingSlipItem, $packingSlipItemData);
 
         return $packingSlipItem;

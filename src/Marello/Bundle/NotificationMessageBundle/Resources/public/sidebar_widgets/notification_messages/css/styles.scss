@@ -1,0 +1,54 @@
+/* @theme: admin.oro; */
+
+/* stylelint-disable no-descending-specificity, selector-max-compound-selectors */
+
+.sidebar-widget.sidebar-widget-notification-messages {
+    .no-messages {
+        padding: 10px 16px;
+        margin: 0;
+    }
+
+    .notification-messages-list-wrapper {
+        position: relative;
+        overflow: auto;
+    }
+
+    .widget-mask-wrapper {
+        min-height: 104px;
+        position: relative;
+    }
+
+    .widget-mask-wrapper .loading-mask .loading-frame .box {
+        margin-left: 7%;
+        max-width: 80%;
+    }
+
+    .notification-message-widget-row:hover {
+        background-color: $primary-inverse;
+    }
+
+    .notification-message-widget-row {
+        padding: 10px 16px;
+        overflow: hidden;
+        border-bottom: 1px solid $additional-extra-lighten;
+        border-top: 1px solid $primary-860;
+        cursor: pointer;
+    }
+
+    .notification-message-widget-row.first {
+        border-top: none;
+    }
+
+    .notification-message-widget-row.last {
+        border-bottom: none;
+    }
+
+    .notification-message-widget-row .notification-title {
+        display: block;
+        color: $primary-200;
+        line-height: 1.2em;
+        margin-bottom: 3px;
+        padding-top: 5px;
+        padding-left: 5px;
+    }
+}

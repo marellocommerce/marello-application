@@ -1,0 +1,46 @@
+operations:
+    marello_return_create_shipment:
+        label: marello.shipping.shipment.create_shipment.button.label
+        enabled: true
+        routes:
+            - marello_return_return_view
+        acl_resource: marello_return_return_update
+        applications: [default]
+        preconditions:
+            '@empty': $.data.shipment
+        actions:
+            - '@call_service_method':
+                  service: Marello\Bundle\ReturnBundle\Factory\ReturnShippingContextFactory
+                  method: create
+                  method_parameters: [$.data]
+                  attribute: $.result.returnShippingContext
+            - '@marello_shipment_create':
+                 context: $.result.returnShippingContext
+                 method: $.data.order.shippingMethod
+                 methodType: $.data.order.shippingMethodType
+            - '@flush_entity': $.data
+            - '@flash_message':
+                  message: marello.shipping.shipment.create_shipment.message.success
+                  type: 'info'
+                  message_parameters:
+                      id: $identifier
+
+    marello_order_can_return:
+        label: marello.return.returnentity.button.label
+        enabled: true
+        button_options:
+            class: btn-primary icons-holder-text
+        routes:
+            - marello_order_order_view
+        acl_resource: marello_return_return_create
+        applications: [ default ]
+        preconditions:
+            '@and':
+                - '@extendable':
+                    events: [ extendable_condition.return_allowed ]
+        actions:
+            - '@redirect':
+                parameters:
+                    route: marello_return_return_create
+                    route_parameters:
+                        id: $id
