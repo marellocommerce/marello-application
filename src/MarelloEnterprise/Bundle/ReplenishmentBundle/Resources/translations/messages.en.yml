@@ -14,7 +14,7 @@ marelloenterprise:
             description.label:          Description
             organization.label:         Organization
             executed.label:             Executed
-
+            manual_items.label:         Manual Items
             messages:
                 success:
                     saved:                      Replenishment Order Config has been saved successfully
@@ -30,12 +30,15 @@ marelloenterprise:
             origin.label:               Origin
             destination.label:          Destination
             execution_date_time.label:  Execution DateTime
-            percentage.label:           Percentage of total inventory (%)
             description.label:          Description
             repl_order_items.label:     Replenishment Order Items
             ro_code.label:              Replenishment Order Code
             repl_order_config.label:    Replenishment Order Config
             organization.label:         Organization
+            type:
+                label:                  Type
+                automated.label:        Automated
+                manual.label:           Manual
 
         replenishmentorderitem:
             id.label:                  Id
@@ -48,6 +51,13 @@ marelloenterprise:
             product_sku.label:         Product Sku
             note.label:                Note
             inventory_qty.label:       Qty
+            quantity.label:            Quantity
+            all.label:                 All
+            all_quantity.label:        All Quantity
+            available.label:           Available
+            unit.label:                Unit
+            source.label:              Source
+            destination.label:         Destination
             total_inventory_qty.label: Total Inventory Qty Origin
             organization.label:        Organization
             inventory_batches.label:   Inventory Batches
@@ -57,9 +67,12 @@ marelloenterprise:
                     tooltip: '...'
                 products:
                     selector_window.title: Select Products
+                add_product:               Add Product
+                quantity.validation_error: Quantity must be equal to or less than available
 
         replenishment_strategies:
             equal_division:           Equal Division
+            manual:                   Manual
 
         menu:
             replenishment.label:      Replenishment
@@ -75,3 +88,6 @@ marelloenterprise:
         section:
             general:  General
             products: Products
+
+        ui:
+            continue: Continue

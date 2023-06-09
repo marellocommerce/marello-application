@@ -9,6 +9,10 @@ services:
         tags:
             - { name: form.type_extension, alias: marello_inventory_inventorylevel, extended_type: Marello\Bundle\InventoryBundle\Form\Type\InventoryLevelType }
 
+    MarelloEnterprise\Bundle\InventoryBundle\Form\Extension\ReshipmentExtension:
+        tags:
+            - { name: form.type_extension, alias: marello_inventory_reshipment, extended_type: Marello\Bundle\InventoryBundle\Form\Type\ReshipmentType }
+
     # Autocomplete search handler
     marelloenterprise_inventory.form.autocomplete.search_handler.warehouses:
         parent: oro_form.autocomplete.search_handler
@@ -131,5 +135,7 @@ services:
         arguments:
             - '@oro_entity.doctrine_helper'
             - '@marelloenterprise_inventory.form.data_transformer.warehouse'
+        calls:
+            - [setAclHelper, ['@oro_security.acl_helper']]
         tags:
             - { name: form.type, alias: marello_warehouse_grid }

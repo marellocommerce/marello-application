@@ -56,7 +56,6 @@ class ReplenishmentOrdersFromConfigProvider
                     ->setOrigin($origin)
                     ->setDestination($destination)
                     ->setExecutionDateTime($config->getExecutionDateTime())
-                    ->setPercentage($config->getPercentage())
                     ->setReplOrderConfig($config)
                     ->setDescription($config->getDescription());
                 $orders[sprintf('%s-%s', $origin->getId(), $destination->getId())] = $order;
@@ -67,6 +66,9 @@ class ReplenishmentOrdersFromConfigProvider
             $orderItem
                 ->setProduct($product)
                 ->setOrder($order);
+            if (!empty($result['allQuantity'])) {
+                $orderItem->setAllQuantity((bool) $result['allQuantity']);
+            }
             if ($calculateQuantities) {
                 $orderItem
                     ->setInventoryQty($result['quantity'])

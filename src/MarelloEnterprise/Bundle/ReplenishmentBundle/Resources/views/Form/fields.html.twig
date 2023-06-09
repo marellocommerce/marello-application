@@ -127,3 +127,138 @@
                 });
     </script>
 {% endblock %}
+
+{% block marello_replenishment_order_manual_item_widget %}
+    <td>
+        <div class="fields-row replenishmentorderitem-line-item-product">
+            {{ form_widget(form.product) }}
+        </div>
+        {{ form_errors(form.product) }}
+    </td>
+    <td>
+        <div class="fields-row replenishmentorderitem-line-item-source">
+            {{ form_widget(form.origin) }}
+        </div>
+        {{ form_errors(form.origin) }}
+    </td>
+    <td>
+        <div class="fields-row replenishmentorderitem-line-item-quantity">
+            {{ form_widget(form.quantity) }}
+        </div>
+        {{ form_errors(form.quantity) }}
+    </td>
+    <td>
+        <div class="fields-row replenishmentorderitem-line-item-all">
+            {{ form_widget(form.allQuantity) }}
+        </div>
+        {{ form_errors(form.allQuantity) }}
+    </td>
+    <td>
+        <div class="fields-row replenishmentorderitem-line-item-available">
+            {{ form_widget(form.availableQuantity) }}
+        </div>
+        {{ form_errors(form.availableQuantity) }}
+    </td>
+    <td>
+        <div class="fields-row replenishmentorderitem-line-item-unit">
+            {{ form_widget(form.unit) }}
+        </div>
+        {{ form_errors(form.unit) }}
+    </td>
+    <td>
+        <div class="fields-row replenishmentorderitem-line-item-product">
+            {{ form_widget(form.destination) }}
+        </div>
+        {{ form_errors(form.destination) }}
+    </td>
+{% endblock %}
+
+{% macro marello_replenishment_order_manual_item_prototype(widget) %}
+    {% if 'collection' in widget.vars.block_prefixes %}
+        {% set form = widget.vars.prototype %}
+        {% set name = widget.vars.full_name ~ '[' ~ widget.vars.prototype.vars.name ~ ']' %}
+        {% set disabled = widget.vars.disabled %}
+        {% set allow_delete = widget.vars.allow_delete %}
+    {% else %}
+        {% if widget.vars.disallow_delete is defined and widget.vars.disallow_delete %}
+            {% set allow_delete = false %}
+        {% else %}
+            {% set allow_delete = widget.parent.vars.allow_delete %}
+        {% endif %}
+        {% set form = widget %}
+        {% set name = widget.vars.full_name %}
+        {% set disabled = widget.parent.vars.disabled %}
+    {% endif %}
+
+    {% set page_component_options = { 'disabled': not allow_delete } %}
+
+    <tr data-content="{{ name }}"
+        class="marello-line-item display-values"
+        data-page-component-module="oroui/js/app/components/view-component"
+        data-page-component-options="{{ {view: 'marelloenterprisereplenishment/js/app/views/replenishment-order-manual-item-view'}|json_encode }}"
+        data-layout="separate">
+        {{ form_widget(form) }}
+        {% if allow_delete %}
+            <td class="marello-line-item-remove">
+                <button type="button" class="marello-remove-line-item btn icons-holder"><i class="fa-remove"></i></button>
+            </td>
+        {% elseif widget.parent.vars.allow_delete %}
+            <td></td>
+        {% endif %}
+    </tr>
+{% endmacro %}
+
+{% block marello_replenishment_order_manual_item_collection_widget %}
+    {% import _self as fields %}
+
+    <div class="replenishment-line-items"
+         data-page-component-module="oroui/js/app/components/view-component"
+         data-page-component-options="{{ {
+             view: 'marelloenterprisereplenishment/js/app/views/replenishment-order-manual-items-view',
+             data: data|default({})
+         }|json_encode }}"
+         data-layout="separate">
+        {% apply spaceless %}
+            {% set widgetContainerAttributes = block('widget_container_attributes') %}
+            {% if prototype is defined %}
+                {% set prototype_html = fields.marello_replenishment_order_manual_item_prototype(form, widgetContainerAttributes) %}
+            {% endif %}
+            {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'marello-item-collection grid-container' }) %}
+            {% set id = id ~ '_collection' %}
+            <div class="row-oro">
+                {% set prototype_name = form.vars.prototype_name %}
+                <div {{ block('widget_container_attributes') }}>
+                    <table class="grid table-hover table table-bordered table-condensed">
+                        <thead>
+                        <tr>
+                            <th class="replenishmentorderitem-line-item-product"><span>{{ 'marelloenterprise.replenishment.replenishmentorderitem.product.label'|trans }}</span></th>
+                            <th class="replenishmentorderitem-line-item-source"><span>{{ 'marelloenterprise.replenishment.replenishmentorderitem.source.label'|trans }}</span></th>
+                            <th class="replenishmentorderitem-line-item-quantity"><span>{{ 'marelloenterprise.replenishment.replenishmentorderitem.quantity.label'|trans }}</span></th>
+                            <th class="replenishmentorderitem-line-item-all"><span>{{ 'marelloenterprise.replenishment.replenishmentorderitem.all.label'|trans }}</span></th>
+                            <th class="replenishmentorderitem-line-item-available"><span>{{ 'marelloenterprise.replenishment.replenishmentorderitem.available.label'|trans }}</span></th>
+                            <th class="replenishmentorderitem-line-item-unit"><span>{{ 'marelloenterprise.replenishment.replenishmentorderitem.unit.label'|trans }}</span></th>
+                            <th class="replenishmentorderitem-line-item-destination"><span>{{ 'marelloenterprise.replenishment.replenishmentorderitem.destination.label'|trans }}</span></th>
+                            {% if form.vars.allow_delete %}
+                                <th class="replenishmentorderitem-line-item-actions"></th>
+                            {% endif %}
+                        </tr>
+                        </thead>
+                        <tbody data-last-index="{{ form.children|length}}" data-prototype-name="{{ prototype_name }}"{% if prototype_html is defined %} data-prototype="{{ prototype_html|escape }}"{% endif %}>
+                        {% if form.children|length %}
+                            {% for child in form.children %}
+                                {{ fields.marello_replenishment_order_manual_item_prototype(child, widgetContainerAttributes) }}
+                            {% endfor %}
+                        {% elseif show_form_when_empty and prototype_html is defined %}
+                            {{ prototype_html|replace({(prototype_name): '0'})|raw }}
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+
+                {% if allow_add %}
+                    <a class="btn marello-add-line-item" data-container=".marello-item-collection tbody" href="javascript: void(0);"><i class="fa-plus"></i>{{ form.vars.add_label|default('marelloenterprise.replenishment.form.replenishmentorderconfig.add_product')|trans }}</a>
+                {% endif %}
+            </div>
+        {% endapply %}
+    </div>
+{% endblock %}

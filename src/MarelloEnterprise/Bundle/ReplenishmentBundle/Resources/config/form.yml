@@ -31,17 +31,15 @@ services:
         tags:
             - { name: form.type }
 
-    marelloenterprise_replenishment.replenishment_order_config.form:
-        class: 'Symfony\Component\Form\Form'
-        factory: ['@form.factory', 'create']
-        arguments:
-            - 'MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Type\ReplenishmentOrderConfigType'
-
     marelloenterprise_replenishment.form.handler.replenishment_order_config:
         class: 'MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Handler\ReplenishmentOrderConfigHandler'
         public: true
         arguments:
-            - '@marelloenterprise_replenishment.replenishment_order_config.form'
-            - '@request_stack'
             - '@doctrine.orm.entity_manager'
             - '@marelloenterprise_replenishment.provider.replenishment_orders_from_config'
+
+    MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Type\ReplenishmentOrderManualItemType:
+        arguments:
+            - '@translator'
+        tags:
+            - { name: form.type }

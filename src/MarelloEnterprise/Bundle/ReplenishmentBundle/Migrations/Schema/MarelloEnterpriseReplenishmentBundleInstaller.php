@@ -20,7 +20,7 @@ class MarelloEnterpriseReplenishmentBundleInstaller implements Installation, Act
      */
     public function getMigrationVersion()
     {
-        return 'v2_0';
+        return 'v2_1';
     }
 
     /**
@@ -32,11 +32,13 @@ class MarelloEnterpriseReplenishmentBundleInstaller implements Installation, Act
         $this->createMarelloReplenishmentOrderConfigTable($schema);
         $this->createMarelloReplenishmentOrderTable($schema);
         $this->createMarelloReplenishmentOrderItemTable($schema);
+        $this->createMarelloReplenishmentOrderManualItemTable($schema);
 
         /** Foreign keys generation **/
         $this->addMarelloReplenishmentOrderConfigForeignKeys($schema);
         $this->addMarelloReplenishmentOrderForeignKeys($schema);
         $this->addMarelloReplenishmentOrderItemForeignKeys($schema);
+        $this->addMarelloReplenishmentOrderManualItemConfigForeignKeys($schema);
     }
 
     /**
@@ -47,12 +49,12 @@ class MarelloEnterpriseReplenishmentBundleInstaller implements Installation, Act
         $table = $schema->createTable('marello_repl_order_config');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);
-        $table->addColumn('origins', 'json_array', ['notnull' => true, 'comment' => '(DC2Type:json_array)']);
-        $table->addColumn('destinations', 'json_array', ['notnull' => true, 'comment' => '(DC2Type:json_array)']);
-        $table->addColumn('products', 'json_array', ['notnull' => true, 'comment' => '(DC2Type:json_array)']);
+        $table->addColumn('origins', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
+        $table->addColumn('destinations', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
+        $table->addColumn('products', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
         $table->addColumn('strategy', 'string', ['length' => 50, 'notnull' => true]);
         $table->addColumn('execution_date_time', 'datetime', ['notnull' => false]);
-        $table->addColumn('percentage', 'float', ['notnull' => true]);
+        $table->addColumn('percentage', 'float', ['notnull' => false]);
         $table->addColumn('description', 'text', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['organization_id']);
@@ -70,13 +72,12 @@ class MarelloEnterpriseReplenishmentBundleInstaller implements Installation, Act
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('repl_order_number', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('origin_id', 'integer', ['notnull' => true]);
-        $table->addColumn('destination_id', 'integer', ['notnull' => true]);
+        $table->addColumn('origin_id', 'integer', ['notnull' => false]);
+        $table->addColumn('destination_id', 'integer', ['notnull' => false]);
         $table->addColumn('execution_date_time', 'datetime', ['notnull' => false]);
-        $table->addColumn('percentage', 'float', ['notnull' => true]);
         $table->addColumn('description', 'text', ['notnull' => false]);
         $table->addColumn('ro_code', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('repl_order_config_id', 'integer', ['notnull' => true]);
+        $table->addColumn('repl_order_config_id', 'integer', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
 
@@ -97,14 +98,32 @@ class MarelloEnterpriseReplenishmentBundleInstaller implements Installation, Act
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('repl_order_id', 'integer', ['notnull' => true]);
-        $table->addColumn('product_id', 'integer', ['notnull' => true]);
+        $table->addColumn('product_id', 'integer', ['notnull' => false]);
         $table->addColumn('product_name', 'string', ['length' => 255]);
         $table->addColumn('product_sku', 'string', ['length' => 255]);
         $table->addColumn('note', 'text', ['notnull' => false]);
         $table->addColumn('inventory_qty', 'integer', ['notnull' => false]);
         $table->addColumn('total_inventory_qty', 'integer', ['notnull' => false]);
+        $table->addColumn('all_quantity', 'boolean', ['notnull' => false]);
         $table->addColumn('inventory_batches', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
         $table->addIndex(['organization_id']);
+        $table->setPrimaryKey(['id']);
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    protected function createMarelloReplenishmentOrderManualItemTable(Schema $schema)
+    {
+        $table = $schema->createTable('marello_repl_order_m_item_config');
+        $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('origin_id', 'integer', ['notnull' => false]);
+        $table->addColumn('destination_id', 'integer', ['notnull' => false]);
+        $table->addColumn('product_id', 'integer', ['notnull' => false]);
+        $table->addColumn('quantity', 'integer', ['notnull' => false]);
+        $table->addColumn('all_quantity', 'boolean', []);
+        $table->addColumn('available_quantity', 'integer', ['notnull' => false]);
+        $table->addColumn('order_config_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
     }
 
@@ -138,19 +157,19 @@ class MarelloEnterpriseReplenishmentBundleInstaller implements Installation, Act
             $schema->getTable('marello_inventory_warehouse'),
             ['origin_id'],
             ['id'],
-            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_inventory_warehouse'),
             ['destination_id'],
             ['id'],
-            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_repl_order_config'),
             ['repl_order_config_id'],
             ['id'],
-            ['onDelete' => null, 'onUpdate' => null]
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
     }
 
@@ -170,11 +189,43 @@ class MarelloEnterpriseReplenishmentBundleInstaller implements Installation, Act
             $schema->getTable('marello_product_product'),
             ['product_id'],
             ['id'],
-            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_organization'),
             ['organization_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    protected function addMarelloReplenishmentOrderManualItemConfigForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('marello_repl_order_m_item_config');
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_inventory_warehouse'),
+            ['origin_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_inventory_warehouse'),
+            ['destination_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_product_product'),
+            ['product_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_repl_order_config'),
+            ['order_config_id'],
             ['id'],
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
