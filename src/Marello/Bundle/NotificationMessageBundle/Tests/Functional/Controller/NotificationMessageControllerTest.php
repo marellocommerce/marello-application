@@ -41,16 +41,4 @@ class NotificationMessageControllerTest extends WebTestCase
         $this->assertResponseStatusCodeEquals($this->client->getResponse(), Response::HTTP_OK);
         $this->assertStringContainsString(LoadNotificationMessagesData::NOTIFICATION_MESSAGE_MESSAGE_1, $crawler->html());
     }
-
-    public function testInfo()
-    {
-        $notificationMessage = $this->getReference(LoadNotificationMessagesData::NOTIFICATION_MESSAGE_MESSAGE_1);
-        $this->client->request(
-            'GET',
-            $this->getUrl('marello_notificationmessage_widget_info', ['id' => $notificationMessage->getId()])
-        );
-
-        $result = $this->getJsonResponseContent($this->client->getResponse(), Response::HTTP_OK);
-        $this->assertEquals($notificationMessage->getId(), $result['entity']->getId());
-    }
 }

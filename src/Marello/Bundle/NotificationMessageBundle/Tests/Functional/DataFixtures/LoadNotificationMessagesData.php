@@ -38,6 +38,7 @@ class LoadNotificationMessagesData extends AbstractFixture implements
         $purchaseOrder = $this->getReference(LoadPurchaseOrderData::PURCHASE_ORDER_1_REF);
 
         $notificationMessage = new NotificationMessage();
+        $notificationMessage->setTitle(self::NOTIFICATION_MESSAGE_MESSAGE_1);
         $notificationMessage->setMessage(self::NOTIFICATION_MESSAGE_MESSAGE_1);
         $notificationMessage->setSolution('Any');
         $notificationMessage->setResolved($this->getEnumValue(
@@ -57,8 +58,8 @@ class LoadNotificationMessagesData extends AbstractFixture implements
         ));
         $notificationMessage->setRelatedItemClass(PurchaseOrder::class);
         $notificationMessage->setRelatedItemId($purchaseOrder->getId());
-        $notificationMessage->addActivityTarget($purchaseOrder);
-        $this->setReference(self::NOTIFICATION_MESSAGE_MESSAGE_1. $notificationMessage);
+
+        $this->setReference(self::NOTIFICATION_MESSAGE_MESSAGE_1, $notificationMessage);
 
         $manager->persist($notificationMessage);
         $manager->flush();

@@ -50,26 +50,6 @@ class NotificationMessageController extends AbstractController
     }
 
     /**
-     * @Route("/widget/info/{id}", name="marello_notificationmessage_widget_info", requirements={"id"="\d+"})
-     * @AclAncestor("marello_notificationmessage_view")
-     * @Template("@MarelloNotificationMessage/NotificationMessage/widget/info.html.twig")
-     * @param Request $request
-     * @param NotificationMessage $entity
-     * @return array
-     */
-    public function infoAction(Request $request, NotificationMessage $entity): array
-    {
-        $targetEntity = $this->getTargetEntity($request);
-        $renderContexts = null !== $targetEntity;
-
-        return [
-            'entity' => $entity,
-            'target' => $targetEntity,
-            'renderContexts' => $renderContexts,
-        ];
-    }
-
-    /**
      * @Route(
      *     "/widget/sidebar-notification-messages/{perPage}",
      *     name="marello_notificationmessage_widget_sidebar_notification_messages",
@@ -112,22 +92,6 @@ class NotificationMessageController extends AbstractController
         }
 
         return $types;
-    }
-
-    /**
-     * @param Request $request
-     * @return object|null
-     */
-    protected function getTargetEntity(Request $request)
-    {
-        $entityRoutingHelper = $this->container->get(EntityRoutingHelper::class);
-        $targetEntityClass = $entityRoutingHelper->getEntityClassName($request, 'targetActivityClass');
-        $targetEntityId = $entityRoutingHelper->getEntityId($request, 'targetActivityId');
-        if (!$targetEntityClass || !$targetEntityId) {
-            return null;
-        }
-
-        return $entityRoutingHelper->getEntity($targetEntityClass, $targetEntityId);
     }
 
     protected function getEventDispatcher()
