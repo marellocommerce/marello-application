@@ -6,6 +6,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
+use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
 use Marello\Bundle\PurchaseOrderBundle\Form\Handler\PurchaseOrderCreateHandler;
 use Marello\Bundle\PurchaseOrderBundle\Form\Handler\PurchaseOrderCreateStepOneHandler;
 use Marello\Bundle\PurchaseOrderBundle\Form\Handler\PurchaseOrderUpdateHandler;
