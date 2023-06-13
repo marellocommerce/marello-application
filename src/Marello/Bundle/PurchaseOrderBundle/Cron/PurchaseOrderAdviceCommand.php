@@ -2,6 +2,10 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\Cron;
 
+use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageResolvedInterface;
+use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageTypeInterface;
+use Marello\Bundle\PurchaseOrderBundle\Provider\PurchaseOrderCandidatesProvider;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -15,7 +19,9 @@ use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\PurchaseOrderBundle\Model\PurchaseOrder;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
 use Marello\Bundle\NotificationBundle\Provider\EmailSendProcessor;
+use Marello\Bundle\NotificationMessageBundle\Model\NotificationMessageContext;
 use Marello\Bundle\NotificationMessageBundle\Event\CreateNotificationMessageEvent;
+use Marello\Bundle\NotificationMessageBundle\Event\ResolveNotificationMessageEvent;
 use Marello\Bundle\NotificationMessageBundle\Factory\NotificationMessageContextFactory;
 use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageSourceInterface;
 
@@ -71,23 +77,25 @@ class PurchaseOrderAdviceCommand extends Command implements CronCommandInterface
             return self::EXIT_CODE;
         }
 
-        $doctrine = $this->container->get('doctrine');
-        $aclHelper = $this->container->get('oro_security.acl_helper');
-        $advisedItems = $doctrine
-            ->getManagerForClass(Product::class)
-            ->getRepository(Product::class)
-            ->getPurchaseOrderItemsCandidates($aclHelper);
+        $context = $this->createNotificationContext();
+        /** @var PurchaseOrderCandidatesProvider $provider */
+        $provider = $this
+            ->container
+            ->get('Marello\Bundle\PurchaseOrderBundle\Provider\PurchaseOrderCandidatesProvider');
+        $advisedItems = $provider->getPurchaseOrderCandidates();
         if (empty($advisedItems)) {
             $output->writeln('There are no advised items for PO notification. The command will not run.');
+            $this->container
+                ->get('event_dispatcher')
+                ->dispatch(
+                    new ResolveNotificationMessageEvent($context),
+                    ResolveNotificationMessageEvent::NAME
+                );
             return self::EXIT_CODE;
         }
 
         $entity = new PurchaseOrder();
-        $organization = $doctrine
-            ->getManagerForClass(Organization::class)
-            ->getRepository(Organization::class)
-            ->getFirst();
-        $entity->setOrganization($organization);
+        $entity->setOrganization($this->getOrganization());
 
         foreach ($advisedItems as $advisedItem) {
             $poItem = new PurchaseOrderItem();
@@ -99,30 +107,6 @@ class PurchaseOrderAdviceCommand extends Command implements CronCommandInterface
         }
 
         if ($entity->getItems()->count() > 0) {
-            $url = $this
-                ->container
-                ->get('router')
-                ->generate('marello_purchase_order_widget_purchase_order_candidates_grid', [], 302);
-            $translation = $this
-                ->container
-                ->get('translator')
-                ->trans(
-                    'marello.notificationmessage.purchaseorder.candidates.solution',
-                    ['%url%' => $url],
-                    'notificationMessage'
-                );
-            $context = NotificationMessageContextFactory::createInfo(
-                NotificationMessageSourceInterface::NOTIFICATION_MESSAGE_SOURCE_SYSTEM,
-                'marello.notificationmessage.purchaseorder.candidates.title',
-                'marello.notificationmessage.purchaseorder.candidates.message',
-                $translation,
-                null,
-                null,
-                null,
-                null,
-                null,
-                $organization
-            );
             $this->container
                 ->get('event_dispatcher')
                 ->dispatch(
@@ -133,7 +117,7 @@ class PurchaseOrderAdviceCommand extends Command implements CronCommandInterface
 
         $recipient = new Customer();
         $recipient->setEmail($configManager->get('marello_purchaseorder.purchaseorder_notification_address'));
-        $recipient->setOrganization($organization);
+        $recipient->setOrganization($this->getOrganization());
         /** @var EmailSendProcessor $sendProcessor */
         $sendProcessor = $this->container->get('marello_notification.email.send_processor');
         $sendProcessor->sendNotification(
@@ -143,5 +127,50 @@ class PurchaseOrderAdviceCommand extends Command implements CronCommandInterface
         );
 
         return self::EXIT_CODE;
+    }
+
+    /**
+     * @return OrganizationInterface
+     */
+    protected function getOrganization()
+    {
+        return $this->container->get('doctrine')
+            ->getManagerForClass(Organization::class)
+            ->getRepository(Organization::class)
+            ->getFirst();
+    }
+
+    /**
+     * @return NotificationMessageContext
+     */
+    protected function createNotificationContext()
+    {
+        $url = $this
+            ->container
+            ->get('router')
+            ->generate('marello_purchase_order_widget_purchase_order_candidates_grid', [], 302);
+        $translation = $this
+            ->container
+            ->get('translator')
+            ->trans(
+                'marello.notificationmessage.purchaseorder.candidates.solution',
+                ['%url%' => $url],
+                'notificationMessage'
+            );
+
+        return NotificationMessageContextFactory::create(
+            NotificationMessageTypeInterface::NOTIFICATION_MESSAGE_TYPE_INFO,
+            NotificationMessageResolvedInterface::NOTIFICATION_MESSAGE_RESOLVED_NO,
+            NotificationMessageSourceInterface::NOTIFICATION_MESSAGE_SOURCE_SYSTEM,
+            'marello.notificationmessage.purchaseorder.candidates.title',
+            'marello.notificationmessage.purchaseorder.candidates.message',
+            $translation,
+            null,
+            null,
+            null,
+            null,
+            null,
+            $this->getOrganization()
+        );
     }
 }

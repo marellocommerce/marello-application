@@ -7,6 +7,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\NotificationMessageBundle\DependencyInjection\Configuration;
 use Marello\Bundle\NotificationMessageBundle\Entity\NotificationMessage;
 use Marello\Bundle\NotificationMessageBundle\Event\CreateNotificationMessageEvent;
+use Marello\Bundle\NotificationMessageBundle\Event\ResolveNotificationMessageEvent;
 use Marello\Bundle\NotificationMessageBundle\Model\NotificationMessageContext;
 use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageResolvedInterface;
 use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageSourceInterface;
@@ -17,7 +18,7 @@ use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class CreateNotificationMessageEventListener
+class NotificationMessageEventListener
 {
     /**
      * @var EntityManagerInterface
@@ -31,6 +32,10 @@ class CreateNotificationMessageEventListener
     ) {
     }
 
+    /**
+     * @param CreateNotificationMessageEvent $event
+     * @return void
+     */
     public function onCreate(CreateNotificationMessageEvent $event): void
     {
         $context = $event->getContext();
@@ -60,6 +65,45 @@ class CreateNotificationMessageEventListener
         }
     }
 
+    /**
+     * @param ResolveNotificationMessageEvent $event
+     * @return void
+     */
+    public function onResolve(ResolveNotificationMessageEvent $event): void
+    {
+        $context = $event->getContext();
+
+        $attributes = $this->getBaseAttributes($context);
+        if ($context->relatedEntity) {
+            $attributes['relatedItemClass'] = get_class($context->relatedEntity);
+            $idValues = $this->getEntityManager()
+                ->getClassMetadata($attributes['relatedItemClass'])
+                ->getIdentifierValues($context->relatedEntity);
+            $attributes['relatedItemId'] = reset($idValues);
+        }
+
+        /** @var NotificationMessage $existingMessage */
+        $existingMessage = $this->getEntityManager()
+            ->getRepository(NotificationMessage::class)
+            ->findOneBy($attributes);
+        if ($existingMessage) {
+            $resolved = $this->getEnumValue(
+                NotificationMessageResolvedInterface::NOTIFICATION_MESSAGE_RESOLVED_ENUM_CODE,
+                NotificationMessageResolvedInterface::NOTIFICATION_MESSAGE_RESOLVED_YES
+            );
+            $existingMessage->setResolved($resolved);
+
+            if ($context->flush) {
+                $this->getEntityManager()->flush();
+            }
+        }
+    }
+
+    /**
+     * @param NotificationMessageContext $context
+     * @param array $attributes
+     * @return NotificationMessage
+     */
     private function createNewNotificationMessage(
         NotificationMessageContext $context,
         array $attributes
@@ -115,6 +159,10 @@ class CreateNotificationMessageEventListener
         return $notificationMessage;
     }
 
+    /**
+     * @param NotificationMessageContext $context
+     * @return array
+     */
     private function getBaseAttributes(NotificationMessageContext $context): array
     {
         $context->title = $this->translator->trans($context->title, [], 'notificationMessage');
@@ -129,6 +177,11 @@ class CreateNotificationMessageEventListener
         ];
     }
 
+    /**
+     * @param string $code
+     * @param string $id
+     * @return AbstractEnumValue
+     */
     private function getEnumValue(string $code, string $id): AbstractEnumValue
     {
         $enumRepo = $this->getEntityManager()->getRepository(ExtendHelper::buildEnumValueClassName($code));
@@ -140,6 +193,9 @@ class CreateNotificationMessageEventListener
         return $enumValue;
     }
 
+    /**
+     * @return EntityManagerInterface
+     */
     private function getEntityManager(): EntityManagerInterface
     {
         if (!$this->em) {

@@ -5,7 +5,10 @@
             <span class="marello-notification-message-type message-type-{{ notificationMessage.alertType.id }}">
                 {{ notificationMessage.alertType }}
             </span>
-            {% set label = oro_entity_config(notificationMessage.relatedItemClass).label|trans ~ ' ' ~ notificationMessage.relatedItemId %}
+            {% set label = null %}
+            {% if notificationMessage.relatedItemClass is not null %}
+                {% set label = oro_entity_config(notificationMessage.relatedItemClass).label|trans ~ ' ' ~ notificationMessage.relatedItemId %}
+            {% endif %}
             <span class="notification-title">{{ label ? notificationMessage.title ~ ' ' ~ label : notificationMessage.title}}</span>
         </div>
     {% endfor %}

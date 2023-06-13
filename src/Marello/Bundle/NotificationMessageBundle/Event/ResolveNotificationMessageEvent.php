@@ -6,9 +6,9 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 use Marello\Bundle\NotificationMessageBundle\Model\NotificationMessageContext;
 
-class CreateNotificationMessageEvent extends Event
+class ResolveNotificationMessageEvent extends Event
 {
-    public const NAME = 'marello_notificationmessage.create_notification_message';
+    public const NAME = 'marello_notificationmessage.resolve_notification_message';
 
     public function __construct(
         private NotificationMessageContext $context
