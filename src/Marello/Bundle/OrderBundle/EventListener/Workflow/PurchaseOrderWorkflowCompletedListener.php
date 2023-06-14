@@ -6,7 +6,6 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
-use Marello\Bundle\InventoryBundle\Provider\AvailableInventoryProvider;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\OrderBundle\Event\OrderItemsForNotificationEvent;
@@ -41,70 +40,18 @@ class PurchaseOrderWorkflowCompletedListener
     private $onDemandItems = [];
 
     /**
-     * @var Registry
-     */
-    private $doctrine;
-
-    /**
-     * @var WorkflowManager
-     */
-    private $workflowManager;
-
-    /**
-     * @var AvailableInventoryProvider
-     */
-    private $availableInventoryProvider;
-
-    /**
-     * @var OrderShippingContextFactory
-     */
-    private $orderShippingContextFactory;
-
-    /**
-     * @var ShippingMethodProviderInterface
-     */
-    private $shippingMethodProvider;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * @var ServiceLink
-     */
-    protected $emailSendProcessorLink;
-
-    /**
      * @var PackingSlip|null
      */
     private $packingSlip;
 
-    /**
-     * @param Registry $doctrine
-     * @param WorkflowManager $workflowManager
-     * @param AvailableInventoryProvider $availableInventoryProvider
-     * @param OrderShippingContextFactory $orderShippingContextFactory
-     * @param ShippingMethodProviderInterface $shippingMethodProvider
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param ServiceLink $emailSendProcessorLink
-     */
     public function __construct(
-        Registry $doctrine,
-        WorkflowManager $workflowManager,
-        AvailableInventoryProvider $availableInventoryProvider,
-        OrderShippingContextFactory $orderShippingContextFactory,
-        ShippingMethodProviderInterface $shippingMethodProvider,
-        EventDispatcherInterface $eventDispatcher,
-        ServiceLink $emailSendProcessorLink
+        private Registry $doctrine,
+        private WorkflowManager $workflowManager,
+        private OrderShippingContextFactory $orderShippingContextFactory,
+        private ShippingMethodProviderInterface $shippingMethodProvider,
+        private EventDispatcherInterface $eventDispatcher,
+        protected ServiceLink $emailSendProcessorLink
     ) {
-        $this->doctrine = $doctrine;
-        $this->workflowManager = $workflowManager;
-        $this->availableInventoryProvider = $availableInventoryProvider;
-        $this->orderShippingContextFactory = $orderShippingContextFactory;
-        $this->shippingMethodProvider = $shippingMethodProvider;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->emailSendProcessorLink = $emailSendProcessorLink;
     }
 
     /**

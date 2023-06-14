@@ -86,7 +86,6 @@ class InventoryItemController extends AbstractController
         return $result;
     }
 
-
     /**
      * @Route(
      *     path="/widget/info/{id}",
@@ -108,6 +107,7 @@ class InventoryItemController extends AbstractController
     }
 
     /**
+     * @deprecated datagrid is now rendered inside view instead of separate widget
      * @Route(
      *     path="/widget/datagrid/{id}",
      *     name="marello_inventory_widget_datagrid",

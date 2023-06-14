@@ -69,13 +69,19 @@ marello:
             inventory_levels.label:        Inventory Levels
             organization.label:            Organization
             warehouse.label:               Warehouse
-            backorder_allowed.label:       Backorder allowed
+            backorder_allowed:
+                label:                     Backorder allowed
+                grid.label:                Backorder
             max_qty_to_backorder.label:    Max Qty per Order
-            can_preorder.label:            Pre-order allowed
+            can_preorder:
+                label:                     Pre-order allowed
+                grid.label:                Pre-order
             max_qty_to_preorder.label:     Max Qty per Order
             back_orders_datetime.label:    Backorders Datetime
             pre_orders_datetime.label:     Pre-orders Datetime
-            order_on_demand_allowed.label: Order on demand allowed
+            order_on_demand_allowed:
+                label:                     Order on demand allowed
+                grid.label:                Order on Demand
             enable_batch_inventory.label:  Enable Batch Inventory
             product_unit.label:            Unit
 
@@ -92,9 +98,15 @@ marello:
             entity_plural_label:            Inventory Levels
             entity_grid_all_view_label:     All %entity_plural_label%
             id.label:                       Id
-            inventory.label:                Inventory Qty
-            allocated_inventory.label:      Allocated Inventory Qty
-            virtual_inventory.label:        Virtual Inventory Qty
+            inventory:
+                label:                      Inventory Qty
+                grid.label:                 On Hand Qty
+            allocated_inventory:
+                label:                      Allocated Inventory Qty
+                grid.label:                 Allocated Qty
+            virtual_inventory:
+                label:                      Virtual Inventory Qty
+                grid.label:                 Virtual Qty
             expected_inventory.label:       Expected Inventory Qty
             inventory_diff.label:           Inventory Qty Change
             allocated_inventory_diff.label: Allocated Inventory Qty Change
@@ -148,7 +160,7 @@ marello:
             inventory_level_qty.label:      InventoryLevel Qty
             allocated_inventory_level_qty.label: Allocated InventoryLevel Qty
             warehouse_name.label:           Warehouse
-
+            inventory_batch.label:          Inventory Batch
 
         balancedinventorylevel:
             id.label:                       Id
@@ -182,11 +194,13 @@ marello:
             shipping_address.label:         Shipping Address
             state.label:                    State
             status.label:                   Status
+            allocation_context.label:       Context
             warehouse.label:                Warehouse
-
             quantity_allocated.label:       Allocated Quantity
             total_quantity_allocated.label: '%allocatedQty% of %totalQty% allocated'
             page_title.view:                '%entity_label% #%id%'
+            reshipment_reason.label:        Reshipment reason
+            shipment.label:                 Shipment
         allocationitem:
             id.label:                       Id
             entity_label:                   Allocation Item
@@ -202,9 +216,15 @@ marello:
             quantity.label:                 Quantity
             quantity_confirmed.label:       Quantity Confirmed
             quantity_rejected.label:        Quantity Rejected
+            total_quantity.label:           Total Quantity
             organization.label:             Organization
             warehouse.label:                Warehouse
 
+        reshipment:
+            label:                          Create Shipment
+            quantity.validation_error:      Quantity must be equal to or less than ordered
+            available_quantity.validation_error: Quantity must be equal to or less than available
+            button.label:                   Create Reshipment
         information.label:                  Inventory Information
         movements.label:                    Inventory Movements
         balancing:
@@ -252,6 +272,7 @@ marello:
                 warehouse.saved:        Warehouse has been saved successfully
                 inventoryitem.saved:    Inventory Item has been saved successfully
                 inventorybatches.saved:    Inventory Batches have been saved successfully
+                reshipment.saved: Reshipment has been saved successfully
                 inventory_rebalance.started: Rebalance started successfully. You will receive email notification upon completion.
             error:
                 warehouse.not_found:    No warehouse found, cannot update a new level without existing warehouse

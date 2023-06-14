@@ -13,9 +13,11 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
 
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use Marello\Bundle\ShippingBundle\Entity\HasShipmentTrait;
 use Marello\Bundle\OrderBundle\Entity\OrderAwareInterface;
 use Marello\Bundle\InventoryBundle\Model\ExtendAllocation;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
+use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 
 /**
@@ -50,8 +52,10 @@ use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 class Allocation extends ExtendAllocation implements
     DerivedPropertyAwareInterface,
     OrganizationAwareInterface,
-    OrderAwareInterface
+    OrderAwareInterface,
+    ShippingAwareInterface
 {
+    use HasShipmentTrait;
     use EntityCreatedUpdatedAtTrait;
     use AuditableOrganizationAwareTrait;
     
@@ -186,20 +190,6 @@ class Allocation extends ExtendAllocation implements
     protected $sourceEntity;
 
     /**
-     * @ORM\Column(name="comment", type="text", nullable=true)
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "dataaudit"={
-     *              "auditable"=true
-     *          }
-     *      }
-     * )
-     *
-     * @var string
-     */
-    protected $comment;
-
-    /**
      * @ORM\Column(name="allocation_number", type="string", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
@@ -236,6 +226,30 @@ class Allocation extends ExtendAllocation implements
      * )
      */
     protected $status;
+
+    /**
+     * @var \Extend\Entity\EV_Marello_Allocation_AllocationContext
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $allocationContext;
+
+    /**
+     * @var \Extend\Entity\EV_Marello_Allocation_ReshipmentReason
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $reshipmentReason;
 
     /**
      * Allocation constructor.
@@ -446,26 +460,6 @@ class Allocation extends ExtendAllocation implements
     }
 
     /**
-     * @return string
-     */
-    public function getComment()
-    {
-        return $this->comment;
-    }
-
-    /**
-     * @param string $comment
-     *
-     * @return $this
-     */
-    public function setComment($comment)
-    {
-        $this->comment = $comment;
-
-        return $this;
-    }
-
-    /**
      * @return \Extend\Entity\EV_Marello_Allocation_State
      */
     public function getState(): AbstractEnumValue
@@ -504,6 +498,25 @@ class Allocation extends ExtendAllocation implements
     }
 
     /**
+     * @return \Extend\Entity\EV_Marello_Allocation_AllocationContext
+     */
+    public function getAllocationContext(): AbstractEnumValue
+    {
+        return $this->allocationContext;
+    }
+
+    /**
+     * @param \Extend\Entity\EV_Marello_Allocation_AllocationContext $allocationContext
+     * @return $this
+     */
+    public function setAllocationContext($allocationContext): self
+    {
+        $this->allocationContext = $allocationContext;
+
+        return $this;
+    }
+
+    /**
      * @return mixed
      */
     public function getAllocationNumber()
@@ -530,6 +543,25 @@ class Allocation extends ExtendAllocation implements
         if (!$this->allocationNumber) {
             $this->setAllocationNumber(sprintf('%09d', $id));
         }
+    }
+
+    /**
+     * @return \Extend\Entity\EV_Marello_Allocation_ReshipmentReason
+     */
+    public function getReshipmentReason(): AbstractEnumValue
+    {
+        return $this->reshipmentReason;
+    }
+
+    /**
+     * @param \Extend\Entity\EV_Marello_Allocation_ReshipmentReason $reshipmentReason
+     * @return $this
+     */
+    public function setReshipmentReason($reshipmentReason): self
+    {
+        $this->reshipmentReason = $reshipmentReason;
+
+        return $this;
     }
 
     /**

@@ -14,9 +14,17 @@ services:
             - [setContainer, ['@Psr\Container\ContainerInterface']]
         tags:
             - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: oro_currency.helper.currency_name, key: Oro\Bundle\CurrencyBundle\Utils\CurrencyNameHelper }
 
     Marello\Bundle\OrderBundle\Controller\OrderDashboardController:
         calls:
             - [setContainer, ['@Psr\Container\ContainerInterface']]
         tags:
             - { name: container.service_subscriber }
+
+    Marello\Bundle\OrderBundle\Controller\OrderShipmentLabelController:
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: oro_attachment.manager.public_mediacache, key: Oro\Bundle\GaufretteBundle\FileManager }

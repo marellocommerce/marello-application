@@ -55,10 +55,14 @@
                         UI.entityViewLink(entity.order, entity.order.orderNumber, 'marello_order_order_view')
                     )}}
                     {{ UI.renderProperty('marello.order.currency.label'|trans, entity.order.currency) }}
-                    {{ UI.renderHtmlProperty(
-                        'marello.order.sales_channel.label'|trans,
-                        UI.entityViewLink(entity.order.salesChannel, entity.order.salesChannelName, 'marello_sales_saleschannel_view')
-                    )}}
+                    {% if entity.order.salesChannel %}
+                        {{ UI.renderHtmlProperty(
+                            'marello.order.sales_channel.label'|trans,
+                            UI.entityViewLink(entity.order.salesChannel, entity.order.salesChannelName, 'marello_sales_saleschannel_view')
+                        )}}
+                    {% else %}
+                        {{ UI.renderProperty('marello.order.sales_channel.label'|trans, entity.order.salesChannelName) }}
+                    {% endif %}
                     {{ UI.renderProperty('marello.order.order_reference.label'|trans, entity.order.orderReference) }}
                     {{ UI.renderProperty('marello.order.create_date.label'|trans, entity.order.createdAt|oro_format_datetime) }}
                     {{ UI.renderProperty('marello.order.purchase_date.label'|trans, entity.order.purchaseDate|oro_format_datetime) }}
@@ -95,7 +99,6 @@
                         </div>
                         {{ UI.renderProperty('marello.return.returnentity.return_number.label'|trans, entity.returnNumber) }}
                         {{ UI.renderProperty('marello.return.returnentity.return_reference.label'|trans, entity.returnReference) }}
-                        {{ UI.renderProperty('marello.return.returnentity.track_trace_code.label'|trans, entity.trackTraceCode) }}
                         {{ UI.renderProperty('marello.return.returnentity.received_at.label'|trans, entity.receivedAt|oro_format_datetime) }}
                         {% set steps = marello_core_get_current_workflow_steps(entity) %}
                         {% for stepLabel, stepName in steps %}
@@ -111,6 +114,10 @@
     {% set generalSubblocks = generalSubblocks|merge([{'data' : [generalInformation] }]) %}
     {% set items %}
         {{ dataGrid.renderGrid('marello-return-items', {'returnId': entity.id}) }}
+    {% endset %}
+
+    {% set shippingInfoWidget %}
+        {{ dataGrid.renderGrid('marello-shipment-grid', {'shipmentId': entity.shipment.id}) }}
     {% endset %}
 
     {% set dataBlocks = [
@@ -131,6 +138,13 @@
             'class': 'active',
             'subblocks': [
                 { 'data' : [items] }
+            ]
+        },
+        {
+            'title': 'marello.shipping.sections.shipments'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data' : [shippingInfoWidget] }
             ]
         }
     ] %}

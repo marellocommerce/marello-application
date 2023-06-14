@@ -1,0 +1,15 @@
+services:
+    _defaults:
+        public: true
+
+    Marello\Bundle\NotificationMessageBundle\Controller\NotificationMessageController:
+        calls:
+            - ['setContainer', ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+
+    Marello\Bundle\NotificationMessageBundle\Controller\AjaxNotificationMessageController:
+        calls:
+            - ['setContainer', ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }

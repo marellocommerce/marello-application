@@ -3,16 +3,19 @@
 namespace Marello\Bundle\PackingBundle\EventListener\Doctrine;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
-use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\OrderBundle\Migrations\Data\ORM\LoadOrderItemStatusData;
-use Marello\Bundle\PackingBundle\Entity\PackingSlip;
-use Marello\Bundle\PackingBundle\Entity\PackingSlipItem;
+
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
 use Oro\Component\Action\Event\ExtendableActionEvent;
+
+use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\PackingBundle\Entity\PackingSlip;
+use Marello\Bundle\PackingBundle\Entity\PackingSlipItem;
+use Marello\Bundle\OrderBundle\Model\OrderItemStatusesInterface;
+use Marello\Bundle\OrderBundle\Migrations\Data\ORM\LoadOrderItemStatusData;
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 
 class PackingSlipItemStatusListener
 {
@@ -53,13 +56,13 @@ class PackingSlipItemStatusListener
                 foreach ($entity->getProduct()->getInventoryItems() as $inventoryItem) {
                     if ($inventoryLevel = $inventoryItem->getInventoryLevel($warehouse)) {
                         if ($inventoryLevel->getVirtualInventoryQty() >= $entity->getQuantity()) {
-                            $entity->setStatus($this->findStatus(LoadOrderItemStatusData::PROCESSING));
+                            $entity->setStatus($this->findStatus(OrderItemStatusesInterface::OIS_COMPLETE));
                         }
                     }
                 }
             }
             // tmp status update for packingslip item
-            $entity->setStatus($this->findStatus(LoadOrderItemStatusData::PROCESSING));
+            $entity->setStatus($this->findStatus(OrderItemStatusesInterface::OIS_COMPLETE));
         }
     }
 
@@ -80,7 +83,7 @@ class PackingSlipItemStatusListener
         $entityManager = $this->doctrineHelper->getEntityManagerForClass(PackingSlipItem::class);
         foreach ($packingSlips as $packingSlip) {
             foreach ($packingSlip->getItems() as $item) {
-                $item->setStatus($this->findStatus(LoadOrderItemStatusData::SHIPPED));
+                $item->setStatus($this->findStatus(OrderItemStatusesInterface::OIS_COMPLETE));
                 $entityManager->persist($item);
             }
         }

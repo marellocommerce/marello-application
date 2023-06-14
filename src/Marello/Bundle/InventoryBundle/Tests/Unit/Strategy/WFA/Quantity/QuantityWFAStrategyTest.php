@@ -6,6 +6,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
+use Marello\Bundle\InventoryBundle\Provider\AllocationExclusionProvider;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
@@ -245,6 +246,14 @@ class QuantityWFAStrategyTest extends TestCase
             ->method('calculate')
             ->with($productsByWh, $orderItemsByProducts, $warehouses, $order->getItems())
             ->willReturn([]);
+
+        $allocationExclusionProvider = $this->createMock(AllocationExclusionProvider::class);
+        $allocationExclusionProvider
+            ->expects(static::once())
+            ->method('getItems')
+            ->with($order)
+            ->willReturn($order->getItems());
+        $this->quantityWFAStrategy->setAllocationExclusionProvider($allocationExclusionProvider);
 
         $this->quantityWFAStrategy->getWarehouseResults($order, null, $initialResults);
     }

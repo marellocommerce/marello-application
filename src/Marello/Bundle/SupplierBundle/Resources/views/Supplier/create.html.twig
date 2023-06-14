@@ -51,7 +51,14 @@
             'subblocks': [{
                 'title': '',
                 'data': [
-                    form_rest(form)
+                    form_row(form.name),
+                    form_row(form.code),
+                    form_row(form.email),
+                    form_row(form.priority),
+                    form_row(form.canDropship),
+                    form_row(form.isActive),
+                    form_row(form.currency),
+                    form_row(form.poSendBy)
                 ]
             }]
         },

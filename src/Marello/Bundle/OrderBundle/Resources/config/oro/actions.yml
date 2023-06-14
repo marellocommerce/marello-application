@@ -1,3 +1,6 @@
+operations:
+    DELETE:
+        exclude_entities: ['MarelloOrderBundle:Order']
 action_groups:
     send_order_invoice_email:
         parameters:
@@ -59,8 +62,8 @@ action_groups:
                                         service: translator
                                         method: trans
                                         method_parameters:
-                                            - 'marello.pdf.filename.invoice'
-                                            - { '%%entityNumber%%': '$.invoice.invoiceNumber' }
+                                            - 'marello.invoice.pdf.filename.label'
+                                            - { '%%invoiceType%%': '$.invoice.invoiceType', '%%entityNumber%%': '$.invoice.invoiceNumber' }
                                         attribute: '$.filename'
                                     - '@call_service_method':
                                         service: marello_pdf.provider.render_parameters
@@ -73,7 +76,7 @@ action_groups:
                                         service: marello_pdf.renderer.twig
                                         method: renderBase64
                                         method_parameters:
-                                            - 'MarelloInvoice/Pdf/invoice.html.twig'
+                                            - '@MarelloInvoice/Pdf/invoice.html.twig'
                                             - '$.render_parameters'
                                         attribute: '$.invoice_pdf'
                                     - '@send_email_template_attachment':
@@ -87,6 +90,13 @@ action_groups:
                                                 - filename: '$.filename'
                                                   body: '$.invoice_pdf'
                                                   mimetype: 'application/pdf'
+                            - '@tree':
+                                  conditions:
+                                      '@empty': [ '$.sender_email' ]
+                                  actions:
+                                      - '@flash_message':
+                                            type: 'error'
+                                            message: marello.invoice.action.send_invoice_email.error
     marello_order_status_change:
         parameters:
             order:
