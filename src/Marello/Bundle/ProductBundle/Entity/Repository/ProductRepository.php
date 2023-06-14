@@ -161,17 +161,15 @@ class ProductRepository extends ServiceEntityRepository
 
     /**
      * @param AclHelper $aclHelper
-     * @param string|null $productIdsToExclude
      * @return array
      */
-    public function getPurchaseOrderItemsCandidates(AclHelper $aclHelper, string $productIdsToExclude = null): array
+    public function getPurchaseOrderItemsCandidates(AclHelper $aclHelper): array
     {
         $qb = $this
             ->createQueryBuilder('p')
             ->select(
-                'p.id,
+                'sup.name AS supplier,
                 p.sku,
-                sup.name AS supplier,
                 SUM(i.desiredInventory - COALESCE((l.inventory - l.allocatedInventory), 0)) AS orderAmount,
                 SUM(i.purchaseInventory) AS purchaseInventory'
             )
@@ -182,13 +180,8 @@ class ProductRepository extends ServiceEntityRepository
             ->where("sup.name <> ''")
             ->andWhere("s.name = 'enabled'")
             ->andWhere("i.replenishment = 'never_out_of_stock'")
-            ->groupBy('p.id, p.sku, sup.name, i.desiredInventory, i.purchaseInventory')
+            ->groupBy('sup.name, p.sku, i.desiredInventory, i.purchaseInventory')
             ->having('SUM(l.inventory - l.allocatedInventory) < i.purchaseInventory');
-
-        if (!empty($productIdsToExclude)) {
-            $qb
-                ->andWhere($qb->expr()->notIn('p.id', $productIdsToExclude));
-        }
 
         return $aclHelper->apply($qb->getQuery())->getResult();
     }

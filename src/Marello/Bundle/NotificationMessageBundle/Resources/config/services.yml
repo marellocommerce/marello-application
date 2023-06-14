@@ -8,14 +8,13 @@ services:
         tags:
             - { name: console.command }
 
-    Marello\Bundle\NotificationMessageBundle\EventListener\NotificationMessageEventListener:
+    Marello\Bundle\NotificationMessageBundle\EventListener\CreateNotificationMessageEventListener:
         arguments:
             - '@doctrine'
             - '@oro_config.manager'
             - '@translator'
         tags:
             - { name: kernel.event_listener, event: marello_notificationmessage.create_notification_message, method: onCreate }
-            - { name: kernel.event_listener, event: marello_notificationmessage.resolve_notification_message, method: onResolve }
 
     marello_notification_message.datagrid.action_permission_provider:
         class: Marello\Bundle\NotificationMessageBundle\Datagrid\ActionPermissionProvider

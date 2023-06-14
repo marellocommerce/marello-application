@@ -10,21 +10,6 @@ use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageTypeInt
 
 class NotificationMessageContextFactory
 {
-    /**
-     * Create Error Notification Message
-     * @param string $source
-     * @param string $title
-     * @param string $message
-     * @param string|null $solution
-     * @param object|null $entity
-     * @param string|null $operation
-     * @param string|null $step
-     * @param string|null $externalId
-     * @param string|null $log
-     * @param OrganizationInterface|null $organization
-     * @param bool $flush
-     * @return NotificationMessageContext
-     */
     public static function createError(
         string $source,
         string $title,
@@ -55,21 +40,6 @@ class NotificationMessageContextFactory
         );
     }
 
-    /**
-     * Create Warning Notification Message
-     * @param string $source
-     * @param string $title
-     * @param string $message
-     * @param string|null $solution
-     * @param object|null $entity
-     * @param string|null $operation
-     * @param string|null $step
-     * @param string|null $externalId
-     * @param string|null $log
-     * @param OrganizationInterface|null $organization
-     * @param bool $flush
-     * @return NotificationMessageContext
-     */
     public static function createWarning(
         string $source,
         string $title,
@@ -100,21 +70,6 @@ class NotificationMessageContextFactory
         );
     }
 
-    /**
-     * Create Success Notification Message
-     * @param string $source
-     * @param string $title
-     * @param string $message
-     * @param string|null $solution
-     * @param object|null $entity
-     * @param string|null $operation
-     * @param string|null $step
-     * @param string|null $externalId
-     * @param string|null $log
-     * @param OrganizationInterface|null $organization
-     * @param bool $flush
-     * @return NotificationMessageContext
-     */
     public static function createSuccess(
         string $source,
         string $title,
@@ -145,21 +100,6 @@ class NotificationMessageContextFactory
         );
     }
 
-    /**
-     * Create Info Notification Message
-     * @param string $source
-     * @param string $title
-     * @param string $message
-     * @param string|null $solution
-     * @param object|null $entity
-     * @param string|null $operation
-     * @param string|null $step
-     * @param string|null $externalId
-     * @param string|null $log
-     * @param OrganizationInterface|null $organization
-     * @param bool $flush
-     * @return NotificationMessageContext
-     */
     public static function createInfo(
         string $source,
         string $title,
@@ -190,24 +130,7 @@ class NotificationMessageContextFactory
         );
     }
 
-    /**
-     * Create generic Notification Message
-     * @param string $alertType
-     * @param string $resolved
-     * @param string $source
-     * @param string $title
-     * @param string $message
-     * @param string|null $solution
-     * @param object|null $entity
-     * @param string|null $operation
-     * @param string|null $step
-     * @param string|null $externalId
-     * @param string|null $log
-     * @param OrganizationInterface|null $organization
-     * @param bool $flush
-     * @return NotificationMessageContext
-     */
-    public static function create(
+    protected static function create(
         string $alertType,
         string $resolved,
         string $source,
