@@ -10,10 +10,7 @@
 {% endblock navButtons %}
 
 {% block pageHeader %}
-    {% set label = null %}
-    {% if entity.relatedItemClass is not null %}
-        {% set label = oro_entity_config(entity.relatedItemClass).label|trans ~ ' ' ~ entity.relatedItemId %}
-    {% endif %}
+    {% set label = oro_entity_config(entity.relatedItemClass).label|trans ~ ' ' ~ entity.relatedItemId %}
 
     {% set breadcrumbs = {
         'entity':      entity,
@@ -44,11 +41,8 @@
                         {{ UI.renderProperty('marello.notificationmessage.count.label'|trans, entity.count) }}
                         {% set route = oro_entity_route(entity.relatedItemClass) %}
                         {% if route %}
-                            {% set label = null %}
-                            {% if entity.relatedItemClass is not null %}
-                                {% set label = oro_entity_config(entity.relatedItemClass).label|trans ~ ' ' ~ entity.relatedItemId %}
-                                {{ UI.renderHtmlProperty('marello.notificationmessage.related_item.label'|trans, UI.renderUrl(path(route, {'id': entity.relatedItemId}), label)) }}
-                            {% endif %}
+                            {% set label = oro_entity_config(entity.relatedItemClass).label|trans ~ ' ' ~ entity.relatedItemId %}
+                            {{ UI.renderHtmlProperty('marello.notificationmessage.related_item.label'|trans, UI.renderUrl(path(route, {'id': entity.relatedItemId}), label)) }}
                         {% endif %}
                         {{ UI.renderProperty('marello.notificationmessage.resolved.label'|trans, entity.resolved) }}
                         {{ UI.renderProperty('marello.notificationmessage.user_group.label'|trans, entity.userGroup|default('N/A'|trans)) }}
