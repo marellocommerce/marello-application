@@ -99,7 +99,9 @@ workflows:
                 post_actions:
                     - '@marello_notification_send':
                         conditions:
-                            '@not_empty': $replenishment_order.destination
+                            '@and':
+                                - '@not_empty': $replenishment_order.destination
+                                - '@not_empty': $replenishment_order.destination.email
                         parameters:
                             entity: $replenishment_order
                             recipient: $replenishment_order.destination

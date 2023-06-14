@@ -54,7 +54,7 @@ class AllocationConsolidationExclusionSelectType extends AbstractType
             [
                 'enum_code' => AllocationStateStatusInterface::ALLOCATION_STATE_ENUM_CODE,
                 'multiple' => true,
-                'query_builder' => function(EntityRepository $repository) {
+                'query_builder' => function (EntityRepository $repository) {
                     $qb = $repository->createQueryBuilder('enum');
                     return $qb
                         ->where($qb->expr()->neq('enum.id', '?1'))

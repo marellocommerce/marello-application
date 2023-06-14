@@ -20,7 +20,8 @@ class WarehouseHandler implements FormHandlerInterface
     public function __construct(
         protected ObjectManager $manager,
         protected AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * {@inheritdoc}

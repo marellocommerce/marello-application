@@ -44,13 +44,7 @@
         </div>
     {% endset %}
     {% set warehouses %}
-        <div class="widget-content">
-            <div class="row-fluid form-horizontal">
-                <div class="responsive-block">
-                    {{ dataGrid.renderGrid('marelloenterprise-inventory-group-warehouses-grid', {id: entity.id}) }}
-                </div>
-            </div>
-        </div>
+        {{ dataGrid.renderGrid('marelloenterprise-inventory-group-warehouses-grid', {id: entity.id}) }}
     {% endset %}
     {% set generalSubblocks = generalSubblocks|merge([{'data' : [generalInformation] }]) %}
 

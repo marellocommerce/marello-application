@@ -1,0 +1,3 @@
+{% for batchNumber, quantity in record.getValue('inventoryBatches') %}
+    {{ batchNumber ~ ': ' ~ quantity }}<br>
+{% endfor %}

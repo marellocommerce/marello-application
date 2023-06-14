@@ -58,7 +58,7 @@ class ReplenishmentOrderItem implements ProductAwareInterface, OrganizationAware
 
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\Product")
-     * @ORM\JoinColumn(name="product_id", nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(name="product_id", nullable=true, onDelete="SET NULL")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -133,6 +133,20 @@ class ReplenishmentOrderItem implements ProductAwareInterface, OrganizationAware
      * @var int
      */
     protected $totalInventoryQty;
+
+    /**
+     * @ORM\Column(name="all_quantity", type="boolean")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var boolean
+     */
+    protected $allQuantity = false;
 
     /**
      * @ORM\Column(name="inventory_batches", type="json_array", nullable=true)
@@ -286,6 +300,25 @@ class ReplenishmentOrderItem implements ProductAwareInterface, OrganizationAware
     public function setTotalInventoryQty($totalInventoryQty)
     {
         $this->totalInventoryQty = $totalInventoryQty;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAllQuantity(): bool
+    {
+        return $this->allQuantity;
+    }
+
+    /**
+     * @param bool $allQuantity
+     * @return self
+     */
+    public function setAllQuantity(bool $allQuantity): self
+    {
+        $this->allQuantity = $allQuantity;
 
         return $this;
     }

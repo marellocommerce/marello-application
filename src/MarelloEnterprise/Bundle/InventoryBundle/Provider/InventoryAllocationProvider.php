@@ -4,6 +4,7 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Provider;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Marello\Bundle\InventoryBundle\Provider\AllocationContextInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
@@ -28,12 +29,6 @@ use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFA\MinimumDistance\Minimu
 
 class InventoryAllocationProvider extends BaseAllocationProvider
 {
-    /** @var WFAStrategiesRegistry $strategiesRegistry */
-    protected $strategiesRegistry;
-
-    /** @var RuleFiltrationServiceInterface $rulesFiltrationService */
-    protected $rulesFiltrationService;
-
     /** @var ArrayCollection $allOrderItems */
     protected $allOrderItems;
 
@@ -46,51 +41,34 @@ class InventoryAllocationProvider extends BaseAllocationProvider
     /** @var array $subAllocations */
     protected $subAllocations = [];
 
-    /** @var BaseAllocationProvider $baseAllocationProvider */
-    protected $baseAllocationProvider;
-
-    /** @var ConfigManager $configManager */
-    private $configManager;
-
-    /**
-     * InventoryAllocationProvider constructor.
-     * @param InventoryAllocationProvider $allocationProvider
-     * @param WFAStrategiesRegistry $strategiesRegistry
-     * @param RuleFiltrationServiceInterface $rulesFiltrationService
-     */
     public function __construct(
-        BaseAllocationProvider $allocationProvider,
-        WFAStrategiesRegistry $strategiesRegistry,
-        RuleFiltrationServiceInterface $rulesFiltrationService,
+        protected BaseAllocationProvider $baseAllocationProvider,
+        protected WFAStrategiesRegistry $strategiesRegistry,
+        protected RuleFiltrationServiceInterface $rulesFiltrationService,
         DoctrineHelper $doctrineHelper,
         OrderWarehousesProviderInterface $warehousesProvider,
         EventDispatcherInterface $eventDispatcher,
-        ConfigManager $configManager
+        protected ConfigManager $configManager
     ) {
         parent::__construct($doctrineHelper, $warehousesProvider, $eventDispatcher);
-        $this->baseAllocationProvider = $allocationProvider;
-        $this->strategiesRegistry = $strategiesRegistry;
-        $this->rulesFiltrationService = $rulesFiltrationService;
-        $this->configManager = $configManager;
     }
 
-    /**
-     * @param Order $order
-     * @param Allocation|null $allocation
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function allocateOrderToWarehouses(Order $order, Allocation $allocation = null)
-    {
+    public function allocateOrderToWarehouses(
+        Order $order,
+        Allocation $allocation = null,
+        callable $callback = null
+    ) {
         $this->consolidationWarehouse = null;
+        $shippingAddress = null;
         // check if order needs to be consolidated
         if ($this->isConsolidationEnabled($order)) {
             $this->consolidationWarehouse = $this->getConsolidationWarehouse($order);
+            $shippingAddress = clone $order->getShippingAddress();
         }
         // consolidation is not enabled, so we just run the 'normal' WFA rules (all of them)
         // the result of the WFA rules is also the input for the Allocation/AllocationItems
         // create all allocation/allocation items
-        $this->baseAllocationProvider->allocateOrderToWarehouses($order, $allocation);
+        $this->baseAllocationProvider->allocateOrderToWarehouses($order, $allocation, $callback);
 
         $em = $this
             ->baseAllocationProvider
@@ -105,18 +83,24 @@ class InventoryAllocationProvider extends BaseAllocationProvider
                 $parentAllocation->setOrganization($order->getOrganization());
                 $parentAllocation->setState(
                     $this->getEnumValue(
-                        'marello_allocation_state',
+                        AllocationStateStatusInterface::ALLOCATION_STATE_ENUM_CODE,
                         AllocationStateStatusInterface::ALLOCATION_STATE_AVAILABLE
                     )
                 );
                 $parentAllocation->setStatus(
                     $this->getEnumValue(
-                        'marello_allocation_status',
+                        AllocationStateStatusInterface::ALLOCATION_STATUS_ENUM_CODE,
                         AllocationStateStatusInterface::ALLOCATION_STATUS_ON_HAND
                     )
                 );
+                $parentAllocation->setAllocationContext(
+                    $this->getEnumValue(
+                        AllocationContextInterface::ALLOCATION_CONTEXT_ENUM_CODE,
+                        AllocationContextInterface::ALLOCATION_CONTEXT_CONSOLIDATION
+                    )
+                );
                 $parentAllocation->setWarehouse($this->consolidationWarehouse);
-                $parentAllocation->setShippingAddress($order->getShippingAddress());
+                $parentAllocation->setShippingAddress($shippingAddress ?? $order->getShippingAddress());
             } else {
                 $parentAllocation = $allocation->getParent();
             }
@@ -154,9 +138,16 @@ class InventoryAllocationProvider extends BaseAllocationProvider
             return false;
         }
 
+        $salesChannelConsolidationEnabled = $this->configManager->get(
+            'marello_enterprise_order.enable_order_consolidation',
+            false,
+            false,
+            $order->getSalesChannel()
+        );
+
         return (
             $order->getConsolidationEnabled() ||
-            $this->configManager->get('marello_enterprise_order.enable_order_consolidation', false, false, $order->getSalesChannel()) ||
+            $salesChannelConsolidationEnabled ||
             $this->configManager->get('marello_enterprise_order.set_global_consolidation')
         );
     }
@@ -169,10 +160,15 @@ class InventoryAllocationProvider extends BaseAllocationProvider
     {
         $isExternalWhType = false;
         if ($allocation->getWarehouse()) {
-            $isExternalWhType = ($allocation->getWarehouse()->getWarehouseType()->getName() === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL);
+            $whType = $allocation->getWarehouse()->getWarehouseType()->getName();
+            $isExternalWhType = ($whType === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL);
         }
+
+        $excludedStates = $this->configManager->get(
+            'marello_enterprise_inventory.inventory_allocation_consolidation_exclusion'
+        );
         return ($isExternalWhType ||
-            in_array($allocation->getState()->getName(), $this->configManager->get('marello_enterprise_inventory.inventory_allocation_consolidation_exclusion'))
+            in_array($allocation->getState()->getName(), $excludedStates)
         );
     }
 
@@ -182,7 +178,7 @@ class InventoryAllocationProvider extends BaseAllocationProvider
      */
     protected function getShippingAddress(Order $order)
     {
-        $shippingAddress =  $order->getShippingAddress();
+        $shippingAddress = clone $order->getShippingAddress();
         if ($this->consolidationWarehouse) {
             // this is a question mark...
             $shippingAddress = $this->consolidationWarehouse->getAddress();
@@ -231,7 +227,7 @@ class InventoryAllocationProvider extends BaseAllocationProvider
         }
 
         // DISTANCE WFA rule cannot be used because Google Integration settings and Geoding have not been configured
-        // need backup for when WFA rule cannot be used to determine consolidation WH, priority in the group might help? :thinking:?
+        // need backup for when WFA rule cannot be used to determine consolidation WH, priority in the group might help?
         // for now just give us the first that is being added from the eligible warehouses....
         return $consolidationWHs->first();
     }

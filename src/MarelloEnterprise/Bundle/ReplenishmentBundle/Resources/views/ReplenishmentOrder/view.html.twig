@@ -22,7 +22,12 @@
                     {{ UI.renderProperty('marelloenterprise.replenishment.replenishmentorder.origin.label'|trans, entity.origin) }}
                     {{ UI.renderProperty('marelloenterprise.replenishment.replenishmentorder.destination.label'|trans, entity.destination) }}
                     {{ UI.renderProperty('marelloenterprise.replenishment.replenishmentorder.execution_date_time.label'|trans, entity.executionDateTime|oro_format_datetime) }}
-                    {{ UI.renderProperty('marelloenterprise.replenishment.replenishmentorder.percentage.label'|trans, (entity.percentage/100)|oro_format_percent) }}
+                    {% if entity.replOrderConfig %}
+                        {{ UI.renderProperty(
+                            'marelloenterprise.replenishment.replenishmentorderconfig.percentage.label'|trans,
+                            entity.replOrderConfig.percentage ? ((entity.replOrderConfig.percentage/100)|oro_format_percent) : 'N/A'|trans
+                        ) }}
+                    {% endif %}
                     {{ UI.renderProperty('marelloenterprise.replenishment.replenishmentorder.description.label'|trans, entity.description) }}
 
                     {% set steps = marello_core_get_current_workflow_steps(entity) %}
@@ -34,13 +39,7 @@
         </div>
     {% endset %}
     {% set items %}
-        <div class="widget-content">
-            <div class="row-fluid form-horizontal">
-                <div class="responsive-block">
-                    {{ dataGrid.renderGrid('marello-replenishment-order-items-grid', {'replOrderId': entity.id}) }}
-                </div>
-            </div>
-        </div>
+        {{ dataGrid.renderGrid('marello-replenishment-order-items-grid', {'replOrderId': entity.id}) }}
     {% endset %}
 
     {% set dataBlocks = [

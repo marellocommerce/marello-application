@@ -3,6 +3,7 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\Twig;
 
 use MarelloEnterprise\Bundle\InventoryBundle\Checker\IsFixedWarehouseGroupChecker;
+use MarelloEnterprise\Bundle\InventoryBundle\Manager\InventoryManager;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -10,17 +11,10 @@ class WarehouseExtension extends AbstractExtension
 {
     const NAME = 'marelloenterprise_warehouse';
 
-    /**
-     * @var IsFixedWarehouseGroupChecker
-     */
-    protected $isFixedWarehouseGroupChecker;
-
-    /**
-     * @param IsFixedWarehouseGroupChecker $isFixedWarehouseGroupChecker
-     */
-    public function __construct(IsFixedWarehouseGroupChecker $isFixedWarehouseGroupChecker)
-    {
-        $this->isFixedWarehouseGroupChecker = $isFixedWarehouseGroupChecker;
+    public function __construct(
+        protected IsFixedWarehouseGroupChecker $isFixedWarehouseGroupChecker,
+        protected InventoryManager $inventoryManager
+    ) {
     }
 
     /**
@@ -40,7 +34,16 @@ class WarehouseExtension extends AbstractExtension
             new TwigFunction(
                 'marello_inventory_is_fixed_warehousegroup',
                 [$this->isFixedWarehouseGroupChecker, 'check']
-            )
+            ),
+            new TwigFunction(
+                'get_expected_inventory_total',
+                [$this, 'getExpectedInventoryTotal']
+            ),
         ];
+    }
+
+    public function getExpectedInventoryTotal($entity)
+    {
+        return $this->inventoryManager->getExpectedInventoryTotal($entity);
     }
 }

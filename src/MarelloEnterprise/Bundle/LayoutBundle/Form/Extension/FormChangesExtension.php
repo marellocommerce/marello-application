@@ -3,6 +3,7 @@
 namespace MarelloEnterprise\Bundle\LayoutBundle\Form\Extension;
 
 use Marello\Bundle\RefundBundle\Form\Type\RefundType;
+use MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Type\ReplenishmentOrderConfigManualType;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\AbstractTypeExtension;
@@ -42,6 +43,6 @@ class FormChangesExtension extends AbstractTypeExtension
      */
     public static function getExtendedTypes(): iterable
     {
-        return [OrderType::class, PaymentCreateType::class, RefundType::class];
+        return [OrderType::class, PaymentCreateType::class, RefundType::class, ReplenishmentOrderConfigManualType::class];
     }
 }

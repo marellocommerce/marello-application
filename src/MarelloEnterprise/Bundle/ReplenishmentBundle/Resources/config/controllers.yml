@@ -14,3 +14,10 @@ services:
             - [setContainer, ['@Psr\Container\ContainerInterface']]
         tags:
             - { name: container.service_subscriber }
+
+    MarelloEnterprise\Bundle\ReplenishmentBundle\Controller\ReplenishmentOrderConfigAjaxController:
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+            - { name: container.service_subscriber, id: marello_layout.provider.form_changes_data.composite, key: Marello\Bundle\LayoutBundle\Provider\CompositeFormChangesProvider }

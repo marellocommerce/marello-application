@@ -5,9 +5,6 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Form\Type;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
-use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
-use Oro\Bundle\FormBundle\Form\DataTransformer\EntitiesToIdsTransformer;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
@@ -16,9 +13,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
+use Oro\Bundle\FormBundle\Form\DataTransformer\EntitiesToIdsTransformer;
 use Oro\Bundle\MultiCurrencyBundle\Form\Transformer\ArrayToJsonTransformer;
 
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
+
 /**
  * Form type for enabled warehouse grid
  */
@@ -26,13 +28,14 @@ class WarehouseGridType extends AbstractType
 {
     protected DoctrineHelper $doctrineHelper;
     protected EntitiesToIdsTransformer $modelTransformer;
+    protected AclHelper $aclHelper;
 
     /**
      * @param DoctrineHelper $doctrineHelper
      */
     public function __construct(
         DoctrineHelper $doctrineHelper,
-        EntitiesToIdsTransformer $modelTransformer
+        EntitiesToIdsTransformer $modelTransformer,
     ) {
         $this->doctrineHelper = $doctrineHelper;
         $this->modelTransformer = $modelTransformer;
@@ -103,7 +106,7 @@ class WarehouseGridType extends AbstractType
     protected function getWarehouseCollection(array $options, Collection $warehousesOnForm, ?int $groupId): array
     {
         $qb = $this->getWarehouseCollectionQb($groupId);
-        $warehouses = $qb->getQuery()->getResult();
+        $warehouses = $this->aclHelper->apply($qb)->getResult();
         $warehouseCollection = [];
         /** @var Warehouse $warehouse */
         foreach ($warehouses as $warehouse) {
@@ -153,5 +156,14 @@ class WarehouseGridType extends AbstractType
                 ->setParameter('id', $groupId);
         }
         return $qb;
+    }
+
+    /**
+     * @param AclHelper $aclHelper
+     * @return void
+     */
+    public function setAclHelper(AclHelper $aclHelper): void
+    {
+        $this->aclHelper = $aclHelper;
     }
 }
