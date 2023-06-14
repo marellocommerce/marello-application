@@ -121,6 +121,10 @@ class InventoryManager implements InventoryManagerInterface
         $allocatedInventory = null;
         if ($context->getInventory()) {
             $inventory = ($level->getInventoryQty() + $context->getInventory());
+            if ($warehouseType === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL
+                && (!$level->isManagedInventory())) {
+                $inventory = 0;
+            }
         }
 
         if ($level->getInventoryItem()->isEnableBatchInventory()) {
@@ -142,7 +146,6 @@ class InventoryManager implements InventoryManagerInterface
         $level->setManagedInventory($context->getValue('isInventoryManaged'));
         /** @var InventoryBatch[] $updatedBatches */
         $updatedBatches = $context->getInventoryBatches();
-        // checken of dit nodig is of niet...
         if (count($updatedBatches) === 1 && $updatedBatches[0]['batch']->getId() === null) {
             $level->addInventoryBatch($updatedBatches[0]['batch']);
         }
@@ -258,9 +261,12 @@ class InventoryManager implements InventoryManagerInterface
         }
 
         $inventoryItem = $this->getInventoryItem($context);
+        $warehouse = $this->getWarehouse();
+        if ($context->getValue('warehouse')) {
+            $warehouse = $context->getValue('warehouse');
+        }
         $repo = $this->doctrineHelper->getEntityRepositoryForClass(InventoryLevel::class);
-        $level = $repo->findOneBy(['inventoryItem' => $inventoryItem]);
-
+        $level = $repo->findOneBy(['inventoryItem' => $inventoryItem, 'warehouse' => $warehouse]);
         if (!$level && $inventoryItem->hasInventoryLevels()) {
             $level = $inventoryItem->getInventoryLevels()->first();
         }
