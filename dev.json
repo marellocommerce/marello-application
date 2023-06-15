@@ -33,7 +33,7 @@
         "oro/calendar-bundle": "5.0.*",
         "oro/oauth2-server": "5.0.*",
         "oro/crm-task-bundle": "5.0.*",
-        "marellocommerce/marello": "4.1.x-dev"
+        "marellocommerce/marello": "4.2.x-dev"
     },
     "require-dev": {
         "behat/behat": "~3.10.0",
