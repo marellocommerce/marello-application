@@ -28,6 +28,8 @@ marello:
         data.label:                                     Data
         due_date.label:                                 Due Date
         purchase_order_reference.label:                 Purchase Order Reference
+        sections:
+            additional:               Additional
         ui:
             continue:                                   Continue
             sections:
