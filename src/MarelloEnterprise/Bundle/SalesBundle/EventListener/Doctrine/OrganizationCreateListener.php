@@ -9,6 +9,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class OrganizationCreateListener
 {
+    // TODO:: remove application state
     public function __construct(
         protected ApplicationState $applicationState
     ) {
@@ -20,17 +21,23 @@ class OrganizationCreateListener
      */
     public function postPersist(Organization $organization, LifecycleEventArgs $args)
     {
-        if ($this->applicationState->isInstalled()) {
-            $systemChannelGroup = new SalesChannelGroup();
-            $systemChannelGroup
-                ->setName(sprintf('%s System Group', $organization->getName()))
-                ->setDescription(sprintf('System Sales Channel Group for %s organization', $organization->getName()))
-                ->setSystem(true)
-                ->setOrganization($organization);
+        $this->entityManager = $args->getEntityManager();
+        $existingGroup = $this
+            ->entityManager
+            ->getRepository(SalesChannelGroup::class)
+            ->findOneBy([
+                'system' => true,
+                'organization'=> $organization
+            ]);
+        $systemChannelGroup = ($existingGroup) ?: new SalesChannelGroup();
+        $systemChannelGroup
+            ->setName(sprintf('%s System Group', $organization->getName()))
+            ->setDescription(sprintf('System Sales Channel Group for %s organization', $organization->getName()))
+            ->setSystem(true)
+            ->setOrganization($organization);
 
-            $em = $args->getEntityManager();
-            $em->persist($systemChannelGroup);
-            $em->flush();
-        }
+        $em = $args->getEntityManager();
+        $em->persist($systemChannelGroup);
+        $em->flush();
     }
 }
