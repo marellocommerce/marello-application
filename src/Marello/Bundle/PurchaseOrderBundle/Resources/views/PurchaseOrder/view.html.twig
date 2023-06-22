@@ -72,6 +72,20 @@
         }
     ] %}
 
+    {% set additionalData %}
+        {{ entityConfig.renderDynamicFields(entity) }}
+    {% endset %}
+
+    {% set dataBlocks = dataBlocks|merge([{
+        'title' : 'marello.purchaseorder.sections.additional'|trans,
+        'priority' : 90,
+        'subblocks': [{
+            'title' : null,
+            'useSpan': false,
+            'data' : [additionalData]
+        }]
+    }]) %}
+
     {%- set additionalInfoPlaceholders = marello_get_additional_placeholder_data('purchaseOrder') -%}
     {% for additionalInfo in additionalInfoPlaceholders %}
         {% set purchaseOrderAdditionalInfoSection %}
