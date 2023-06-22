@@ -462,7 +462,7 @@ class Allocation extends ExtendAllocation implements
     /**
      * @return \Extend\Entity\EV_Marello_Allocation_State
      */
-    public function getState(): AbstractEnumValue
+    public function getState(): ?AbstractEnumValue
     {
         return $this->state;
     }
@@ -481,7 +481,7 @@ class Allocation extends ExtendAllocation implements
     /**
      * @return \Extend\Entity\EV_Marello_Allocation_Status
      */
-    public function getStatus(): \Extend\Entity\EV_Marello_Allocation_Status
+    public function getStatus(): ?\Extend\Entity\EV_Marello_Allocation_Status
     {
         return $this->status;
     }
@@ -500,7 +500,7 @@ class Allocation extends ExtendAllocation implements
     /**
      * @return \Extend\Entity\EV_Marello_Allocation_AllocationContext
      */
-    public function getAllocationContext(): AbstractEnumValue
+    public function getAllocationContext(): ?AbstractEnumValue
     {
         return $this->allocationContext;
     }

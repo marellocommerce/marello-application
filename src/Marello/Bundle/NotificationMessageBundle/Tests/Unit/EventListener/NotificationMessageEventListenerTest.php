@@ -23,9 +23,9 @@ use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageTypeInt
 use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageSourceInterface;
 use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageResolvedInterface;
 use Marello\Bundle\NotificationMessageBundle\Entity\Repository\NotificationMessageRepository;
-use Marello\Bundle\NotificationMessageBundle\EventListener\CreateNotificationMessageEventListener;
+use Marello\Bundle\NotificationMessageBundle\EventListener\NotificationMessageEventListener;
 
-class CreateNotificationMessageEventListenerTest extends TestCase
+class NotificationMessageEventListenerTest extends TestCase
 {
     /** @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject */
     private $registry;
@@ -50,7 +50,7 @@ class CreateNotificationMessageEventListenerTest extends TestCase
             });
 
         $this->configManager = $this->createMock(ConfigManager::class);
-        $this->listener = new CreateNotificationMessageEventListener($this->registry, $this->configManager, $this->translator);
+        $this->listener = new NotificationMessageEventListener($this->registry, $this->configManager, $this->translator);
     }
 
     public function testOnCreateNew(): void

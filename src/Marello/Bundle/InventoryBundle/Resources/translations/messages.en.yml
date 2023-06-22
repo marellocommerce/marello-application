@@ -83,6 +83,7 @@ marello:
                 label:                     Order on demand allowed
                 grid.label:                Order on Demand
             enable_batch_inventory.label:  Enable Batch Inventory
+            batch_inventory.label:         Batches / Lot
             product_unit.label:            Unit
 
             section:

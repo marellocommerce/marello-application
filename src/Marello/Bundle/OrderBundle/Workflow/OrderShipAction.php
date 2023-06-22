@@ -3,21 +3,22 @@
 namespace Marello\Bundle\OrderBundle\Workflow;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
+
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
+use Oro\Component\ConfigExpression\ContextAccessor;
+
+use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\Allocation;
+use Marello\Bundle\PackingBundle\Entity\PackingSlipItem;
 use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 use Marello\Bundle\InventoryBundle\Provider\AllocationStateStatusInterface;
-use Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProviderInterface;
-use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use Marello\Bundle\PackingBundle\Entity\PackingSlipItem;
-use Marello\Bundle\ProductBundle\Migrations\Data\ORM\LoadAllocationStatusData;
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
-use Oro\Component\ConfigExpression\ContextAccessor;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class OrderShipAction extends OrderTransitionAction
 {
