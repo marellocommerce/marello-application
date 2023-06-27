@@ -85,6 +85,10 @@ class InventoryManager extends BaseInventoryManager
         $allocatedInventory = null;
         if ($context->getInventory()) {
             $inventory = ($level->getInventoryQty() + $context->getInventory());
+            if ($warehouseType === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL
+                && (!$level->isManagedInventory())) {
+                $inventory = 0;
+            }
         }
 
         if ($level->getInventoryItem()->isEnableBatchInventory()) {

@@ -17,7 +17,7 @@ class OrganizationCreateListener
      * @var EntityManagerInterface
      */
     private $entityManager;
-
+    // TODO: remove application state
     public function __construct(
         protected ApplicationState $applicationState
     ) {
@@ -29,11 +29,9 @@ class OrganizationCreateListener
      */
     public function postPersist(Organization $organization, LifecycleEventArgs $args)
     {
-        if ($this->applicationState->isInstalled()) {
             $this->entityManager = $args->getEntityManager();
             $this->createSystemWarehouseGroupForOrganization($organization);
             $this->createSystemWFARulesForOrganization($organization);
-        }
     }
 
     /**
@@ -41,7 +39,15 @@ class OrganizationCreateListener
      */
     private function createSystemWarehouseGroupForOrganization(Organization $organization)
     {
-        $systemWhGroup = new WarehouseGroup();
+        $existingGroup = $this
+            ->entityManager
+            ->getRepository(WarehouseGroup::class)
+            ->findOneBy([
+                'system' => true,
+                'organization' => $organization
+            ]);
+
+        $systemWhGroup = ($existingGroup) ?: new WarehouseGroup();
         $systemWhGroup
             ->setName(sprintf('%s System Group', $organization->getName()))
             ->setDescription(sprintf('System Warehouse Group for %s organization', $organization->getName()))

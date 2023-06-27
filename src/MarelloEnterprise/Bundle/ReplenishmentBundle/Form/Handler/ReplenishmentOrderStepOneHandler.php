@@ -13,7 +13,8 @@ class ReplenishmentOrderStepOneHandler
     public function __construct(
         private FormInterface $form,
         private Request $request
-    ) {}
+    ) {
+    }
 
     public function process(): bool
     {
