@@ -14,7 +14,7 @@ marelloenterprise:
             description.label:          Description
             organization.label:         Organization
             executed.label:             Executed
-
+            manual_items.label:         Manual Items
             messages:
                 success:
                     saved:                      Replenishment Order Config has been saved successfully
@@ -53,6 +53,7 @@ marelloenterprise:
             inventory_qty.label:       Qty
             quantity.label:            Quantity
             all.label:                 All
+            all_quantity.label:        All Quantity
             available.label:           Available
             unit.label:                Unit
             source.label:              Source
