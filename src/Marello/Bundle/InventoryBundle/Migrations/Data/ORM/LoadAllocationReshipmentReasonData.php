@@ -46,7 +46,9 @@ class LoadAllocationReshipmentReasonData extends AbstractFixture implements Vers
 
     protected function loadReasons(ObjectManager $manager): void
     {
-        $className = ExtendHelper::buildEnumValueClassName(AllocationReshipmentReasonInterface::ALLOCATION_RESHIPMENT_REASON_ENUM_CODE);
+        $className = ExtendHelper::buildEnumValueClassName(
+            AllocationReshipmentReasonInterface::ALLOCATION_RESHIPMENT_REASON_ENUM_CODE
+        );
 
         /** @var EnumValueRepository $enumRepo */
         $enumRepo = $manager->getRepository($className);

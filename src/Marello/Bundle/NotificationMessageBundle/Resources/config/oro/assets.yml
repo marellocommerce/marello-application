@@ -1,0 +1,4 @@
+css:
+    inputs:
+        - 'bundles/marellonotificationmessage/css/scss/main.scss'
+        - 'bundles/marellonotificationmessage/sidebar_widgets/notification_messages/css/styles.scss'

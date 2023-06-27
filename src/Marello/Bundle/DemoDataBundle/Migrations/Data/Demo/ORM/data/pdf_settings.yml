@@ -2,6 +2,7 @@ configuration:
     global:
         marello_pdf:
             paper_size: a4
+            logo_width: 250
             company_address: |-
                 Goodwaves
                 Einsteinstraße

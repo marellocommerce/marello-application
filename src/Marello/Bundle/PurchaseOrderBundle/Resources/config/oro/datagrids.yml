@@ -266,3 +266,108 @@ datagrids:
                     excluded: '#removeProducts'
             requireJSModules:
                 - marellopurchaseorder/js/datagrid/marello-purchase-order-item-candidates-builder
+
+    marello-purchase-order-item-candidates-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - p.id
+                    - p.sku as productSku
+                    - p.denormalizedDefaultName as productName
+                    - p.manufacturingCode
+                    - sup.name AS preferredSupplier
+                    - i.desiredInventory
+                    - i.purchaseInventory
+                    - COALESCE(SUM(l.inventory - l.allocatedInventory), 0) AS virtualInventory
+                    - (i.desiredInventory - COALESCE(SUM(l.inventory - l.allocatedInventory), 0)) AS orderAmount
+                from:
+                    - { table: MarelloProductBundle:Product, alias: p }
+                join:
+                    left:
+                        - { join: p.inventoryItems, alias: i }
+                        - { join: i.inventoryLevels, alias: l }
+                        - { join: p.status, alias: s }
+                        - { join: p.preferredSupplier, alias: sup }
+                where:
+                    and:
+                        - sup.name <> ''
+                        - s.name = 'enabled'                                          # Only select product with enabled status
+                        - i.replenishment = 'never_out_of_stock'
+                having: SUM(l.inventory - l.allocatedInventory) < i.purchaseInventory  # Only products with virtual stock lower than required purchase stock level
+                groupBy: p.sku
+        columns:
+            productSku:
+                data_name:          productSku
+                label:              marello.product.sku.label
+                type:               twig
+                frontend_type:      html
+                template:           '@MarelloProduct/Product/Datagrid/productSku.html.twig'
+            productName:
+                label:              marello.product.name.label
+                frontend_type:      string
+                data_name:          productName
+            manufacturingCode:
+                label:              marello.product.manufacturing_code.label
+                frontend_type:      string
+            preferredSupplier:
+                label:              marello.product.preferred_supplier.label
+                frontend_type:      string
+                data_name:          preferredSupplier
+            purchaseInventory:
+                label:              marello.purchaseorder.purchaseorderitem.purchase_stock_level.label
+                frontend_type:      number
+            desiredInventory:
+                label:              marello.purchaseorder.purchaseorderitem.desired_stock_level.label
+                frontend_type:      number
+            virtualInventory:
+                label:              marello.purchaseorder.purchaseorderitem.virtual_stock_level.label
+                frontend_type:      number
+                data_name:          virtualInventory
+            orderAmount:
+                label:              marello.purchaseorder.purchaseorderitem.order_amount.label
+                frontend_type:      number
+                data_name:          orderAmount
+        sorters:
+            columns:
+                productSku:             { data_name: p.sku }
+                productName:            { data_name: p.denormalizedDefaultName }
+                manufacturingCode:      { data_name: p.manufacturingCode }
+                preferredSupplier:      { data_name: preferredSupplier }
+                purchaseInventory:      { data_name: i.purchaseInventory }
+                desiredInventory:       { data_name: i.desiredInventory }
+                virtualInventory:       { data_name: virtualInventory }
+                orderAmount:            { data_name: orderAmount }
+            default:
+                sku: 'ASC'
+        filters:
+            columns:
+                productSku:
+                    type:             string
+                    data_name:        productSku
+                productName:
+                    type:             string
+                    data_name:        productName
+                manufacturingCode:
+                    type:             string
+                    data_name:        p.manufacturingCode
+                purchaseInventory:
+                    type:             number
+                    data_name:        i.purchaseInventory
+                desiredInventory:
+                    type:             number
+                    data_name:        i.desiredInventory
+                virtualInventory:
+                    type:             number
+                    data_name:        virtualInventory
+                    filter_by_having: true
+                orderAmount:
+                    type:             number
+                    data_name:        orderAmount
+                    filter_by_having: true
+        properties:
+            id: ~
+        options:
+            entityHint: product purchase candidates
+            gridViews:
+                allLabel: marello.purchaseorder.purchaseorderitem.candidates.label

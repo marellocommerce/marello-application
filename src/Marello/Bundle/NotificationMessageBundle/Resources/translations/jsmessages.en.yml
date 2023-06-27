@@ -1,0 +1,18 @@
+marello:
+    notificationmessage:
+        actions:
+            resolve:
+                success: Notification Message was successfully resolved
+                content: Are you sure you want to resolve this notification(s)?
+                ok: Confirm
+        widget:
+            title: Notification Messages
+            description: List of Notification Messages by user groups
+            number_of_notification_messages: Number of Messages
+            alert_types:
+                label: Alert Types
+                error: Error
+                warning: Warning
+                success: Success
+                info: Info
+            settings: Notification Messages widget settings

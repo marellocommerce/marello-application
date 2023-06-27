@@ -6,6 +6,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
+use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
 use Marello\Bundle\PurchaseOrderBundle\Form\Handler\PurchaseOrderCreateHandler;
 use Marello\Bundle\PurchaseOrderBundle\Form\Handler\PurchaseOrderCreateStepOneHandler;
 use Marello\Bundle\PurchaseOrderBundle\Form\Handler\PurchaseOrderUpdateHandler;
@@ -297,6 +298,20 @@ class PurchaseOrderController extends AbstractController
         }
 
         return new JsonResponse(['purchasePrice' => null]);
+    }
+
+    /**
+     * @Route(
+     *      path="/widget/purchase-order-candidates-grid",
+     *      name="marello_purchase_order_widget_purchase_order_candidates_grid"
+     * )
+     * @AclAncestor("marello_product_view")
+     * @Config\Template("@MarelloPurchaseOrder/PurchaseOrder/widget/purchaseOrderCandidatesGrid.html.twig")
+     * @return array
+     */
+    public function purchaseOrderCandidatesGridAction()
+    {
+        return [];
     }
 
     public static function getSubscribedServices()
