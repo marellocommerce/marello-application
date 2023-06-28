@@ -5,21 +5,20 @@ namespace Marello\Bundle\PurchaseOrderBundle\EventListener\Doctrine;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
-
+use Marello\Bundle\InventoryBundle\Entity\Allocation;
+use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
+use Marello\Bundle\InventoryBundle\Factory\InventoryBatchFromInventoryLevelFactory;
 use Marello\Bundle\InventoryBundle\Provider\AllocationStateStatusInterface;
-use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
-use Oro\Bundle\ConfigBundle\Config\ConfigManager;
-
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
-use Marello\Bundle\InventoryBundle\Entity\Allocation;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 class PurchaseOrderOnOrderOnDemandCreationListener
 {
@@ -86,14 +85,11 @@ class PurchaseOrderOnOrderOnDemandCreationListener
             return;
         }
 
-        [$poBySupplier, $itemsBySupplier] = $this->createPurchaseOrdersFromAllocation(
+        [$poBySupplier, $allocationItemsBySupplier] = $this->createPurchaseOrdersFromAllocation(
             $allocation,
             $entityManager
         );
-        $this->updatePurchaseOrdersTotal($poBySupplier, $itemsBySupplier, $allocation->getOrder());
-        $entityManager->flush();
-
-        $this->createTemporaryWarehouses($poBySupplier, $entityManager);
+        $this->updatePurchaseOrdersTotal($poBySupplier, $allocationItemsBySupplier, $allocation->getOrder());
         $entityManager->flush();
     }
 
@@ -102,18 +98,20 @@ class PurchaseOrderOnOrderOnDemandCreationListener
         EntityManager $entityManager
     ): array {
         $poBySupplier = [];
-        $itemsBySupplier = [];
+        $allocationItemsBySupplier = [];
 
         $organization = $allocation->getOrganization();
-        foreach ($allocation->getItems() as $onDemandItem) {
-            if (!$this->isOrderOnDemandItem($onDemandItem->getProduct())) {
+        foreach ($allocation->getItems() as $allocationItem) {
+            if (!$this->isOrderOnDemandItem($allocationItem->getProduct())) {
                 continue;
             }
 
-            $product = $onDemandItem->getProduct();
+            $product = $allocationItem->getProduct();
             $supplier = $product->getPreferredSupplier();
             $supplierCode = $supplier->getCode();
-            $itemsBySupplier[$supplierCode][] = $onDemandItem->getId();
+            $allocationItemsBySupplier[$supplierCode][] = $allocationItem->getId();
+
+            // Create Purchase Order if not exist
             if (!isset($poBySupplier[$supplierCode])) {
                 $po = new PurchaseOrder();
                 $po
@@ -126,29 +124,31 @@ class PurchaseOrderOnOrderOnDemandCreationListener
 
             /** @var PurchaseOrder $po */
             $po = $poBySupplier[$supplierCode];
-            $qty = $onDemandItem->getQuantity();
             $price = $this->getPurchasePrice($product, $allocation->getOrder());
             $poItem = new PurchaseOrderItem();
             $poItem
                 ->setProduct($product)
-                ->setOrderedAmount($onDemandItem->getQuantity())
-                ->setRowTotal($price->getValue() * $qty)
-                ->setPurchasePrice($price);
-            $poItem->setData([
-                self::ORDER_ON_DEMAND =>
-                    [
-                        'order' => $allocation->getOrder()->getId(),
-                        'orderItem' => $onDemandItem->getId(),
-                    ]
-            ]);
+                ->setOrderedAmount($allocationItem->getQuantity())
+                ->setRowTotal($price->getValue() * $allocationItem->getQuantity())
+                ->setPurchasePrice($price)
+                ->setData([
+                    self::ORDER_ON_DEMAND =>
+                        [
+                            'order' => $allocation->getOrder()->getId(),
+                            'allocationItem' => $allocationItem->getId(),
+                        ]
+                ]);
+
             $po->addItem($poItem);
             $entityManager->persist($poItem);
+
+            $this->createInventoryBatch($allocationItem, $entityManager);
         }
 
-        return [$poBySupplier, $itemsBySupplier];
+        return [$poBySupplier, $allocationItemsBySupplier];
     }
 
-    private function updatePurchaseOrdersTotal(array $poBySupplier, array $itemsBySupplier, Order $order): void
+    private function updatePurchaseOrdersTotal(array $poBySupplier, array $allocationItemsBySupplier, Order $order): void
     {
         foreach ($poBySupplier as $po) {
             $orderTotal = 0.00;
@@ -163,42 +163,13 @@ class PurchaseOrderOnOrderOnDemandCreationListener
                         self::ORDER_ON_DEMAND =>
                             [
                                 'order' => $order->getId(),
-                                'orderItems' => $itemsBySupplier[$po->getSupplier()->getCode()]
+                                'allocationItems' => $allocationItemsBySupplier[$po->getSupplier()->getCode()]
                             ]
                     ]
                 );
         }
     }
 
-    private function createTemporaryWarehouses(array $poBySupplier, EntityManager $entityManager): void
-    {
-        $warehouseType = $entityManager
-            ->getRepository(WarehouseType::class)
-            ->findOneBy(['name' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_VIRTUAL]);
-
-        /** @var PurchaseOrder $po */
-        foreach ($poBySupplier as $po) {
-            $code = $po->getTemporaryWarehouseCode();
-            $warehouse = new Warehouse();
-            $warehouse->setWarehouseType($warehouseType);
-            $warehouse->setDefault(false);
-            $warehouse->setOwner($po->getOrganization());
-            $warehouse->setCode($code);
-            $warehouse->setLabel($code);
-            $po->setWarehouse($warehouse);
-            $entityManager->persist($warehouse);
-
-            foreach ($po->getItems() as $poItem) {
-                $inventoryItem = $poItem->getProduct()->getInventoryItems()->first();
-                $inventoryLevel = new InventoryLevel();
-                $inventoryLevel->setInventoryItem($inventoryItem);
-                $inventoryLevel->setWarehouse($warehouse);
-                $inventoryLevel->setOrganization($po->getOrganization());
-                $entityManager->persist($inventoryLevel);
-            }
-        }
-    }
-    
     /**
      * @param Product $product
      * @param Order $order
@@ -238,6 +209,49 @@ class PurchaseOrderOnOrderOnDemandCreationListener
         }
 
         return false;
+    }
+
+    private function createInventoryBatch(AllocationItem $allocationItem, EntityManager $entityManager): void
+    {
+        $allocation = $allocationItem->getAllocation();
+        $warehouse = $this->getOnDemandLocation($allocation, $entityManager);
+        if (!$warehouse) {
+            return;
+        }
+
+        /** @var InventoryLevel[] $inventoryLevels */
+        $inventoryLevels = $allocationItem->getProduct()->getInventoryItems()->first()->getInventoryLevels();
+        foreach ($inventoryLevels as $inventoryLevel) {
+            if ($inventoryLevel->getWarehouse() !== $warehouse) {
+                continue;
+            }
+
+            $inventoryBatch = InventoryBatchFromInventoryLevelFactory::createInventoryBatch($inventoryLevel);
+            $inventoryBatch->setOrganization($allocation->getOrganization());
+            $inventoryBatch->setOrderOnDemandRef($allocationItem->getId());
+            $inventoryBatch->setQuantity($allocationItem->getQuantity());
+            $inventoryBatch->setDeliveryDate(null);
+
+            $entityManager->persist($inventoryBatch);
+        }
+    }
+
+    private function getOnDemandLocation(Allocation $allocation, EntityManager $entityManager): ?Warehouse
+    {
+        /** @var WarehouseChannelGroupLink $channelGroupLink */
+        $channelGroupLink = $entityManager
+            ->getRepository(WarehouseChannelGroupLink::class)
+            ->findLinkBySalesChannelGroup($allocation->getOrder()->getSalesChannel()->getGroup());
+        $onDemandLocations = $entityManager->getRepository(Warehouse::class)->findBy(
+            [
+                'orderOnDemandLocation' => true,
+                'group' => $channelGroupLink->getWarehouseGroup(),
+            ],
+            ['sortOrder' => 'ASC'],
+            1
+        );
+
+        return $onDemandLocations[0] ?? null;
     }
 
     /**

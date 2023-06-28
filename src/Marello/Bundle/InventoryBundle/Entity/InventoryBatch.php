@@ -191,6 +191,21 @@ class InventoryBatch extends ExtendInventoryBatch implements
      */
     protected $inventoryLevel;
 
+
+    /**
+     * @ORM\Column(name="order_on_demand_ref", type="string", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var string
+     */
+    protected $orderOnDemandRef;
+
     public function __clone()
     {
         if ($this->id) {
@@ -395,6 +410,25 @@ class InventoryBatch extends ExtendInventoryBatch implements
     {
         $this->inventoryLevel = $inventoryLevel;
         
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getOrderOnDemandRef(): ?string
+    {
+        return $this->orderOnDemandRef;
+    }
+
+    /**
+     * @param string|null $orderOnDemandRef
+     * @return InventoryBatch
+     */
+    public function setOrderOnDemandRef(string $orderOnDemandRef = null): self
+    {
+        $this->orderOnDemandRef = $orderOnDemandRef;
+
         return $this;
     }
 }

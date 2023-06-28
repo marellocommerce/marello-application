@@ -10,10 +10,10 @@ use Marello\Bundle\InventoryBundle\Entity\Allocation;
 use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository;
+use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
 use Marello\Bundle\InventoryBundle\Provider\AllocationStateStatusInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
@@ -26,7 +26,6 @@ use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityExtendBundle\Tests\Unit\Fixtures\TestEnumValue;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Oro\Component\Testing\Unit\EntityTrait;
 use PHPUnit\Framework\TestCase;
 
@@ -40,29 +39,24 @@ class PurchaseOrderOnOrderOnDemandCreationListenerTest extends TestCase
     protected $configManager;
 
     /**
-     * @var AclHelper|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $aclHelper;
-
-    /**
      * @var PurchaseOrderOnOrderOnDemandCreationListener
      */
-    protected $purchaseOrderOnOrderOnDemandCreationListener;
+    protected $listener;
 
     protected function setUp(): void
     {
-        $this->aclHelper = $this->createMock(AclHelper::class);
         $this->configManager = $this->createMock(ConfigManager::class);
         $this->configManager->expects($this->any())
             ->method('get')
             ->willReturn(true);
-        $this->purchaseOrderOnOrderOnDemandCreationListener =
-            new PurchaseOrderOnOrderOnDemandCreationListener($this->aclHelper);
-        $this->purchaseOrderOnOrderOnDemandCreationListener->setConfigManager($this->configManager);
+        $this->listener = new PurchaseOrderOnOrderOnDemandCreationListener();
+        $this->listener->setConfigManager($this->configManager);
     }
 
     public function testPostFlush()
     {
+        $allocation = $this->getAllocation();
+
         /** @var LifecycleEventArgs|\PHPUnit\Framework\MockObject\MockObject $args **/
         $postPersistArgs = $this->getMockBuilder(LifecycleEventArgs::class)
             ->disableOriginalConstructor()
@@ -70,7 +64,7 @@ class PurchaseOrderOnOrderOnDemandCreationListenerTest extends TestCase
         $postPersistArgs
             ->expects(static::once())
             ->method('getEntity')
-            ->willReturn($this->getAllocation());
+            ->willReturn($allocation);
         /** @var PostFlushEventArgs|\PHPUnit\Framework\MockObject\MockObject $args **/
         $postFlushArgs = $this->getMockBuilder(PostFlushEventArgs::class)
             ->disableOriginalConstructor()
@@ -85,16 +79,33 @@ class PurchaseOrderOnOrderOnDemandCreationListenerTest extends TestCase
             ->expects(static::once())
             ->method('find')
             ->willReturn($this->getAllocation());
-        $warehouseTypeRepository = $this->createMock(EntityRepository::class);
-        $warehouseTypeRepository
-            ->expects(static::once())
-            ->method('findOneBy')
-            ->willReturn(new WarehouseType('test'));
+        $linkRepository = $this->createMock(WarehouseChannelGroupLinkRepository::class);
+        $whGroup = new WarehouseGroup();
+        $groupLink = new WarehouseChannelGroupLink();
+        $groupLink->setWarehouseGroup($whGroup);
+        $linkRepository
+            ->expects(static::exactly(2))
+            ->method('findLinkBySalesChannelGroup')
+            ->with($allocation->getOrder()->getSalesChannel()->getGroup())
+            ->willReturn($groupLink);
+        $whRepository = $this->createMock(WarehouseRepository::class);
         $manager
             ->expects(static::any())
             ->method('getRepository')
-            ->withConsecutive([Allocation::class], [WarehouseType::class])
-            ->willReturnOnConsecutiveCalls($orderRepository, $warehouseTypeRepository);
+            ->withConsecutive(
+                [Allocation::class],
+                [WarehouseChannelGroupLink::class],
+                [Warehouse::class],
+                [WarehouseChannelGroupLink::class],
+                [Warehouse::class]
+            )
+            ->willReturnOnConsecutiveCalls(
+                $orderRepository,
+                $linkRepository,
+                $whRepository,
+                $linkRepository,
+                $whRepository
+            );
         $postFlushArgs
             ->expects(static::once())
             ->method('getEntityManager')
@@ -108,11 +119,11 @@ class PurchaseOrderOnOrderOnDemandCreationListenerTest extends TestCase
                 $reflectionProperty->setValue($entity, random_int(0, 10));
             });
         $manager
-            ->expects(static::exactly(2))
+            ->expects(static::once())
             ->method('flush');
 
-        $this->purchaseOrderOnOrderOnDemandCreationListener->postPersist($postPersistArgs);
-        $this->purchaseOrderOnOrderOnDemandCreationListener->postFlush($postFlushArgs);
+        $this->listener->postPersist($postPersistArgs);
+        $this->listener->postFlush($postFlushArgs);
     }
 
     private function getAllocation(): Allocation
