@@ -13,11 +13,6 @@ marelloenterprise_inventory_warehousechannelgrouplink:
     type:     annotation
     prefix:   /marello/inventory/warehouse-channelgroup-link
 
-marelloenterprise_inventory_wfarule:
-    resource: "@MarelloEnterpriseInventoryBundle/Controller/WFARuleController.php"
-    type:     annotation
-    prefix:   /marello/inventory/wfa-rule
-
 marelloenterprise_inventory_expected_inventory_item:
     resource: "@MarelloEnterpriseInventoryBundle/Controller/ExpectedInventoryItemController.php"
     type:     annotation

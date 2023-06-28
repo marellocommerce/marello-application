@@ -50,7 +50,7 @@ class LoadWarehouseChannelGroupLinkData extends AbstractFixture implements Depen
         'whscglink6' => [
             'channelgroup'         => 'Sales Channel DE München',
             'warehousegroup'       => 'Store Warehouse DE München'
-        ],
+        ]
     ];
 
     /**
@@ -106,9 +106,34 @@ class LoadWarehouseChannelGroupLinkData extends AbstractFixture implements Depen
 
             $channelLink->addSalesChannelGroup($channelGroup);
             $this->manager->persist($channelLink);
-            $this->manager->flush();
         }
+
+        // add new channelgrouplinks for other organisations
+        $organizations = $this->manager->getRepository('OroOrganizationBundle:Organization')->findAll();
+        /** @var Organization $organization */
+        foreach ($organizations as $organization) {
+            if ($organization->getId() === $this->organization->getId()) {
+                continue;
+            }
+            $systemWarehouseGroup = $this->manager
+                ->getRepository(WarehouseGroup::class)
+                ->findOneBy(['system' => true, 'organization' => $organization]);
+            $systemSalesChannelGroup = $this->manager
+                ->getRepository(SalesChannelGroup::class)
+                ->findOneBy(['system' => true, 'organization' => $organization]);
+            $defaultWarehouseChannelGroupLink = new WarehouseChannelGroupLink();
+            $defaultWarehouseChannelGroupLink
+                ->setSystem(true)
+                ->setOrganization($organization)
+                ->setWarehouseGroup($systemWarehouseGroup)
+                ->addSalesChannelGroup($systemSalesChannelGroup);
+            $this->manager->persist($defaultWarehouseChannelGroupLink);
+        }
+
+        $this->manager->flush();
     }
+
+
 
     /**
      * Get WarehouseChannelGroupLink

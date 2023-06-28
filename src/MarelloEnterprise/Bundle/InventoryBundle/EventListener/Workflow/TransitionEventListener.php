@@ -28,7 +28,8 @@ class TransitionEventListener
     public function __construct(
         protected DoctrineHelper $doctrineHelper,
         protected WorkflowManager $workflowManager
-    ) {}
+    ) {
+    }
 
     public function onSendTransitionAfter(ExtendableActionEvent $event): void
     {

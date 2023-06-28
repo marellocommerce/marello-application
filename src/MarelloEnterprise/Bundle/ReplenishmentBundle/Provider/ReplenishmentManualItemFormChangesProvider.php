@@ -17,7 +17,8 @@ class ReplenishmentManualItemFormChangesProvider implements FormChangesProviderI
 
     public function __construct(
         protected DoctrineHelper $doctrineHelper
-    ) {}
+    ) {
+    }
 
     /**
      * {@inheritdoc}
