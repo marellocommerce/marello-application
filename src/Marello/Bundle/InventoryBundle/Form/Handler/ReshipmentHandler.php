@@ -21,7 +21,8 @@ class ReshipmentHandler implements FormHandlerInterface
         protected EntityManagerInterface $manager,
         protected InventoryAllocationProvider $allocationProvider,
         protected array $removedItems = []
-    ) {}
+    ) {
+    }
 
     /**
      * @param $data

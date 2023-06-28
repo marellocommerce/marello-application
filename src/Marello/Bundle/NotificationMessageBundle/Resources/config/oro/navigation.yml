@@ -1,0 +1,18 @@
+navigation:
+    menu_config:
+        items:
+            notification_messages:
+                label: marello.notificationmessage.entity_plural_label
+                route: marello_notificationmessage_index
+                extras:
+                    routes: ['marello_notificationmessage_*']
+                    position: 5
+
+        tree:
+            application_menu:
+                children:
+                    activities_tab:
+                        children:
+                            notification_messages: ~
+    titles:
+        marello_notificationmessage_index: marello.notificationmessage.entity_plural_label

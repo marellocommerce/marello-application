@@ -15,6 +15,7 @@ use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Marello\Bundle\InventoryBundle\Provider\AllocationStateStatusInterface;
+use Marello\Bundle\InventoryBundle\Provider\AllocationContextInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
@@ -135,7 +136,12 @@ class PurchaseOrderOnOrderOnDemandCreationListenerTest extends TestCase
         $state = new TestEnumValue(
             AllocationStateStatusInterface::ALLOCATION_STATE_WFS,
             AllocationStateStatusInterface::ALLOCATION_STATE_WFS
-        );/** @var Order $order */
+        );
+        $context = new TestEnumValue(
+            AllocationContextInterface::ALLOCATION_CONTEXT_ORDER,
+            AllocationContextInterface::ALLOCATION_CONTEXT_ORDER
+        );
+        /** @var Order $order */
         $order = $this->getEntity(
             Order::class,
             ['id' => 1, 'salesChannel' => $salesChannel, 'organization' => $organization]
@@ -143,7 +149,7 @@ class PurchaseOrderOnOrderOnDemandCreationListenerTest extends TestCase
         /** @var Allocation $order */
         $allocation = $this->getEntity(
             Allocation::class,
-            ['id' => 1, 'state' => $state, 'order' => $order, 'organization' => $organization]
+            ['id' => 1, 'state' => $state, 'allocationContext' => $context, 'order' => $order, 'organization' => $organization]
         );
 
         $product1 = $this->getProduct(1);

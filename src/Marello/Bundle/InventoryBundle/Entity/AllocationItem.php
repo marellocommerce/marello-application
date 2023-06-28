@@ -61,7 +61,7 @@ class AllocationItem extends ExtendAllocationItem implements OrganizationAwareIn
      * @var Product
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\Product")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
+     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -200,7 +200,9 @@ class AllocationItem extends ExtendAllocationItem implements OrganizationAwareIn
         if (is_null($this->productName)) {
             $this->setProductName((string)$this->product->getName());
         }
-        $this->productSku  = $this->product->getSku();
+        if (is_null($this->productSku)) {
+            $this->setProductSku($this->product->getSku());
+        }
     }
 
     /**

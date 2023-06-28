@@ -14,9 +14,9 @@ class OrderItemCollectionType extends AbstractType
 {
     const BLOCK_PREFIX = 'marello_order_item_collection';
 
-    public function __construct(
-        private Router $router
-    ) {}
+    public function __construct(private Router $router)
+    {
+    }
 
     /**
      * {@inheritdoc}

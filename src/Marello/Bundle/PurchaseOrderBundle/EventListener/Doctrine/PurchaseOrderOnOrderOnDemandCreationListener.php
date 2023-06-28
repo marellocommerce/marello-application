@@ -5,6 +5,8 @@ namespace Marello\Bundle\PurchaseOrderBundle\EventListener\Doctrine;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
+
+use Marello\Bundle\InventoryBundle\Provider\AllocationContextInterface;
 use Marello\Bundle\InventoryBundle\Entity\Allocation;
 use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
@@ -50,6 +52,11 @@ class PurchaseOrderOnOrderOnDemandCreationListener
             return;
         }
 
+        if ($entity->getAllocationContext()
+            && $entity->getAllocationContext()->getId() === AllocationContextInterface::ALLOCATION_CONTEXT_REALLOCATION
+        ) {
+            return;
+        }
         $orderOnDemandItems = [];
         foreach ($entity->getItems() as $item) {
             /** @var InventoryItem $inventoryItem */
