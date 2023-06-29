@@ -21,6 +21,7 @@ class WebhookTransport extends AbstractRestTransport
     use LoggerAwareTrait;
 
     public const DEFAULT_ALGO = 'sha256';
+    public const DEFAULT_USER_AGENT_HEADER = 'Marello-Webhook-App';
 
     /** @var Webhook */
     protected Webhook $webhook;
@@ -69,7 +70,12 @@ class WebhookTransport extends AbstractRestTransport
     protected function getClientOptions(ParameterBag $parameterBag)
     {
         return [
-            'HTTP_MARELLO_SIGNATURE' => $this->getMarelloWebhookSignature($parameterBag),
+            'headers' => [
+                'User-Agent' => self::DEFAULT_USER_AGENT_HEADER,
+            ],
+            'authorization' => [
+                'HTTP_MARELLO_SIGNATURE ' . $this->getMarelloWebhookSignature($parameterBag),
+            ]
         ];
     }
 
