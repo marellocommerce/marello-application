@@ -37,6 +37,8 @@ marello:
             value:
                 yes:                  Yes
                 no:                   No
+        sections:
+            additional:               Additional
 
         supplier_email.label:       Email
         supplier_address.label:     Address

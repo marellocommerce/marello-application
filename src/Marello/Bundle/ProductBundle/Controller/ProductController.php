@@ -171,7 +171,7 @@ class ProductController extends AbstractController
     /**
      * @param Product $product
      * @param Request $request
-     * @return array
+     * @return array|RedirectResponse
      */
     protected function update(Product $product, Request $request)
     {
@@ -190,11 +190,7 @@ class ProductController extends AbstractController
                     $actionData = $actionGroup->execute(new ActionData(['data' => $product]));
                     /** @var Product $productCopy */
                     if ($productCopy = $actionData->offsetGet('productCopy')) {
-                        return new RedirectResponse(
-                            $this->container
-                                ->get(Router::class)
-                                ->generate('marello_product_view', ['id' => $productCopy->getId()])
-                        );
+                        return $this->redirectToRoute('marello_product_view', ['id' => $productCopy->getId()]);
                     }
                 }
             } else {
@@ -312,7 +308,7 @@ class ProductController extends AbstractController
      * @Template
      *
      * @param Request $request
-     * @return array
+     * @return array|RedirectResponse
      */
     public function assignSalesChannelsAction(Request $request)
     {

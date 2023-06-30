@@ -132,6 +132,7 @@ services:
         class: 'Marello\Bundle\InventoryBundle\EventListener\Workflow\AllocationWorkflowStartListener'
         arguments:
             - '@oro_workflow.manager'
+            - '@event_dispatcher'
         tags:
             - { name: doctrine.event_listener, event: postPersist }
             - { name: doctrine.event_listener, event: postFlush }
@@ -143,6 +144,8 @@ services:
             - '@oro_workflow.manager'
             - '@oro_message_queue.client.message_producer'
             - '@marello_inventory.model.inventory_level_totals_calculator'
+        calls:
+            - ['setEventDispatcher', ['@event_dispatcher']]
         tags:
             - { name: kernel.event_listener, event: extendable_action.allocation_complete, method: onAllocationComplete }
 

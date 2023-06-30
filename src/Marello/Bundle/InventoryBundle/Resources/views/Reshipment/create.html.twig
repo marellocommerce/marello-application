@@ -1,0 +1,141 @@
+{% extends '@OroUI/actions/update.html.twig' %}
+{% import '@OroUI/macros.html.twig' as UI %}
+
+{% form_theme form with '@OroForm/Form/fields.html.twig' %}
+
+{% set formAction = path('marello_inventory_reshipment_create', { 'id': form.vars.value.id }) %}
+
+{% block navButtons %}
+    {{ UI.cancelButton(path('marello_order_order_view', { 'id': form.vars.value.id })) }}
+    {% set html = UI.saveAndCloseButton({
+        'route': 'marello_order_order_view',
+        'params': {'id': form.vars.value.id}
+    }) %}
+    {{ UI.dropdownSaveButton({'html': html}) }}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set title = 'marello.inventory.reshipment.label'|trans %}
+    {% include '@OroUI/page_title_block.html.twig' with { title: title } %}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set id = 'marello-reshipment-create' %}
+
+    {% set customerInformation %}
+        <div class="box-type1">
+            {{ UI.renderHtmlProperty(
+                'marello.customer.entity_label'|trans,
+                UI.entityViewLink(form.vars.value.customer, form.vars.value.customer|oro_format_name, 'marello_customer_view')
+            )}}
+
+            <div class="attribute-item">
+                <label for="{{ form.shippingAddress.vars.id }}"
+                       class="attribute-item__term">
+                    {{ form.shippingAddress.vars.label|trans }}
+                </label>
+            </div>
+
+            {% if form.shippingAddress.customerAddress is defined %}
+                {% set idAddressBlock = '#' ~ form.shippingAddress.customerAddress.vars.id %}
+            {% else %}
+                {% set idAddressBlock = null %}
+            {% endif %}
+            <div
+                    data-page-component-module="oroui/js/app/components/view-component"
+                    data-page-component-options="{{ {
+                        view: 'marelloorder/js/app/views/order-address-view',
+                        type: 'shipping',
+                        selectors: {
+                            address: idAddressBlock,
+                            subtotalsFields: []
+                        }
+                    }|json_encode }}"
+                    style="margin:5px"
+                    data-layout="separate">
+                {{ form_widget(form.shippingAddress) }}
+            </div>
+        </div>
+    {% endset %}
+
+    {% set orderItems %}
+        <div class="order-line-items">
+            {{ form_widget(form.items) }}
+            {{ form_errors(form.items) }}
+        </div>
+    {% endset %}
+
+    {% set reshipmentReasonForm %}
+        {{ form_row(form.reshipmentReason) }}
+    {% endset %}
+
+    {% set orderInformation %}
+        <div class="box-type1">
+            {{ UI.renderProperty('marello.order.order_number.label'|trans, form.vars.value.orderNumber) }}
+            {{ UI.renderProperty('marello.order.purchase_date.label'|trans, form.vars.value.purchaseDate|oro_format_datetime) }}
+            {{ UI.renderHtmlProperty(
+                'marello.order.sales_channel.label'|trans,
+                UI.entityViewLink(form.vars.value.salesChannel, form.vars.value.salesChannelName, 'marello_sales_saleschannel_view')
+            )}}
+            {{ form_rest(form) }}
+            {{ reshipmentReasonForm }}
+        </div><br/>
+    {% endset %}
+
+    {% set dataBlocks = [
+        {
+            'title': 'marello.order.sections.general'|trans,
+            'class': 'active',
+            'subblocks': [
+                {
+                    'title': 'marello.order.datablock.order_information'|trans,
+                    'spanClass': 'empty',
+                    'data': [
+                        orderInformation
+                    ]
+                },
+                {
+                    'title': 'marello.order.datablock.customer_information'|trans,
+                    'spanClass': 'empty',
+                    'data': [
+                        customerInformation
+                    ]
+                }
+            ]
+        },
+        {
+            'title': 'marello.order.items.label'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    orderItems
+                ]
+            }]
+        }
+    ] %}
+
+    {% set additionalData = [] %}
+    {% for child in form.children %}
+        {% if child.vars.extra_field is defined and child.vars.extra_field %}
+            {% set additionalData = additionalData|merge([form_row(child)]) %}
+        {% endif %}
+    {% endfor %}
+
+    {% if additionalData is not empty %}
+        {% set dataBlocks = dataBlocks|merge([{
+            'title': 'marello.order.sections.additional'|trans,
+            'subblocks': [{
+                'title': '',
+                'useSpan': false,
+                'data' : additionalData
+            }]
+        }] ) %}
+    {% endif %}
+
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': dataBlocks,
+    } %}
+    {{ parent() }}
+{% endblock content_data %}

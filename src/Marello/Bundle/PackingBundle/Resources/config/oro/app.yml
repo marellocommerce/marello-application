@@ -1,0 +1,4 @@
+liip_imagine:
+    filter_sets:
+        pdf_logo:
+            quality: 100

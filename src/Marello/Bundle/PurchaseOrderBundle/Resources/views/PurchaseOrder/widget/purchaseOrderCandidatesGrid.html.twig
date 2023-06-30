@@ -1,0 +1,14 @@
+{% extends '@OroUI/actions/index.html.twig' %}
+{% import '@OroUI/macros.html.twig' as UI %}
+{% import '@OroDataGrid/macros.html.twig' as dataGrid %}
+{% set gridName = 'marello-purchase-order-item-candidates-grid' %}
+{% set pageTitle = 'marello.purchaseorder.purchaseorderitem.candidates.label'|trans %}
+
+{% block navButtons %}
+    <div class="btn-group">
+        {{ UI.addButton({
+            'path': path('marello_purchaseorder_purchaseorder_create'),
+            'entity_label': 'marello.purchaseorder.entity_label'|trans
+        }) }}
+    </div>
+{% endblock %}

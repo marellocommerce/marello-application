@@ -108,3 +108,19 @@ services:
         public: true
         arguments:
             - '@oro_config.form.handler.config'
+
+    marello_pdf.provider.logo_path:
+        class: 'Marello\Bundle\PdfBundle\Provider\LogoPathProvider'
+        arguments:
+            - '@oro_config.manager'
+            - '@oro_entity.doctrine_helper'
+            - '@oro_attachment.manager'
+            - '@oro_attachment.manager.image_resize'
+            - '%kernel.project_dir%'
+
+    marello_pdf.pdf.provider.logo_render_parameter:
+        class: 'Marello\Bundle\PdfBundle\Provider\Render\LogoRenderParameterProvider'
+        arguments:
+            - '@marello_pdf.provider.logo_path'
+        tags:
+            - { name: marello_pdf.render_parameter_provider }

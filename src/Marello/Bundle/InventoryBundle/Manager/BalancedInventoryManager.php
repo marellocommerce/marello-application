@@ -109,6 +109,10 @@ class BalancedInventoryManager implements InventoryManagerInterface
             $newInventoryQty = $level->getInventoryQty();
         }
 
+        if ($newInventoryQty < 0) {
+            $newInventoryQty = 0;
+        }
+
         $level->setInventoryQty($newInventoryQty);
 
         return $level;

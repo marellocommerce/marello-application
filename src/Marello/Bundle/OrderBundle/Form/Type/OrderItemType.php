@@ -12,9 +12,10 @@ use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class OrderItemType extends AbstractType
 {
@@ -52,7 +53,8 @@ class OrderItemType extends AbstractType
                 'create_enabled' => false
             ])
             ->add('quantity', NumberType::class, [
-                'data' => 1
+                'data' => 1,
+                'constraints' => [new GreaterThanOrEqual(1)]
             ])
             ->add('availableInventory', NumberType::class, [
                 'mapped' => false,
@@ -68,8 +70,8 @@ class OrderItemType extends AbstractType
             ])
             ->add('price', TextType::class, [
                 'attr' => [
-                        'readonly' => true
-                    ]
+                    'readonly' => true
+                ]
             ])
             ->add('tax', TextType::class, [
                 'attr' => [
@@ -91,6 +93,7 @@ class OrderItemType extends AbstractType
                     'readonly' => true
                 ]
             ])
+            ->add('allocationExclusion', CheckboxType::class, [])
         ;
 
         $builder->get('taxCode')->addModelTransformer($this->taxCodeModelTransformer);
