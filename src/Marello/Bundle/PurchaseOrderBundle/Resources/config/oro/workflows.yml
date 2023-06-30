@@ -29,7 +29,8 @@ workflows:
             complete_purchase_order:
                 is_final: true
             cancelled_purchase_order:
-                is_final: true
+                allowed_transitions:
+                    - send
         transitions:
             send:
                 step_to: pending

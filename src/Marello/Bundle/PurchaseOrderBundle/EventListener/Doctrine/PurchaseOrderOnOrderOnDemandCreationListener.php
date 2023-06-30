@@ -142,6 +142,7 @@ class PurchaseOrderOnOrderOnDemandCreationListener
                     self::ORDER_ON_DEMAND =>
                         [
                             'order' => $allocation->getOrder()->getId(),
+                            'orderItem' => $allocationItem->getOrderItem()->getId(),
                             'allocationItem' => $allocationItem->getId(),
                         ]
                 ]);
@@ -159,8 +160,14 @@ class PurchaseOrderOnOrderOnDemandCreationListener
     {
         foreach ($poBySupplier as $po) {
             $orderTotal = 0.00;
+            $orderItems = [];
+            /** @var PurchaseOrderItem $poi */
             foreach ($po->getItems() as $poi) {
                 $orderTotal += $poi->getRowTotal();
+                $data = $poi->getData();
+                if (isset($data[self::ORDER_ON_DEMAND])) {
+                    $orderItems[] = $data[self::ORDER_ON_DEMAND]['orderItem'];
+                }
             }
 
             $po
@@ -170,7 +177,8 @@ class PurchaseOrderOnOrderOnDemandCreationListener
                         self::ORDER_ON_DEMAND =>
                             [
                                 'order' => $order->getId(),
-                                'allocationItems' => $allocationItemsBySupplier[$po->getSupplier()->getCode()]
+                                'allocationItems' => $allocationItemsBySupplier[$po->getSupplier()->getCode()],
+                                'orderItems' => $orderItems
                             ]
                     ]
                 );
