@@ -260,7 +260,7 @@ class ReplenishmentOrder extends ExtendReplenishmentOrder implements
      * @param \DateTime $executionDateTime
      * @return ReplenishmentOrder
      */
-    public function setExecutionDateTime(\DateTime $executionDateTime)
+    public function setExecutionDateTime(\DateTime $executionDateTime = null)
     {
         $this->executionDateTime = $executionDateTime;
 

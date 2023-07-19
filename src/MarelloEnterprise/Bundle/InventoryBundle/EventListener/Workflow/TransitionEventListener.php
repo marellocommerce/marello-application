@@ -79,7 +79,7 @@ class TransitionEventListener
                 ->setDestination($destinationWarehouse)
                 ->setOrigin($originWarehouse)
                 ->setProduct($item->getProduct())
-                ->setAllQuantity(true)
+                ->setAllQuantity(false)
                 ->setQuantity($qty)
                 ->setAvailableQuantity($qty);
             $replOrderConfig->addManualItem($manualItemConfig);
@@ -88,7 +88,7 @@ class TransitionEventListener
             $replItem
                 ->setOrder($replOrder)
                 ->setProduct($item->getProduct())
-                ->setAllQuantity(true)
+                ->setAllQuantity(false)
                 ->setInventoryQty($qty)
                 ->setTotalInventoryQty($qty);
             $replOrder->addReplOrderItem($replItem);
