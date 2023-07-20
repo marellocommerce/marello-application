@@ -2,11 +2,6 @@
 
 namespace MarelloEnterprise\Bundle\OrderBundle\Tests\Unit\Form\Extension;
 
-use Doctrine\Persistence\ObjectManager;
-
-use Oro\Bundle\ConfigBundle\Event\ConfigGetEvent;
-use Oro\Bundle\ConfigBundle\Event\ConfigSettingsUpdateEvent;
-use Oro\Bundle\ConfigBundle\Event\ConfigUpdateEvent;
 use Symfony\Component\Form\FormConfigInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;
@@ -83,52 +78,24 @@ class OrderExtensionTest extends TestCase
     }
 
     /**
-     * Test Consolidation Enabled
+     * Test Consolidation Enabled on SalesChannel
      * @return void
      */
-    public function testPostDataListenerConsolidationEnabled()
+    public function testConsolidationEnabledForSalesChannel(): void
     {
-        $this->configManager
-            ->expects(static::exactly(3))
-            ->method('get')
-            ->withConsecutive(
-                ['marello_enterprise_order.enable_order_consolidation'],
-                ['marello_enterprise_order.set_consolidation_for_scope',
-                    false,
-                    false,
-                    $this->salesChannel
-                ],
-                ['marello_enterprise_order.set_consolidation_for_scope']
-            )
-            ->willReturnOnConsecutiveCalls(true, true, false);
+        $this->settingSetupTest(true, true, false);
+        $this->testFormIsUpdated();
+        $this->orderExtension->postSetDataListener($this->formEvent);
+    }
 
-        $formMock = $this->createMock(FormInterface::class);
-        $formConfigMock = $this->createMock(FormConfigInterface::class);
-        $formMock->expects(static::once())
-            ->method('getConfig')
-            ->willReturn($formConfigMock);
-        $formConfigMock->expects(static::once())
-            ->method('getOptions')
-            ->willReturn([]);
-
-        $resolvedFormTypeMock = $this->createMock(ResolvedFormTypeInterface::class);
-        $formConfigMock->expects(static::once())
-            ->method('getType')
-            ->willReturn($resolvedFormTypeMock);
-
-        $resolvedFormTypeMock->expects(static::once())
-            ->method('getInnerType')
-            ->willReturn($this->createMock(FormTypeInterface::class));
-        $this->form
-            ->expects(static::once())
-            ->method('get')
-            ->with('consolidation_enabled')
-            ->willReturn($formMock);
-
-        $this->form
-            ->expects(static::once())
-            ->method('add');
-
+    /**
+     * Test Consolidation Enabled on SalesChannel
+     * @return void
+     */
+    public function testConsolidationEnabledForSystem(): void
+    {
+        $this->settingSetupTest(true, false, true);
+        $this->testFormIsUpdated();
         $this->orderExtension->postSetDataListener($this->formEvent);
     }
 
@@ -136,57 +103,31 @@ class OrderExtensionTest extends TestCase
      * Test consolidation not enabled
      * @return void
      */
-    public function testPostDataListenerConsolidationDisabled()
+    public function testConsolidationDisabled(): void
     {
-        $this->configManager
-            ->expects(static::exactly(3))
-            ->method('get')
-            ->withConsecutive(
-                ['marello_enterprise_order.enable_order_consolidation'],
-                ['marello_enterprise_order.set_consolidation_for_scope',
-                    false,
-                    false,
-                    $this->salesChannel
-                ],
-                ['marello_enterprise_order.set_consolidation_for_scope']
-            )
-            ->willReturnOnConsecutiveCalls(true, false, false);
-
-        $formMock = $this->createMock(FormInterface::class);
-        $formConfigMock = $this->createMock(FormConfigInterface::class);
-        $formMock->expects(static::never())
-            ->method('getConfig')
-            ->willReturn($formConfigMock);
-        $formConfigMock->expects(self::never())
-            ->method('getOptions')
-            ->willReturn([]);
-
-        $resolvedFormTypeMock = $this->createMock(ResolvedFormTypeInterface::class);
-        $formConfigMock->expects(self::never())
-            ->method('getType')
-            ->willReturn($resolvedFormTypeMock);
-
-        $resolvedFormTypeMock->expects(self::never())
-            ->method('getInnerType')
-            ->willReturn($this->createMock(FormTypeInterface::class));
-        $this->form
-            ->expects(static::never())
-            ->method('get')
-            ->with('consolidation_enabled')
-            ->willReturn($formMock);
-
-        $this->form
-            ->expects(static::never())
-            ->method('add');
-
+        $this->settingSetupTest(true, false, false);
+        $this->testFormIsUpdated(false, true);
         $this->orderExtension->postSetDataListener($this->formEvent);
     }
 
     /**
-     * Test consolidation feature not enabled
+     * Test consolidation feature not enabled at all
      * @return void
      */
-    public function testConsolidationFeatureDisabled()
+    public function testConsolidationFeatureDisabled(): void
+    {
+        $this->settingSetupTest(false, false, true);
+        $this->testFormIsUpdated(false);
+        $this->orderExtension->postSetDataListener($this->formEvent);
+    }
+
+    /**
+     * @param bool $featureEnabled
+     * @param bool $salesChannelEnabled
+     * @param bool $systemEnabled
+     * @return void
+     */
+    protected function settingSetupTest(bool $featureEnabled, bool $salesChannelEnabled, bool $systemEnabled): void
     {
         $this->configManager
             ->expects(static::exactly(3))
@@ -200,17 +141,54 @@ class OrderExtensionTest extends TestCase
                 ],
                 ['marello_enterprise_order.set_consolidation_for_scope']
             )
-            ->willReturnOnConsecutiveCalls(false, false, true);
+            ->willReturnOnConsecutiveCalls($featureEnabled, $salesChannelEnabled, $systemEnabled);
+    }
+
+    /**
+     * @param bool $consolidationFieldAdded
+     * @param bool $allDisabled
+     * @return void
+     */
+    protected function testFormIsUpdated(bool $consolidationFieldAdded = true, bool $allDisabled = false): void
+    {
+        $addedMethodsCalled = $consolidationFieldAdded ? 1 : 0;
+        $removedMethodsCalled = $consolidationFieldAdded ? 0 : 1;
+        if ($allDisabled) {
+            $removedMethodsCalled = 0;
+        }
+
+        $formMock = $this->createMock(FormInterface::class);
+        $formConfigMock = $this->createMock(FormConfigInterface::class);
+        $resolvedFormTypeMock = $this->createMock(ResolvedFormTypeInterface::class);
+        $this->form
+            ->expects(static::exactly($addedMethodsCalled))
+            ->method('get')
+            ->with('consolidation_enabled')
+            ->willReturn($formMock);
+
+        $formMock->expects(static::exactly($addedMethodsCalled))
+            ->method('getConfig')
+            ->willReturn($formConfigMock);
+
+        $formConfigMock->expects(static::exactly($addedMethodsCalled))
+            ->method('getOptions')
+            ->willReturn([]);
+
+        $formConfigMock->expects(static::exactly($addedMethodsCalled))
+            ->method('getType')
+            ->willReturn($resolvedFormTypeMock);
+
+        $resolvedFormTypeMock->expects(static::exactly($addedMethodsCalled))
+            ->method('getInnerType')
+            ->willReturn($this->createMock(FormTypeInterface::class));
 
         $this->form
-            ->expects(static::once())
+            ->expects(static::exactly($removedMethodsCalled))
             ->method('remove')
             ->with('consolidation_enabled');
 
         $this->form
-            ->expects(static::never())
+            ->expects(static::exactly($addedMethodsCalled))
             ->method('add');
-
-        $this->orderExtension->postSetDataListener($this->formEvent);
     }
 }
