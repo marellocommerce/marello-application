@@ -1,0 +1,20 @@
+services:
+    MarelloEnterprise\Bundle\OrderBundle\EventListener\Doctrine\OrderWorkflowStartListener:
+        decorates: marello_order.listener.start_workflow
+        arguments:
+            - '@oro_workflow.manager'
+            - '@MarelloEnterprise\Bundle\OrderBundle\EventListener\Doctrine\OrderWorkflowStartListener.inner'
+        calls:
+            - [setTokenAccessor, ['@oro_security.token_accessor']]
+
+    MarelloEnterprise\Bundle\OrderBundle\EventListener\Doctrine\OnOrderCreateListener:
+        arguments:
+            - '@MarelloEnterprise\Bundle\OrderBundle\Provider\OrderConsolidationProvider'
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+
+    MarelloEnterprise\Bundle\OrderBundle\EventListener\OrderFieldValueListener:
+        arguments:
+            - '@MarelloEnterprise\Bundle\OrderBundle\Provider\OrderConsolidationProvider'
+        tags:
+            - { name: kernel.event_listener, event: oro.entity_extend_event.before_value_render, method: onBeforeValueRender }

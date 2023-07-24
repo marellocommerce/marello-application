@@ -1,6 +1,6 @@
 services:
     MarelloEnterprise\Bundle\OrderBundle\Form\Extension\OrderExtension:
         arguments:
-            - '@oro_config.manager'
+            - '@MarelloEnterprise\Bundle\OrderBundle\Provider\OrderConsolidationProvider'
         tags:
             - { name: form.type_extension, alias: marello_order_order, extended_type: Marello\Bundle\OrderBundle\Form\Type\OrderType }
