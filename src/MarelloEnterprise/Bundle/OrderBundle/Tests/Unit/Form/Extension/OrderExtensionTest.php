@@ -2,6 +2,7 @@
 
 namespace MarelloEnterprise\Bundle\OrderBundle\Tests\Unit\Form\Extension;
 
+use MarelloEnterprise\Bundle\OrderBundle\Provider\OrderConsolidationProvider;
 use Symfony\Component\Form\FormConfigInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;
@@ -42,9 +43,9 @@ class OrderExtensionTest extends TestCase
     protected $salesChannel;
 
     /**
-     * @var ConfigManager|\PHPUnit\Framework\MockObject\MockObject
+     * @var OrderConsolidationProvider|\PHPUnit\Framework\MockObject\MockObject
      */
-    protected $configManager;
+    protected $orderConsolidationProvider;
 
     /**
      * @var OrderExtension
@@ -73,28 +74,27 @@ class OrderExtensionTest extends TestCase
             ->method('getForm')
             ->willReturn($this->form);
 
-        $this->configManager = $this->createMock(ConfigManager::class);
-        $this->orderExtension = new OrderExtension($this->configManager);
+        $this->orderConsolidationProvider = $this->createMock(OrderConsolidationProvider::class);
+        $this->orderExtension = new OrderExtension($this->orderConsolidationProvider);
     }
 
     /**
-     * Test Consolidation Enabled on SalesChannel
-     * @return void
-     */
-    public function testConsolidationEnabledForSalesChannel(): void
-    {
-        $this->settingSetupTest(true, true, false);
-        $this->testFormIsUpdated();
-        $this->orderExtension->postSetDataListener($this->formEvent);
-    }
-
-    /**
-     * Test Consolidation Enabled on SalesChannel
+     * Test Consolidation Enabled for Order
      * @return void
      */
     public function testConsolidationEnabledForSystem(): void
     {
-        $this->settingSetupTest(true, false, true);
+        $this->orderConsolidationProvider
+            ->expects(static::once())
+            ->method('isConsolidationFeatureEnabled')
+            ->willReturn(true);
+
+        $this->orderConsolidationProvider
+            ->expects(static::once())
+            ->method('isConsolidationEnabledForOrder')
+            ->with($this->entity)
+            ->willReturn(true);
+
         $this->testFormIsUpdated();
         $this->orderExtension->postSetDataListener($this->formEvent);
     }
@@ -105,7 +105,15 @@ class OrderExtensionTest extends TestCase
      */
     public function testConsolidationDisabled(): void
     {
-        $this->settingSetupTest(true, false, false);
+        $this->orderConsolidationProvider
+            ->expects(static::once())
+            ->method('isConsolidationFeatureEnabled')
+            ->willReturn(true);
+        $this->orderConsolidationProvider
+            ->expects(static::once())
+            ->method('isConsolidationEnabledForOrder')
+            ->willReturn(false);
+
         $this->testFormIsUpdated(false, true);
         $this->orderExtension->postSetDataListener($this->formEvent);
     }
@@ -116,32 +124,12 @@ class OrderExtensionTest extends TestCase
      */
     public function testConsolidationFeatureDisabled(): void
     {
-        $this->settingSetupTest(false, false, true);
+        $this->orderConsolidationProvider
+            ->expects(static::once())
+            ->method('isConsolidationFeatureEnabled')
+            ->willReturn(false);
         $this->testFormIsUpdated(false);
         $this->orderExtension->postSetDataListener($this->formEvent);
-    }
-
-    /**
-     * @param bool $featureEnabled
-     * @param bool $salesChannelEnabled
-     * @param bool $systemEnabled
-     * @return void
-     */
-    protected function settingSetupTest(bool $featureEnabled, bool $salesChannelEnabled, bool $systemEnabled): void
-    {
-        $this->configManager
-            ->expects(static::exactly(3))
-            ->method('get')
-            ->withConsecutive(
-                ['marello_enterprise_order.enable_order_consolidation'],
-                ['marello_enterprise_order.set_consolidation_for_scope',
-                    false,
-                    false,
-                    $this->salesChannel
-                ],
-                ['marello_enterprise_order.set_consolidation_for_scope']
-            )
-            ->willReturnOnConsecutiveCalls($featureEnabled, $salesChannelEnabled, $systemEnabled);
     }
 
     /**

@@ -28,6 +28,7 @@ class MarelloEnterpriseOrderExtension extends Extension
         $loader->load('workflow_actions.yml');
         $loader->load('form.yml');
         $loader->load('services.yml');
+        $loader->load('eventlisteners.yml');
     }
 
     /**

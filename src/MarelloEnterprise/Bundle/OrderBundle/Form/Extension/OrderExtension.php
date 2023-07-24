@@ -8,18 +8,18 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractTypeExtension;
 
 use Oro\Bundle\FormBundle\Utils\FormUtils;
-use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Form\Type\OrderType;
+use MarelloEnterprise\Bundle\OrderBundle\Provider\OrderConsolidationProvider;
 
 class OrderExtension extends AbstractTypeExtension
 {
+
     public function __construct(
-        protected ConfigManager $configManager
+        protected OrderConsolidationProvider $consolidationProvider
     ) {
     }
-
     /**
      * {@inheritdoc}
      */
@@ -49,29 +49,20 @@ class OrderExtension extends AbstractTypeExtension
         /** @var Order $order */
         $order = $event->getData();
         $form = $event->getForm();
-        $featureEnabled = $this->configManager->get('marello_enterprise_order.enable_order_consolidation');
 
-        if (!$featureEnabled) {
+        if (!$this->consolidationProvider->isConsolidationFeatureEnabled()) {
             $form->remove('consolidation_enabled');
         }
 
-        $consolidationEnabled = $this->configManager->get(
-            'marello_enterprise_order.set_consolidation_for_scope',
-            false,
-            false,
-            $order->getSalesChannel()
-        );
-
-        $consolidationEnabledSystem = $this->configManager
-            ->get('marello_enterprise_order.set_consolidation_for_scope');
-        if (($consolidationEnabled || $consolidationEnabledSystem) && $featureEnabled) {
+        if ($this->consolidationProvider->isConsolidationEnabledForOrder($order)) {
             FormUtils::replaceField(
                 $form,
                 'consolidation_enabled',
                 [
                     'data' => 1,
                     'attr' => ['readonly' => true]
-                ]);
+                ]
+            );
         }
     }
 }
