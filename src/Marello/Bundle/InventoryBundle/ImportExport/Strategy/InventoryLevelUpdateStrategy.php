@@ -13,7 +13,6 @@ use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
-use Marello\Bundle\InventoryBundle\Model\InventoryLevelCalculator;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 
 class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy

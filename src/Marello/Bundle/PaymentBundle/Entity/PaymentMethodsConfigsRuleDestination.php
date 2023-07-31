@@ -9,7 +9,8 @@ use Oro\Bundle\AddressBundle\Entity\Country;
 use Oro\Bundle\AddressBundle\Entity\Region;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
-use Marello\Bundle\PaymentBundle\Model\ExtendPaymentMethodsConfigsRuleDestination;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 
 /**
  * @ORM\Entity
@@ -19,8 +20,10 @@ use Marello\Bundle\PaymentBundle\Model\ExtendPaymentMethodsConfigsRuleDestinatio
  *     mode="hidden",
  * )
  */
-class PaymentMethodsConfigsRuleDestination extends ExtendPaymentMethodsConfigsRuleDestination
+class PaymentMethodsConfigsRuleDestination implements ExtendEntityInterface
 {
+    use ExtendEntityTrait;
+
     /**
      * @var integer
      *
@@ -118,8 +121,6 @@ class PaymentMethodsConfigsRuleDestination extends ExtendPaymentMethodsConfigsRu
 
     public function __construct()
     {
-        parent::__construct();
-
         $this->postalCodes = new ArrayCollection();
     }
 

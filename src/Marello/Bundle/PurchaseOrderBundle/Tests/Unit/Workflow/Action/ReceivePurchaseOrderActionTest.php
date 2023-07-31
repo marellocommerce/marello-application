@@ -74,7 +74,6 @@ class ReceivePurchaseOrderActionTest extends TestCase
     {
         $class = new \ReflectionClass($obj);
         $method = $class->getMethod($name);
-        $method->setAccessible(true);
         return $method->invokeArgs($obj, $args);
     }
 
@@ -201,8 +200,6 @@ class ReceivePurchaseOrderActionTest extends TestCase
 
         $inventoryItemMock = $this
             ->createMock(InventoryItem::class);
-        $inventoryItemCollection = new ArrayCollection();
-        $inventoryItemCollection->add($inventoryItemMock);
 
         $collection = new ArrayCollection();
         $collection->add($purchaseOrderItemMock);
@@ -237,8 +234,8 @@ class ReceivePurchaseOrderActionTest extends TestCase
             ->willReturn($productMock);
 
         $productMock->expects($this->atLeastOnce())
-            ->method('getInventoryItems')
-            ->willReturn($inventoryItemCollection);
+            ->method('getInventoryItem')
+            ->willReturn($inventoryItemMock);
 
         $inventoryItemMock->expects($this->atLeastOnce())
             ->method('setBackOrdersDatetime')
@@ -291,8 +288,6 @@ class ReceivePurchaseOrderActionTest extends TestCase
 
         $inventoryItemMock = $this
             ->createMock(InventoryItem::class);
-        $inventoryItemCollection = new ArrayCollection();
-        $inventoryItemCollection->add($inventoryItemMock);
 
         $collection = new ArrayCollection();
         $collection->add($purchaseOrderItemMock);
@@ -319,8 +314,8 @@ class ReceivePurchaseOrderActionTest extends TestCase
             ->willReturn($productMock);
 
         $productMock->expects($this->atLeastOnce())
-            ->method('getInventoryItems')
-            ->willReturn($inventoryItemCollection);
+            ->method('getInventoryItem')
+            ->willReturn($inventoryItemMock);
 
         $inventoryItemMock->expects($this->once())
             ->method('setBackOrdersDatetime')

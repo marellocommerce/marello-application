@@ -12,13 +12,11 @@ use Marello\Bundle\CustomerBundle\Entity\HasFullNameTrait;
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
 use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\LocaleBundle\Model\FullNameInterface;
-use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
-use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use Marello\Bundle\OrderBundle\Model\ExtendCustomer;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 
 /**
@@ -28,13 +26,15 @@ use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(name="marello_order_customer")
  */
-class Customer extends ExtendCustomer implements
+class Customer implements
     FullNameInterface,
     EmailHolderInterface,
-    EmailOwnerInterface
+    EmailOwnerInterface,
+    ExtendEntityInterface
 {
     use HasFullNameTrait, HasEmailAddressTrait;
     use EntityCreatedUpdatedAtTrait;
+    use ExtendEntityTrait;
 
     /**
      * @ORM\Id

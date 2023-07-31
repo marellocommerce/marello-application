@@ -2,7 +2,6 @@ search:
     Marello\Bundle\OrderBundle\Entity\Order:
         alias:                          marello_order
         label:                          marello.order.entity_plural_label
-        title_fields:                   [orderNumber]
         route:
             name:                       marello_order_order_view
             parameters:

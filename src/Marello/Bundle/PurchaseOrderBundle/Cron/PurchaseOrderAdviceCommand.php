@@ -5,6 +5,7 @@ namespace Marello\Bundle\PurchaseOrderBundle\Cron;
 use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageResolvedInterface;
 use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageTypeInterface;
 use Marello\Bundle\PurchaseOrderBundle\Provider\PurchaseOrderCandidatesProvider;
+use Oro\Bundle\CronBundle\Command\CronCommandScheduleDefinitionInterface;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -12,9 +13,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Oro\Bundle\CronBundle\Command\CronCommandInterface;
-
-use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\PurchaseOrderBundle\Model\PurchaseOrder;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
@@ -25,7 +23,7 @@ use Marello\Bundle\NotificationMessageBundle\Event\ResolveNotificationMessageEve
 use Marello\Bundle\NotificationMessageBundle\Factory\NotificationMessageContextFactory;
 use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageSourceInterface;
 
-class PurchaseOrderAdviceCommand extends Command implements CronCommandInterface
+class PurchaseOrderAdviceCommand extends Command implements CronCommandScheduleDefinitionInterface
 {
     const COMMAND_NAME = 'oro:cron:marello:po-advice';
     const EXIT_CODE = 0;
@@ -45,18 +43,6 @@ class PurchaseOrderAdviceCommand extends Command implements CronCommandInterface
     }
 
     /**
-     * @inheritDoc
-     */
-    public function isActive()
-    {
-        $featureChecker = $this->container->get('oro_featuretoggle.checker.feature_checker');
-        $configManager = $this->container->get('oro_config.manager');
-
-        return $featureChecker->isResourceEnabled(self::COMMAND_NAME, 'cron_jobs') &&
-        $configManager->get('marello_purchaseorder.purchaseorder_notification') === true;
-    }
-
-    /**
      * {@inheritdoc}
      */
     protected function configure()
@@ -71,6 +57,16 @@ class PurchaseOrderAdviceCommand extends Command implements CronCommandInterface
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $featureChecker = $this->container->get('oro_featuretoggle.checker.feature_checker');
+        $configManager = $this->container->get('oro_config.manager');
+
+        $isActive = $featureChecker->isResourceEnabled(self::COMMAND_NAME, 'cron_jobs') &&
+            $configManager->get('marello_purchaseorder.purchaseorder_notification') === true;
+        if (!$isActive) {
+            $output->writeln('This cron command is not active.');
+            return self::EXIT_CODE;
+        }
+
         $configManager = $this->container->get('oro_config.manager');
         if ($configManager->get('marello_purchaseorder.purchaseorder_notification') !== true) {
             $output->writeln('The PO notification feature is disabled. The command will not run.');

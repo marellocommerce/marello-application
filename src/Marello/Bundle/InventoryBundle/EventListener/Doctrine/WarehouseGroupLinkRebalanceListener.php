@@ -5,17 +5,18 @@ namespace Marello\Bundle\InventoryBundle\EventListener\Doctrine;
 use Doctrine\ORM\UnitOfWork;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;
-
+use Marello\Bundle\CoreBundle\Model\JobIdGenerationTrait;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
-
-use Marello\Bundle\InventoryBundle\Async\Topics;
+use Marello\Bundle\InventoryBundle\Async\Topic\ResolveRebalanceInventoryTopic;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 
 class WarehouseGroupLinkRebalanceListener
 {
+    use JobIdGenerationTrait;
+
     /**
      * @var UnitOfWork
      */
@@ -38,7 +39,7 @@ class WarehouseGroupLinkRebalanceListener
      */
     public function onFlush(OnFlushEventArgs $eventArgs)
     {
-        $this->em = $eventArgs->getEntityManager();
+        $this->em = $eventArgs->getObjectManager();
         $this->unitOfWork = $this->em->getUnitOfWork();
 
         if (!empty($this->unitOfWork->getScheduledEntityUpdates())) {
@@ -94,8 +95,8 @@ class WarehouseGroupLinkRebalanceListener
                 );
                 foreach ($products as $product) {
                     $this->messageProducer->send(
-                        Topics::RESOLVE_REBALANCE_INVENTORY,
-                        ['product_id' => $product->getId(), 'jobId' => md5($product->getId())]
+                        ResolveRebalanceInventoryTopic::getName(),
+                        ['product_id' => $product->getId(), 'jobId' => $this->generateJobId($product->getId())]
                     );
                 }
             }

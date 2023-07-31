@@ -29,7 +29,7 @@ class DerivedPropertySetter
      */
     public function onFlush(OnFlushEventArgs $args)
     {
-        $em  = $args->getEntityManager();
+        $em  = $args->getObjectManager();
         $uow = $em->getUnitOfWork();
 
         $insertions = $uow->getScheduledEntityInsertions();
@@ -61,13 +61,13 @@ class DerivedPropertySetter
         $dispatch = $this->generate;
 
         try {
-            $args->getEntityManager()->flush($this->generate);
+            $args->getObjectManager()->flush($this->generate);
         } catch (\Exception $e) {
-            $args->getEntityManager()->rollback();
+            $args->getObjectManager()->rollback();
             throw $e;
         }
 
-        $args->getEntityManager()->commit();
+        $args->getObjectManager()->commit();
 
         foreach ($dispatch as $entity) {
             $this->eventDispatcher->dispatch(new DerivedPropertySetEvent($entity), DerivedPropertySetEvent::NAME);

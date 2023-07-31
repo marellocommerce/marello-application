@@ -1,4 +1,5 @@
 <?php
+
 namespace Marello\Bundle\SupplierBundle\Form\Type;
 
 use Marello\Bundle\SupplierBundle\Entity\Supplier;

@@ -3,8 +3,6 @@ services:
         class: 'Marello\Bundle\OrderBundle\EventListener\Doctrine\OrderWorkflowStartListener'
         arguments:
             - '@oro_workflow.manager'
-        calls:
-            - [setDoctrineHelper, ['@oro_entity.doctrine_helper']]
         tags:
             - { name: doctrine.event_listener, event: postPersist }
             - { name: doctrine.event_listener, event: postFlush }

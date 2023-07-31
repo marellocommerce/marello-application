@@ -144,7 +144,6 @@ class ShippingMethodHasShippingRulesTest extends \PHPUnit\Framework\TestCase
             get_class($this->shippingMethodHasShippingRulesCondition),
             'contextAccessor'
         );
-        $reflection->setAccessible(true);
 
         $this->assertInstanceOf(
             get_class($contextAccessor),

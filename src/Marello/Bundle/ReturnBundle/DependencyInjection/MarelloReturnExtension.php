@@ -13,7 +13,7 @@ class MarelloReturnExtension extends Extension
     /**
      * {@inheritdoc}
      */
-    public function load(array $config, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
@@ -22,7 +22,7 @@ class MarelloReturnExtension extends Extension
         $loader->load('workflow_actions.yml');
 
         $configuration = new Configuration();
-        $config = $this->processConfiguration($configuration, $config);
+        $config = $this->processConfiguration($configuration, $configs);
         $container->prependExtensionConfig($this->getAlias(), array_intersect_key($config, array_flip(['settings'])));
     }
 }

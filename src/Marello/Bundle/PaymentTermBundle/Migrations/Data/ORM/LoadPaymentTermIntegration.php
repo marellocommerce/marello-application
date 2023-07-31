@@ -6,10 +6,10 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\PaymentBundle\Entity\PaymentMethodConfig;
-use Marello\Bundle\PaymentBundle\Migrations\Data\ORM\CreateDefaultPaymentRule;
+use Marello\Bundle\PaymentBundle\Entity\PaymentMethodsConfigsRule;
 use Marello\Bundle\PaymentTermBundle\Entity\MarelloPaymentTermSettings;
-use Marello\Bundle\PaymentTermBundle\Entity\PaymentTermSettings;
 use Marello\Bundle\PaymentTermBundle\Integration\PaymentTermChannelType;
+use Marello\Bundle\RuleBundle\Entity\Rule;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
@@ -23,13 +23,16 @@ class LoadPaymentTermIntegration extends AbstractFixture implements
 {
     use ContainerAwareTrait;
 
+    const DEFAULT_RULE_NAME = 'Default';
+    const DEFAULT_RULE_REFERENCE = 'payment_rule.default';
+
     /**
      * {@inheritdoc}
      */
     public function getDependencies()
     {
         return [
-            CreateDefaultPaymentRule::class,
+            LoadOrganizationAndBusinessUnitData::class,
         ];
     }
 
@@ -43,8 +46,29 @@ class LoadPaymentTermIntegration extends AbstractFixture implements
         }
 
         $channel = $this->loadIntegration($manager);
+        $paymentRule = $this->createDefaltPaymentRule($manager);
+        $this->addMethodConfigToDefaultPaymentRule($channel, $paymentRule);
 
-        $this->addMethodConfigToDefaultPaymentRule($manager, $channel);
+        $manager->flush();
+    }
+
+    private function createDefaltPaymentRule(ObjectManager $manager): PaymentMethodsConfigsRule
+    {
+        $rule = new Rule();
+        $rule->setName(self::DEFAULT_RULE_NAME)
+            ->setEnabled(true)
+            ->setSortOrder(1);
+
+        $paymentRule = new PaymentMethodsConfigsRule();
+
+        $paymentRule->setRule($rule)
+            ->setOrganization($this->getOrganization($manager))
+            ->setCurrency('USD');
+
+        $manager->persist($paymentRule);
+        $this->addReference(self::DEFAULT_RULE_REFERENCE, $paymentRule);
+
+        return $paymentRule;
     }
 
     /**
@@ -72,20 +96,13 @@ class LoadPaymentTermIntegration extends AbstractFixture implements
         return $channel;
     }
 
-    /**
-     * @param ObjectManager $manager
-     * @param Channel       $channel
-     */
-    private function addMethodConfigToDefaultPaymentRule(ObjectManager $manager, Channel $channel)
-    {
+    private function addMethodConfigToDefaultPaymentRule(
+        Channel $channel,
+        PaymentMethodsConfigsRule $paymentRule
+    ) {
         $methodConfig = new PaymentMethodConfig();
         $methodConfig->setMethod($this->getIdentifier($channel));
-
-        $defaultPaymentRule = $this->getReference(CreateDefaultPaymentRule::DEFAULT_RULE_REFERENCE);
-        $defaultPaymentRule->addMethodConfig($methodConfig);
-
-        $manager->persist($defaultPaymentRule);
-        $manager->flush();
+        $paymentRule->addMethodConfig($methodConfig);
     }
 
     /**

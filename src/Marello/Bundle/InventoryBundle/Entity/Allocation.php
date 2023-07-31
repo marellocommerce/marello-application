@@ -8,6 +8,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\EntityExtendBundle\Entity\AbstractEnumValue;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
@@ -15,7 +17,6 @@ use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\ShippingBundle\Entity\HasShipmentTrait;
 use Marello\Bundle\OrderBundle\Entity\OrderAwareInterface;
-use Marello\Bundle\InventoryBundle\Model\ExtendAllocation;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
@@ -49,15 +50,17 @@ use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
  * @ORM\Table(name="marello_inventory_allocation")
  * @ORM\HasLifecycleCallbacks()
  */
-class Allocation extends ExtendAllocation implements
+class Allocation implements
     DerivedPropertyAwareInterface,
     OrganizationAwareInterface,
     OrderAwareInterface,
-    ShippingAwareInterface
+    ShippingAwareInterface,
+    ExtendEntityInterface
 {
     use HasShipmentTrait;
     use EntityCreatedUpdatedAtTrait;
     use AuditableOrganizationAwareTrait;
+    use ExtendEntityTrait;
     
     /**
      * @var int
@@ -256,8 +259,6 @@ class Allocation extends ExtendAllocation implements
      */
     public function __construct()
     {
-        parent::__construct();
-        
         $this->items = new ArrayCollection();
         $this->children = new ArrayCollection();
     }

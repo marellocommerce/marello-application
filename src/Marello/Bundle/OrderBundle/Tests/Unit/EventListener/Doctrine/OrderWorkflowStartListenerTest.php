@@ -2,18 +2,13 @@
 
 namespace Marello\Bundle\OrderBundle\Tests\Unit\EventListener\Doctrine;
 
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowStartArguments;
 use PHPUnit\Framework\TestCase;
-
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
-
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\OrderBundle\Model\WorkflowNameProviderInterface;
@@ -28,18 +23,13 @@ class OrderWorkflowStartListenerTest extends TestCase
 
     /** @var  OrderWorkflowStartListener $orderWorkflowStartListener */
     private $orderWorkflowStartListener;
-
-    /** @var DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject $doctrineHelperMock */
-    private $doctrineHelperMock;
     /**
      * {@inheritdoc}
      */
     protected function setUp(): void
     {
         $this->workflowManagerMock = $this->createMock(WorkflowManager::class);
-        $this->doctrineHelperMock = $this->createMock(DoctrineHelper::class);
         $this->orderWorkflowStartListener = new OrderWorkflowStartListener($this->workflowManagerMock);
-        $this->orderWorkflowStartListener->setDoctrineHelper($this->doctrineHelperMock);
     }
 
     /**
@@ -162,7 +152,7 @@ class OrderWorkflowStartListenerTest extends TestCase
     {
         $eventArgs = $this->createMock(LifecycleEventArgs::class);
         $eventArgs->expects(static::once())
-            ->method('getEntity')
+            ->method('getObject')
             ->willReturn($entity);
 
         return $eventArgs;

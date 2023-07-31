@@ -5,9 +5,9 @@ namespace Marello\Bundle\ShippingBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
-
-use Marello\Bundle\ShippingBundle\Model\ExtendTrackingInfo;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 
 /**
  * @ORM\Entity
@@ -25,9 +25,10 @@ use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
  *  }
  * )
  */
-class TrackingInfo extends ExtendTrackingInfo
+class TrackingInfo implements ExtendEntityInterface
 {
     use EntityCreatedUpdatedAtTrait;
+    use ExtendEntityTrait;
 
     /**
      * @ORM\Id

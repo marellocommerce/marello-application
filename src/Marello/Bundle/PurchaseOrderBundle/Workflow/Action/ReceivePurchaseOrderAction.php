@@ -95,8 +95,7 @@ class ReceivePurchaseOrderAction extends AbstractAction
 
                 // both cases are independent of the qty that has been received
                 if ($product = $item->getProduct()) {
-                    /** @var InventoryItem $inventoryItem */
-                    $inventoryItem = $product->getInventoryItems()->first();
+                    $inventoryItem = $product->getInventoryItem();
                     // back-order remove date for item
                     $inventoryItem->setBackOrdersDatetime(null);
                     // pre-order remove date and set pre-order to false for inventory item

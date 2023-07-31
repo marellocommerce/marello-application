@@ -5,9 +5,10 @@ namespace Marello\Bundle\SupplierBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
-use Marello\Bundle\SupplierBundle\Model\ExtendSupplier;
 use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
@@ -38,9 +39,10 @@ use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
  * )
  * @ORM\HasLifecycleCallbacks()
  */
-class Supplier extends ExtendSupplier implements CurrencyAwareInterface, EmailHolderInterface
+class Supplier implements CurrencyAwareInterface, EmailHolderInterface, ExtendEntityInterface
 {
     use EntityCreatedUpdatedAtTrait, AuditableOrganizationAwareTrait;
+    use ExtendEntityTrait;
 
     const SEND_PO_MANUALLY = 'manual';
     const SEND_PO_BY_EMAIL = 'email';

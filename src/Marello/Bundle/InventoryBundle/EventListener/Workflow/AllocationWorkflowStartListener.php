@@ -2,16 +2,13 @@
 
 namespace Marello\Bundle\InventoryBundle\EventListener\Workflow;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
-
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Marello\Bundle\InventoryBundle\Provider\AllocationStateStatusInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowStartArguments;
-
 use Marello\Bundle\InventoryBundle\Entity\Allocation;
 use Marello\Bundle\NotificationMessageBundle\Event\CreateNotificationMessageEvent;
 use Marello\Bundle\NotificationMessageBundle\Factory\NotificationMessageContextFactory;
@@ -49,7 +46,7 @@ class AllocationWorkflowStartListener
      */
     public function postPersist(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
         if ($entity instanceof Allocation) {
             if ($workflow = $this->getApplicableWorkflow($entity)) {
                 $this->entities[] = $entity;

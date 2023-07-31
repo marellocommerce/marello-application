@@ -2,8 +2,9 @@
 
 namespace Marello\Bundle\InventoryBundle\Command;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
-use Marello\Bundle\InventoryBundle\Async\Topics;
+use Doctrine\Persistence\ManagerRegistry;
+use Marello\Bundle\CoreBundle\Model\JobIdGenerationTrait;
+use Marello\Bundle\InventoryBundle\Async\Topic\ResolveRebalanceInventoryTopic;
 use Marello\Bundle\InventoryBundle\Model\InventoryBalancer\InventoryBalancer;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
@@ -16,6 +17,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class InventoryBalanceCommand extends Command
 {
+    use JobIdGenerationTrait;
+
     const NAME = 'marello:inventory:balance';
     const ALL = 'all';
     const PRODUCT = 'product';
@@ -23,33 +26,15 @@ class InventoryBalanceCommand extends Command
     const BACKGROUND = 'background';
     const DIRECT = 'direct';
 
-    /** @var Registry $registry */
-    private $registry;
-
-    /** @var InventoryBalancer $inventoryBalancer */
-    private $inventoryBalancer;
-
-    /** @var MessageProducerInterface $messageProducer*/
-    private $messageProducer;
-    
     /** @var string */
     private $executionType;
 
-    /**
-     * @param Registry $registry
-     * @param InventoryBalancer $inventoryBalancer
-     * @param MessageProducerInterface $messageProducer
-     */
     public function __construct(
-        Registry $registry,
-        InventoryBalancer $inventoryBalancer,
-        MessageProducerInterface $messageProducer
+        protected ManagerRegistry $registry,
+        protected InventoryBalancer $inventoryBalancer,
+        protected MessageProducerInterface $messageProducer
     ) {
         parent::__construct();
-        
-        $this->registry = $registry;
-        $this->inventoryBalancer = $inventoryBalancer;
-        $this->messageProducer = $messageProducer;
     }
 
     /**
@@ -181,9 +166,9 @@ class InventoryBalanceCommand extends Command
                 $this->inventoryBalancer->balanceInventory($product, true, true);
             } else {
                 $id = $product->getId();
-                $jobId = md5($id);
+                $jobId = $this->generateJobId($id);
                 $this->messageProducer->send(
-                    Topics::RESOLVE_REBALANCE_INVENTORY,
+                    ResolveRebalanceInventoryTopic::getName(),
                     ['product_id' => $id, 'jobId' => $jobId]
                 );
                 $output->writeln(

@@ -1,4 +1,5 @@
 <?php
+
 namespace Marello\Bundle\ProductBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;

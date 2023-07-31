@@ -3,8 +3,8 @@
 namespace Marello\Bundle\InventoryBundle\EventListener\Doctrine;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevelLogRecord;
 
 /**
@@ -26,7 +26,7 @@ class StockLevelSubjectHydrationSubscriber implements EventSubscriber
      */
     public function postLoad(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
 
         if (!$entity instanceof InventoryLevelLogRecord) {
             return;
@@ -43,7 +43,7 @@ class StockLevelSubjectHydrationSubscriber implements EventSubscriber
          * Create reference to subject entity.
          * This does not guarantee that this entity instance exists.
          */
-        $subject = $args->getEntityManager()
+        $subject = $args->getObjectManager()
             ->getReference(
                 $entity->getSubjectType(),
                 $entity->getSubjectId()
