@@ -2,7 +2,7 @@
 
 namespace MarelloEnterprise\Bundle\SalesBundle\EventListener\Doctrine;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Oro\Bundle\DistributionBundle\Handler\ApplicationState;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
@@ -12,8 +12,7 @@ class OrganizationCreateListener
     // TODO:: remove application state
     public function __construct(
         protected ApplicationState $applicationState
-    ) {
-    }
+    ) {}
     
     /**
      * @param Organization $organization
@@ -21,9 +20,8 @@ class OrganizationCreateListener
      */
     public function postPersist(Organization $organization, LifecycleEventArgs $args)
     {
-        $this->entityManager = $args->getEntityManager();
-        $existingGroup = $this
-            ->entityManager
+        $em = $args->getObjectManager();
+        $existingGroup = $em
             ->getRepository(SalesChannelGroup::class)
             ->findOneBy([
                 'system' => true,
@@ -36,7 +34,6 @@ class OrganizationCreateListener
             ->setSystem(true)
             ->setOrganization($organization);
 
-        $em = $args->getEntityManager();
         $em->persist($systemChannelGroup);
         $em->flush();
     }

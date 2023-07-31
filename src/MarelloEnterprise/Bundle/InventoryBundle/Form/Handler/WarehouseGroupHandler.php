@@ -3,7 +3,6 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\Form\Handler;
 
 use Doctrine\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Oro\Bundle\FormBundle\Form\Handler\FormHandlerInterface;
@@ -19,8 +18,7 @@ class WarehouseGroupHandler implements FormHandlerInterface
     public function __construct(
         protected ObjectManager $manager,
         protected AclHelper $aclHelper
-    ) {
-    }
+    ) {}
 
     /**
      * {@inheritdoc}

@@ -2,7 +2,7 @@
 
 namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Workflow;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
@@ -16,24 +16,12 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ReplenishmentOrderAllocateDestinationInventoryAction extends ReplenishmentOrderTransitionAction
 {
-    /**
-     * @var Registry
-     */
-    protected $doctrine;
-
-    /**
-     * @param ContextAccessor           $contextAccessor
-     * @param EventDispatcherInterface  $eventDispatcher
-     * @param Registry                  $doctrine
-     */
     public function __construct(
         ContextAccessor $contextAccessor,
         EventDispatcherInterface $eventDispatcher,
-        Registry $doctrine
+        protected ManagerRegistry $doctrine
     ) {
         parent::__construct($contextAccessor, $eventDispatcher);
-
-        $this->doctrine = $doctrine;
     }
 
     /**
@@ -103,8 +91,7 @@ class ReplenishmentOrderAllocateDestinationInventoryAction extends Replenishment
                     }
                 }
                 if ($originInventoryBatch && !$destinationInventoryBatch) {
-                    /** @var InventoryItem $inventoryItem */
-                    $inventoryItem = $item->getProduct()->getInventoryItems()->first();
+                    $inventoryItem = $item->getProduct()->getInventoryItem();
                     if ($inventoryItem) {
                         $destinationInventoryBatch = clone $originInventoryBatch;
                         $destinationInventoryBatch->setQuantity(0);

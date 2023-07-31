@@ -3,7 +3,7 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Marello\Bundle\RuleBundle\Entity\Rule;
 use MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule;
@@ -20,8 +20,7 @@ class OrganizationCreateListener
     // TODO: remove application state
     public function __construct(
         protected ApplicationState $applicationState
-    ) {
-    }
+    ) {}
 
     /**
      * @param Organization $organization
@@ -29,9 +28,9 @@ class OrganizationCreateListener
      */
     public function postPersist(Organization $organization, LifecycleEventArgs $args)
     {
-            $this->entityManager = $args->getEntityManager();
-            $this->createSystemWarehouseGroupForOrganization($organization);
-            $this->createSystemWFARulesForOrganization($organization);
+        $this->entityManager = $args->getObjectManager();
+        $this->createSystemWarehouseGroupForOrganization($organization);
+        $this->createSystemWFARulesForOrganization($organization);
     }
 
     /**

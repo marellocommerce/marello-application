@@ -73,8 +73,7 @@ class ReplenishmentOrdersFromConfigProvider
                 $orderItem
                     ->setInventoryQty($result['quantity'])
                     ->setTotalInventoryQty($result['total_quantity']);
-                /** @var InventoryItem $inventoryItem */
-                $inventoryItem = $product->getInventoryItems()->first();
+                $inventoryItem = $product->getInventoryItem();
                 if ($inventoryItem && $inventoryItem->isEnableBatchInventory()) {
                     if ($inventoryLevel = $inventoryItem->getInventoryLevel($origin)) {
                         /** @var InventoryBatch[] $inventoryBatches */
