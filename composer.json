@@ -30,12 +30,12 @@
         }
     },
     "require": {
-        "oro/platform": "5.0.*",
-        "oro/platform-serialised-fields": "5.0.*",
-        "oro/calendar-bundle": "5.0.*",
-        "oro/oauth2-server": "5.0.*",
-        "oro/crm-task-bundle": "5.0.*",
-        "marellocommerce/marello": "~4.2.0"
+        "oro/platform": "5.1.*",
+        "oro/platform-serialised-fields": "5.1.*",
+        "oro/calendar-bundle": "5.1.*",
+        "oro/oauth2-server": "5.1.*",
+        "oro/crm-task-bundle": "5.1.*",
+        "marellocommerce/marello": "~5.0.0"
     },
     "require-dev": {
         "behat/behat": "~3.10.0",
@@ -70,24 +70,21 @@
             "enabled": false
         },
         "allow-plugins": {
-            "php-http/discovery": false
+            "php-http/discovery": false,
+            "symfony/flex": true,
+            "symfony/runtime": true
         }
     },
     "scripts": {
         "post-install-cmd": [
-            "@build-parameters",
             "@set-permissions",
             "@install-assets",
             "@set-assets-version"
         ],
         "post-update-cmd": [
-            "@build-parameters",
             "@set-permissions",
             "@update-assets",
             "@set-assets-version"
-        ],
-        "build-parameters": [
-            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
         ],
         "set-permissions": [
             "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::setPermissions"
@@ -114,9 +111,6 @@
         "symfony-web-dir": "public",
         "symfony-var-dir": "var",
         "symfony-bin-dir": "bin",
-        "symfony-tests-dir": "tests",
-        "incenteev-parameters": {
-            "file": "config/parameters.yml"
-        }
+        "symfony-tests-dir": "tests"
     }
 }

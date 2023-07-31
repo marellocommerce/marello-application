@@ -10,7 +10,7 @@ using Marello.
 
 Marello is a Symfony 5.4 based application with the following requirements:
 
-* PHP 8.1 or above with command line interface
+* PHP 8.2 or above with command line interface
 * PHP Extensions
     * ctype
     * curl

@@ -33,7 +33,10 @@ build/
 /public/media/js
 /public/build.js
 /config/parameters.yml
-/config/parameters_test.yml
+/config/.env
+/.env-app.local
+/.env-app.local.php
+/.env-app.*.local
 *~
 bin/*
 !bin/console
@@ -43,3 +46,4 @@ phpunit.xml
 /.web-server-pid
 /.vagrant
 /node_modules
+.phpunit.result.cache
