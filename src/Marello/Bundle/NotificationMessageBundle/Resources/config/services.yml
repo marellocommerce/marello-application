@@ -51,3 +51,12 @@ services:
             - '@doctrine'
         tags:
             - { name: form.type, alias: marello_notificationmessage_group_config }
+
+    Marello\Bundle\NotificationMessageBundle\Entity\Repository\NotificationMessageRepository:
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'Marello\Bundle\NotificationMessageBundle\Entity\NotificationMessage'
+        calls:
+            - ['setAclHelper', ['@oro_security.acl_helper']]
+        tags:
+            - { name: doctrine.repository_service }
