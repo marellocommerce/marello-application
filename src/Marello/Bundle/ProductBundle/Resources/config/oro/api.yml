@@ -4,9 +4,9 @@ api:
             alias: marelloproduct
             plural_alias: marelloproducts
 
-        Marello\Bundle\ProductBundle\Entity\ProductStatus:
-            alias: marelloproductstatus
-            plural_alias: marelloproductstatuses
+        Marello\Bundle\ProductBundle\Entity\Variant:
+            alias: marellovariant
+            plural_alias: marellovariants
 
     entities:
         Marello\Bundle\ProductBundle\Entity\Product:
@@ -19,6 +19,8 @@ api:
                     property_path: taxCode
                 productstatus:
                     property_path: status
+                variants:
+                    property_path: variant
                 channelsCodes:
                     exclude: true
                 categoriesCodes:
@@ -51,3 +53,33 @@ api:
                             exclude: true
                         channelPrices:
                             exclude: true
+
+        Marello\Bundle\ProductBundle\Entity\Variant:
+            documentation_resource: '@MarelloProductBundle/Resources/doc/api/variant.md'
+            identifier_field_names: [variantCode]
+            fields:
+                products:
+                    property_path: products
+            filters:
+                exclusion_policy: all
+                fields:
+                    variantCode:
+                        data_type: string
+                        allow_array: true
+                        property_path: variantCode
+                        description: 'Filter by variantCode'
+                    createdAt:
+                        data_type: datetime
+                        property_path: createdAt
+                        description: 'Filter variants by created at'
+                    updatedAt:
+                        data_type: datetime
+                        property_path: updatedAt
+                        description: 'Filter variants by updated at'
+            actions:
+                create: false
+                delete: false
+                delete_list: false
+                add_relationship: false
+                update_relationship: false
+                delete_relationship: false
