@@ -24,7 +24,8 @@ class ReplenishmentOrderManualItemType extends AbstractType
     public function __construct(
         protected TranslatorInterface $translator,
         protected $addQuantityErrorByForm = []
-    ) {}
+    ) {
+    }
 
     /**
      * {@inheritdoc}
@@ -118,7 +119,9 @@ class ReplenishmentOrderManualItemType extends AbstractType
         foreach ($this->addQuantityErrorByForm as $key => $form) {
             if ($event->getForm() === $form) {
                 $event->getForm()->get('quantity')->addError(new FormError(
-                    $this->translator->trans('marelloenterprise.replenishment.form.replenishmentorderconfig.add_product.quantity.validation_error')
+                    $this->translator->trans(
+                        'marelloenterprise.replenishment.form.replenishmentorderconfig.add_product.quantity.validation_error'
+                    )
                 ));
                 unset($this->addQuantityErrorByForm[$key]);
             }
