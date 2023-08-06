@@ -83,6 +83,7 @@ marello:
                 label:                     Order on demand allowed
                 grid.label:                Order on Demand
             enable_batch_inventory.label:  Enable Batch Inventory
+            batch_inventory.label:         Batches / Lot
             product_unit.label:            Unit
 
             section:
@@ -162,7 +163,7 @@ marello:
             inventory_level_qty.label:      InventoryLevel Qty
             allocated_inventory_level_qty.label: Allocated InventoryLevel Qty
             warehouse_name.label:           Warehouse
-
+            inventory_batch.label:          Inventory Batch
 
         balancedinventorylevel:
             id.label:                       Id
@@ -196,12 +197,13 @@ marello:
             shipping_address.label:         Shipping Address
             state.label:                    State
             status.label:                   Status
-            allocationContext.label:        Context
+            allocation_context.label:       Context
             warehouse.label:                Warehouse
             quantity_allocated.label:       Allocated Quantity
             total_quantity_allocated.label: '%allocatedQty% of %totalQty% allocated'
             page_title.view:                '%entity_label% #%id%'
             reshipment_reason.label:        Reshipment reason
+            shipment.label:                 Shipment
         allocationitem:
             id.label:                       Id
             entity_label:                   Allocation Item
@@ -217,6 +219,7 @@ marello:
             quantity.label:                 Quantity
             quantity_confirmed.label:       Quantity Confirmed
             quantity_rejected.label:        Quantity Rejected
+            total_quantity.label:           Total Quantity
             organization.label:             Organization
             warehouse.label:                Warehouse
 

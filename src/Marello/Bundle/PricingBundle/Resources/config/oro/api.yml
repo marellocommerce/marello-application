@@ -35,6 +35,10 @@ api:
                         data_type: string
                         property_path: product.sku
                         description: 'Filter prices by Product SKU'
+                    currency:
+                        data_type: string
+                        property_path: currency
+                        description: 'Filter prices by currency'
                     createdAt:
                         exclude: true
                     updatedAt:
@@ -67,6 +71,10 @@ api:
                         data_type: string
                         property_path: channel.code
                         description: 'Filter prices by SalesChannel'
+                    currency:
+                        data_type: string
+                        property_path: currency
+                        description: 'Filter prices by currency'
                     createdAt:
                         exclude: true
                     updatedAt:

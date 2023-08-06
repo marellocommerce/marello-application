@@ -24,7 +24,8 @@ class ReshipmentItemType extends AbstractType
         protected AvailableInventoryProvider $availableInventoryProvider,
         protected array $addQuantityErrorByForm = [],
         protected array $addAvailableQuantityErrorByForm = [],
-    ) {}
+    ) {
+    }
 
     /**
      * {@inheritdoc}

@@ -41,13 +41,20 @@ services:
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-purchase-order-item-candidates, method: buildBeforeProductsBySupplier, priority: 100 }
 
-    marello_purchaseorder.listener.datagrid.purchaseorder_grid_listener:
-        class: Marello\Bundle\PurchaseOrderBundle\EventListener\Datagrid\PurchaseOrderGridListener
+    marello_purchaseorder.listener.datagrid.purchaseorder_item_candidates_grid_listener:
+        class: Marello\Bundle\PurchaseOrderBundle\EventListener\Datagrid\PurchaseOrderItemCandidatesGridListener
+        arguments:
+            - '@Marello\Bundle\PurchaseOrderBundle\Provider\PurchaseOrderCandidatesProvider'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-purchase-order-item-candidates, method: onBuildBeforeCandidatesGrid }
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-purchase-order-item-candidates-grid, method: onBuildBeforeCandidatesGrid }
+
+    Marello\Bundle\PurchaseOrderBundle\Provider\PurchaseOrderCandidatesProvider:
+        public: true
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@oro_workflow.manager'
-        tags:
-            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-purchase-order-item-candidates, method: buildBeforePendingOrders }
+            - '@oro_security.acl_helper'
 
     marello_purchaseorder.twig.purchaseorder_extension:
         class: Marello\Bundle\PurchaseOrderBundle\Twig\PurchaseOrderExtension

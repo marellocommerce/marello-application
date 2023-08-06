@@ -19,7 +19,8 @@ class PackingSlipTableProvider implements TableProviderInterface
 
     public function __construct(
         protected TableSizeProvider $tableSizeProvider
-    ) {}
+    ) {
+    }
 
     public function supports($entity)
     {

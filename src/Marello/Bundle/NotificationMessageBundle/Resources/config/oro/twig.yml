@@ -1,0 +1,2 @@
+bundles:
+    - '@MarelloNotificationMessage/Form/fields.html.twig'

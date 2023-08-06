@@ -2,13 +2,14 @@
 
 namespace Marello\Bundle\PdfBundle\Tests\Unit\Provider\Logo;
 
-use Marello\Bundle\PdfBundle\Provider\LogoPathProvider;
-use Marello\Bundle\PdfBundle\Provider\Render\LogoRenderParameterProvider;
-use Marello\Bundle\PdfBundle\Tests\Unit\Mock\SalesChannelAwareModel;
+use Marello\Bundle\ShippingBundle\Entity\Shipment;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\PdfBundle\Provider\LogoPathProvider;
+use Marello\Bundle\PdfBundle\Tests\Unit\Mock\SalesChannelAwareModel;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Component\Testing\Unit\EntityTrait;
 use PHPUnit\Framework\TestCase;
+use Marello\Bundle\PdfBundle\Provider\Render\LogoRenderParameterProvider;
 
 class LogoRenderParameterProviderTest extends TestCase
 {
