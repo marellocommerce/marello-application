@@ -33,6 +33,7 @@ api:
                 fields:
                     product:
                         data_type: string
+                        allow_array: true
                         property_path: product.sku
                         description: 'Filter prices by Product SKU'
                     currency:
@@ -65,6 +66,7 @@ api:
                 fields:
                     product:
                         data_type: string
+                        allow_array: true
                         property_path: product.sku
                         description: 'Filter prices by Product SKU'
                     saleschannel:
