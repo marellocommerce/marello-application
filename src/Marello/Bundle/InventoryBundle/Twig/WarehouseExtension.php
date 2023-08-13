@@ -3,8 +3,10 @@
 namespace Marello\Bundle\InventoryBundle\Twig;
 
 use Doctrine\Persistence\ManagerRegistry;
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -18,9 +20,9 @@ class WarehouseExtension extends AbstractExtension
     protected $warehouseRepository;
 
     public function __construct(
-        private ManagerRegistry $registry
-    ) {
-    }
+        private ManagerRegistry $registry,
+        private InventoryManager $inventoryManager
+    ) {}
 
     /**
      * Returns the name of the extension.
@@ -43,7 +45,15 @@ class WarehouseExtension extends AbstractExtension
             new TwigFunction(
                 'marello_inventory_get_warehouses_names_by_ids',
                 [$this, 'getWarehousesNamesByIds']
-            )
+            ),
+            new TwigFunction(
+                'get_expected_inventory_total',
+                [$this, 'getExpectedInventoryTotal']
+            ),
+            new TwigFunction(
+                'get_expired_sell_by_date_total',
+                [$this, 'getExpiredSellByDateTotal']
+            ),
         ];
     }
 
@@ -59,6 +69,16 @@ class WarehouseExtension extends AbstractExtension
         }, $warehouses));
 
         return $warehousesNames;
+    }
+
+    public function getExpectedInventoryTotal($entity)
+    {
+        return $this->inventoryManager->getExpectedInventoryTotal($entity);
+    }
+
+    public function getExpiredSellByDateTotal(InventoryItem $entity)
+    {
+        return $this->inventoryManager->getExpiredSellByDateTotal($entity);
     }
 
     protected function getRepository(): WarehouseRepository

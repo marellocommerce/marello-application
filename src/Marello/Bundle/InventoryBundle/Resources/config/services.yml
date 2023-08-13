@@ -61,11 +61,14 @@ services:
         class: 'Marello\Bundle\InventoryBundle\Twig\WarehouseExtension'
         arguments:
             - '@doctrine'
+            - '@marello_inventory.manager.inventory_manager'
         tags:
             - { name: twig.extension }
 
     marello_inventory.provider.order_warehouse:
         class: 'Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProvider'
+        arguments:
+            - '@Marello\Bundle\InventoryBundle\Strategy\WFA\WFAStrategiesRegistry'
 
     Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository:
         parent: oro_entity.abstract_repository
@@ -301,3 +304,7 @@ services:
     Marello\Bundle\InventoryBundle\EventListener\Action\Condition\ReshipmentActionListener:
         tags:
             - { name: kernel.event_listener, event: extendable_condition.reshipment_allowed, method: isReshipmentAllowed }
+
+    Marello\Bundle\InventoryBundle\EventListener\Datagrid\ExpectedInventoryItemGridListener:
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.marello-inventory-expected-inventory-item-grid, method: onBuildAfter }

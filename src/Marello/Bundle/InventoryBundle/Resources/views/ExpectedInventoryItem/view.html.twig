@@ -1,0 +1,78 @@
+{% extends '@OroUI/actions/view.html.twig' %}
+{% import '@OroUI/macros.html.twig' as UI %}
+{% import '@OroDataGrid/macros.html.twig' as dataGrid %}
+
+{% block content %}
+    <div class="layout-content"
+            {% if pageComponent is defined %}{{ UI.renderPageComponentAttributes(pageComponent) }}{% endif %}
+    >
+        <div class="container-fluid page-title">
+            {% set titleButtonsBlock %}
+                {% block navButtonContainer %}
+                    {% placeholder view_navButtons_before with {entity: entity} %}
+                    {% block navButtons %}{% placeholder view_navButtons with {entity: entity} %}{% endblock navButtons %}
+                    {% placeholder view_navButtons_after with {entity: entity} %}
+                {% endblock navButtonContainer%}
+            {% endset %}
+
+            <div class="navigation navbar-extra navbar-extra-right">
+                {% set breadcrumbs = {
+                    'entity':      entity,
+                    'indexPath':   path('marello_inventory_inventory_view', {'id': entity.id}),
+                    'indexLabel':  entity.product.sku,
+                    'entityTitle': 'marello.inventory.inventorylevel.expected_inventory.label'|trans
+                } %}
+                {% block pageHeader %}
+                    <div class="row">
+                        <div class="pull-left-extra">
+                            <div class="page-title__path">
+                                <div class="top-row">
+                                    {% block breadcrumbs %}
+                                        {% if breadcrumbs is defined %}
+                                            <div class="page-title__entity-title-wrapper">
+                                                {% if breadcrumbs.indexLabel is defined %}
+                                                    <div class="sub-title">
+                                                        {%- if breadcrumbs.indexPath is defined -%}
+                                                            <a href="{{ oro_url_add_query(breadcrumbs.indexPath) }}">{{ breadcrumbs.indexLabel }}</a>
+                                                        {%- else -%}
+                                                            {{ breadcrumbs.indexLabel }}
+                                                        {%- endif -%}
+                                                    </div>
+                                                    <span class="separator">/</span>
+                                                {% endif %}
+                                                <h1 class="page-title__entity-title">{{ breadcrumbs.entityTitle }}</h1>
+                                            </div>
+                                        {% endif %}
+                                    {% endblock breadcrumbs %}
+                                </div>
+                            </div>
+                        </div>
+                        {% apply spaceless %}
+                            <div class="pull-right title-buttons-container">
+                                {{ titleButtonsBlock }}
+                            </div>
+                        {% endapply %}
+                    </div>
+                {% endblock pageHeader %}
+            </div>
+        </div>
+        <div class="container-fluid page-title">
+            <div class="navigation navbar-extra navbar-extra-right">
+                <div class="row">
+                    <div class="pull-left pull-left-extra">
+                        <div class="pull-left">
+                            <h1 class="oro-subtitle">{{ pageTitle is defined ? pageTitle : '' }}</h1>
+                        </div>
+                    </div>
+                    <div class="page-title-center"
+                         data-role="filters-state-view-container"
+                         data-page-component-module="oroui/js/app/components/view-component"
+                         data-page-component-options="{{ {'view': 'oroui/js/app/views/page-center-title-view'}|json_encode }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{ dataGrid.renderGrid('marello-inventory-expected-inventory-item-grid', {'productId': entity.product.id}) }}
+    </div>
+{% endblock %}
