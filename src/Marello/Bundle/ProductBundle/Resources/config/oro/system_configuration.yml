@@ -1,0 +1,28 @@
+system_configuration:
+    groups:
+        product:
+            title: marello.product.system_configuration.groups.product.title
+        product_configuration:
+            title: marello.product.system_configuration.groups.product_configuration.title
+            icon: fa-barcode
+        product_general:
+            title: marello.product.system_configuration.groups.product_general.label
+    fields:
+        marello_product.image_use_external_url:
+            data_type: boolean
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+            options:
+                label: marello.product.system_configuration.fields.image_use_external_url.label
+                required: false
+
+    tree:
+        system_configuration:
+            marello:
+                children:
+                    product:
+                        children:
+                            product_configuration:
+                                children:
+                                    product_general:
+                                        children:
+                                            - marello_product.image_use_external_url

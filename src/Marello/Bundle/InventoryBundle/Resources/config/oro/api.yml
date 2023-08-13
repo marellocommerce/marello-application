@@ -18,13 +18,12 @@ api:
                     exclude: true
                 createdAt:
                     exclude: true
-                updatedAt:
-                    exclude: true
             filters:
                 exclusion_policy: all
                 fields:
                     product:
                         data_type: string
+                        allow_array: true
                         property_path: product.sku
                         description: 'Filter by product sku'
                     saleschannel:
@@ -34,7 +33,9 @@ api:
                     createdAt:
                         exclude: true
                     updatedAt:
-                        exclude: true
+                        data_type: datetime
+                        property_path: updatedAt
+                        description: 'Filter products by updated at'
             actions:
                 get_subresource: false
                 create: false
