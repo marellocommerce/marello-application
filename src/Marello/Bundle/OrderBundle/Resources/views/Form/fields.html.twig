@@ -53,6 +53,12 @@
         </div>
         {{ form_errors(form.rowTotalInclTax) }}
     </td>
+    <td class="order-line-item-allocation-exclusion">
+        <div class="fields-row">
+            {{ form_widget(form.allocationExclusion) }}
+        </div>
+        {{ form_errors(form.allocationExclusion) }}
+    </td>
 {% endblock %}
 
 {% macro marello_order_item_collection_item_prototype(widget, attributes) %}

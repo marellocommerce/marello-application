@@ -1,0 +1,31 @@
+marello:
+    notificationmessage:
+        order:
+            no_sku:
+                title: Product SKU can’t be found
+                message: Can’t create an Order, product SKU can’t be found
+        purchaseorder:
+            no_sku:
+                title: Product SKU can’t be found
+                message: Can’t create a Purchase Order, product SKU can’t be found
+            candidates:
+                title: Product purchase candidates
+                message: Based on the product configuration, we've identified that one or more products need to be purchased to prevent the product(s) from becoming out of stock.
+                solution: 'Navigate to the <a href="%url%">Purchase Order Item Candidates</a> and create Purchase Order(s) for the products'
+        allocation:
+            no_sku:
+                title: Missing Product
+                message: During the Allocation process Marello has unsuccessfully tried to allocate the product. The product has probably been removed.
+                solution: Create the product in Marello and add availability option(s) to the Inventory item.
+            no_available:
+                title: There is no product availability # dynamische title inclusief de id van de related entity.
+                message: Can’t be Allocated, there is no product availability
+                solution: Possible solutions are; create an allocation option by adding product availability, credit the products or consult the customer about next steps.
+        webhook:
+            cant_update:
+                title: Webhook error
+                message: After several attempts Marello has not been able to send an update to an external application through a Webhook.
+                solution: |
+                    Possible solutions are;<br/>
+                    - The external application might be down, bring the external application back up.<br/>
+                    - The Webhook settings/credentials are not valid. Check the correct values and update the Webhook.

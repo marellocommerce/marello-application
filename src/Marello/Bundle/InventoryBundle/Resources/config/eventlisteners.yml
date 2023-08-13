@@ -132,6 +132,7 @@ services:
         class: 'Marello\Bundle\InventoryBundle\EventListener\Workflow\AllocationWorkflowStartListener'
         arguments:
             - '@oro_workflow.manager'
+            - '@event_dispatcher'
         tags:
             - { name: doctrine.event_listener, event: postPersist }
             - { name: doctrine.event_listener, event: postFlush }

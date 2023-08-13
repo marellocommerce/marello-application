@@ -105,6 +105,16 @@ services:
         tags:
             - { name: kernel.event_listener, event: oro_search.before_search, method: process }
 
+    Marello\Bundle\ProductBundle\EventListener\ProductImageListener:
+        arguments:
+            - '@oro_config.manager'
+            - '@Oro\Bundle\AttachmentBundle\Manager\AttachmentManager'
+            - '@oro_message_queue.client.message_producer'
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+            - { name: kernel.event_listener, event: oro_config.update_after, method: onConfigUpdate }
+
     marello_product.provider.tax_code_provider:
         class: Marello\Bundle\ProductBundle\Provider\ProductTaxCodeProvider
         arguments:
@@ -186,6 +196,14 @@ services:
         tags:
             - { name: 'oro_message_queue.client.message_processor' }
 
+    Marello\Bundle\ProductBundle\Async\ProductImageUpdateProcessor:
+        arguments:
+            - '@logger'
+            - '@doctrine.orm.entity_manager'
+            - '@oro_config.manager'
+            - '@Oro\Bundle\AttachmentBundle\Manager\AttachmentManager'
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }
 
     marello_product.event_listener.attribute_family_form_view:
         parent: oro_entity_config.event_listener.attribute_family_form_view.abstract

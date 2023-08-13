@@ -4,10 +4,12 @@ namespace Marello\Bundle\ProductBundle\Migrations\Schema;
 
 use Doctrine\DBAL\Schema\Schema;
 
-use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 use Oro\Bundle\MigrationBundle\Migration\Installation;
+use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
+use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension;
 use Oro\Bundle\AttachmentBundle\Migration\Extension\AttachmentExtensionAwareTrait;
+use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
 use Oro\Bundle\AttachmentBundle\Migration\Extension\AttachmentExtensionAwareInterface;
 
 /**
@@ -16,9 +18,13 @@ use Oro\Bundle\AttachmentBundle\Migration\Extension\AttachmentExtensionAwareInte
  */
 class MarelloProductBundleInstaller implements
     Installation,
-    AttachmentExtensionAwareInterface
+    AttachmentExtensionAwareInterface,
+    ExtendExtensionAwareInterface
 {
     use AttachmentExtensionAwareTrait;
+
+    /** @var ExtendExtension $extendExtension */
+    protected $extendExtension;
 
     const PRODUCT_TABLE = 'marello_product_product';
     const MAX_PRODUCT_IMAGE_SIZE_IN_MB = 1;
@@ -29,7 +35,7 @@ class MarelloProductBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_13';
+        return 'v1_14';
     }
 
     /**
@@ -355,6 +361,24 @@ class MarelloProductBundleInstaller implements
             self::MAX_PRODUCT_IMAGE_DIMENSIONS_IN_PIXELS,
             self::MAX_PRODUCT_IMAGE_DIMENSIONS_IN_PIXELS
         );
+
+        $attachmentTable = $schema->getTable('oro_attachment_file');
+        if (!$attachmentTable->hasColumn('media_url')) {
+            $attachmentTable->addColumn('media_url', 'string', [
+                'oro_options' => [
+                    'extend' => [
+                        'is_extend' => true,
+                        'owner' => ExtendScope::OWNER_CUSTOM,
+                        'nullable' => true,
+                        'on_delete' => 'SET NULL'
+                    ],
+                ],
+                [
+                    'length' => 255,
+                    'notnull' => false
+                ]
+            ]);
+        }
     }
 
     /**
@@ -371,5 +395,13 @@ class MarelloProductBundleInstaller implements
             ['id'],
             ['onUpdate' => null, 'onDelete' => 'RESTRICT']
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setExtendExtension(ExtendExtension $extendExtension)
+    {
+        $this->extendExtension = $extendExtension;
     }
 }

@@ -44,13 +44,8 @@ class RebalanceSalesChannelGroupProcessor implements MessageProcessorInterface, 
     public function process(MessageInterface $message, SessionInterface $session): string
     {
         $data = JSON::decode($message->getBody());
-
         $salesChannels = $data['salesChannelIds'];
-        file_put_contents(
-            '/app/var/logs/saleschannel.log',
-            __METHOD__ . " " . __LINE__ . " " . print_r($data, true). "\r\n",
-            FILE_APPEND
-        );
+
         if (!empty($salesChannels)) {
             /** @var ProductRepository $productRepo */
             $productRepo = $this->entityManager->getRepository(Product::class);

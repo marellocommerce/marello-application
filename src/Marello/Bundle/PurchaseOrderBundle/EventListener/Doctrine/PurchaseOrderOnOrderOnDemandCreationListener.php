@@ -12,6 +12,7 @@ use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 use Marello\Bundle\InventoryBundle\Factory\InventoryBatchFromInventoryLevelFactory;
+use Marello\Bundle\InventoryBundle\Provider\AllocationContextInterface;
 use Marello\Bundle\InventoryBundle\Provider\AllocationStateStatusInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ProductBundle\Entity\Product;
@@ -50,6 +51,11 @@ class PurchaseOrderOnOrderOnDemandCreationListener
             return;
         }
 
+        if ($entity->getAllocationContext()
+            && $entity->getAllocationContext()->getId() === AllocationContextInterface::ALLOCATION_CONTEXT_REALLOCATION
+        ) {
+            return;
+        }
         $orderOnDemandItems = [];
         foreach ($entity->getItems() as $item) {
             /** @var InventoryItem $inventoryItem */

@@ -97,7 +97,12 @@ class ShipmentCreateAction extends AbstractAction
             if ($shippingMethodType = $shippingMethod->getType($methodType)) {
                 $shipmentManager = $this->getShipmentManager();
                 foreach ($shippingContextArray as $shippingContext) {
-                    if ($shipment = $shippingMethodType->createShipment($shippingContext, $shippingMethod->getLabel(), $methodType)) {
+                    $shipment = $shippingMethodType->createShipment(
+                        $shippingContext,
+                        $shippingMethod->getLabel(),
+                        $methodType
+                    );
+                    if ($shipment) {
                         $shipmentManager->persist($shipment);
                     }
                 }

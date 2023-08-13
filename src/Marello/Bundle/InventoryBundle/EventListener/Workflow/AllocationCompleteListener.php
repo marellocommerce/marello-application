@@ -80,6 +80,7 @@ class AllocationCompleteListener
         /** @var Order $order */
         $order = $entity->getOrder();
         $shippedItems = [];
+        /** @var OrderItem $item */
         foreach ($order->getItems() as $item) {
             // all items which have complete or shipped status
             $orderStatuses = [
@@ -99,10 +100,14 @@ class AllocationCompleteListener
                 $orderItemQty = (empty($allocationItems)) ? $item->getQuantity() : 0;
                 /** @var AllocationItem $allocationItem */
                 foreach ($allocationItems as $allocationItem) {
-                    $orderItemQty += $allocationItem->getQuantityConfirmed();
+                    // if we add the all allocation confirmed quantities including the parent we would always
+                    // have allocated more quantity than we've ordered..
+                    if (!$allocationItem->getAllocation()->getParent()) {
+                        $orderItemQty += $allocationItem->getQuantityConfirmed();
+                    }
                 }
 
-                if ($orderItemQty == $item->getQuantity() ||
+                if ((int)$orderItemQty === $item->getQuantity() ||
                     ($entity->getAllocationContext() &&
                     $entity->getAllocationContext()->getId() ===
                     AllocationContextInterface::ALLOCATION_CONTEXT_RESHIPMENT)
@@ -113,7 +118,8 @@ class AllocationCompleteListener
         }
 
         // shipped items take quantities in account from above
-        if (count($shippedItems) === $order->getItems()->count()) {
+        // parent needs to be empty, as this might indicate that this order should be consolidated
+        if (count($shippedItems) === $order->getItems()->count() && !$entity->getParent()) {
             if ($entity->getAllocationContext() &&
                 $entity->getAllocationContext()->getId() === AllocationContextInterface::ALLOCATION_CONTEXT_RESHIPMENT
             ) {

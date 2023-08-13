@@ -67,7 +67,6 @@ class InventoryAllocationProvider
             if ($allocation && $allocation->getWarehouse()) {
                 $this->handleAllocationInventory($allocation, $order, true);
             }
-
             /** @var OrderWarehouseResult $result */
             foreach ($orderWarehouseResults as $result) {
                 $newAllocation = new Allocation();
@@ -389,7 +388,8 @@ class InventoryAllocationProvider
         foreach ($order->getData() as $key => $value) {
             try {
                 $this->propertyAccessor->setValue($allocation, $key, $value);
-            } catch (\Exception $e) {}
+            } catch (\Exception $e) {
+            }
         }
     }
 

@@ -39,9 +39,15 @@ class LoadSalesChannelGroupData extends AbstractFixture
     protected function loadSalesChannelGroups()
     {
         $organization = $this->manager->getRepository('OroOrganizationBundle:Organization')->getFirst();
-
+        $existingGroup = $this
+            ->manager
+            ->getRepository(SalesChannelGroup::class)
+            ->findOneBy([
+                'system' => true,
+                'organization'=> $organization
+            ]);
         foreach ($this->data as $values) {
-            $group = new SalesChannelGroup();
+            $group = ($existingGroup) ?: new SalesChannelGroup();
             $group
                 ->setName(
                     sprintf('%s %s', $organization->getName(), $values['name'])
