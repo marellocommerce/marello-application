@@ -83,7 +83,8 @@ class ReceivePurchaseOrderAction extends AbstractAction
             if ($isPartial) {
                 if (array_key_exists(self::LAST_PARTIALLY_RECEIVED_QTY, $data)) {
                     $inventoryUpdateQty = $data[self::LAST_PARTIALLY_RECEIVED_QTY];
-                    $item->setData(null);
+                    unset($data[self::LAST_PARTIALLY_RECEIVED_QTY]);
+                    $item->setData($data);
                 }
             } else {
                 if (!$this->isItemFullyReceived($item)) {

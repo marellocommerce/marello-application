@@ -106,6 +106,11 @@ class PurchaseOrderOnOrderOnDemandCreationListener
         $poBySupplier = [];
         $allocationItemsBySupplier = [];
 
+        $warehouse = $this->getOnDemandLocation($allocation, $entityManager);
+        if (!$warehouse) {
+            throw new \LogicException('To create Purchase Order you need to specify an On Demand Location warehouse');
+        }
+
         $organization = $allocation->getOrganization();
         foreach ($allocation->getItems() as $allocationItem) {
             if (!$this->isOrderOnDemandItem($allocationItem->getProduct())) {
@@ -122,7 +127,8 @@ class PurchaseOrderOnOrderOnDemandCreationListener
                 $po = new PurchaseOrder();
                 $po
                     ->setSupplier($supplier)
-                    ->setOrganization($organization);
+                    ->setOrganization($organization)
+                    ->setWarehouse($warehouse);
 
                 $entityManager->persist($po);
                 $poBySupplier[$supplierCode] = $po;
@@ -148,7 +154,7 @@ class PurchaseOrderOnOrderOnDemandCreationListener
             $po->addItem($poItem);
             $entityManager->persist($poItem);
 
-            $this->createInventoryBatch($allocationItem, $entityManager);
+            $this->createInventoryBatch($allocationItem, $warehouse, $entityManager);
         }
 
         return [$poBySupplier, $allocationItemsBySupplier];
@@ -217,13 +223,12 @@ class PurchaseOrderOnOrderOnDemandCreationListener
         return false;
     }
 
-    private function createInventoryBatch(AllocationItem $allocationItem, EntityManager $entityManager): void
-    {
+    private function createInventoryBatch(
+        AllocationItem $allocationItem,
+        Warehouse $warehouse,
+        EntityManager $entityManager
+    ): void {
         $allocation = $allocationItem->getAllocation();
-        $warehouse = $this->getOnDemandLocation($allocation, $entityManager);
-        if (!$warehouse) {
-            return;
-        }
 
         /** @var InventoryLevel[] $inventoryLevels */
         $inventoryLevels = $allocationItem->getProduct()->getInventoryItems()->first()->getInventoryLevels();
