@@ -28,6 +28,7 @@ api:
                         description: 'Filter by product sku'
                     saleschannel:
                         data_type: string
+                        allow_array: true
                         property_path: salesChannelGroup.salesChannels.code
                         description: 'Filter levels by SalesChannel'
                     createdAt:
