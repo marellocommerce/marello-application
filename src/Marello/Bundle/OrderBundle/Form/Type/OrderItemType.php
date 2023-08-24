@@ -13,6 +13,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -99,6 +101,19 @@ class OrderItemType extends AbstractType
         $builder->get('taxCode')->addModelTransformer($this->taxCodeModelTransformer);
         $builder->addEventSubscriber(
             new OrderItemPurchasePriceSubscriber($this->configManager->get(Configuration::VAT_SYSTEM_CONFIG_PATH))
+        );
+
+        $builder->addEventListener(
+            FormEvents::PRE_SUBMIT,
+            function (FormEvent $event) {
+                // Hack to set the same owner for OrderItem as for Order
+                // We need to fill not only data value, but also set this data for a form to avoid validation error
+                $parentOwnerField = $event->getForm()->getParent()->getParent()->get('owner');
+                $data = $parentOwnerField->getData();
+                $viewData = $parentOwnerField->getViewData();
+                $event->getForm()->get('owner')->setData($data);
+                $event->setData(['owner' => $viewData] + $event->getData());
+            }
         );
     }
 
