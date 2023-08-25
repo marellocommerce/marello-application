@@ -155,4 +155,41 @@ class CustomerJsonApiTest extends RestJsonApiTestCase
         self::assertSame('US', $primaryAddress->getCountryIso2());
         self::assertSame('US-NY', $primaryAddress->getRegion()->getCombinedCode());
     }
+
+    /**
+     * Try creating customer with already existing email address
+     */
+    public function testCreateDuplicateCustomer()
+    {
+        $response = $this->post(
+            ['entity' => self::TESTING_ENTITY],
+            'customer_create_with_address.yml',
+            [],
+            false
+        );
+
+        $this->assertJsonResponse($response);
+
+        $entityType = self::extractEntityType(['entity' => self::TESTING_ENTITY]);
+        self::assertApiResponseStatusCodeEquals(
+            $response,
+            Response::HTTP_BAD_REQUEST,
+            $entityType,
+            'post'
+        );
+        self::assertResponseContentTypeEquals($response, $this->getResponseContentType());
+    }
+
+    /**
+     * @param array $parameters
+     * @return string
+     */
+    private static function extractEntityType(array $parameters): string
+    {
+        if (empty($parameters['entity'])) {
+            return 'unknown';
+        }
+
+        return $parameters['entity'];
+    }
 }
