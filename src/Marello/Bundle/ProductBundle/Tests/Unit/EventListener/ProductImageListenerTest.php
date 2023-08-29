@@ -18,7 +18,6 @@ use Oro\Bundle\AttachmentBundle\Entity\File;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\ConfigBundle\Event\ConfigUpdateEvent;
-use Oro\Bundle\AttachmentBundle\Manager\AttachmentManager;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
@@ -29,13 +28,10 @@ class ProductImageListenerTest extends TestCase
     /** @var ConfigManager|\PHPUnit\Framework\MockObject\MockObject $configManagerMock */
     private $configManagerMock;
 
-    /** @var AttachmentManager|\PHPUnit\Framework\MockObject\MockObject $attachmentManagerMock */
-    private $attachmentManagerMock;
-
     /** @var ConfigManager|\PHPUnit\Framework\MockObject\MockObject $configManagerMock */
     private $messageProducerMock;
 
-    /** @var AttachmentManager|\PHPUnit\Framework\MockObject\MockObject $attachmentManagerMock */
+    /** @var DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject $doctrineHelperMock */
     private $doctrineHelperMock;
 
     /** @var  ProductImageListener $productImageListener */
@@ -47,12 +43,10 @@ class ProductImageListenerTest extends TestCase
     protected function setUp(): void
     {
         $this->configManagerMock = $this->createMock(ConfigManager::class);
-        $this->attachmentManagerMock = $this->createMock(AttachmentManager::class);
         $this->messageProducerMock = $this->createMock(MessageProducerInterface::class);
         $this->doctrineHelperMock = $this->createMock(DoctrineHelper::class);
         $this->productImageListener = new ProductImageListener(
             $this->configManagerMock,
-            $this->attachmentManagerMock,
             $this->messageProducerMock,
             $this->doctrineHelperMock
         );
@@ -69,9 +63,9 @@ class ProductImageListenerTest extends TestCase
             ->with('marello_product.image_use_external_url')
             ->willReturn(false);
 
-        $this->attachmentManagerMock
+        $this->messageProducerMock
             ->expects(static::never())
-            ->method('getFilteredImageUrl');
+            ->method('send');
 
         /** @var OnFlushEventArgs|\PHPUnit\Framework\MockObject\MockObject $eventPostFlushArgs */
         $eventPostFlushArgs = $this->createMock(OnFlushEventArgs::class);
@@ -92,10 +86,6 @@ class ProductImageListenerTest extends TestCase
             ->method('get')
             ->with('marello_product.image_use_external_url')
             ->willReturn(true);
-
-        $this->attachmentManagerMock
-            ->expects(static::never())
-            ->method('getFilteredImageUrl');
 
         $entityManagerMock = $this->createMock(EntityManagerInterface::class);
         $unitOfWorkMock = $this->createMock(UnitOfWork::class);
@@ -135,11 +125,6 @@ class ProductImageListenerTest extends TestCase
             ->with('marello_product.image_use_external_url')
             ->willReturn(true);
 
-        $this->attachmentManagerMock
-            ->expects(static::once())
-            ->method('getFilteredImageUrl')
-            ->willReturn('test1234');
-
         $entityManagerMock = $this->createMock(EntityManagerInterface::class);
         $unitOfWorkMock = $this->createMock(UnitOfWork::class);
         /** @var OnFlushEventArgs|\PHPUnit\Framework\MockObject\MockObject $eventPostFlushArgs */
@@ -154,14 +139,7 @@ class ProductImageListenerTest extends TestCase
             ->method('getUnitOfWork')
             ->willReturn($unitOfWorkMock);
 
-        $file = $this->getMockBuilder(File::class)
-            ->disableOriginalConstructor()
-            ->disableOriginalClone()
-            ->disableArgumentCloning()
-            ->disallowMockingUnknownTypes()
-            ->addMethods(['setMediaUrl'])
-            ->onlyMethods(['getParentEntityClass'])
-            ->getMock();
+        $file = $this->createMock(File::class);
         $file
             ->expects(static::once())
             ->method('getParentEntityClass')
@@ -169,8 +147,12 @@ class ProductImageListenerTest extends TestCase
 
         $file
             ->expects(static::once())
-            ->method('setMediaUrl')
-            ->with('test1234');
+            ->method('getParentEntityId')
+            ->willReturn(1);
+
+        $this->messageProducerMock
+            ->expects(static::once())
+            ->method('send');
 
         $unitOfWorkMock
             ->expects(static::exactly(2))
@@ -202,6 +184,31 @@ class ProductImageListenerTest extends TestCase
 
         $this->productImageListener->onConfigUpdate($configUpdateEvent);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function testOnConfigUpdateBeingDisabledNoUpdateForImageProcessor()
+    {
+        $this->messageProducerMock
+            ->expects(static::never())
+            ->method('send');
+        $configUpdateEvent = $this->createMock(ConfigUpdateEvent::class);
+        $configUpdateEvent
+            ->expects(static::once())
+            ->method('isChanged')
+            ->with('marello_product.image_use_external_url')
+            ->willReturn(true);
+
+        $configUpdateEvent
+            ->expects(static::once())
+            ->method('getNewValue')
+            ->with('marello_product.image_use_external_url')
+            ->willReturn(false);
+
+        $this->productImageListener->onConfigUpdate($configUpdateEvent);
+    }
+
 
     /**
      * {@inheritdoc}
@@ -271,6 +278,12 @@ class ProductImageListenerTest extends TestCase
         $configUpdateEvent
             ->expects(static::once())
             ->method('isChanged')
+            ->with('marello_product.image_use_external_url')
+            ->willReturn(true);
+
+        $configUpdateEvent
+            ->expects(static::once())
+            ->method('getNewValue')
             ->with('marello_product.image_use_external_url')
             ->willReturn(true);
 
