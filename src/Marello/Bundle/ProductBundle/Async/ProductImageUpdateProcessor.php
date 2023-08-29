@@ -4,11 +4,12 @@ namespace Marello\Bundle\ProductBundle\Async;
 
 use Doctrine\ORM\EntityManagerInterface;
 
-use Doctrine\Persistence\Proxy;
-use Oro\Bundle\AttachmentBundle\Entity\File;
-use Oro\Bundle\AttachmentBundle\Manager\AttachmentManager;
-use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Psr\Log\LoggerInterface;
+
+use Oro\Bundle\AttachmentBundle\Entity\File;
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+use Oro\Bundle\AttachmentBundle\Manager\AttachmentManager;
+use Oro\Bundle\AttachmentBundle\Manager\ImageResizeManagerInterface;
 
 use Oro\Component\MessageQueue\Util\JSON;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
@@ -26,7 +27,8 @@ class ProductImageUpdateProcessor implements MessageProcessorInterface, TopicSub
         private LoggerInterface $logger,
         private EntityManagerInterface $entityManager,
         private ConfigManager $configManager,
-        private AttachmentManager $attachmentManager
+        private AttachmentManager $attachmentManager,
+        private ImageResizeManagerInterface $imageResizeManager
     ) {
     }
 
@@ -50,9 +52,8 @@ class ProductImageUpdateProcessor implements MessageProcessorInterface, TopicSub
         }
 
         $data = JSON::decode($message->getBody());
-        $productSku = $data['productSku'];
         /** @var Product $product */
-        $product = $this->entityManager->getRepository(Product::class)->findOneBy(['sku' => $productSku]);
+        $product = $this->entityManager->getRepository(Product::class)->findOneBy(['id' => $data['productId']]);
         if ($product && $product->getImage()) {
             try {
                 $image = $product->getImage();
@@ -65,6 +66,7 @@ class ProductImageUpdateProcessor implements MessageProcessorInterface, TopicSub
                     $file->setMediaUrl($url);
                     $this->entityManager->persist($file);
                     $this->entityManager->flush($file);
+                    $this->imageResizeManager->applyFilter($file, 'product_view');
                 }
             } catch (\Exception $e) {
                 $this->logger->error(

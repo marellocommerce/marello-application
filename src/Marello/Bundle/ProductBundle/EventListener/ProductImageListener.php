@@ -8,7 +8,6 @@ use Oro\Bundle\AttachmentBundle\Entity\File;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\ConfigBundle\Event\ConfigUpdateEvent;
-use Oro\Bundle\AttachmentBundle\Manager\AttachmentManager;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
@@ -19,7 +18,6 @@ class ProductImageListener
 {
     public function __construct(
         protected ConfigManager $configManager,
-        protected AttachmentManager $attachmentManager,
         protected MessageProducerInterface $messageProducer,
         protected DoctrineHelper $doctrineHelper
     ) {
@@ -86,9 +84,10 @@ class ProductImageListener
     protected function updateImageFileExternalUrl(File $file): void
     {
         if (Product::class === $file->getParentEntityClass()) {
-            $url = $this->attachmentManager
-                ->getFilteredImageUrl($file, 'product_view');
-            $file->setMediaUrl($url);
+            $this->messageProducer->send(
+                ProductImageUpdateProcessor::TOPIC,
+                ['productId' => $file->getParentEntityId()]
+            );
         }
     }
 
@@ -102,12 +101,16 @@ class ProductImageListener
             return;
         }
 
+        if (!$event->getNewValue('marello_product.image_use_external_url')) {
+            return;
+        }
+
         foreach ($this->getProductsToProcess() as $product) {
             // if the setting is changed, we need to update all the images
             // of products to regenerate the media urls
             $this->messageProducer->send(
                 ProductImageUpdateProcessor::TOPIC,
-                ['productSku' => $product['sku']]
+                ['productId' => $product['id']]
             );
         }
     }
