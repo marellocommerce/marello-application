@@ -1,9 +1,5 @@
 api:
     entity_aliases:
-        Marello\Bundle\CustomerBundle\Entity\Customer:
-            alias: marellocustomer
-            plural_alias: marellocustomers
-
         Marello\Bundle\OrderBundle\Entity\Order:
             alias: marelloorder
             plural_alias: marelloorders
@@ -33,10 +29,21 @@ api:
                         allow_array: true
                         property_path: orderReference
                         description: 'Filter by order reference'
+                        operators: ['=', '!=', '*', '!*', '~', '!~', '^', '!^', '$', '!$']
+                    salesChannel:
+                        data_type: string
+                        allow_array: true
+                        property_path: salesChannel.code
+                        description: 'Filter by SalesChannel'
+                        operators: ['=', '!=', '*', '!*', '~', '!~', '^', '!^', '$', '!$']
                     createdAt:
                         exclude: true
                     updatedAt:
                         exclude: true
+            sorters:
+                fields:
+                    purchaseDate: ~
+                    orderReference: ~
             actions:
                 update: false
                 delete: false
@@ -69,24 +76,4 @@ api:
                 delete: false
                 delete_list: false
                 update_relationship: false
-                delete_relationship: false
-
-        Marello\Bundle\CustomerBundle\Entity\Customer:
-            documentation_resource: '@MarelloOrderBundle/Resources/doc/api/customer.md'
-            fields:
-                createdAt:
-                    exclude: true
-                updatedAt:
-                    exclude: true
-            filters:
-                exclusion_policy: all
-                fields:
-                    email:
-                        data_type: string
-                        allow_array: true
-                        property_path: email
-                        description: 'Filter by email'
-            actions:
-                delete: false
-                delete_list: false
                 delete_relationship: false
