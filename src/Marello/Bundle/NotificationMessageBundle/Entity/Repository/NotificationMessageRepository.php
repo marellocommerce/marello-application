@@ -3,13 +3,21 @@
 namespace Marello\Bundle\NotificationMessageBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageResolvedInterface;
-use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageTypeInterface;
+
 use Oro\Bundle\UserBundle\Entity\User;
-use function Doctrine\ORM\QueryBuilder;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
+
+use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageTypeInterface;
+use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageResolvedInterface;
 
 class NotificationMessageRepository extends EntityRepository
 {
+    /** @var AclHelper $aclHelper */
+    private AclHelper $aclHelper;
+
+    /**
+     * @return array
+     */
     public function getOutdatedNotificationMessages(): array
     {
         $monthAgo = (new \DateTime())->modify('-30 days');
@@ -17,37 +25,57 @@ class NotificationMessageRepository extends EntityRepository
         $qb
             ->where($qb->expr()->lt('na.createdAt', ':monthAgo'))
             ->andWhere($qb->expr()->orX(
-                $qb->expr()->eq('na.resolved', ':yes'),
+                $qb->expr()->eq('na.resolved', ':resolved'),
                 $qb->expr()->eq('na.alertType', ':infoType')
             ))
             ->setParameter('monthAgo', $monthAgo)
-            ->setParameter('yes', NotificationMessageResolvedInterface::NOTIFICATION_MESSAGE_RESOLVED_YES)
+            ->setParameter('resolved', NotificationMessageResolvedInterface::NOTIFICATION_MESSAGE_RESOLVED_YES)
             ->setParameter('infoType', NotificationMessageTypeInterface::NOTIFICATION_MESSAGE_TYPE_INFO);
 
-        return $qb->getQuery()->getResult();
+        return $this->aclHelper->apply($qb->getQuery())->getResult();
     }
 
+    /**
+     * @param User $user
+     * @param int $limit
+     * @param array $types
+     * @return float|int|mixed|string
+     */
     public function getNotificationMessagesAssignedTo(User $user, int $limit, array $types)
     {
-        $queryBuilder = $this->createQueryBuilder('na');
+        $qb = $this->createQueryBuilder('na');
 
-        $queryBuilder
-            ->where(
-                $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->in('na.userGroup', ':groups'),
-                    $queryBuilder->expr()->isNull('na.userGroup'),
+        $qb
+            ->where($qb->expr()->neq('na.resolved', ':resolved'))
+            ->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->in('na.userGroup', ':groups'),
+                    $qb->expr()->isNull('na.userGroup'),
                 )
             )
             ->orderBy('na.createdAt', 'DESC')
             ->setFirstResult(0)
             ->setMaxResults($limit)
-            ->setParameter('groups', $user->getGroups()->toArray());
+            ->setParameter('groups', $user->getGroups()->toArray())
+            ->setParameter(
+                'resolved',
+                NotificationMessageResolvedInterface::NOTIFICATION_MESSAGE_RESOLVED_YES
+            );
 
         if ($types) {
-            $queryBuilder->andWhere($queryBuilder->expr()->in('na.alertType', ':types'))
+            $qb->andWhere($qb->expr()->in('na.alertType', ':types'))
                 ->setParameter('types', $types);
         }
 
-        return $queryBuilder->getQuery()->execute();
+        return $this->aclHelper->apply($qb->getQuery())->execute();
+    }
+
+    /**
+     * @param AclHelper $aclHelper
+     * @return void
+     */
+    public function setAclHelper(AclHelper $aclHelper): void
+    {
+        $this->aclHelper = $aclHelper;
     }
 }
