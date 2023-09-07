@@ -34,11 +34,27 @@ class HandleMediaUrl implements ProcessorInterface
             return;
         }
 
+        if ($this->isMediaUrlNotEmpty($context)) {
+            return;
+        }
+
         if ($this->hasFileContents($context)) {
             $data[self::CONTENT_FIELD_NAME] = null;
         }
 
         $context->setData($data);
+    }
+
+    /**
+     * @param ContextInterface $context
+     * @return bool
+     */
+    private function isMediaUrlNotEmpty(ContextInterface $context): bool
+    {
+        $mediaUrlFieldName = $context->getResultFieldName(self::MEDIA_URL_FIELD_NAME);
+        $data = $context->getData();
+
+        return $mediaUrlFieldName && null === $data[$mediaUrlFieldName];
     }
 
     /**
