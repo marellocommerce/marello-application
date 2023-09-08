@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "80c56f82adb68a1ac6a595bc46157b59",
+    "content-hash": "5bb3d755b1ebc429a6316d85d3618198",
     "packages": [
         {
             "name": "ass/xmlsecurity",
@@ -5610,11 +5610,17 @@
         },
         {
             "name": "marellocommerce/marello",
-            "version": "dev-main",
+            "version": "4.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/marellocommerce/marello.git",
+                "reference": "08197b40a8b5868be265de45c37518c6c67aaf33"
+            },
             "dist": {
-                "type": "path",
-                "url": "../../package/marello",
-                "reference": "ec8d6ccad362750b530fe68ab2ef6d212fced73c"
+                "type": "zip",
+                "url": "https://api.github.com/repos/marellocommerce/marello/zipball/08197b40a8b5868be265de45c37518c6c67aaf33",
+                "reference": "08197b40a8b5868be265de45c37518c6c67aaf33",
+                "shasum": ""
             },
             "require": {
                 "mpdf/mpdf": "^8.0",
@@ -5625,7 +5631,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "4.1-dev"
+                    "dev-main": "4.2-dev"
                 }
             },
             "autoload": {
@@ -5647,26 +5653,34 @@
             ],
             "description": "Marello Unified Commerce Management",
             "homepage": "https://github.com/marellocommerce/marello.git",
-            "transport-options": {
-                "relative": true
-            }
+            "support": {
+                "source": "https://github.com/marellocommerce/marello/tree/4.2.0",
+                "issues": "https://github.com/marellocommerce/marello/issues"
+            },
+            "time": "2023-06-15T06:19:40+00:00"
         },
         {
             "name": "marellocommerce/marello-enterprise",
-            "version": "dev-main",
+            "version": "4.2.0",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:marellocommerce/marello-enterprise.git",
+                "reference": "3dbdfead4554015b3b23209c76d2ceed254f35c7"
+            },
             "dist": {
-                "type": "path",
-                "url": "../../package/marello-enterprise",
-                "reference": "15d9c14202739649a0002ac335f156dfafb48a3c"
+                "type": "zip",
+                "url": "https://api.github.com/repos/marellocommerce/marello-enterprise/zipball/3dbdfead4554015b3b23209c76d2ceed254f35c7",
+                "reference": "3dbdfead4554015b3b23209c76d2ceed254f35c7",
+                "shasum": ""
             },
             "require": {
-                "marellocommerce/marello": "4.1.*",
+                "marellocommerce/marello": "4.2.*",
                 "oro/platform-enterprise": "5.0.*"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "4.1-dev"
+                    "dev-main": "4.2-dev"
                 }
             },
             "autoload": {
@@ -5685,9 +5699,11 @@
             ],
             "description": "Marello Unified Commerce Management Enterprise edition",
             "homepage": "https://github.com/marellocommerce/marello-ee.git",
-            "transport-options": {
-                "relative": true
-            }
+            "support": {
+                "source": "https://github.com/marellocommerce/marello-enterprise/tree/4.2.0",
+                "issues": "https://github.com/marellocommerce/marello-enterprise/issues"
+            },
+            "time": "2023-06-15T06:19:40+00:00"
         },
         {
             "name": "matomo/device-detector",
@@ -6750,7 +6766,6 @@
                     "/Tests/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "OSL-3.0"
             ],
@@ -6763,8 +6778,8 @@
             "description": "Oro Health Check Bundle",
             "homepage": "https://github.com/oroinc/OroHealthCheckBundle.git",
             "keywords": [
-                "ORO",
-                "health check"
+                "Health Check",
+                "Oro"
             ],
             "support": {
                 "source": "https://github.com/oroinc/OroHealthCheckBundle/tree/5.0.2"
@@ -6833,13 +6848,13 @@
             "version": "5.0.12",
             "source": {
                 "type": "git",
-                "url": "https://github.com/oroinc/platform.git",
-                "reference": "ac69b11ed8f28aff24ec99856661b18560f4ed3e"
+                "url": "git@github.com:oroinc/platform-er.git",
+                "reference": "d9c8ae703db4e5c12b1c4eca5725b5393bc77bc3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/platform/zipball/ac69b11ed8f28aff24ec99856661b18560f4ed3e",
-                "reference": "ac69b11ed8f28aff24ec99856661b18560f4ed3e",
+                "url": "https://api.github.com/repos/oroinc/platform-er/zipball/d9c8ae703db4e5c12b1c4eca5725b5393bc77bc3",
+                "reference": "d9c8ae703db4e5c12b1c4eca5725b5393bc77bc3",
                 "shasum": ""
             },
             "require": {
@@ -7051,102 +7066,101 @@
             },
             "autoload": {
                 "psr-4": {
-                    "Oro\\Component\\Log\\": "src/Oro/Component/Log",
-                    "Oro\\Component\\Math\\": "src/Oro/Component/Math",
-                    "Oro\\Bundle\\UIBundle\\": "src/Oro/Bundle/UIBundle",
+                    "Oro\\Bundle\\ActionBundle\\": "src/Oro/Bundle/ActionBundle",
+                    "Oro\\Bundle\\ActivityBundle\\": "src/Oro/Bundle/ActivityBundle",
+                    "Oro\\Bundle\\ActivityListBundle\\": "src/Oro/Bundle/ActivityListBundle",
+                    "Oro\\Bundle\\AddressBundle\\": "src/Oro/Bundle/AddressBundle",
                     "Oro\\Bundle\\ApiBundle\\": "src/Oro/Bundle/ApiBundle",
-                    "Oro\\Bundle\\SSOBundle\\": "src/Oro/Bundle/SSOBundle",
-                    "Oro\\Bundle\\TagBundle\\": "src/Oro/Bundle/TagBundle",
-                    "Oro\\Component\\Action\\": "src/Oro/Component/Action",
-                    "Oro\\Component\\Config\\": "src/Oro/Component/Config",
-                    "Oro\\Component\\Layout\\": "src/Oro/Component/Layout",
-                    "Oro\\Bundle\\CronBundle\\": "src/Oro/Bundle/CronBundle",
-                    "Oro\\Bundle\\FormBundle\\": "src/Oro/Bundle/FormBundle",
-                    "Oro\\Bundle\\HelpBundle\\": "src/Oro/Bundle/HelpBundle",
-                    "Oro\\Bundle\\ImapBundle\\": "src/Oro/Bundle/ImapBundle",
-                    "Oro\\Bundle\\NoteBundle\\": "src/Oro/Bundle/NoteBundle",
-                    "Oro\\Bundle\\SoapBundle\\": "src/Oro/Bundle/SoapBundle",
-                    "Oro\\Bundle\\SyncBundle\\": "src/Oro/Bundle/SyncBundle",
-                    "Oro\\Bundle\\UserBundle\\": "src/Oro/Bundle/UserBundle",
-                    "Oro\\Component\\Routing\\": "src/Oro/Component/Routing",
-                    "Oro\\Component\\Testing\\": "src/Oro/Component/Testing",
                     "Oro\\Bundle\\AssetBundle\\": "src/Oro/Bundle/AssetBundle",
+                    "Oro\\Bundle\\AttachmentBundle\\": "src/Oro/Bundle/AttachmentBundle",
                     "Oro\\Bundle\\BatchBundle\\": "src/Oro/Bundle/BatchBundle",
+                    "Oro\\Bundle\\BusinessEntitiesBundle\\": "src/Oro/Bundle/BusinessEntitiesBundle",
                     "Oro\\Bundle\\CacheBundle\\": "src/Oro/Bundle/CacheBundle",
                     "Oro\\Bundle\\ChartBundle\\": "src/Oro/Bundle/ChartBundle",
+                    "Oro\\Bundle\\CommentBundle\\": "src/Oro/Bundle/CommentBundle",
+                    "Oro\\Bundle\\ConfigBundle\\": "src/Oro/Bundle/ConfigBundle",
+                    "Oro\\Bundle\\CronBundle\\": "src/Oro/Bundle/CronBundle",
+                    "Oro\\Bundle\\CurrencyBundle\\": "src/Oro/Bundle/CurrencyBundle",
+                    "Oro\\Bundle\\DashboardBundle\\": "src/Oro/Bundle/DashboardBundle",
+                    "Oro\\Bundle\\DataAuditBundle\\": "src/Oro/Bundle/DataAuditBundle",
+                    "Oro\\Bundle\\DataGridBundle\\": "src/Oro/Bundle/DataGridBundle",
+                    "Oro\\Bundle\\DigitalAssetBundle\\": "src/Oro/Bundle/DigitalAssetBundle",
+                    "Oro\\Bundle\\DistributionBundle\\": "src/Oro/Bundle/DistributionBundle",
                     "Oro\\Bundle\\DraftBundle\\": "src/Oro/Bundle/DraftBundle",
                     "Oro\\Bundle\\EmailBundle\\": "src/Oro/Bundle/EmailBundle",
-                    "Oro\\Bundle\\ScopeBundle\\": "src/Oro/Bundle/ScopeBundle",
-                    "Oro\\Bundle\\ThemeBundle\\": "src/Oro/Bundle/ThemeBundle",
-                    "Oro\\Component\\PhpUtils\\": "src/Oro/Component/PhpUtils",
-                    "Oro\\Bundle\\ActionBundle\\": "src/Oro/Bundle/ActionBundle",
-                    "Oro\\Bundle\\ConfigBundle\\": "src/Oro/Bundle/ConfigBundle",
+                    "Oro\\Bundle\\EmbeddedFormBundle\\": "src/Oro/Bundle/EmbeddedFormBundle",
                     "Oro\\Bundle\\EntityBundle\\": "src/Oro/Bundle/EntityBundle",
+                    "Oro\\Bundle\\EntityConfigBundle\\": "src/Oro/Bundle/EntityConfigBundle",
+                    "Oro\\Bundle\\EntityExtendBundle\\": "src/Oro/Bundle/EntityExtendBundle",
+                    "Oro\\Bundle\\EntityMergeBundle\\": "src/Oro/Bundle/EntityMergeBundle",
+                    "Oro\\Bundle\\EntityPaginationBundle\\": "src/Oro/Bundle/EntityPaginationBundle",
+                    "Oro\\Bundle\\FeatureToggleBundle\\": "src/Oro/Bundle/FeatureToggleBundle",
                     "Oro\\Bundle\\FilterBundle\\": "src/Oro/Bundle/FilterBundle",
+                    "Oro\\Bundle\\FormBundle\\": "src/Oro/Bundle/FormBundle",
+                    "Oro\\Bundle\\GaufretteBundle\\": "src/Oro/Bundle/GaufretteBundle",
+                    "Oro\\Bundle\\GoogleIntegrationBundle\\": "src/Oro/Bundle/GoogleIntegrationBundle",
+                    "Oro\\Bundle\\HelpBundle\\": "src/Oro/Bundle/HelpBundle",
+                    "Oro\\Bundle\\ImapBundle\\": "src/Oro/Bundle/ImapBundle",
+                    "Oro\\Bundle\\ImportExportBundle\\": "src/Oro/Bundle/ImportExportBundle",
+                    "Oro\\Bundle\\InstallerBundle\\": "src/Oro/Bundle/InstallerBundle",
+                    "Oro\\Bundle\\IntegrationBundle\\": "src/Oro/Bundle/IntegrationBundle",
                     "Oro\\Bundle\\LayoutBundle\\": "src/Oro/Bundle/LayoutBundle",
                     "Oro\\Bundle\\LocaleBundle\\": "src/Oro/Bundle/LocaleBundle",
                     "Oro\\Bundle\\LoggerBundle\\": "src/Oro/Bundle/LoggerBundle",
-                    "Oro\\Bundle\\ReportBundle\\": "src/Oro/Bundle/ReportBundle",
-                    "Oro\\Bundle\\SearchBundle\\": "src/Oro/Bundle/SearchBundle",
-                    "Oro\\Component\\Exception\\": "src/Oro/Component/Exception",
-                    "Oro\\Component\\TestUtils\\": "src/Oro/Component/TestUtils",
-                    "Oro\\Bundle\\AddressBundle\\": "src/Oro/Bundle/AddressBundle",
-                    "Oro\\Bundle\\CommentBundle\\": "src/Oro/Bundle/CommentBundle",
-                    "Oro\\Bundle\\SegmentBundle\\": "src/Oro/Bundle/SegmentBundle",
-                    "Oro\\Bundle\\SidebarBundle\\": "src/Oro/Bundle/SidebarBundle",
-                    "Oro\\Bundle\\WindowsBundle\\": "src/Oro/Bundle/WindowsBundle",
-                    "Oro\\Component\\Duplicator\\": "src/Oro/Component/Duplicator",
-                    "Oro\\Bundle\\ActivityBundle\\": "src/Oro/Bundle/ActivityBundle",
-                    "Oro\\Bundle\\CurrencyBundle\\": "src/Oro/Bundle/CurrencyBundle",
-                    "Oro\\Bundle\\DataGridBundle\\": "src/Oro/Bundle/DataGridBundle",
-                    "Oro\\Bundle\\PlatformBundle\\": "src/Oro/Bundle/PlatformBundle",
-                    "Oro\\Bundle\\ReminderBundle\\": "src/Oro/Bundle/ReminderBundle",
-                    "Oro\\Bundle\\SecurityBundle\\": "src/Oro/Bundle/SecurityBundle",
-                    "Oro\\Bundle\\WorkflowBundle\\": "src/Oro/Bundle/WorkflowBundle",
-                    "Oro\\Bundle\\DashboardBundle\\": "src/Oro/Bundle/DashboardBundle",
-                    "Oro\\Bundle\\DataAuditBundle\\": "src/Oro/Bundle/DataAuditBundle",
-                    "Oro\\Bundle\\GaufretteBundle\\": "src/Oro/Bundle/GaufretteBundle",
-                    "Oro\\Bundle\\InstallerBundle\\": "src/Oro/Bundle/InstallerBundle",
-                    "Oro\\Bundle\\MigrationBundle\\": "src/Oro/Bundle/MigrationBundle",
-                    "Oro\\Component\\MessageQueue\\": "src/Oro/Component/MessageQueue",
-                    "Oro\\Bundle\\AttachmentBundle\\": "src/Oro/Bundle/AttachmentBundle",
-                    "Oro\\Bundle\\NavigationBundle\\": "src/Oro/Bundle/NavigationBundle",
-                    "Oro\\Component\\DoctrineUtils\\": "src/Oro/Component/DoctrineUtils",
-                    "Oro\\Bundle\\EntityMergeBundle\\": "src/Oro/Bundle/EntityMergeBundle",
-                    "Oro\\Bundle\\IntegrationBundle\\": "src/Oro/Bundle/IntegrationBundle",
                     "Oro\\Bundle\\MaintenanceBundle\\": "src/Oro/Bundle/MaintenanceBundle",
-                    "Oro\\Bundle\\TranslationBundle\\": "src/Oro/Bundle/TranslationBundle",
-                    "Oro\\Component\\ChainProcessor\\": "src/Oro/Component/ChainProcessor",
-                    "Oro\\Component\\PropertyAccess\\": "src/Oro/Component/PropertyAccess",
-                    "Oro\\Bundle\\ActivityListBundle\\": "src/Oro/Bundle/ActivityListBundle",
-                    "Oro\\Bundle\\DigitalAssetBundle\\": "src/Oro/Bundle/DigitalAssetBundle",
-                    "Oro\\Bundle\\DistributionBundle\\": "src/Oro/Bundle/DistributionBundle",
-                    "Oro\\Bundle\\EmbeddedFormBundle\\": "src/Oro/Bundle/EmbeddedFormBundle",
-                    "Oro\\Bundle\\EntityConfigBundle\\": "src/Oro/Bundle/EntityConfigBundle",
-                    "Oro\\Bundle\\EntityExtendBundle\\": "src/Oro/Bundle/EntityExtendBundle",
-                    "Oro\\Bundle\\ImportExportBundle\\": "src/Oro/Bundle/ImportExportBundle",
                     "Oro\\Bundle\\MessageQueueBundle\\": "src/Oro/Bundle/MessageQueueBundle",
+                    "Oro\\Bundle\\MicrosoftIntegrationBundle\\": "src/Oro/Bundle/MicrosoftIntegrationBundle",
+                    "Oro\\Bundle\\MigrationBundle\\": "src/Oro/Bundle/MigrationBundle",
+                    "Oro\\Bundle\\NavigationBundle\\": "src/Oro/Bundle/NavigationBundle",
+                    "Oro\\Bundle\\NoteBundle\\": "src/Oro/Bundle/NoteBundle",
                     "Oro\\Bundle\\NotificationBundle\\": "src/Oro/Bundle/NotificationBundle",
                     "Oro\\Bundle\\OrganizationBundle\\": "src/Oro/Bundle/OrganizationBundle",
-                    "Oro\\Bundle\\ViewSwitcherBundle\\": "src/Oro/Bundle/ViewSwitcherBundle",
-                    "Oro\\Bundle\\FeatureToggleBundle\\": "src/Oro/Bundle/FeatureToggleBundle",
+                    "Oro\\Bundle\\PlatformBundle\\": "src/Oro/Bundle/PlatformBundle",
                     "Oro\\Bundle\\QueryDesignerBundle\\": "src/Oro/Bundle/QueryDesignerBundle",
+                    "Oro\\Bundle\\ReminderBundle\\": "src/Oro/Bundle/ReminderBundle",
+                    "Oro\\Bundle\\ReportBundle\\": "src/Oro/Bundle/ReportBundle",
+                    "Oro\\Bundle\\ScopeBundle\\": "src/Oro/Bundle/ScopeBundle",
+                    "Oro\\Bundle\\SearchBundle\\": "src/Oro/Bundle/SearchBundle",
+                    "Oro\\Bundle\\SecurityBundle\\": "src/Oro/Bundle/SecurityBundle",
+                    "Oro\\Bundle\\SegmentBundle\\": "src/Oro/Bundle/SegmentBundle",
+                    "Oro\\Bundle\\SidebarBundle\\": "src/Oro/Bundle/SidebarBundle",
+                    "Oro\\Bundle\\SoapBundle\\": "src/Oro/Bundle/SoapBundle",
+                    "Oro\\Bundle\\SSOBundle\\": "src/Oro/Bundle/SSOBundle",
+                    "Oro\\Bundle\\SyncBundle\\": "src/Oro/Bundle/SyncBundle",
+                    "Oro\\Bundle\\TagBundle\\": "src/Oro/Bundle/TagBundle",
                     "Oro\\Bundle\\TestFrameworkBundle\\": "src/Oro/Bundle/TestFrameworkBundle",
-                    "Oro\\Component\\ConfigExpression\\": "src/Oro/Component/ConfigExpression",
-                    "Oro\\Component\\EntitySerializer\\": "src/Oro/Component/EntitySerializer",
-                    "Oro\\Component\\ExpressionLanguage\\": "src/Oro/Component/ExpressionLanguage",
-                    "Oro\\Bundle\\BusinessEntitiesBundle\\": "src/Oro/Bundle/BusinessEntitiesBundle",
-                    "Oro\\Bundle\\EntityPaginationBundle\\": "src/Oro/Bundle/EntityPaginationBundle",
-                    "Oro\\Component\\DependencyInjection\\": "src/Oro/Component/DependencyInjection",
-                    "Oro\\Bundle\\GoogleIntegrationBundle\\": "src/Oro/Bundle/GoogleIntegrationBundle",
+                    "Oro\\Bundle\\ThemeBundle\\": "src/Oro/Bundle/ThemeBundle",
+                    "Oro\\Bundle\\TranslationBundle\\": "src/Oro/Bundle/TranslationBundle",
+                    "Oro\\Bundle\\UIBundle\\": "src/Oro/Bundle/UIBundle",
+                    "Oro\\Bundle\\UserBundle\\": "src/Oro/Bundle/UserBundle",
+                    "Oro\\Bundle\\ViewSwitcherBundle\\": "src/Oro/Bundle/ViewSwitcherBundle",
+                    "Oro\\Bundle\\WindowsBundle\\": "src/Oro/Bundle/WindowsBundle",
+                    "Oro\\Bundle\\WorkflowBundle\\": "src/Oro/Bundle/WorkflowBundle",
                     "Oro\\Bundle\\WsseAuthenticationBundle\\": "src/Oro/Bundle/WsseAuthenticationBundle",
-                    "Oro\\Bundle\\MicrosoftIntegrationBundle\\": "src/Oro/Bundle/MicrosoftIntegrationBundle"
+                    "Oro\\Component\\Action\\": "src/Oro/Component/Action",
+                    "Oro\\Component\\ChainProcessor\\": "src/Oro/Component/ChainProcessor",
+                    "Oro\\Component\\Config\\": "src/Oro/Component/Config",
+                    "Oro\\Component\\ConfigExpression\\": "src/Oro/Component/ConfigExpression",
+                    "Oro\\Component\\DependencyInjection\\": "src/Oro/Component/DependencyInjection",
+                    "Oro\\Component\\DoctrineUtils\\": "src/Oro/Component/DoctrineUtils",
+                    "Oro\\Component\\Duplicator\\": "src/Oro/Component/Duplicator",
+                    "Oro\\Component\\EntitySerializer\\": "src/Oro/Component/EntitySerializer",
+                    "Oro\\Component\\Exception\\": "src/Oro/Component/Exception",
+                    "Oro\\Component\\ExpressionLanguage\\": "src/Oro/Component/ExpressionLanguage",
+                    "Oro\\Component\\Layout\\": "src/Oro/Component/Layout",
+                    "Oro\\Component\\Log\\": "src/Oro/Component/Log",
+                    "Oro\\Component\\Math\\": "src/Oro/Component/Math",
+                    "Oro\\Component\\MessageQueue\\": "src/Oro/Component/MessageQueue",
+                    "Oro\\Component\\PropertyAccess\\": "src/Oro/Component/PropertyAccess",
+                    "Oro\\Component\\PhpUtils\\": "src/Oro/Component/PhpUtils",
+                    "Oro\\Component\\Routing\\": "src/Oro/Component/Routing",
+                    "Oro\\Component\\Testing\\": "src/Oro/Component/Testing",
+                    "Oro\\Component\\TestUtils\\": "src/Oro/Component/TestUtils"
                 },
                 "exclude-from-classmap": [
                     "/Tests/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -7159,10 +7173,9 @@
             "description": "Business Application Platform (BAP)",
             "homepage": "https://github.com/oroinc/platform.git",
             "support": {
-                "issues": "https://github.com/oroinc/platform/issues",
-                "source": "https://github.com/oroinc/platform/tree/5.0.12"
+                "source": "https://github.com/oroinc/platform-er/tree/5.0.12"
             },
-            "time": "2023-05-22T09:57:03+00:00"
+            "time": "2023-05-22T09:57:41+00:00"
         },
         {
             "name": "oro/platform-enterprise",
@@ -8315,16 +8328,16 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "3.0.19",
+            "version": "3.0.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "cc181005cf548bfd8a4896383bb825d859259f95"
+                "reference": "543a1da81111a0bfd6ae7bbc2865c5e89ed3fc67"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/cc181005cf548bfd8a4896383bb825d859259f95",
-                "reference": "cc181005cf548bfd8a4896383bb825d859259f95",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/543a1da81111a0bfd6ae7bbc2865c5e89ed3fc67",
+                "reference": "543a1da81111a0bfd6ae7bbc2865c5e89ed3fc67",
                 "shasum": ""
             },
             "require": {
@@ -8405,7 +8418,7 @@
             ],
             "support": {
                 "issues": "https://github.com/phpseclib/phpseclib/issues",
-                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.19"
+                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.20"
             },
             "funding": [
                 {
@@ -8421,7 +8434,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-03-05T17:13:09+00:00"
+            "time": "2023-06-13T06:30:34+00:00"
         },
         {
             "name": "predis/predis",
@@ -16288,16 +16301,16 @@
         },
         {
             "name": "fakerphp/faker",
-            "version": "v1.22.0",
+            "version": "v1.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FakerPHP/Faker.git",
-                "reference": "f85772abd508bd04e20bb4b1bbe260a68d0066d2"
+                "reference": "e3daa170d00fde61ea7719ef47bb09bb8f1d9b01"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FakerPHP/Faker/zipball/f85772abd508bd04e20bb4b1bbe260a68d0066d2",
-                "reference": "f85772abd508bd04e20bb4b1bbe260a68d0066d2",
+                "url": "https://api.github.com/repos/FakerPHP/Faker/zipball/e3daa170d00fde61ea7719ef47bb09bb8f1d9b01",
+                "reference": "e3daa170d00fde61ea7719ef47bb09bb8f1d9b01",
                 "shasum": ""
             },
             "require": {
@@ -16350,9 +16363,9 @@
             ],
             "support": {
                 "issues": "https://github.com/FakerPHP/Faker/issues",
-                "source": "https://github.com/FakerPHP/Faker/tree/v1.22.0"
+                "source": "https://github.com/FakerPHP/Faker/tree/v1.23.0"
             },
-            "time": "2023-05-14T12:31:37+00:00"
+            "time": "2023-06-12T08:44:38+00:00"
         },
         {
             "name": "friends-of-behat/mink-extension",
@@ -19310,10 +19323,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "marellocommerce/marello": 20,
-        "marellocommerce/marello-enterprise": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
