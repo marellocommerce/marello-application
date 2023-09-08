@@ -47,7 +47,8 @@
         "oro/health-check-bundle": "5.0.*",
         "oro/oauth2-server": "5.0.*",
         "oro/crm-task-bundle": "5.0.*",
-        "marellocommerce/marello-enterprise": "~4.2.0"
+        "marellocommerce/marello-enterprise": "~4.2.0",
+        "http-interop/http-factory-guzzle": "^1.2"
     },
     "require-dev": {
         "behat/behat": "~3.10.0",
@@ -82,7 +83,7 @@
             "enabled": false
         },
         "allow-plugins": {
-            "php-http/discovery": false
+            "php-http/discovery": true
         }
     },
     "scripts": {
