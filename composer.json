@@ -35,7 +35,7 @@
         "oro/calendar-bundle": "5.0.*",
         "oro/oauth2-server": "5.0.*",
         "oro/crm-task-bundle": "5.0.*",
-        "marellocommerce/marello": "~4.1.0"
+        "marellocommerce/marello": "~4.2.0"
     },
     "require-dev": {
         "behat/behat": "~3.10.0",
@@ -68,6 +68,9 @@
         "bin-dir": "bin",
         "fxp-asset": {
             "enabled": false
+        },
+        "allow-plugins": {
+            "php-http/discovery": false
         }
     },
     "scripts": {

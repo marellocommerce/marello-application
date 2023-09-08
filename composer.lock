@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f69720bf12992fa582ffd692c7bcaada",
+    "content-hash": "56bb3e25d6a8fd26b7df617a7afbe248",
     "packages": [
         {
             "name": "ass/xmlsecurity",
@@ -5256,11 +5256,17 @@
         },
         {
             "name": "marellocommerce/marello",
-            "version": "dev-main",
+            "version": "4.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/marellocommerce/marello.git",
+                "reference": "08197b40a8b5868be265de45c37518c6c67aaf33"
+            },
             "dist": {
-                "type": "path",
-                "url": "../../package/marello",
-                "reference": "ec8d6ccad362750b530fe68ab2ef6d212fced73c"
+                "type": "zip",
+                "url": "https://api.github.com/repos/marellocommerce/marello/zipball/08197b40a8b5868be265de45c37518c6c67aaf33",
+                "reference": "08197b40a8b5868be265de45c37518c6c67aaf33",
+                "shasum": ""
             },
             "require": {
                 "mpdf/mpdf": "^8.0",
@@ -5271,7 +5277,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "4.1-dev"
+                    "dev-main": "4.2-dev"
                 }
             },
             "autoload": {
@@ -5293,9 +5299,11 @@
             ],
             "description": "Marello Unified Commerce Management",
             "homepage": "https://github.com/marellocommerce/marello.git",
-            "transport-options": {
-                "relative": true
-            }
+            "support": {
+                "source": "https://github.com/marellocommerce/marello/tree/4.2.0",
+                "issues": "https://github.com/marellocommerce/marello/issues"
+            },
+            "time": "2023-06-15T06:19:40+00:00"
         },
         {
             "name": "matomo/device-detector",
@@ -15514,16 +15522,16 @@
         },
         {
             "name": "fakerphp/faker",
-            "version": "v1.22.0",
+            "version": "v1.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FakerPHP/Faker.git",
-                "reference": "f85772abd508bd04e20bb4b1bbe260a68d0066d2"
+                "reference": "e3daa170d00fde61ea7719ef47bb09bb8f1d9b01"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FakerPHP/Faker/zipball/f85772abd508bd04e20bb4b1bbe260a68d0066d2",
-                "reference": "f85772abd508bd04e20bb4b1bbe260a68d0066d2",
+                "url": "https://api.github.com/repos/FakerPHP/Faker/zipball/e3daa170d00fde61ea7719ef47bb09bb8f1d9b01",
+                "reference": "e3daa170d00fde61ea7719ef47bb09bb8f1d9b01",
                 "shasum": ""
             },
             "require": {
@@ -15576,9 +15584,9 @@
             ],
             "support": {
                 "issues": "https://github.com/FakerPHP/Faker/issues",
-                "source": "https://github.com/FakerPHP/Faker/tree/v1.22.0"
+                "source": "https://github.com/FakerPHP/Faker/tree/v1.23.0"
             },
-            "time": "2023-05-14T12:31:37+00:00"
+            "time": "2023-06-12T08:44:38+00:00"
         },
         {
             "name": "friends-of-behat/mink-extension",
@@ -18536,9 +18544,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "marellocommerce/marello": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
