@@ -549,7 +549,7 @@ class Allocation implements
     /**
      * @return \Extend\Entity\EV_Marello_Allocation_ReshipmentReason
      */
-    public function getReshipmentReason(): AbstractEnumValue
+    public function getReshipmentReason(): ?AbstractEnumValue
     {
         return $this->reshipmentReason;
     }
