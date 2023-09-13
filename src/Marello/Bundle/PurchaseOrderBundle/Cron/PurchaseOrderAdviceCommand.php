@@ -2,26 +2,30 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\Cron;
 
-use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageResolvedInterface;
-use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageTypeInterface;
-use Marello\Bundle\PurchaseOrderBundle\Provider\PurchaseOrderCandidatesProvider;
-use Oro\Bundle\CronBundle\Command\CronCommandScheduleDefinitionInterface;
-use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
+use Doctrine\Persistence\ManagerRegistry;
+
+use Oro\Bundle\EntityBundle\Event\EntityStructureOptionsEvent;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
+use Oro\Bundle\CronBundle\Command\CronCommandScheduleDefinitionInterface;
+
 use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\PurchaseOrderBundle\Model\PurchaseOrder;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
 use Marello\Bundle\NotificationBundle\Provider\EmailSendProcessor;
 use Marello\Bundle\NotificationMessageBundle\Model\NotificationMessageContext;
+use Marello\Bundle\PurchaseOrderBundle\Provider\PurchaseOrderCandidatesProvider;
 use Marello\Bundle\NotificationMessageBundle\Event\CreateNotificationMessageEvent;
 use Marello\Bundle\NotificationMessageBundle\Event\ResolveNotificationMessageEvent;
+use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageTypeInterface;
 use Marello\Bundle\NotificationMessageBundle\Factory\NotificationMessageContextFactory;
 use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageSourceInterface;
+use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageResolvedInterface;
 
 class PurchaseOrderAdviceCommand extends Command implements CronCommandScheduleDefinitionInterface
 {
