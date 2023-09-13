@@ -2,9 +2,9 @@ imports:
     - { resource: security.yml }
 
 parameters:
-    database_server_version: '8.0'
+    database_server_version: '15.1'
     secret: '%env(ORO_SECRET)%'
-    database_driver: 'pdo_mysql'
+    database_driver: 'pdo_pgsql'
     database_dsn: '%env(ORO_DB_DSN)%'
     mailer_dsn: '%env(ORO_MAILER_DSN)%'
     websocket_server_dsn: '%env(ORO_WEBSOCKET_SERVER_DSN)%'
@@ -19,7 +19,7 @@ parameters:
     maintenance_lock_file_path: '%env(resolve:ORO_MAINTENANCE_LOCK_FILE_PATH)%'
 
     env(ORO_SECRET): ThisTokenIsNotSoSecretChangeIt
-    env(ORO_DB_URL): 'mysql://root:root@db:3306/marello_application'
+    env(ORO_DB_URL): 'postgresql://root:root@db_postgres:5432/marellocommerce?sslmode=disable&charset=utf8&serverVersion=15.1'
     env(ORO_DB_DSN): '%env(ORO_DB_URL)%'
     env(ORO_MAILER_DSN): 'native://default'
     env(ORO_SEARCH_URL): 'orm:'
