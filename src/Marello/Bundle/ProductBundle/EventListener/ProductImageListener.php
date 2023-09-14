@@ -3,6 +3,7 @@
 namespace Marello\Bundle\ProductBundle\EventListener;
 
 use Doctrine\ORM\Event\OnFlushEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 use Oro\Bundle\AttachmentBundle\Entity\File;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
@@ -33,14 +34,23 @@ class ProductImageListener
         if ($this->configManager->get('marello_product.image_use_external_url')) {
             $entityManager = $args->getEntityManager();
             $unitOfWork = $entityManager->getUnitOfWork();
-            if (!empty($unitOfWork->getScheduledEntityInsertions())) {
-                $records = $this->filterRecords($unitOfWork->getScheduledEntityInsertions());
-                $this->applyCallBackForChangeSet('updateImageFileExternalUrl', $records);
-            }
             if (!empty($unitOfWork->getScheduledEntityUpdates())) {
                 $records = $this->filterRecords($unitOfWork->getScheduledEntityUpdates());
                 $this->applyCallBackForChangeSet('updateImageFileExternalUrl', $records);
             }
+        }
+    }
+
+    /**
+     * @param LifecycleEventArgs $args
+     * @return void
+     * @throws \Oro\Component\MessageQueue\Transport\Exception\Exception
+     */
+    public function postPersist(LifecycleEventArgs $args)
+    {
+        $entity = $args->getObject();
+        if ($entity instanceof Product && $entity->getImage()) {
+            $this->updateImageFileExternalUrl($entity->getImage());
         }
     }
 
@@ -80,20 +90,19 @@ class ProductImageListener
     /**
      * @param File $file
      * @return void
+     * @throws \Oro\Component\MessageQueue\Transport\Exception\Exception
      */
     protected function updateImageFileExternalUrl(File $file): void
     {
         if (Product::class === $file->getParentEntityClass()) {
-            $this->messageProducer->send(
-                ProductImageUpdateProcessor::TOPIC,
-                ['productId' => $file->getParentEntityId()]
-            );
+            $this->sendToMessageProducer($file->getParentEntityId());
         }
     }
 
     /**
      * @param ConfigUpdateEvent $event
      * @return void
+     * @throws \Oro\Component\MessageQueue\Transport\Exception\Exception
      */
     public function onConfigUpdate(ConfigUpdateEvent $event): void
     {
@@ -108,10 +117,7 @@ class ProductImageListener
         foreach ($this->getProductsToProcess() as $product) {
             // if the setting is changed, we need to update all the images
             // of products to regenerate the media urls
-            $this->messageProducer->send(
-                ProductImageUpdateProcessor::TOPIC,
-                ['productId' => $product['id']]
-            );
+            $this->sendToMessageProducer($product['id']);
         }
     }
 
@@ -132,5 +138,18 @@ class ProductImageListener
         $query = $qb->select('p.id', 'p.sku');
 
         return $query->getQuery()->toIterable();
+    }
+
+    /**
+     * @param int $productId
+     * @return void
+     * @throws \Oro\Component\MessageQueue\Transport\Exception\Exception
+     */
+    protected function sendToMessageProducer(int $productId): void
+    {
+        $this->messageProducer->send(
+            ProductImageUpdateProcessor::TOPIC,
+            ['productId' => $productId]
+        );
     }
 }
