@@ -2,6 +2,7 @@ imports:
     - { resource: security.yml }
 
 parameters:
+    web_backend_prefix: ''
     database_server_version: '15.1'
     secret: '%env(ORO_SECRET)%'
     database_driver: 'pdo_pgsql'

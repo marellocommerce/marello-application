@@ -108,6 +108,12 @@
         "symfony": {
             "require": "~5.4.0"
         },
+        "runtime": {
+            "dotenv_path": ".env-app",
+            "env_var_name": "ORO_ENV",
+            "debug_var_name": "ORO_DEBUG",
+            "prod_envs": ["prod", "behat_test"]
+        },
         "symfony-web-dir": "public",
         "symfony-var-dir": "var",
         "symfony-bin-dir": "bin",

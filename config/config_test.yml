@@ -8,7 +8,7 @@ parameters:
     message_queue_transport_dsn: 'dbal:'
     main_log_channels: []
 
-    env(ORO_DB_URL): 'mysql://root:root@db:3306/marello_application_test'
+    env(ORO_DB_URL): 'postgresql://root:root@db_postgres:5432/marellocommerce_test?sslmode=disable&charset=utf8&serverVersion=15.1'
 
 framework:
     test: ~
