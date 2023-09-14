@@ -25,6 +25,9 @@ api:
                     exclude: true
                 categoriesCodes:
                     exclude: true
+                #removed tags from API response as they cannot deal with SKU as identifier
+                tags:
+                    exclude: true
             filters:
                 exclusion_policy: all
                 fields:

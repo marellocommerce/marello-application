@@ -12,7 +12,7 @@ use Oro\Bundle\ConfigBundle\Event\ConfigUpdateEvent;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\ProductBundle\Async\ProductImageUpdateProcessor;
+use Marello\Bundle\ProductBundle\Async\Topic\ProductImageUpdateTopic;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 
 class ProductImageListener
@@ -148,7 +148,7 @@ class ProductImageListener
     protected function sendToMessageProducer(int $productId): void
     {
         $this->messageProducer->send(
-            ProductImageUpdateProcessor::TOPIC,
+            ProductImageUpdateTopic::getName(),
             ['productId' => $productId]
         );
     }
