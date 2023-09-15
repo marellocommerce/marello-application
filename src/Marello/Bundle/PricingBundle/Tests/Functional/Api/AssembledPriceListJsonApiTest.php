@@ -77,7 +77,18 @@ class AssembledPriceListJsonApiTest extends RestJsonApiTestCase
             ['entity' => 'marelloproducts'],
             'product_without_prices.yml'
         );
+        /** @var Product $product1 */
+        $product1 = $this->getReference('product1');
+        var_dump($product1->getTaxCode()->getCode());
+
+        file_put_contents(
+            '/app/var/logs/test-prices.log',
+            __METHOD__ . " " . __LINE__ . " " . print_r($product1->getTaxCode()->getCode(), true) . "\r\n",
+            FILE_APPEND
+        );
+        die();
         $this->assertJsonResponse($productResponse);
+
 
         $response = $this->post(
             ['entity' => self::TESTING_ENTITY],

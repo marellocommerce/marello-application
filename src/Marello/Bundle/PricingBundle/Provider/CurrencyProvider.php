@@ -15,7 +15,8 @@ class CurrencyProvider
     public function __construct(
         protected ManagerRegistry $registry,
         protected LocaleSettings $localeSettings
-    ) {}
+    ) {
+    }
 
     /**
      * Get currency for channel.

@@ -12,7 +12,8 @@ class ManualShippingServiceIntegration implements ShippingServiceIntegrationInte
 {
     public function __construct(
         protected ManagerRegistry $doctrine
-    ) {}
+    ) {
+    }
 
     /**
      * @param ShippingAwareInterface $shippingAwareInterface

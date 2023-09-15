@@ -30,8 +30,8 @@ class PaymentCreateType extends AbstractType
     public function __construct(
         protected ManagerRegistry $registry,
         protected PaymentMethodChoicesProviderInterface $paymentMethodChoicesProvider
-    ) {}
-
+    ) {
+    }
 
     /**
      * {@inheritdoc}

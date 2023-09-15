@@ -27,7 +27,8 @@ class PricingSubscriber implements EventSubscriberInterface
     public function __construct(
         protected CurrencyProvider $provider,
         protected ManagerRegistry $doctrine
-    ) {}
+    ) {
+    }
 
     /**
      * Get subscribed events

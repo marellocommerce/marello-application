@@ -15,7 +15,8 @@ class InventoryItemSubscriber implements EventSubscriberInterface
     public function __construct(
         private ManagerRegistry $doctrine,
         private AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * Get subscribed events

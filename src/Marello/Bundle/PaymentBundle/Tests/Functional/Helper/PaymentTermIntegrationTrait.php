@@ -12,7 +12,7 @@ trait PaymentTermIntegrationTrait
      *
      * @return mixed
      */
-    abstract public function getReference($name);
+    abstract public function getReference(string $name);
 
     /**
      * @return string

@@ -17,7 +17,8 @@ class BalancedInventoryHandler
         protected ManagerRegistry $doctrine,
         protected BalancedInventoryFactory $balancedInventoryFactory,
         protected AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * @param ProductInterface $product

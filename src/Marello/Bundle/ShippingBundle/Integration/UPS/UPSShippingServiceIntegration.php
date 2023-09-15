@@ -24,7 +24,8 @@ class UPSShippingServiceIntegration implements ShippingServiceIntegrationInterfa
         protected FileManager $fileManager,
         protected ShipmentConfirmRequestBuilder $shipmentConfirmRequestBuilder,
         protected ShipmentAcceptRequestBuilder $shipmentAcceptRequestBuilder
-    ) {}
+    ) {
+    }
 
     /**
      * @param ShippingAwareInterface $shippingAwareInterface

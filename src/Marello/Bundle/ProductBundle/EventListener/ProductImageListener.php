@@ -48,9 +48,11 @@ class ProductImageListener
      */
     public function postPersist(LifecycleEventArgs $args)
     {
-        $entity = $args->getObject();
-        if ($entity instanceof Product && $entity->getImage()) {
-            $this->updateImageFileExternalUrl($entity->getImage());
+        if ($this->configManager->get('marello_product.image_use_external_url')) {
+            $entity = $args->getObject();
+            if ($entity instanceof Product && $entity->getImage()) {
+                $this->updateImageFileExternalUrl($entity->getImage());
+            }
         }
     }
 

@@ -18,7 +18,8 @@ class ProductSupplierRelationsDropshipValidator extends ConstraintValidator
 {
     public function __construct(
         protected ManagerRegistry $doctrine
-    ) {}
+    ) {
+    }
 
     /**
      * Checks if the passed entity is unique in collection.

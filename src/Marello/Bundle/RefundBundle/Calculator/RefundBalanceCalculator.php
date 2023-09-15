@@ -20,7 +20,8 @@ class RefundBalanceCalculator
 
     public function __construct(
         protected ManagerRegistry $doctrine
-    ) {}
+    ) {
+    }
     
     /**
      * @param Refund $refund

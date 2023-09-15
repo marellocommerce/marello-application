@@ -21,7 +21,8 @@ class ChannelPriceProvider extends AbstractOrderItemFormChangesProvider
     public function __construct(
         protected ManagerRegistry $registry,
         protected AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * {@inheritdoc}

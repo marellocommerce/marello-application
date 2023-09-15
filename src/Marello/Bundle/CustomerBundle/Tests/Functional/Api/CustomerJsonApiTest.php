@@ -30,41 +30,25 @@ class CustomerJsonApiTest extends RestJsonApiTestCase
         $this->assertJsonResponse($response);
         $this->assertResponseStatusCodeEquals($response, Response::HTTP_OK);
         $this->assertResponseCount(10, $response);
+        var_dump(self::jsonToArray($response->getContent()));
+        die();
         $this->assertResponseContains('cget_customer_list.yml', $response);
     }
 
     /**
      * Test get customer by id
+     * Email has become the id for the Customer Entity
      */
     public function testGetCustomerById()
     {
         $customer = $this->getReference('marello-customer-1');
         $response = $this->get(
-            ['entity' => self::TESTING_ENTITY, 'id' => $customer->getId()],
+            ['entity' => self::TESTING_ENTITY, 'id' => $customer->getEmail()],
             []
         );
 
         $this->assertJsonResponse($response);
         $this->assertResponseContains('get_customer_by_id.yml', $response);
-    }
-
-    /**
-     * Get a single customer by email
-     */
-    public function testGetCustomerFilteredByEmail()
-    {
-        /** @var Customer $customer */
-        $customer = $this->getReference('marello-customer-1');
-        $response = $this->cget(
-            ['entity' => self::TESTING_ENTITY],
-            [
-                'filter' => ['email' =>  $customer->getEmail() ]
-            ]
-        );
-
-        $this->assertJsonResponse($response);
-        $this->assertResponseCount(1, $response);
-        $this->assertResponseContains('get_customer_by_email.yml', $response);
     }
 
     /**

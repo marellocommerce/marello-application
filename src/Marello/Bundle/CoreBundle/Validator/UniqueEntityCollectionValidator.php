@@ -29,7 +29,8 @@ class UniqueEntityCollectionValidator extends ConstraintValidator
 
     public function __construct(
         protected ManagerRegistry $registry
-    ) {}
+    ) {
+    }
 
     /**
      * Checks if the passed entity is unique in collection.

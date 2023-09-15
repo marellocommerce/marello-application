@@ -16,7 +16,8 @@ abstract class AbstractTreeHandler
     public function __construct(
         protected $entityClass,
         protected ManagerRegistry $managerRegistry
-    ) {}
+    ) {
+    }
 
     /**
      * @param object|null $root

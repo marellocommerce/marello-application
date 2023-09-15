@@ -24,7 +24,8 @@ class PaymentUpdateType extends AbstractType
 
     public function __construct(
         protected ManagerRegistry $registry
-    ) {}
+    ) {
+    }
 
     /**
      * {@inheritdoc}

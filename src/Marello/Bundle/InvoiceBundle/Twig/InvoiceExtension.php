@@ -14,7 +14,8 @@ class InvoiceExtension extends AbstractExtension
 
     public function __construct(
         protected ManagerRegistry $doctrine
-    ) {}
+    ) {
+    }
 
     /**
      * Returns the name of the extension.

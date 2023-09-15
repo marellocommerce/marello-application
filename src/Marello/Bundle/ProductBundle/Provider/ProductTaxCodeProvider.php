@@ -15,7 +15,8 @@ class ProductTaxCodeProvider extends AbstractOrderItemFormChangesProvider
     public function __construct(
         protected ManagerRegistry $registry,
         protected AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * {@inheritdoc}

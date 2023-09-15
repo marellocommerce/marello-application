@@ -22,7 +22,8 @@ class InvoicePdfRequestHandler implements PdfRequestHandlerInterface
         protected TranslatorInterface $translator,
         protected RenderParametersProvider $parametersProvider,
         protected TwigRenderer $renderer
-    ) {}
+    ) {
+    }
 
     /**
      * @inheritDoc

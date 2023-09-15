@@ -21,7 +21,8 @@ class InventoryRebalanceProductProcessor implements MessageProcessorInterface, T
         protected InventoryBalancer $inventoryBalancer,
         protected LoggerInterface $logger,
         protected ManagerRegistry $registry
-    ) {}
+    ) {
+    }
 
     /**
      * {@inheritdoc}

@@ -10,10 +10,10 @@ data:
                 data:
                     -
                         type: marellocustomers
-                        id: '<toString(@marello-customer-1->id)>'
+                        id: '<toString(@marello-customer-1->email)>'
                     -
                         type: marellocustomers
-                        id: '<toString(@marello-customer-2->id)>'
+                        id: '<toString(@marello-customer-2->email)>'
             organization:
                 data:
                     type: organizations
@@ -33,10 +33,10 @@ data:
                 data:
                     -
                         type: marellocustomers
-                        id: '<toString(@company2->customers[0]->id)>'
+                        id: '<toString(@company2->customers[0]->email)>'
                     -
                         type: marellocustomers
-                        id: '<toString(@company2->customers[1]->id)>'
+                        id: '<toString(@company2->customers[1]->email)>'
             organization:
                 data:
                     type: organizations
@@ -52,10 +52,10 @@ data:
                 data:
                     -
                         type: marellocustomers
-                        id: '<toString(@company3->customers[0]->id)>'
+                        id: '<toString(@company3->customers[0]->email)>'
                     -
                         type: marellocustomers
-                        id: '<toString(@company3->customers[1]->id)>'
+                        id: '<toString(@company3->customers[1]->email)>'
             organization:
                 data:
                     type: organizations

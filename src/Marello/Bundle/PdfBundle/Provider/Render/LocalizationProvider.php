@@ -28,7 +28,8 @@ class LocalizationProvider implements RenderParameterProviderInterface
         protected ConfigManager $config,
         protected ManagerRegistry $doctrine,
         protected $localizationParameterName
-    ) {}
+    ) {
+    }
 
     /**
      * {@inheritdoc}
