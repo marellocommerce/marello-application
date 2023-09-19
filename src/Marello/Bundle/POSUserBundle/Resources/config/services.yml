@@ -1,0 +1,46 @@
+imports:
+    - { resource: controllers.yml }
+
+services:
+    Marello\Bundle\POSUserBundle\Api\Handler\POSUserRequestActionHandler:
+        public: true
+        arguments:
+            - ['rest']
+            - '@oro_api.action_processor_bag'
+            - '@oro_api.rest.filter_value_accessor_factory'
+            - '@fos_rest.view_handler'
+
+    Marello\Bundle\POSUserBundle\Api\Processor\AuthenticateRequestActionProcessor:
+        arguments:
+            - '@oro_api.processor_bag'
+            - authenticate
+            - '@oro_api.config_provider'
+            - '@oro_api.metadata_provider'
+
+    Marello\Bundle\POSUserBundle\Provider\POSUserAuthProvider:
+        arguments:
+            - '@marelloenterprise_instoreassistant.manager.oro_user_manager'
+            - '@security.encoder_factory'
+            - '@oro_userpro.security.login_attempts_manager'
+
+    Marello\Bundle\POSUserBundle\Api\Processor\NormalizeCredentialsData:
+        tags:
+            - { name: oro.api.processor, action: authenticate, group: normalize_input, priority: -60 }
+
+    Marello\Bundle\POSUserBundle\Api\Processor\Authenticate\POSUserVerificationCheck:
+        arguments:
+            - '@Marello\Bundle\POSUserBundle\Provider\POSUserAuthProvider'
+        tags:
+            - { name: oro.api.processor, action: authenticate, group: security_check, class: Marello\Bundle\POSUserBundle\Api\Model\POSUserApi }
+
+    Marello\Bundle\POSUserBundle\Api\Processor\LoadOroUserApi:
+        tags:
+            - { name: oro.api.processor, action: authenticate, group: load_data, priority: -10 }
+
+    Marello\Bundle\POSUserBundle\Api\Processor\ConvertToInstoreUserApi:
+        tags:
+            - { name: oro.api.processor, action: authenticate, group: transform_data, priority: -10 }
+
+    Marello\Bundle\POSUserBundle\Api\Processor\NormalizeInstoreUserApi:
+        tags:
+            - { name: oro.api.processor, action: authenticate, group: normalize_data, priority: -10 }
