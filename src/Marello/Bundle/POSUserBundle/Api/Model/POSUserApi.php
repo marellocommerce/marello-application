@@ -4,47 +4,49 @@ namespace Marello\Bundle\POSUserBundle\Api\Model;
 
 class POSUserApi
 {
-    /** @var int $id */
+    /**
+     * @var int
+     */
     protected $id;
 
-    /** @var string $apiKey */
+    /**
+     * @var string
+     */
     protected $apiKey;
 
     /**
-     * @param int $id
-     * @param string $apiKey
+     * @var array
      */
-    public function __construct($id, $apiKey)
+    protected $roles;
+
+    public function __construct(int $id, string $apiKey, array $roles)
     {
         $this->id = $id;
         $this->apiKey = $apiKey;
+        $this->roles = $roles;
     }
 
-    /**
-     * @return int
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
-    public function getApiKey()
+    public function getApiKey(): string
     {
         return $this->apiKey;
     }
 
-    /**
-     * Implement to Array
-     * @return array
-     */
-    public function toArray()
+    public function getRoles(): array
+    {
+        return $this->roles;
+    }
+
+    public function toArray(): array
     {
         return [
             'id' => $this->id,
-            'apiKey' => $this->apiKey
+            'apiKey' => $this->apiKey,
+            'roles' => $this->roles
         ];
     }
 }

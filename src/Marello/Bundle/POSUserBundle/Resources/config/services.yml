@@ -19,9 +19,9 @@ services:
 
     Marello\Bundle\POSUserBundle\Provider\POSUserAuthProvider:
         arguments:
-            - '@marelloenterprise_instoreassistant.manager.oro_user_manager'
+            - '@oro_user.manager'
             - '@security.encoder_factory'
-            - '@oro_userpro.security.login_attempts_manager'
+            - '@oro_user.logger.user_login_attempt'
 
     Marello\Bundle\POSUserBundle\Api\Processor\NormalizeCredentialsData:
         tags:
@@ -34,13 +34,15 @@ services:
             - { name: oro.api.processor, action: authenticate, group: security_check, class: Marello\Bundle\POSUserBundle\Api\Model\POSUserApi }
 
     Marello\Bundle\POSUserBundle\Api\Processor\LoadOroUserApi:
+        arguments:
+            - '@oro_user.manager'
         tags:
             - { name: oro.api.processor, action: authenticate, group: load_data, priority: -10 }
 
-    Marello\Bundle\POSUserBundle\Api\Processor\ConvertToInstoreUserApi:
+    Marello\Bundle\POSUserBundle\Api\Processor\ConvertToPOSUserApi:
         tags:
             - { name: oro.api.processor, action: authenticate, group: transform_data, priority: -10 }
 
-    Marello\Bundle\POSUserBundle\Api\Processor\NormalizeInstoreUserApi:
+    Marello\Bundle\POSUserBundle\Api\Processor\NormalizePOSUserApi:
         tags:
             - { name: oro.api.processor, action: authenticate, group: normalize_data, priority: -10 }

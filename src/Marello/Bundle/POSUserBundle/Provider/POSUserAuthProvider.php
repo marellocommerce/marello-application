@@ -2,38 +2,21 @@
 
 namespace Marello\Bundle\POSUserBundle\Provider;
 
-use Symfony\Component\Security\Core\Encoder\EncoderFactory;
-use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\UserBundle\Entity\UserManager;
+use Oro\Bundle\UserBundle\Security\UserLoginAttemptLogger;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
-use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\UserBundle\Entity\UserInterface as OroUserInterface;
-use Oro\Bundle\UserProBundle\Security\LoginAttemptsManager;
-
-use MarelloEnterprise\Bundle\InstoreAssistantBundle\Manager\OroUserManagerInterface;
-
-class POSUserAuthProvider implements AuthenticationProviderInterface // weedizp + service
+class POSUserAuthProvider implements AuthenticationProviderInterface
 {
-    /** @var OroUserManagerInterface $userManager */
-    private $userManager;
-
-    /** @var EncoderFactory $encoderFactory */
-    private $encoderFactory;
-
-    /** @var LoginAttemptsManager $attemptsManager */
-    private $attemptsManager;
-
     public function __construct(
-        OroUserManagerInterface $userManager,
-        EncoderFactory $encoderFactory,
-        LoginAttemptsManager $attemptsManager
-    ) {
-        $this->userManager = $userManager;
-        $this->encoderFactory = $encoderFactory;
-        $this->attemptsManager = $attemptsManager;
-    }
+        private UserManager $userManager,
+        private EncoderFactoryInterface $encoderFactory,
+        private UserLoginAttemptLogger $loginLogger
+    ) {}
 
     public function authenticatePOSUser(string $username, string $credentials): bool
     {
@@ -41,51 +24,23 @@ class POSUserAuthProvider implements AuthenticationProviderInterface // weedizp 
             return false;
         }
 
-        /** @var User $user */
         $user = $this->getUser($username);
-        if (!$userHasValidCredentials = $this->hasValidCredentials($user, $credentials)) {
-            $this->attemptsManager->trackLoginFailure($user);
+        $encoder = $this->encoderFactory->getEncoder($user);
+        if ($userHasValidCredentials = $encoder->isPasswordValid($user->getPassword(), $credentials, $user->getSalt())) {
+            $this->loginLogger->logSuccessLoginAttempt($user, 'API');
         } else {
-            $this->attemptsManager->trackLoginSuccess($user);
+            $this->loginLogger->logFailedLoginAttempt($user, 'API');
         }
 
         return $userHasValidCredentials;
     }
 
-    /**
-     * check with the encoder whether the credentials are correct
-     * @param $user
-     * @param $credentials
-     * @return bool
-     */
-    protected function hasValidCredentials($user, $credentials)
-    {
-        /** @var PasswordEncoderInterface $userEncoder */
-        $userEncoder = $this->getEncoder($user);
 
-        return $userEncoder->isPasswordValid($user->getPassword(), $credentials, $user->getSalt());
-    }
-
-    /**
-     * @param OroUserInterface|string $user
-     * @return PasswordEncoderInterface
-     */
-    protected function getEncoder($user)
-    {
-        return $this->encoderFactory->getEncoder($user);
-    }
-
-    /**
-     * @param $username
-     * @return mixed
-     * @throws UsernameNotFoundException
-     */
-    protected function getUser($username)
+    protected function getUser(string $username): User
     {
         $user = $this->userManager->findUserByUsernameOrEmail($username);
-
         if (!$user) {
-            throw new UsernameNotFoundException(sprintf('No user with name "%s" was found.', $username));
+            throw new UserNotFoundException(sprintf('No user with name "%s" was found.', $username));
         }
 
         return $user;
@@ -93,20 +48,16 @@ class POSUserAuthProvider implements AuthenticationProviderInterface // weedizp 
 
     /**
      * Authentication does not require a token (yet)
-     * @param TokenInterface $token
-     * @return bool
      */
-    public function supports(TokenInterface $token)
+    public function supports(TokenInterface $token): bool
     {
         return true;
     }
 
     /**
      * Authentication does not require a token (yet), therefore authenticate cannot be used
-     * @param TokenInterface $token
-     * @return bool
      */
-    public function authenticate(TokenInterface $token)
+    public function authenticate(TokenInterface $token): bool
     {
         return true;
     }
