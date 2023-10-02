@@ -62,6 +62,7 @@ class OrderAjaxControllerTest extends WebTestCase
                 );
             }
         }
+        $this->assertEquals(86, $result['totals']['total']['amount']);
     }
 
     /**

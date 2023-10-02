@@ -48,8 +48,8 @@ class OrderTotalsProvider implements FormChangesProviderInterface
      */
     protected function getTotalWithSubtotalsValues(Order $order)
     {
-        $total = $this->totalsProvider->getTotal($order);
         $subtotals = $this->totalsProvider->getSubtotal($order);
+        $total = $this->totalsProvider->getTotal($order, $subtotals);
         
         return [
             self::TOTAL => $total->toArray(),
