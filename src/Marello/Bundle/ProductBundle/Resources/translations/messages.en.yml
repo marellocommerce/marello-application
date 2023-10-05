@@ -122,6 +122,12 @@ marello:
                 product_general.label: General
             fields:
                 image_use_external_url.label: Use External Url For Product Image
+
+    attachment:
+        file:
+            media_url:
+                label:  'External Media Url'
+                description: 'External Url For Product Image'
 oro:
     marelloproduct:
         menu:

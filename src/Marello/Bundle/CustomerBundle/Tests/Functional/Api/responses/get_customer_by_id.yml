@@ -1,6 +1,6 @@
 data:
     type: marellocustomers
-    id: '<toString(@marello-customer-1->email)>'
+    id: '<toString(@marello-customer-1->id)>'
     attributes:
         namePrefix: null
         firstName: James

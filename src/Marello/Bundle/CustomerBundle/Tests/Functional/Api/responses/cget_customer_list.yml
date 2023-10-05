@@ -1,13 +1,14 @@
 data:
     -
         type: marellocustomers
-        id: '<toString(@marello-customer-0->email)>'
+        id: '<toString(@marello-customer-0->id)>'
         attributes:
             namePrefix: null
             firstName: Marilyn
             middleName: null
             lastName: Earnest
             nameSuffix: null
+            email: MarilynREarnest@gustr.com
         relationships:
             primaryAddress:
                 data:
@@ -20,19 +21,28 @@ data:
                     -
                         type: marelloaddresses
                         id: '<toString(@marello-customer-0->primaryAddress->id)>'
+            company:
+                data: null
             organization:
                 data:
                     type: organizations
-                    id: '1'
+                    id: '<toString(@organization->id)>'
+            attachments:
+                data: []
+            activityNotes:
+                data: []
+            activityEmails:
+                data: []
     -
         type: marellocustomers
-        id: '<toString(@marello-customer-1->email)>'
+        id: '<toString(@marello-customer-1->id)>'
         attributes:
             namePrefix: null
             firstName: James
             middleName: null
             lastName: Boling
             nameSuffix: null
+            email: JamesCBoling@einrot.com
         relationships:
             primaryAddress:
                 data:
@@ -45,19 +55,28 @@ data:
                     -
                         type: marelloaddresses
                         id: '<toString(@marello-customer-1->primaryAddress->id)>'
+            company:
+                data: null
             organization:
                 data:
                     type: organizations
-                    id: '1'
+                    id: '<toString(@organization->id)>'
+            attachments:
+                data: []
+            activityNotes:
+                data: []
+            activityEmails:
+                data: []
     -
         type: marellocustomers
-        id: '<toString(@marello-customer-2->email)>'
+        id: '<toString(@marello-customer-2->id)>'
         attributes:
             namePrefix: null
             firstName: Randy
             middleName: null
             lastName: Gamino
             nameSuffix: null
+            email: RandyMGamino@armyspy.com
         relationships:
             primaryAddress:
                 data:
@@ -70,19 +89,28 @@ data:
                     -
                         type: marelloaddresses
                         id: '<toString(@marello-customer-2->primaryAddress->id)>'
+            company:
+                data: null
             organization:
                 data:
                     type: organizations
-                    id: '1'
+                    id: '<toString(@organization->id)>'
+            attachments:
+                data: []
+            activityNotes:
+                data: []
+            activityEmails:
+                data: []
     -
         type: marellocustomers
-        id: '<toString(@marello-customer-3->email)>'
+        id: '<toString(@marello-customer-3->id)>'
         attributes:
             namePrefix: null
             firstName: Priscilla
             middleName: null
             lastName: Gray
             nameSuffix: null
+            email: PriscillaJGray@teleworm.us
         relationships:
             primaryAddress:
                 data:
@@ -95,19 +123,28 @@ data:
                     -
                         type: marelloaddresses
                         id: '<toString(@marello-customer-3->primaryAddress->id)>'
+            company:
+                data: null
             organization:
                 data:
                     type: organizations
-                    id: '1'
+                    id: '<toString(@organization->id)>'
+            attachments:
+                data: []
+            activityNotes:
+                data: []
+            activityEmails:
+                data: []
     -
         type: marellocustomers
-        id: '<toString(@marello-customer-4->email)>'
+        id: '<toString(@marello-customer-4->id)>'
         attributes:
             namePrefix: null
             firstName: May
             middleName: null
             lastName: Harman
             nameSuffix: null
+            email: MayMHarman@einrot.com
         relationships:
             primaryAddress:
                 data:
@@ -120,19 +157,28 @@ data:
                     -
                         type: marelloaddresses
                         id: '<toString(@marello-customer-4->primaryAddress->id)>'
+            company:
+                data: null
             organization:
                 data:
                     type: organizations
-                    id: '1'
+                    id: '<toString(@organization->id)>'
+            attachments:
+                data: []
+            activityNotes:
+                data: []
+            activityEmails:
+                data: []
     -
         type: marellocustomers
-        id: '<toString(@marello-customer-5->email)>'
+        id: '<toString(@marello-customer-5->id)>'
         attributes:
             namePrefix: null
             firstName: Catherine
             middleName: null
             lastName: Ramos
             nameSuffix: null
+            email: CatherineERamos@teleworm.us
         relationships:
             primaryAddress:
                 data:
@@ -145,19 +191,28 @@ data:
                     -
                         type: marelloaddresses
                         id: '<toString(@marello-customer-5->primaryAddress->id)>'
+            company:
+                data: null
             organization:
                 data:
                     type: organizations
-                    id: '1'
+                    id: '<toString(@organization->id)>'
+            attachments:
+                data: []
+            activityNotes:
+                data: []
+            activityEmails:
+                data: []
     -
         type: marellocustomers
-        id: '<toString(@marello-customer-6->email)>'
+        id: '<toString(@marello-customer-6->id)>'
         attributes:
             namePrefix: null
             firstName: Richard
             middleName: null
             lastName: Brock
             nameSuffix: null
+            email: RichardGBrock@superrito.com
         relationships:
             primaryAddress:
                 data:
@@ -170,19 +225,28 @@ data:
                     -
                         type: marelloaddresses
                         id: '<toString(@marello-customer-6->primaryAddress->id)>'
+            company:
+                data: null
             organization:
                 data:
                     type: organizations
-                    id: '1'
+                    id: '<toString(@organization->id)>'
+            attachments:
+                data: []
+            activityNotes:
+                data: []
+            activityEmails:
+                data: []
     -
         type: marellocustomers
-        id: '<toString(@marello-customer-7->email)>'
+        id: '<toString(@marello-customer-7->id)>'
         attributes:
             namePrefix: null
             firstName: Edward
             middleName: null
             lastName: Hall
             nameSuffix: null
+            email: EdwardLHall@superrito.com
         relationships:
             primaryAddress:
                 data:
@@ -195,19 +259,28 @@ data:
                     -
                         type: marelloaddresses
                         id: '<toString(@marello-customer-7->primaryAddress->id)>'
+            company:
+                data: null
             organization:
                 data:
                     type: organizations
-                    id: '1'
+                    id: '<toString(@organization->id)>'
+            attachments:
+                data: []
+            activityNotes:
+                data: []
+            activityEmails:
+                data: []
     -
         type: marellocustomers
-        id: '<toString(@marello-customer-8->email)>'
+        id: '<toString(@marello-customer-8->id)>'
         attributes:
             namePrefix: null
             firstName: Kelly
             middleName: null
             lastName: Nguyen
             nameSuffix: null
+            email: KellySNguyen@einrot.com
         relationships:
             primaryAddress:
                 data:
@@ -220,19 +293,28 @@ data:
                     -
                         type: marelloaddresses
                         id: '<toString(@marello-customer-8->primaryAddress->id)>'
+            company:
+                data: null
             organization:
                 data:
                     type: organizations
-                    id: '1'
+                    id: '<toString(@organization->id)>'
+            attachments:
+                data: []
+            activityNotes:
+                data: []
+            activityEmails:
+                data: []
     -
         type: marellocustomers
-        id: '<toString(@marello-customer-9->email)>'
+        id: '<toString(@marello-customer-9->id)>'
         attributes:
             namePrefix: null
             firstName: Roberta
             middleName: null
             lastName: Orth
             nameSuffix: null
+            email: RobertaMOrth@teleworm.us
         relationships:
             primaryAddress:
                 data:
@@ -245,7 +327,15 @@ data:
                     -
                         type: marelloaddresses
                         id: '<toString(@marello-customer-9->primaryAddress->id)>'
+            company:
+                data: null
             organization:
                 data:
                     type: organizations
-                    id: '1'
+                    id: '<toString(@organization->id)>'
+            attachments:
+                data: []
+            activityNotes:
+                data: []
+            activityEmails:
+                data: []

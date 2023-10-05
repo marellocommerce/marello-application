@@ -12,6 +12,8 @@ api:
         Marello\Bundle\OrderBundle\Entity\Order:
             documentation_resource: '@MarelloOrderBundle/Resources/doc/api/order.md'
             fields:
+                customerAddresses:
+                    property_path: customer.addresses
                 createdAt:
                     exclude: true
                 updatedAt:

@@ -4,6 +4,8 @@ namespace Marello\Bundle\CustomerBundle\Tests\Functional\Api;
 
 use Symfony\Component\HttpFoundation\Response;
 
+use Oro\Bundle\TestFrameworkBundle\Tests\Functional\DataFixtures\LoadOrganization;
+
 use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\CoreBundle\Tests\Functional\RestJsonApiTestCase;
 use Marello\Bundle\CustomerBundle\Tests\Functional\DataFixtures\LoadCustomerData;
@@ -16,6 +18,7 @@ class CustomerJsonApiTest extends RestJsonApiTestCase
     {
         parent::setUp();
         $this->loadFixtures([
+            LoadOrganization::class,
             LoadCustomerData::class
         ]);
     }
@@ -26,12 +29,9 @@ class CustomerJsonApiTest extends RestJsonApiTestCase
     public function testGetListOfCustomers()
     {
         $response = $this->cget(['entity' => self::TESTING_ENTITY], []);
-
         $this->assertJsonResponse($response);
         $this->assertResponseStatusCodeEquals($response, Response::HTTP_OK);
         $this->assertResponseCount(10, $response);
-        var_dump(self::jsonToArray($response->getContent()));
-        die();
         $this->assertResponseContains('cget_customer_list.yml', $response);
     }
 
@@ -43,7 +43,7 @@ class CustomerJsonApiTest extends RestJsonApiTestCase
     {
         $customer = $this->getReference('marello-customer-1');
         $response = $this->get(
-            ['entity' => self::TESTING_ENTITY, 'id' => $customer->getEmail()],
+            ['entity' => self::TESTING_ENTITY, 'id' => $customer->getId()],
             []
         );
 
@@ -67,6 +67,7 @@ class CustomerJsonApiTest extends RestJsonApiTestCase
 
         /** @var Customer $customer */
         $customer = $this->getEntityManager()->find(Customer::class, $responseContent->data->id);
+        $this->assertNotNull($customer->getPrimaryAddress(), 'Customer with Address');
         $this->assertEquals($customer->getEmail(), $responseContent->data->attributes->email);
     }
 
@@ -83,9 +84,9 @@ class CustomerJsonApiTest extends RestJsonApiTestCase
         $this->assertJsonResponse($response);
 
         $responseContent = json_decode($response->getContent());
-
         /** @var Customer $customer */
         $customer = $this->getEntityManager()->find(Customer::class, $responseContent->data->id);
+        $this->assertNull($customer->getPrimaryAddress(), 'Customer without Address');
         $this->assertEquals($customer->getEmail(), $responseContent->data->attributes->email);
     }
 

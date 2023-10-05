@@ -9,10 +9,10 @@ data:
             data:
                 -
                     type: marellocustomers
-                    id: '<toString(@marello-customer-1->email)>'
+                    id: '<toString(@marello-customer-1->id)>'
                 -
                     type: marellocustomers
-                    id: '<toString(@marello-customer-2->email)>'
+                    id: '<toString(@marello-customer-2->id)>'
         organization:
             data:
                 type: organizations
