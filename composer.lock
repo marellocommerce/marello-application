@@ -461,16 +461,16 @@
         },
         {
             "name": "composer/composer",
-            "version": "2.2.21",
+            "version": "2.2.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "978198befc71de0b18fc1fc5a472c03b184b504a"
+                "reference": "fedc76ee3f3e3d57d20993b9f4c5fcfb2f8596aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/978198befc71de0b18fc1fc5a472c03b184b504a",
-                "reference": "978198befc71de0b18fc1fc5a472c03b184b504a",
+                "url": "https://api.github.com/repos/composer/composer/zipball/fedc76ee3f3e3d57d20993b9f4c5fcfb2f8596aa",
+                "reference": "fedc76ee3f3e3d57d20993b9f4c5fcfb2f8596aa",
                 "shasum": ""
             },
             "require": {
@@ -540,7 +540,7 @@
             "support": {
                 "irc": "ircs://irc.libera.chat:6697/composer",
                 "issues": "https://github.com/composer/composer/issues",
-                "source": "https://github.com/composer/composer/tree/2.2.21"
+                "source": "https://github.com/composer/composer/tree/2.2.22"
             },
             "funding": [
                 {
@@ -556,7 +556,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-02-15T12:07:40+00:00"
+            "time": "2023-09-29T08:53:46+00:00"
         },
         {
             "name": "composer/metadata-minifier",
@@ -4120,16 +4120,16 @@
         },
         {
             "name": "justinrainbow/json-schema",
-            "version": "5.2.12",
+            "version": "v5.2.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/justinrainbow/json-schema.git",
-                "reference": "ad87d5a5ca981228e0e205c2bc7dfb8e24559b60"
+                "reference": "fbbe7e5d79f618997bc3332a6f49246036c45793"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/ad87d5a5ca981228e0e205c2bc7dfb8e24559b60",
-                "reference": "ad87d5a5ca981228e0e205c2bc7dfb8e24559b60",
+                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/fbbe7e5d79f618997bc3332a6f49246036c45793",
+                "reference": "fbbe7e5d79f618997bc3332a6f49246036c45793",
                 "shasum": ""
             },
             "require": {
@@ -4184,9 +4184,9 @@
             ],
             "support": {
                 "issues": "https://github.com/justinrainbow/json-schema/issues",
-                "source": "https://github.com/justinrainbow/json-schema/tree/5.2.12"
+                "source": "https://github.com/justinrainbow/json-schema/tree/v5.2.13"
             },
-            "time": "2022-04-13T08:02:27+00:00"
+            "time": "2023-09-26T02:20:38+00:00"
         },
         {
             "name": "knplabs/gaufrette",
@@ -4880,30 +4880,30 @@
         },
         {
             "name": "laminas/laminas-stdlib",
-            "version": "3.17.0",
+            "version": "3.18.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-stdlib.git",
-                "reference": "dd35c868075bad80b6718959740913e178eb4274"
+                "reference": "e85b29076c6216e7fc98e72b42dbe1bbc3b95ecf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-stdlib/zipball/dd35c868075bad80b6718959740913e178eb4274",
-                "reference": "dd35c868075bad80b6718959740913e178eb4274",
+                "url": "https://api.github.com/repos/laminas/laminas-stdlib/zipball/e85b29076c6216e7fc98e72b42dbe1bbc3b95ecf",
+                "reference": "e85b29076c6216e7fc98e72b42dbe1bbc3b95ecf",
                 "shasum": ""
             },
             "require": {
-                "php": "~8.1.0 || ~8.2.0"
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0"
             },
             "conflict": {
                 "zendframework/zend-stdlib": "*"
             },
             "require-dev": {
                 "laminas/laminas-coding-standard": "^2.5",
-                "phpbench/phpbench": "^1.2.9",
-                "phpunit/phpunit": "^10.0.16",
+                "phpbench/phpbench": "^1.2.14",
+                "phpunit/phpunit": "^10.3.3",
                 "psalm/plugin-phpunit": "^0.18.4",
-                "vimeo/psalm": "^5.8"
+                "vimeo/psalm": "^5.15.0"
             },
             "type": "library",
             "autoload": {
@@ -4935,7 +4935,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2023-03-20T13:51:37+00:00"
+            "time": "2023-09-19T10:15:21+00:00"
         },
         {
             "name": "laminas/laminas-validator",
@@ -5669,16 +5669,16 @@
         },
         {
             "name": "marellocommerce/marello",
-            "version": "4.2.1",
+            "version": "4.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/marellocommerce/marello.git",
-                "reference": "721de70efa5f103385141ad99e239e4d8357ef0f"
+                "reference": "29d07cb22c72422aeb3772e382b30d8da8ad1a69"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/marellocommerce/marello/zipball/721de70efa5f103385141ad99e239e4d8357ef0f",
-                "reference": "721de70efa5f103385141ad99e239e4d8357ef0f",
+                "url": "https://api.github.com/repos/marellocommerce/marello/zipball/29d07cb22c72422aeb3772e382b30d8da8ad1a69",
+                "reference": "29d07cb22c72422aeb3772e382b30d8da8ad1a69",
                 "shasum": ""
             },
             "require": {
@@ -5713,23 +5713,23 @@
             "description": "Marello Unified Commerce Management",
             "homepage": "https://github.com/marellocommerce/marello.git",
             "support": {
-                "source": "https://github.com/marellocommerce/marello/tree/4.2.1",
+                "source": "https://github.com/marellocommerce/marello/tree/4.2.2",
                 "issues": "https://github.com/marellocommerce/marello/issues"
             },
-            "time": "2023-09-07T09:03:12+00:00"
+            "time": "2023-10-10T07:15:33+00:00"
         },
         {
             "name": "marellocommerce/marello-enterprise",
-            "version": "4.2.0",
+            "version": "4.2.1",
             "source": {
                 "type": "git",
                 "url": "git@github.com:marellocommerce/marello-enterprise.git",
-                "reference": "3dbdfead4554015b3b23209c76d2ceed254f35c7"
+                "reference": "a49c4e394c35b31199e279359fc6220cf91a3bb8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/marellocommerce/marello-enterprise/zipball/3dbdfead4554015b3b23209c76d2ceed254f35c7",
-                "reference": "3dbdfead4554015b3b23209c76d2ceed254f35c7",
+                "url": "https://api.github.com/repos/marellocommerce/marello-enterprise/zipball/a49c4e394c35b31199e279359fc6220cf91a3bb8",
+                "reference": "a49c4e394c35b31199e279359fc6220cf91a3bb8",
                 "shasum": ""
             },
             "require": {
@@ -5759,10 +5759,10 @@
             "description": "Marello Unified Commerce Management Enterprise edition",
             "homepage": "https://github.com/marellocommerce/marello-ee.git",
             "support": {
-                "source": "https://github.com/marellocommerce/marello-enterprise/tree/4.2.0",
+                "source": "https://github.com/marellocommerce/marello-enterprise/tree/4.2.1",
                 "issues": "https://github.com/marellocommerce/marello-enterprise/issues"
             },
-            "time": "2023-06-15T06:19:40+00:00"
+            "time": "2023-10-10T08:47:31+00:00"
         },
         {
             "name": "matomo/device-detector",
@@ -6677,16 +6677,16 @@
         },
         {
             "name": "oro/calendar-bundle",
-            "version": "5.0.7",
+            "version": "5.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/oroinc/OroCalendarBundle.git",
-                "reference": "f3f7c369235933801d5a2376bab3747939776ec6"
+                "reference": "2928b844a57027ec593d97e5387f628a59247ae7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/OroCalendarBundle/zipball/f3f7c369235933801d5a2376bab3747939776ec6",
-                "reference": "f3f7c369235933801d5a2376bab3747939776ec6",
+                "url": "https://api.github.com/repos/oroinc/OroCalendarBundle/zipball/2928b844a57027ec593d97e5387f628a59247ae7",
+                "reference": "2928b844a57027ec593d97e5387f628a59247ae7",
                 "shasum": ""
             },
             "require": {
@@ -6729,9 +6729,9 @@
             ],
             "support": {
                 "issues": "https://github.com/oroinc/OroCalendarBundle/issues",
-                "source": "https://github.com/oroinc/OroCalendarBundle/tree/5.0.7"
+                "source": "https://github.com/oroinc/OroCalendarBundle/tree/5.0.8"
             },
-            "time": "2023-06-07T11:18:46+00:00"
+            "time": "2023-08-29T11:40:24+00:00"
         },
         {
             "name": "oro/crm-task-bundle",
@@ -6788,26 +6788,29 @@
         },
         {
             "name": "oro/doctrine-extensions",
-            "version": "2.0.2",
+            "version": "2.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/oroinc/doctrine-extensions.git",
-                "reference": "478101fdb37e7a3bd4efad78b6e36fc49c26055f"
+                "reference": "d1200661febb4a52560fe64b699dde511e482474"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/doctrine-extensions/zipball/478101fdb37e7a3bd4efad78b6e36fc49c26055f",
-                "reference": "478101fdb37e7a3bd4efad78b6e36fc49c26055f",
+                "url": "https://api.github.com/repos/oroinc/doctrine-extensions/zipball/d1200661febb4a52560fe64b699dde511e482474",
+                "reference": "d1200661febb4a52560fe64b699dde511e482474",
                 "shasum": ""
             },
             "require": {
-                "doctrine/orm": ">=2.6",
-                "php": ">=7.3"
+                "doctrine/dbal": ">=2.6, <3.0",
+                "doctrine/orm": ">=2.6, <3.0",
+                "php": ">=8.0"
             },
             "require-dev": {
+                "doctrine/annotations": ">1.0, <2.0",
                 "doctrine/data-fixtures": "^1.3",
                 "phpunit/phpunit": "9.*",
                 "squizlabs/php_codesniffer": "3.5.*",
+                "symfony/cache": "5.*",
                 "symfony/yaml": "5.*"
             },
             "type": "library",
@@ -6840,22 +6843,22 @@
             ],
             "support": {
                 "issues": "https://github.com/oroinc/doctrine-extensions/issues",
-                "source": "https://github.com/oroinc/doctrine-extensions/tree/2.0.2"
+                "source": "https://github.com/oroinc/doctrine-extensions/tree/2.0.3"
             },
-            "time": "2022-05-10T14:09:20+00:00"
+            "time": "2023-09-22T15:10:47+00:00"
         },
         {
             "name": "oro/health-check-bundle",
-            "version": "5.0.3",
+            "version": "5.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/oroinc/OroHealthCheckBundle.git",
-                "reference": "51346d409f687d6d567f5cb853e71f3c06e5bc41"
+                "reference": "3ea9a295b28ac0c9a66e1f7c64a2edffcc1c8cda"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/OroHealthCheckBundle/zipball/51346d409f687d6d567f5cb853e71f3c06e5bc41",
-                "reference": "51346d409f687d6d567f5cb853e71f3c06e5bc41",
+                "url": "https://api.github.com/repos/oroinc/OroHealthCheckBundle/zipball/3ea9a295b28ac0c9a66e1f7c64a2edffcc1c8cda",
+                "reference": "3ea9a295b28ac0c9a66e1f7c64a2edffcc1c8cda",
                 "shasum": ""
             },
             "require": {
@@ -6893,9 +6896,9 @@
                 "Oro"
             ],
             "support": {
-                "source": "https://github.com/oroinc/OroHealthCheckBundle/tree/5.0.3"
+                "source": "https://github.com/oroinc/OroHealthCheckBundle/tree/5.0.4"
             },
-            "time": "2023-06-07T17:27:56+00:00"
+            "time": "2023-07-13T06:48:11+00:00"
         },
         {
             "name": "oro/oauth2-server",
@@ -6956,16 +6959,16 @@
         },
         {
             "name": "oro/platform",
-            "version": "5.0.13",
+            "version": "5.0.14",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/platform-er.git",
-                "reference": "07804f9cb4901f4c089c0c22d480d0a93c26beba"
+                "reference": "341569c2335394e2e966ef1f8d834a96441d61dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/platform-er/zipball/07804f9cb4901f4c089c0c22d480d0a93c26beba",
-                "reference": "07804f9cb4901f4c089c0c22d480d0a93c26beba",
+                "url": "https://api.github.com/repos/oroinc/platform-er/zipball/341569c2335394e2e966ef1f8d834a96441d61dc",
+                "reference": "341569c2335394e2e966ef1f8d834a96441d61dc",
                 "shasum": ""
             },
             "require": {
@@ -7284,22 +7287,22 @@
             "description": "Business Application Platform (BAP)",
             "homepage": "https://github.com/oroinc/platform.git",
             "support": {
-                "source": "https://github.com/oroinc/platform-er/tree/5.0.13"
+                "source": "https://github.com/oroinc/platform-er/tree/5.0.14"
             },
-            "time": "2023-06-27T09:19:53+00:00"
+            "time": "2023-09-01T13:20:27+00:00"
         },
         {
             "name": "oro/platform-enterprise",
-            "version": "5.0.11",
+            "version": "5.0.12",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/platform-enterprise.git",
-                "reference": "8c8a6bc1d37d4f836a57452eb8139cdbd86fdaa8"
+                "reference": "41447f9c8e510dac26defe12d4bbcb5bd5885d5b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/platform-enterprise/zipball/8c8a6bc1d37d4f836a57452eb8139cdbd86fdaa8",
-                "reference": "8c8a6bc1d37d4f836a57452eb8139cdbd86fdaa8",
+                "url": "https://api.github.com/repos/oroinc/platform-enterprise/zipball/41447f9c8e510dac26defe12d4bbcb5bd5885d5b",
+                "reference": "41447f9c8e510dac26defe12d4bbcb5bd5885d5b",
                 "shasum": ""
             },
             "require": {
@@ -7354,22 +7357,22 @@
             "description": "OroPlatform Enterprise",
             "homepage": "https://github.com/oroinc/platform-enterprise.git",
             "support": {
-                "source": "https://github.com/oroinc/platform-enterprise/tree/5.0.11"
+                "source": "https://github.com/oroinc/platform-enterprise/tree/5.0.12"
             },
-            "time": "2023-06-07T11:19:10+00:00"
+            "time": "2023-08-29T11:40:49+00:00"
         },
         {
             "name": "oro/platform-serialised-fields",
-            "version": "5.0.2",
+            "version": "5.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/oroinc/OroEntitySerializedFieldsBundle.git",
-                "reference": "9b5d8ad4042f72f0162210d57c6763186a33be27"
+                "reference": "4bd4047f9509d3bd875c09fe9ef10ea3924000aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/OroEntitySerializedFieldsBundle/zipball/9b5d8ad4042f72f0162210d57c6763186a33be27",
-                "reference": "9b5d8ad4042f72f0162210d57c6763186a33be27",
+                "url": "https://api.github.com/repos/oroinc/OroEntitySerializedFieldsBundle/zipball/4bd4047f9509d3bd875c09fe9ef10ea3924000aa",
+                "reference": "4bd4047f9509d3bd875c09fe9ef10ea3924000aa",
                 "shasum": ""
             },
             "require": {
@@ -7409,9 +7412,9 @@
             ],
             "support": {
                 "issues": "https://github.com/oroinc/OroEntitySerializedFieldsBundle/issues",
-                "source": "https://github.com/oroinc/OroEntitySerializedFieldsBundle/tree/5.0.2"
+                "source": "https://github.com/oroinc/OroEntitySerializedFieldsBundle/tree/5.0.3"
             },
-            "time": "2022-09-20T15:32:16+00:00"
+            "time": "2023-07-07T10:26:14+00:00"
         },
         {
             "name": "oro/redis-config",
@@ -8439,16 +8442,16 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "3.0.21",
+            "version": "3.0.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "4580645d3fc05c189024eb3b834c6c1e4f0f30a1"
+                "reference": "866cc78fbd82462ffd880e3f65692afe928bed50"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/4580645d3fc05c189024eb3b834c6c1e4f0f30a1",
-                "reference": "4580645d3fc05c189024eb3b834c6c1e4f0f30a1",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/866cc78fbd82462ffd880e3f65692afe928bed50",
+                "reference": "866cc78fbd82462ffd880e3f65692afe928bed50",
                 "shasum": ""
             },
             "require": {
@@ -8529,7 +8532,7 @@
             ],
             "support": {
                 "issues": "https://github.com/phpseclib/phpseclib/issues",
-                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.21"
+                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.23"
             },
             "funding": [
                 {
@@ -8545,7 +8548,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-07-09T15:24:48+00:00"
+            "time": "2023-09-18T17:22:01+00:00"
         },
         {
             "name": "predis/predis",
@@ -8810,16 +8813,16 @@
         },
         {
             "name": "psr/http-client",
-            "version": "1.0.2",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/http-client.git",
-                "reference": "0955afe48220520692d2d09f7ab7e0f93ffd6a31"
+                "reference": "bb5906edc1c324c9a05aa0873d40117941e5fa90"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/http-client/zipball/0955afe48220520692d2d09f7ab7e0f93ffd6a31",
-                "reference": "0955afe48220520692d2d09f7ab7e0f93ffd6a31",
+                "url": "https://api.github.com/repos/php-fig/http-client/zipball/bb5906edc1c324c9a05aa0873d40117941e5fa90",
+                "reference": "bb5906edc1c324c9a05aa0873d40117941e5fa90",
                 "shasum": ""
             },
             "require": {
@@ -8856,9 +8859,9 @@
                 "psr-18"
             ],
             "support": {
-                "source": "https://github.com/php-fig/http-client/tree/1.0.2"
+                "source": "https://github.com/php-fig/http-client"
             },
-            "time": "2023-04-10T20:12:12+00:00"
+            "time": "2023-09-23T14:17:50+00:00"
         },
         {
             "name": "psr/http-factory",
@@ -9936,16 +9939,16 @@
         },
         {
             "name": "setasign/fpdi",
-            "version": "v2.4.1",
+            "version": "v2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Setasign/FPDI.git",
-                "reference": "f4ba73e5bc053ccc90b81717c5df1cb2ea7bae7b"
+                "reference": "ecf0459643ec963febfb9a5d529dcd93656006a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Setasign/FPDI/zipball/f4ba73e5bc053ccc90b81717c5df1cb2ea7bae7b",
-                "reference": "f4ba73e5bc053ccc90b81717c5df1cb2ea7bae7b",
+                "url": "https://api.github.com/repos/Setasign/FPDI/zipball/ecf0459643ec963febfb9a5d529dcd93656006a4",
+                "reference": "ecf0459643ec963febfb9a5d529dcd93656006a4",
                 "shasum": ""
             },
             "require": {
@@ -9996,7 +9999,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Setasign/FPDI/issues",
-                "source": "https://github.com/Setasign/FPDI/tree/v2.4.1"
+                "source": "https://github.com/Setasign/FPDI/tree/v2.5.0"
             },
             "funding": [
                 {
@@ -10004,7 +10007,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-07-27T08:12:09+00:00"
+            "time": "2023-09-28T10:46:27+00:00"
         },
         {
             "name": "snc/redis-bundle",
@@ -10953,16 +10956,16 @@
         },
         {
             "name": "symfony/error-handler",
-            "version": "v5.4.26",
+            "version": "v5.4.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/error-handler.git",
-                "reference": "b26719213a39c9ba57520cbc5e52bfcc5e8d92f9"
+                "reference": "328c6fcfd2f90b64c16efaf0ea67a311d672f078"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/error-handler/zipball/b26719213a39c9ba57520cbc5e52bfcc5e8d92f9",
-                "reference": "b26719213a39c9ba57520cbc5e52bfcc5e8d92f9",
+                "url": "https://api.github.com/repos/symfony/error-handler/zipball/328c6fcfd2f90b64c16efaf0ea67a311d672f078",
+                "reference": "328c6fcfd2f90b64c16efaf0ea67a311d672f078",
                 "shasum": ""
             },
             "require": {
@@ -11004,7 +11007,7 @@
             "description": "Provides tools to manage errors and ease debugging PHP code",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/error-handler/tree/v5.4.26"
+                "source": "https://github.com/symfony/error-handler/tree/v5.4.29"
             },
             "funding": [
                 {
@@ -11020,7 +11023,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-07-16T16:48:57+00:00"
+            "time": "2023-09-06T21:54:06+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -12544,16 +12547,16 @@
         },
         {
             "name": "symfony/password-hasher",
-            "version": "v5.4.27",
+            "version": "v5.4.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/password-hasher.git",
-                "reference": "6dd2daf41b44384752f6b59e8ad3e56ffb81e35c"
+                "reference": "57cd0369af1a92b87c1e960251ebdf9457225bfd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/password-hasher/zipball/6dd2daf41b44384752f6b59e8ad3e56ffb81e35c",
-                "reference": "6dd2daf41b44384752f6b59e8ad3e56ffb81e35c",
+                "url": "https://api.github.com/repos/symfony/password-hasher/zipball/57cd0369af1a92b87c1e960251ebdf9457225bfd",
+                "reference": "57cd0369af1a92b87c1e960251ebdf9457225bfd",
                 "shasum": ""
             },
             "require": {
@@ -12598,7 +12601,7 @@
                 "password"
             ],
             "support": {
-                "source": "https://github.com/symfony/password-hasher/tree/v5.4.27"
+                "source": "https://github.com/symfony/password-hasher/tree/v5.4.29"
             },
             "funding": [
                 {
@@ -12614,7 +12617,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-07-28T14:44:35+00:00"
+            "time": "2023-09-19T07:33:45+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -14803,16 +14806,16 @@
         },
         {
             "name": "symfony/string",
-            "version": "v5.4.26",
+            "version": "v5.4.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/string.git",
-                "reference": "1181fe9270e373537475e826873b5867b863883c"
+                "reference": "e41bdc93def20eaf3bfc1537c4e0a2b0680a152d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/string/zipball/1181fe9270e373537475e826873b5867b863883c",
-                "reference": "1181fe9270e373537475e826873b5867b863883c",
+                "url": "https://api.github.com/repos/symfony/string/zipball/e41bdc93def20eaf3bfc1537c4e0a2b0680a152d",
+                "reference": "e41bdc93def20eaf3bfc1537c4e0a2b0680a152d",
                 "shasum": ""
             },
             "require": {
@@ -14869,7 +14872,7 @@
                 "utf8"
             ],
             "support": {
-                "source": "https://github.com/symfony/string/tree/v5.4.26"
+                "source": "https://github.com/symfony/string/tree/v5.4.29"
             },
             "funding": [
                 {
@@ -14885,7 +14888,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-06-28T12:46:07+00:00"
+            "time": "2023-09-13T11:47:41+00:00"
         },
         {
             "name": "symfony/templating",
@@ -15456,16 +15459,16 @@
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v5.4.28",
+            "version": "v5.4.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "684b36ff415e1381d4a943c3ca2502cd2debad73"
+                "reference": "6172e4ae3534d25ee9e07eb487c20be7760fcc65"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/684b36ff415e1381d4a943c3ca2502cd2debad73",
-                "reference": "684b36ff415e1381d4a943c3ca2502cd2debad73",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/6172e4ae3534d25ee9e07eb487c20be7760fcc65",
+                "reference": "6172e4ae3534d25ee9e07eb487c20be7760fcc65",
                 "shasum": ""
             },
             "require": {
@@ -15525,7 +15528,7 @@
                 "dump"
             ],
             "support": {
-                "source": "https://github.com/symfony/var-dumper/tree/v5.4.28"
+                "source": "https://github.com/symfony/var-dumper/tree/v5.4.29"
             },
             "funding": [
                 {
@@ -15541,7 +15544,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-08-24T13:38:36+00:00"
+            "time": "2023-09-12T10:09:58+00:00"
         },
         {
             "name": "symfony/var-exporter",
@@ -17026,16 +17029,16 @@
         },
         {
             "name": "pdepend/pdepend",
-            "version": "2.14.0",
+            "version": "2.15.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pdepend/pdepend.git",
-                "reference": "1121d4b04af06e33e9659bac3a6741b91cab1de1"
+                "reference": "d12f25bcdfb7754bea458a4a5cb159d55e9950d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pdepend/pdepend/zipball/1121d4b04af06e33e9659bac3a6741b91cab1de1",
-                "reference": "1121d4b04af06e33e9659bac3a6741b91cab1de1",
+                "url": "https://api.github.com/repos/pdepend/pdepend/zipball/d12f25bcdfb7754bea458a4a5cb159d55e9950d0",
+                "reference": "d12f25bcdfb7754bea458a4a5cb159d55e9950d0",
                 "shasum": ""
             },
             "require": {
@@ -17077,7 +17080,7 @@
             ],
             "support": {
                 "issues": "https://github.com/pdepend/pdepend/issues",
-                "source": "https://github.com/pdepend/pdepend/tree/2.14.0"
+                "source": "https://github.com/pdepend/pdepend/tree/2.15.1"
             },
             "funding": [
                 {
@@ -17085,7 +17088,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-05-26T13:15:18+00:00"
+            "time": "2023-09-28T12:00:56+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -17336,16 +17339,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "9.2.27",
+            "version": "9.2.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "b0a88255cb70d52653d80c890bd7f38740ea50d1"
+                "reference": "6a3a87ac2bbe33b25042753df8195ba4aa534c76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/b0a88255cb70d52653d80c890bd7f38740ea50d1",
-                "reference": "b0a88255cb70d52653d80c890bd7f38740ea50d1",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/6a3a87ac2bbe33b25042753df8195ba4aa534c76",
+                "reference": "6a3a87ac2bbe33b25042753df8195ba4aa534c76",
                 "shasum": ""
             },
             "require": {
@@ -17402,7 +17405,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
                 "security": "https://github.com/sebastianbergmann/php-code-coverage/security/policy",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/9.2.27"
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/9.2.29"
             },
             "funding": [
                 {
@@ -17410,7 +17413,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-07-26T13:44:30+00:00"
+            "time": "2023-09-19T04:57:46+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
