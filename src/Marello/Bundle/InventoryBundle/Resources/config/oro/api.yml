@@ -8,6 +8,14 @@ api:
             alias: marellowarehousetype
             plural_alias: marellowarehousetypes
 
+        Marello\Bundle\InventoryBundle\Entity\Allocation:
+            alias: marelloallocation
+            plural_alias: marelloallocations
+
+        Marello\Bundle\InventoryBundle\Entity\AllocationItem:
+            alias: marelloallocationitem
+            plural_alias: marelloallocationitems
+
     entities:
         Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel:
             documentation_resource: '@MarelloInventoryBundle/Resources/doc/api/balancedinventorylevel.md'
@@ -50,3 +58,64 @@ api:
 
         Marello\Bundle\InventoryBundle\Entity\WarehouseType:
             actions: false
+
+        Marello\Bundle\InventoryBundle\Entity\Allocation:
+            filters:
+                exclusion_policy: all
+                fields:
+                    warehouse:
+                        data_type: string
+                        allow_array: true
+                        property_path: warehouse.code
+                        description: 'Filter by Warehouse code'
+                        operators: ['=', '!=', '*', '!*', '~', '!~', '^', '!^', '$', '!$']
+                    order:
+                        data_type: integer
+                        allow_array: true
+                        description: 'Filter by order ID'
+                        operators: ['=', '!=', '*', '!*', '~', '!~', '^', '!^', '$', '!$']
+                    orderReference:
+                        data_type: string
+                        allow_array: true
+                        property_path: order.orderReference
+                        description: 'Filter by order reference'
+                        operators: ['=', '!=', '*', '!*', '~', '!~', '^', '!^', '$', '!$']
+                    orderNumber:
+                        data_type: string
+                        allow_array: true
+                        property_path: order.orderNumber
+                        description: 'Filter by order number'
+                        operators: ['=', '!=', '*', '!*', '~', '!~', '^', '!^', '$', '!$']
+                    state:
+                        data_type: string
+                        allow_array: true
+                        property_path: state_id
+                        description: 'Filter by state'
+                        operators: ['=', '!=', '*', '!*', '~', '!~', '^', '!^', '$', '!$']
+                    status:
+                        data_type: string
+                        allow_array: true
+                        property_path: status_id
+                        description: 'Filter by status'
+                        operators: ['=', '!=', '*', '!*', '~', '!~', '^', '!^', '$', '!$']
+                    createdAt:
+                        exclude: true
+            actions:
+                update: false
+                delete: false
+                delete_list: false
+                update_relationship: false
+                delete_relationship: false
+
+        Marello\Bundle\InventoryBundle\Entity\AllocationItem:
+            fields:
+                updatedAt:
+                    exclude: true
+            filters:
+                exclusion_policy: all
+            actions:
+                create: false
+                delete: false
+                delete_list: false
+                update_relationship: false
+                delete_relationship: false
