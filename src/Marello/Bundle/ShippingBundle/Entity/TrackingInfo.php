@@ -40,7 +40,7 @@ class TrackingInfo implements ExtendEntityInterface
     protected $id;
 
     /**
-     * @ORM\Column(name="tracking_url", type="string", length=255)
+     * @ORM\Column(name="tracking_url", type="string", length=255, nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -53,7 +53,7 @@ class TrackingInfo implements ExtendEntityInterface
     protected $trackingUrl;
 
     /**
-     * @ORM\Column(name="track_trace_url", type="string", length=255)
+     * @ORM\Column(name="track_trace_url", type="string", length=255, nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -66,7 +66,7 @@ class TrackingInfo implements ExtendEntityInterface
     protected $trackTraceUrl;
 
     /**
-     * @ORM\Column(name="tracking_code", type="string", length=255)
+     * @ORM\Column(name="tracking_code", type="string", length=255, nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -79,7 +79,7 @@ class TrackingInfo implements ExtendEntityInterface
     protected $trackingCode;
 
     /**
-     * @ORM\Column(name="provider", type="string", length=255)
+     * @ORM\Column(name="provider", type="string", length=255, nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -92,7 +92,7 @@ class TrackingInfo implements ExtendEntityInterface
     protected $provider;
 
     /**
-     * @ORM\Column(name="provider_name", type="string", length=255)
+     * @ORM\Column(name="provider_name", type="string", length=255, nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -110,6 +110,7 @@ class TrackingInfo implements ExtendEntityInterface
      *     inversedBy="trackingInfo",
      *     cascade={"persist"}
      * )
+     * @ORM\JoinColumn(name="shipment_id", nullable=true, unique=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={

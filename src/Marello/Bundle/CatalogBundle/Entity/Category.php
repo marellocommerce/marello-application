@@ -81,7 +81,7 @@ class Category implements OrganizationAwareInterface, ExtendEntityInterface
     /**
      * @var string
      *
-     * @ORM\Column(type="string", nullable=false, unique=true)
+     * @ORM\Column(type="string", nullable=false)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
