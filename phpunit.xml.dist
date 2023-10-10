@@ -39,7 +39,7 @@
         <testsuite name="functional">
             <file>vendor/oro/platform/src/Oro/Bundle/TestFrameworkBundle/Tests/Functional/ConfigTranslationTest.php</file>
             <!--<file>vendor/oro/platform/src/Oro/Bundle/TestFrameworkBundle/Tests/Functional/SchemaTest.php</file>-->
-            <directory>vendor/marellocommerce/*/*/*/*/CustomerBundle/Tests/Functional</directory>
+            <directory>vendor/marellocommerce/*/*/*/*/*/Tests/Functional</directory>
         </testsuite>
         <testsuite name="selenium">
             <directory>vendor/oro/*/Tests/Selenium</directory>
