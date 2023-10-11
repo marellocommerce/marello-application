@@ -156,6 +156,20 @@ class PackingSlip extends ExtendPackingSlip implements
     protected $salesChannel;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="saleschannel_name", type="string", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $salesChannelName;
+
+    /**
      * @var Warehouse
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\Warehouse")
@@ -361,6 +375,9 @@ class PackingSlip extends ExtendPackingSlip implements
     public function setSalesChannel($salesChannel)
     {
         $this->salesChannel = $salesChannel;
+        if ($this->salesChannel) {
+            $this->salesChannelName = $this->salesChannel->getName();
+        }
 
         return $this;
     }

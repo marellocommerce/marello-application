@@ -27,3 +27,6 @@ system_configuration:
                                     pricing_vat:
                                         children:
                                             - marello_pricing.is_vat_included
+    api_tree:
+        pricing-general:
+            marello_pricing.is_vat_included: ~

@@ -29,6 +29,11 @@ class LoadAllocationContextData extends AbstractFixture implements VersionedFixt
             'id' => AllocationContextInterface::ALLOCATION_CONTEXT_CONSOLIDATION,
             'name' => 'Consolidation',
             'isDefault'=> false
+        ],
+        [
+            'id' => AllocationContextInterface::ALLOCATION_CONTEXT_RESHIPMENT,
+            'name' => 'Reshipment',
+            'isDefault'=> false
         ]
     ];
 
@@ -67,6 +72,6 @@ class LoadAllocationContextData extends AbstractFixture implements VersionedFixt
      */
     public function getVersion()
     {
-        return '1.0';
+        return '1.1';
     }
 }

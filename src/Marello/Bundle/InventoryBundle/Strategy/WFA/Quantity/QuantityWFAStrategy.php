@@ -4,6 +4,8 @@ namespace Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
@@ -21,6 +23,9 @@ use Marello\Bundle\InventoryBundle\Provider\AllocationStateStatusInterface;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository;
 use Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\Calculator\QtyWHCalculatorInterface;
+use Marello\Bundle\NotificationMessageBundle\Event\CreateNotificationMessageEvent;
+use Marello\Bundle\NotificationMessageBundle\Factory\NotificationMessageContextFactory;
+use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageSourceInterface;
 
 class QuantityWFAStrategy implements WFAStrategyInterface
 {
@@ -45,6 +50,9 @@ class QuantityWFAStrategy implements WFAStrategyInterface
 
     /** @var AllocationExclusionInterface $exclusionProvider */
     private $exclusionProvider;
+
+    /** @var EventDispatcherInterface $eventDispatcher */
+    private $eventDispatcher;
 
     /**
      * @var Warehouse[]
@@ -123,6 +131,26 @@ class QuantityWFAStrategy implements WFAStrategyInterface
         }, $linkedWarehouses);
 
         foreach ($orderItems as $key => $orderItem) {
+            if (!$orderItem->getProduct()) {
+                $errorContext = NotificationMessageContextFactory::createError(
+                    NotificationMessageSourceInterface::NOTIFICATION_MESSAGE_SOURCE_ALLOCATION,
+                    'marello.notificationmessage.allocation.no_sku.title',
+                    'marello.notificationmessage.allocation.no_sku.message',
+                    'marello.notificationmessage.allocation.no_sku.solution',
+                    $order,
+                    null,
+                    'allocating',
+                    null,
+                    null,
+                    null,
+                    false
+                );
+                $this->eventDispatcher->dispatch(
+                    new CreateNotificationMessageEvent($errorContext),
+                    CreateNotificationMessageEvent::NAME
+                );
+                return [];
+            }
             $orderItemsByProducts[sprintf(
                 '%s_|_%s',
                 $orderItem->getProduct()->getSku(),
@@ -215,7 +243,6 @@ class QuantityWFAStrategy implements WFAStrategyInterface
             $productsByWh[$inventoryItem->getProduct()->getSku()]['qtyOrdered'] = $orderItem->getQuantity();
             $productsByWh[$inventoryItem->getProduct()->getSku()]['qtyAvailable'] = $quantityAvailable;
         }
-
         $possibleOptionsToFulfill = array_map(
             function ($item) {
                 return $this->getOptions($item['selected_wh'], $item['qtyOrdered']);
@@ -421,19 +448,32 @@ class QuantityWFAStrategy implements WFAStrategyInterface
      */
     private function cartesian($input): array
     {
-        $result = array(array());
-        foreach ($input as $key => $values) {
-            $append = array();
-
-            foreach ($result as $product) {
-                foreach ($values as $item) {
-                    $product[$key] = $item;
-                    $append[] = $product;
+        $uniqueWhs = [];
+        foreach ($input as $v) {
+            $uniqueWhs = array_merge($uniqueWhs, array_values($v));
+        }
+        $uniqueWhs = array_unique($uniqueWhs);
+        $whOptions[] = $uniqueWhs;
+        for ($i = 1; $i < count($uniqueWhs); $i++) {
+            $element = array_shift($uniqueWhs);
+            $uniqueWhs[] = $element;
+            $whOptions[] = $uniqueWhs;
+        }
+        $product = [];
+        $result = [];
+        foreach ($whOptions as $whOption) {
+            foreach ($whOption as $wh) {
+                foreach ($input as $key => $values) {
+                    if (array_search($wh, $values, true)) {
+                        $product[$key] = $wh;
+                    }
                 }
             }
-
-            $result = $append;
+            $result[] = $product;
         }
+        uasort($result, function ($resultA, $resultB) {
+            return (count(array_unique($resultA)) <=> count(array_unique($resultB)));
+        });
 
         return $result;
     }
@@ -669,5 +709,14 @@ class QuantityWFAStrategy implements WFAStrategyInterface
     public function setAllocationExclusionProvider(AllocationExclusionInterface $provider)
     {
         $this->exclusionProvider = $provider;
+    }
+
+    /**
+     * @param EventDispatcherInterface $eventDispatcher
+     * @return void
+     */
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
     }
 }

@@ -173,6 +173,7 @@
             @page {
                 sheet-size: {{ paper_size }};
                 footer: html_default_footer;
+                background-color: #ffffff;
                 margin-top: 60px;
                 margin-bottom: 60px;
                 margin-footer: 50px;
@@ -349,12 +350,16 @@
                     <td class="r">{{ total|oro_format_currency({'locale': locale, 'currency':entity.currency}) }}</td>
                 </tr>
                 <tr>
+                    <th>{{ 'marello.pdf.invoice.shipping_amount_incl_tax.label'|trans({}, 'pdf', language) }}</th>
+                    <td class="r">{{ entity.shippingAmountInclTax|oro_format_currency({'locale': locale, 'currency':entity.currency}) }}</td>
+                </tr>
+                <tr>
                     <th>{{ 'marello.pdf.invoice.tax.label'|trans({}, 'pdf', language) }}</th>
                     <td class="r">{{ taxtotal|oro_format_currency({'locale': locale, 'currency':entity.currency}) }}</td>
                 </tr>
                 <tr class="invoice-total">
                     <th>{{ 'marello.pdf.invoice.total.label'|trans({}, 'pdf', language) }}</th>
-                    <td class="r">{{ (total + taxtotal)|oro_format_currency({'locale': locale, 'currency':entity.currency}) }}</td>
+                    <td class="r">{{ (total + taxtotal + entity.shippingAmountInclTax)|oro_format_currency({'locale': locale, 'currency':entity.currency}) }}</td>
                 </tr>
                 </tbody>
             </table>

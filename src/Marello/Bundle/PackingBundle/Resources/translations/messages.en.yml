@@ -10,6 +10,7 @@ marello:
             customer.label:         Customer
             organization.label:     Organization
             sales_channel.label:    Sales Channel
+            sales_channel_name.label: Sales Channel
             billing_address:
                 label:                  Billing Address
                 name.label:             Bill to Name
@@ -47,3 +48,13 @@ marello:
         datagrid:
             columns:
                 grand_total:        Totals
+
+        action:
+            send_packing_slip_email:
+                label: Email Packing Slip
+                success: "Email Packing Slip was successfully sent to %%email%%"
+                error: You cannot perform the action. Please, provide the sender's email in the configuration (Marello -> Documents -> Workflow)
+
+        pdf:
+            filename.label: "PackingSlip_%entityNumber%"
+            download.label: Download PDF

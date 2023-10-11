@@ -1,6 +1,16 @@
 imports:
     - { resource: controllers.yml }
 
+parameters:
+    marello_packing.pdf.document.total_rows:
+        a4: 36
+        letter: 33
+    marello_packing.pdf.document.description_width:
+        a4: 20
+        letter: 20
+    marello_packing.pdf.document.header_rows: 13
+    marello_packing.pdf.document.footer_rows: 3
+
 services:
     marello_packing.mapper.order_to_packingslip:
         class: 'Marello\Bundle\PackingBundle\Mapper\OrderToPackingSlipMapper'
@@ -35,4 +45,27 @@ services:
             - '@oro_entity.doctrine_helper'
         tags:
             - { name: doctrine.event_listener, event: prePersist }
-#            - { name: kernel.event_listener, event: extendable_action.order_ship, method: onOrderShipped }
+
+    Marello\Bundle\PackingBundle\Pdf\Request\PackingSlipPdfRequestHandler:
+        arguments:
+            - '@doctrine'
+            - '@translator'
+            - '@marello_pdf.provider.render_parameters'
+            - '@marello_pdf.renderer.twig'
+        tags:
+            - { name: marello_pdf.request_handler }
+
+    Marello\Bundle\PackingBundle\Pdf\Table\PackingSlipTableProvider:
+        arguments:
+            - '@marello_packing.pdf.provider.table_size'
+        tags:
+            - { name: marello_pdf.document_table_provider }
+
+    marello_packing.pdf.provider.table_size:
+        class: Marello\Bundle\PdfBundle\Provider\TableSizeProvider
+        arguments:
+            - '@oro_config.saleschannel'
+            - '%marello_packing.pdf.document.total_rows%'
+            - '%marello_packing.pdf.document.description_width%'
+            - '%marello_packing.pdf.document.header_rows%'
+            - '%marello_packing.pdf.document.footer_rows%'

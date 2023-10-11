@@ -12,6 +12,11 @@ marello:
             ups_shipment_digest.label:         UPS Shipment Digest
             shipping_label.label:              Shipping Label
             organization.label:                Organization
+            tracking_info.label:               Tracking Info
+            create_shipment:
+                button.label:   Create Shipment
+                message.success:   Shipment Created
+
         shippingmethodsconfigsrule:
             entity_label: Shipping Rule
             entity_plural_label: Shipping Rules
@@ -67,6 +72,7 @@ marello:
 
         sections:
             general: 'General Information'
+            shipments: 'Shipments'
             shippingrule_destination: 'Destinations'
             shippingrule_conditions: 'Conditions'
             shippingrule_configurations:
@@ -88,3 +94,15 @@ marello:
         datagrid:
             action.enable: Enable
             action.disable: Disable
+
+        trackinginfo:
+            entity_label:               Tracking Info
+            entity_plural_label:        Tracking Info
+            entity_grid_all_view_label: All %entity_plural_label%
+            id.label:                   Id
+            provider.label:             Provider
+            provider_name.label:        Provider Name
+            shipment.label:             Shipment
+            tracking_code.label:        Tracking Code
+            tracking_url.label:         Tracking Url
+            track_trace_url.label:      Track Trace Url

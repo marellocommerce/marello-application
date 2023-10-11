@@ -1,0 +1,8 @@
+marello:
+    packing:
+        action:
+            send_packing_slip_email:
+                label: Email Packing Slip
+                description: "<p>Email the Packing Slip including an Packing Slip PDF to:</p>
+                    <p><b>Customer:</b> {{ name }}<br/>
+                    <b>Email Address:</b> {{ email }}</p>"

@@ -13,6 +13,9 @@ use Marello\Bundle\ShippingBundle\Context\ShippingContextInterface;
 use Oro\Bundle\CurrencyBundle\Entity\Price;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * @deprecated will be removed in 5.0
+ */
 class OrderShippingContextFactory implements ShippingContextFactoryInterface
 {
     /**

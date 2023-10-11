@@ -25,6 +25,7 @@ marello:
         status.label:               Status
         customer.label:             Customer
         sales_channel.label:        Sales Channel
+        sales_channel_name.label:   Sales Channel
         items.label:                Items
         subtotal.label:             Subtotal
         total_tax.label:            Tax Total
@@ -36,12 +37,12 @@ marello:
         invoice_type.label:         Invoice Type
         pdf:
             download.label:         Download PDF
-            filename.label:         "%invoiceType%_%entityNumber%"
+            filename.label:         "%invoiceType%_%entityNumber%.pdf"
         action:
             send_invoice_email:
                 label: Email Invoice
                 success: "Email Invoice was successfully sent to %%email%%"
-                error: You can perform the action. Please, provide the sender's name in the configuration
+                error: You cannot perform the action. Please, provide the sender's email in the configuration (Marello -> Documents -> Workflow)
 
         creditmemo:
             id.label:                   Id
@@ -68,6 +69,7 @@ marello:
             status.label:               Status
             customer.label:             Customer
             sales_channel.label:        Sales Channel
+            sales_channel_name.label:   Sales Channel
             items.label:                Items
             subtotal.label:             Subtotal
             total_tax.label:            Tax Total
@@ -154,6 +156,7 @@ marello:
             status.label:               Status
             customer.label:             Customer
             sales_channel.label:        Sales Channel
+            sales_channel_name.label:   Sales Channel
             items.label:                Items
             subtotal.label:             Subtotal
             total_tax.label:            Tax Total

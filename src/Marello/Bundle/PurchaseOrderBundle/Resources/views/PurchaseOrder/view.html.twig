@@ -2,6 +2,7 @@
 {% import '@OroDataGrid/macros.html.twig' as dataGrid %}
 {% import '@OroUI/macros.html.twig' as UI %}
 {% import '@MarelloAddress/macros.html.twig' as Address %}
+{% import '@OroEntityConfig/macros.html.twig' as entityConfig %}
 
 {% block navButtons %}
     {% if marello_purchaseorder_can_edit(entity)  %}
@@ -71,6 +72,20 @@
             ]
         }
     ] %}
+
+    {% set additionalData %}
+        {{ entityConfig.renderDynamicFields(entity) }}
+    {% endset %}
+
+    {% set dataBlocks = dataBlocks|merge([{
+        'title' : 'marello.purchaseorder.sections.additional'|trans,
+        'priority' : 90,
+        'subblocks': [{
+            'title' : null,
+            'useSpan': false,
+            'data' : [additionalData]
+        }]
+    }]) %}
 
     {%- set additionalInfoPlaceholders = marello_get_additional_placeholder_data('purchaseOrder') -%}
     {% for additionalInfo in additionalInfoPlaceholders %}

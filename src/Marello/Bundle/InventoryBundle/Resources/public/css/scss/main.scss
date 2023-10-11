@@ -14,6 +14,14 @@
     }
 }
 
+.scrollable-container {
+    [data-ftid="marello_inventory_reshipment"] {
+        .attribute-item__term {
+            color: #545456;
+        }
+    }
+}
+
 .inventorylevel-warehouse {
     .select2-container {
         width: 300px;
@@ -65,4 +73,13 @@
 
 .fa-caret-right:before {
   content: "\f0da";
+}
+
+.reshipment-reason-attribute {
+    margin-left: 18px;
+    margin-top: -10px;
+
+    .reshipment-reason-attribute-field {
+        margin-left: -10px;
+    }
 }

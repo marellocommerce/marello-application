@@ -242,6 +242,7 @@ services:
             - '@oro_config.manager'
         calls:
             - [setAllocationExclusionProvider, ['@Marello\Bundle\InventoryBundle\Provider\AllocationExclusionProvider']]
+            - [setEventDispatcher, ['@event_dispatcher']]
         tags:
             - { name: marello_inventory_wfa_strategy }
 
@@ -273,3 +274,22 @@ services:
             - { name: marello_inventory_warehouse_notifier }
 
     Marello\Bundle\InventoryBundle\Provider\AllocationExclusionProvider: ~
+
+    Marello\Bundle\InventoryBundle\Factory\AllocationShippingContextFactory:
+        public: true
+        arguments:
+            - '@marello_order.shipping_line_item.converter_basic'
+            - '@marello_shipping.context.builder_factory_basic'
+        calls:
+            - [setEventDispatcher, ['@event_dispatcher']]
+
+    Marello\Bundle\InventoryBundle\Form\Handler\ReshipmentHandler:
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider'
+        tags:
+            - { name: oro_form.form.handler, alias: marello_inventory.reshipment_form.handler }
+
+    Marello\Bundle\InventoryBundle\EventListener\Action\Condition\ReshipmentActionListener:
+        tags:
+            - { name: kernel.event_listener, event: extendable_condition.reshipment_allowed, method: isReshipmentAllowed }

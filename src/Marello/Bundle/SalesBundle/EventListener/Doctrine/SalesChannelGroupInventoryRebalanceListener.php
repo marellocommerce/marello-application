@@ -6,11 +6,9 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
 
-use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\InventoryBundle\Async\Topics;
+use Marello\Bundle\SalesBundle\Async\Topics;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 
 class SalesChannelGroupInventoryRebalanceListener
@@ -27,8 +25,7 @@ class SalesChannelGroupInventoryRebalanceListener
     protected $em;
 
     public function __construct(
-        private MessageProducerInterface $messageProducer,
-        private AclHelper $aclHelper
+        private MessageProducerInterface $messageProducer
     ) {
     }
 
@@ -95,18 +92,13 @@ class SalesChannelGroupInventoryRebalanceListener
      */
     protected function rebalanceForSalesChannelGroup(SalesChannelGroup $entity)
     {
+        $salesChannelIds = [];
         foreach ($entity->getSalesChannels() as $salesChannel) {
-            $products = $this->em->getRepository(Product::class)->findByChannel(
-                $salesChannel,
-                $this->aclHelper
-            );
-            /** @var Product $product */
-            foreach ($products as $product) {
-                $this->messageProducer->send(
-                    Topics::RESOLVE_REBALANCE_INVENTORY,
-                    ['product_id' => $product->getId(), 'jobId' => md5($product->getId())]
-                );
-            }
+            $salesChannelIds[] = $salesChannel->getId();
         }
+        $this->messageProducer->send(
+            Topics::REBALANCE_SALESCHANNEL_GROUP_TOPIC,
+            ['salesChannelIds' => $salesChannelIds]
+        );
     }
 }
