@@ -3,15 +3,18 @@
 namespace MarelloEnterprise\Bundle\SalesBundle\EventListener\Doctrine;
 
 use Doctrine\Persistence\Event\LifecycleEventArgs;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
-use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
+
 use Symfony\Component\HttpFoundation\Session\Session;
+
+use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 
 class SalesChannelGroupListener
 {
     public function __construct(
         protected Session $session
-    ) {}
+    ) {
+    }
     
     /**
      * @param LifecycleEventArgs $args

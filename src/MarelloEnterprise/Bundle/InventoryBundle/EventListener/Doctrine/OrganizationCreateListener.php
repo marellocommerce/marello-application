@@ -17,10 +17,6 @@ class OrganizationCreateListener
      * @var EntityManagerInterface
      */
     private $entityManager;
-    // TODO: remove application state
-    public function __construct(
-        protected ApplicationState $applicationState
-    ) {}
 
     /**
      * @param Organization $organization

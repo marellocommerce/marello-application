@@ -3,14 +3,17 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\Form\Handler;
 
 use Doctrine\Persistence\ObjectManager;
+
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
+
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
+use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
+use Oro\Bundle\FormBundle\Form\Handler\FormHandlerInterface;
+
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
-use Oro\Bundle\FormBundle\Form\Handler\FormHandlerInterface;
-use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
-use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 class WarehouseHandler implements FormHandlerInterface
 {
@@ -18,7 +21,8 @@ class WarehouseHandler implements FormHandlerInterface
     public function __construct(
         protected ObjectManager $manager,
         protected AclHelper $aclHelper
-    ) {}
+    ) {
+    }
 
     /**
      * {@inheritdoc}

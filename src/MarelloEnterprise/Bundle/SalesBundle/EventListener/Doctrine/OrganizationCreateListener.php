@@ -9,11 +9,6 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class OrganizationCreateListener
 {
-    // TODO:: remove application state
-    public function __construct(
-        protected ApplicationState $applicationState
-    ) {}
-    
     /**
      * @param Organization $organization
      * @param LifecycleEventArgs $args
