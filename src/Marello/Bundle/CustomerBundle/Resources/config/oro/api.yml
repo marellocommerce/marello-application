@@ -25,6 +25,10 @@ api:
                         property_path: email
                         description: 'Filter by email'
             actions:
+                get_list:
+                    fields:
+                        activityEmails:
+                            exclude: true
                 delete: false
                 delete_list: false
                 delete_relationship: false

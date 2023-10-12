@@ -31,8 +31,6 @@ data:
                 data: []
             activityNotes:
                 data: []
-            activityEmails:
-                data: []
     -
         type: marellocustomers
         id: '<toString(@marello-customer-1->id)>'
@@ -64,8 +62,6 @@ data:
             attachments:
                 data: []
             activityNotes:
-                data: []
-            activityEmails:
                 data: []
     -
         type: marellocustomers
@@ -99,8 +95,6 @@ data:
                 data: []
             activityNotes:
                 data: []
-            activityEmails:
-                data: []
     -
         type: marellocustomers
         id: '<toString(@marello-customer-3->id)>'
@@ -132,8 +126,6 @@ data:
             attachments:
                 data: []
             activityNotes:
-                data: []
-            activityEmails:
                 data: []
     -
         type: marellocustomers
@@ -167,8 +159,6 @@ data:
                 data: []
             activityNotes:
                 data: []
-            activityEmails:
-                data: []
     -
         type: marellocustomers
         id: '<toString(@marello-customer-5->id)>'
@@ -200,8 +190,6 @@ data:
             attachments:
                 data: []
             activityNotes:
-                data: []
-            activityEmails:
                 data: []
     -
         type: marellocustomers
@@ -235,8 +223,6 @@ data:
                 data: []
             activityNotes:
                 data: []
-            activityEmails:
-                data: []
     -
         type: marellocustomers
         id: '<toString(@marello-customer-7->id)>'
@@ -268,8 +254,6 @@ data:
             attachments:
                 data: []
             activityNotes:
-                data: []
-            activityEmails:
                 data: []
     -
         type: marellocustomers
@@ -303,8 +287,6 @@ data:
                 data: []
             activityNotes:
                 data: []
-            activityEmails:
-                data: []
     -
         type: marellocustomers
         id: '<toString(@marello-customer-9->id)>'
@@ -336,6 +318,4 @@ data:
             attachments:
                 data: []
             activityNotes:
-                data: []
-            activityEmails:
                 data: []
