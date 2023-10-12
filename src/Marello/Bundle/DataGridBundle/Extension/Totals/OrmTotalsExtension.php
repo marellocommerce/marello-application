@@ -73,8 +73,6 @@ class OrmTotalsExtension extends BaseOrmTotalsExtension
                 $val = $this->dateTimeFormatter->formatTime($val);
                 break;
             case PropertyInterface::TYPE_DECIMAL:
-                $val = $this->numberFormatter->formatDecimal($val);
-                break;
             case PropertyInterface::TYPE_INTEGER:
                 $val = $this->numberFormatter->formatDecimal($val);
                 break;

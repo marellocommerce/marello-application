@@ -2,9 +2,10 @@
 
 namespace Marello\Bundle\CustomerBundle\Provider;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Oro\Bundle\BatchBundle\ORM\Query\BufferedQueryResultIterator;
+use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
 use Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProviderInterface;
 
 class CustomerEmailOwnerProvider implements EmailOwnerProviderInterface
@@ -13,7 +14,7 @@ class CustomerEmailOwnerProvider implements EmailOwnerProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getEmailOwnerClass()
+    public function getEmailOwnerClass(): string
     {
         return Customer::class;
     }
@@ -21,7 +22,7 @@ class CustomerEmailOwnerProvider implements EmailOwnerProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function findEmailOwner(EntityManager $em, $email)
+    public function findEmailOwner(EntityManagerInterface $em, string $email): ?EmailOwnerInterface
     {
         return $em
             ->getRepository(Customer::class)
@@ -31,7 +32,7 @@ class CustomerEmailOwnerProvider implements EmailOwnerProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getOrganizations(EntityManager $em, $email)
+    public function getOrganizations(EntityManagerInterface $em, string $email): array
     {
         $rows = $em->createQueryBuilder()
             ->from(Customer::class, 'c')
@@ -52,7 +53,7 @@ class CustomerEmailOwnerProvider implements EmailOwnerProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getEmails(EntityManager $em, $organizationId)
+    public function getEmails(EntityManagerInterface $em, int $organizationId): iterable
     {
         $qb = $em->createQueryBuilder()
             ->from(Customer::class, 'c')

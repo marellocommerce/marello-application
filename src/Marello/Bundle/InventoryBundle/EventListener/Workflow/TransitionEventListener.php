@@ -2,8 +2,9 @@
 
 namespace Marello\Bundle\InventoryBundle\EventListener\Workflow;
 
+use Marello\Bundle\CoreBundle\Model\JobIdGenerationTrait;
+use Marello\Bundle\WorkflowBundle\Async\Topic\WorkflowTransitTopic;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
@@ -11,10 +12,8 @@ use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 use Oro\Component\Action\Event\ExtendableActionEvent;
 use Oro\Component\MessageQueue\Client\MessagePriority;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
-
-use Marello\Bundle\WorkflowBundle\Async\Topics;
-use Marello\Bundle\InventoryBundle\Async\Topics as InventoryTopics;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Marello\Bundle\InventoryBundle\Async\Topic\ResolveRebalanceInventoryTopic;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\Allocation;
 use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
@@ -23,6 +22,8 @@ use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 
 class TransitionEventListener
 {
+    use JobIdGenerationTrait;
+
     const WORKFLOW_STEP_FROM = 'pending';
     const WORKFLOW_NAME = 'marello_allocate_workflow';
     const CONTEXT_KEY = 'allocation';
@@ -70,13 +71,13 @@ class TransitionEventListener
             if ($entity->getStatus()->getName() === self::WORKFLOW_COULD_NOT_ALLOCATE_STEP) {
                 if ($event->getContext()->getCurrentStep()->getName() === self::WORKFLOW_STEP_FROM) {
                     $this->messageProducer->send(
-                        Topics::WORKFLOW_TRANSIT_TOPIC,
+                        WorkflowTransitTopic::getName(),
                         [
                             'workflow_item_entity_id' => $event->getContext()->getEntityId(),
                             'current_step_id' => $event->getContext()->getCurrentStep()->getId(),
                             'entity_class' => Allocation::class,
                             'transition' => self::WORKFLOW_COULD_NOT_ALLOCATE_STEP,
-                            'jobId' => md5($event->getContext()->getEntityId()),
+                            'jobId' => $this->generateJobId($event->getContext()->getEntityId()),
                             'priority' => MessagePriority::NORMAL
                         ]
                     );
@@ -135,10 +136,10 @@ class TransitionEventListener
         );
 
         $this->messageProducer->send(
-            InventoryTopics::RESOLVE_REBALANCE_INVENTORY,
+            ResolveRebalanceInventoryTopic::getName(),
             [
                 'product_id' => $item->getProduct()->getId(),
-                'jobId' => md5($item->getProduct()->getId()),
+                'jobId' => $this->generateJobId($item->getProduct()->getId()),
                 'priority' => MessagePriority::NORMAL
             ]
         );

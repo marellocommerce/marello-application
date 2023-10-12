@@ -1,4 +1,5 @@
 <?php
+
 namespace Marello\Bundle\SalesBundle\Form\Type;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;

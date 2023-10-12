@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\PaymentBundle\Form\Type;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\InvoiceBundle\Entity\AbstractInvoice;
 use Marello\Bundle\InvoiceBundle\Entity\Repository\AbstractInvoiceRepository;
 use Marello\Bundle\InvoiceBundle\Form\Type\InvoiceSelectType;
@@ -22,17 +22,9 @@ class PaymentUpdateType extends AbstractType
 {
     const BLOCK_PREFIX = 'marello_payment_update';
 
-    /**
-     * @var Registry
-     */
-    private $registry;
-
-    /**
-     * @param Registry $registry
-     */
-    public function __construct(Registry $registry)
-    {
-        $this->registry = $registry;
+    public function __construct(
+        protected ManagerRegistry $registry
+    ) {
     }
 
     /**

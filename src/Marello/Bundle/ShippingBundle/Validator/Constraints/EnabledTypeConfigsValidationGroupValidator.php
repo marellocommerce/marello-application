@@ -5,7 +5,6 @@ namespace Marello\Bundle\ShippingBundle\Validator\Constraints;
 use Marello\Bundle\ShippingBundle\Entity\ShippingMethodTypeConfig;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class EnabledTypeConfigsValidationGroupValidator extends ConstraintValidator
@@ -36,12 +35,7 @@ class EnabledTypeConfigsValidationGroupValidator extends ConstraintValidator
         $count = count($enabledRules);
 
         if ($count < $constraint->min) {
-            if ($this->context instanceof ExecutionContextInterface) {
-                $builder = $this->context->buildViolation($constraint->message);
-            } else {
-                $builder = $this->buildViolation($constraint->message);
-            }
-            $builder
+            $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ count }}', $count)
                 ->setParameter('{{ limit }}', $constraint->min)
                 ->setPlural((int)$constraint->min)

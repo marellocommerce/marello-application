@@ -3,9 +3,9 @@
 namespace Marello\Bundle\PurchaseOrderBundle\EventListener\Doctrine;
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Marello\Bundle\InventoryBundle\Provider\AllocationContextInterface;
 use Marello\Bundle\InventoryBundle\Provider\AllocationStateStatusInterface;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
@@ -43,7 +43,7 @@ class PurchaseOrderOnOrderOnDemandCreationListener
      */
     public function postPersist(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
         if (!$entity instanceof Allocation) {
             return;
         }
@@ -78,7 +78,7 @@ class PurchaseOrderOnOrderOnDemandCreationListener
     public function postFlush(PostFlushEventArgs $args)
     {
         if ($this->allocationId) {
-            $entityManager = $args->getEntityManager();
+            $entityManager = $args->getObjectManager();
             /** @var Allocation $entity */
             $entity = $entityManager
                 ->getRepository(Allocation::class)
@@ -180,10 +180,9 @@ class PurchaseOrderOnOrderOnDemandCreationListener
      */
     private function isOrderOnDemandItem(Product $product)
     {
-        foreach ($product->getInventoryItems() as $inventoryItem) {
-            if ($inventoryItem->isOrderOnDemandAllowed()) {
-                return true;
-            }
+        $inventoryItem = $product->getInventoryItem();
+        if ($inventoryItem && $inventoryItem->isOrderOnDemandAllowed()) {
+            return true;
         }
 
         return false;

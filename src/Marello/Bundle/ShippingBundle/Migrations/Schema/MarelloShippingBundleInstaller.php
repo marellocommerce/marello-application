@@ -177,6 +177,9 @@ class MarelloShippingBundleInstaller implements Installation, AttachmentExtensio
         $table->addColumn('tracking_code', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('provider', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('provider_name', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('shipment_id', 'integer', ['notnull' => false]);
+        $table->addColumn('created_at', 'datetime');
+        $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
     }
 

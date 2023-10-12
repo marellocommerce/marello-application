@@ -48,7 +48,6 @@ trait UpdateExtendRelationTrait
                 /** @var FieldConfigId $fieldId */
                 $fieldId = $data['relation'][$fullRelationTo]['field_id'];
                 $reflectionProperty = new \ReflectionProperty(get_class($fieldId), 'fieldName');
-                $reflectionProperty->setAccessible(true);
                 $reflectionProperty->setValue($fieldId, $relationTo);
                 $data['relation'][$fullRelationTo]['field_id'] = $fieldId;
             }

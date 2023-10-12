@@ -2,13 +2,11 @@
 
 namespace Marello\Bundle\RefundBundle\Workflow\Actions;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
-
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Component\Action\Exception\InvalidParameterException;
 use Oro\Component\Action\Action\AbstractAction;
 use Oro\Component\Action\Action\ActionInterface;
 use Oro\Component\ConfigExpression\ContextAccessor;
-
 use Marello\Bundle\RefundBundle\Entity\Refund;
 use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
 use Marello\Bundle\OrderBundle\Entity\Order;
@@ -18,20 +16,11 @@ class CreateRefundAction extends AbstractAction
     /** @var array */
     protected $options;
 
-    /** @var Registry */
-    protected $doctrine;
-
-    /**
-     * CreateRefundAction constructor.
-     *
-     * @param ContextAccessor $contextAccessor
-     * @param Registry        $doctrine
-     */
-    public function __construct(ContextAccessor $contextAccessor, Registry $doctrine)
-    {
+    public function __construct(
+        ContextAccessor $contextAccessor,
+        protected ManagerRegistry $doctrine
+    ) {
         parent::__construct($contextAccessor);
-
-        $this->doctrine = $doctrine;
     }
 
     /**

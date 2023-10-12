@@ -100,12 +100,6 @@ services:
         arguments:
             - 'Marello\Bundle\CustomerBundle\Form\Type\CompanyType'
 
-    marello_customer.form:
-        class: 'Symfony\Component\Form\Form'
-        public: true
-        factory: ['@form.factory', 'create']
-        arguments:
-            - 'Marello\Bundle\CustomerBundle\Form\Type\CustomerType'
 
     marello_customer.form.type.customer:
         class: 'Marello\Bundle\CustomerBundle\Form\Type\CustomerType'
@@ -134,9 +128,15 @@ services:
         class: 'Marello\Bundle\CustomerBundle\Form\Handler\CustomerHandler'
         public: true
         arguments:
-            - '@marello_customer.form'
-            - '@request_stack'
             - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: oro_form.form.handler, alias: marello_customer.form.handler.customer }
+
+    marelloenterprise_inventory.form_handler.warehousegroup:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Handler\WarehouseGroupHandler'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@oro_security.acl_helper'
 
     marello_customer.provider.customer_email_owner:
         class: 'Marello\Bundle\CustomerBundle\Provider\CustomerEmailOwnerProvider'

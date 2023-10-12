@@ -82,7 +82,7 @@ class ProductApiEntityManager extends ApiEntityManager
                         'channelType' => null,
                     ],
                 ],
-                'inventoryItems' => [
+                'inventoryItem' => [
                     'exclusion_policy' => 'all',
                     'fields'           => [
                         'id'          => null,

@@ -1,4 +1,5 @@
 <?php
+
 namespace Marello\Bundle\ManualShippingBundle\EventListener;
 
 use Marello\Bundle\ManualShippingBundle\Integration\ManualShippingChannelType;

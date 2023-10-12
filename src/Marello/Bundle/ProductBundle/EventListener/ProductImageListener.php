@@ -12,7 +12,7 @@ use Oro\Bundle\ConfigBundle\Event\ConfigUpdateEvent;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\ProductBundle\Async\ProductImageUpdateProcessor;
+use Marello\Bundle\ProductBundle\Async\Topic\ProductImageUpdateTopic;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 
 class ProductImageListener
@@ -48,9 +48,11 @@ class ProductImageListener
      */
     public function postPersist(LifecycleEventArgs $args)
     {
-        $entity = $args->getObject();
-        if ($entity instanceof Product && $entity->getImage()) {
-            $this->updateImageFileExternalUrl($entity->getImage());
+        if ($this->configManager->get('marello_product.image_use_external_url')) {
+            $entity = $args->getObject();
+            if ($entity instanceof Product && $entity->getImage()) {
+                $this->updateImageFileExternalUrl($entity->getImage());
+            }
         }
     }
 
@@ -132,7 +134,7 @@ class ProductImageListener
             ->getEntityManager(Product::class)
             ->getConnection()
             ->getConfiguration()
-            ->setSQLLogger(null); //turn off log
+            ->setSQLLogger(); //turn off log
 
         $qb = $em->createQueryBuilder('p');
         $query = $qb->select('p.id', 'p.sku');
@@ -148,7 +150,7 @@ class ProductImageListener
     protected function sendToMessageProducer(int $productId): void
     {
         $this->messageProducer->send(
-            ProductImageUpdateProcessor::TOPIC,
+            ProductImageUpdateTopic::getName(),
             ['productId' => $productId]
         );
     }

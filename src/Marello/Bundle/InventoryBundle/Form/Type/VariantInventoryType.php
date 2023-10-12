@@ -19,7 +19,7 @@ class VariantInventoryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('products', CollectionType::class, [
-            'entry_type'               => ProductInventoryType::class,
+            'entry_type'         => ProductInventoryType::class, // TODO: resolve missed class
             'allow_add'          => false,
             'allow_delete'       => false,
             'constraints'        => [new Valid()],

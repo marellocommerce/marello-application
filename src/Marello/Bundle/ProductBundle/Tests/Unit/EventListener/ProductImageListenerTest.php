@@ -11,6 +11,7 @@ use Doctrine\DBAL\Configuration;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 use PHPUnit\Framework\TestCase;
 
@@ -79,7 +80,7 @@ class ProductImageListenerTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    public function testNoInsertionsOrUpdates()
+    public function testNoImageEntityUpdates()
     {
         $this->configManagerMock
             ->expects(static::once())
@@ -103,15 +104,92 @@ class ProductImageListenerTest extends TestCase
 
         $unitOfWorkMock
             ->expects(static::once())
-            ->method('getScheduledEntityInsertions')
-            ->willReturn([]);
-
-        $unitOfWorkMock
-            ->expects(static::once())
             ->method('getScheduledEntityUpdates')
             ->willReturn([]);
 
         $this->productImageListener->onFlush($eventPostFlushArgs);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function testNoImageCreation()
+    {
+        $this->configManagerMock
+            ->expects(static::once())
+            ->method('get')
+            ->with('marello_product.image_use_external_url')
+            ->willReturn(true);
+
+        $productMock = $this->getMockBuilder(Product::class)
+            ->disableOriginalConstructor()
+            ->disableOriginalClone()
+            ->disableArgumentCloning()
+            ->disallowMockingUnknownTypes()
+            ->addMethods(['getImage'])
+            ->getMock();
+        /** @var LifecycleEventArgs|\PHPUnit\Framework\MockObject\MockObject $eventPostPersistArgs */
+        $eventPostPersistArgs = $this->createMock(LifecycleEventArgs::class);
+        $eventPostPersistArgs
+            ->expects(static::once())
+            ->method('getObject')
+            ->willReturn($productMock);
+
+        $productMock
+            ->expects(static::once())
+            ->method('getImage')
+            ->willReturn(null);
+
+        $this->productImageListener->postPersist($eventPostPersistArgs);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function testImageCreation()
+    {
+        $this->configManagerMock
+            ->expects(static::once())
+            ->method('get')
+            ->with('marello_product.image_use_external_url')
+            ->willReturn(true);
+
+        $file = $this->createMock(File::class);
+        $file
+            ->expects(static::once())
+            ->method('getParentEntityClass')
+            ->willReturn(Product::class);
+
+        $file
+            ->expects(static::once())
+            ->method('getParentEntityId')
+            ->willReturn(1);
+
+        $productMock = $this->getMockBuilder(Product::class)
+            ->disableOriginalConstructor()
+            ->disableOriginalClone()
+            ->disableArgumentCloning()
+            ->disallowMockingUnknownTypes()
+            ->addMethods(['getImage'])
+            ->getMock();
+
+        $productMock
+            ->expects(static::exactly(2))
+            ->method('getImage')
+            ->willReturn($file);
+
+        $this->messageProducerMock
+            ->expects(static::once())
+            ->method('send');
+
+        /** @var LifecycleEventArgs|\PHPUnit\Framework\MockObject\MockObject $eventPostPersistArgs */
+        $eventPostPersistArgs = $this->createMock(LifecycleEventArgs::class);
+        $eventPostPersistArgs
+            ->expects(static::once())
+            ->method('getObject')
+            ->willReturn($productMock);
+
+        $this->productImageListener->postPersist($eventPostPersistArgs);
     }
 
     /**
@@ -156,13 +234,8 @@ class ProductImageListenerTest extends TestCase
 
         $unitOfWorkMock
             ->expects(static::exactly(2))
-            ->method('getScheduledEntityInsertions')
-            ->willReturn([$file]);
-
-        $unitOfWorkMock
-            ->expects(static::once())
             ->method('getScheduledEntityUpdates')
-            ->willReturn([]);
+            ->willReturn([$file]);
 
         $this->productImageListener->onFlush($eventPostFlushArgs);
     }

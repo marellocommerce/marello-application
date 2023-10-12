@@ -1,4 +1,5 @@
 <?php
+
 namespace Marello\Bundle\ProductBundle\Form\Type;
 
 use Oro\Bundle\FormBundle\Form\Type\OroEntitySelectOrCreateInlineType;

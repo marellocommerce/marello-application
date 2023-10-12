@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\ShippingBundle\Method\Provider\Integration;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Entity\Repository\ChannelRepository;
@@ -72,7 +72,10 @@ class ChannelShippingMethodProvider implements ShippingMethodProviderInterface
      */
     public function getShippingMethods()
     {
-        $this->loadChannels();
+        $this->loadedChannels = $this->loadChannels();
+        foreach ($this->loadedChannels as $channel) {
+            $this->createMethodFromChannel($channel);
+        }
 
         return $this->methods;
     }
@@ -116,7 +119,17 @@ class ChannelShippingMethodProvider implements ShippingMethodProviderInterface
 
     private function loadChannels()
     {
-        /* After fetching, all entities will be saved into $loadedChannels on postLoad call */
-        $this->getRepository()->findByTypeAndExclude($this->channelType, $this->loadedChannels);
+        $qb = $this->getRepository()->createQueryBuilder('channel');
+        $qb
+            ->where($qb->expr()->eq('channel.type', ':type'))
+            ->setParameter('type', $this->channelType);
+
+        if (count($this->loadedChannels) > 0) {
+            $qb
+                ->andWhere($qb->expr()->notIn('channel', ':channels'))
+                ->setParameter('channels', $this->loadedChannels);
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }

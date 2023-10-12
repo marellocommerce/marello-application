@@ -1,0 +1,7 @@
+services:
+    _defaults:
+        tags:
+            - { name: oro_message_queue.topic }
+
+    Marello\Bundle\WorkflowBundle\Async\Topic\WorkflowTransitMassTopic: ~
+    Marello\Bundle\WorkflowBundle\Async\Topic\WorkflowTransitTopic: ~

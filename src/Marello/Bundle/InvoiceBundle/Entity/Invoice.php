@@ -7,14 +7,16 @@ use Doctrine\Common\Collections\Collection;
 
 use Marello\Bundle\PaymentTermBundle\Entity\PaymentTerm;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
-
-use Marello\Bundle\InvoiceBundle\Model\ExtendInvoice;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 
 /**
  * @ORM\Entity
  */
-class Invoice extends ExtendInvoice
+class Invoice extends AbstractInvoice implements ExtendEntityInterface
 {
+    use ExtendEntityTrait;
+
     const INVOICE_TYPE = 'invoice';
 
     /**

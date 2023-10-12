@@ -4,6 +4,8 @@ namespace Marello\Bundle\CustomerBundle\Tests\Functional\Api;
 
 use Symfony\Component\HttpFoundation\Response;
 
+use Oro\Bundle\TestFrameworkBundle\Tests\Functional\DataFixtures\LoadOrganization;
+
 use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\CoreBundle\Tests\Functional\RestJsonApiTestCase;
 use Marello\Bundle\CustomerBundle\Tests\Functional\DataFixtures\LoadCustomerData;
@@ -16,6 +18,7 @@ class CustomerJsonApiTest extends RestJsonApiTestCase
     {
         parent::setUp();
         $this->loadFixtures([
+            LoadOrganization::class,
             LoadCustomerData::class
         ]);
     }
@@ -26,7 +29,6 @@ class CustomerJsonApiTest extends RestJsonApiTestCase
     public function testGetListOfCustomers()
     {
         $response = $this->cget(['entity' => self::TESTING_ENTITY], []);
-
         $this->assertJsonResponse($response);
         $this->assertResponseStatusCodeEquals($response, Response::HTTP_OK);
         $this->assertResponseCount(10, $response);
@@ -35,6 +37,7 @@ class CustomerJsonApiTest extends RestJsonApiTestCase
 
     /**
      * Test get customer by id
+     * Email has become the id for the Customer Entity
      */
     public function testGetCustomerById()
     {
@@ -46,25 +49,6 @@ class CustomerJsonApiTest extends RestJsonApiTestCase
 
         $this->assertJsonResponse($response);
         $this->assertResponseContains('get_customer_by_id.yml', $response);
-    }
-
-    /**
-     * Get a single customer by email
-     */
-    public function testGetCustomerFilteredByEmail()
-    {
-        /** @var Customer $customer */
-        $customer = $this->getReference('marello-customer-1');
-        $response = $this->cget(
-            ['entity' => self::TESTING_ENTITY],
-            [
-                'filter' => ['email' =>  $customer->getEmail() ]
-            ]
-        );
-
-        $this->assertJsonResponse($response);
-        $this->assertResponseCount(1, $response);
-        $this->assertResponseContains('get_customer_by_email.yml', $response);
     }
 
     /**
@@ -83,6 +67,7 @@ class CustomerJsonApiTest extends RestJsonApiTestCase
 
         /** @var Customer $customer */
         $customer = $this->getEntityManager()->find(Customer::class, $responseContent->data->id);
+        $this->assertNotNull($customer->getPrimaryAddress(), 'Customer with Address');
         $this->assertEquals($customer->getEmail(), $responseContent->data->attributes->email);
     }
 
@@ -99,9 +84,9 @@ class CustomerJsonApiTest extends RestJsonApiTestCase
         $this->assertJsonResponse($response);
 
         $responseContent = json_decode($response->getContent());
-
         /** @var Customer $customer */
         $customer = $this->getEntityManager()->find(Customer::class, $responseContent->data->id);
+        $this->assertNull($customer->getPrimaryAddress(), 'Customer without Address');
         $this->assertEquals($customer->getEmail(), $responseContent->data->attributes->email);
     }
 

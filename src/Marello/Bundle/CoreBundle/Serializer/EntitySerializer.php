@@ -2,11 +2,11 @@
 
 namespace Marello\Bundle\CoreBundle\Serializer;
 
-use Oro\Bundle\EntityBundle\ORM\Registry;
 use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityExtendBundle\Serializer\ExtendEntityFieldFilter;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
+use Oro\Component\EntitySerializer\ConfigAccessor;
 use Oro\Component\EntitySerializer\ConfigConverter;
 use Oro\Component\EntitySerializer\ConfigNormalizer;
 use Oro\Component\EntitySerializer\ConfigUtil;
@@ -15,35 +15,38 @@ use Oro\Component\EntitySerializer\DataNormalizer;
 use Oro\Component\EntitySerializer\DataTransformerInterface as BaseDataTransformerInterface;
 use Oro\Component\EntitySerializer\DoctrineHelper;
 use Oro\Component\EntitySerializer\EntityConfig;
+use Oro\Component\EntitySerializer\EntityMetadata;
 use Oro\Component\EntitySerializer\EntitySerializer as BaseEntitySerializer;
 use Oro\Component\EntitySerializer\FieldAccessor;
+use Oro\Component\EntitySerializer\FieldConfig;
+use Oro\Component\EntitySerializer\FieldFilterInterface;
 use Oro\Component\EntitySerializer\QueryFactory;
 use Oro\Component\EntitySerializer\SerializationHelper;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
 
 class EntitySerializer extends BaseEntitySerializer
 {
     const WORKFLOW_ITEM_FIELD   = 'workflowItems';
     const WORKFLOW_ITEM_FQCN    = 'Oro\Bundle\WorkflowBundle\Entity\WorkflowItem';
 
-    /** @var WorkflowManager $workflowManager */
+    /** @var WorkflowManager */
     protected $workflowManager;
 
-    /**
-     * @param Registry                     $doctrine
-     * @param ConfigManager                $configManager
-     * @param BaseDataAccessorInterface    $dataAccessor
-     * @param BaseDataTransformerInterface $dataTransformer
-     * @param QueryFactory                 $queryFactory
-     * @param WorkflowManager              $workflowManager
-     */
+    /** @var ConfigAccessor */
+    private $configAccessor;
+
+    /** @var FieldFilterInterface */
+    private $fieldFilter;
+
     public function __construct(
-        Registry $doctrine,
+        ManagerRegistry $doctrine,
         ConfigManager $configManager,
         BaseDataAccessorInterface $dataAccessor,
         BaseDataTransformerInterface $dataTransformer,
         QueryFactory $queryFactory,
         WorkflowManager $workflowManager
     ) {
+        $this->configAccessor = new ConfigAccessor();
         $doctrineHelper = new DoctrineHelper($doctrine);
         $fieldAccessor  = new FieldAccessor(
             $doctrineHelper,
@@ -65,6 +68,11 @@ class EntitySerializer extends BaseEntitySerializer
         $this->workflowManager = $workflowManager;
     }
 
+    public function setFieldFilter(FieldFilterInterface $filter): void
+    {
+        $this->fieldFilter = $filter;
+    }
+
     /**
      * @param mixed        $entity
      * @param string       $entityClass
@@ -76,7 +84,7 @@ class EntitySerializer extends BaseEntitySerializer
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    protected function serializeItem($entity, $entityClass, EntityConfig $config, array $context)
+    protected function serializeItem(mixed $entity, string $entityClass, EntityConfig $config, array $context): array
     {
         if (!$entity) {
             return [];
@@ -88,7 +96,7 @@ class EntitySerializer extends BaseEntitySerializer
         $fields = $this->fieldAccessor->getFieldsToSerialize($entityClass, $config);
         foreach ($fields as $field) {
             $fieldConfig = $config->getField($field);
-            $propertyPath = $this->getPropertyPath($field, $fieldConfig);
+            $propertyPath = $this->configAccessor->getPropertyPath($field, $fieldConfig);
             $path = ConfigUtil::explodePropertyPath($propertyPath);
             $isReference = count($path) > 1;
 
@@ -113,7 +121,7 @@ class EntitySerializer extends BaseEntitySerializer
                 if (null !== $value) {
                     if ($this->isAssociation($propertyPath, $entityMetadata, $fieldConfig)) {
                         if (is_object($value)) {
-                            $targetConfig = $this->getTargetEntity($config, $field);
+                            $targetConfig = $this->configAccessor->getTargetEntity($config, $field);
                             $targetEntityClass = $this->doctrineHelper->getAssociationTargetClass(
                                 $entityMetadata,
                                 $path
@@ -151,7 +159,7 @@ class EntitySerializer extends BaseEntitySerializer
             } elseif ($propertyPath === self::WORKFLOW_ITEM_FIELD) {
                 if ($this->hasWorkflowAssociation($entity) && $this->hasWorkflowItemField($config)) {
                     $workflowItems = $this->workflowManager->getWorkflowItemsByEntity($entity);
-                    $targetConfig = $this->getTargetEntity($config, $field);
+                    $targetConfig = $this->configAccessor->getTargetEntity($config, $field);
                     $value = $this->serializeEntities(
                         $workflowItems,
                         self::WORKFLOW_ITEM_FQCN,
@@ -167,11 +175,9 @@ class EntitySerializer extends BaseEntitySerializer
             }
         }
 
-
         if (!empty($referenceFields)) {
             $result = $this->serializationHelper->handleFieldsReferencedToChildFields(
                 $result,
-                $entityClass,
                 $config,
                 $context,
                 $referenceFields
@@ -199,5 +205,36 @@ class EntitySerializer extends BaseEntitySerializer
     protected function hasWorkflowAssociation($entity)
     {
         return $this->workflowManager->hasWorkflowItemsByEntity($entity);
+    }
+
+    private function isAssociation(
+        string $fieldName,
+        EntityMetadata $entityMetadata,
+        FieldConfig $fieldConfig = null
+    ): bool {
+        return
+            (ConfigUtil::IGNORE_PROPERTY_PATH !== $fieldName && $entityMetadata->isAssociation($fieldName))
+            || (null !== $fieldConfig && null !== $fieldConfig->getTargetEntity());
+    }
+
+    private function getIdFieldNameIfIdOnlyRequested(EntityConfig $config, string $entityClass): ?string
+    {
+        if (!$config->isExcludeAll()) {
+            return null;
+        }
+
+        $fields = $config->getFields();
+        if (\count($fields) !== 1) {
+            return null;
+        }
+
+        reset($fields);
+        $fieldName = key($fields);
+        $field = current($fields);
+        if ($this->doctrineHelper->getEntityIdFieldName($entityClass) !== $field->getPropertyPath($fieldName)) {
+            return null;
+        }
+
+        return $fieldName;
     }
 }

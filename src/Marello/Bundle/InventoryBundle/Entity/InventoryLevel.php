@@ -5,9 +5,10 @@ namespace Marello\Bundle\InventoryBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Marello\Bundle\InventoryBundle\Model\ExtendInventoryLevel;
 use Marello\Bundle\InventoryBundle\Model\InventoryQtyAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
@@ -39,9 +40,10 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
  * )
  * @ORM\HasLifecycleCallbacks()
  */
-class InventoryLevel extends ExtendInventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInterface
+class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInterface, ExtendEntityInterface
 {
     use AuditableOrganizationAwareTrait;
+    use ExtendEntityTrait;
     
     /**
      * @ORM\Id
@@ -231,8 +233,6 @@ class InventoryLevel extends ExtendInventoryLevel implements OrganizationAwareIn
     
     public function __construct()
     {
-        parent::__construct();
-
         $this->inventoryBatches = new ArrayCollection();
     }
     
