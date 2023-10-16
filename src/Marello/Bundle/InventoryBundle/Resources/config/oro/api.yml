@@ -23,9 +23,6 @@ api:
                 saleschannels:
                     data_type: object
                     target_class: Marello\Bundle\SalesBundle\Entity\SalesChannel
-#                    property_path: salesChannelGroup.salesChannels
-#                salesChannelGroup:
-#                    exclude: true
                 createdAt:
                     exclude: true
             filters:

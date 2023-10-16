@@ -106,7 +106,7 @@ api:
                     saleschannel:
                         data_type: string
                         allow_array: true
-                        property_path: channel.code
+                        property_path: salesChannel.code
                         description: 'Filter taxes by SalesChannel'
                     taxcode:
                         data_type: string
