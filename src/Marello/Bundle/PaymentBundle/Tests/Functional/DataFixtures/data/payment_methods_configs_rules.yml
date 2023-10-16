@@ -1,7 +1,7 @@
 payment_rule.1:
     rule:
         enabled: true
-        sortOrder: 0
+        sortOrder: 1
         expression: 'true'
     currency: 'EUR'
 

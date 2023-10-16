@@ -2,14 +2,11 @@
 
 namespace Marello\Bundle\SalesBundle\EventListener\Doctrine;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
-
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Oro\Bundle\DistributionBundle\Handler\ApplicationState;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Symfony\Component\HttpFoundation\Session\Session;
-
 use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
-
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -30,8 +27,7 @@ class SalesChannelGroupListener
 
     public function preRemove(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
-
+        $entity = $args->getObject();
         if (!$entity instanceof SalesChannelGroup) {
             return;
         }
@@ -42,7 +38,7 @@ class SalesChannelGroupListener
                 ->add('error', $message);
             throw new AccessDeniedException($message);
         }
-        $em = $args->getEntityManager();
+        $em = $args->getObjectManager();
         $systemGroup = $em
             ->getRepository(SalesChannelGroup::class)
             ->findSystemChannelGroup($this->aclHelper);
@@ -72,7 +68,7 @@ class SalesChannelGroupListener
     public function postPersist(SalesChannelGroup $salesChannelGroup, LifecycleEventArgs $args)
     {
         if ($this->applicationState->isInstalled()) {
-            $em = $args->getEntityManager();
+            $em = $args->getObjectManager();
             $systemWarehouseChannelGroupLink = $this->getSystemWarehouseChannelGroupLink($em);
 
             if ($systemWarehouseChannelGroupLink) {
@@ -93,7 +89,7 @@ class SalesChannelGroupListener
         if ($this->systemWarehouseChannelGroupLink === null) {
             $this->systemWarehouseChannelGroupLink = $entityManager
                 ->getRepository(WarehouseChannelGroupLink::class)
-                ->findSystemLink($this->aclHelper);
+                ->findSystemLink();
         }
 
         return $this->systemWarehouseChannelGroupLink;

@@ -21,9 +21,12 @@ class MarelloProductExtension extends Extension
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
+        $container->prependExtensionConfig($this->getAlias(), $config);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('form.yml');
         $loader->load('services.yml');
+        $loader->load('mq_topics.yml');
+        $loader->load('services_api.yml');
     }
 }

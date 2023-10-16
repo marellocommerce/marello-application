@@ -2,8 +2,8 @@
 
 namespace Marello\Bundle\InventoryBundle\EventListener\Workflow;
 
+use Marello\Bundle\CoreBundle\Model\JobIdGenerationTrait;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
@@ -12,9 +12,7 @@ use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 use Oro\Component\Action\Event\ExtendableActionEvent;
 use Oro\Component\MessageQueue\Client\MessagePriority;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
-
 use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\WorkflowBundle\Async\Topics;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\Allocation;
@@ -27,9 +25,12 @@ use Marello\Bundle\InventoryBundle\Model\InventoryTotalCalculator;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 use Marello\Bundle\InventoryBundle\Provider\AllocationContextInterface;
 use Marello\Bundle\InventoryBundle\Provider\AllocationStateStatusInterface;
+use Marello\Bundle\WorkflowBundle\Async\Topic\WorkflowTransitTopic;
 
 class AllocationCompleteListener
 {
+    use JobIdGenerationTrait;
+
     const TRANSIT_TO_STEP = 'ship';
     const WORKFLOW_NAME_B2C_1 = 'marello_order_b2c_workflow_1';
     const WORKFLOW_NAME_B2C_2 = 'marello_order_b2c_workflow_2';
@@ -80,6 +81,7 @@ class AllocationCompleteListener
         /** @var Order $order */
         $order = $entity->getOrder();
         $shippedItems = [];
+        /** @var OrderItem $item */
         foreach ($order->getItems() as $item) {
             // all items which have complete or shipped status
             $orderStatuses = [
@@ -99,10 +101,14 @@ class AllocationCompleteListener
                 $orderItemQty = (empty($allocationItems)) ? $item->getQuantity() : 0;
                 /** @var AllocationItem $allocationItem */
                 foreach ($allocationItems as $allocationItem) {
-                    $orderItemQty += $allocationItem->getQuantityConfirmed();
+                    // if we add the all allocation confirmed quantities including the parent we would always
+                    // have allocated more quantity than we've ordered..
+                    if (!$allocationItem->getAllocation()->getParent()) {
+                        $orderItemQty += $allocationItem->getQuantityConfirmed();
+                    }
                 }
 
-                if ($orderItemQty == $item->getQuantity() ||
+                if ((int)$orderItemQty === $item->getQuantity() ||
                     ($entity->getAllocationContext() &&
                     $entity->getAllocationContext()->getId() ===
                     AllocationContextInterface::ALLOCATION_CONTEXT_RESHIPMENT)
@@ -113,7 +119,8 @@ class AllocationCompleteListener
         }
 
         // shipped items take quantities in account from above
-        if (count($shippedItems) === $order->getItems()->count()) {
+        // parent needs to be empty, as this might indicate that this order should be consolidated
+        if (count($shippedItems) === $order->getItems()->count() && !$entity->getParent()) {
             if ($entity->getAllocationContext() &&
                 $entity->getAllocationContext()->getId() === AllocationContextInterface::ALLOCATION_CONTEXT_RESHIPMENT
             ) {
@@ -150,13 +157,13 @@ class AllocationCompleteListener
                         ]
                     );
                 $this->messageProducer->send(
-                    Topics::WORKFLOW_TRANSIT_TOPIC,
+                    WorkflowTransitTopic::getName(),
                     [
                         'workflow_item_entity_id' => $order->getId(),
                         'current_step_id' => $workflowItem->getCurrentStep()->getId(),
                         'entity_class' => Order::class,
                         'transition' => self::TRANSIT_TO_STEP,
-                        'jobId' => md5($order->getId()),
+                        'jobId' => $this->generateJobId($order->getId()),
                         'priority' => MessagePriority::NORMAL
                     ]
                 );

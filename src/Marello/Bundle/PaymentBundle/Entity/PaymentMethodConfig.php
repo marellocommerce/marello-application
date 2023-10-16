@@ -5,15 +5,18 @@ namespace Marello\Bundle\PaymentBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
-use Marello\Bundle\PaymentBundle\Model\ExtendPaymentMethodConfig;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\PaymentBundle\Entity\Repository\PaymentMethodConfigRepository")
  * @ORM\Table(name="marello_payment_method_config")
  * @Config()
  */
-class PaymentMethodConfig extends ExtendPaymentMethodConfig
+class PaymentMethodConfig implements ExtendEntityInterface
 {
+    use ExtendEntityTrait;
+
     /**
      * @var integer
      *

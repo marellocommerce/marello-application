@@ -4,9 +4,10 @@ namespace Marello\Bundle\InventoryBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use Marello\Bundle\InventoryBundle\Model\ExtendWarehouse;
 use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 
 /**
@@ -33,8 +34,10 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
  *      }
  * )
  */
-class Warehouse extends ExtendWarehouse implements EmailHolderInterface
+class Warehouse implements EmailHolderInterface, ExtendEntityInterface
 {
+    use ExtendEntityTrait;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -182,8 +185,6 @@ class Warehouse extends ExtendWarehouse implements EmailHolderInterface
      */
     public function __construct($label = null, $default = false)
     {
-        parent::__construct();
-        
         $this->label   = $label;
         $this->default = $default;
     }

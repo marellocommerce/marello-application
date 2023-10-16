@@ -4,13 +4,13 @@ namespace Marello\Bundle\NotificationMessageBundle\Cron;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\NotificationMessageBundle\Entity\NotificationMessage;
-use Oro\Bundle\CronBundle\Command\CronCommandInterface;
+use Oro\Bundle\CronBundle\Command\CronCommandScheduleDefinitionInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class NotificationMessageCleanupCommand extends Command implements CronCommandInterface
+class NotificationMessageCleanupCommand extends Command implements CronCommandScheduleDefinitionInterface
 {
     private const COMMAND_NAME = 'oro:cron:marello:notification-message:cleanup';
 
@@ -23,11 +23,6 @@ class NotificationMessageCleanupCommand extends Command implements CronCommandIn
     public function getDefaultDefinition()
     {
         return '0 12 * * *';
-    }
-
-    public function isActive()
-    {
-        return true;
     }
 
     protected function configure()

@@ -155,7 +155,7 @@ datagrids:
                     - { table: MarelloProductBundle:Product, alias: p }
                 join:
                     left:
-                        - { join: p.inventoryItems, alias: i }
+                        - { join: p.inventoryItem, alias: i }
                         - { join: i.inventoryLevels, alias: l }
                         - { join: p.status, alias: s }
                         - { join: p.preferredSupplier, alias: sup }
@@ -285,7 +285,7 @@ datagrids:
                     - { table: MarelloProductBundle:Product, alias: p }
                 join:
                     left:
-                        - { join: p.inventoryItems, alias: i }
+                        - { join: p.inventoryItem, alias: i }
                         - { join: i.inventoryLevels, alias: l }
                         - { join: p.status, alias: s }
                         - { join: p.preferredSupplier, alias: sup }

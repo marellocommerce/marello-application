@@ -34,11 +34,11 @@ workflows:
         transition_definitions:
             approve_definition: []
             credit_definition:
-                post_actions:
+                actions:
                     - '@extendable':
                         events: [extendable_action.refund_credited]
             complete_definition:
-                post_actions:
+                actions:
                     - '@marello_notification_send':
                         entity: $refund
                         recipient: $refund.order.customer

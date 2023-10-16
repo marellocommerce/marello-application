@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\InvoiceBundle\Pdf\Request;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\InvoiceBundle\Entity\Invoice;
 use Marello\Bundle\PdfBundle\Provider\Render\ConfigValuesProvider;
 use Marello\Bundle\PdfBundle\Provider\RenderParametersProvider;
@@ -17,42 +17,12 @@ class InvoicePdfRequestHandler implements PdfRequestHandlerInterface
 {
     const ENTITY_ALIAS = 'invoice';
 
-    /**
-     * @var Registry
-     */
-    private $doctrine;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var RenderParametersProvider
-     */
-    private $parametersProvider;
-
-    /**
-     * @var TwigRenderer
-     */
-    private $renderer;
-
-    /**
-     * @param Registry $doctrine
-     * @param TranslatorInterface $translator
-     * @param RenderParametersProvider $parametersProvider
-     * @param TwigRenderer $renderer
-     */
     public function __construct(
-        Registry $doctrine,
-        TranslatorInterface $translator,
-        RenderParametersProvider $parametersProvider,
-        TwigRenderer $renderer
+        protected ManagerRegistry $doctrine,
+        protected TranslatorInterface $translator,
+        protected RenderParametersProvider $parametersProvider,
+        protected TwigRenderer $renderer
     ) {
-        $this->doctrine = $doctrine;
-        $this->translator = $translator;
-        $this->parametersProvider = $parametersProvider;
-        $this->renderer = $renderer;
     }
 
     /**

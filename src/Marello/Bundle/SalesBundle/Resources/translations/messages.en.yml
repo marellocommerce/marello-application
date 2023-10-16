@@ -43,6 +43,7 @@ marello:
             datablock:
                 general: General
                 additional: Additional
+                products: Linked Products
 
         saleschanneltype:
             entity_label: Sales Channel Type

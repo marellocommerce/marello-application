@@ -3,8 +3,9 @@
 namespace Marello\Bundle\TaxBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Marello\Bundle\TaxBundle\Model\ExtendTaxCode;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 
 /**
  * TaxCode
@@ -33,8 +34,10 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  *      }
  * )
  */
-class TaxCode extends ExtendTaxCode
+class TaxCode implements ExtendEntityInterface
 {
+    use ExtendEntityTrait;
+
     /**
      * @var integer
      *

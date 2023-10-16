@@ -27,7 +27,7 @@ services:
         arguments:
             - '@marello_shipping.integration.ups.api'
             - '@doctrine'
-            - '@oro_attachment.manager'
+            - '@Oro\Bundle\AttachmentBundle\Manager\FileManager'
             - '@marello_shipping.integration.ups.request_builder.shipment_confirm'
             - '@marello_shipping.integration.ups.request_builder.shipment_accept'
         tags:
@@ -209,10 +209,10 @@ services:
             - '@marello_shipping.shipping_context.cache_key_generator'
 
     marello_shipping.price.cache:
+        parent: oro.data.cache
         public: false
-        parent: oro.cache.abstract
-        calls:
-            - [setNamespace, ['marello_shipping_price']]
+        tags:
+            - { name: 'cache.pool', namespace: 'marello_shipping_price' }
 
     marello_shipping.shipping_context.cache_key_generator:
         class: 'Marello\Bundle\ShippingBundle\Context\ShippingContextCacheKeyGenerator'

@@ -2,10 +2,10 @@
 
 namespace Marello\Bundle\ShippingBundle\Provider\Cache;
 
-use Doctrine\Common\Cache\CacheProvider;
 use Oro\Bundle\CurrencyBundle\Entity\Price;
 use Marello\Bundle\ShippingBundle\Context\ShippingContextCacheKeyGenerator;
 use Marello\Bundle\ShippingBundle\Context\ShippingContextInterface;
+use Psr\Cache\CacheItemPoolInterface;
 
 class ShippingPriceCache
 {
@@ -15,7 +15,7 @@ class ShippingPriceCache
     const CACHE_LIFETIME = 3600;
 
     /**
-     * @var CacheProvider
+     * @var CacheItemPoolInterface
      */
     protected $cache;
 
@@ -25,11 +25,11 @@ class ShippingPriceCache
     protected $cacheKeyGenerator;
 
     /**
-     * @param CacheProvider $cacheProvider
+     * @param CacheItemPoolInterface $cacheProvider
      * @param ShippingContextCacheKeyGenerator $cacheKeyGenerator
      */
     public function __construct(
-        CacheProvider $cacheProvider,
+        CacheItemPoolInterface $cacheProvider,
         ShippingContextCacheKeyGenerator $cacheKeyGenerator
     ) {
         $this->cache = $cacheProvider;
@@ -45,10 +45,10 @@ class ShippingPriceCache
     public function getPrice(ShippingContextInterface $context, $methodId, $typeId)
     {
         $key = $this->generateKey($context, $methodId, $typeId);
-        if (!$this->cache->contains($key)) {
+        if (!$this->cache->hasItem($key)) {
             return null;
         }
-        return $this->cache->fetch($key);
+        return $this->cache->getItem($key)->get();
     }
 
     /**
@@ -59,7 +59,7 @@ class ShippingPriceCache
      */
     public function hasPrice(ShippingContextInterface $context, $methodId, $typeId)
     {
-        return $this->cache->contains($this->generateKey($context, $methodId, $typeId));
+        return $this->cache->hasItem($this->generateKey($context, $methodId, $typeId));
     }
 
     /**
@@ -72,7 +72,11 @@ class ShippingPriceCache
     public function savePrice(ShippingContextInterface $context, $methodId, $typeId, Price $price)
     {
         $key = $this->generateKey($context, $methodId, $typeId);
-        $this->cache->save($key, $price, static::CACHE_LIFETIME);
+        $cacheItem = $this->cache->getItem($key);
+        $cacheItem->set($price);
+        $cacheItem->expiresAfter(static::CACHE_LIFETIME);
+        $this->cache->save($cacheItem);
+
         return $this;
     }
 
@@ -89,6 +93,6 @@ class ShippingPriceCache
     
     public function deleteAllPrices()
     {
-        $this->cache->deleteAll();
+        $this->cache->clear();
     }
 }

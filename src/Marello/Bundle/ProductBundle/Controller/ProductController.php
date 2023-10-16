@@ -81,6 +81,7 @@ class ProductController extends AbstractController
             $request->setMethod('POST');
             $request->request->set('input_action', 'marello_product_create');
             $request->request->set('single_product_type', true);
+
             return $this->forward(__CLASS__ . '::createStepTwoAction', [], $queryParams);
         }
 
@@ -115,7 +116,7 @@ class ProductController extends AbstractController
      */
     protected function createStepTwo(Request $request, Product $product)
     {
-        if ($request->get('input_action') === 'marello_product_create') {
+        if ($request->get(Router::ACTION_PARAMETER) === 'marello_product_create') {
             $form = $this->createForm(ProductStepOneType::class, $product);
             $queryParams = $request->query->all();
             $form->handleRequest($request);
@@ -199,21 +200,7 @@ class ProductController extends AbstractController
                     $this->container->get(TranslatorInterface::class)->trans('marello.product.messages.success.product.saved')
                 );
 
-                return $this->container->get(Router::class)->redirectAfterSave(
-                    [
-                        'route' => 'marello_product_update',
-                        'parameters' => [
-                            'id' => $product->getId(),
-                        ]
-                    ],
-                    [
-                        'route' => 'marello_product_view',
-                        'parameters' => [
-                            'id' => $product->getId(),
-                        ]
-                    ],
-                    $product
-                );
+                return $this->container->get(Router::class)->redirect($product);
             }
         }
 

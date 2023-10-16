@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\OrderBundle\EventListener\Doctrine;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -14,8 +14,7 @@ class OrderOrganizationListener
 
     public function prePersist(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
-
+        $entity = $args->getObject();
         if (!$entity instanceof Order) {
             return;
         }

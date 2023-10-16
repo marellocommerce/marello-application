@@ -263,3 +263,40 @@ datagrids:
                 selectors:
                     included: '#addSalesChannels'
                     excluded: '#removeSalesChannels'
+
+    marello-saleschannel-product-grid:
+        source:
+            type: orm
+            acl_resource: marello_product_view
+            query:
+                select:
+                    - p.id
+                    - p.sku
+                    - p.type
+                from:
+                    - { table: MarelloProductBundle:Product, alias: p }
+                where:
+                    and:
+                        - p.id IN(:productIds)
+            bind_parameters:
+                - productIds
+        columns:
+            sku:
+                label: marello.product.sku.label
+                frontend_type: string
+            name:
+                label: marello.product.names.label
+                inline_editing:
+                    enable: false
+            type:
+                label: marello.product.type.label
+                frontend_type: string
+                inline_editing:
+                    enable: false
+        properties:
+            id: ~
+            name:
+                type: localized_value
+                data_name: names
+        options:
+            entityHint: products

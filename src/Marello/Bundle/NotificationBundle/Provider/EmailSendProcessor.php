@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\NotificationBundle\Provider;
 
-use Marello\Bundle\InventoryBundle\Entity\Allocation;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 

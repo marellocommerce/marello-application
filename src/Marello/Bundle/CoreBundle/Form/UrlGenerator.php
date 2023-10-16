@@ -2,8 +2,7 @@
 
 namespace Marello\Bundle\CoreBundle\Form;
 
-use Doctrine\Common\Cache\CacheProvider;
-
+use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 use Oro\Bundle\PlatformBundle\Provider\PackageProvider;
@@ -19,7 +18,7 @@ class UrlGenerator
     /** @var PackageProvider $packageProvider */
     protected $packageProvider;
 
-    /** @var CacheProvider $cacheProvider */
+    /** @var CacheItemPoolInterface $cacheProvider */
     protected $cacheProvider;
 
     /** @var RequestStack $requestStack */
@@ -27,12 +26,12 @@ class UrlGenerator
 
     /**
      * @param PackageProvider $packageProvider
-     * @param CacheProvider $cacheProvider
+     * @param CacheItemPoolInterface $cacheProvider
      * @param RequestStack $requestStack
      */
     public function __construct(
         PackageProvider $packageProvider,
-        CacheProvider $cacheProvider,
+        CacheItemPoolInterface $cacheProvider,
         RequestStack $requestStack
     ) {
         $this->packageProvider = $packageProvider;
@@ -46,8 +45,8 @@ class UrlGenerator
      */
     public function getUrl()
     {
-        if ($this->cacheProvider->contains('marello_url')) {
-            return $this->cacheProvider->fetch('marello_url');
+        if ($this->cacheProvider->hasItem('marello_url')) {
+            return $this->cacheProvider->getItem('marello_url')->get();
         }
 
         $url = self::URL;
@@ -61,7 +60,9 @@ class UrlGenerator
 
         $url .= sprintf('?%s', urlencode(http_build_query($data)));
 
-        $this->cacheProvider->save('marello_url', $url);
+        $cacheItem ??=$this->cacheProvider->getItem('marello_url');
+        $cacheItem->set($url);
+        $this->cacheProvider->save($cacheItem);
 
         return $url;
     }
@@ -74,16 +75,16 @@ class UrlGenerator
     {
         $packages = $this->packageProvider->getThirdPartyPackages();
         $data = [];
-        foreach ($packages as $package) {
+        foreach ($packages as $packageName => $package) {
             $packageName = str_replace(
                 self::MARELLO_NAMESPACE . PackageProvider::NAMESPACE_DELIMITER,
                 '',
-                $package->getPrettyName()
+                $packageName
             );
 
             if ($packageName === self::MARELLO_PACKAGE) {
                 $data['edition'] = self::COMMUNITY_EDITION;
-                $data['version'] = $package->getPrettyVersion();
+                $data['version'] = $package['pretty_version'];
                 continue;
             }
         }

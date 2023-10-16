@@ -15,9 +15,8 @@ use Oro\Bundle\LocaleBundle\Form\Type\LocalizationCollectionType;
 use Oro\Bundle\LocaleBundle\Form\Type\LocalizedFallbackValueCollectionType;
 use Oro\Bundle\LocaleBundle\Tests\Unit\Form\Type\Stub\LocalizationCollectionTypeStub;
 use Oro\Bundle\SecurityBundle\Encoder\SymmetricCrypterInterface;
-use Oro\Bundle\TranslationBundle\Form\Type\TranslatableEntityType;
 use Oro\Component\Testing\Unit\EntityTrait;
-use Oro\Component\Testing\Unit\Form\Type\Stub\EntityType as EntityTypeStub;
+use Oro\Component\Testing\Unit\Form\Type\Stub\EntityTypeStub;
 use Oro\Component\Testing\Unit\PreloadedExtension;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
@@ -69,7 +68,7 @@ class UPSTransportSettingsTypeTest extends FormIntegrationTestCase
     protected function getExtensions()
     {
         $country = new Country('US');
-        $countryType = new EntityTypeStub(['US' => $country], TranslatableEntityType::NAME);
+        $countryType = new EntityTypeStub(['US' => $country]);
 
         $entityType = new EntityTypeStub(
             [
@@ -92,7 +91,6 @@ class UPSTransportSettingsTypeTest extends FormIntegrationTestCase
                     ]
                 ),
             ],
-            'entity'
         );
 
         /** @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject $registry */

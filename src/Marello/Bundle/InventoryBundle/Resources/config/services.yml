@@ -293,3 +293,9 @@ services:
     Marello\Bundle\InventoryBundle\EventListener\Action\Condition\ReshipmentActionListener:
         tags:
             - { name: kernel.event_listener, event: extendable_condition.reshipment_allowed, method: isReshipmentAllowed }
+
+    Marello\Bundle\InventoryBundle\Api\Processor\ComputeSalesChannelsField:
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: oro.api.processor, action: customize_loaded_data, class: Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel }

@@ -3,35 +3,33 @@
 namespace Marello\Bundle\RuleBundle\Validator\Constraints;
 
 use Oro\Component\ExpressionLanguage\BasicExpressionLanguageValidator;
+use Oro\Component\ExpressionLanguage\ExpressionLanguage;
+use Symfony\Component\ExpressionLanguage\SyntaxError;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class ExpressionLanguageSyntaxValidator extends ConstraintValidator
 {
     /**
-     * @var BasicExpressionLanguageValidator
+     * @var ExpressionLanguage
      */
-    private $basicExpressionLanguageValidator;
+    private $expressionParser;
 
-    /**
-     * @param BasicExpressionLanguageValidator $basicExpressionLanguageValidator
-     */
-    public function __construct(BasicExpressionLanguageValidator $basicExpressionLanguageValidator)
+    public function __construct(ExpressionLanguage $expressionParser)
     {
-        $this->basicExpressionLanguageValidator = $basicExpressionLanguageValidator;
+        $this->expressionParser = $expressionParser;
     }
 
-    /**
-     * @param string     $expression
-     * @param Constraint $constraint
-     */
-    public function validate($expression, Constraint $constraint)
+    public function validate($value, Constraint $constraint)
     {
-        if ($expression) {
-            $validateResult = $this->basicExpressionLanguageValidator->validate($expression);
-            if ($validateResult) {
-                $this->context->addViolation($validateResult);
-            }
+        if (!$value) {
+            return;
+        }
+
+        try {
+            $this->expressionParser->parse($value, []);
+        } catch (SyntaxError $ex) {
+            $this->context->addViolation($ex->getMessage());
         }
     }
 }

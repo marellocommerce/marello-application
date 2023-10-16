@@ -2,24 +2,23 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\EventListener\Doctrine;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
-use Oro\Bundle\EntityBundle\ORM\Registry;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class PurchaseOrderWarehouseListener
 {
     public function __construct(
-        private Registry $doctrine,
+        private ManagerRegistry $doctrine,
         private AclHelper $aclHelper
     ) {
     }
 
     public function prePersist(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
-
+        $entity = $args->getObject();
         if (!$entity instanceof PurchaseOrder) {
             return;
         }
