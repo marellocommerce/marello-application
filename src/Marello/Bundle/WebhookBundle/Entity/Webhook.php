@@ -28,6 +28,11 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
  *          "dataaudit"={
  *              "auditable"=true
  *          },
+*           "ownership"={
+*               "owner_type"="ORGANIZATION",
+*               "owner_field_name"="organization",
+*               "owner_column_name"="organization_id"
+*           },
  *          "security"={
  *              "type"="ACL",
  *              "group_name"=""
@@ -116,7 +121,7 @@ class Webhook extends ExtendWebhook implements OrganizationAwareInterface
     protected $secret;
 
     /**
-     * @var string
+     * @var bool
      *
      * @ORM\Column(name="enabled",type="boolean")
      * @ConfigField(

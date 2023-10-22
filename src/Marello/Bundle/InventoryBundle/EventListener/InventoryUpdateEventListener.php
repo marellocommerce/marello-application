@@ -2,36 +2,19 @@
 
 namespace Marello\Bundle\InventoryBundle\EventListener;
 
-use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Manager\BalancedInventoryManager;
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
-use Marello\Bundle\WebhookBundle\Event\WebhookContext;
-use Marello\Bundle\WebhookBundle\EventListener\WebhookListenerInterface;
-use Marello\Bundle\WebhookBundle\EventListener\WebhookEventListenerTrait;
-use Symfony\Contracts\EventDispatcher\Event;
+use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
+use Marello\Bundle\WebhookBundle\Event\InventoryUpdateWebhookEvent;
+use Marello\Bundle\WebhookBundle\Manager\WebhookProducer;
 
-class InventoryUpdateEventListener implements  WebhookListenerInterface
+class InventoryUpdateEventListener
 {
-    use WebhookEventListenerTrait;
-
-    /** @var InventoryManager $manager */
-    protected $manager;
-
-    /** @var BalancedInventoryManager $balancedInventoryManager */
-    protected $balancedInventoryManager;
-
-    /**
-     * @param InventoryManager $manager
-     * @param BalancedInventoryManager $balancedInventoryManager
-     */
     public function __construct(
-        InventoryManager $manager,
-        BalancedInventoryManager $balancedInventoryManager
-    ) {
-        $this->manager = $manager;
-        $this->balancedInventoryManager = $balancedInventoryManager;
-    }
+        protected InventoryManager $manager,
+        protected BalancedInventoryManager $balancedInventoryManager,
+        protected WebhookProducer $webhookProducer
+    ) {}
 
     /**
      * Handle incoming event
@@ -40,39 +23,12 @@ class InventoryUpdateEventListener implements  WebhookListenerInterface
     public function handleUpdateInventoryEvent(InventoryUpdateEvent $event)
     {
         $context = $event->getInventoryUpdateContext();
+        $this->webhookProducer->triggerWebhook((new InventoryUpdateWebhookEvent())->setData($context));
         if (!$context->getIsVirtual()) {
             $this->manager->updateInventoryLevel($context);
             return;
         }
 
         $this->balancedInventoryManager->updateInventoryLevel($context);
-    }
-
-    /**
-     * @return string
-     */
-    public function getRegisteredWebhook(): string
-    {
-        return 'marello_inventory.inventory.update';
-    }
-
-    /**
-     * @param InventoryUpdateEvent|Event $event
-     * @return WebhookContext
-     */
-    public function getWebhookDataContext(InventoryUpdateEvent|Event $event): WebhookContext
-    {
-        /** @var InventoryUpdateContext $inventoryContext */
-        $inventoryContext = $event->getInventoryUpdateContext();
-
-        $data[] = [
-            'inventory' => $inventoryContext->getInventory(),
-            'inventory_level_qty' => $inventoryContext->getInventoryLevel()->getInventoryQty(),
-            'change_trigger' => $inventoryContext->getChangeTrigger(),
-            'sku' => $inventoryContext->getInventoryItem()->getProduct()->getSku(),
-            'warehouse' => $inventoryContext->getInventoryLevel()->getWarehouse()->getCode(),
-        ];
-
-        return new WebhookContext($data, $this->getRegisteredWebhook());
     }
 }

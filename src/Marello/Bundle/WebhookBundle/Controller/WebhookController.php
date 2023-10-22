@@ -4,15 +4,10 @@ namespace Marello\Bundle\WebhookBundle\Controller;
 
 use Marello\Bundle\WebhookBundle\Entity\Webhook;
 use Marello\Bundle\WebhookBundle\Form\Type\WebhookType;
-use Marello\Bundle\WebhookBundle\Model\WebhookEventInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\Annotation\CsrfProtection;
-use Oro\Bundle\EntityBundle\Handler\EntityDeleteHandlerRegistry;
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\UIBundle\Route\Router;
 use Doctrine\Persistence\ManagerRegistry;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,8 +21,6 @@ class WebhookController extends AbstractController
      * @Route("/", name="marello_webhook_index")
      * @Template
      * @AclAncestor("marello_webhook_view")
-     *
-     * @return array
      */
     public function indexAction(): array
     {
@@ -44,11 +37,8 @@ class WebhookController extends AbstractController
      * )
      * @AclAncestor("marello_webhook_view")
      * @Template("@MarelloWebhook/Webhook/view.html.twig")
-     *
-     * @param Webhook $webhook
-     * @return array
      */
-    public function viewAction(Webhook $webhook)
+    public function viewAction(Webhook $webhook): array
     {
         return [
             'entity' => $webhook,
@@ -63,8 +53,6 @@ class WebhookController extends AbstractController
      * )
      * @Template("@MarelloWebhook/Webhook/update.html.twig")
      * @AclAncestor("marello_webhook_create")
-     *
-     * @return array
      */
     public function createAction(Request $request, Webhook $webhook = null)
     {
@@ -79,11 +67,6 @@ class WebhookController extends AbstractController
      * )
      * @Template
      * @AclAncestor("marello_webhook_update")
-     *
-     * @param Request $request
-     * @param Webhook|null $webhook
-     *
-     * @return array
      */
     public function updateAction(Request $request, Webhook $webhook = null)
     {
@@ -99,26 +82,15 @@ class WebhookController extends AbstractController
      * )
      * @CsrfProtection()
      * @AclAncestor("marello_webhook_delete")
-     *
-     * @param Webhook $webhook
-     *
-     * @return JsonResponse
      */
-    public function deleteAction(Webhook $webhook)
+    public function deleteAction(Webhook $webhook): JsonResponse
     {
         $translator = $this->container->get(TranslatorInterface::class);
         if ($this->isGranted('delete', $webhook)) {
-            /** @var EntityDeleteHandlerRegistry $deleteHandlerRegistry */
-            try {
-                $deleteHandlerRegistry = $this->container->get(EntityDeleteHandlerRegistry::class);
-            } catch (NotFoundExceptionInterface $e) {
-                //
-            } catch (ContainerExceptionInterface $e) {
-                //
-            }
-
-            $deleteHandlerRegistry->getHandler(Webhook::class)
-                ->delete($webhook, true, []);
+            $registry = $this->container->get(ManagerRegistry::class);
+            $entityManager = $registry->getManagerForClass(Webhook::class);
+            $entityManager->remove($webhook);
+            $entityManager->flush();
 
             $successful = true;
             $message = $translator->trans('marello.webhook.webhook_entity.message.deleted');
@@ -130,25 +102,13 @@ class WebhookController extends AbstractController
         return new JsonResponse(['message' => $message, 'successful' => $successful]);
     }
 
-    /**
-     * Handles order updates and creation.
-     *
-     * @param Request $request
-     * @param Webhook|null $webhook
-     *
-     * @return array
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
     protected function update(Request $request, Webhook $webhook = null)
     {
-        $formClass = WebhookType::class;
-
         if ($webhook === null) {
             $webhook = new Webhook();
         }
 
-        $form = $this->createForm($formClass, $webhook);
+        $form = $this->createForm(WebhookType::class, $webhook);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -156,8 +116,8 @@ class WebhookController extends AbstractController
                 'success',
                 $this->container->get(TranslatorInterface::class)->trans('marello.webhook.messages.success.webhook.saved')
             );
-            $manager = $this->container->get(ManagerRegistry::class)->getManager();
 
+            $manager = $this->container->get(ManagerRegistry::class)->getManager();
             $manager->persist($webhook);
             $manager->flush();
 
@@ -184,23 +144,6 @@ class WebhookController extends AbstractController
         ];
     }
 
-    /**
-     * @deprecated
-     * @param Webhook $webhook
-     * @return \Extend\Entity\EV_Marello_Webhook_Event
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    private function getWebhookEvent(Webhook $webhook): \Extend\Entity\EV_Marello_Webhook_Event
-    {
-        $doctrine = $this->container->get(ManagerRegistry::class);
-        $eventEnumClass = ExtendHelper::buildEnumValueClassName(WebhookEventInterface::WEBHOOK_EVENT_ENUM_CLASS);
-        return $doctrine
-            ->getManagerForClass($eventEnumClass)
-            ->getRepository($eventEnumClass)
-            ->find($webhook->getEvent());
-    }
-
     public static function getSubscribedServices()
     {
         return array_merge(
@@ -209,7 +152,6 @@ class WebhookController extends AbstractController
                 TranslatorInterface::class,
                 Router::class,
                 ManagerRegistry::class,
-                EntityDeleteHandlerRegistry::class,
             ]
         );
     }

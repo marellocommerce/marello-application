@@ -18,6 +18,7 @@ class MarelloWebhookExtension extends Extension
         $loader->load('controllers.yml');
         $loader->load('services.yml');
         $loader->load('integration.yml');
+        $loader->load('form.yml');
 
         $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
         $container->prependExtensionConfig($this->getAlias(), array_intersect_key($config, array_flip(['settings'])));

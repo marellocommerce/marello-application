@@ -17,7 +17,6 @@
 {% block navButtons %}
     {{ parent() }}
     {% if is_granted('EDIT', entity) %}
-        {{ UI.buttonSeparator() }}
         {{ UI.editButton({
             'path': path('marello_webhook_update', {'id': entity.id}),
             'entity_label': 'marello.webhook.entity_label'|trans
@@ -33,13 +32,10 @@
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
                     <div class="box-type1">
-                        <div class="title">
-                            <span class="widget-title">{{ 'marello.webhook.datablock.webhook_information'|trans }}</span>
-                        </div>
                         {{ UI.renderProperty('marello.webhook.name.label'|trans, entity.name) }}
-                        {{ UI.renderProperty('marello.webhook.event.label'|trans, entity.event) }}
-                        {{ UI.renderProperty('marello.webhook.enabled.label'|trans, entity.enabled ? 'marello.webhook.enabled.true.label'|trans : 'marello.webhook.enabled.false.label'|trans) }}
                         {{ UI.renderProperty('marello.webhook.callback_url.label'|trans, entity.callbackUrl) }}
+                        {{ UI.renderProperty('marello.webhook.event.label'|trans, get_marello_webhook_event_label(entity.event)) }}
+                        {{ UI.renderProperty('marello.webhook.enabled.label'|trans, entity.enabled ? 'marello.webhook.enabled.yes.label'|trans : 'marello.webhook.enabled.no.label'|trans) }}
                         {{ UI.renderProperty('oro.ui.created_at'|trans, entity.createdAt|date) }}
                         {{ UI.renderProperty('oro.ui.updated_at'|trans, entity.updatedAt|date|default('N/A'|trans)) }}
                     </div>
@@ -48,12 +44,6 @@
         </div>
     {% endset %}
     {% set generalSubblocks = generalSubblocks|merge([{'data' : [generalInformation] }]) %}
-    {% set additionalBlock %}
-        {% if (entity.organization is defined) %}
-            {{ UI.renderProperty('oro.user.role.organization.label'|trans, entity.organization) }}
-        {% endif %}
-    {% endset %}
-
 
     {% set dataBlocks = [
         {
@@ -63,15 +53,6 @@
         },
 
     ] %}
-
-    {% set dataBlocks = dataBlocks|merge([{
-        'title': 'marello.webhook.datablock.additional.title'|trans,
-        'subblocks': [{
-            'data': [
-                additionalBlock
-            ]
-        }]
-    }]) %}
 
     {% set data = { 'dataBlocks': dataBlocks } %}
     {{ parent() }}

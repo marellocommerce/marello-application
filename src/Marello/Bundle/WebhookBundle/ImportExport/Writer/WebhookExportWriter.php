@@ -2,9 +2,9 @@
 
 namespace Marello\Bundle\WebhookBundle\ImportExport\Writer;
 
-use Marello\Bundle\WebhookBundle\Integration\Transport\WebhookTransport;
-use Marello\Bundle\WebhookBundle\Model\WebhookProvider;
+use Marello\Bundle\WebhookBundle\Manager\WebhookProvider;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
+use Oro\Bundle\BatchBundle\Item\ExecutionContext;
 use Oro\Bundle\ImportExportBundle\Context\ContextAwareInterface;
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
@@ -19,38 +19,25 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class WebhookExportWriter extends PersistentBatchWriter implements
     ContextAwareInterface
 {
-    protected WebhookProvider $webhookProvider;
-
-    protected TransportInterface|WebhookTransport $transport;
-
-    protected ConnectorContextMediator $connectorContextMediator;
-
-    protected ContextInterface $context;
-
-    protected $contextData;
+    /**
+     * @var ContextInterface
+     */
+    protected $context;
 
     /**
-     * OrderExportWriter constructor.
-     * @param ManagerRegistry $registry
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param ContextRegistry $contextRegistry
-     * @param ConnectorContextMediator $connectorContextMediator
-     * @param TransportInterface $transport
-     * @param WebhookProvider $webhookProvider
-     * @param LoggerInterface $logger
+     * @var ExecutionContext
      */
+    protected $contextData;
+
     public function __construct(
         ManagerRegistry $registry,
         EventDispatcherInterface $eventDispatcher,
         ContextRegistry $contextRegistry,
-        ConnectorContextMediator $connectorContextMediator,
-        TransportInterface $transport,
-        WebhookProvider $webhookProvider,
+        protected ConnectorContextMediator $connectorContextMediator,
+        protected TransportInterface $transport,
+        protected WebhookProvider $webhookProvider,
         LoggerInterface $logger
     ) {
-        $this->connectorContextMediator = $connectorContextMediator;
-        $this->transport = $transport;
-        $this->webhookProvider = $webhookProvider;
         parent::__construct($registry, $eventDispatcher, $contextRegistry, $logger);
     }
 

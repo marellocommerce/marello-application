@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\WebhookBundle\Provider;
+namespace Marello\Bundle\WebhookBundle\Event\Provider;
 
 use Marello\Bundle\WebhookBundle\Event\WebhookEventInterface;
 
@@ -9,27 +9,17 @@ class WebhookEventProvider
     /**
      * @var WebhookEventInterface[]
      */
-    private array $events = [];
+    private array $events;
 
-    /**
-     * @param WebhookEventInterface $webhookEvent
-     * @return $this
-     */
-    public function addEvent(WebhookEventInterface $webhookEvent)
+    public function __construct(iterable $events)
     {
-        $name = $webhookEvent->getName();
-        if ($this->hasEvent($name)) {
-            throw new \LogicException(sprintf('Event "%s" already registered', $name));
-        }
-        $this->events[$name] = $webhookEvent;
-
-        return $this;
+        $this->events = $events instanceof \Traversable ? iterator_to_array($events) : $events;
     }
 
     /**
      * @return WebhookEventInterface[]
      */
-    public function getEvents()
+    public function getEvents(): array
     {
         return $this->events;
     }
@@ -54,5 +44,25 @@ class WebhookEventProvider
     public function hasEvent(string $name): bool
     {
         return isset($this->events[$name]);
+    }
+
+    public function getEventChoices(): array
+    {
+        $choices = [];
+        foreach ($this->events as $event) {
+            $choices[$event::getLabel()] = $event::getName();
+        }
+
+        return $choices;
+    }
+
+    public function getLabel(string $name): string
+    {
+        $event = $this->getEvent($name);
+        if ($event) {
+            return $event::getLabel();
+        }
+
+        return '';
     }
 }

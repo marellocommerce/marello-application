@@ -21,6 +21,7 @@ services:
         arguments:
             - '@marello_inventory.manager.inventory_manager'
             - '@marello_inventory.manager.balancedinventory_manager'
+            - '@Marello\Bundle\WebhookBundle\Manager\WebhookProducer'
         tags:
             - { name: kernel.event_listener, event: marello_inventory.inventory.update, method: handleUpdateInventoryEvent }
 
