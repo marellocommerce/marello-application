@@ -12,7 +12,6 @@ use Oro\Bundle\UIBundle\Route\Router;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -64,23 +63,8 @@ class ReturnController extends AbstractController
                     ->get(TranslatorInterface::class)
                     ->trans('marello.return.returnentity.messages.success.returnentity.saved')
             );
-            return $this->container->get(Router::class)->redirectAfterSave(
-                [
-                    'route' => 'marello_return_return_update',
-                    'parameters' => [
-                        'id' => $return->getId(),
-                        '_enableContentProviders' => 'mainMenu'
-                    ]
-                ],
-                [
-                    'route' => 'marello_return_return_view',
-                    'parameters' => [
-                        'id' => $return->getId(),
-                        '_enableContentProviders' => 'mainMenu'
-                    ]
-                ],
-                $return
-            );
+
+            return $this->container->get(Router::class)->redirect($return);
         }
 
         return [
@@ -131,22 +115,7 @@ class ReturnController extends AbstractController
             $manager->persist($return);
             $manager->flush();
 
-            return $this->container->get(Router::class)->redirectAfterSave(
-                [
-                    'route'      => 'marello_return_return_update',
-                    'parameters' => [
-                        'id' => $return->getId(),
-                    ],
-                ],
-                [
-                    'route'      => 'marello_return_return_view',
-                    'parameters' => [
-                        'id'                      => $return->getId(),
-                        '_enableContentProviders' => 'mainMenu'
-                    ]
-                ],
-                $return
-            );
+            return $this->container->get(Router::class)->redirect($return);
         }
 
         return [

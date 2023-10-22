@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\PaymentBundle\Form\Type;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\InvoiceBundle\Entity\AbstractInvoice;
 use Marello\Bundle\InvoiceBundle\Entity\Repository\AbstractInvoiceRepository;
 use Marello\Bundle\InvoiceBundle\Form\Type\InvoiceSelectType;
@@ -27,26 +27,11 @@ class PaymentCreateType extends AbstractType
 {
     const BLOCK_PREFIX = 'marello_payment_create';
 
-    /**
-     * @var Registry
-     */
-    private $registry;
-
-    /**
-     * @var PaymentMethodChoicesProviderInterface
-     */
-    private $paymentMethodChoicesProvider;
-
-    /**
-     * @param Registry $registry
-     * @param PaymentMethodChoicesProviderInterface $paymentMethodChoicesProvider
-     */
-    public function __construct(Registry $registry, PaymentMethodChoicesProviderInterface $paymentMethodChoicesProvider)
-    {
-        $this->registry = $registry;
-        $this->paymentMethodChoicesProvider = $paymentMethodChoicesProvider;
+    public function __construct(
+        protected ManagerRegistry $registry,
+        protected PaymentMethodChoicesProviderInterface $paymentMethodChoicesProvider
+    ) {
     }
-
 
     /**
      * {@inheritdoc}

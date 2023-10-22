@@ -39,7 +39,7 @@ class InventoryLogLevelControllerTest extends WebTestCase
             'GET',
             $this->getUrl(
                 'marello_inventory_inventorylevel_index',
-                ['id' => $product->getInventoryItems()->first()->getId()]
+                ['id' => $product->getInventoryItem()->getId()]
             )
         );
 
@@ -50,7 +50,7 @@ class InventoryLogLevelControllerTest extends WebTestCase
         $response = $this->client->requestGrid(
             'marello-inventory-log-extended',
             [
-                'marello-inventory-log-extended[inventoryItemId]' => $product->getInventoryItems()->first()->getId(),
+                'marello-inventory-log-extended[inventoryItemId]' => $product->getInventoryItem()->getId(),
             ]
         );
         $result = self::getJsonResponseContent($response, Response::HTTP_OK);
@@ -67,7 +67,7 @@ class InventoryLogLevelControllerTest extends WebTestCase
         $product = $this->getReference(LoadProductData::PRODUCT_1_REF);
 
         $response = $this->client->requestGrid('marello-inventory-log', [
-            'marello-inventory-log[inventoryItemId]' => $product->getInventoryItems()->first()->getId(),
+            'marello-inventory-log[inventoryItemId]' => $product->getInventoryItem()->getId(),
         ]);
         $result = self::getJsonResponseContent($response, Response::HTTP_OK);
         $this->assertArrayHasKey('data', $result);

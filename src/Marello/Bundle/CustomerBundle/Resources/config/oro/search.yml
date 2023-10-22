@@ -2,7 +2,6 @@ search:
     Marello\Bundle\CustomerBundle\Entity\Customer:
         alias:                  marello_customer
         label:                  marello.customer.entity_plural_label
-        title_fields:           [firstName, middleName, lastName, nameSuffix, email]
         route:
             name:               marello_customer_view
             parameters:
@@ -36,7 +35,6 @@ search:
     Marello\Bundle\CustomerBundle\Entity\Company:
         alias:                          marello_company
         label:                          marello.customer.company.entity_plural_label
-        title_fields:                   [name]
         route:
             name:                       marello_customer_company_view
             parameters:

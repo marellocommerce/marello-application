@@ -6,9 +6,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
-use Marello\Bundle\SalesBundle\Model\ExtendSalesChannelGroup;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
@@ -45,10 +46,11 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
  *  }
  * )
  */
-class SalesChannelGroup extends ExtendSalesChannelGroup
+class SalesChannelGroup implements ExtendEntityInterface
 {
     use EntityCreatedUpdatedAtTrait;
     use AuditableOrganizationAwareTrait;
+    use ExtendEntityTrait;
     
     /**
      * @ORM\Id
@@ -140,8 +142,6 @@ class SalesChannelGroup extends ExtendSalesChannelGroup
 
     public function __construct()
     {
-        parent::__construct();
-        
         $this->salesChannels = new ArrayCollection();
     }
 

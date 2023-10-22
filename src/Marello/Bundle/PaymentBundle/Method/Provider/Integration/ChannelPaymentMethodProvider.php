@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\PaymentBundle\Method\Provider\Integration;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Marello\Bundle\PaymentBundle\Method\Provider\PaymentMethodProviderInterface;
 use Marello\Bundle\PaymentBundle\Method\Factory\IntegrationPaymentMethodFactoryInterface;
 use Marello\Bundle\PaymentBundle\Method\PaymentMethodInterface;
@@ -56,10 +55,9 @@ class ChannelPaymentMethodProvider implements PaymentMethodProviderInterface
      * We need only non dirty channels for creating methods.
      * For example if entity was changed on form submit, we will have dirty channel in Unit of work.
      *
-     * @param Channel            $channel
-     * @param LifecycleEventArgs $event
+     * @param Channel $channel
      */
-    public function postLoad(Channel $channel, LifecycleEventArgs $event)
+    public function postLoad(Channel $channel)
     {
         if ($channel->getType() === $this->channelType) {
             $this->loadedChannels[] = $channel;
@@ -72,7 +70,10 @@ class ChannelPaymentMethodProvider implements PaymentMethodProviderInterface
      */
     public function getPaymentMethods()
     {
-        $this->loadChannels();
+        $this->loadedChannels = $this->loadChannels();
+        foreach ($this->loadedChannels as $channel) {
+            $this->createMethodFromChannel($channel);
+        }
 
         return $this->methods;
     }
@@ -116,7 +117,17 @@ class ChannelPaymentMethodProvider implements PaymentMethodProviderInterface
 
     private function loadChannels()
     {
-        /* After fetching, all entities will be saved into $loadedChannels on postLoad call */
-        $this->getRepository()->findByTypeAndExclude($this->channelType, $this->loadedChannels);
+        $qb = $this->getRepository()->createQueryBuilder('channel');
+        $qb
+            ->where($qb->expr()->eq('channel.type', ':type'))
+            ->setParameter('type', $this->channelType);
+
+        if (count($this->loadedChannels) > 0) {
+            $qb
+                ->andWhere($qb->expr()->notIn('channel', ':channels'))
+                ->setParameter('channels', $this->loadedChannels);
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\OrderBundle\EventListener\Workflow;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
@@ -45,7 +45,7 @@ class PurchaseOrderWorkflowCompletedListener
     private $packingSlip;
 
     public function __construct(
-        private Registry $doctrine,
+        private ManagerRegistry $doctrine,
         private WorkflowManager $workflowManager,
         private OrderShippingContextFactory $orderShippingContextFactory,
         private ShippingMethodProviderInterface $shippingMethodProvider,

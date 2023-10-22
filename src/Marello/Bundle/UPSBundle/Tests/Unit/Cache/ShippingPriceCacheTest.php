@@ -2,8 +2,6 @@
 
 namespace Marello\Bundle\UPSBundle\Tests\Unit\Cache;
 
-use Doctrine\Common\Cache\CacheProvider;
-
 use PHPUnit\Framework\TestCase;
 
 use Oro\Bundle\CurrencyBundle\Entity\Price;
@@ -12,6 +10,8 @@ use Marello\Bundle\UPSBundle\Entity\UPSSettings;
 use Marello\Bundle\UPSBundle\Cache\ShippingPriceCache;
 use Marello\Bundle\UPSBundle\Cache\ShippingPriceCacheKey;
 use Marello\Bundle\UPSBundle\Cache\Lifetime\LifetimeProviderInterface;
+use Psr\Cache\CacheItemPoolInterface;
+use Symfony\Component\Cache\CacheItem;
 
 class ShippingPriceCacheTest extends TestCase
 {
@@ -31,7 +31,7 @@ class ShippingPriceCacheTest extends TestCase
     private $cache;
 
     /**
-     * @var CacheProvider|\PHPUnit\Framework\MockObject\MockObject
+     * @var CacheItemPoolInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $cacheProvider;
 
@@ -52,7 +52,7 @@ class ShippingPriceCacheTest extends TestCase
 
     public function setUp(): void
     {
-        $this->cacheProvider = $this->createMock(CacheProvider::class);
+        $this->cacheProvider = $this->createMock(CacheItemPoolInterface::class);
         $this->lifetimeProvider = $this->createMock(LifetimeProviderInterface::class);
 
         $this->settings = $this->createMock(UPSSettings::class);
@@ -60,10 +60,6 @@ class ShippingPriceCacheTest extends TestCase
         $this->settings
             ->method('getId')
             ->willReturn(self::SETTINGS_ID);
-
-        $this->cacheProvider->expects(static::once())
-            ->method('setNamespace')
-            ->with('marello_ups_shipping_price_'.self::SETTINGS_ID);
 
         $this->cacheKey = $this->getCacheKeyMock($this->settings, self::CACHE_KEY);
 
@@ -77,16 +73,18 @@ class ShippingPriceCacheTest extends TestCase
     public function testFetchPrice()
     {
         $this->cacheProvider->expects(static::once())
-            ->method('contains')
+            ->method('hasItem')
             ->with(self::CACHE_KEY)
             ->willReturn(true);
 
         $price = Price::create(10, 'USD');
+        $cacheItem = new CacheItem();
+        $cacheItem->set($price);
 
         $this->cacheProvider->expects(static::once())
-            ->method('fetch')
+            ->method('getItem')
             ->with(self::CACHE_KEY)
-            ->willReturn($price);
+            ->willReturn($cacheItem);
 
         static::assertSame($price, $this->cache->fetchPrice($this->cacheKey));
     }
@@ -94,12 +92,12 @@ class ShippingPriceCacheTest extends TestCase
     public function testFetchPriceFalse()
     {
         $this->cacheProvider->expects(static::once())
-            ->method('contains')
+            ->method('hasItem')
             ->with(self::CACHE_KEY)
             ->willReturn(false);
 
         $this->cacheProvider->expects(static::never())
-            ->method('fetch');
+            ->method('getItem');
 
         static::assertFalse($this->cache->fetchPrice($this->cacheKey));
     }
@@ -107,7 +105,7 @@ class ShippingPriceCacheTest extends TestCase
     public function testContainsPrice()
     {
         $this->cacheProvider->expects(static::once())
-            ->method('contains')
+            ->method('hasItem')
             ->with(self::CACHE_KEY)
             ->willReturn(true);
 
@@ -117,7 +115,7 @@ class ShippingPriceCacheTest extends TestCase
     public function testContainsPriceFalse()
     {
         $this->cacheProvider->expects(static::once())
-            ->method('contains')
+            ->method('hasItem')
             ->with(self::CACHE_KEY)
             ->willReturn(false);
 
@@ -134,8 +132,10 @@ class ShippingPriceCacheTest extends TestCase
 
         $price = Price::create(10, 'USD');
         $this->cacheProvider->expects(static::once())
-            ->method('save')
-            ->with(self::CACHE_KEY, $price, $lifetime);
+            ->method('getItem')
+            ->willReturn(new CacheItem());
+        $this->cacheProvider->expects(static::once())
+            ->method('save');
 
         static::assertEquals($this->cache, $this->cache->savePrice($this->cacheKey, $price));
     }

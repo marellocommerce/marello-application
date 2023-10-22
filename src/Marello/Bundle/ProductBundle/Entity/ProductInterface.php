@@ -2,7 +2,9 @@
 
 namespace Marello\Bundle\ProductBundle\Entity;
 
-interface ProductInterface
+use Marello\Bundle\InventoryBundle\Model\InventoryItemAwareInterface;
+
+interface ProductInterface extends InventoryItemAwareInterface
 {
     public function getSku();
 

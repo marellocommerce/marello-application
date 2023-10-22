@@ -4,6 +4,7 @@ namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
+use Marello\Bundle\PaymentBundle\Entity\PaymentMethodConfig;
 use Marello\Bundle\PaymentBundle\Entity\PaymentMethodsConfigsRule;
 use Marello\Bundle\RuleBundle\Entity\Rule;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
@@ -37,10 +38,13 @@ class LoadPaymentRule extends AbstractFixture
                 ->setSortOrder($config['sort_order']);
 
             $paymentRuleConfig = new PaymentMethodsConfigsRule();
+            $methodConfig = new PaymentMethodConfig();
+            $methodConfig->setMethod(self::DEFAULT_RULE_NAME);
 
             $paymentRuleConfig->setRule($rule)
                 ->setOrganization($this->getOrganization($manager))
-                ->setCurrency($config['currency']);
+                ->setCurrency($config['currency'])
+                ->addMethodConfig($methodConfig);
             $this->addReference($paymentRuleReferenceName, $paymentRuleConfig);
             $manager->persist($paymentRuleConfig);
         }

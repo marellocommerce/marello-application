@@ -12,7 +12,6 @@ use Marello\Bundle\PricingBundle\Entity\AssembledChannelPriceList;
 use Marello\Bundle\PricingBundle\Entity\AssembledPriceList;
 use Marello\Bundle\PricingBundle\Entity\PriceListInterface;
 use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
-use Marello\Bundle\ProductBundle\Model\ExtendProduct;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Model\SalesChannelsAwareInterface;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
@@ -21,6 +20,8 @@ use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
 use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamilyAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
@@ -68,14 +69,16 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
  *  }
  * )
  */
-class Product extends ExtendProduct implements
+class Product implements
     ProductInterface,
     SalesChannelsAwareInterface,
     PricingAwareInterface,
     OrganizationAwareInterface,
-    InventoryItemAwareInterface,
-    AttributeFamilyAwareInterface
+    AttributeFamilyAwareInterface,
+    ExtendEntityInterface
 {
+    use ExtendEntityTrait;
+
     const DEFAULT_PRODUCT_TYPE = 'simple';
  
     /**
@@ -446,9 +449,9 @@ class Product extends ExtendProduct implements
     protected $variant;
 
     /**
-     * @var ArrayCollection|InventoryItem[]
+     * @var InventoryItem
      *
-     * @ORM\OneToMany(
+     * @ORM\OneToOne(
      *      targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryItem",
      *      mappedBy="product",
      *      cascade={"remove", "persist"},
@@ -466,7 +469,7 @@ class Product extends ExtendProduct implements
      *      }
      * )
      */
-    protected $inventoryItems;
+    protected $inventoryItem;
 
     /**
      * @var array $data
@@ -672,13 +675,10 @@ class Product extends ExtendProduct implements
 
     public function __construct()
     {
-        parent::__construct();
-
         $this->names                = new ArrayCollection();
         $this->prices               = new ArrayCollection();
         $this->channelPrices        = new ArrayCollection();
         $this->channels             = new ArrayCollection();
-        $this->inventoryItems       = new ArrayCollection();
         $this->suppliers            = new ArrayCollection();
         $this->salesChannelTaxCodes = new ArrayCollection();
         $this->categories           = new ArrayCollection();
@@ -692,7 +692,6 @@ class Product extends ExtendProduct implements
             $this->prices               = new ArrayCollection();
             $this->channelPrices        = new ArrayCollection();
             $this->channels             = new ArrayCollection();
-            $this->inventoryItems       = new ArrayCollection();
             $this->suppliers            = new ArrayCollection();
             $this->salesChannelTaxCodes = new ArrayCollection();
         }
@@ -1125,11 +1124,11 @@ class Product extends ExtendProduct implements
     }
 
     /**
-     * @return ArrayCollection|InventoryItem[]
+     * @return InventoryItem|null
      */
-    public function getInventoryItems()
+    public function getInventoryItem(): ?InventoryItem
     {
-        return $this->inventoryItems;
+        return $this->inventoryItem;
     }
 
     /**
@@ -1137,26 +1136,10 @@ class Product extends ExtendProduct implements
      *
      * @return $this
      */
-    public function addInventoryItem(InventoryItem $item)
+    public function setInventoryItem(InventoryItem $item)
     {
-        if (!$this->inventoryItems->contains($item)) {
-            $this->inventoryItems->add($item->setProduct($this));
-        }
+        $this->inventoryItem = $item;
 
-        return $this;
-    }
-
-    /**
-     * @param InventoryItem $item
-     *
-     * @return $this
-     */
-    public function removeInventoryItem(InventoryItem $item)
-    {
-        if ($this->inventoryItems->contains($item)) {
-            $this->inventoryItems->removeElement($item);
-        }
-        
         return $this;
     }
 

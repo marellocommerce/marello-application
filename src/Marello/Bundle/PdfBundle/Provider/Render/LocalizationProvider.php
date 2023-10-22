@@ -3,10 +3,9 @@
 namespace Marello\Bundle\PdfBundle\Provider\Render;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\LocaleBundle\Entity\Localization;
-
 use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
 use Marello\Bundle\LocaleBundle\Model\LocalizationAwareInterface;
 use Marello\Bundle\PdfBundle\Provider\RenderParameterProviderInterface;
@@ -15,21 +14,6 @@ use Marello\Bundle\LocaleBundle\Provider\EntityLocalizationProviderInterface;
 class LocalizationProvider implements RenderParameterProviderInterface
 {
     const SCOPE_IDENTIFIER_KEY = 'config_scope';
-
-    /**
-     * @var ConfigManager
-     */
-    protected $config;
-
-    /**
-     * @var Registry
-     */
-    protected $doctrine;
-
-    /**
-     * @var string
-     */
-    protected $localizationParameterName;
 
     /** @var EntityLocalizationProviderInterface $chainLocalizationProvider */
     protected $chainLocalizationProvider;
@@ -40,11 +24,11 @@ class LocalizationProvider implements RenderParameterProviderInterface
      * @param Registry $doctrine
      * @param $localizationParameterName
      */
-    public function __construct(ConfigManager $config, Registry $doctrine, $localizationParameterName)
-    {
-        $this->config = $config;
-        $this->doctrine = $doctrine;
-        $this->localizationParameterName = $localizationParameterName;
+    public function __construct(
+        protected ConfigManager $config,
+        protected ManagerRegistry $doctrine,
+        protected $localizationParameterName
+    ) {
     }
 
     /**

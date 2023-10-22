@@ -25,6 +25,7 @@ class MarelloInventoryExtension extends Extension
         $loader->load('form.yml');
         $loader->load('importexport.yml');
         $loader->load('eventlisteners.yml');
+        $loader->load('mq_topics.yml');
     }
 
     /**

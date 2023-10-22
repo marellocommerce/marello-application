@@ -2,8 +2,6 @@
 
 namespace Marello\Bundle\InventoryBundle\Manager;
 
-use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
-use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 
 interface InventoryManagerInterface

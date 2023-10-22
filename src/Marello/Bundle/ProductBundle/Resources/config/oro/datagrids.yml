@@ -225,7 +225,7 @@ datagrids:
                 join:
                     left:
                         - { join: p.status, alias: s }
-                        - { join: p.inventoryItems, alias: i }
+                        - { join: p.inventoryItem, alias: i }
                         - { join: i.inventoryLevels, alias: il }
                         - { join: i.replenishment, alias: repl }
                 where:
@@ -295,7 +295,7 @@ datagrids:
                 join:
                     left:
                         - { join: p.status, alias: s }
-                        - { join: p.inventoryItems, alias: i }
+                        - { join: p.inventoryItem, alias: i }
                         - { join: i.inventoryLevels, alias: il }
                 where:
                     and:

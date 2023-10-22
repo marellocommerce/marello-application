@@ -224,14 +224,6 @@ class PurchaseOrderItem implements
     }
 
     /**
-     * @return \Marello\Bundle\ProductBundle\Entity\Product
-     */
-    public function getInventoryItems()
-    {
-        return $this->getProduct();
-    }
-
-    /**
      * @return int
      */
     public function getId()

@@ -2,12 +2,10 @@
 
 namespace Marello\Bundle\OrderBundle\EventListener\Doctrine;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
-
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository;
-
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Model\OrderStatusesInterface;
 
@@ -31,7 +29,7 @@ class PendingOrderStatusListener
      */
     public function postPersist(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
         if ($entity instanceof Order && $entity->getOrderStatus() === null) {
             $className = ExtendHelper::buildEnumValueClassName(OrderStatusesInterface::ORDER_STATUS_ENUM_CLASS);
             /** @var EnumValueRepository $enumRepo */

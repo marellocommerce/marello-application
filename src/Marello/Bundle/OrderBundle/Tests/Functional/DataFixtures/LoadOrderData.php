@@ -15,10 +15,13 @@ use Marello\Bundle\PricingBundle\Tests\Functional\DataFixtures\LoadProductChanne
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 use Marello\Bundle\InventoryBundle\Tests\Functional\DataFixtures\LoadInventoryData;
+use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
+use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
 use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxCodeData;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
@@ -144,6 +147,47 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         $manager->flush();
 
         $this->closeFiles();
+
+        $this->loadReturns($manager);
+    }
+
+    private function loadReturns(ObjectManager $manager)
+    {
+        /**
+         * Temporary moved from LoadReturnData to avoid "A new entity was found through the relationship
+            "Oro\Bundle\EmailBundle\Entity\EmailUser#organization" that was not configured
+            to cascade persist operations for entity: Oro." error.
+         */
+        $orders = $manager->getRepository('MarelloOrderBundle:Order')->findAll();
+        $channel = $this->getReference(LoadSalesData::CHANNEL_1_REF);
+        $reasonClass = ExtendHelper::buildEnumValueClassName('marello_return_reason');
+        $reasons = $manager->getRepository($reasonClass)->findAll();
+
+        $i = 0;
+        foreach ($orders as $order) {
+            if (!$this->hasReference('marello_order_unreturned')) {
+                $this->setReference('marello_order_unreturned', $order);
+                continue;
+            }
+
+            $return = new ReturnEntity();
+
+            $return->setOrder($order);
+            $return->setSalesChannel($channel);
+            $return->setReturnReference(uniqid($order->getOrderNumber()));
+
+            $order->getItems()->map(function (OrderItem $item) use ($return, $reasons) {
+                $returnItem = new ReturnItem($item);
+                $returnItem->setQuantity(rand(1, $item->getQuantity()));
+                $returnItem->setReason($reasons[rand(0, count($reasons) - 1)]);
+                $return->addReturnItem($returnItem);
+            });
+
+            $manager->persist($return);
+            $this->setReference('return' . $i++, $return);
+        }
+
+        $manager->flush();
     }
 
     /**
