@@ -14,6 +14,10 @@ class AuthenticationContext extends SingleItemContext
         return $this->requestData;
     }
 
+    /**
+     * @param array $requestData
+     * @return void
+     */
     public function setRequestData(array $requestData): void
     {
         $this->requestData = $requestData;

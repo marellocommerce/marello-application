@@ -54,8 +54,7 @@ Password of the user for verfication of the account.
 
 Password is used to verify the identity of the user.
 
-
-#####NOTE: the specifications are based on proposed specs of a login session
-#####Resources:
+##### NOTE: the specifications are based on proposed specs of a login session
+##### Resources:
 * https://accountjsonapi.docs.apiary.io/#reference/current-user/session/sign-in
 * http://discuss.jsonapi.org/t/example-json-api-for-accounts/234/11

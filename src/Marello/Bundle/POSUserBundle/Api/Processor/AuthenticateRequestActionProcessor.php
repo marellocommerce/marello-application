@@ -2,13 +2,15 @@
 
 namespace Marello\Bundle\POSUserBundle\Api\Processor;
 
-use Marello\Bundle\POSUserBundle\Api\Processor\Authenticate\AuthenticationContext;
+use Oro\Component\ChainProcessor\Context;
 use Oro\Bundle\ApiBundle\Processor\NormalizeResultContext;
 use Oro\Bundle\ApiBundle\Processor\RequestActionProcessor;
 
+use Marello\Bundle\POSUserBundle\Api\Processor\Authenticate\AuthenticationContext;
+
 class AuthenticateRequestActionProcessor extends RequestActionProcessor
 {
-    protected function createContextObject()
+    protected function createContextObject(): Context
     {
         return new AuthenticationContext($this->configProvider, $this->metadataProvider);
     }

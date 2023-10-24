@@ -14,7 +14,8 @@ class LoadOroUserApi implements ProcessorInterface
 
     public function __construct(
         private UserManager $userManager
-    ) {}
+    ) {
+    }
 
     public function process(ContextInterface $context)
     {

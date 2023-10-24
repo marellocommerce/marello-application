@@ -26,6 +26,9 @@ class POSUserApi
         $this->roles = $roles;
     }
 
+    /**
+     * @return int
+     */
     public function getId(): int
     {
         return $this->id;

@@ -2,21 +2,22 @@
 
 namespace Marello\Bundle\POSUserBundle\Provider;
 
-use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\UserBundle\Entity\UserInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Oro\Bundle\UserBundle\Security\UserLoginAttemptLogger;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
+use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
-class POSUserAuthProvider implements AuthenticationProviderInterface
+class POSUserAuthProvider implements AuthenticationManagerInterface
 {
     public function __construct(
         private UserManager $userManager,
         private EncoderFactoryInterface $encoderFactory,
         private UserLoginAttemptLogger $loginLogger
-    ) {}
+    ) {
+    }
 
     public function authenticatePOSUser(string $username, string $credentials): bool
     {
@@ -35,8 +36,12 @@ class POSUserAuthProvider implements AuthenticationProviderInterface
         return $userHasValidCredentials;
     }
 
-
-    protected function getUser(string $username): User
+    /**
+     * find a user by username or email
+     * @param string $username
+     * @return UserInterface|null
+     */
+    protected function getUser(string $username): ?UserInterface
     {
         $user = $this->userManager->findUserByUsernameOrEmail($username);
         if (!$user) {
@@ -44,14 +49,6 @@ class POSUserAuthProvider implements AuthenticationProviderInterface
         }
 
         return $user;
-    }
-
-    /**
-     * Authentication does not require a token (yet)
-     */
-    public function supports(TokenInterface $token): bool
-    {
-        return true;
     }
 
     /**

@@ -9,12 +9,14 @@ use Oro\Component\ChainProcessor\ContextInterface;
 use Oro\Component\ChainProcessor\ProcessorInterface;
 use Oro\Bundle\ApiBundle\Request\Constraint;
 use Oro\Bundle\ApiBundle\Model\Error;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class POSUserVerificationCheck implements ProcessorInterface
 {
     public function __construct(
         private POSUserAuthProvider $authenticationProvider
-    ) {}
+    ) {
+    }
 
     /**
      * {@inheritdoc}
