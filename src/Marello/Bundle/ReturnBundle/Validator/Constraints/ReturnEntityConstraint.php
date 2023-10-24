@@ -1,4 +1,5 @@
 <?php
+
 namespace Marello\Bundle\ReturnBundle\Validator\Constraints;
 
 use Marello\Bundle\ReturnBundle\Validator\ReturnEntityValidator;

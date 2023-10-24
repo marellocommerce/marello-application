@@ -4,13 +4,9 @@ namespace Marello\Bundle\InventoryBundle\Migrations\Data\ORM;
 
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\AbstractFixture;
-
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-
 use Oro\Component\MessageQueue\Client\MessageProducer;
-
-use Marello\Bundle\InventoryBundle\Async\Topics;
 
 class AddInventoryRebalanceJob extends AbstractFixture implements ContainerAwareInterface
 {

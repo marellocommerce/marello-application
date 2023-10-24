@@ -2,8 +2,8 @@
 
 namespace Marello\Bundle\SupplierBundle\EventListener\Doctrine;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Marello\Bundle\SupplierBundle\Event\SupplierDropshipEvent;
 use Oro\Bundle\EntityBundle\Event\OroEventManager;
@@ -29,7 +29,7 @@ class SupplierDropshipEventListener
      */
     public function prePersist(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
         if ($entity instanceof Supplier && $entity->getCanDropship() === true) {
             $this->eventDispatcher->dispatch(
                 new SupplierDropshipEvent($entity, true),
@@ -43,9 +43,9 @@ class SupplierDropshipEventListener
      */
     public function preUpdate(PreUpdateEventArgs $args)
     {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
         if ($entity instanceof Supplier && $args->hasChangedField('canDropship')) {
-            $em = $args->getEntityManager();
+            $em = $args->getObjectManager();
             /** @var OroEventManager $eventManager */
             $eventManager = $em->getEventManager();
             $eventManager->removeEventListener('preUpdate', $this);
@@ -68,7 +68,7 @@ class SupplierDropshipEventListener
      */
     public function preRemove(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
         if ($entity instanceof Supplier && $entity->getCanDropship() === true) {
             $this->eventDispatcher->dispatch(
                 new SupplierDropshipEvent($entity, false),

@@ -7,6 +7,7 @@ use Marello\Bundle\PricingBundle\Form\Type\ProductPriceType;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Form\Type\ProductSupplierSelectType;
 use Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderItemType;
+use Oro\Bundle\FeatureToggleBundle\Checker\FeatureChecker;
 use Oro\Bundle\FormBundle\Form\Type\OroEntitySelectOrCreateInlineType;
 use Oro\Bundle\FormBundle\Form\Type\OroMoneyType;
 use Oro\Bundle\FormBundle\Tests\Unit\Form\Type\EntitySelectOrCreateInlineFormExtension;
@@ -108,6 +109,9 @@ class PurchaseOrderItemTypeTest extends FormIntegrationTestCase
     public function getExtensions()
     {
         $authorizationChecker = $this->createMock(AuthorizationCheckerInterface::class);
+        $authorizationChecker->method('isGranted')
+            ->willReturn(true);
+        $featureChecker = $this->createMock(FeatureChecker::class);
 
         $configManager = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\ConfigManager')
             ->disableOriginalConstructor()
@@ -193,6 +197,7 @@ class PurchaseOrderItemTypeTest extends FormIntegrationTestCase
             new PreloadedExtension([
                 OroEntitySelectOrCreateInlineType::class => new OroEntitySelectOrCreateInlineType(
                     $authorizationChecker,
+                    $featureChecker,
                     $configManager,
                     $entityManager,
                     $searchRegistry

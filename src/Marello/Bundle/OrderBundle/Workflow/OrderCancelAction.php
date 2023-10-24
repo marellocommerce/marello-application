@@ -2,13 +2,9 @@
 
 namespace Marello\Bundle\OrderBundle\Workflow;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
-
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Component\ConfigExpression\ContextAccessor;
-
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
@@ -16,31 +12,14 @@ use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 
 class OrderCancelAction extends OrderTransitionAction
 {
-    /** @var Registry */
-    protected $doctrine;
-
-    /** @var EventDispatcherInterface $eventDispatcher */
-    protected $eventDispatcher;
-
     /** @var boolean */
     protected $shouldUpdateBalancedInventory;
 
-    /**
-     * OrderCancelAction constructor.
-     *
-     * @param ContextAccessor           $contextAccessor
-     * @param Registry                  $doctrine
-     * @param EventDispatcherInterface  $eventDispatcher
-     */
     public function __construct(
         ContextAccessor $contextAccessor,
-        Registry $doctrine,
-        EventDispatcherInterface $eventDispatcher
+        protected ManagerRegistry $doctrine
     ) {
         parent::__construct($contextAccessor);
-
-        $this->doctrine = $doctrine;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**

@@ -4,8 +4,8 @@ namespace Marello\Bundle\PurchaseOrderBundle\Tests\Unit\EventListener\Doctrine;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Marello\Bundle\InventoryBundle\Entity\Allocation;
 use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
@@ -69,7 +69,7 @@ class PurchaseOrderOnOrderOnDemandCreationListenerTest extends TestCase
             ->getMock();
         $postPersistArgs
             ->expects(static::once())
-            ->method('getEntity')
+            ->method('getObject')
             ->willReturn($this->getAllocation());
         /** @var PostFlushEventArgs|\PHPUnit\Framework\MockObject\MockObject $args **/
         $postFlushArgs = $this->getMockBuilder(PostFlushEventArgs::class)
@@ -99,7 +99,7 @@ class PurchaseOrderOnOrderOnDemandCreationListenerTest extends TestCase
             ->willReturnOnConsecutiveCalls($orderRepository, $whchgrlinkRepository);
         $postFlushArgs
             ->expects(static::once())
-            ->method('getEntityManager')
+            ->method('getObjectManager')
             ->willReturn($manager);
         $manager
             ->expects(static::exactly(1))
@@ -197,7 +197,7 @@ class PurchaseOrderOnOrderOnDemandCreationListenerTest extends TestCase
             ['id' => $id, 'orderOnDemandAllowed' => true],
             [$product]
         );
-        $product->addInventoryItem($inventoryItem);
+        $product->setInventoryItem($inventoryItem);
         /** @var ProductSupplierRelation $productSupplierRelation */
         $productSupplierRelation = $this->getEntity(
             ProductSupplierRelation::class,

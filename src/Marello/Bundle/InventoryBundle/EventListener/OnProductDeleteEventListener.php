@@ -40,7 +40,7 @@ class OnProductDeleteEventListener
      */
     public function onFlush(OnFlushEventArgs $eventArgs)
     {
-        $this->em = $eventArgs->getEntityManager();
+        $this->em = $eventArgs->getObjectManager();
         $this->unitOfWork = $this->em->getUnitOfWork();
 
         if (!empty($this->unitOfWork->getScheduledEntityDeletions())) {

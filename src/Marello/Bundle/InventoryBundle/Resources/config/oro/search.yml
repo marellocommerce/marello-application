@@ -2,7 +2,6 @@ search:
     Marello\Bundle\InventoryBundle\Entity\Allocation:
         alias:                          marello_allocation
         label:                          marello.inventory.allocation.entity_plural_label
-        title_fields:                   [allocationNumber]
         route:
             name:                       marello_inventory_allocation_view
             parameters:

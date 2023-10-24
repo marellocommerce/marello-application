@@ -2,17 +2,16 @@
 
 namespace Marello\Bundle\WorkflowBundle\Async;
 
-use Psr\Log\LoggerInterface;
-
+use Marello\Bundle\WorkflowBundle\Async\Topic\WorkflowTransitTopic;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
-
 use Oro\Component\MessageQueue\Util\JSON;
 use Oro\Component\MessageQueue\Transport\SessionInterface;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
 use Oro\Component\MessageQueue\Client\TopicSubscriberInterface;
 use Oro\Component\MessageQueue\Consumption\MessageProcessorInterface;
+use Psr\Log\LoggerInterface;
 
 class WorkflowTransitProcessor implements MessageProcessorInterface, TopicSubscriberInterface
 {
@@ -45,7 +44,7 @@ class WorkflowTransitProcessor implements MessageProcessorInterface, TopicSubscr
      */
     public static function getSubscribedTopics()
     {
-        return [Topics::WORKFLOW_TRANSIT_TOPIC];
+        return [WorkflowTransitTopic::getName()];
     }
 
     /**

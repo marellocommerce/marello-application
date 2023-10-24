@@ -157,14 +157,12 @@ class QuantityWFAStrategy implements WFAStrategyInterface
                 $orderItem->getId() ? : $key
             )] = $orderItem;
 
-            /** @var ArrayCollection $inventoryItems */
             if ($orderItem instanceof AllocationItem) {
-                $inventoryItems = $orderItem->getProduct()->getInventoryItems();
+                $inventoryItem = $orderItem->getProduct()->getInventoryItem();
             } else {
-                $inventoryItems = $orderItem->getInventoryItems();
+                $inventoryItem = $orderItem->getInventoryItem();
             }
-            /** @var InventoryItem $inventoryItem */
-            $inventoryItem = $inventoryItems->first();
+
             $productSku = $inventoryItem->getProduct()->getSku();
             $orderItemQtyToAllocateLeft = $orderItem->getQuantity();
             $inventoryLevels = $this->getInventoryLevelCandidates($inventoryItem, $warehousesIds);

@@ -2,13 +2,9 @@
 
 namespace Marello\Bundle\OrderBundle\Workflow;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
-
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Component\ConfigExpression\ContextAccessor;
-
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
@@ -22,28 +18,11 @@ use Marello\Bundle\InventoryBundle\Provider\AllocationStateStatusInterface;
 
 class OrderShipAction extends OrderTransitionAction
 {
-    /** @var Registry */
-    protected $doctrine;
-
-    /** @var EventDispatcherInterface $eventDispatcher */
-    protected $eventDispatcher;
-
-    /**
-     * OrderShipAction constructor.
-     *
-     * @param ContextAccessor           $contextAccessor
-     * @param Registry                  $doctrine
-     * @param EventDispatcherInterface  $eventDispatcher
-     */
     public function __construct(
         ContextAccessor $contextAccessor,
-        Registry $doctrine,
-        EventDispatcherInterface $eventDispatcher
+        protected ManagerRegistry $doctrine,
     ) {
         parent::__construct($contextAccessor);
-
-        $this->doctrine = $doctrine;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**

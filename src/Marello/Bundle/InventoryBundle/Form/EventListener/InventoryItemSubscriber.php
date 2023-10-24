@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\InventoryBundle\Form\EventListener;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
@@ -13,7 +13,7 @@ use Symfony\Component\Form\FormEvents;
 class InventoryItemSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private Registry $doctrine,
+        private ManagerRegistry $doctrine,
         private AclHelper $aclHelper
     ) {
     }

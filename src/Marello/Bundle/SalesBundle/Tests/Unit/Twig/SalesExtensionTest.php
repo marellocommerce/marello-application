@@ -52,6 +52,10 @@ class SalesExtensionTest extends TestCase
                 new TwigFunction(
                     'marello_get_sales_channel_name_by_code',
                     [$this->extension, 'getChannelNameByCode']
+                ),
+                new TwigFunction(
+                    'marello_get_product_ids_by_channel_ids',
+                    [$this->extension, 'getProductIdsByChannelIds']
                 )
             ],
             $this->extension->getFunctions()

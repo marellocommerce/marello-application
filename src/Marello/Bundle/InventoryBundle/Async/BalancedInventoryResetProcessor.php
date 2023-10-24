@@ -4,6 +4,7 @@ namespace Marello\Bundle\InventoryBundle\Async;
 
 use Doctrine\ORM\EntityManagerInterface;
 
+use Marello\Bundle\InventoryBundle\Async\Topic\BalancedInventoryResetTopic;
 use Psr\Log\LoggerInterface;
 
 use Oro\Component\MessageQueue\Util\JSON;
@@ -48,7 +49,7 @@ class BalancedInventoryResetProcessor implements MessageProcessorInterface, Topi
      */
     public static function getSubscribedTopics()
     {
-        return [Topics::BALANCED_INVENTORY_RESET];
+        return [BalancedInventoryResetTopic::getName()];
     }
 
     /**

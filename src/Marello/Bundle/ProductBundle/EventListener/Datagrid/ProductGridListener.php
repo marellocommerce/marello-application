@@ -3,11 +3,6 @@
 namespace Marello\Bundle\ProductBundle\EventListener\Datagrid;
 
 use Doctrine\ORM\Query;
-use Doctrine\ORM\Query\Expr\GroupBy;
-
-use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
-use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Event\OrmResultBefore;
 

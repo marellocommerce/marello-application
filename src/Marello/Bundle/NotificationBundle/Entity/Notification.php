@@ -6,12 +6,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+use Oro\Bundle\ActivityBundle\Model\ActivityInterface;
+use Oro\Bundle\ActivityBundle\Model\ExtendActivity;
 use Oro\Bundle\AttachmentBundle\Entity\File;
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
-
-use Marello\Bundle\NotificationBundle\Model\ExtendNotification;
 
 /**
  * @ORM\Entity()
@@ -33,8 +35,11 @@ use Marello\Bundle\NotificationBundle\Model\ExtendNotification;
  *  }
  * )
  */
-class Notification extends ExtendNotification
+class Notification implements ActivityInterface, ExtendEntityInterface
 {
+    use ExtendActivity;
+    use ExtendEntityTrait;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -110,8 +115,6 @@ class Notification extends ExtendNotification
      */
     public function __construct(EmailTemplate $template, array $recipients, $body, Organization $organization)
     {
-        parent::__construct();
-
         $this->template     = $template;
         $this->recipients   = $recipients;
         $this->organization = $organization;

@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\WorkflowBundle\Datagrid\Extension\MassAction;
 
-use Marello\Bundle\WorkflowBundle\Async\Topics;
+use Marello\Bundle\WorkflowBundle\Async\Topic\WorkflowTransitMassTopic;
 use Marello\Bundle\WorkflowBundle\Manager\WorkflowTransitMassManager;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\IterableResult;
@@ -88,7 +88,7 @@ class WorkflowTransitMassActionHandler implements MassActionHandlerInterface
         $request = $this->requestStack->getCurrentRequest();
         $parameters = $this->massActionParametersParser->parse($request);
 
-        $this->messageProducer->send(Topics::MASS_WORKFLOW_TRANSIT_TOPIC, [
+        $this->messageProducer->send(WorkflowTransitMassTopic::getName(), [
             'datagridName' => $datagrid->getName(),
             'actionName' => $massAction->getName(),
             'parameters' => $parameters,

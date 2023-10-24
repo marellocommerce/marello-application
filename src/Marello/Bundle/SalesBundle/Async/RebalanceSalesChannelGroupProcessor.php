@@ -3,9 +3,8 @@
 namespace Marello\Bundle\SalesBundle\Async;
 
 use Doctrine\ORM\EntityManagerInterface;
-
+use Marello\Bundle\CoreBundle\Model\JobIdGenerationTrait;
 use Psr\Log\LoggerInterface;
-
 use Oro\Component\MessageQueue\Util\JSON;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
@@ -13,13 +12,15 @@ use Oro\Component\MessageQueue\Transport\SessionInterface;
 use Oro\Component\MessageQueue\Client\TopicSubscriberInterface;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Oro\Component\MessageQueue\Consumption\MessageProcessorInterface;
-
+use Marello\Bundle\InventoryBundle\Async\Topic\ResolveRebalanceInventoryTopic;
+use Marello\Bundle\SalesBundle\Async\Topic\RebalanceSalesChannelGroupTopic;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\InventoryBundle\Async\Topics as InventoryTopics;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 
 class RebalanceSalesChannelGroupProcessor implements MessageProcessorInterface, TopicSubscriberInterface
 {
+    use JobIdGenerationTrait;
+
     public function __construct(
         private LoggerInterface $logger,
         private EntityManagerInterface $entityManager,
@@ -33,7 +34,7 @@ class RebalanceSalesChannelGroupProcessor implements MessageProcessorInterface, 
      */
     public static function getSubscribedTopics(): array
     {
-        return [Topics::REBALANCE_SALESCHANNEL_GROUP_TOPIC];
+        return [RebalanceSalesChannelGroupTopic::getName()];
     }
 
     /**
@@ -58,8 +59,8 @@ class RebalanceSalesChannelGroupProcessor implements MessageProcessorInterface, 
                 /** @var array $productIds */
                 foreach (array_unique($productIds) as $productId) {
                     $this->messageProducer->send(
-                        InventoryTopics::RESOLVE_REBALANCE_INVENTORY,
-                        ['product_id' => $productId, 'jobId' => md5($productId)]
+                        ResolveRebalanceInventoryTopic::getName(),
+                        ['product_id' => $productId, 'jobId' => $this->generateJobId($productId)]
                     );
                 }
             } catch (\Exception $e) {
