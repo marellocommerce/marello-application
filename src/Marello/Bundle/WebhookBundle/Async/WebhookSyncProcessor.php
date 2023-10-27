@@ -2,8 +2,8 @@
 
 namespace Marello\Bundle\WebhookBundle\Async;
 
+use Marello\Bundle\WebhookBundle\Async\Topic\WebhookSyncTopic;
 use Marello\Bundle\WebhookBundle\Integration\Connector\WebhookNotificationConnector;
-
 use Marello\Bundle\WebhookBundle\Manager\WebhookProvider;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\IntegrationBundle\Authentication\Token\IntegrationTokenAwareTrait;
@@ -41,7 +41,7 @@ class WebhookSyncProcessor implements
 
     public static function getSubscribedTopics()
     {
-        return [Topics::WEBHOOK_NOTIFY];
+        return [WebhookSyncTopic::getName()];
     }
 
     public function process(MessageInterface $message, SessionInterface $session)
@@ -64,7 +64,7 @@ class WebhookSyncProcessor implements
 
         $result = $this->jobRunner->runUnique(
             $message->getMessageId(),
-            Topics::WEBHOOK_NOTIFY . ':'. $messageBody['integration_id']. '_'. uniqid('', true),
+            WebhookSyncTopic::getName() . ':'. $messageBody['integration_id']. '_'. uniqid('', true), // TODO
             function () use ($integration, $messageBody) {
                 $this->setTemporaryIntegrationToken($integration);
 

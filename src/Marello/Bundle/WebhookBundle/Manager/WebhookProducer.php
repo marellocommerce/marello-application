@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\WebhookBundle\Manager;
 
-use Marello\Bundle\WebhookBundle\Async\Topics;
+use Marello\Bundle\WebhookBundle\Async\Topic\WebhookSyncTopic;
 use Marello\Bundle\WebhookBundle\Entity\Webhook;
 use Marello\Bundle\WebhookBundle\Event\WebhookEventInterface;
 use Marello\Bundle\WebhookBundle\Integration\Connector\WebhookNotificationConnector;
@@ -39,7 +39,7 @@ class WebhookProducer
         ];
         foreach ($integrationChannels as $integrationChannel) {
             $this->messageProducer->send(
-                Topics::WEBHOOK_NOTIFY,
+                WebhookSyncTopic::getName(),
                 new Message(
                     [
                         'integration_id' => $integrationChannel->getId(),
