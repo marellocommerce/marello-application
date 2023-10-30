@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\WorkflowBundle\Async;
 
+use Marello\Bundle\WorkflowBundle\Async\Topic\WorkflowTransitMassTopic;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\DTO\SelectedItems;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\IterableResultFactoryRegistry;
@@ -59,7 +60,7 @@ class WorkflowTransitMassProcessor implements MessageProcessorInterface, TopicSu
 
     public static function getSubscribedTopics(): array
     {
-        return [Topics::MASS_WORKFLOW_TRANSIT_TOPIC];
+        return [WorkflowTransitMassTopic::getName()];
     }
 
     public function process(MessageInterface $message, SessionInterface $session): string

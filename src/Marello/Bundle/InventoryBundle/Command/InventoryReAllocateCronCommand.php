@@ -2,25 +2,26 @@
 
 namespace Marello\Bundle\InventoryBundle\Command;
 
+use Marello\Bundle\CoreBundle\Model\JobIdGenerationTrait;
+use Oro\Bundle\CronBundle\Command\CronCommandScheduleDefinitionInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Component\MessageQueue\Client\MessagePriority;
-use Oro\Bundle\CronBundle\Command\CronCommandInterface;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository;
-
-use Marello\Bundle\WorkflowBundle\Async\Topics;
 use Marello\Bundle\InventoryBundle\Entity\Allocation;
 use Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider;
 use Marello\Bundle\InventoryBundle\Provider\AllocationStateStatusInterface;
+use Marello\Bundle\WorkflowBundle\Async\Topic\WorkflowTransitTopic;
 
-class InventoryReAllocateCronCommand extends Command implements CronCommandInterface
+class InventoryReAllocateCronCommand extends Command implements CronCommandScheduleDefinitionInterface
 {
+    use JobIdGenerationTrait;
+
     const COMMAND_NAME = 'oro:cron:marello:inventory:reallocate';
     const ALLOCATION_WORKFLOW_RESOLVED = 'resolved';
     const EXIT_CODE = 0;
@@ -67,14 +68,6 @@ class InventoryReAllocateCronCommand extends Command implements CronCommandInter
     public function getDefaultDefinition()
     {
         return '*/10 * * * *';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function isActive()
-    {
-        return true;
     }
 
     /**
@@ -153,13 +146,13 @@ class InventoryReAllocateCronCommand extends Command implements CronCommandInter
 
         if ($workflowItem) {
             $this->messageProducer->send(
-                Topics::WORKFLOW_TRANSIT_TOPIC,
+                WorkflowTransitTopic::getName(),
                 [
                     'workflow_item_entity_id' => $allocation->getId(),
                     'current_step_id' => $workflowItem->getCurrentStep()->getId(),
                     'entity_class' => Allocation::class,
                     'transition' => self::ALLOCATION_WORKFLOW_RESOLVED,
-                    'jobId' => md5($allocation->getId()),
+                    'jobId' => $this->generateJobId($allocation->getId()),
                     'priority' => MessagePriority::NORMAL
                 ]
             );

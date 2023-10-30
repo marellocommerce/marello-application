@@ -18,11 +18,10 @@ use Oro\Component\MessageQueue\Client\TopicSubscriberInterface;
 use Oro\Component\MessageQueue\Consumption\MessageProcessorInterface;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Async\Topic\ProductImageUpdateTopic;
 
 class ProductImageUpdateProcessor implements MessageProcessorInterface, TopicSubscriberInterface
 {
-    const TOPIC = 'marello_product.product_image_update';
-
     public function __construct(
         private LoggerInterface $logger,
         private EntityManagerInterface $entityManager,
@@ -37,7 +36,7 @@ class ProductImageUpdateProcessor implements MessageProcessorInterface, TopicSub
      */
     public static function getSubscribedTopics(): array
     {
-        return [self::TOPIC];
+        return [ProductImageUpdateTopic::getName()];
     }
 
     /**

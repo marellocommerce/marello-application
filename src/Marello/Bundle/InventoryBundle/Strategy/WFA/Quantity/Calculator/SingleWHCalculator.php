@@ -4,7 +4,6 @@ namespace Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\Calculator;
 
 use Doctrine\Common\Collections\Collection;
 use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
-use Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\Calculator\AbstractWHCalculator;
 
 class SingleWHCalculator extends AbstractWHCalculator
 {

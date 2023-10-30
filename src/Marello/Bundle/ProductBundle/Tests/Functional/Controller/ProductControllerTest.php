@@ -74,8 +74,10 @@ class ProductControllerTest extends WebTestCase
         $name    = 'Super duper product';
         $sku     = 'SKU-1234';
 
-        $form    = $crawler->selectButton('Save and Close')->form();
+        $button = $crawler->selectButton('Save and Close');
+        $form = $button->form();
         $formValues = $form->getPhpValues();
+        $formValues['input_action'] = $button->attr('data-action');
         $formValues['marello_product_form']['names']['values']['default'] = $name;
         $formValues['marello_product_form']['sku'] = $sku;
         $formValues['marello_product_form']['status'] = 'enabled';

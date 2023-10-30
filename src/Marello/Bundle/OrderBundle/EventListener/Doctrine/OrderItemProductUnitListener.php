@@ -2,8 +2,7 @@
 
 namespace Marello\Bundle\OrderBundle\EventListener\Doctrine;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
-
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\InventoryBundle\Manager\InventoryItemManager;
 
@@ -25,7 +24,7 @@ class OrderItemProductUnitListener
      */
     public function postPersist(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
         if ($entity instanceof OrderItem && $entity->getProductUnit() === null) {
             // try getting product unit from inventory item
             $inventoryItem = $this->inventoryItemManager->getInventoryItem($entity->getProduct());

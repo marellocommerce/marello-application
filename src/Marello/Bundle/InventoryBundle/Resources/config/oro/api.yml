@@ -21,9 +21,8 @@ api:
             documentation_resource: '@MarelloInventoryBundle/Resources/doc/api/balancedinventorylevel.md'
             fields:
                 saleschannels:
-                    property_path: salesChannelGroup.salesChannels
-                salesChannelGroup:
-                    exclude: true
+                    data_type: object
+                    target_class: Marello\Bundle\SalesBundle\Entity\SalesChannel
                 createdAt:
                     exclude: true
             filters:
@@ -34,7 +33,7 @@ api:
                         allow_array: true
                         property_path: product.sku
                         description: 'Filter by product sku'
-                    saleschannel:
+                    saleschannels:
                         data_type: string
                         allow_array: true
                         property_path: salesChannelGroup.salesChannels.code

@@ -1,4 +1,5 @@
 <?php
+
 namespace Marello\Bundle\ShippingBundle\Provider\Price;
 
 use Marello\Bundle\ShippingBundle\Context\ShippingContextInterface;

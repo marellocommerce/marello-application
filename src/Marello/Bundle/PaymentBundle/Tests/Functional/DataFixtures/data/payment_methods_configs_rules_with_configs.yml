@@ -1,7 +1,7 @@
 payment_rule.1:
     rule:
         enabled: true
-        sortOrder: 0
+        sortOrder: 1
         expression: 'true'
     currency: 'EUR'
     methodConfigs:
@@ -147,7 +147,7 @@ payment_rule.8:
 payment_rule.9:
     rule:
         enabled: true
-        sortOrder: 0
+        sortOrder: 1
         expression: 'true'
     currency: 'USD'
     methodConfigs:
@@ -161,19 +161,19 @@ payment_rule.9:
 payment_rule.10:
     rule:
         enabled: true
-        sortOrder: 0
+        sortOrder: 1
         expression: 'true'
     currency: 'UAH'
 payment_rule.11:
     rule:
         enabled: false
-        sortOrder: 0
+        sortOrder: 1
         expression: 'true'
     currency: 'UAH'
 payment_rule.12:
     rule:
         enabled: true
-        sortOrder: 0
+        sortOrder: 1
         expression: 'true'
     currency: 'UAH'
     destinations:
@@ -183,7 +183,7 @@ payment_rule.12:
 payment_rule_without_type_configs:
     rule:
         enabled: true
-        sortOrder: 0
+        sortOrder: 1
         expression: 'true'
     currency: 'USD'
     methodConfigs:
@@ -192,7 +192,7 @@ payment_rule_without_type_configs:
 payment_rule_with_disabled_type_configs:
     rule:
         enabled: true
-        sortOrder: 0
+        sortOrder: 1
         expression: 'true'
     currency: 'USD'
     methodConfigs:

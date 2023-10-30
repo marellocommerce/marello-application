@@ -4,7 +4,8 @@ services:
         arguments:
             - '@oro_action.expression.context_accessor'
             - '@doctrine'
-            - '@event_dispatcher'
+        calls:
+            - [setDispatcher, ['@event_dispatcher']]
         tags:
             - { name: oro_action.action, alias: marello_ship_order }
 
@@ -13,6 +14,7 @@ services:
         arguments:
             - '@oro_action.expression.context_accessor'
             - '@doctrine'
-            - '@event_dispatcher'
+        calls:
+            - [setDispatcher, ['@event_dispatcher']]
         tags:
             - { name: oro_action.action, alias: marello_cancel_order }

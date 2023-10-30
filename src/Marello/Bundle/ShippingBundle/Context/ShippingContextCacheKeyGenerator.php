@@ -30,7 +30,7 @@ class ShippingContextCacheKeyGenerator
             $context->getSubtotal() ? $context->getSubtotal()->getValue() : '',
             $context->getSubtotal() ? $context->getSubtotal()->getCurrency() : '',
         ])))
-        .($context->getSourceEntity() ? get_class($context->getSourceEntity()) : '')
+        .str_replace('\\', '', $context->getSourceEntity() ? get_class($context->getSourceEntity()) : '')
         .$context->getSourceEntityIdentifier();
     }
 

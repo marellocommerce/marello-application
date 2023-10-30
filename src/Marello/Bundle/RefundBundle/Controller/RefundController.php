@@ -114,21 +114,7 @@ class RefundController extends AbstractController
                 $this->container->get(TranslatorInterface::class)->trans('marello.refund.messages.success.refund.saved')
             );
 
-            return $this->container->get(Router::class)->redirectAfterSave(
-                [
-                    'route'      => 'marello_refund_update',
-                    'parameters' => [
-                        'id' => $entity->getId(),
-                    ],
-                ],
-                [
-                    'route'      => 'marello_refund_view',
-                    'parameters' => [
-                        'id' => $entity->getId(),
-                    ],
-                ],
-                $entity
-            );
+            return $this->container->get(Router::class)->redirect($entity);
         }
 
         $form = $form->createView();

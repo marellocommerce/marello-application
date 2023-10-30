@@ -4,10 +4,10 @@ namespace Marello\Bundle\UPSBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Marello\Bundle\ManualShippingBundle\Migrations\Data\ORM\LoadManualShippingIntegration;
 use Marello\Bundle\ShippingBundle\Entity\ShippingMethodConfig;
 use Marello\Bundle\ShippingBundle\Entity\ShippingMethodTypeConfig;
 use Marello\Bundle\ShippingBundle\Migrations\Data\ORM\AbstractMoveConfigValuesToSettings;
-use Marello\Bundle\ShippingBundle\Migrations\Data\ORM\CreateDefaultShippingRule;
 use Marello\Bundle\UPSBundle\Method\UPSShippingMethod;
 use Marello\Bundle\UPSBundle\Migrations\Data\ORM\Config\ChannelByTypeFactory;
 use Marello\Bundle\UPSBundle\Migrations\Data\ORM\Config\UPSConfigFactory;
@@ -20,7 +20,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class MoveConfigValuesToSettings extends AbstractMoveConfigValuesToSettings implements DependentFixtureInterface
 {
     const SECTION_NAME = 'marello_shipping';
-
     const UPS_TYPE = 'marello_ups';
 
     /**
@@ -29,7 +28,7 @@ class MoveConfigValuesToSettings extends AbstractMoveConfigValuesToSettings impl
     public function getDependencies()
     {
         return [
-            CreateDefaultShippingRule::class,
+            LoadManualShippingIntegration::class,
         ];
     }
 
@@ -147,7 +146,7 @@ class MoveConfigValuesToSettings extends AbstractMoveConfigValuesToSettings impl
             ->setOptions([UPSShippingMethod::OPTION_SURCHARGE => 0.0])
             ->addTypeConfig($typeConfig);
 
-        $defaultShippingRule = $this->getReference(CreateDefaultShippingRule::DEFAULT_RULE_REFERENCE);
+        $defaultShippingRule = $this->getReference(LoadManualShippingIntegration::DEFAULT_RULE_REFERENCE);
         $defaultShippingRule->addMethodConfig($methodConfig);
 
         $manager->persist($defaultShippingRule);

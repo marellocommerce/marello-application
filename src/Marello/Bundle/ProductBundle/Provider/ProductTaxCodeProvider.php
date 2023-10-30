@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\ProductBundle\Provider;
 
-use Oro\Bundle\EntityBundle\ORM\Registry;
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Provider\OrderItem\AbstractOrderItemFormChangesProvider;
@@ -13,7 +13,7 @@ use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 class ProductTaxCodeProvider extends AbstractOrderItemFormChangesProvider
 {
     public function __construct(
-        protected Registry $registry,
+        protected ManagerRegistry $registry,
         protected AclHelper $aclHelper
     ) {
     }

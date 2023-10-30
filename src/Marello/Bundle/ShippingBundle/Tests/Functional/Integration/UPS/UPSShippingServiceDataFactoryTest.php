@@ -14,7 +14,6 @@ use Marello\Bundle\ShippingBundle\Integration\UPS\Model\ShipTo;
 use Marello\Bundle\ShippingBundle\Integration\UPS\UPSShippingServiceDataFactory;
 
 use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
-use Marello\Bundle\ReturnBundle\Tests\Functional\DataFixtures\LoadReturnData;
 
 class UPSShippingServiceDataFactoryTest extends WebTestCase
 {
@@ -28,7 +27,6 @@ class UPSShippingServiceDataFactoryTest extends WebTestCase
         $this->loadFixtures(
             [
                 LoadOrderData::class,
-                LoadReturnData::class
             ]
         );
         
@@ -74,7 +72,7 @@ class UPSShippingServiceDataFactoryTest extends WebTestCase
 
         $shippingDataProvider = $this->client
             ->getContainer()
-            ->get('marello_order.shipping.integration.service_data_provider');
+            ->get('marello_return.shipping.integration.service_data_provider');
         $shippingDataProvider = $shippingDataProvider
             ->setEntity($return)
             ->setWarehouse($this->getReference(LoadOrderData::DEFAULT_WAREHOUSE_REF));

@@ -34,6 +34,10 @@ class UpdateAttachmentFileTable implements Migration
                         'nullable' => true,
                         'on_delete' => 'SET NULL'
                     ],
+                    'entity' => [
+                        'label' => 'marello.attachment.file.media_url.label',
+                        'description' => 'marello.attachment.file.media_url.description'
+                    ]
                 ],
                 [
                     'length' => 255,

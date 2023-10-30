@@ -10,14 +10,9 @@ class SalesChannelConfigurationFormProvider extends AbstractProvider
 
     private $parentCheckboxLabel = 'marello.sales.config.use_default.label';
 
-    public function getTree()
+    protected function getTreeName(): string
     {
-        return $this->getTreeData(self::CONFIG_KEY, self::CORRECT_FIELDS_NESTING_LEVEL);
-    }
-
-    public function getJsTree()
-    {
-        return $this->getJsTreeData(self::CONFIG_KEY, self::CORRECT_MENU_NESTING_LEVEL);
+        return self::CONFIG_KEY;
     }
 
     public function setParentCheckboxLabel($label)
@@ -25,7 +20,7 @@ class SalesChannelConfigurationFormProvider extends AbstractProvider
         $this->parentCheckboxLabel = $label;
     }
 
-    protected function getParentCheckboxLabel()
+    protected function getParentCheckboxLabel(): string
     {
         return $this->parentCheckboxLabel;
     }

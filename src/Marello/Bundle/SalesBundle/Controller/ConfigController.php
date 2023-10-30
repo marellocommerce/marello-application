@@ -38,6 +38,7 @@ class ConfigController extends AbstractController
         $activeGroup = null,
         $activeSubGroup = null
     ) {
+        /** @var SalesChannelConfigurationFormProvider $provider */
         $provider = $this->container->get(SalesChannelConfigurationFormProvider::class);
         /** @var ConfigManager $manager */
         $manager = $this->container->get(ConfigManager::class);
@@ -50,7 +51,7 @@ class ConfigController extends AbstractController
         $form = false;
 
         if ($activeSubGroup !== null) {
-            $form = $provider->getForm($activeSubGroup);
+            $form = $provider->getForm($activeSubGroup, $manager);
 
             if ($this->container->get(ConfigHandler::class)
                 ->setConfigManager($manager)
@@ -69,7 +70,7 @@ class ConfigController extends AbstractController
                 $dataUpdateTopicSender->send($tagGenerator->generate($taggableData));
 
                 // recreate form to drop values for fields with use_parent_scope_value
-                $form = $provider->getForm($activeSubGroup);
+                $form = $provider->getForm($activeSubGroup, $manager);
                 $form->setData($manager->getSettingsByForm($form));
             }
         }

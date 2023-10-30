@@ -100,8 +100,8 @@ class OrderControllerTest extends WebTestCase
         static::assertSame($product->getSku(), $orderItem->getProductSku());
         static::assertSame($order->getOrganization(), $orderItem->getOrganization());
         static::assertEquals(
-            $product->getInventoryItems()->first()->getProductUnit(),
-            $orderItem->getProduct()->getInventoryItems()->first()->getProductUnit()
+            $product->getInventoryItem()->getProductUnit(),
+            $orderItem->getProduct()->getInventoryItem()->getProductUnit()
         );
 
         static::assertEquals(9.0, $order->getSubtotal());

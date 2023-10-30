@@ -2,8 +2,8 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\EventListener\Doctrine;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
@@ -35,7 +35,7 @@ class PurchaseOrderWorkflowTransitListener
      */
     public function postPersist(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
         if ($entity instanceof PurchaseOrder) {
             if ($entity->getSupplier()->getPoSendBy() === Supplier::SEND_PO_MANUALLY) {
                 $this->purchaseOrderId = $entity->getId();
@@ -61,7 +61,7 @@ class PurchaseOrderWorkflowTransitListener
     public function postFlush(PostFlushEventArgs $args)
     {
         if ($this->purchaseOrderId) {
-            $entityManager = $args->getEntityManager();
+            $entityManager = $args->getObjectManager();
             /** @var PurchaseOrder $entity */
             $entity = $entityManager
                 ->getRepository(PurchaseOrder::class)
@@ -113,10 +113,9 @@ class PurchaseOrderWorkflowTransitListener
      */
     private function isOrderOnDemandAllowed(Product $product)
     {
-        foreach ($product->getInventoryItems() as $inventoryItem) {
-            if ($inventoryItem->isOrderOnDemandAllowed()) {
-                return true;
-            }
+        $inventoryItem = $product->getInventoryItem();
+        if ($inventoryItem && $inventoryItem->isOrderOnDemandAllowed()) {
+            return true;
         }
 
         return false;

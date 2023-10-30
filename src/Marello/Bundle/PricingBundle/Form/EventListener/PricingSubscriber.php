@@ -2,12 +2,10 @@
 
 namespace Marello\Bundle\PricingBundle\Form\EventListener;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
-use Oro\Bundle\EntityBundle\ORM\Registry;
-
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\PricingBundle\Provider\CurrencyProvider;
 use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
@@ -22,28 +20,14 @@ use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 class PricingSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var CurrencyProvider
-     */
-    protected $provider;
-
-    /**
-     * @var Registry
-     */
-    protected $doctrine;
-
-    /**
      * @var PriceType[]
      */
     protected $priceTypes = [];
 
-    /**
-     * @param CurrencyProvider $provider
-     * @param Registry $doctrine
-     */
-    public function __construct(CurrencyProvider $provider, Registry $doctrine)
-    {
-        $this->provider = $provider;
-        $this->doctrine = $doctrine;
+    public function __construct(
+        protected CurrencyProvider $provider,
+        protected ManagerRegistry $doctrine
+    ) {
     }
 
     /**

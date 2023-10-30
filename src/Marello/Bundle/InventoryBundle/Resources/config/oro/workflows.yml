@@ -51,7 +51,7 @@ workflows:
                 transition_definition: complete_definition
         transition_definitions:
             pending_definition:
-                post_actions:
+                actions:
                     -  '@extendable':
                            conditions:
                                '@and':
@@ -70,7 +70,7 @@ workflows:
                                   - '@empty': $allocation.warehouse.notifier
                           message: 'No notification can be send, notification method is empty'
                           type: 'error'
-                post_actions:
+                actions:
                     -  '@extendable':
                            events: [ extendable_action.send_transition_after ]
             close_allocation_definition:
@@ -79,7 +79,7 @@ workflows:
                         - '@equal': [ $allocation.state.id, 'closed' ]
                         - '@equal': [ $allocation.status.id, 'closed' ]
             pick_pack_definition:
-                post_actions:
+                actions:
                     - '@foreach':
                           array: $allocation.items
                           value: $.result.value
@@ -96,7 +96,6 @@ workflows:
                           actions:
                               - '@assign_value': [$.result.value.quantityConfirmed, 0]
                               - '@assign_value': [$.result.value.quantityRejected, $.result.value.quantity]
-                post_actions:
                     - '@call_service_method':
                           service: Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider
                           method: allocateOrderToWarehouses
@@ -110,7 +109,7 @@ workflows:
                           identifier: 'closed'
                           attribute: $allocation.status
             complete_definition:
-                post_actions:
+                actions:
                     - '@call_service_method':
                         service: Marello\Bundle\InventoryBundle\Factory\AllocationShippingContextFactory
                         method: create
@@ -182,7 +181,6 @@ workflows:
                           actions:
                               - '@assign_value': [$.result.value.quantityConfirmed, 0]
                               - '@assign_value': [$.result.value.quantityRejected, $.result.value.quantity]
-                post_actions:
                     - '@call_service_method':
                             service: Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider
                             method: allocateOrderToWarehouses

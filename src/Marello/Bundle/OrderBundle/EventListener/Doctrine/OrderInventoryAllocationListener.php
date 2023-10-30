@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\OrderBundle\EventListener\Doctrine;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 use Marello\Bundle\OrderBundle\Entity\Order;
@@ -21,8 +21,7 @@ class OrderInventoryAllocationListener
 
     public function postPersist(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
-
+        $entity = $args->getObject();
         if (!$entity instanceof Order) {
             return;
         }

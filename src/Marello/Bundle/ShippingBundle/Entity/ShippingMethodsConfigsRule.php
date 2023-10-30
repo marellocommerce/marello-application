@@ -9,8 +9,9 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Marello\Bundle\RuleBundle\Entity\RuleInterface;
 use Marello\Bundle\RuleBundle\Entity\RuleOwnerInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Marello\Bundle\ShippingBundle\Model\ExtendShippingMethodsConfigsRule;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\ShippingBundle\Entity\Repository\ShippingMethodsConfigsRuleRepository")
@@ -38,8 +39,10 @@ use Marello\Bundle\ShippingBundle\Model\ExtendShippingMethodsConfigsRule;
  *      }
  * )
  */
-class ShippingMethodsConfigsRule extends ExtendShippingMethodsConfigsRule implements RuleOwnerInterface
+class ShippingMethodsConfigsRule implements RuleOwnerInterface, ExtendEntityInterface
 {
+    use ExtendEntityTrait;
+
     /**
      * @var int
      *
@@ -130,8 +133,6 @@ class ShippingMethodsConfigsRule extends ExtendShippingMethodsConfigsRule implem
      */
     public function __construct()
     {
-        parent::__construct();
-
         $this->destinations = new ArrayCollection();
         $this->methodConfigs = new ArrayCollection();
     }
