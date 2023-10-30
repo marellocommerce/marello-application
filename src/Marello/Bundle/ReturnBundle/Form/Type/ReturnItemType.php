@@ -5,7 +5,6 @@ namespace Marello\Bundle\ReturnBundle\Form\Type;
 use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
 use Marello\Bundle\ReturnBundle\Form\EventListener\ReturnItemTypeSubscriber;
 use Marello\Bundle\ReturnBundle\Validator\Constraints\ReturnItemConstraint;
-use Oro\Bundle\EntityExtendBundle\Form\Type\EnumChoiceType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;

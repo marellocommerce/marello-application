@@ -15,5 +15,3 @@ services:
             - ['setContainer', ['@Psr\Container\ContainerInterface']]
         tags:
             - { name: container.service_subscriber }
-            - { name: container.service_subscriber, id: marello_customer.form, key: Symfony\Component\Form\Form }
-            - { name: container.service_subscriber, id: marello_customer.form.handler.customer, key: Marello\Bundle\CustomerBundle\Form\Handler\CustomerHandler }

@@ -134,21 +134,7 @@ class OrderController extends AbstractController
             $manager->persist($order);
             $manager->flush();
 
-            return $this->container->get(Router::class)->redirectAfterSave(
-                [
-                    'route'      => 'marello_order_order_update',
-                    'parameters' => [
-                        'id' => $order->getId(),
-                    ],
-                ],
-                [
-                    'route'      => 'marello_order_order_view',
-                    'parameters' => [
-                        'id' => $order->getId(),
-                    ],
-                ],
-                $order
-            );
+            return $this->container->get(Router::class)->redirect($order);
         }
 
         return [

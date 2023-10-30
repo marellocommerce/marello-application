@@ -1,7 +1,6 @@
 search:
     Marello\Bundle\TaxBundle\Entity\TaxCode:
         alias:                          marello_taxcodes
-        title_fields:                   [code]
         route:
             name:                       marello_tax_taxcode_index
             parameters:
@@ -15,7 +14,6 @@ search:
 
     Marello\Bundle\TaxBundle\Entity\TaxRate:
         alias:                          marello_taxrates
-        title_fields:                   [code]
         route:
             name:                       marello_tax_taxrate_view
             parameters:
@@ -29,7 +27,6 @@ search:
 
     Marello\Bundle\TaxBundle\Entity\TaxJurisdiction:
         alias:                          marello_taxjurisdiction
-        title_fields:                   [code]
         route:
             name:                       marello_tax_taxjurisdiction_view
             parameters:

@@ -11,29 +11,29 @@ class SalesChannelScopeManager extends AbstractScopeManager
 
     protected $scopeId = 0;
 
-    public function getScopedEntityName()
+    public function getScopedEntityName(): string
     {
         return self::SCOPE_NAME;
     }
 
-    public function setScopeId($scopeId)
+    public function setScopeId(int $scopeId): void
     {
         $this->dispatchScopeIdChangeEvent();
 
         $this->scopeId = $scopeId;
     }
 
-    public function getScopeId()
+    public function getScopeId(): ?int
     {
         return $this->scopeId;
     }
 
-    protected function isSupportedScopeEntity($entity)
+    protected function isSupportedScopeEntity(object $entity): bool
     {
         return $entity instanceof SalesChannel;
     }
 
-    protected function getScopeEntityIdValue($entity)
+    protected function getScopeEntityIdValue(object $entity): mixed
     {
         return $entity->getId();
     }

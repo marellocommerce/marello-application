@@ -4,9 +4,12 @@ namespace Marello\Bundle\NotificationMessageBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
-use Marello\Bundle\NotificationMessageBundle\Model\ExtendNotificationMessage;
+use Oro\Bundle\ActivityBundle\Model\ActivityInterface;
+use Oro\Bundle\ActivityBundle\Model\ExtendActivity;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\EntityExtendBundle\Entity\AbstractEnumValue;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 use Oro\Bundle\UserBundle\Entity\Group;
@@ -34,10 +37,12 @@ use Oro\Bundle\UserBundle\Entity\Group;
  *     }
  * )
  */
-class NotificationMessage extends ExtendNotificationMessage implements OrganizationAwareInterface
+class NotificationMessage implements OrganizationAwareInterface, ActivityInterface, ExtendEntityInterface
 {
     use AuditableOrganizationAwareTrait;
     use EntityCreatedUpdatedAtTrait;
+    use ExtendActivity;
+    use ExtendEntityTrait;
 
     /**
      * @ORM\Id

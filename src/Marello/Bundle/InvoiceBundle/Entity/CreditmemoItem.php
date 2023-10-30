@@ -5,14 +5,16 @@ namespace Marello\Bundle\InvoiceBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
-
-use Marello\Bundle\InvoiceBundle\Model\ExtendCreditmemoItem;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 
 /**
  * @ORM\Entity
  */
-class CreditmemoItem extends ExtendCreditmemoItem
+class CreditmemoItem extends AbstractInvoiceItem implements ExtendEntityInterface
 {
+    use ExtendEntityTrait;
+
     /**
      * @var int
      *

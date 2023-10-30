@@ -3,13 +3,10 @@
 namespace Marello\Bundle\InventoryBundle\EventListener\Doctrine;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
-
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevelLogRecord;
-
 use Oro\Bundle\UserBundle\Entity\User;
-
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
@@ -43,7 +40,7 @@ class StockLevelAuthorFillSubscriber implements EventSubscriber
      */
     public function prePersist(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
 
         if (!$entity instanceof InventoryLevelLogRecord) {
             return;

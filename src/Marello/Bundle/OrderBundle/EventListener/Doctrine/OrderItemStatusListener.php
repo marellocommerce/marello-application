@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\OrderBundle\EventListener\Doctrine;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Provider\AvailableInventoryProvider;
@@ -37,12 +37,11 @@ class OrderItemStatusListener
      */
     public function postPersist(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
         if ($entity instanceof OrderItem) {
             $product = $entity->getProduct();
             if ($product) {
-                /** @var InventoryItem $inventoryItem */
-                $inventoryItem = $product->getInventoryItems()->first();
+                $inventoryItem = $product->getInventoryItem();
                 $availableInventory = $this->availableInventoryProvider->getAvailableInventory(
                     $product,
                     $entity->getOrder()->getSalesChannel()

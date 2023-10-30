@@ -8,6 +8,7 @@ use Marello\Bundle\CatalogBundle\Entity\Category;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -103,7 +104,7 @@ class CategoryHandler
     /**
      * Returns form instance
      *
-     * @return FormInterface
+     * @return FormView
      */
     public function getFormView()
     {

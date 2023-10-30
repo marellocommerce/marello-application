@@ -2,8 +2,8 @@
 
 namespace Marello\Bundle\InventoryBundle\EventListener\Workflow;
 
+use Marello\Bundle\CoreBundle\Model\JobIdGenerationTrait;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
@@ -12,9 +12,7 @@ use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 use Oro\Component\Action\Event\ExtendableActionEvent;
 use Oro\Component\MessageQueue\Client\MessagePriority;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
-
 use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\WorkflowBundle\Async\Topics;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\Allocation;
@@ -27,9 +25,12 @@ use Marello\Bundle\InventoryBundle\Model\InventoryTotalCalculator;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 use Marello\Bundle\InventoryBundle\Provider\AllocationContextInterface;
 use Marello\Bundle\InventoryBundle\Provider\AllocationStateStatusInterface;
+use Marello\Bundle\WorkflowBundle\Async\Topic\WorkflowTransitTopic;
 
 class AllocationCompleteListener
 {
+    use JobIdGenerationTrait;
+
     const TRANSIT_TO_STEP = 'ship';
     const WORKFLOW_NAME_B2C_1 = 'marello_order_b2c_workflow_1';
     const WORKFLOW_NAME_B2C_2 = 'marello_order_b2c_workflow_2';
@@ -156,13 +157,13 @@ class AllocationCompleteListener
                         ]
                     );
                 $this->messageProducer->send(
-                    Topics::WORKFLOW_TRANSIT_TOPIC,
+                    WorkflowTransitTopic::getName(),
                     [
                         'workflow_item_entity_id' => $order->getId(),
                         'current_step_id' => $workflowItem->getCurrentStep()->getId(),
                         'entity_class' => Order::class,
                         'transition' => self::TRANSIT_TO_STEP,
-                        'jobId' => md5($order->getId()),
+                        'jobId' => $this->generateJobId($order->getId()),
                         'priority' => MessagePriority::NORMAL
                     ]
                 );

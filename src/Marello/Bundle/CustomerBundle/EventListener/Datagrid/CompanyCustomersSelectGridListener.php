@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\CustomerBundle\EventListener\Datagrid;
 
-use Doctrine\ORM\Query;
 use Marello\Bundle\CustomerBundle\Entity\Repository\CompanyRepository;
 use Oro\Bundle\DataGridBundle\Event\OrmResultBeforeQuery;
 

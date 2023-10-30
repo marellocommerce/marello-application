@@ -2,13 +2,13 @@
 
 namespace Marello\Bundle\InvoiceBundle\Mapper;
 
-use Marello\Bundle\InvoiceBundle\Entity\Invoice;
+use Marello\Bundle\InvoiceBundle\Entity\AbstractInvoice;
 
 interface MapperInterface
 {
     /**
      * @param object $sourceEntity
-     * @return Invoice[]
+     * @return AbstractInvoice
      */
     public function map($sourceEntity);
 }

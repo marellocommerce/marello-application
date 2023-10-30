@@ -31,7 +31,7 @@ class RefreshContextListener extends ParentListener
         /**
          * Start customization
          */
-        $em = $event->getEntityManager();
+        $em = $event->getObjectManager();
         $classEm = $this->doctrine->getManagerForClass($organizationClass);
         if ($classEm instanceof VirtualProxyInterface) {
             $classEm = $classEm->getWrappedValueHolderValue();

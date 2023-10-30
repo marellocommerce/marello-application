@@ -10,11 +10,9 @@ use Marello\Bundle\ShippingBundle\Entity\Shipment;
 use Marello\Bundle\ShippingBundle\Integration\Manual\ManualShippingServiceDataFactory;
 use Marello\Bundle\ShippingBundle\Integration\Manual\ManualShippingServiceIntegration;
 use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
-use Marello\Bundle\ReturnBundle\Tests\Functional\DataFixtures\LoadReturnData;
 
 class ManualShippingServiceIntegrationTest extends WebTestCase
 {
-
     /** @var ManualShippingServiceIntegration */
     protected $integration;
 
@@ -28,7 +26,6 @@ class ManualShippingServiceIntegrationTest extends WebTestCase
         $this->loadFixtures(
             [
                 LoadOrderData::class,
-                LoadReturnData::class
             ]
         );
 
@@ -63,13 +60,13 @@ class ManualShippingServiceIntegrationTest extends WebTestCase
 
         $shippingDataProvider = $this->client
             ->getContainer()
-            ->get('marello_order.shipping.integration.service_data_provider');
+            ->get('marello_return.shipping.integration.service_data_provider');
         $shippingDataProvider = $shippingDataProvider
             ->setEntity($return)
             ->setWarehouse($this->getReference(LoadOrderData::DEFAULT_WAREHOUSE_REF));
 
         $data = $this->dataFactory->createData($shippingDataProvider);
-        
+
         $integration = $this->client->getContainer()->get('marello_shipping.integration.manual.service_integration');
         $shipment = $integration->createShipment($return, $data);
 

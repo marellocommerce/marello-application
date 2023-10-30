@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\OrderBundle\Twig;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\InvoiceBundle\Entity\AbstractInvoice;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
@@ -18,7 +18,7 @@ class OrderExtension extends AbstractExtension
     const NAME = 'marello_order';
 
     /**
-     * @var Registry
+     * @var ManagerRegistry
      */
     private $doctrine;
 
@@ -139,12 +139,7 @@ class OrderExtension extends AbstractExtension
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     * @param Registry $doctrine
-     * @return $this
-     */
-    public function setRegistry(Registry $doctrine)
+    public function setRegistry(ManagerRegistry $doctrine)
     {
         $this->doctrine = $doctrine;
 

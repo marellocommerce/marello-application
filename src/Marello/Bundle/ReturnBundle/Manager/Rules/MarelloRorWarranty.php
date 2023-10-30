@@ -123,7 +123,7 @@ class MarelloRorWarranty implements BusinessRuleInterface
         $enumValue = $enumRepo->find($enumValueId);
 
         if (!$enumValue) {
-            throw new \Exception(spritnf('Cannot find %s result for id %s', $className, $enumValueId));
+            throw new \Exception(sprintf('Cannot find %s result for id %s', $className, $enumValueId));
         }
 
         return $enumValue;

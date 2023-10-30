@@ -3,12 +3,8 @@
 namespace Marello\Bundle\ReturnBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
-use Oro\Bundle\FormBundle\Form\Type\OroDateType;
-
 use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
 use Marello\Bundle\ReturnBundle\Form\EventListener\ReturnTypeSubscriber;
 use Marello\Bundle\ReturnBundle\Validator\Constraints\ReturnEntityConstraint;

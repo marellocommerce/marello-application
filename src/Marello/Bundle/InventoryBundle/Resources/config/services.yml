@@ -305,6 +305,12 @@ services:
         tags:
             - { name: kernel.event_listener, event: extendable_condition.reshipment_allowed, method: isReshipmentAllowed }
 
+    Marello\Bundle\InventoryBundle\Api\Processor\ComputeSalesChannelsField:
+      arguments:
+        - '@doctrine.orm.entity_manager'
+      tags:
+        - { name: oro.api.processor, action: customize_loaded_data, class: Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel }
+
     Marello\Bundle\InventoryBundle\EventListener\Datagrid\ExpectedInventoryItemGridListener:
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.marello-inventory-expected-inventory-item-grid, method: onBuildAfter }

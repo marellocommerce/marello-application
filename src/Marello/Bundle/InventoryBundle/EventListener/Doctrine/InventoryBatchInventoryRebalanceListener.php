@@ -5,12 +5,15 @@ namespace Marello\Bundle\InventoryBundle\EventListener\Doctrine;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
-use Marello\Bundle\InventoryBundle\Async\Topics;
+use Marello\Bundle\CoreBundle\Model\JobIdGenerationTrait;
+use Marello\Bundle\InventoryBundle\Async\Topic\ResolveRebalanceInventoryTopic;
 use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 
 class InventoryBatchInventoryRebalanceListener
 {
+    use JobIdGenerationTrait;
+
     /**
      * @var UnitOfWork
      */
@@ -40,7 +43,7 @@ class InventoryBatchInventoryRebalanceListener
      */
     public function onFlush(OnFlushEventArgs $eventArgs)
     {
-        $this->em = $eventArgs->getEntityManager();
+        $this->em = $eventArgs->getObjectManager();
         $this->unitOfWork = $this->em->getUnitOfWork();
 
         if (!empty($this->unitOfWork->getScheduledEntityInsertions())) {
@@ -98,8 +101,8 @@ class InventoryBatchInventoryRebalanceListener
         $product = $inventoryLevel->getInventoryItem()->getProduct();
         $id = $product->getId();
         $this->messageProducer->send(
-            Topics::RESOLVE_REBALANCE_INVENTORY,
-            ['product_id' => $id, 'jobId' => md5($id)]
+            ResolveRebalanceInventoryTopic::getName(),
+            ['product_id' => $id, 'jobId' => $this->generateJobId($id)]
         );
     }
 }

@@ -2,6 +2,9 @@
 
 namespace Marello\Bundle\InventoryBundle\Async;
 
+use Marello\Bundle\CoreBundle\Model\JobIdGenerationTrait;
+use Marello\Bundle\InventoryBundle\Async\Topic\ResolveRebalanceAllInventoryTopic;
+use Marello\Bundle\InventoryBundle\Async\Topic\ResolveRebalanceInventoryTopic;
 use Psr\Log\LoggerInterface;
 
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
@@ -15,6 +18,8 @@ use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 
 class InventoryRebalanceProductsProcessor implements MessageProcessorInterface, TopicSubscriberInterface
 {
+    use JobIdGenerationTrait;
+
     /** @var LoggerInterface $logger */
     protected $logger;
 
@@ -44,7 +49,7 @@ class InventoryRebalanceProductsProcessor implements MessageProcessorInterface, 
      */
     public static function getSubscribedTopics()
     {
-        return [Topics::RESOLVE_REBALANCE_ALL_INVENTORY];
+        return [ResolveRebalanceAllInventoryTopic::getName()];
     }
 
     /**
@@ -52,23 +57,14 @@ class InventoryRebalanceProductsProcessor implements MessageProcessorInterface, 
      */
     public function process(MessageInterface $message, SessionInterface $session)
     {
-        if ($message->getBody() !== Topics::ALL_INVENTORY) {
-            $this->logger->critical(
-                sprintf('Got invalid message. "%s"', $message->getBody()),
-                ['message' => $message]
-            );
-
-            return self::REJECT;
-        }
-
         $products = $this->repository->findAll();
         /** @var ProductInterface $product */
         foreach ($products as $product) {
             $this->producer->send(
-                Topics::RESOLVE_REBALANCE_INVENTORY,
+                ResolveRebalanceInventoryTopic::getName(),
                 [
                     'product_id' => $product->getId(),
-                    'jobId' => md5($product->getId())
+                    'jobId' => $this->generateJobId($product->getId())
                 ]
             );
         }

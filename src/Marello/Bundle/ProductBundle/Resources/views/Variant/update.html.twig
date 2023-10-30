@@ -28,7 +28,13 @@
 {% block navButtons %}
     {{ UI.cancelButton(path('marello_product_view', { id: parent.id })) }}
 
-    {% set html = UI.saveAndCloseButton() %}
+    {% set html = UI.saveAndCloseButton({
+        'route': 'marello_product_view',
+        'params': {
+            'id': parent.id,
+            '_enableContentProviders': 'mainMenu'
+        }
+    }) %}
     {{ UI.dropdownSaveButton({'html': html}) }}
 {% endblock %}
 
