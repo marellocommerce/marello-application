@@ -38,8 +38,6 @@ services:
             - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\InventoryBundle\Entity\WarehouseGroup', event: preRemove }
 
     MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\OrganizationCreateListener:
-        arguments:
-            - '@oro_distribution.handler.application_status'
         tags:
             - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\OrganizationBundle\Entity\Organization', event: postPersist, priority: 10 }
 

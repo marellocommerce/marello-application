@@ -139,7 +139,7 @@ class InventoryAllocationProvider extends BaseAllocationProvider
         }
 
         $salesChannelConsolidationEnabled = $this->configManager->get(
-            'marello_enterprise_order.enable_order_consolidation',
+            'marello_enterprise_order.set_consolidation_for_scope',
             false,
             false,
             $order->getSalesChannel()
@@ -148,7 +148,7 @@ class InventoryAllocationProvider extends BaseAllocationProvider
         return (
             $order->getConsolidationEnabled() ||
             $salesChannelConsolidationEnabled ||
-            $this->configManager->get('marello_enterprise_order.set_global_consolidation')
+            $this->configManager->get('marello_enterprise_order.set_consolidation_for_scope')
         );
     }
 

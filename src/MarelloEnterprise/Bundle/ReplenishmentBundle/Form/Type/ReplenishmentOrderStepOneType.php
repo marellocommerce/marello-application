@@ -22,8 +22,10 @@ class ReplenishmentOrderStepOneType extends AbstractType
                 [
                     'label' => 'marelloenterprise.replenishment.replenishmentorder.type.label',
                     'choices' => [
-                        'marelloenterprise.replenishment.replenishmentorder.type.automated.label' => ReplenishmentOrderStepOne::AUTOMATED_TYPE,
-                        'marelloenterprise.replenishment.replenishmentorder.type.manual.label' => ReplenishmentOrderStepOne::MANUAL_TYPE,
+                        'marelloenterprise.replenishment.replenishmentorder.type.automated.label'
+                            => ReplenishmentOrderStepOne::AUTOMATED_TYPE,
+                        'marelloenterprise.replenishment.replenishmentorder.type.manual.label'
+                            => ReplenishmentOrderStepOne::MANUAL_TYPE
                     ],
                     'constraints' => [
                         new NotBlank(),

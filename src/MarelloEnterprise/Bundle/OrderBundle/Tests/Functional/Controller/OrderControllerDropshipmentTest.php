@@ -244,15 +244,6 @@ class OrderControllerDropshipmentTest extends WebTestCase
         $this->workflowManager->transit($workflowItem, 'payment_received');
         $this->workflowManager->transit($workflowItem, 'prepare_shipping');
 
-//        /** @var PackingSlip[] $packingSlips */
-//        $packingSlips = $this->doctrine
-//            ->getManagerForClass(PackingSlip::class)
-//            ->getRepository(PackingSlip::class)
-//            ->findBy([
-//                'order' => $entity
-//            ]);
-//        $this->assertCount(2, $packingSlips);
-
         /** @var Product $ownProduct */
         $ownProduct = $this->getReference(LoadProductData::PRODUCT_1_REF);
         /** @var Product $externalProduct */
@@ -276,11 +267,10 @@ class OrderControllerDropshipmentTest extends WebTestCase
             $warehouseType = $allocation->getWarehouse()->getWarehouseType()->getName();
             if ($warehouseType === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
                 $this->assertEquals($allocationItem->getProductSku(), $externalProduct->getSku());
-                $this->assertEquals(LoadOrderItemStatusData::PENDING, $orderItem->getStatus()->getId());
             } else {
                 $this->assertEquals($allocationItem->getProductSku(), $ownProduct->getSku());
-                $this->assertEquals(LoadOrderItemStatusData::PROCESSING, $orderItem->getStatus()->getId());
             }
+            $this->assertEquals(LoadOrderItemStatusData::PROCESSING, $orderItem->getStatus()->getId());
         }
     }
 

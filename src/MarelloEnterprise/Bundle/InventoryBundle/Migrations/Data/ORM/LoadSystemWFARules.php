@@ -29,7 +29,7 @@ class LoadSystemWFARules extends AbstractFixture implements ContainerAwareInterf
             [
                 'enabled'          => true,
                 'name'             => 'Minimum Quantity',
-                'sortOrder'        => 0,
+                'sortOrder'        => 1,
                 'stopProcessing'   => false,
                 'strategy'         => QuantityWFAStrategy::IDENTIFIER
             ],

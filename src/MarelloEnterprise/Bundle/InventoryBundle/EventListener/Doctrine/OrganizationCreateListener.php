@@ -3,7 +3,7 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Marello\Bundle\RuleBundle\Entity\Rule;
 use MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule;
@@ -18,22 +18,15 @@ class OrganizationCreateListener
      */
     private $entityManager;
 
-    public function __construct(
-        protected ApplicationState $applicationState
-    ) {
-    }
-
     /**
      * @param Organization $organization
      * @param LifecycleEventArgs $args
      */
     public function postPersist(Organization $organization, LifecycleEventArgs $args)
     {
-        if ($this->applicationState->isInstalled()) {
-            $this->entityManager = $args->getEntityManager();
-            $this->createSystemWarehouseGroupForOrganization($organization);
-            $this->createSystemWFARulesForOrganization($organization);
-        }
+        $this->entityManager = $args->getObjectManager();
+        $this->createSystemWarehouseGroupForOrganization($organization);
+        $this->createSystemWFARulesForOrganization($organization);
     }
 
     /**
@@ -41,7 +34,15 @@ class OrganizationCreateListener
      */
     private function createSystemWarehouseGroupForOrganization(Organization $organization)
     {
-        $systemWhGroup = new WarehouseGroup();
+        $existingGroup = $this
+            ->entityManager
+            ->getRepository(WarehouseGroup::class)
+            ->findOneBy([
+                'system' => true,
+                'organization' => $organization
+            ]);
+
+        $systemWhGroup = ($existingGroup) ?: new WarehouseGroup();
         $systemWhGroup
             ->setName(sprintf('%s System Group', $organization->getName()))
             ->setDescription(sprintf('System Warehouse Group for %s organization', $organization->getName()))

@@ -3,9 +3,7 @@
 namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Async;
 
 use Psr\Log\LoggerInterface;
-
 use Doctrine\ORM\EntityManagerInterface;
-
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 use Oro\Component\MessageQueue\Client\TopicSubscriberInterface;
@@ -13,14 +11,12 @@ use Oro\Component\MessageQueue\Consumption\MessageProcessorInterface;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
 use Oro\Component\MessageQueue\Transport\SessionInterface;
 use Oro\Component\MessageQueue\Util\JSON;
-
+use MarelloEnterprise\Bundle\ReplenishmentBundle\Async\Topic\AllocateReplenishmentOrdersInventoryTopic;
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrder;
 use MarelloEnterprise\Bundle\ReplenishmentBundle\EventListener\Doctrine\ReplenishmentWorkflowAllocateInventoryListener;
 
 class AllocateReplenishmentOrdersInventoryProcessor implements MessageProcessorInterface, TopicSubscriberInterface
 {
-    const TOPIC = 'marelloenterprise_replenishment.allocate_replenishment_orders_inventory';
-
     const ORDERS = 'orders';
 
     /**
@@ -58,7 +54,7 @@ class AllocateReplenishmentOrdersInventoryProcessor implements MessageProcessorI
      */
     public static function getSubscribedTopics()
     {
-        return [self::TOPIC];
+        return [AllocateReplenishmentOrdersInventoryTopic::getName()];
     }
 
     /**

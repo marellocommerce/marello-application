@@ -2,7 +2,7 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
@@ -30,7 +30,7 @@ class WarehouseListener
     public function prePersist(Warehouse $warehouse, LifecycleEventArgs $args)
     {
         if ($this->applicationState->isInstalled() && !$warehouse->getGroup()) {
-            $em = $args->getEntityManager();
+            $em = $args->getObjectManager();
             $whType = $warehouse->getWarehouseType();
             if ($whType && $whType->getName() === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED) {
                 $group = new WarehouseGroup();
@@ -65,7 +65,7 @@ class WarehouseListener
             );
         }
         $inventoryLevels = $args
-            ->getEntityManager()
+            ->getObjectManager()
             ->getRepository(InventoryLevel::class)
             ->findBy(['warehouse' => $warehouse]);
         if (!empty($inventoryLevels)) {
@@ -79,7 +79,7 @@ class WarehouseListener
         }
         if ($group = $warehouse->getGroup()) {
             if (!$group->isSystem() && $group->getWarehouses()->count() < 1) {
-                $args->getEntityManager()->remove($group);
+                $args->getObjectManager()->remove($group);
             }
         }
     }

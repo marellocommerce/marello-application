@@ -14,7 +14,7 @@ marelloenterprise:
             description.label:          Description
             organization.label:         Organization
             executed.label:             Executed
-
+            manual_items.label:         Manual Items
             messages:
                 success:
                     saved:                      Replenishment Order Config has been saved successfully
@@ -40,6 +40,19 @@ marelloenterprise:
                 automated.label:        Automated
                 manual.label:           Manual
 
+        replenishmentordermanualitemconfig:
+            entity_label:              Replenishment Order Manual Item Config
+            entity_plural_label:       Replenishment Order Manual Item Configs
+            entity_grid_all_view_label: All %entity_plural_label%
+            id.label:                  Id
+            quantity.label:            Quantity
+            all_quantity.label:        All Quantity
+            available_quantity.label:  Available Quantity
+            origin.label:              Origin
+            destination.label:         Destination
+            product.label:             Product
+            order_config.label:        Order Config
+
         replenishmentorderitem:
             id.label:                  Id
             entity_label:              Replenishment Order Item
@@ -53,6 +66,7 @@ marelloenterprise:
             inventory_qty.label:       Qty
             quantity.label:            Quantity
             all.label:                 All
+            all_quantity.label:        All Quantity
             available.label:           Available
             unit.label:                Unit
             source.label:              Source
