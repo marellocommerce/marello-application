@@ -2,17 +2,14 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\Tests\Functional\Cron;
 
-use Oro\Bundle\CronBundle\Entity\Repository\ScheduleRepository;
-use Oro\Bundle\NotificationBundle\Async\Topic\SendEmailNotificationTopic;
+use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
-
 use Oro\Bundle\CronBundle\Entity\Schedule;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Bundle\MessageQueueBundle\Test\Functional\MessageQueueExtension;
-
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 use Marello\Bundle\PurchaseOrderBundle\Cron\PurchaseOrderAdviceCommand;
@@ -69,7 +66,7 @@ class PurchaseOrderAdviceCronTest extends WebTestCase
         $commandTester->execute(['command' => $command]);
 
         self::assertStringContainsString(
-            'The PO notification feature is disabled. The command will not run.',
+            'This cron command is not active.',
             $commandTester->getDisplay()
         );
         self::assertEquals(PurchaseOrderAdviceCommand::EXIT_CODE, $commandTester->getStatusCode());
@@ -114,7 +111,7 @@ class PurchaseOrderAdviceCronTest extends WebTestCase
      */
     public function testAdviceCommandIsRegisteredCorrectly()
     {
-        /** @var ScheduleRepository $scheduleRepository */
+        /** @var EntityRepository $scheduleRepository */
         $scheduleRepository = self::getContainer()
             ->get('doctrine')
             ->getRepository(Schedule::class);

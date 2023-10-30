@@ -3,7 +3,6 @@
 namespace Marello\Bundle\PurchaseOrderBundle\EventListener\Datagrid;
 
 use Doctrine\ORM\EntityManager;
-use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 

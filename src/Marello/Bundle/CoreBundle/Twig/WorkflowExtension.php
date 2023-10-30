@@ -49,7 +49,7 @@ class WorkflowExtension extends AbstractExtension
     }
 
     /**
-     * @param Entity
+     * @param $entity
      *
      * @return array
      */

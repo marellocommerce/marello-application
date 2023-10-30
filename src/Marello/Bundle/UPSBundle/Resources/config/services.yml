@@ -145,10 +145,10 @@ services:
             - "@marello_ups.cache.lifetime_provider"
 
     marello_ups.cache.shipping_price:
-        parent: oro.cache.abstract
+        parent: oro.data.cache
         public: false
-        calls:
-            - [ setNamespace, [ 'marello_ups_cache_shipping_price' ] ]
+        tags:
+            - { name: 'cache.pool', namespace: 'marello_ups_cache_shipping_price' }
 
     marello_ups.cache.lifetime_provider:
         class: 'Marello\Bundle\UPSBundle\Cache\Lifetime\UPSSettings\LifetimeByInvalidateCacheAtFieldProvider'

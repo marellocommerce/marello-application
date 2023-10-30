@@ -4,7 +4,35 @@ api:
             alias: marellocompany
             plural_alias: marellocompanies
 
+        Marello\Bundle\CustomerBundle\Entity\Customer:
+            alias: marellocustomer
+            plural_alias: marellocustomers
+
     entities:
+        Marello\Bundle\CustomerBundle\Entity\Customer:
+            documentation_resource: '@MarelloCustomerBundle/Resources/doc/api/customer.md'
+            fields:
+                createdAt:
+                    exclude: true
+                updatedAt:
+                    exclude: true
+            filters:
+                exclusion_policy: all
+                fields:
+                    email:
+                        data_type: string
+                        allow_array: true
+                        property_path: email
+                        description: 'Filter by email'
+            actions:
+                get_list:
+                    fields:
+                        activityEmails:
+                            exclude: true
+                delete: false
+                delete_list: false
+                delete_relationship: false
+
         Marello\Bundle\CustomerBundle\Entity\Company:
             fields:
                 createdAt:

@@ -14,10 +14,11 @@ use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderAwareInterface;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
-use Marello\Bundle\RefundBundle\Model\ExtendRefund;
 use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
 use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 /**
@@ -51,15 +52,17 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
  *      }
  * )
  */
-class Refund extends ExtendRefund implements
+class Refund implements
     DerivedPropertyAwareInterface,
     CurrencyAwareInterface,
     LocalizationAwareInterface,
-    OrderAwareInterface
+    OrderAwareInterface,
+    ExtendEntityInterface
 {
     use EntityCreatedUpdatedAtTrait;
     use AuditableOrganizationAwareTrait;
     use LocalizationTrait;
+    use ExtendEntityTrait;
         
     /**
      * @ORM\Id
@@ -251,8 +254,6 @@ class Refund extends ExtendRefund implements
      */
     public function __construct()
     {
-        parent::__construct();
-
         $this->items = new ArrayCollection();
     }
 

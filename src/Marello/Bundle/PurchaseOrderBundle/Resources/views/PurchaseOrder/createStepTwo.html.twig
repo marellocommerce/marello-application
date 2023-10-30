@@ -14,8 +14,14 @@
     {{ parent() }}
 
     {{ UI.cancelButton(path('marello_purchaseorder_purchaseorder_index')) }}
-    {% set html = UI.saveAndCloseButton() %}
-    {% set html = html ~ UI.saveAndStayButton() %}
+    {% set html = UI.saveAndCloseButton({
+        'route': 'marello_purchaseorder_purchaseorder_index',
+        'params': {}
+    }) %}
+    {% set html = html ~ UI.saveAndStayButton({
+        'route': 'marello_purchaseorder_purchaseorder_view',
+        'params': {'id': '$id'}
+    }) %}
     {{ UI.dropdownSaveButton({ 'html': html }) }}
 {% endblock navButtons %}
 
@@ -104,6 +110,25 @@
             }]
         }
     } %}
+
+    {% set additionalData = [] %}
+    {% for child in form.children %}
+        {% if child.vars.extra_field is defined and child.vars.extra_field %}
+            {% set additionalData = additionalData|merge([form_row(child)]) %}
+        {% endif %}
+    {% endfor %}
+
+    {% if additionalData is not empty %}
+        {% set dataBlocks = dataBlocks|merge([{
+            'title': 'marello.purchaseorder.sections.additional'|trans,
+            'subblocks': [{
+                'title': '',
+                'useSpan': false,
+                'data' : additionalData
+            }]
+        }]) %}
+    {% endif %}
+
     {% set data = {
         'formErrors': form_errors(form)? form_errors(form) : null,
         'dataBlocks': dataBlocks,

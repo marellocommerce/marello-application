@@ -37,7 +37,7 @@ datagrids:
                 frontend_type:      string
                 data_name:          productUnit
             enableBatchInventory:
-                label:              marello.inventory.inventoryitem.enable_batch_inventory.label
+                label:              marello.inventory.inventoryitem.batch_inventory.label
                 frontend_type:      boolean
                 data_name:          enableBatchInventory
             inventoryQty:
@@ -483,7 +483,7 @@ datagrids:
                 label:          marello.inventory.allocation.warehouse.label
                 frontend_type:  string
             allocationContextId:
-                label:          marello.inventory.allocation.allocationContext.label
+                label:          marello.inventory.allocation.allocation_context.label
                 choices:        "@oro_entity_extend.enum_value_provider->getEnumChoicesByCode('marello_allocation_allocationcontext')"
                 frontend_type:  select
             allocationStateId:

@@ -3,13 +3,11 @@
 namespace Marello\Bundle\SalesBundle\Tests\Unit\EventListener\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Event\LifecycleEventArgs;
-
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Oro\Bundle\DistributionBundle\Handler\ApplicationState;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\SalesBundle\EventListener\Doctrine\SalesChannelListener;
@@ -68,7 +66,7 @@ class SalesChannelListenerTest extends TestCase
             ->getMock();
         $args
             ->expects(static::once())
-            ->method('getEntityManager')
+            ->method('getObjectManager')
             ->willReturn($entityManager);
 
         $this->salesChannelListener->prePersist($salesChannel, $args);

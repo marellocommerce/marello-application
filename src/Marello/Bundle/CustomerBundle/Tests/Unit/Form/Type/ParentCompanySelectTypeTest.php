@@ -84,7 +84,6 @@ class ParentCompanySelectTypeTest extends TestCase
         $customer = new Company();
 
         $reflection = new \ReflectionProperty(get_class($customer), 'id');
-        $reflection->setAccessible(true);
         $reflection->setValue($customer, $customerId);
 
         return [

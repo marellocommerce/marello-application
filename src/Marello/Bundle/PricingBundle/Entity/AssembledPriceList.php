@@ -9,7 +9,8 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\PricingBundle\Model\PriceTypeInterface;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
-use Marello\Bundle\PricingBundle\Model\ExtendAssembledPriceList;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 
 /**
  * @ORM\Entity()
@@ -23,9 +24,10 @@ use Marello\Bundle\PricingBundle\Model\ExtendAssembledPriceList;
  * )
  * @ORM\Table(name="marello_assembled_price_list")
  */
-class AssembledPriceList extends ExtendAssembledPriceList implements PriceListInterface
+class AssembledPriceList implements PriceListInterface, ExtendEntityInterface
 {
     use EntityCreatedUpdatedAtTrait;
+    use ExtendEntityTrait;
 
     /**
      * @var integer

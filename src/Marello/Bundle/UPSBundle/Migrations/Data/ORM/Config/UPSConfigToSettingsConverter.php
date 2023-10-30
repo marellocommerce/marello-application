@@ -2,11 +2,11 @@
 
 namespace Marello\Bundle\UPSBundle\Migrations\Data\ORM\Config;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\UPSBundle\Entity\ShippingService;
 use Marello\Bundle\UPSBundle\Entity\UPSSettings;
 use Marello\Bundle\UPSBundle\Provider\ChannelType;
 use Oro\Bundle\AddressBundle\Entity\Country;
-use Oro\Bundle\EntityBundle\ORM\Registry;
 use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 use Oro\Bundle\SecurityBundle\Encoder\SymmetricCrypterInterface;
 
@@ -18,7 +18,7 @@ class UPSConfigToSettingsConverter
     private $productionUrl;
 
     /**
-     * @var Registry
+     * @var ManagerRegistry
      */
     private $doctrine;
 
@@ -29,10 +29,10 @@ class UPSConfigToSettingsConverter
 
     /**
      * @param string $productionUrl
-     * @param Registry $doctrine
+     * @param ManagerRegistry $doctrine
      * @param SymmetricCrypterInterface $crypter
      */
-    public function __construct($productionUrl, Registry $doctrine, SymmetricCrypterInterface $crypter)
+    public function __construct($productionUrl, ManagerRegistry $doctrine, SymmetricCrypterInterface $crypter)
     {
         $this->productionUrl = $productionUrl;
         $this->doctrine = $doctrine;

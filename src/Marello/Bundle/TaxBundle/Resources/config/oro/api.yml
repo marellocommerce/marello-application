@@ -23,3 +23,57 @@ api:
                 delete_list: false
                 update_relationship: false
                 delete_relationship: false
+
+        Marello\Bundle\TaxBundle\Entity\TaxRule:
+            fields:
+                createdAt:
+                    exclude: true
+                updatedAt:
+                    exclude: true
+            filters:
+                exclusion_policy: none
+            actions:
+                create: false
+                update: false
+                delete: false
+                delete_list: false
+                update_relationship: false
+                delete_relationship: false
+
+        Marello\Bundle\TaxBundle\Entity\TaxJurisdiction:
+            identifier_field_names: [code]
+            fields:
+                id:
+                    exclude: true
+                createdAt:
+                    exclude: true
+                updatedAt:
+                    exclude: true
+            filters:
+                exclusion_policy: none
+            actions:
+                create: false
+                update: false
+                delete: false
+                delete_list: false
+                update_relationship: false
+                delete_relationship: false
+
+        Marello\Bundle\TaxBundle\Entity\TaxRate:
+            identifier_field_names: [code]
+            fields:
+                id:
+                    exclude: true
+                createdAt:
+                    exclude: true
+                updatedAt:
+                    exclude: true
+            filters:
+                exclusion_policy: none
+            actions:
+                create: false
+                update: false
+                delete: false
+                delete_list: false
+                update_relationship: false
+                delete_relationship: false

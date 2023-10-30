@@ -52,7 +52,15 @@ class LoadWarehouseGroupData extends AbstractFixture implements DependentFixture
         $organization = $this->manager->getRepository('OroOrganizationBundle:Organization')->getFirst();
 
         foreach ($this->data as $values) {
-            $group = new WarehouseGroup();
+            $existingGroup = $this
+                ->manager
+                ->getRepository(WarehouseGroup::class)
+                ->findOneBy([
+                    'system' => true,
+                    'organization'=> $organization
+                ]);
+
+            $group = ($existingGroup) ?: new WarehouseGroup();
             $group
                 ->setName(
                     sprintf('%s %s', $organization->getName(), $values['name'])

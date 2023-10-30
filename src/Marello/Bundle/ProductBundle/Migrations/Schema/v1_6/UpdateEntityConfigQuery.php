@@ -10,7 +10,7 @@ use Oro\Bundle\MigrationBundle\Migration\ParametrizedMigrationQuery;
 /**
  * Update entity config data using callback.
  */
-class UpdateEntityConfigDataQuery extends ParametrizedMigrationQuery
+class UpdateEntityConfigQuery extends ParametrizedMigrationQuery
 {
     /**
      * @var callable
@@ -60,7 +60,7 @@ class UpdateEntityConfigDataQuery extends ParametrizedMigrationQuery
      */
     public function doExecute(LoggerInterface $logger, $dryRun = false)
     {
-        $data = $this->loadEntityConfigData($logger, $this->className);
+        $data = $this->loadEntityConfigData($logger);
         $data = call_user_func($this->updateCallback, $data);
 
         $query  = 'UPDATE oro_entity_config SET data = :data WHERE class_name = :class_name';

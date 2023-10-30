@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\CatalogBundle\Twig;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\CatalogBundle\Entity\Category;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -12,7 +12,7 @@ class CategoryExtension extends AbstractExtension
     const NAME = 'marello_category';
 
     public function __construct(
-        private Registry $doctrine
+        protected ManagerRegistry $doctrine
     ) {
     }
 

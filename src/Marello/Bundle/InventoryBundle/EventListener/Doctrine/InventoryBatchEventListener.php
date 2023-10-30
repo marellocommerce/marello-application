@@ -111,7 +111,7 @@ class InventoryBatchEventListener
     public function postFlush(PostFlushEventArgs $args): void
     {
         if (!empty($this->inventoryBatches)) {
-            $entityManager = $args->getEntityManager();
+            $entityManager = $args->getObjectManager();
             foreach ($this->inventoryBatches as $inventoryBatch) {
                 $entityManager->persist($inventoryBatch);
             }

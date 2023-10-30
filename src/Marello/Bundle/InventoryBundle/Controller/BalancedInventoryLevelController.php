@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\InventoryBundle\Controller;
 
-use Marello\Bundle\InventoryBundle\Async\Topics;
+use Marello\Bundle\InventoryBundle\Async\Topic\ResolveRebalanceAllInventoryTopic;
 use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -49,8 +49,8 @@ class BalancedInventoryLevelController extends AbstractController
     {
         $messageProducer = $this->container->get(MessageProducerInterface::class);
         $messageProducer->send(
-            Topics::RESOLVE_REBALANCE_ALL_INVENTORY,
-            Topics::ALL_INVENTORY
+            ResolveRebalanceAllInventoryTopic::getName(),
+            []
         );
 
         $request->getSession()->getFlashBag()->add(

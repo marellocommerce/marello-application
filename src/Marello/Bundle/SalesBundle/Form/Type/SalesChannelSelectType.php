@@ -1,4 +1,5 @@
 <?php
+
 namespace Marello\Bundle\SalesBundle\Form\Type;
 
 use Oro\Bundle\FormBundle\Form\Type\OroJquerySelect2HiddenType;

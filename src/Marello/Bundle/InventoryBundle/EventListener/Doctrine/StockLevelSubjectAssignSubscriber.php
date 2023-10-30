@@ -32,7 +32,7 @@ class StockLevelSubjectAssignSubscriber implements EventSubscriber
      */
     public function onFlush(OnFlushEventArgs $args)
     {
-        $insertions = $args->getEntityManager()->getUnitOfWork()->getScheduledEntityInsertions();
+        $insertions = $args->getObjectManager()->getUnitOfWork()->getScheduledEntityInsertions();
         $this->assignSubjects = $this->getLevelsToAssign($insertions);
 
         /*
@@ -40,7 +40,7 @@ class StockLevelSubjectAssignSubscriber implements EventSubscriber
          * Begin transaction, which makes this flush not commit changes to DB.
          */
         if (count($this->assignSubjects) > 0) {
-            $args->getEntityManager()->beginTransaction();
+            $args->getObjectManager()->beginTransaction();
         }
     }
 
@@ -70,7 +70,7 @@ class StockLevelSubjectAssignSubscriber implements EventSubscriber
              * Therefore, indicate wrong use of subject system.
              */
             if ($id === null) {
-                $args->getEntityManager()->rollback();
+                $args->getObjectManager()->rollback();
                 throw new \Exception(
                     "Trying to assign an entity that has not been persisted as subject. Persist the entity first."
                 );
@@ -85,19 +85,19 @@ class StockLevelSubjectAssignSubscriber implements EventSubscriber
                 'subjectType',
                 ClassUtils::getClass($inventoryLevelLogRecord->getSubject())
             );
-            $args->getEntityManager()->persist($inventoryLevelLogRecord);
+            $args->getObjectManager()->persist($inventoryLevelLogRecord);
         }
 
         /*
          * Flush changes made to InventoryLevels and finish transaction.
          */
         try {
-            $args->getEntityManager()->flush();
+            $args->getObjectManager()->flush();
         } catch (\Exception $e) {
-            $args->getEntityManager()->rollback();
+            $args->getObjectManager()->rollback();
             throw $e;
         }
-        $args->getEntityManager()->commit();
+        $args->getObjectManager()->commit();
     }
 
     /**

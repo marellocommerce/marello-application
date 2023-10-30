@@ -12,6 +12,8 @@ use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
@@ -39,10 +41,11 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
  *      }
  * )
  */
-class PurchaseOrder implements DerivedPropertyAwareInterface
+class PurchaseOrder implements DerivedPropertyAwareInterface, ExtendEntityInterface
 {
     use EntityCreatedUpdatedAtTrait;
     use AuditableOrganizationAwareTrait;
+    use ExtendEntityTrait;
 
     /**
      * @ORM\Id
@@ -173,39 +176,6 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
      * )
      */
     protected $data = [];
-
-    /**
-     * Creates order using products
-     *
-     * @param array|Product[] $products
-     * @param Organization    $organization
-     *
-     * @return self
-     */
-    public static function usingProducts(array $products, Organization $organization): self
-    {
-        $order = new self($organization);
-
-        foreach ($products as $product) {
-            $virtualStock = array_reduce(
-                $product->getInventoryItems()->toArray(),
-                function ($carry, InventoryItem $item) {
-                    return $carry + $item->getVirtualStock();
-                },
-                0
-            );
-
-            $amount = $product->getDesiredStockLevel() - $virtualStock;
-            $purchaseOrderItem = new PurchaseOrderItem();
-            $purchaseOrderItem
-                ->setProduct($product)
-                ->setOrderedAmount($amount)
-                ;
-            $order->addItem($purchaseOrderItem);
-        }
-
-        return $order;
-    }
 
     /**
      * PurchaseOrder constructor.

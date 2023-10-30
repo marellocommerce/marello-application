@@ -13,13 +13,12 @@
 
 namespace Marello\Bundle\CoreBundle\Validator;
 
-use Oro\Bundle\EntityBundle\ORM\Registry;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-
 use Marello\Bundle\CoreBundle\Validator\Constraints\UniqueEntityCollection;
 use Marello\Bundle\CoreBundle\Validator\Exception\InvalidMethodException;
 
@@ -28,12 +27,9 @@ class UniqueEntityCollectionValidator extends ConstraintValidator
     /** @var array */
     private $collection = [];
 
-    /** @var Registry */
-    private $registry;
-
-    public function __construct(Registry $registry)
-    {
-        $this->registry = $registry;
+    public function __construct(
+        protected ManagerRegistry $registry
+    ) {
     }
 
     /**
@@ -57,12 +53,11 @@ class UniqueEntityCollectionValidator extends ConstraintValidator
         }
 
         $fields = (array) $constraint->fields;
-
-
         if (0 === count($fields)) {
             throw new ConstraintDefinitionException('At least one field has to be specified.');
         }
 
+        $this->collection = [];
         $em = $this->registry->getManagerForClass(get_class($entity));
         $class = $em->getClassMetadata(get_class($entity));
         $fieldValue = null;

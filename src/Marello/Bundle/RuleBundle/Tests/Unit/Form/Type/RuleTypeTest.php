@@ -63,7 +63,7 @@ class RuleTypeTest extends FormIntegrationTestCase
             [
                 (new Rule())
                     ->setName('old name')
-                    ->setSortOrder(0)
+                    ->setSortOrder(3)
             ],
         ];
     }

@@ -10,7 +10,6 @@ use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 
 use Marello\Bundle\ReturnBundle\Manager\BusinessRuleInterface;
 use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
-use Marello\Bundle\ShippingBundle\Entity\Shipment;
 use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
 
 class MarelloProductWarranty implements BusinessRuleInterface
@@ -134,7 +133,7 @@ class MarelloProductWarranty implements BusinessRuleInterface
         $enumValue = $enumRepo->find($enumValueId);
 
         if (!$enumValue) {
-            throw new \Exception(spritnf('Cannot find %s result for id %s', $className, $enumValueId));
+            throw new \Exception(sprintf('Cannot find %s result for id %s', $className, $enumValueId));
         }
 
         return $enumValue;

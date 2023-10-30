@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\InventoryBundle\Model\BalancedInventory;
 
-use Oro\Bundle\EntityBundle\ORM\Registry;
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\Repository\BalancedInventoryRepository;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
@@ -14,7 +14,7 @@ use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 class BalancedInventoryHandler
 {
     public function __construct(
-        protected Registry $doctrine,
+        protected ManagerRegistry $doctrine,
         protected BalancedInventoryFactory $balancedInventoryFactory,
         protected AclHelper $aclHelper
     ) {

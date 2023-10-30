@@ -157,13 +157,12 @@ abstract class AbstractOrderAddressType extends AbstractType
      * @param FormBuilderInterface $builder
      * @param Order $entity
      * @param bool $isEditEnabled
-     * @return bool
      */
     protected function initCustomerAddressField(
         FormBuilderInterface $builder,
         Order $entity,
         $isEditEnabled
-    ) {
+    ): void {
         if ($isEditEnabled) {
             $addresses = $this->getAddresses($entity);
 

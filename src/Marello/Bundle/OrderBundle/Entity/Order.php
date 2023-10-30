@@ -9,10 +9,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Oro\Bundle\CurrencyBundle\Entity\Price;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
-use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
-use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 
-use Marello\Bundle\OrderBundle\Model\ExtendOrder;
 use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\TaxBundle\Model\TaxAwareInterface;
@@ -28,6 +27,7 @@ use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
 use Marello\Bundle\PricingBundle\Subtotal\Model\SubtotalAwareInterface;
 use Marello\Bundle\PricingBundle\Subtotal\Model\LineItemsAwareInterface;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
+use Oro\Bundle\UserBundle\Entity\Ownership\AuditableUserAwareTrait;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\OrderBundle\Entity\Repository\OrderRepository")
@@ -44,9 +44,11 @@ use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
  *              "group_name"=""
  *          },
  *          "ownership"={
- *              "owner_type"="ORGANIZATION",
- *              "owner_field_name"="organization",
- *              "owner_column_name"="organization_id"
+ *              "owner_type"="USER",
+ *              "owner_field_name"="owner",
+ *              "owner_column_name"="user_owner_id",
+ *              "organization_field_name"="organization",
+ *              "organization_column_name"="organization_id"
  *          },
  *          "grid"={
  *              "default"="marello-order-select-grid"
@@ -64,7 +66,7 @@ use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
  * )
  * @ORM\HasLifecycleCallbacks()
  */
-class Order extends ExtendOrder implements
+class Order implements
     DerivedPropertyAwareInterface,
     CurrencyAwareInterface,
     DiscountAwareInterface,
@@ -74,13 +76,14 @@ class Order extends ExtendOrder implements
     LineItemsAwareInterface,
     LocalizationAwareInterface,
     SalesChannelAwareInterface,
-    OrganizationAwareInterface
+    ExtendEntityInterface
 {
     // HasShipmentTrait, ShippingAwareInterface will be removed in next Major
     use HasShipmentTrait;
     use LocalizationTrait;
     use EntityCreatedUpdatedAtTrait;
-    use AuditableOrganizationAwareTrait;
+    use AuditableUserAwareTrait;
+    use ExtendEntityTrait;
     
     /**
      * @var int
@@ -554,8 +557,6 @@ class Order extends ExtendOrder implements
         AbstractAddress $billingAddress = null,
         AbstractAddress $shippingAddress = null
     ) {
-        parent::__construct();
-        
         $this->items           = new ArrayCollection();
         $this->billingAddress  = $billingAddress;
         $this->shippingAddress = $shippingAddress;

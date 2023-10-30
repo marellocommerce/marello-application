@@ -4,13 +4,10 @@ namespace Marello\Bundle\InventoryBundle\Provider;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Oro\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository;
-
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
@@ -22,6 +19,7 @@ use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 use Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\QuantityWFAStrategy;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class InventoryAllocationProvider
 {
@@ -67,7 +65,6 @@ class InventoryAllocationProvider
             if ($allocation && $allocation->getWarehouse()) {
                 $this->handleAllocationInventory($allocation, $order, true);
             }
-
             /** @var OrderWarehouseResult $result */
             foreach ($orderWarehouseResults as $result) {
                 $newAllocation = new Allocation();
@@ -389,7 +386,8 @@ class InventoryAllocationProvider
         foreach ($order->getData() as $key => $value) {
             try {
                 $this->propertyAccessor->setValue($allocation, $key, $value);
-            } catch (\Exception $e) {}
+            } catch (\Exception $e) {
+            }
         }
     }
 

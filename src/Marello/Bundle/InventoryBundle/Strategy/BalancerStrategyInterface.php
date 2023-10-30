@@ -21,8 +21,8 @@ interface BalancerStrategyInterface
     /**
      * @param ProductInterface $product
      * @param ArrayAccess $salesChannelGroups
-     * @param $inventory
+     * @param $inventoryTotal
      * @return array
      */
-    public function getResults(ProductInterface $product, ArrayAccess $salesChannelGroups, $inventory);
+    public function getResults(ProductInterface $product, ArrayAccess $salesChannelGroups, $inventoryTotal);
 }

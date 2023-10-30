@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\ShippingBundle\Integration\Manual;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\ShippingBundle\Entity\Shipment;
 use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
@@ -10,18 +10,9 @@ use Marello\Bundle\ShippingBundle\Integration\ShippingServiceIntegrationInterfac
 
 class ManualShippingServiceIntegration implements ShippingServiceIntegrationInterface
 {
-    /** @var Registry */
-    public $doctrine;
-
-    /**
-     * ManualShippingServiceIntegration constructor.
-     *
-     * @param Registry $doctrine
-     */
     public function __construct(
-        Registry $doctrine
+        protected ManagerRegistry $doctrine
     ) {
-        $this->doctrine = $doctrine;
     }
 
     /**

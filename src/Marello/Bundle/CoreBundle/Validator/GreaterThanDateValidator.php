@@ -13,6 +13,7 @@
 
 namespace Marello\Bundle\CoreBundle\Validator;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\EntityBundle\ORM\Registry;
 use Marello\Bundle\CoreBundle\Validator\Constraints\GreaterThanDate;
 use Symfony\Component\Validator\Constraint;
@@ -25,7 +26,7 @@ class GreaterThanDateValidator extends ConstraintValidator
     /** @var Registry */
     private $registry;
 
-    public function __construct(Registry $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         $this->registry = $registry;
     }

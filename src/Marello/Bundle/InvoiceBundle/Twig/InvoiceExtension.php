@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\InvoiceBundle\Twig;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\InvoiceBundle\Entity\AbstractInvoice;
 use Marello\Bundle\PaymentBundle\Entity\Payment;
 use Twig\Extension\AbstractExtension;
@@ -13,7 +13,7 @@ class InvoiceExtension extends AbstractExtension
     const NAME = 'marello_invoice';
 
     public function __construct(
-        protected Registry $doctrine
+        protected ManagerRegistry $doctrine
     ) {
     }
 
