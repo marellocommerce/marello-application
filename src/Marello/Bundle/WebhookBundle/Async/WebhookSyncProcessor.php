@@ -62,9 +62,8 @@ class WebhookSyncProcessor implements
             return self::REJECT;
         }
 
-        $result = $this->jobRunner->runUnique(
-            $message->getMessageId(),
-            WebhookSyncTopic::getName() . ':'. $messageBody['integration_id']. '_'. uniqid('', true), // TODO
+        $result = $this->jobRunner->runUniqueByMessage(
+            $message,
             function () use ($integration, $messageBody) {
                 $this->setTemporaryIntegrationToken($integration);
 

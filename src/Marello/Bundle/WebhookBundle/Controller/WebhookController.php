@@ -121,21 +121,7 @@ class WebhookController extends AbstractController
             $manager->persist($webhook);
             $manager->flush();
 
-            return $this->container->get(Router::class)->redirectAfterSave(
-                [
-                    'route'      => 'marello_webhook_update',
-                    'parameters' => [
-                        'id' => $webhook->getId(),
-                    ],
-                ],
-                [
-                    'route'      => 'marello_webhook_view',
-                    'parameters' => [
-                        'id' => $webhook->getId(),
-                    ],
-                ],
-                $webhook
-            );
+            return $this->container->get(Router::class)->redirect($webhook);
         }
 
         return [

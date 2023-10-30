@@ -1,5 +1,5 @@
 datagrids:
-    marello_webhook_grid:
+    marello-webhook-grid:
         extended_entity_name: Marello\Bundle\WebhookBundle\Entity\Webhook
         inline_editing:
             enable: true

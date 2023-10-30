@@ -3,9 +3,10 @@
 namespace Marello\Bundle\WebhookBundle\Async\Topic;
 
 use Oro\Component\MessageQueue\Topic\AbstractTopic;
+use Oro\Component\MessageQueue\Topic\JobAwareTopicInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class WebhookSyncTopic extends AbstractTopic
+class WebhookSyncTopic extends AbstractTopic implements JobAwareTopicInterface
 {
     public static function getName(): string
     {
@@ -36,5 +37,10 @@ class WebhookSyncTopic extends AbstractTopic
             ->addAllowedTypes('transport_batch_size', ['int'])
             ->addAllowedTypes('connector', ['string'])
             ->addAllowedTypes('connector_parameters', ['array']);
+    }
+
+    public function createJobName($messageBody): string
+    {
+        return sprintf('%s:%s_%s', self::getName(), $messageBody['integration_id'], uniqid('', true));
     }
 }

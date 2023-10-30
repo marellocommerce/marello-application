@@ -6,14 +6,9 @@ use Marello\Bundle\WebhookBundle\Model\WebhookContext;
 
 abstract class AbstractWebhookEvent implements WebhookEventInterface
 {
-    protected $data;
-
-    public function setData($data): self
-    {
-        $this->data = $data;
-
-        return $this;
-    }
+    public function __construct(
+        protected $data = null
+    ) {}
 
     abstract public static function getName(): string;
 

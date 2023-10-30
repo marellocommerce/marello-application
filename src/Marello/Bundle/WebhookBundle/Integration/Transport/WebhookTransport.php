@@ -16,6 +16,7 @@ class WebhookTransport extends AbstractRestTransport
 {
     public const DEFAULT_ALGO = 'sha256';
     public const DEFAULT_USER_AGENT_HEADER = 'Marello-Webhook-App';
+    public const SETTINGS_PAYLOAD_KEY = 'payload';
 
     /**
      * @var Webhook
@@ -53,27 +54,30 @@ class WebhookTransport extends AbstractRestTransport
                 'User-Agent' => self::DEFAULT_USER_AGENT_HEADER,
             ],
             'authorization' => [
-                'HTTP_MARELLO_SIGNATURE ' . $this->getMarelloWebhookSignature(),
+                'HTTP_MARELLO_SIGNATURE ' . $this->getMarelloWebhookSignature($parameterBag),
             ]
         ];
     }
 
-    protected function getMarelloWebhookSignature(): bool|string
+    protected function getMarelloWebhookSignature(ParameterBag $parameterBag): bool|string
     {
-        $body = ''; // TODO: add real data here
-        $eventName = $this->getWebhook()->getName();
+        $body = $parameterBag->get(self::SETTINGS_PAYLOAD_KEY);
         $secret = $this->getWebhook()->getSecret();
 
-        return hash_hmac(self::DEFAULT_ALGO, $eventName.$body, $secret);
+        return base64_encode(
+            hash_hmac(self::DEFAULT_ALGO, $body, $secret, true)
+        );
     }
 
     public function sendRequest($item): ?RestResponseInterface
     {
-        $this->logger->notice('CALL: '.$this->getClientBaseUrl($this->settings) .' REQUEST: ' . json_encode($item, JSON_THROW_ON_ERROR));
+        $jsonData = json_encode($item, JSON_THROW_ON_ERROR);
+        $this->settings->set(self::SETTINGS_PAYLOAD_KEY, $jsonData);
+        $this->logger->notice('CALL: '.$this->getClientBaseUrl($this->settings) .' REQUEST: ' . $jsonData);
 
         return $this->client->post(
             $this->getClientBaseUrl($this->settings),
-            $item,
+            $jsonData,
             $this->getClientOptions($this->settings)
         );
     }

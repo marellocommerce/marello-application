@@ -2,12 +2,11 @@ system_configuration:
     groups:
         webhook_settings:
             title: marello.webhook.system_configuration.groups.webhook.title
+            icon: 'fa-share'
         webhook_integration_settings:
             title: marello.webhook.system_configuration.groups.settings.title
-            icon: 'fa-file'
-        integration_setting:
-            title: marello.webhook.system_configuration.groups.settings_mapping.title
-            icon: 'fa-user-plus'
+        marello_integrations:
+            title: marello.webhook.system_configuration.groups.integrations.title
 
     fields:
         marello_webhook.notification_redelivery:
@@ -21,9 +20,9 @@ system_configuration:
 
     tree:
         system_configuration:
-            platform:
+            marello:
                 children:
-                    integrations: # TODO do we need to move to Marello section?
+                    marello_integrations:
                         children:
                             webhook_settings:
                                 children:

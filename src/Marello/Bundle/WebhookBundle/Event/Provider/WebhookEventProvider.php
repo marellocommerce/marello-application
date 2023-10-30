@@ -24,10 +24,6 @@ class WebhookEventProvider
         return $this->events;
     }
 
-    /**
-     * @param string $name
-     * @return WebhookEventInterface|null
-     */
     public function getEvent(string $name): ?WebhookEventInterface
     {
         if ($this->hasEvent($name)) {
@@ -37,10 +33,6 @@ class WebhookEventProvider
         return null;
     }
 
-    /**
-     * @param string $name
-     * @return boolean
-     */
     public function hasEvent(string $name): bool
     {
         return isset($this->events[$name]);

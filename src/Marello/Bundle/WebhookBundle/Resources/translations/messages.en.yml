@@ -22,7 +22,8 @@ marello:
                 notification_redelivery.label: Notification Redelivery Count
             groups:
                 settings.title: Webhook Settings
-                webhook.title: Webhook
+                webhook.title: Webhooks
+                integrations.title: Integrations
         connector:
             notification.label: Webhook Notification
         notification:

@@ -1,12 +1,4 @@
 services:
-    _instanceof:
-        Marello\Bundle\WebhookBundle\Event\WebhookEventInterface:
-            tags:
-                - { name: marello_webhook.event }
-
-    Marello\Bundle\WebhookBundle\Event\InventoryUpdateWebhookEvent: ~ # TODO: move to bundle
-    Marello\Bundle\WebhookBundle\Event\BalancedInventoryUpdateAfterWebhookEvent: ~
-
     marello_webhook.event.provider.webhook_event_provider:
         class: Marello\Bundle\WebhookBundle\Event\Provider\WebhookEventProvider
         public: true
