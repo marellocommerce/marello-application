@@ -5,13 +5,21 @@ namespace Marello\Bundle\ShippingBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+
+use Marello\Bundle\ShippingBundle\Model\ExtendTrackingInfo;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
-use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
-use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="marello_tracking_info")
+ * @ORM\Table(
+ *     name="marello_tracking_info",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(
+ *             name="marello_tracking_info_shipmentidx",
+ *             columns={"shipment_id"}
+ *         )
+ *     }
+ * )
  * @ORM\HasLifecycleCallbacks()
  * @Oro\Config(
  *  defaultValues={
@@ -25,10 +33,9 @@ use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
  *  }
  * )
  */
-class TrackingInfo implements ExtendEntityInterface
+class TrackingInfo extends ExtendTrackingInfo
 {
     use EntityCreatedUpdatedAtTrait;
-    use ExtendEntityTrait;
 
     /**
      * @ORM\Id
@@ -110,7 +117,7 @@ class TrackingInfo implements ExtendEntityInterface
      *     inversedBy="trackingInfo",
      *     cascade={"persist"}
      * )
-     * @ORM\JoinColumn(name="shipment_id", nullable=true, unique=true)
+     * @ORM\JoinColumn(name="shipment_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -240,6 +247,7 @@ class TrackingInfo implements ExtendEntityInterface
     public function setShipment(Shipment $shipment): self
     {
         $this->shipment = $shipment;
+        $this->shipment->setTrackingInfo($this);
 
         return $this;
     }
