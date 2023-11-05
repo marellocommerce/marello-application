@@ -1,12 +1,14 @@
 <?php
 
+namespace Oro\Bundle\EntityConfigBundle\Tests\Unit\Entity;
+
 namespace MarelloEnterprise\Bundle\AddressBundle\Tests\Unit\EventListener\Doctrine;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\UnitOfWork;
 
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use PHPUnit\Framework\TestCase;
 
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
@@ -84,7 +86,7 @@ class AddressGeocodingListenerTest extends TestCase
         $uow = $this->createMock(UnitOfWork::class);
 
         $args->expects(static::once())
-            ->method('getEntityManager')
+            ->method('getObjectManager')
             ->willReturn($em);
         $em->expects(static::once())
             ->method('getUnitOfWork')

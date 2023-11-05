@@ -5,8 +5,9 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\RuleBundle\Entity\RuleInterface;
 use Marello\Bundle\RuleBundle\Entity\RuleOwnerInterface;
-use MarelloEnterprise\Bundle\InventoryBundle\Model\ExtendWFARule;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
@@ -33,9 +34,10 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
  *      }
  * )
  */
-class WFARule extends ExtendWFARule implements RuleOwnerInterface, OrganizationAwareInterface
+class WFARule implements RuleOwnerInterface, OrganizationAwareInterface, ExtendEntityInterface
 {
     use AuditableOrganizationAwareTrait;
+    use ExtendEntityTrait;
     
     /**
      * @var integer

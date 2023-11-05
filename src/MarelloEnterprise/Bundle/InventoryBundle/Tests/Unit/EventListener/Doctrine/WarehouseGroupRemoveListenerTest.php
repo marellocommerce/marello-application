@@ -3,7 +3,7 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\EventListener\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseGroupRepository;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class WarehouseGroupREmoveListenerTest extends TestCase
+class WarehouseGroupRemoveListenerTest extends TestCase
 {
     /**
      * @var WarehouseGroupRemoveListener
@@ -107,7 +107,7 @@ class WarehouseGroupREmoveListenerTest extends TestCase
             ->getMock();
         $args
             ->expects(static::once())
-            ->method('getEntityManager')
+            ->method('getObjectManager')
             ->willReturn($entityManager);
 
         $this->warehouseGroupRemoveListener->preRemove($warehouseGroup, $args);

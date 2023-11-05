@@ -1,0 +1,6 @@
+services:
+    _defaults:
+        tags:
+            - { name: oro_message_queue.topic }
+
+    MarelloEnterprise\Bundle\ReplenishmentBundle\Async\Topic\AllocateReplenishmentOrdersInventoryTopic: ~

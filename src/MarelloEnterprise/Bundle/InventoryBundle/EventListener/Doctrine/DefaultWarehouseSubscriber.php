@@ -4,8 +4,8 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 
@@ -28,14 +28,13 @@ class DefaultWarehouseSubscriber implements EventSubscriber
      */
     public function preUpdate(PreUpdateEventArgs $args)
     {
-        $entity = $args->getEntity();
-
+        $entity = $args->getObject();
         if (!$entity instanceof Warehouse) {
             return;
         }
 
         if ($args->hasChangedField('default') && $entity->isDefault()) {
-            $this->resetDefault($args->getEntityManager(), $entity->getOwner());
+            $this->resetDefault($args->getObjectManager(), $entity->getOwner());
         }
     }
 
@@ -45,13 +44,12 @@ class DefaultWarehouseSubscriber implements EventSubscriber
      */
     public function prePersist(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
-
+        $entity = $args->getObject();
         if (!$entity instanceof Warehouse || !$entity->isDefault()) {
             return;
         }
 
-        $this->resetDefault($args->getEntityManager(), $entity->getOwner());
+        $this->resetDefault($args->getObjectManager(), $entity->getOwner());
     }
 
     /**

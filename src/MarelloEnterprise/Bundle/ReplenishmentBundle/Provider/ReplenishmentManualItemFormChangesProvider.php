@@ -41,8 +41,7 @@ class ReplenishmentManualItemFormChangesProvider implements FormChangesProviderI
 
             $identifier = sprintf('%s%s', self::IDENTIFIER_PREFIX, $key);
             $product = $products[$item['product']];
-            /** @var InventoryItem $inventoryItem */
-            $inventoryItem = $product->getInventoryItems()->first();
+            $inventoryItem = $product->getInventoryItem();
             $unit = $inventoryItem->getProductUnit();
             if ($unit) {
                 $data[$identifier]['unit'] = $unit->getName();

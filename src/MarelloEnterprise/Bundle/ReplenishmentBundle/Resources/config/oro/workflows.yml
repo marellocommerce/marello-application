@@ -64,7 +64,7 @@ workflows:
 
         transition_definitions:
             allocate_inventory_definition:
-                post_actions:
+                actions:
                     - '@marelloenterprise_replenishment_order_allocate_origin_inventory_action': ~
                     - '@marello_notification_send':
                         conditions:
@@ -74,7 +74,7 @@ workflows:
                             recipient: $replenishment_order.origin
                             template: marello_replenishment_order_allocated
             check_and_pack_definition:
-                post_actions:
+                actions:
                     - '@flush_entity': $replenishment_order
                     - '@call_service_method':
                         service: oro_config.manager
@@ -96,7 +96,7 @@ workflows:
                             recipient: $.result.replenishment_carrier_receiver
                             template: marello_replenishment_order_ready_for_shipping
             ship_definition:
-                post_actions:
+                actions:
                     - '@marello_notification_send':
                         conditions:
                             '@and':
@@ -109,10 +109,10 @@ workflows:
                     - '@marelloenterprise_replenishment_order_ship_action': ~
             receive_definition: ~
             complete_definition:
-                post_actions:
+                actions:
                     - '@marelloenterprise_replenishment_order_allocate_destination_inventory_action': ~
             cancel_definition:
-                post_actions:
+                actions:
                     - '@marelloenterprise_replenishment_order_cancel_action': ~
                     - '@marello_notification_send':
                         entity: $replenishment_order
