@@ -40,7 +40,7 @@ class PurchaseOrderOnOrderOnDemandCreationListener
      */
     public function postPersist(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
         if (!$entity instanceof Allocation) {
             return;
         }
@@ -81,7 +81,7 @@ class PurchaseOrderOnOrderOnDemandCreationListener
             return;
         }
 
-        $entityManager = $args->getEntityManager();
+        $entityManager = $args->getObjectManager();
         /** @var Allocation $allocation */
         $allocation = $entityManager
             ->getRepository(Allocation::class)
@@ -214,10 +214,9 @@ class PurchaseOrderOnOrderOnDemandCreationListener
      */
     private function isOrderOnDemandItem(Product $product)
     {
-        foreach ($product->getInventoryItems() as $inventoryItem) {
-            if ($inventoryItem->isOrderOnDemandAllowed()) {
-                return true;
-            }
+        $inventoryItem = $product->getInventoryItem();
+        if ($inventoryItem && $inventoryItem->isOrderOnDemandAllowed()) {
+            return true;
         }
 
         return false;

@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\ProductBundle\Validator;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
@@ -16,19 +16,9 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class ProductSupplierRelationsDropshipValidator extends ConstraintValidator
 {
-    /**
-     * @var Registry
-     */
-    private $doctrine;
-
-    /**
-     * {@inheritdoc}
-     * @param Registry $doctrine
-     */
     public function __construct(
-        Registry $doctrine
+        protected ManagerRegistry $doctrine
     ) {
-        $this->doctrine = $doctrine;
     }
 
     /**

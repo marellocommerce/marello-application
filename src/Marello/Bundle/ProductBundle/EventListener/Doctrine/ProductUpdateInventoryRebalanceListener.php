@@ -5,11 +5,11 @@ namespace Marello\Bundle\ProductBundle\EventListener\Doctrine;
 use Doctrine\ORM\UnitOfWork;
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\Event\OnFlushEventArgs;
-
+use Marello\Bundle\CoreBundle\Model\JobIdGenerationTrait;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
-
-use Marello\Bundle\InventoryBundle\Async\Topics;
+use Marello\Bundle\InventoryBundle\Async\Topic\BalancedInventoryResetTopic;
+use Marello\Bundle\InventoryBundle\Async\Topic\ResolveRebalanceInventoryTopic;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\ProductBundle\Entity\ProductStatus;
@@ -17,6 +17,8 @@ use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
 
 class ProductUpdateInventoryRebalanceListener
 {
+    use JobIdGenerationTrait;
+
     /**
      * @var UnitOfWork
      */
@@ -51,7 +53,7 @@ class ProductUpdateInventoryRebalanceListener
      */
     public function onFlush(OnFlushEventArgs $eventArgs)
     {
-        $entityManager = $eventArgs->getEntityManager();
+        $entityManager = $eventArgs->getObjectManager();
         $this->unitOfWork = $entityManager->getUnitOfWork();
 
         if (!empty($this->unitOfWork->getScheduledEntityUpdates())) {
@@ -167,8 +169,8 @@ class ProductUpdateInventoryRebalanceListener
     protected function triggerRebalance(Product $entity)
     {
         $this->messageProducer->send(
-            Topics::RESOLVE_REBALANCE_INVENTORY,
-            ['product_id' => $entity->getId(), 'jobId' => md5($entity->getId())]
+            ResolveRebalanceInventoryTopic::getName(),
+            ['product_id' => $entity->getId(), 'jobId' => $this->generateJobId($entity->getId())]
         );
     }
 
@@ -178,8 +180,8 @@ class ProductUpdateInventoryRebalanceListener
     protected function triggerBalancedInventoryReset(BalancedInventoryLevel $level)
     {
         $this->messageProducer->send(
-            Topics::BALANCED_INVENTORY_RESET,
-            ['blncd_inventory_level_id' => $level->getId(), 'jobId' => md5($level->getId())]
+            BalancedInventoryResetTopic::getName(),
+            ['blncd_inventory_level_id' => $level->getId(), 'jobId' => $this->generateJobId($level->getId())]
         );
     }
 }

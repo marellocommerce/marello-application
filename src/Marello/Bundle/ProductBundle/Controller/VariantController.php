@@ -98,17 +98,7 @@ class VariantController extends AbstractController
             /*
              * Redirect to product page.
              */
-            return $this->container->get(Router::class)->redirectAfterSave(
-                [],
-                [
-                    'route'      => 'marello_product_view',
-                    'parameters' => [
-                        'id'                      => $product->getId(),
-                        '_enableContentProviders' => 'mainMenu'
-                    ]
-                ],
-                $product
-            );
+            return $this->container->get(Router::class)->redirect($product);
         }
 
         return [

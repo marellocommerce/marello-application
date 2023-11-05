@@ -4,10 +4,8 @@ namespace Marello\Bundle\ReturnBundle\Factory;
 
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\InventoryBundle\Entity\Allocation;
-use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
 use Marello\Bundle\OrderBundle\Converter\OrderShippingLineItemConverterInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\OrderBundle\Event\OrderShippingContextBuildingEvent;
 use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
 use Marello\Bundle\ReturnBundle\Entity\ReturnItem;

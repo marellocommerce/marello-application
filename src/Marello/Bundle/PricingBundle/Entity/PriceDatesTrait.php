@@ -10,7 +10,7 @@ trait PriceDatesTrait
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="start_date", type="datetime")
+     * @ORM\Column(name="start_date", type="datetime", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -27,7 +27,7 @@ trait PriceDatesTrait
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="end_date", type="datetime")
+     * @ORM\Column(name="end_date", type="datetime", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={

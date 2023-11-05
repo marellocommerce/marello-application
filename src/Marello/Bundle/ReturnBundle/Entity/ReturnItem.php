@@ -4,14 +4,16 @@ namespace Marello\Bundle\ReturnBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\InventoryBundle\Model\InventoryItemAwareInterface;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use Marello\Bundle\ReturnBundle\Model\ExtendReturnItem;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 
 /**
@@ -31,13 +33,15 @@ use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
  *      }
  * )
  */
-class ReturnItem extends ExtendReturnItem implements
+class ReturnItem implements
     CurrencyAwareInterface,
     InventoryItemAwareInterface,
-    OrganizationAwareInterface
+    OrganizationAwareInterface,
+    ExtendEntityInterface
 {
     use EntityCreatedUpdatedAtTrait;
     use AuditableOrganizationAwareTrait;
+    use ExtendEntityTrait;
 
     /**
      * @var int
@@ -113,11 +117,11 @@ class ReturnItem extends ExtendReturnItem implements
     }
 
     /**
-     * @return \Doctrine\Common\Collections\ArrayCollection|\Marello\Bundle\InventoryBundle\Entity\InventoryItem[]
+     * @return InventoryItem|null
      */
-    public function getInventoryItems()
+    public function getInventoryItem()
     {
-        return $this->getOrderItem()->getInventoryItems();
+        return $this->getOrderItem()->getInventoryItem();
     }
 
     /**

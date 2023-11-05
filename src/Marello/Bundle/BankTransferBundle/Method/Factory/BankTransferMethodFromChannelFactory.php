@@ -4,7 +4,6 @@ namespace Marello\Bundle\BankTransferBundle\Method\Factory;
 
 use Marello\Bundle\BankTransferBundle\Method\BankTransferMethod;
 use Marello\Bundle\ManualShippingBundle\Entity\ManualShippingSettings;
-use Marello\Bundle\ManualShippingBundle\Method\ManualShippingMethod;
 use Marello\Bundle\PaymentBundle\Method\Factory\IntegrationPaymentMethodFactoryInterface;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Generator\IntegrationIdentifierGeneratorInterface;
@@ -46,7 +45,7 @@ class BankTransferMethodFromChannelFactory implements IntegrationPaymentMethodFa
     /**
      * @param Channel $channel
      *
-     * @return ManualShippingMethod
+     * @return BankTransferMethod
      */
     public function create(Channel $channel)
     {

@@ -2,7 +2,8 @@
 
 namespace Marello\Bundle\InventoryBundle\EventListener;
 
-use Marello\Bundle\InventoryBundle\Async\Topics;
+use Marello\Bundle\CoreBundle\Model\JobIdGenerationTrait;
+use Marello\Bundle\InventoryBundle\Async\Topic\ResolveRebalanceInventoryTopic;
 use Marello\Bundle\InventoryBundle\Entity\Repository\BalancedInventoryRepository;
 use Marello\Bundle\InventoryBundle\Event\BalancedInventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\BalancedInventoryLevelInterface;
@@ -15,6 +16,8 @@ use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 
 class BalancedInventoryUpdateAfterEventListener
 {
+    use JobIdGenerationTrait;
+
     const BALANCED_LEVEL_CONTEXT_KEY = 'balancedInventoryLevel';
     const SALESCHANNELGROUP_CONTEXT_KEY  = 'salesChannelGroup';
 
@@ -26,11 +29,6 @@ class BalancedInventoryUpdateAfterEventListener
     ) {
     }
 
-    /**
-     * Handle incoming event
-     * @param BalancedInventoryUpdateEvent $event
-     * @return mixed
-     */
     public function handleInventoryUpdateAfterEvent(BalancedInventoryUpdateEvent $event)
     {
         /** @var InventoryUpdateContext $context */
@@ -58,8 +56,8 @@ class BalancedInventoryUpdateAfterEventListener
         $group = $context->getValue(self::SALESCHANNELGROUP_CONTEXT_KEY);
         if ($this->isRebalanceApplicable($product, $level, $group)) {
             $this->messageProducer->send(
-                Topics::RESOLVE_REBALANCE_INVENTORY,
-                ['product_id' => $product->getId(), 'jobId' => md5($product->getId())]
+                ResolveRebalanceInventoryTopic::getName(),
+                ['product_id' => $product->getId(), 'jobId' => $this->generateJobId($product->getId())]
             );
         }
     }

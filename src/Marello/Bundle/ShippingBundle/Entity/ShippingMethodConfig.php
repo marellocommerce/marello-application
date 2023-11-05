@@ -6,17 +6,20 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\ShippingBundle\Method\ShippingMethodTypeInterface;
-use Marello\Bundle\ShippingBundle\Model\ExtendShippingMethodConfig;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 
 /**
  * @ORM\Table(name="marello_ship_method_config")
  * @ORM\Entity(repositoryClass="Marello\Bundle\ShippingBundle\Entity\Repository\ShippingMethodConfigRepository")
  * @Config
  */
-class ShippingMethodConfig extends ExtendShippingMethodConfig
+class ShippingMethodConfig implements ExtendEntityInterface
 {
+    use ExtendEntityTrait;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer", name="id")
@@ -86,7 +89,6 @@ class ShippingMethodConfig extends ExtendShippingMethodConfig
 
     public function __construct()
     {
-        parent::__construct();
         $this->typeConfigs = new ArrayCollection();
     }
 

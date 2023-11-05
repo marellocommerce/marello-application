@@ -58,13 +58,13 @@ workflows:
                 transition_definition: cancel_purchase_order_definition
         transition_definitions:
             send_definition:
-                post_actions:
+                actions:
                     - '@marello_purchase_order_send':
                         entity: $po
                         recipient: $po.supplier
                         template: marello_purchase_order_supplier
             partially_receive_definition:
-                post_actions:
+                actions:
                     - '@marello_receive_purchase_order':
                         entity: $received_items
                         is_partial: true
@@ -73,7 +73,7 @@ workflows:
                         transitionName: 'complete_purchase_order'
                         entity: $received_items
             complete_purchase_order_definition:
-                post_actions:
+                actions:
                     - '@marello_receive_purchase_order':
                         entity: $po
                     - '@marello_purchase_order_transit_complete_action':

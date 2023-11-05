@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\NotificationMessageBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
@@ -10,7 +10,7 @@ use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageTypeInterface;
 use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageResolvedInterface;
 
-class NotificationMessageRepository extends EntityRepository
+class NotificationMessageRepository extends ServiceEntityRepository
 {
     /** @var AclHelper $aclHelper */
     private AclHelper $aclHelper;

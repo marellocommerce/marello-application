@@ -132,7 +132,6 @@ workflows:
                 actions:
                     - '@assign_value':
                           - [$update_balanced_inventory, true]
-                post_actions:
                     - '@run_action_group':
                           action_group: send_order_invoice_email
                           parameters_mapping:
@@ -151,7 +150,6 @@ workflows:
                 actions:
                     - '@extendable':
                           events: [extendable_action.order_cancel]
-                post_actions:
                     - '@marello_cancel_order':
                           update_balanced_inventory: $update_balanced_inventory
                     - '@marello_notification_send':
@@ -178,7 +176,6 @@ workflows:
                                     message: $note
                                     target_entity: $order
                               - '@assign_value': [$note, ~]
-                post_actions:
                     - '@run_action_group':
                           action_group: send_order_invoice_email
                           parameters_mapping:
@@ -190,7 +187,7 @@ workflows:
                               order: $order
                               status: 'hold'
             un_hold_definition:
-                post_actions:
+                actions:
                     - '@run_action_group':
                           action_group: send_order_invoice_email
                           parameters_mapping:
@@ -206,7 +203,7 @@ workflows:
                     '@and':
                         - '@sales_channel_has_valid_integration':
                               salesChannel: $order.salesChannel
-                post_actions:
+                actions:
                     - '@assign_value':
                           attribute: $order.invoicedAt
                           value: $invoiced_at
@@ -231,7 +228,7 @@ workflows:
                     '@and':
                         - '@sales_channel_has_valid_integration':
                               salesChannel: $order.salesChannel
-                post_actions:
+                actions:
                     - '@extendable':
                           events: [extendable_action.order_paid]
                     - '@run_action_group':
@@ -252,7 +249,7 @@ workflows:
                         - '@not_empty': $order.shippingAddress.postalCode
                         - '@not_empty': $order.shippingAddress.city
                         - '@not_empty': $order.shippingAddress.street
-                post_actions:
+                actions:
                     - '@call_service_method':
                           service: Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider
                           method: allocateOrderToWarehouses
@@ -280,7 +277,7 @@ workflows:
                         - '@not_empty': $order.shippingAddress.street
                         - '@sales_channel_has_valid_integration':
                               salesChannel: $order.salesChannel
-                post_actions:
+                actions:
                     - '@extendable':
                           events: [extendable_action.order_ship]
                     - '@marello_ship_order': ~
@@ -297,7 +294,7 @@ workflows:
                               order: $order
                               status: 'shipped'
             payment_reminder_definition:
-                post_actions:
+                actions:
                     - '@marello_notification_send':
                           entity: $order
                           recipient: $order.customer
@@ -430,7 +427,7 @@ workflows:
 
         transition_definitions:
             pending_definition:
-                post_actions:
+                actions:
                     - '@run_action_group':
                           action_group: send_order_invoice_email
                           parameters_mapping:
@@ -449,7 +446,6 @@ workflows:
                 actions:
                     - '@extendable':
                           events: [extendable_action.order_cancel]
-                post_actions:
                     - '@marello_cancel_order': ~
                     - '@marello_notification_send':
                           entity: $order
@@ -466,7 +462,7 @@ workflows:
                               order: $order
                               status: 'cancelled'
             hold_definition:
-                post_actions:
+                actions:
                     - '@run_action_group':
                           action_group: send_order_invoice_email
                           parameters_mapping:
@@ -478,7 +474,7 @@ workflows:
                               order: $order
                               status: 'hold'
             un_hold_definition:
-                post_actions:
+                actions:
                     - '@run_action_group':
                           action_group: send_order_invoice_email
                           parameters_mapping:
@@ -494,7 +490,7 @@ workflows:
                     '@and':
                         - '@sales_channel_has_valid_integration':
                               salesChannel: $order.salesChannel
-                post_actions:
+                actions:
                     - '@assign_value':
                           attribute: $order.invoicedAt
                           value: $invoiced_at
@@ -519,7 +515,7 @@ workflows:
                     '@and':
                         - '@sales_channel_has_valid_integration':
                               salesChannel: $order.salesChannel
-                post_actions:
+                actions:
                     - '@marello_notification_send':
                           entity: $order
                           recipient: $order.customer
@@ -544,7 +540,7 @@ workflows:
                         - '@not_empty': $order.shippingAddress.postalCode
                         - '@not_empty': $order.shippingAddress.city
                         - '@not_empty': $order.shippingAddress.street
-                post_actions:
+                actions:
                     - '@call_service_method':
                           service: Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider
                           method: allocateOrderToWarehouses
@@ -572,7 +568,7 @@ workflows:
                         - '@not_empty': $order.shippingAddress.street
                         - '@sales_channel_has_valid_integration':
                               salesChannel: $order.salesChannel
-                post_actions:
+                actions:
                     - '@extendable':
                           events: [extendable_action.order_ship]
                     - '@marello_ship_order': ~
@@ -589,7 +585,7 @@ workflows:
                               order: $order
                               status: 'shipped'
             payment_reminder_definition:
-                post_actions:
+                actions:
                     - '@marello_notification_send':
                           entity: $order
                           recipient: $order.customer

@@ -36,7 +36,7 @@ class EmailAddressVisibilityListener implements OptionalListenerInterface
             return;
         }
 
-        $entityManager = $args->getEntityManager();
+        $entityManager = $args->getObjectManager();
         $unitOfWork = $entityManager->getUnitOfWork();
 
         $newEntities = $unitOfWork->getScheduledEntityInsertions();

@@ -1,0 +1,7 @@
+services:
+    _defaults:
+        tags:
+            - { name: oro_message_queue.topic }
+
+    Marello\Bundle\ProductBundle\Async\Topic\ProductsAssignSalesChannelsTopic: ~
+    Marello\Bundle\ProductBundle\Async\Topic\ProductImageUpdateTopic: ~

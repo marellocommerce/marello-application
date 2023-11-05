@@ -6,14 +6,16 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
-
-use Marello\Bundle\InvoiceBundle\Model\ExtendCreditmemo;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 
 /**
  * @ORM\Entity
  */
-class Creditmemo extends ExtendCreditmemo
+class Creditmemo extends AbstractInvoice implements ExtendEntityInterface
 {
+    use ExtendEntityTrait;
+
     const CREDITMEMO_TYPE = 'creditmemo';
 
     /**

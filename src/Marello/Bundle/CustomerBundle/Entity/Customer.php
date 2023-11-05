@@ -7,11 +7,12 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
-use Marello\Bundle\CustomerBundle\Model\ExtendCustomer;
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
 use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\LocaleBundle\Model\FullNameInterface;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
@@ -41,15 +42,17 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
  *      }
  * )
  */
-class Customer extends ExtendCustomer implements
+class Customer implements
     FullNameInterface,
     EmailHolderInterface,
     EmailOwnerInterface,
-    OrganizationAwareInterface
+    OrganizationAwareInterface,
+    ExtendEntityInterface
 {
     use HasFullNameTrait, HasEmailAddressTrait;
     use EntityCreatedUpdatedAtTrait;
     use AuditableOrganizationAwareTrait;
+    use ExtendEntityTrait;
 
     /**
      * @ORM\Id

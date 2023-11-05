@@ -177,7 +177,7 @@ class ProductRepository extends ServiceEntityRepository
             )
             ->innerJoin('p.preferredSupplier', 'sup')
             ->innerJoin('p.status', 's')
-            ->innerJoin('p.inventoryItems', 'i')
+            ->innerJoin('p.inventoryItem', 'i')
             ->innerJoin('i.inventoryLevels', 'l')
             ->where("sup.name <> ''")
             ->andWhere("s.name = 'enabled'")

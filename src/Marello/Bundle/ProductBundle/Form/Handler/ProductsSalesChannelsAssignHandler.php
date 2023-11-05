@@ -3,25 +3,24 @@
 namespace Marello\Bundle\ProductBundle\Form\Handler;
 
 use Doctrine\ORM\EntityManagerInterface;
-
+use Marello\Bundle\CoreBundle\Model\JobIdGenerationTrait;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-
 use Oro\Component\MessageQueue\Util\JSON;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
-
+use Marello\Bundle\ProductBundle\Async\Topic\ProductsAssignSalesChannelsTopic;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Marello\Bundle\ProductBundle\Async\ProductsAssignSalesChannelsProcessor;
 
 class ProductsSalesChannelsAssignHandler
 {
     use RequestHandlerTrait;
+    use JobIdGenerationTrait;
 
     /** @var int size that will determine wether the products should be saved immediately or send to the queue  */
     const FLUSH_BATCH_SIZE = 100;
@@ -246,11 +245,11 @@ class ProductsSalesChannelsAssignHandler
     private function sendProductsToMessageQueue(array $productIds, array $channelIds)
     {
         $this->messageProducer->send(
-            ProductsAssignSalesChannelsProcessor::TOPIC,
+            ProductsAssignSalesChannelsTopic::getName(),
             [
                 'products' => $productIds,
                 'salesChannels' => $channelIds,
-                'jobId' => md5(implode($productIds))
+                'jobId' => $this->generateJobId(implode($productIds))
             ]
         );
     }

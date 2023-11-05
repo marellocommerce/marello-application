@@ -5,9 +5,9 @@ namespace Marello\Bundle\ShippingBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
-
-use Marello\Bundle\ShippingBundle\Model\ExtendTrackingInfo;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 
 /**
  * @ORM\Entity
@@ -25,9 +25,10 @@ use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
  *  }
  * )
  */
-class TrackingInfo extends ExtendTrackingInfo
+class TrackingInfo implements ExtendEntityInterface
 {
     use EntityCreatedUpdatedAtTrait;
+    use ExtendEntityTrait;
 
     /**
      * @ORM\Id
@@ -39,7 +40,7 @@ class TrackingInfo extends ExtendTrackingInfo
     protected $id;
 
     /**
-     * @ORM\Column(name="tracking_url", type="string", length=255)
+     * @ORM\Column(name="tracking_url", type="string", length=255, nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -52,7 +53,7 @@ class TrackingInfo extends ExtendTrackingInfo
     protected $trackingUrl;
 
     /**
-     * @ORM\Column(name="track_trace_url", type="string", length=255)
+     * @ORM\Column(name="track_trace_url", type="string", length=255, nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -65,7 +66,7 @@ class TrackingInfo extends ExtendTrackingInfo
     protected $trackTraceUrl;
 
     /**
-     * @ORM\Column(name="tracking_code", type="string", length=255)
+     * @ORM\Column(name="tracking_code", type="string", length=255, nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -78,7 +79,7 @@ class TrackingInfo extends ExtendTrackingInfo
     protected $trackingCode;
 
     /**
-     * @ORM\Column(name="provider", type="string", length=255)
+     * @ORM\Column(name="provider", type="string", length=255, nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -91,7 +92,7 @@ class TrackingInfo extends ExtendTrackingInfo
     protected $provider;
 
     /**
-     * @ORM\Column(name="provider_name", type="string", length=255)
+     * @ORM\Column(name="provider_name", type="string", length=255, nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -109,6 +110,7 @@ class TrackingInfo extends ExtendTrackingInfo
      *     inversedBy="trackingInfo",
      *     cascade={"persist"}
      * )
+     * @ORM\JoinColumn(name="shipment_id", nullable=true, unique=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={

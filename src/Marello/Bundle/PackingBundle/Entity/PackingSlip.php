@@ -6,10 +6,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Symfony\Component\Validator\Constraints as Assert;
-
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
@@ -19,7 +19,6 @@ use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\Allocation;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use Marello\Bundle\PackingBundle\Model\ExtendPackingSlip;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
@@ -48,13 +47,15 @@ use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
  * @ORM\Table(name="marello_packing_packing_slip")
  * @ORM\HasLifecycleCallbacks()
  */
-class PackingSlip extends ExtendPackingSlip implements
+class PackingSlip implements
     DerivedPropertyAwareInterface,
     OrganizationAwareInterface,
-    SalesChannelAwareInterface
+    SalesChannelAwareInterface,
+    ExtendEntityInterface
 {
     use EntityCreatedUpdatedAtTrait;
     use AuditableOrganizationAwareTrait;
+    use ExtendEntityTrait;
     
     /**
      * @var int
@@ -229,8 +230,6 @@ class PackingSlip extends ExtendPackingSlip implements
 
     public function __construct()
     {
-        parent::__construct();
-        
         $this->items = new ArrayCollection();
     }
 

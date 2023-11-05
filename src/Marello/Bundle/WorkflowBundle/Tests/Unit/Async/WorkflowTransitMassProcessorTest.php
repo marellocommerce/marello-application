@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\WorkflowBundle\Tests\Unit\Async;
 
+use Marello\Bundle\WorkflowBundle\Async\Topic\WorkflowTransitMassTopic;
 use Marello\Bundle\WorkflowBundle\Async\WorkflowTransitMassProcessor;
 use Marello\Bundle\WorkflowBundle\Manager\WorkflowTransitMassManager;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
@@ -20,7 +21,6 @@ use Oro\Component\MessageQueue\Transport\SessionInterface;
 use Oro\Component\MessageQueue\Util\JSON;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use Marello\Bundle\WorkflowBundle\Async\Topics;
 
 class WorkflowTransitMassProcessorTest extends TestCase
 {
@@ -73,7 +73,7 @@ class WorkflowTransitMassProcessorTest extends TestCase
     public function testGetSubscribedTopics()
     {
         $this->assertEquals(
-            [Topics::MASS_WORKFLOW_TRANSIT_TOPIC],
+            [WorkflowTransitMassTopic::getName()],
             WorkflowTransitMassProcessor::getSubscribedTopics()
         );
     }

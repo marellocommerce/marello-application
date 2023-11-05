@@ -8,6 +8,10 @@ api:
             alias: marellovariant
             plural_alias: marellovariants
 
+        Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation:
+            alias: marelloproductchanneltax
+            plural_alias: marelloproductchanneltaxes
+
     entities:
         Marello\Bundle\ProductBundle\Entity\Product:
             documentation_resource: '@MarelloProductBundle/Resources/doc/api/product.md'
@@ -24,6 +28,9 @@ api:
                 channelsCodes:
                     exclude: true
                 categoriesCodes:
+                    exclude: true
+                #removed tags from API response as they cannot deal with SKU as identifier
+                tags:
                     exclude: true
             filters:
                 exclusion_policy: all
@@ -76,6 +83,44 @@ api:
                         data_type: datetime
                         property_path: updatedAt
                         description: 'Filter variants by updated at'
+            actions:
+                create: false
+                delete: false
+                delete_list: false
+                add_relationship: false
+                update_relationship: false
+                delete_relationship: false
+
+        Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation:
+            fields:
+                taxcode:
+                    property_path: taxCode
+            filters:
+                exclusion_policy: all
+                fields:
+                    sku:
+                        data_type: string
+                        allow_array: true
+                        property_path: product.sku
+                        description: 'Filter taxes by sku'
+                    saleschannel:
+                        data_type: string
+                        allow_array: true
+                        property_path: salesChannel.code
+                        description: 'Filter taxes by SalesChannel'
+                    taxcode:
+                        data_type: string
+                        allow_array: true
+                        property_path: taxCode.code
+                        description: 'Filter taxes by Taxcode'
+                    createdAt:
+                        data_type: datetime
+                        property_path: createdAt
+                        description: 'Filter taxes by created at'
+                    updatedAt:
+                        data_type: datetime
+                        property_path: updatedAt
+                        description: 'Filter taxes by updated at'
             actions:
                 create: false
                 delete: false
