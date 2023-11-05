@@ -58,8 +58,7 @@ class PurchaseOrderOnOrderOnDemandCreationListener
         }
         $orderOnDemandItems = [];
         foreach ($entity->getItems() as $item) {
-            /** @var InventoryItem $inventoryItem */
-            $inventoryItem = $item->getOrderItem()->getInventoryItems()->first();
+            $inventoryItem = $item->getOrderItem()->getInventoryItem();
             if ($inventoryItem->isEnableBatchInventory()
                 && $this->isOrderOnDemandItem($item->getProduct())
                 && $entity->getState()->getId() === AllocationStateStatusInterface::ALLOCATION_STATE_WFS
@@ -229,8 +228,7 @@ class PurchaseOrderOnOrderOnDemandCreationListener
     ): void {
         $allocation = $allocationItem->getAllocation();
 
-        /** @var InventoryLevel[] $inventoryLevels */
-        $inventoryLevels = $allocationItem->getProduct()->getInventoryItems()->first()->getInventoryLevels();
+        $inventoryLevels = $allocationItem->getProduct()->getInventoryItem()->getInventoryLevels();
         foreach ($inventoryLevels as $inventoryLevel) {
             if ($inventoryLevel->getWarehouse() !== $warehouse) {
                 continue;

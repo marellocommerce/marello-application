@@ -150,8 +150,7 @@ class ReceivePurchaseOrderAction extends AbstractAction
 
     protected function setPickupLocation(PurchaseOrderItem $item, string $pickupLocation): void
     {
-        /** @var InventoryItem $inventoryItem */
-        $inventoryItem = $item->getProduct()->getInventoryItems()->first();
+        $inventoryItem = $item->getProduct()->getInventoryItem();
         $purchaseOrder = $item->getOrder();
         foreach ($inventoryItem->getInventoryLevels() as $inventoryLevel) {
             if ($inventoryLevel->getWarehouse() !== $purchaseOrder->getWarehouse()) {
