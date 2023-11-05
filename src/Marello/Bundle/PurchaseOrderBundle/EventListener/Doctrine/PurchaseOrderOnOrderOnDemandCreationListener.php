@@ -3,8 +3,8 @@
 namespace Marello\Bundle\PurchaseOrderBundle\EventListener\Doctrine;
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Marello\Bundle\InventoryBundle\Entity\Allocation;
 use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
