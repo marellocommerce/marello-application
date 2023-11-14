@@ -7,14 +7,16 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+use Oro\Bundle\EmailBundle\Model\From;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 use Oro\Bundle\CronBundle\Command\CronCommandScheduleDefinitionInterface;
+use Oro\Bundle\EmailBundle\Model\EmailTemplateCriteria;
+use Oro\Bundle\EmailBundle\Manager\EmailTemplateManager;
+use Oro\Bundle\EmailBundle\Exception\EmailTemplateException;
+use Oro\Bundle\NotificationBundle\Model\NotificationSettings;
 
 use Marello\Bundle\CustomerBundle\Entity\Customer;
-use Marello\Bundle\PurchaseOrderBundle\Model\PurchaseOrder;
-use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
-use Marello\Bundle\NotificationBundle\Provider\EmailSendProcessor;
 use Marello\Bundle\NotificationMessageBundle\Model\NotificationMessageContext;
 use Marello\Bundle\PurchaseOrderBundle\Provider\PurchaseOrderCandidatesProvider;
 use Marello\Bundle\NotificationMessageBundle\Event\CreateNotificationMessageEvent;
@@ -29,6 +31,12 @@ class PurchaseOrderAdviceCommand extends Command implements CronCommandScheduleD
     const COMMAND_NAME = 'oro:cron:marello:po-advice';
     const EXIT_CODE = 0;
 
+    /** @var NotificationSettings $notificationSettings */
+    private $notificationSettings;
+
+    /** @var EmailTemplateManager $emailTemplateManager */
+    private $emailTemplateManager;
+
     public function __construct(
         protected ContainerInterface $container
     ) {
@@ -41,6 +49,18 @@ class PurchaseOrderAdviceCommand extends Command implements CronCommandScheduleD
     public function getDefaultDefinition()
     {
         return '0 13 * * *';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isActive()
+    {
+        $featureChecker = $this->container->get('oro_featuretoggle.checker.feature_checker');
+        $configManager = $this->container->get('oro_config.manager');
+
+        return $featureChecker->isResourceEnabled(self::COMMAND_NAME, 'cron_jobs') &&
+        $configManager->get('marello_purchaseorder.purchaseorder_notification') === true;
     }
 
     /**
@@ -91,19 +111,7 @@ class PurchaseOrderAdviceCommand extends Command implements CronCommandScheduleD
             return self::EXIT_CODE;
         }
 
-        $entity = new PurchaseOrder();
-        $entity->setOrganization($this->getOrganization());
-
-        foreach ($advisedItems as $advisedItem) {
-            $poItem = new PurchaseOrderItem();
-            $poItem
-                ->setSupplier($advisedItem['supplier'])
-                ->setProductSku($advisedItem['sku'])
-                ->setOrderedAmount((double)$advisedItem['orderAmount']);
-            $entity->addItem($poItem);
-        }
-
-        if ($entity->getItems()->count() > 0) {
+        if (count($advisedItems) > 0) {
             $this->container
                 ->get('event_dispatcher')
                 ->dispatch(
@@ -115,15 +123,70 @@ class PurchaseOrderAdviceCommand extends Command implements CronCommandScheduleD
         $recipient = new Customer();
         $recipient->setEmail($configManager->get('marello_purchaseorder.purchaseorder_notification_address'));
         $recipient->setOrganization($this->getOrganization());
-        /** @var EmailSendProcessor $sendProcessor */
-        $sendProcessor = $this->container->get('marello_notification.email.send_processor');
-        $sendProcessor->sendNotification(
-            'marello_purchase_order_model_advise',
-            [$recipient],
-            $entity
+        $this->sendNotification(
+            'marello_purchase_order_advise',
+            $recipient,
+            $advisedItems
         );
 
         return self::EXIT_CODE;
+    }
+
+    /**
+     * @param EmailTemplateManager $emailTemplateManager
+     * @return void
+     */
+    public function setEmailTemplateManager(EmailTemplateManager $emailTemplateManager)
+    {
+        $this->emailTemplateManager = $emailTemplateManager;
+    }
+
+    /**
+     * @param NotificationSettings $notificationSettings
+     * @return void
+     */
+    public function setNotificationSettings(NotificationSettings $notificationSettings)
+    {
+        $this->notificationSettings = $notificationSettings;
+    }
+
+    /**
+     * @param $templateName
+     * @param $recipient
+     * @param $items
+     * @param NotificationMessageContext $context
+     * @return void
+     */
+    private function sendNotification($templateName, $recipient, $items)
+    {
+        try {
+            $this->emailTemplateManager
+                ->sendTemplateEmail(
+                    From::emailAddress($this->notificationSettings->getSender()->toString()),
+                    [$recipient],
+                    new EmailTemplateCriteria($templateName),
+                    ['items' => $items]
+                );
+        } catch (EmailTemplateException $exception) {
+            $errorContext = NotificationMessageContextFactory::createError(
+                NotificationMessageSourceInterface::NOTIFICATION_MESSAGE_SOURCE_SYSTEM,
+                'marello.notificationmessage.purchaseorder.candidates.error.cron',
+                sprintf('Error found, code: %s, Message: %s', $exception->getCode(), $exception->getMessage()),
+                null,
+                null,
+                null,
+                null,
+                null,
+                $exception->getTraceAsString(),
+                $this->getOrganization(),
+            );
+            $this->container
+                ->get('event_dispatcher')
+                ->dispatch(
+                    new CreateNotificationMessageEvent($errorContext),
+                    CreateNotificationMessageEvent::NAME
+                );
+        }
     }
 
     /**
