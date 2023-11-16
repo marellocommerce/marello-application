@@ -1,8 +1,0 @@
-services:
-    _defaults:
-        public: true
-
-    Marello\Bundle\POSUserBundle\Controller\Api\POSUserController:
-        parent: Oro\Bundle\ApiBundle\Controller\RestApiController
-        calls:
-            - ['setContainer', ['@Psr\Container\ContainerInterface']]

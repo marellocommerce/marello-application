@@ -1,60 +1,57 @@
-# Marello\Bundle\POSUserBundle\Api\Model\POSUserApi
+# Marello\Bundle\POSUserBundle\Api\Model\Login
 
 ## ACTIONS
 
-### put
+### create
 
-Retrieve a api key for the logged in User.
-
-{@inheritdoc}
+Validates the pos user email and password, and if the credentials are valid, returns the API access key if exist and the roles for the pos user.
+This can be used for subsequent API requests.
 
 {@request:json_api}
-Example:
-
-`<web_backend_prefix/api/marelloposuser/authenticate>`
+Example of the request:
 
 ```JSON
-{  
-   "data":{  
-      "type":"marelloposuser",
-      "attributes":{
-         "apiKey":"62674f15490a74cf0c607a83274d3883d8099496",
-         "roles": [
-           "ROLE_POS_ADMIN"
-         ]
-      }
-   }
+{
+  "meta": {
+    "user": "user@example.com",
+    "password": "123"
+  }
+}
+```
+
+Example of the response:
+
+```JSON
+{
+  "meta": {
+    "apiKey": "2fae75ac8e15a82f499756fb905d2f80b0d0051e",
+    "roles": [
+      "ROLE_POS_USER",
+      "ROLE_POS_ADMIN"
+    ]
+  }
 }
 ```
 {@/request}
 
 ## FIELDS
 
-### username
-Username of the Instore User account.
+### user
 
-#### put
+The pos user email or username.
 
-User can be verified by either the username or email.
+**The required field.**
 
-### email
-Email of the Instore User account.
+### password
 
-#### put
+The pos user password.
 
-User can be verified by either the username or email.
+**The required field.**
 
-### credentials
+### apiKey
 
-Password of the user for verfication of the account.
+The API access key.
 
-**The required field**
+### roles
 
-#### put
-
-Password is used to verify the identity of the user.
-
-##### NOTE: the specifications are based on proposed specs of a login session
-##### Resources:
-* https://accountjsonapi.docs.apiary.io/#reference/current-user/session/sign-in
-* http://discuss.jsonapi.org/t/example-json-api-for-accounts/234/11
+The roles for the pos user.

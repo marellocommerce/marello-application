@@ -1,7 +1,0 @@
-marello_posuser_rest_api_authenticate_user:
-    path: /api/marelloposuser/authenticate
-    methods: [PUT]
-    defaults:
-        _controller: Marello\Bundle\POSUserBundle\Controller\Api\POSUserController::authenticateAction
-    options:
-        group: rest_api

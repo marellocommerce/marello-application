@@ -123,11 +123,11 @@ api:
                     createdAt:
                         data_type: datetime
                         property_path: createdAt
-                        description: 'Filter products by created at'
+                        description: 'Filter prices by created at'
                     updatedAt:
                         data_type: datetime
                         property_path: updatedAt
-                        description: 'Filter products by updated at'
+                        description: 'Filter prices by updated at'
             actions:
                 delete: false
                 delete_list: false
@@ -162,11 +162,11 @@ api:
                     createdAt:
                         data_type: datetime
                         property_path: createdAt
-                        description: 'Filter products by created at'
+                        description: 'Filter prices by created at'
                     updatedAt:
                         data_type: datetime
                         property_path: updatedAt
-                        description: 'Filter products by updated at'
+                        description: 'Filter prices by updated at'
             actions:
                 delete: false
                 delete_list: false

@@ -2,8 +2,9 @@
 
 namespace Marello\Bundle\POSUserBundle\Migrations\Data\ORM;
 
-use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\AbstractFixture;
+
 use Oro\Bundle\UserBundle\Entity\Role;
 
 class LoadPOSRolesData extends AbstractFixture

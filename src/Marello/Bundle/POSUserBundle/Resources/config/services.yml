@@ -1,48 +1,25 @@
-imports:
-    - { resource: controllers.yml }
-
 services:
-    Marello\Bundle\POSUserBundle\Api\Handler\POSUserRequestActionHandler:
-        public: true
+    marello_posuser.api.authentication_provider:
+        alias: oro_security.authentication.provider.username_password_organization.main
+        public: false
+
+    Marello\Bundle\POSUserBundle\Api\Processor\HandleLogin:
         arguments:
-            - ['rest']
-            - '@oro_api.action_processor_bag'
-            - '@oro_api.rest.filter_value_accessor_factory'
-            - '@fos_rest.view_handler'
+            - 'main'
+            - '@marello_posuser.api.authentication_provider'
+            - '@translator'
+        tags:
+            - { name: oro.api.processor, action: create, group: save_data, requestType: json_api&rest, class: Marello\Bundle\POSUserBundle\Api\Model\Login }
 
-    Marello\Bundle\POSUserBundle\Api\Processor\AuthenticateRequestActionProcessor:
+    marello_posuser.api.login.normalize:
+        class: Oro\Bundle\ApiBundle\Processor\Shared\NormalizeEntity
         arguments:
-            - '@oro_api.processor_bag'
-            - authenticate
-            - '@oro_api.config_provider'
-            - '@oro_api.metadata_provider'
-
-    Marello\Bundle\POSUserBundle\Provider\POSUserAuthProvider:
-        arguments:
-            - '@oro_user.manager'
-            - '@security.encoder_factory'
-            - '@oro_user.logger.user_login_attempt'
-
-    Marello\Bundle\POSUserBundle\Api\Processor\NormalizeCredentialsData:
+            - '@oro_api.object_normalizer'
         tags:
-            - { name: oro.api.processor, action: authenticate, group: normalize_input, priority: -60 }
+            - { name: oro.api.processor, action: create, group: normalize_data, requestType: json_api&rest, class: Marello\Bundle\POSUserBundle\Api\Model\Login }
 
-    Marello\Bundle\POSUserBundle\Api\Processor\Authenticate\POSUserVerificationCheck:
-        arguments:
-            - '@Marello\Bundle\POSUserBundle\Provider\POSUserAuthProvider'
+    # return HTTP_OK status code instead of HTTP_CREATED for "login" POST request
+    marello_posuser.api.login.set_http_ok_response_status_code:
+        class: Oro\Bundle\ApiBundle\Processor\Shared\SetHttpResponseStatusCode
         tags:
-            - { name: oro.api.processor, action: authenticate, group: security_check, class: Marello\Bundle\POSUserBundle\Api\Model\POSUserApi }
-
-    Marello\Bundle\POSUserBundle\Api\Processor\LoadOroUserApi:
-        arguments:
-            - '@oro_user.manager'
-        tags:
-            - { name: oro.api.processor, action: authenticate, group: load_data, priority: -10 }
-
-    Marello\Bundle\POSUserBundle\Api\Processor\ConvertToPOSUserApi:
-        tags:
-            - { name: oro.api.processor, action: authenticate, group: transform_data, priority: -10 }
-
-    Marello\Bundle\POSUserBundle\Api\Processor\NormalizePOSUserApi:
-        tags:
-            - { name: oro.api.processor, action: authenticate, group: normalize_data, priority: -10 }
+            - { name: oro.api.processor, action: create, group: normalize_result, requestType: json_api&rest, class: Marello\Bundle\POSUserBundle\Api\Model\Login, priority: 10 }
