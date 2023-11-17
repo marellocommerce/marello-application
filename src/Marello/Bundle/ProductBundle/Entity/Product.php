@@ -7,7 +7,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CatalogBundle\Entity\Category;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\InventoryBundle\Model\InventoryItemAwareInterface;
 use Marello\Bundle\PricingBundle\Entity\AssembledChannelPriceList;
 use Marello\Bundle\PricingBundle\Entity\AssembledPriceList;
 use Marello\Bundle\PricingBundle\Entity\PriceListInterface;
@@ -16,6 +15,7 @@ use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Model\SalesChannelsAwareInterface;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
+use Oro\Bundle\EntityBundle\EntityProperty\DenormalizedPropertyAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
 use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamilyAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
@@ -75,7 +75,8 @@ class Product implements
     PricingAwareInterface,
     OrganizationAwareInterface,
     AttributeFamilyAwareInterface,
-    ExtendEntityInterface
+    ExtendEntityInterface,
+    DenormalizedPropertyAwareInterface
 {
     use ExtendEntityTrait;
 
@@ -1546,10 +1547,7 @@ class Product implements
     public function prePersist()
     {
         $this->createdAt = new \DateTime('now', new \DateTimeZone('UTC'));
-        if (!$this->getDefaultName()) {
-            throw new \RuntimeException(sprintf('Product %s has to have a default name', $this->getSku()));
-        }
-        $this->denormalizedDefaultName = $this->getDefaultName()->getString();
+        $this->updateDenormalizedProperties();
     }
 
     /**
@@ -1558,6 +1556,11 @@ class Product implements
     public function preUpdate()
     {
         $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->updateDenormalizedProperties();
+    }
+
+    public function updateDenormalizedProperties(): void
+    {
         if (!$this->getDefaultName()) {
             throw new \RuntimeException(sprintf('Product %s has to have a default name', $this->getSku()));
         }
