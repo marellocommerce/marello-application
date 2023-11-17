@@ -9,12 +9,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Oro\Bundle\EmailBundle\Model\From;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
-use Oro\Bundle\CronBundle\Command\CronCommandScheduleDefinitionInterface;
 use Oro\Bundle\EmailBundle\Model\EmailTemplateCriteria;
 use Oro\Bundle\EmailBundle\Manager\EmailTemplateManager;
 use Oro\Bundle\EmailBundle\Exception\EmailTemplateException;
 use Oro\Bundle\NotificationBundle\Model\NotificationSettings;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
+use Oro\Bundle\CronBundle\Command\CronCommandScheduleDefinitionInterface;
 
 use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\NotificationMessageBundle\Model\NotificationMessageContext;
@@ -31,14 +31,15 @@ class PurchaseOrderAdviceCommand extends Command implements CronCommandScheduleD
     const COMMAND_NAME = 'oro:cron:marello:po-advice';
     const EXIT_CODE = 0;
 
-    /** @var NotificationSettings $notificationSettings */
-    private $notificationSettings;
-
-    /** @var EmailTemplateManager $emailTemplateManager */
-    private $emailTemplateManager;
-
+    /**
+     * @param ContainerInterface $container
+     * @param EmailTemplateManager $emailTemplateManager
+     * @param NotificationSettings $notificationSettings
+     */
     public function __construct(
-        protected ContainerInterface $container
+        protected ContainerInterface $container,
+        protected EmailTemplateManager $emailTemplateManager,
+        protected NotificationSettings $notificationSettings
     ) {
         parent::__construct();
     }
@@ -130,24 +131,6 @@ class PurchaseOrderAdviceCommand extends Command implements CronCommandScheduleD
         );
 
         return self::EXIT_CODE;
-    }
-
-    /**
-     * @param EmailTemplateManager $emailTemplateManager
-     * @return void
-     */
-    public function setEmailTemplateManager(EmailTemplateManager $emailTemplateManager)
-    {
-        $this->emailTemplateManager = $emailTemplateManager;
-    }
-
-    /**
-     * @param NotificationSettings $notificationSettings
-     * @return void
-     */
-    public function setNotificationSettings(NotificationSettings $notificationSettings)
-    {
-        $this->notificationSettings = $notificationSettings;
     }
 
     /**
