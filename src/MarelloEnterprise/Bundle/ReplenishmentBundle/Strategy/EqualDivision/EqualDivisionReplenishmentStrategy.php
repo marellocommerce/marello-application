@@ -83,9 +83,8 @@ class EqualDivisionReplenishmentStrategy implements ReplenishmentStrategyInterfa
         foreach ($products as $product) {
             $totalQty[$product->getId()] = 0;
             $totalPercentageQty[$product->getId()] = 0;
-            $inventoryItems = $product->getInventoryItems();
-            /** @var InventoryItem $inventoryItem */
-            foreach ($inventoryItems as $inventoryItem) {
+            $inventoryItem = $product->getInventoryItem();
+            if ($inventoryItem) {
                 /** @var InventoryLevel $inventoryLevel */
                 foreach ($inventoryItem->getInventoryLevels() as $inventoryLevel) {
                     $warehouse =$inventoryLevel->getWarehouse();

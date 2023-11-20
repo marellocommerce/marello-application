@@ -7,12 +7,13 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use MarelloEnterprise\Bundle\ReplenishmentBundle\Model\ExtendReplenishmentOrder;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 
 /**
@@ -29,12 +30,14 @@ use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
  *      }
  * )
  */
-class ReplenishmentOrder extends ExtendReplenishmentOrder implements
+class ReplenishmentOrder implements
     DerivedPropertyAwareInterface,
-    OrganizationAwareInterface
+    OrganizationAwareInterface,
+    ExtendEntityInterface
 {
     use AuditableOrganizationAwareTrait;
     use EntityCreatedUpdatedAtTrait;
+    use ExtendEntityTrait;
 
     /**
      * @ORM\Id
@@ -169,7 +172,6 @@ class ReplenishmentOrder extends ExtendReplenishmentOrder implements
      */
     public function __construct()
     {
-        parent::__construct();
         $this->replOrderItems = new ArrayCollection();
     }
 
@@ -260,7 +262,7 @@ class ReplenishmentOrder extends ExtendReplenishmentOrder implements
      * @param \DateTime $executionDateTime
      * @return ReplenishmentOrder
      */
-    public function setExecutionDateTime(\DateTime $executionDateTime)
+    public function setExecutionDateTime(\DateTime $executionDateTime = null)
     {
         $this->executionDateTime = $executionDateTime;
 

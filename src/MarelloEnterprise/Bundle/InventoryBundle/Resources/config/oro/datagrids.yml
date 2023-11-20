@@ -172,6 +172,12 @@ datagrids:
             isConsolidationWarehouse:
                 label: marello.inventory.warehouse.is_consolidation_warehouse.label
                 frontend_type:      boolean
+            isOrderOnDemandLocation:
+                label: marello.inventory.warehouse.order_on_demand_location.label
+                frontend_type:      boolean
+            sortOrder:
+                label: marello.inventory.warehouse.sort_order.label
+                frontend_type:      number
         filters: ~
         actions: ~
 

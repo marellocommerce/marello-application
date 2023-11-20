@@ -12,7 +12,6 @@ use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderAdvisedItemCollectionType;
 use Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderCreateStepTwoType;
 use Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderItemCollectionType;
-use Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderItemReceiveCollectionType;
 use Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderItemType;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Marello\Bundle\SupplierBundle\Form\Type\SupplierSelectType;
@@ -22,6 +21,7 @@ use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+use Oro\Bundle\FeatureToggleBundle\Checker\FeatureChecker;
 use Oro\Bundle\FormBundle\Autocomplete\SearchRegistry;
 use Oro\Bundle\FormBundle\Form\Type\CollectionType;
 use Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType;
@@ -29,7 +29,7 @@ use Oro\Bundle\FormBundle\Form\Type\MultipleEntityType;
 use Oro\Bundle\FormBundle\Form\Type\OroDateType;
 use Oro\Bundle\FormBundle\Form\Type\OroEntitySelectOrCreateInlineType;
 use Oro\Bundle\FormBundle\Form\Type\OroMoneyType;
-use Oro\Bundle\FormBundle\Tests\Unit\Form\Stub\EntityIdentifierType as EntityIdentifierStubType;
+use Oro\Bundle\FormBundle\Tests\Unit\Form\Stub\EntityIdentifierTypeStub;
 use Oro\Bundle\FormBundle\Tests\Unit\Form\Type\EntitySelectOrCreateInlineFormExtension;
 use Oro\Bundle\LocaleBundle\Formatter\NumberFormatter;
 use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
@@ -134,6 +134,10 @@ class PurchaseOrderCreateStepTwoTypeTest extends FormIntegrationTestCase
     {
         /** @var AuthorizationCheckerInterface|\PHPUnit\Framework\MockObject\MockObject $authorizationChecker */
         $authorizationChecker = $this->createMock(AuthorizationCheckerInterface::class);
+        $authorizationChecker->method('isGranted')
+            ->willReturn(true);
+        /** @var FeatureChecker|\PHPUnit\Framework\MockObject\MockObject $featureChecker */
+        $featureChecker = $this->createMock(FeatureChecker::class);
         /** @var ConfigManager|\PHPUnit\Framework\MockObject\MockObject $configManager */
         $configManager = $this->getMockBuilder(ConfigManager::class)
             ->disableOriginalConstructor()
@@ -243,6 +247,7 @@ class PurchaseOrderCreateStepTwoTypeTest extends FormIntegrationTestCase
                     OroEntitySelectOrCreateInlineType::class =>
                         new OroEntitySelectOrCreateInlineType(
                             $authorizationChecker,
+                            $featureChecker,
                             $configManager,
                             $entityManager,
                             $searchRegistry
@@ -251,7 +256,7 @@ class PurchaseOrderCreateStepTwoTypeTest extends FormIntegrationTestCase
                     OroDateType::class => new OroDateType(),
                     MultipleEntityType::class => new MultipleEntityType($doctrineHelper, $authorizationChecker),
                     PurchaseOrderAdvisedItemCollectionType::class => new PurchaseOrderAdvisedItemCollectionType(),
-                    EntityIdentifierType::class => new EntityIdentifierStubType([]),
+                    EntityIdentifierType::class => new EntityIdentifierTypeStub([]),
                     PurchaseOrderItemCollectionType::class => new PurchaseOrderItemCollectionType(),
                     CollectionType::class => new CollectionType(),
                     PurchaseOrderItemType::class => new PurchaseOrderItemType(),

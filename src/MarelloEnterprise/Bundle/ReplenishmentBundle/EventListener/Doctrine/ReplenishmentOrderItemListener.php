@@ -2,7 +2,7 @@
 
 namespace MarelloEnterprise\Bundle\ReplenishmentBundle\EventListener\Doctrine;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
@@ -41,7 +41,7 @@ class ReplenishmentOrderItemListener
      */
     public function postUpdate(ReplenishmentOrderItem $item, LifecycleEventArgs $args)
     {
-        $em = $args->getEntityManager();
+        $em = $args->getObjectManager();
         $changes = $em->getUnitOfWork()->getEntityChangeSet($item);
         if (!isset($changes['inventoryQty'])
             || $changes['inventoryQty'][0] === null
@@ -77,8 +77,7 @@ class ReplenishmentOrderItemListener
             return;
         }
 
-        /** @var InventoryItem $inventoryItem */
-        $inventoryItem = $product->getInventoryItems()->first();
+        $inventoryItem = $product->getInventoryItem();
         if (!$inventoryItem || !$inventoryItem->isEnableBatchInventory()) {
             return;
         }

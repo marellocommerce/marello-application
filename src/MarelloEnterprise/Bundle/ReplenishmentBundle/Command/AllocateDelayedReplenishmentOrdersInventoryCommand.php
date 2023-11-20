@@ -2,40 +2,27 @@
 
 namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Command;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Persistence\ManagerRegistry;
+use Marello\Bundle\CoreBundle\Model\JobIdGenerationTrait;
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Async\AllocateReplenishmentOrdersInventoryProcessor;
+use MarelloEnterprise\Bundle\ReplenishmentBundle\Async\Topic\AllocateReplenishmentOrdersInventoryTopic;
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrder;
-use Oro\Bundle\CronBundle\Command\CronCommandInterface;
+use Oro\Bundle\CronBundle\Command\CronCommandScheduleDefinitionInterface;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class AllocateDelayedReplenishmentOrdersInventoryCommand extends Command implements CronCommandInterface
+class AllocateDelayedReplenishmentOrdersInventoryCommand extends Command implements CronCommandScheduleDefinitionInterface
 {
+    use JobIdGenerationTrait;
+
     const NAME = 'oro:cron:marello:replenishment:allocate-delayed-orders-inventory';
 
-    /**
-     * @var Registry
-     */
-    private $doctrine;
-
-    /**
-     * @var MessageProducerInterface
-     */
-    private $messageProducer;
-
-    /**
-     * @param Registry $doctrine
-     * @param MessageProducerInterface $messageProducer
-     */
     public function __construct(
-        Registry $doctrine,
-        MessageProducerInterface $messageProducer
+        private ManagerRegistry $doctrine,
+        private MessageProducerInterface $messageProducer
     ) {
-        $this->doctrine = $doctrine;
-        $this->messageProducer = $messageProducer;
-
         parent::__construct();
     }
 
@@ -68,10 +55,10 @@ class AllocateDelayedReplenishmentOrdersInventoryCommand extends Command impleme
             $ordersIds[] = $order->getId();
         }
         $this->messageProducer->send(
-            AllocateReplenishmentOrdersInventoryProcessor::TOPIC,
+            AllocateReplenishmentOrdersInventoryTopic::getName(),
             [
                 AllocateReplenishmentOrdersInventoryProcessor::ORDERS => $ordersIds,
-                'jobId' => md5(rand(1, 5))
+                'jobId' => $this->generateJobId(rand(1, 5))
             ]
         );
         $output->writeln(
@@ -90,13 +77,5 @@ class AllocateDelayedReplenishmentOrdersInventoryCommand extends Command impleme
     public function getDefaultDefinition()
     {
         return '*/5 * * * *';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function isActive()
-    {
-        return true;
     }
 }

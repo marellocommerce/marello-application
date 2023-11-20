@@ -2,13 +2,10 @@
 
 namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Workflow;
 
-use Oro\Bundle\EntityBundle\ORM\Registry;
-
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Component\ConfigExpression\ContextAccessor;
-
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
@@ -22,7 +19,7 @@ class ReplenishmentOrderAllocateOriginInventoryAction extends ReplenishmentOrder
         ContextAccessor $contextAccessor,
         EventDispatcherInterface $eventDispatcher,
         protected ReplenishmentOrdersFromConfigProvider $replenishmentOrdersProvider,
-        protected Registry $registry
+        protected ManagerRegistry $registry
     ) {
         parent::__construct($contextAccessor, $eventDispatcher);
     }
@@ -84,7 +81,7 @@ class ReplenishmentOrderAllocateOriginInventoryAction extends ReplenishmentOrder
     protected function getQuantities(ReplenishmentOrderItem $orderItem): array
     {
         if ($orderItem->isAllQuantity()) {
-            $inventoryItem = $orderItem->getProduct()->getInventoryItems()->first();
+            $inventoryItem = $orderItem->getProduct()->getInventoryItem();
             $qty = 0;
             foreach ($inventoryItem->getInventoryLevels() as $inventoryLevel) {
                 if ($inventoryLevel->getWarehouse() === $orderItem->getOrder()->getOrigin()) {

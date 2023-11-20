@@ -1,0 +1,5 @@
+map:
+    '*':
+        marelloorder/js/app/views/order-items-view: marelloenterpriseorder/js/app/views/order-items-view
+    marelloenterpriseorder/js/app/views/order-items-view:
+        marelloorder/js/app/views/order-items-view: marelloorder/js/app/views/order-items-view
