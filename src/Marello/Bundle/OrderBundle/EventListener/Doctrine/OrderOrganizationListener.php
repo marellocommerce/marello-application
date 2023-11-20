@@ -10,7 +10,8 @@ class OrderOrganizationListener
 {
     public function __construct(
         protected TokenStorageInterface $tokenStorage
-    ) {}
+    ) {
+    }
 
     public function prePersist(LifecycleEventArgs $args)
     {

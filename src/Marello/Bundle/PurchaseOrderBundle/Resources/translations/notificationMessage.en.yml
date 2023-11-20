@@ -1,0 +1,12 @@
+marello:
+    notificationmessage:
+        purchaseorder:
+            no_sku:
+                title: Product SKU can’t be found
+                message: Can’t create a Purchase Order, product SKU can’t be found
+            candidates:
+                title: Product purchase candidates
+                message: Based on the product configuration, we've identified that one or more products need to be purchased to prevent the product(s) from becoming out of stock.
+                solution: 'Navigate to the <a href="%url%">Purchase Order Item Candidates</a> and create Purchase Order(s) for the products'
+                error:
+                    cron: Purchase Candidates Cron Error

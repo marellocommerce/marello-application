@@ -105,5 +105,7 @@ services:
         class: 'Marello\Bundle\PurchaseOrderBundle\Cron\PurchaseOrderAdviceCommand'
         arguments:
             - '@service_container'
+            - '@oro_email.manager.template_email'
+            - '@oro_notification.model.notification_settings'
         tags:
             - { name: console.command }

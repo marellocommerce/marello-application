@@ -133,3 +133,9 @@ oro:
         menu:
             marelloproduct_attributes: Product Attributes
             marelloproduct_attribute_families: Product Families
+
+    attachment:
+        file:
+            media_url:
+                label:  'External Media Url'
+                description: 'External Url For Product Image'

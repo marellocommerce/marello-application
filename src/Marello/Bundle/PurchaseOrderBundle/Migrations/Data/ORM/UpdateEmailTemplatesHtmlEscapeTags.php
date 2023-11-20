@@ -10,6 +10,31 @@ use Oro\Bundle\MigrationBundle\Fixture\VersionedFixtureInterface;
 class UpdateEmailTemplatesHtmlEscapeTags extends AbstractEmailFixture implements VersionedFixtureInterface
 {
     /**
+     * {@inheritDoc}
+     */
+    public function load(ObjectManager $manager)
+    {
+        $emailTemplates = $this->getEmailTemplatesList($this->getEmailsDir());
+
+        foreach ($emailTemplates as $fileName => $file) {
+            $this->loadTemplate($manager, $fileName, $file);
+        }
+
+        $template = $this->findExistingTemplate(
+            $manager,
+            [
+                'params' => [
+                    'name' => 'marello_purchase_order_model_advise'
+                ]
+            ]
+        );
+        if ($template) {
+            $manager->remove($template);
+        }
+        $manager->flush();
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function findExistingTemplate(ObjectManager $manager, array $template)
@@ -20,8 +45,7 @@ class UpdateEmailTemplatesHtmlEscapeTags extends AbstractEmailFixture implements
         }
 
         return $manager->getRepository('OroEmailBundle:EmailTemplate')->findOneBy([
-            'name' => $template['params']['name'],
-            'entityName' => 'Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder',
+            'name' => $template['params']['name']
         ]);
     }
 
@@ -42,6 +66,6 @@ class UpdateEmailTemplatesHtmlEscapeTags extends AbstractEmailFixture implements
      */
     public function getVersion()
     {
-        return '1.3';
+        return '1.4';
     }
 }

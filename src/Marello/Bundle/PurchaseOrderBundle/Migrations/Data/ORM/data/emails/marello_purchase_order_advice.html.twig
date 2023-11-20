@@ -1,5 +1,4 @@
 @name = marello_purchase_order_advise
-@entityName = Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder
 @subject = Purchase Order advise notification
 @isSystem = 0
 @isEditable = 1
@@ -486,18 +485,18 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <!--{% for item in entity.items %}-->
-                                                <tr>
-                                                    <td class="item-info" style="border-top: 1px solid #d6d7d7; font-family: Roboto Condensed, Arial Narrow, Arial, sans-serif; padding: 10px 8px; font-size:13px; font-weight: 300;">
-                                                        {{ item.supplier }}
-                                                    </td>
-                                                    <td class="item-info" style="border-top: 1px solid #d6d7d7; font-family: Roboto Condensed, Arial Narrow, Arial, sans-serif; padding: 10px 8px; font-size:13px; font-weight: 300;">
-                                                        {{ item.productSku }}
-                                                    </td>
-                                                    <td class="item-info" style="border-top: 1px solid #d6d7d7; font-family: Roboto Condensed, Arial Narrow, Arial, sans-serif; padding: 10px 8px; font-size:13px; font-weight: 300;">
-                                                        {{ item.orderedAmount }}
-                                                    </td>
-                                                </tr>
+                                            <!--{% for item in items %}-->
+                                            <tr>
+                                                <td class="item-info" style="border-top: 1px solid #d6d7d7; font-family: Roboto Condensed, Arial Narrow, Arial, sans-serif; padding: 10px 8px; font-size:13px; font-weight: 300;">
+                                                    {{ item['supplier'] }}
+                                                </td>
+                                                <td class="item-info" style="border-top: 1px solid #d6d7d7; font-family: Roboto Condensed, Arial Narrow, Arial, sans-serif; padding: 10px 8px; font-size:13px; font-weight: 300;">
+                                                    {{ item['sku'] }}
+                                                </td>
+                                                <td class="item-info" style="border-top: 1px solid #d6d7d7; font-family: Roboto Condensed, Arial Narrow, Arial, sans-serif; padding: 10px 8px; font-size:13px; font-weight: 300;">
+                                                    {{ item['orderAmount'] }}
+                                                </td>
+                                            </tr>
                                             <!--{% endfor %}-->
                                             </tbody>
                                         </table>
