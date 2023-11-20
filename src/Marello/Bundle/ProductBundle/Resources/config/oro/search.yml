@@ -2,7 +2,6 @@ search:
     Marello\Bundle\ProductBundle\Entity\Product:
         alias: marello_product
         label: marello.product.entity_plural_label
-        title_fields: [denormalizedDefaultName]
         route:
             name: marello_product_view
             parameters:

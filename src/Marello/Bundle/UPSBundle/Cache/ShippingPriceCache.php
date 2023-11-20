@@ -2,11 +2,12 @@
 
 namespace Marello\Bundle\UPSBundle\Cache;
 
-use Doctrine\Common\Cache\CacheProvider;
+use Oro\Bundle\CacheBundle\Provider\FilesystemCache;
 use Oro\Bundle\CurrencyBundle\Entity\Price;
 use Marello\Bundle\UPSBundle\Cache\Lifetime\LifetimeProviderInterface;
 use Marello\Bundle\UPSBundle\Entity\UPSSettings;
 use Marello\Bundle\UPSBundle\Model\Request\PriceRequest;
+use Psr\Cache\CacheItemPoolInterface;
 
 class ShippingPriceCache
 {
@@ -18,7 +19,7 @@ class ShippingPriceCache
     const NAME_SPACE = 'marello_ups_shipping_price';
 
     /**
-     * @var CacheProvider
+     * @var CacheItemPoolInterface
      */
     protected $cache;
 
@@ -28,10 +29,10 @@ class ShippingPriceCache
     protected $lifetimeProvider;
 
     /**
-     * @param CacheProvider             $cache
+     * @param CacheItemPoolInterface    $cache
      * @param LifetimeProviderInterface $lifetimeProvider
      */
-    public function __construct(CacheProvider $cache, LifetimeProviderInterface $lifetimeProvider)
+    public function __construct(CacheItemPoolInterface $cache, LifetimeProviderInterface $lifetimeProvider)
     {
         $this->cache = $cache;
         $this->lifetimeProvider = $lifetimeProvider;
@@ -56,7 +57,7 @@ class ShippingPriceCache
      */
     protected function containsPriceByStringKey($stringKey)
     {
-        return $this->cache->contains($stringKey);
+        return $this->cache->hasItem($stringKey);
     }
 
     /**
@@ -73,7 +74,7 @@ class ShippingPriceCache
             return false;
         }
 
-        return $this->cache->fetch($stringKey);
+        return $this->cache->getItem($stringKey)->get();
     }
 
     /**
@@ -88,7 +89,10 @@ class ShippingPriceCache
 
         $lifetime = $this->lifetimeProvider->getLifetime($key->getTransport(), static::LIFETIME);
 
-        $this->cache->save($this->generateStringKey($key), $price, $lifetime);
+        $cacheItem = $this->cache->getItem($this->generateStringKey($key));
+        $cacheItem->set($price);
+        $cacheItem->expiresAfter($lifetime);
+        $this->cache->save($cacheItem);
 
         return $this;
     }
@@ -99,7 +103,7 @@ class ShippingPriceCache
     public function deleteAll($transportId)
     {
         $this->setNamespace($transportId);
-        $this->cache->deleteAll();
+        $this->cache->clear();
     }
 
     /**
@@ -135,6 +139,8 @@ class ShippingPriceCache
      */
     protected function setNamespace($id)
     {
-        $this->cache->setNamespace(self::NAME_SPACE.'_'.$id);
+        if ($this->cache instanceof FilesystemCache) {
+            $this->cache->setNamespace(self::NAME_SPACE.'_'.$id);
+        }
     }
 }

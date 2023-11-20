@@ -2,13 +2,11 @@
 
 namespace Marello\Bundle\InvoiceBundle\Pdf\Request;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
-
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Contracts\Translation\TranslatorInterface;
-
 use Marello\Bundle\InvoiceBundle\Entity\Creditmemo;
 use Marello\Bundle\PdfBundle\Provider\Render\ConfigValuesProvider;
 use Marello\Bundle\PdfBundle\Provider\RenderParametersProvider;
@@ -19,42 +17,12 @@ class CreditmemoPdfRequestHandler implements PdfRequestHandlerInterface
 {
     const ENTITY_ALIAS = 'creditmemo';
 
-    /**
-     * @var Registry
-     */
-    private $doctrine;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var RenderParametersProvider
-     */
-    private $parametersProvider;
-
-    /**
-     * @var TwigRenderer
-     */
-    private $renderer;
-
-    /**
-     * @param Registry $doctrine
-     * @param TranslatorInterface $translator
-     * @param RenderParametersProvider $parametersProvider
-     * @param TwigRenderer $renderer
-     */
     public function __construct(
-        Registry $doctrine,
-        TranslatorInterface $translator,
-        RenderParametersProvider $parametersProvider,
-        TwigRenderer $renderer
+        protected ManagerRegistry $doctrine,
+        protected TranslatorInterface $translator,
+        protected RenderParametersProvider $parametersProvider,
+        protected TwigRenderer $renderer
     ) {
-        $this->doctrine = $doctrine;
-        $this->translator = $translator;
-        $this->parametersProvider = $parametersProvider;
-        $this->renderer = $renderer;
     }
 
     /**

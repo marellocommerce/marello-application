@@ -1,0 +1,6 @@
+services:
+    Marello\Bundle\ProductBundle\Api\Processor\HandleMediaUrl:
+        arguments:
+            - '@oro_config.manager'
+        tags:
+            - { name: oro.api.processor, action: customize_loaded_data, class: Oro\Bundle\AttachmentBundle\Entity\File }

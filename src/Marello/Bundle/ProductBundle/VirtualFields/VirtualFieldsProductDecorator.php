@@ -8,8 +8,9 @@ use Oro\Bundle\EntityBundle\Provider\EntityFieldProvider;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\VirtualFields\QueryDesigner\VirtualFieldsProductQueryDesigner;
 use Marello\Bundle\ProductBundle\VirtualFields\QueryDesigner\VirtualFieldsSelectQueryConverter;
-use Oro\Component\PropertyAccess\PropertyAccessor;
+use Oro\Bundle\EntityExtendBundle\PropertyAccess;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class VirtualFieldsProductDecorator
 {
@@ -277,7 +278,7 @@ class VirtualFieldsProductDecorator
     protected function getPropertyAccessor()
     {
         if (!static::$propertyAccessor) {
-            static::$propertyAccessor = new PropertyAccessor();
+            static::$propertyAccessor = PropertyAccess::createPropertyAccessor();
         }
 
         return static::$propertyAccessor;

@@ -2,9 +2,8 @@
 
 namespace Marello\Bundle\ShippingBundle\Integration\UPS;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
-use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ShippingBundle\Entity\Shipment;
 use Marello\Bundle\ShippingBundle\Entity\TrackingInfo;
 use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
@@ -13,48 +12,19 @@ use Marello\Bundle\ShippingBundle\Integration\UPS\RequestBuilder\ShipmentAcceptR
 use Marello\Bundle\ShippingBundle\Integration\UPS\RequestBuilder\ShipmentConfirmRequestBuilder;
 use Marello\Bundle\UPSBundle\Method\UPSShippingMethod;
 use Oro\Bundle\AttachmentBundle\Entity\File;
-use Oro\Bundle\AttachmentBundle\Manager\AttachmentManager;
+use Oro\Bundle\AttachmentBundle\Manager\FileManager;
 use SimpleXMLElement;
 use Symfony\Component\HttpFoundation\File\File as SFFile;
 
 class UPSShippingServiceIntegration implements ShippingServiceIntegrationInterface
 {
-    /** @var UPSApi */
-    protected $api;
-
-    /** @var ShipmentConfirmRequestBuilder */
-    protected $shipmentConfirmRequestBuilder;
-
-    /** @var Registry */
-    public $doctrine;
-
-    /** @var ShipmentAcceptRequestBuilder */
-    protected $shipmentAcceptRequestBuilder;
-
-    /** @var AttachmentManager */
-    protected $attachmentManager;
-
-    /**
-     * UPSShippingServiceIntegration constructor.
-     *
-     * @param UPSApi                        $api
-     * @param Registry                      $doctrine
-     * @param AttachmentManager             $attachmentManager
-     * @param ShipmentConfirmRequestBuilder $shipmentConfirmRequestBuilder
-     * @param ShipmentAcceptRequestBuilder  $shipmentAcceptRequestBuilder
-     */
     public function __construct(
-        UPSApi $api,
-        Registry $doctrine,
-        AttachmentManager $attachmentManager,
-        ShipmentConfirmRequestBuilder $shipmentConfirmRequestBuilder,
-        ShipmentAcceptRequestBuilder $shipmentAcceptRequestBuilder
+        protected UPSApi $api,
+        protected ManagerRegistry $doctrine,
+        protected FileManager $fileManager,
+        protected ShipmentConfirmRequestBuilder $shipmentConfirmRequestBuilder,
+        protected ShipmentAcceptRequestBuilder $shipmentAcceptRequestBuilder
     ) {
-        $this->api                           = $api;
-        $this->shipmentConfirmRequestBuilder = $shipmentConfirmRequestBuilder;
-        $this->doctrine                      = $doctrine;
-        $this->attachmentManager             = $attachmentManager;
-        $this->shipmentAcceptRequestBuilder  = $shipmentAcceptRequestBuilder;
     }
 
     /**
@@ -228,8 +198,8 @@ class UPSShippingServiceIntegration implements ShippingServiceIntegrationInterfa
         $file = new File();
         $file->setFile($sfFile);
 
-        $this->attachmentManager->preUpload($file);
-        $this->attachmentManager->upload($file);
+        $this->fileManager->preUpload($file);
+        $this->fileManager->upload($file);
 
         /*
          * Delete temporary file ...

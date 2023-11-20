@@ -191,7 +191,7 @@ define(function(require) {
         /**
          * get sales channel value
          * @returns {string}
-         * @private
+         * @protected
          */
         _getSalesChannel: function() {
             return this.$salesChannel.length !== 0 ? this.$salesChannel.val() : '';

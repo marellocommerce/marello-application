@@ -21,6 +21,7 @@ marello:
         workflow_item.label:        Workflow Item
         workflow_step.label:        Workflow Step
         organization.label:         Organization
+        owner.label:                Owner
         currency.label:             Currency
         coupon_code.label:          Coupon Code
         discount_amount.label:      Discount Amount
@@ -119,6 +120,7 @@ marello:
             status.label:        Status
             allocation_exclusion.label: Exclude from Allocation Process
             organization.label: Organization
+            owner.label:        Owner
 
             messages:
                 product_not_salable:    Product cannot be sold in the chosen Sales Channel

@@ -83,7 +83,8 @@ class ReceivePurchaseOrderAction extends AbstractAction
             if ($isPartial) {
                 if (array_key_exists(self::LAST_PARTIALLY_RECEIVED_QTY, $data)) {
                     $inventoryUpdateQty = $data[self::LAST_PARTIALLY_RECEIVED_QTY];
-                    $item->setData(null);
+                    unset($data[self::LAST_PARTIALLY_RECEIVED_QTY]);
+                    $item->setData($data);
                 }
             } else {
                 if (!$this->isItemFullyReceived($item)) {
@@ -99,8 +100,7 @@ class ReceivePurchaseOrderAction extends AbstractAction
 
                 // both cases are independent of the qty that has been received
                 if ($product = $item->getProduct()) {
-                    /** @var InventoryItem $inventoryItem */
-                    $inventoryItem = $product->getInventoryItems()->first();
+                    $inventoryItem = $product->getInventoryItem();
                     // back-order remove date for item
                     $inventoryItem->setBackOrdersDatetime(null);
                     // pre-order remove date and set pre-order to false for inventory item
@@ -150,8 +150,7 @@ class ReceivePurchaseOrderAction extends AbstractAction
 
     protected function setPickupLocation(PurchaseOrderItem $item, string $pickupLocation): void
     {
-        /** @var InventoryItem $inventoryItem */
-        $inventoryItem = $item->getProduct()->getInventoryItems()->first();
+        $inventoryItem = $item->getProduct()->getInventoryItem();
         $purchaseOrder = $item->getOrder();
         foreach ($inventoryItem->getInventoryLevels() as $inventoryLevel) {
             if ($inventoryLevel->getWarehouse() !== $purchaseOrder->getWarehouse()) {

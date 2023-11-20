@@ -2,7 +2,10 @@
 
 namespace Marello\Bundle\PaymentBundle\Tests\Unit\Method\Provider;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Entity\Repository\ChannelRepository;
@@ -81,12 +84,17 @@ class ChannelPaymentMethodProviderTest extends \PHPUnit\Framework\TestCase
         $doctrineEvent = $this->createLifecycleEventArgsMock();
         $this->provider->postLoad($loadedChannel, $doctrineEvent);
 
+        $query = $this->createMock(AbstractQuery::class);
+        $query->method('getResult')->willReturn([$fetchedChannel]);
+        $queryBuilder = $this->createMock(QueryBuilder::class);
+        $queryBuilder->method('expr')->willReturn(new Expr());
+        $queryBuilder->method('where')->willReturnSelf();
+        $queryBuilder->method('setParameter')->willReturnSelf();
+        $queryBuilder->method('andWhere')->willReturnSelf();
+        $queryBuilder->method('getQuery')->willReturn($query);
         $repository
-            ->method('findByTypeAndExclude')
-            ->will(static::returnCallback(function () use ($fetchedChannel, $doctrineEvent) {
-                $this->provider->postLoad($fetchedChannel, $doctrineEvent);
-                return [$fetchedChannel];
-            }));
+            ->method('createQueryBuilder')
+            ->willReturn($queryBuilder);
     }
 
     public function testGetPaymentMethods()

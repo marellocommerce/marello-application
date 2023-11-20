@@ -3,6 +3,7 @@
 namespace Marello\Bundle\SalesBundle\Twig;
 
 use Doctrine\Persistence\ManagerRegistry;
+use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelRepository;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
@@ -37,6 +38,10 @@ class SalesExtension extends AbstractExtension
             new TwigFunction(
                 'marello_get_sales_channel_name_by_code',
                 [$this, 'getChannelNameByCode']
+            ),
+            new TwigFunction(
+                'marello_get_product_ids_by_channel_ids',
+                [$this, 'getProductIdsByChannelIds']
             )
         ];
     }
@@ -44,7 +49,7 @@ class SalesExtension extends AbstractExtension
     /**
      * @return boolean
      */
-    public function checkActiveChannels()
+    public function checkActiveChannels(): bool
     {
         if ($this->getRepository()->getActiveChannels($this->aclHelper)) {
             return true;
@@ -54,10 +59,21 @@ class SalesExtension extends AbstractExtension
     }
 
     /**
+     * @param array $channelIds
+     * @return array
+     */
+    public function getProductIdsByChannelIds(array $channelIds): array
+    {
+        $productRepository = $this->registry->getRepository(Product::class);
+
+        return $productRepository->getProductIdsBySalesChannelIds($channelIds, $this->aclHelper);
+    }
+
+    /**
      * @param string $code
      * @return string
      */
-    public function getChannelNameByCode($code)
+    public function getChannelNameByCode($code): string
     {
         $channel = $this->getRepository()
             ->findOneBy(['code' => $code]);
@@ -73,7 +89,7 @@ class SalesExtension extends AbstractExtension
      *
      * @return string The extension name
      */
-    public function getName()
+    public function getName(): string
     {
         return self::NAME;
     }

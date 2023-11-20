@@ -2,8 +2,7 @@
 
 namespace Marello\Bundle\PackingBundle\EventListener\Doctrine;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
-
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
@@ -37,24 +36,22 @@ class PackingSlipItemStatusListener
      */
     public function prePersist(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
         if ($entity instanceof PackingSlipItem) {
             $warehouse = $entity->getPackingSlip()->getWarehouse();
             $warehouseType = $warehouse->getWarehouseType()->getName();
-            if ($warehouseType === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
-                foreach ($entity->getProduct()->getInventoryItems() as $inventoryItem) {
-                    if ($inventoryLevel = $inventoryItem->getInventoryLevel($warehouse)) {
+            $inventoryItem = $entity->getProduct()->getInventoryItem();
+            if ($inventoryItem) {
+                $inventoryLevel = $inventoryItem->getInventoryLevel($warehouse);
+                if ($inventoryLevel) {
+                    if ($warehouseType === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
                         if ($inventoryLevel->getVirtualInventoryQty() >= $entity->getQuantity() ||
                             $inventoryLevel->isManagedInventory() === false) {
                             $entity->setStatus($this->findStatus(LoadOrderItemStatusData::DROPSHIPPING));
                         } else {
                             $entity->setStatus($this->findStatus(LoadOrderItemStatusData::COULD_NOT_ALLOCATE));
                         }
-                    }
-                }
-            } else {
-                foreach ($entity->getProduct()->getInventoryItems() as $inventoryItem) {
-                    if ($inventoryLevel = $inventoryItem->getInventoryLevel($warehouse)) {
+                    } else {
                         if ($inventoryLevel->getVirtualInventoryQty() >= $entity->getQuantity()) {
                             $entity->setStatus($this->findStatus(OrderItemStatusesInterface::OIS_COMPLETE));
                         }

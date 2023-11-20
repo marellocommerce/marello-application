@@ -10,7 +10,8 @@ use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\PricingBundle\Model\PriceTypeInterface;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
-use Marello\Bundle\PricingBundle\Model\ExtendAssembledChannelPriceList;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 
 /**
  * @ORM\Entity()
@@ -24,9 +25,10 @@ use Marello\Bundle\PricingBundle\Model\ExtendAssembledChannelPriceList;
  * )
  * @ORM\Table(name="marello_assembled_ch_pr_list")
  */
-class AssembledChannelPriceList extends ExtendAssembledChannelPriceList implements PriceListInterface
+class AssembledChannelPriceList implements PriceListInterface, ExtendEntityInterface
 {
     use EntityCreatedUpdatedAtTrait;
+    use ExtendEntityTrait;
     
     /**
      * @var integer

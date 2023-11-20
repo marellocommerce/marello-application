@@ -7,7 +7,6 @@ use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use phpDocumentor\Reflection\File;
 
 abstract class AbstractWHCalculator implements QtyWHCalculatorInterface
 {
@@ -97,8 +96,7 @@ abstract class AbstractWHCalculator implements QtyWHCalculatorInterface
         $cumulativePriority = 0;
         foreach ($orderItems as $orderItem) {
             $product = $orderItem->getProduct();
-            /** @var InventoryItem $invItem */
-            $invItem = $product->getInventoryItems()->first();
+            $invItem = $product->getInventoryItem();
             $invLevel = $invItem->getInventoryLevel($warehouse);
             $invLevelQtyKey = sprintf('%s_|_%s', $product->getSku(), $invLevel->getId());
             $invLevelQty = $invLevel->getVirtualInventoryQty();

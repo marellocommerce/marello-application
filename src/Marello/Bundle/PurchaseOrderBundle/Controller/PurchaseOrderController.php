@@ -178,18 +178,7 @@ class PurchaseOrderController extends AbstractController
                 'success',
                 $this->container->get(TranslatorInterface::class)->trans('marello.purchaseorder.messages.purchaseorder.saved')
             );
-            return $this->container->get(Router::class)->redirectAfterSave(
-                [
-                    'route'      => 'marello_purchaseorder_purchaseorder_view',
-                    'parameters' => [
-                        'id' => $form->getData()->getId(),
-                    ],
-                ],
-                [
-                    'route'      => 'marello_purchaseorder_purchaseorder_index',
-                    'parameters' => [],
-                ]
-            );
+            return $this->container->get(Router::class)->redirect($purchaseOrder);
         }
 
         $this->addFlash(
@@ -225,21 +214,7 @@ class PurchaseOrderController extends AbstractController
             );
 
 
-            return $this->container->get(Router::class)->redirectAfterSave(
-                [
-                    'route'      => 'marello_purchaseorder_purchaseorder_update',
-                    'parameters' => [
-                        'id'                      => $purchaseOrder->getId(),
-                    ]
-                ],
-                [
-                    'route'      => 'marello_purchaseorder_purchaseorder_view',
-                    'parameters' => [
-                        'id'                      => $purchaseOrder->getId(),
-                    ]
-                ],
-                $purchaseOrder
-            );
+            return $this->container->get(Router::class)->redirect($purchaseOrder);
         }
 
         return [

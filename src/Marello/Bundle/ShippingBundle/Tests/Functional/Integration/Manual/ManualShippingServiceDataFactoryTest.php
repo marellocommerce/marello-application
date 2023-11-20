@@ -8,7 +8,6 @@ use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
 use Marello\Bundle\ShippingBundle\Integration\Manual\ManualShippingServiceDataFactory;
 use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
-use Marello\Bundle\ReturnBundle\Tests\Functional\DataFixtures\LoadReturnData;
 
 class ManualShippingServiceDataFactoryTest extends WebTestCase
 {
@@ -22,7 +21,6 @@ class ManualShippingServiceDataFactoryTest extends WebTestCase
         $this->loadFixtures(
             [
                 LoadOrderData::class,
-                LoadReturnData::class
             ]
         );
         
@@ -59,7 +57,7 @@ class ManualShippingServiceDataFactoryTest extends WebTestCase
 
         $shippingDataProvider = $this->client
             ->getContainer()
-            ->get('marello_order.shipping.integration.service_data_provider');
+            ->get('marello_return.shipping.integration.service_data_provider');
         $shippingDataProvider = $shippingDataProvider
             ->setEntity($return)
             ->setWarehouse($this->getReference(LoadOrderData::DEFAULT_WAREHOUSE_REF));

@@ -5,11 +5,9 @@ namespace Marello\Bundle\SalesBundle\EventListener\Doctrine;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
-
-use Oro\Component\MessageQueue\Client\MessageProducerInterface;
-
-use Marello\Bundle\SalesBundle\Async\Topics;
+use Marello\Bundle\SalesBundle\Async\Topic\RebalanceSalesChannelGroupTopic;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
+use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 
 class SalesChannelGroupInventoryRebalanceListener
 {
@@ -36,7 +34,7 @@ class SalesChannelGroupInventoryRebalanceListener
      */
     public function onFlush(OnFlushEventArgs $eventArgs)
     {
-        $this->em = $eventArgs->getEntityManager();
+        $this->em = $eventArgs->getObjectManager();
         $this->unitOfWork = $this->em->getUnitOfWork();
         $records = [];
         if (!empty($this->unitOfWork->getScheduledEntityInsertions())) {
@@ -97,7 +95,7 @@ class SalesChannelGroupInventoryRebalanceListener
             $salesChannelIds[] = $salesChannel->getId();
         }
         $this->messageProducer->send(
-            Topics::REBALANCE_SALESCHANNEL_GROUP_TOPIC,
+            RebalanceSalesChannelGroupTopic::getName(),
             ['salesChannelIds' => $salesChannelIds]
         );
     }

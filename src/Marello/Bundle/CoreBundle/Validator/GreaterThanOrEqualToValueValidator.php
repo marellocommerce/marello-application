@@ -13,24 +13,20 @@
 
 namespace Marello\Bundle\CoreBundle\Validator;
 
-use Oro\Bundle\EntityBundle\ORM\Registry;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-
 use Marello\Bundle\CoreBundle\Validator\Exception\InvalidMethodException;
 use Marello\Bundle\CoreBundle\Validator\Constraints\GreaterThanOrEqualToValue;
 
 class GreaterThanOrEqualToValueValidator extends ConstraintValidator
 {
-    /** @var Registry */
-    private $registry;
-
-    public function __construct(Registry $registry)
-    {
-        $this->registry = $registry;
+    public function __construct(
+        protected ManagerRegistry $registry
+    ) {
     }
 
     /**

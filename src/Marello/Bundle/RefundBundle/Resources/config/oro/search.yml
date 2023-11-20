@@ -2,7 +2,6 @@ search:
     Marello\Bundle\RefundBundle\Entity\Refund:
         alias:                          marello_refund
         label:                          marello.refund.entity_plural_label
-        title_fields:                   [refundNumber]
         route:
             name:                       marello_refund_view
             parameters:

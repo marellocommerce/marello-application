@@ -3,7 +3,6 @@
 namespace Marello\Bundle\PaymentBundle\Validator;
 
 use Marello\Bundle\PaymentBundle\Entity\Payment;
-use Marello\Bundle\PaymentBundle\Migrations\Data\ORM\LoadPaymentStatusData;
 use Marello\Bundle\PaymentBundle\Validator\Constraints\TotalPaid;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
