@@ -26,7 +26,7 @@ define(function(require) {
             name: '',
             isConsolidationWarehouse: false,
             isOrderOnDemandLocation: false,
-            sortOrder: 0,
+            sortOrderOodLoc: 0,
             onlyAdded: false
         },
 
@@ -42,9 +42,9 @@ define(function(require) {
             return data;
         },
 
-        getSortOrderData: function() {
+        getsortOrderOodLocData: function() {
             const data = [];
-            data[this.get('code')] = this.get('sortOrder');
+            data[this.get('code')] = this.get('sortOrderOodLoc');
             return data;
         },
 

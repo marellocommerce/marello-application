@@ -175,8 +175,8 @@ datagrids:
             isOrderOnDemandLocation:
                 label: marello.inventory.warehouse.order_on_demand_location.label
                 frontend_type:      boolean
-            sortOrder:
-                label: marello.inventory.warehouse.sort_order.label
+            sortOrderOodLoc:
+                label: marello.inventory.warehouse.sort_order_ood_loc.label
                 frontend_type:      number
         filters: ~
         actions: ~

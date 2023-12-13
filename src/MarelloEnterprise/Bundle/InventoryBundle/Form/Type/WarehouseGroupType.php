@@ -61,7 +61,7 @@ class WarehouseGroupType extends AbstractType
                 ]
             )
             ->add(
-                'sortOrder',
+                'sortOrderOodLoc',
                 HiddenType::class,
                 [
                     'mapped' => false
@@ -79,7 +79,7 @@ class WarehouseGroupType extends AbstractType
     {
         $this->assignDataToWarehouses($event, 'isConsolidationWarehouse', 'setIsConsolidationWarehouse', false);
         $this->assignDataToWarehouses($event, 'isOrderOnDemandLocation', 'setOrderOnDemandLocation', false);
-        $this->assignDataToWarehouses($event, 'sortOrder', 'setSortOrder', 0);
+        $this->assignDataToWarehouses($event, 'sortOrderOodLoc', 'setSortOrderOodLoc', 0);
     }
 
     private function assignDataToWarehouses(FormEvent $event, string $fieldName, string $setter, $defaultValue): void

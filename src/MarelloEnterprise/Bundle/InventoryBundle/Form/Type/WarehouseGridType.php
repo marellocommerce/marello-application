@@ -102,7 +102,7 @@ class WarehouseGridType extends AbstractType
                 'name' => $warehouse->getLabel(),
                 'isConsolidationWarehouse' => $warehouse->getIsConsolidationWarehouse(),
                 'isOrderOnDemandLocation' => $warehouse->isOrderOnDemandLocation(),
-                'sortOrder' => $warehouse->getSortOrder(),
+                'sortOrderOodLoc' => $warehouse->getSortOrderOodLoc(),
             ];
         }
 

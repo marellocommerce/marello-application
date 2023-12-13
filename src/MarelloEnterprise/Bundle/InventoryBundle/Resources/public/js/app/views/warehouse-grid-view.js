@@ -24,7 +24,7 @@ define(function(require) {
             'click [data-name="warehouse-add"]': 'onAddWarehouse',
             'change .consolidation-warehouse [data-name="field__consolidation-warehouse"]': 'onConsolidationCheckboxChange',
             'change .warehouse-order-on-demand-location [data-name="field__order-on-demand-location-warehouse"]': 'onDemandLocationCheckboxChange',
-            'change .warehouse-sort-order [data-name="field__sort-order-warehouse"]': 'onSortOrderChange'
+            'change .warehouse-sort-order-ood [data-name="field__sort-order-ood-warehouse"]': 'onsortOrderOodLocChange'
         },
 
         /**
@@ -65,7 +65,7 @@ define(function(require) {
                 $warehouseTable: this.$('[data-name="warehouse-table-body"]'),
                 $consolidationWarehouses: $(document).find('[name*=isConsolidationWarehouse]'),
                 $onDemandLocationWarehouses: $(document).find('[name*=isOrderOnDemandLocation]'),
-                $sortOrderWarehouses: $(document).find('[name*=sortOrder]'),
+                $sortOrderOodLocWarehouses: $(document).find('[name*=sortOrderOodLoc]'),
             };
         },
 
@@ -104,10 +104,10 @@ define(function(require) {
             this.collection.get({cid: cid}).set('isOrderOnDemandLocation', propertyValue);
         },
 
-        onSortOrderChange: function(e) {
+        onsortOrderOodLocChange: function(e) {
             const cid = this.$(e.currentTarget).closest('tr').data('cid');
             const propertyValue = this.$(e.currentTarget).val();
-            this.collection.get({cid: cid}).set('sortOrder', propertyValue);
+            this.collection.get({cid: cid}).set('sortOrderOodLoc', propertyValue);
         },
 
         onAddWarehouse: function(e) {
@@ -119,7 +119,7 @@ define(function(require) {
                     {
                         isConsolidationWarehouse: false,
                         isOrderOnDemandLocation: false,
-                        sortOrder: 0,
+                        sortOrderOodLoc: 0,
                         onlyAdded: true
                     },
                     this.allowedWarehouses[value]
@@ -139,16 +139,16 @@ define(function(require) {
         updateWarehouses: function() {
             const consolidationWarehousesData = {};
             const orderOnDemandLocationData = {};
-            const sortOrderData = {};
+            const sortOrderOodLocData = {};
             this.collection.each(function(model) {
                 _.extend(consolidationWarehousesData, model.getConsolidationWarehouseData());
                 _.extend(orderOnDemandLocationData, model.getOrderOnDemandLocationData());
-                _.extend(sortOrderData, model.getSortOrderData());
+                _.extend(sortOrderOodLocData, model.getsortOrderOodLocData());
             });
 
             this.domCache.$consolidationWarehouses.val(JSON.stringify(consolidationWarehousesData));
             this.domCache.$onDemandLocationWarehouses.val(JSON.stringify(orderOnDemandLocationData));
-            this.domCache.$sortOrderWarehouses.val(JSON.stringify(sortOrderData));
+            this.domCache.$sortOrderOodLocWarehouses.val(JSON.stringify(sortOrderOodLocData));
         },
 
         getConsolidationWarehouses: function() {
