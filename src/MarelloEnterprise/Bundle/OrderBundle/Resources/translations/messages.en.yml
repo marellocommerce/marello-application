@@ -1,10 +1,5 @@
 marello:
     order:
-        system_configuration:
-            groups:
-                order.title:          Order
-                order_general.title:  General
-
         consolidation_enabled.label: Consolidation Enabled
 
 marelloenterprise:

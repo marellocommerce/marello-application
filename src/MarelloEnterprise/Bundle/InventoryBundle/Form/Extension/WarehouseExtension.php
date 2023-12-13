@@ -35,7 +35,7 @@ class WarehouseExtension extends AbstractTypeExtension
         $builder
             ->add('default', CheckboxType::class, [
                 'required' => false,
-                'tooltip'  => 'marelloenterprise.inventory.warehouse.delete',
+                'tooltip'  => 'marelloenterprise.inventory.warehouse.tooltip.delete_default',
             ])
             ->add('warehouseType', EntityType::class, [
                 'label'    => 'marello.inventory.warehouse.warehouse_type.label',
