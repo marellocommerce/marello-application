@@ -82,11 +82,14 @@ marello:
             general:                General
             additional:             Additional
 
-        form.choose_product:        Select Product
-        form.add_product:           Add Product
-        form.add_products:          Add Multiple Products
-        form.add_variant:           Add Variant
-        form.add_supplier:          Add Supplier
+        form:
+            choose_product:        Select Product
+            add_product:           Add Product
+            add_products:          Add Multiple Products
+            add_variant:           Add Variant
+            add_supplier:          Add Supplier
+            tooltip:
+                warranty:          Warranty in number of days
         product_information:        Product Information
         create_variant.label:       Create Variant
         add_variant.label:          Variants

@@ -61,9 +61,9 @@ class InventoryLevelCalculator
                 $forbiddenInventory += $batch->getQuantity();
             }
             // we cannot use reserved for Order On Demand batches
-            if ($batch->getOrderOnDemandRef()) {
-                $forbiddenInventory += $batch->getQuantity();
-            }
+//            if ($batch->getOrderOnDemandRef()) {
+//                $forbiddenInventory += $batch->getQuantity();
+//            }
 
             $batchInventoryTotal += $batch->getQuantity();
         }

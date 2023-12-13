@@ -26,7 +26,7 @@ system_configuration:
             type: Oro\Bundle\FormBundle\Form\Type\OroPercentType
             options:
                 label: marello.inventory.system_configuration.fields.balance_threshold_percentage.label
-                tooltip: marello.inventory.system_configuration.fields.balance_threshold_percentage
+                tooltip: marello.inventory.system_configuration.fields.tooltip.balance_threshold_percentage
                 required: true
                 constraints:
                     - NotBlank: ~
@@ -40,27 +40,12 @@ system_configuration:
                 constraints:
                     - NotBlank: ~
 
-        marello_inventory.inventory_on_demand_enabled:
-            data_type: boolean
-            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
-            options:
-                label: marello.inventory.system_configuration.fields.inventory_on_demand_enabled.label
-                required: false
-
-        marello_inventory.inventory_on_demand:
-            data_type: boolean
-            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
-            options:
-                label: marello.inventory.system_configuration.fields.inventory_on_demand.label
-                tooltip: marello.inventory.system_configuration.fields.inventory_on_demand
-                required: false
-
         marello_inventory.inventory_allocation_priority:
             data_type: string
             type: Marello\Bundle\InventoryBundle\Form\Type\InventoryAllocationPriorityChoiceType
             options:
                 label: marello.inventory.system_configuration.fields.inventory_allocation_priority.label
-                tooltip: marello.inventory.system_configuration.fields.inventory_allocation_priority
+                tooltip: marello.inventory.system_configuration.fields.tooltip.inventory_allocation_priority
                 required: true
                 constraints:
                     - NotBlank: ~
@@ -79,12 +64,6 @@ system_configuration:
                                     inventory_balancing_strategy:
                                         children:
                                             - marello_inventory.balancing_strategy
-                            inventory_on_demand:
-                                children:
-                                    inventory_on_demand_general:
-                                        children:
-                                            - marello_inventory.inventory_on_demand_enabled
-                                            - marello_inventory.inventory_on_demand
                             inventory_allocation:
                                 children:
                                     inventory_allocation_general:

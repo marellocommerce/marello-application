@@ -34,6 +34,7 @@ workflows:
         transitions:
             send:
                 step_to: pending
+                is_start: true
                 transition_definition: send_definition
             partially_receive:
                 step_to: partially_received

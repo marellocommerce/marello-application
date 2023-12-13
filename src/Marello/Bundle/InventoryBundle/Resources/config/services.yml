@@ -238,7 +238,7 @@ services:
     Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\QuantityWFAStrategy:
         arguments:
             - '@Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\Calculator\SingleWHCalculator'
-            - '@Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository'
+            - '@oro_entity.doctrine_helper'
             - '@oro_config.manager'
         calls:
             - [setAllocationExclusionProvider, ['@Marello\Bundle\InventoryBundle\Provider\AllocationExclusionProvider']]

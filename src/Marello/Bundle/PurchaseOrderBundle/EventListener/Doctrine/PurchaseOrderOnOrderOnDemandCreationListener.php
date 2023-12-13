@@ -14,6 +14,11 @@ use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 use Marello\Bundle\InventoryBundle\Factory\InventoryBatchFromInventoryLevelFactory;
 use Marello\Bundle\InventoryBundle\Provider\AllocationContextInterface;
 use Marello\Bundle\InventoryBundle\Provider\AllocationStateStatusInterface;
+use Marello\Bundle\NotificationMessageBundle\Factory\NotificationMessageContextFactory;
+use Marello\Bundle\NotificationMessageBundle\Model\NotificationMessageContext;
+use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageResolvedInterface;
+use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageSourceInterface;
+use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageTypeInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
@@ -30,10 +35,10 @@ class PurchaseOrderOnOrderOnDemandCreationListener
      */
     private $allocationId;
 
-    /**
-     * @var ConfigManager $configManager
-     */
-    private $configManager;
+    public function __construct(
+        private ConfigManager $configManager
+    ) {
+    }
 
     /**
      * @param LifecycleEventArgs $args
@@ -45,8 +50,8 @@ class PurchaseOrderOnOrderOnDemandCreationListener
             return;
         }
 
-        if (!$this->configManager->get('marello_inventory.inventory_on_demand_enabled')
-            || !$this->configManager->get('marello_inventory.inventory_on_demand')
+        if (!$this->configManager->get('marello_order.order_on_demand_enabled')
+            || !$this->configManager->get('marello_order.order_on_demand')
         ) {
             return;
         }
@@ -94,7 +99,7 @@ class PurchaseOrderOnOrderOnDemandCreationListener
             $allocation,
             $entityManager
         );
-        $this->updatePurchaseOrdersTotal($poBySupplier, $allocationItemsBySupplier, $allocation->getOrder());
+        $this->updatePurchaseOrdersTotal($poBySupplier, $allocationItemsBySupplier, $allocation);
         $entityManager->flush();
     }
 
@@ -146,6 +151,7 @@ class PurchaseOrderOnOrderOnDemandCreationListener
                     self::ORDER_ON_DEMAND =>
                         [
                             'order' => $allocation->getOrder()->getId(),
+                            'allocation' => $allocation->getId(),
                             'allocationItem' => $allocationItem->getId(),
                         ]
                 ]);
@@ -159,7 +165,11 @@ class PurchaseOrderOnOrderOnDemandCreationListener
         return [$poBySupplier, $allocationItemsBySupplier];
     }
 
-    private function updatePurchaseOrdersTotal(array $poBySupplier, array $allocationItemsBySupplier, Order $order): void
+    private function updatePurchaseOrdersTotal(
+        array $poBySupplier,
+        array $allocationItemsBySupplier,
+        Allocation $allocation
+    ): void
     {
         foreach ($poBySupplier as $po) {
             $orderTotal = 0.00;
@@ -173,7 +183,8 @@ class PurchaseOrderOnOrderOnDemandCreationListener
                     [
                         self::ORDER_ON_DEMAND =>
                             [
-                                'order' => $order->getId(),
+                                'order' => $allocation->getOrder()->getId(),
+                                'allocation' => $allocation->getId(),
                                 'allocationItems' => $allocationItemsBySupplier[$po->getSupplier()->getCode()]
                             ]
                     ]
@@ -233,12 +244,10 @@ class PurchaseOrderOnOrderOnDemandCreationListener
             if ($inventoryLevel->getWarehouse() !== $warehouse) {
                 continue;
             }
-
             $inventoryBatch = InventoryBatchFromInventoryLevelFactory::createInventoryBatch($inventoryLevel);
             $inventoryBatch->setOrganization($allocation->getOrganization());
             $inventoryBatch->setOrderOnDemandRef($allocationItem->getId());
-            $inventoryBatch->setQuantity($allocationItem->getQuantity());
-            $inventoryBatch->setDeliveryDate(null);
+            $inventoryBatch->setQuantity(0);
 
             $entityManager->persist($inventoryBatch);
         }
@@ -263,10 +272,32 @@ class PurchaseOrderOnOrderOnDemandCreationListener
     }
 
     /**
-     * @param ConfigManager $configManager
+     * @return NotificationMessageContext
      */
-    public function setConfigManager(ConfigManager $configManager)
+    protected function createNotificationContext($type)
     {
-        $this->configManager = $configManager;
+//        $translation = $this
+//            ->container
+//            ->get('translator')
+//            ->trans(
+//                'marello.notificationmessage.purchaseorder.candidates.solution',
+//                ['%url%' => $url],
+//                'notificationMessage'
+//            );
+
+//        return NotificationMessageContextFactory::create(
+//            NotificationMessageTypeInterface::NOTIFICATION_MESSAGE_TYPE_INFO,
+//            NotificationMessageResolvedInterface::NOTIFICATION_MESSAGE_RESOLVED_NO,
+//            NotificationMessageSourceInterface::NOTIFICATION_MESSAGE_SOURCE_SYSTEM,
+//            'marello.notificationmessage.purchaseorder.candidates.title',
+//            'marello.notificationmessage.purchaseorder.candidates.message',
+//            $translation,
+//            null,
+//            null,
+//            null,
+//            null,
+//            null,
+//            $this->getOrganization()
+//        );
     }
 }
