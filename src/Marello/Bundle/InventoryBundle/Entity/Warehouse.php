@@ -180,18 +180,21 @@ class Warehouse implements EmailHolderInterface, ExtendEntityInterface
     protected $notifier;
 
     /**
-     * @ORM\Column(name="sort_order", type="integer", nullable=true)
+     * @ORM\Column(name="sort_order_ood_loc", type="integer", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
-     *          }
+     *          },
+                "entity"={
+     *               "label"="marello.inventory.warehouse.sort_order_ood_loc.label"
+     *           },
      *      }
      * )
      *
      * @var int
      */
-    protected $sortOrder;
+    protected $sortOrderOodLoc;
 
     /**
      * @ORM\Column(name="order_on_demand_location", type="boolean", nullable=true)
@@ -413,18 +416,18 @@ class Warehouse implements EmailHolderInterface, ExtendEntityInterface
     /**
      * @return int|null
      */
-    public function getSortOrder(): ?int
+    public function getSortOrderOodLoc(): ?int
     {
-        return $this->sortOrder;
+        return $this->sortOrderOodLoc;
     }
 
     /**
-     * @param int|null $sortOrder
+     * @param int|null $sortOrderOodLoc
      * @return $this
      */
-    public function setSortOrder(int $sortOrder = null): self
+    public function setSortOrderOodLoc(int $sortOrderOodLoc = null): self
     {
-        $this->sortOrder = $sortOrder;
+        $this->sortOrderOodLoc = $sortOrderOodLoc;
 
         return $this;
     }

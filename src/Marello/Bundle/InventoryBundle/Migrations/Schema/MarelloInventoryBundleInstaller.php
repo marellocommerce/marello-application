@@ -213,7 +213,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addColumn('group_id', 'integer', ['notnull' => false]);
         $table->addColumn('email', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('notifier', 'string', ['notnull' => false, 'length' => 100]);
-        $table->addColumn('sort_order', 'integer', ['notnull' => false]);
+        $table->addColumn('sort_order_ood_loc', 'integer', ['notnull' => false]);
         $table->addColumn('order_on_demand_location', 'boolean', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['address_id'], 'uniq_15597d1f5b7af75');

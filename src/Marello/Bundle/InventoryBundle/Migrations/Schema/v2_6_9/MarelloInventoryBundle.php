@@ -18,13 +18,23 @@ class MarelloInventoryBundle implements Migration
     protected function updateWarehouseTable(Schema $schema): void
     {
         $table = $schema->getTable('marello_inventory_warehouse');
-        $table->addColumn('sort_order', 'integer', ['notnull' => false]);
-        $table->addColumn('order_on_demand_location', 'bool', ['notnull' => false]);
+        if (!$table->hasColumn('sort_order_ood_loc')) {
+            $table->addColumn('sort_order_ood_loc', 'integer', ['notnull' => false]);
+        }
+
+        if (!$table->hasColumn('order_on_demand_location')) {
+            $table->addColumn('order_on_demand_location', 'boolean', ['notnull' => false]);
+        }
+        if ($table->hasColumn('sort_order')) {
+            $table->dropColumn('sort_order');
+        }
     }
 
     protected function updateInventoryBatchTable(Schema $schema): void
     {
         $table = $schema->getTable('marello_inventory_batch');
-        $table->addColumn('order_on_demand_ref', 'string', ['notnull' => false, 'length' => 255]);
+        if (!$table->hasColumn('order_on_demand_ref')) {
+            $table->addColumn('order_on_demand_ref', 'string', ['notnull' => false, 'length' => 255]);
+        }
     }
 }
