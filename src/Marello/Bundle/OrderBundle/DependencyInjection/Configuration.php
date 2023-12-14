@@ -22,7 +22,15 @@ class Configuration implements ConfigurationInterface
         SettingsBuilder::append(
             $rootNode,
             [
-                'order_notification' => ['value' => true]
+                'order_notification' => [
+                    'value' => true
+                ],
+                'order_on_demand_enabled' => [
+                    'value' => false
+                ],
+                'order_on_demand' => [
+                    'value' => false
+                ],
             ]
         );
 

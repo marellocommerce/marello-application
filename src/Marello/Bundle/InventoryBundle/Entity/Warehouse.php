@@ -180,6 +180,37 @@ class Warehouse implements EmailHolderInterface, ExtendEntityInterface
     protected $notifier;
 
     /**
+     * @ORM\Column(name="sort_order_ood_loc", type="integer", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
+                "entity"={
+     *               "label"="marello.inventory.warehouse.sort_order_ood_loc.label"
+     *           },
+     *      }
+     * )
+     *
+     * @var int
+     */
+    protected $sortOrderOodLoc;
+
+    /**
+     * @ORM\Column(name="order_on_demand_location", type="boolean", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var bool
+     */
+    protected $orderOnDemandLocation;
+
+    /**
      * @param string $label
      * @param bool   $default
      */
@@ -378,6 +409,44 @@ class Warehouse implements EmailHolderInterface, ExtendEntityInterface
     public function setNotifier(string $notifier = null): self
     {
         $this->notifier = $notifier;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getSortOrderOodLoc(): ?int
+    {
+        return $this->sortOrderOodLoc;
+    }
+
+    /**
+     * @param int|null $sortOrderOodLoc
+     * @return $this
+     */
+    public function setSortOrderOodLoc(int $sortOrderOodLoc = null): self
+    {
+        $this->sortOrderOodLoc = $sortOrderOodLoc;
+
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function isOrderOnDemandLocation(): ?bool
+    {
+        return $this->orderOnDemandLocation;
+    }
+
+    /**
+     * @param bool|null $orderOnDemandLocation
+     * @return $this
+     */
+    public function setOrderOnDemandLocation(bool $orderOnDemandLocation = null): self
+    {
+        $this->orderOnDemandLocation = $orderOnDemandLocation;
 
         return $this;
     }

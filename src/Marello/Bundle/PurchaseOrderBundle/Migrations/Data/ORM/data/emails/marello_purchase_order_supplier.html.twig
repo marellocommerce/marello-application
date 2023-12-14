@@ -495,6 +495,9 @@
                                                 <th class="item-info item-info-left" style="background-color: #f8f8f8; font-family: Roboto Condensed, Arial Narrow, Arial, sans-serif; font-weight: 400; padding: 10px 8px; font-size:13px;">
                                                     MANUFACTURING CODE
                                                 </th>
+                                                <th class="item-info item-info-left" style="background-color: #f8f8f8; font-family: Roboto Condensed, Arial Narrow, Arial, sans-serif; font-weight: 400; padding: 10px 8px; font-size:13px;">
+                                                    ORDER ITEM ID
+                                                </th>
                                                 <th class="item-info item-info-right" style="background-color: #f8f8f8; font-family: Roboto Condensed, Arial Narrow, Arial, sans-serif; font-weight: 400; padding: 10px 8px; font-size:13px;">
                                                     QTY
                                                 </th>
@@ -511,6 +514,11 @@
                                                     </td>
                                                     <td class="item-info" style="border-top: 1px solid #d6d7d7; font-family: Roboto Condensed, Arial Narrow, Arial, sans-serif; padding: 10px 8px; font-size:13px; font-weight: 300;">
                                                         {{ item.product.manufacturingCode }}
+                                                    </td>
+                                                    <td class="item-info" style="border-top: 1px solid #d6d7d7; font-family: Roboto Condensed, Arial Narrow, Arial, sans-serif; padding: 10px 8px; font-size:13px; font-weight: 300;">
+                                                        {% if item.data is not empty %}
+                                                            {{ item.data['order_on_demand']['allocationItem'] }}
+                                                        {% endif %}
                                                     </td>
                                                     <td class="item-info item-info-right" style="border-top: 1px solid #d6d7d7; font-family: Roboto Condensed, Arial Narrow, Arial, sans-serif; padding: 10px 8px; font-size:13px; font-weight: 300;">
                                                         {{ item.orderedAmount }}

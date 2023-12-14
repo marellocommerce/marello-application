@@ -138,7 +138,7 @@
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
-                    {{ UI.renderProperty('marello.inventory.inventoryitem.order_on_demand_allowed.label'|trans, entity.orderOnDemandAllowed ? 'marello.core.yes.label'|trans : 'marello.core.no.label'|trans) }}
+                    {{ UI.renderProperty('marello.inventory.inventoryitem.order_on_demand.label'|trans, entity.orderOnDemandAllowed ? 'marello.core.yes.label'|trans : 'marello.core.no.label'|trans) }}
                 </div>
             </div>
         </div>
@@ -170,7 +170,7 @@
             }]
         }])
     %}
-    {% set orderOnDemandAllowed = oro_config_value('marello_inventory.inventory_on_demand_enabled') %}
+    {% set orderOnDemandAllowed = oro_config_value('marello_order.order_on_demand_enabled') %}
     {% if orderOnDemandAllowed %}
         {% set dataBlocks = dataBlocks|merge([{
             'title': 'marello.inventory.inventoryitem.section.orderondemand.label'|trans,

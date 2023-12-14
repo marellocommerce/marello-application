@@ -191,6 +191,16 @@ class PurchaseOrderItem implements
      * @var array $data
      *
      * @ORM\Column(name="data", type="json_array", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "email"={
+     *              "available_in_template"=true
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $data = [];
 

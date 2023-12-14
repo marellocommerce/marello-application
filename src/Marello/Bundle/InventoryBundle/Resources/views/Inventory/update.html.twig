@@ -181,7 +181,7 @@
         }
     ] %}
 
-    {% set orderOnDemandAllowed = oro_config_value('marello_inventory.inventory_on_demand_enabled') %}
+    {% set orderOnDemandAllowed = oro_config_value('marello_order.order_on_demand_enabled') %}
     {% if orderOnDemandAllowed %}
         {% set dataBlocks = dataBlocks|merge([{
             'title': 'marello.inventory.inventoryitem.section.orderondemand.label'|trans,

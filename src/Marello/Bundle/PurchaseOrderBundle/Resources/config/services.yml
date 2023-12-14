@@ -15,8 +15,10 @@ services:
         class: Marello\Bundle\PurchaseOrderBundle\Workflow\Action\ReceivePurchaseOrderAction
         arguments:
             - '@oro_action.expression.context_accessor'
-            - '@doctrine.orm.entity_manager'
+            - '@oro_entity.doctrine_helper'
             - '@marello_purchaseorder.processor.note_activity_processor'
+            - '@Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider'
+            - '@oro_message_queue.client.message_producer'
         tags:
             - { name: oro_action.action, alias: marello_receive_purchase_order }
 
@@ -63,12 +65,9 @@ services:
         tags:
             - { name: twig.extension }
 
-    marello_purchaseorder.listener.doctrine.po_on_demand_creation:
-        class: Marello\Bundle\PurchaseOrderBundle\EventListener\Doctrine\PurchaseOrderOnOrderOnDemandCreationListener
+    Marello\Bundle\PurchaseOrderBundle\EventListener\Doctrine\PurchaseOrderOnOrderOnDemandCreationListener:
         arguments:
-            - '@oro_security.acl_helper'
-        calls:
-            - ['setConfigManager', ['@oro_config.manager']]
+            - '@oro_config.manager'
         tags:
             - { name: doctrine.event_listener, event: postPersist }
             - { name: doctrine.event_listener, event: postFlush }

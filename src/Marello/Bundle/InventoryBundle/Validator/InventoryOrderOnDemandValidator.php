@@ -27,8 +27,8 @@ class InventoryOrderOnDemandValidator extends ConstraintValidator
             return;
         }
         $product = $entity->getProduct();
-        if ($this->configManager->get('marello_inventory.inventory_on_demand_enabled') &&
-            $this->configManager->get('marello_inventory.inventory_on_demand')
+        if ($this->configManager->get('marello_order.order_on_demand_enabled') &&
+            $this->configManager->get('marello_order.inventoryorder_on_demand')
         ) {
             if ($entity->isOrderOnDemandAllowed() &&
                 (!$product->getPreferredSupplier() || $product->getSuppliers()->count() === 0)) {
