@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\Workflow\Action;
 
+use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
 use Symfony\Component\PropertyAccess\PropertyPathInterface;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
@@ -122,31 +123,49 @@ class ReceivePurchaseOrderAction extends AbstractAction
             }
 
             if ($isFullyReceived) {
-                $fullyReceivedItems++;
                 $data = $item->getData();
                 $orderOnDemandKey = PurchaseOrderOnOrderOnDemandCreationListener::ORDER_ON_DEMAND;
                 if (isset($data[$orderOnDemandKey]) && $item->getStatus() !== PurchaseOrderItem::STATUS_COMPLETE) {
                     $repo = $this->doctrineHelper->getEntityRepositoryForClass(Allocation::class);
                     /** @var Allocation $allocation */
                     $allocation = $repo->find($data[$orderOnDemandKey]['allocation']);
+                    // add check to see if the allocation is not closed yet...
+                    if ($allocation->getStatus()->getId() === AllocationStateStatusInterface::ALLOCATION_STATE_CLOSED) {
+                        // the original allocation is closed, wether it was random or because another purchase order
+                        // triggered the closing of said allocation. We need to find the new allocation to prevent issues
+                        // with double allocation of the items.
+                        $allocItemRepo = $this->doctrineHelper->getEntityRepositoryForClass(AllocationItem::class);
+                        /** @var AllocationItem|null $allocationItem */
+                        $allocationItem = $allocItemRepo
+                            ->findOneBy(
+                                [
+                                    'warehouse' => null,
+                                    'orderItem' => $data[$orderOnDemandKey]['orderItem']
+                                ],
+                                [
+                                    'id' => 'DESC'
+                                ]
+                            );
+                        if ($allocationItem) {
+                            $allocation = $allocationItem->getAllocation();
+                        }
+                    }
                     // send re-allocate message for the allocation
                     $this->allocationProvider->allocateOrderToWarehouses($allocation->getOrder(), $allocation);
-                    if ($allocation->getItems()->count() === $fullyReceivedItems) {
-                        $allocation->setState(
-                            $this->getEnumValue(
-                                AllocationStateStatusInterface::ALLOCATION_STATE_ENUM_CODE,
-                                AllocationStateStatusInterface::ALLOCATION_STATE_CLOSED
-                            )
-                        );
-                        $allocation->setStatus(
-                            $this->getEnumValue(
-                                AllocationStateStatusInterface::ALLOCATION_STATUS_ENUM_CODE,
-                                AllocationStateStatusInterface::ALLOCATION_STATUS_CLOSED
-                            )
-                        );
-                        $this->doctrineHelper->getEntityManagerForClass(Allocation::class)->persist($allocation);
-                        $this->updateAllocationWorkflow($allocation);
-                    }
+                    $allocation->setState(
+                        $this->getEnumValue(
+                            AllocationStateStatusInterface::ALLOCATION_STATE_ENUM_CODE,
+                            AllocationStateStatusInterface::ALLOCATION_STATE_CLOSED
+                        )
+                    );
+                    $allocation->setStatus(
+                        $this->getEnumValue(
+                            AllocationStateStatusInterface::ALLOCATION_STATUS_ENUM_CODE,
+                            AllocationStateStatusInterface::ALLOCATION_STATUS_CLOSED
+                        )
+                    );
+                    $this->doctrineHelper->getEntityManagerForClass(Allocation::class)->persist($allocation);
+                    $this->updateAllocationWorkflow($allocation);
                 }
                 $item->setStatus(PurchaseOrderItem::STATUS_COMPLETE);
             }
@@ -176,7 +195,7 @@ class ReceivePurchaseOrderAction extends AbstractAction
         if (isset($data[$orderOnDemandKey])) {
             $repo = $this->doctrineHelper->getEntityRepositoryForClass(InventoryBatch::class);
             /** @var InventoryBatch $batch */
-            $batch = $repo->findOneBy(['orderOnDemandRef' => $data[$orderOnDemandKey]['allocationItem']]);
+            $batch = $repo->findOneBy(['orderOnDemandRef' => $data[$orderOnDemandKey]['orderItem']]);
             if ($batch) {
                 $context = InventoryUpdateContextFactory::createInventoryLevelUpdateContext(
                     $batch->getInventoryLevel(),

@@ -151,8 +151,9 @@ class PurchaseOrderOnOrderOnDemandCreationListener
                     self::ORDER_ON_DEMAND =>
                         [
                             'order' => $allocation->getOrder()->getId(),
+                            'orderItem' => $allocationItem->getOrderItem()->getId(),
                             'allocation' => $allocation->getId(),
-                            'allocationItem' => $allocationItem->getId(),
+                            'allocationItem' => $allocationItem->getId()
                         ]
                 ]);
 
@@ -165,6 +166,12 @@ class PurchaseOrderOnOrderOnDemandCreationListener
         return [$poBySupplier, $allocationItemsBySupplier];
     }
 
+    /**
+     * @param array|PurchaseOrder[] $poBySupplier
+     * @param array $allocationItemsBySupplier
+     * @param Allocation $allocation
+     * @return void
+     */
     private function updatePurchaseOrdersTotal(
         array $poBySupplier,
         array $allocationItemsBySupplier,
@@ -246,7 +253,7 @@ class PurchaseOrderOnOrderOnDemandCreationListener
             }
             $inventoryBatch = InventoryBatchFromInventoryLevelFactory::createInventoryBatch($inventoryLevel);
             $inventoryBatch->setOrganization($allocation->getOrganization());
-            $inventoryBatch->setOrderOnDemandRef($allocationItem->getId());
+            $inventoryBatch->setOrderOnDemandRef($allocationItem->getOrderItem()->getId());
             $inventoryBatch->setQuantity(0);
 
             $entityManager->persist($inventoryBatch);
@@ -264,7 +271,7 @@ class PurchaseOrderOnOrderOnDemandCreationListener
                 'orderOnDemandLocation' => true,
                 'group' => $channelGroupLink->getWarehouseGroup(),
             ],
-            ['sortOrder' => 'ASC'],
+            ['sortOrderOodLoc' => 'ASC'],
             1
         );
 
