@@ -29,7 +29,7 @@ class CustomerHandler implements FormHandlerInterface
     public function process($data, FormInterface $form, Request $request)
     {
         if (!$data instanceof Customer) {
-            throw new \InvalidArgumentException('Argument data should be instance of WarehouseGroup entity');
+            throw new \InvalidArgumentException('Argument data should be instance of Customer entity');
         }
 
         $form->setData($data);

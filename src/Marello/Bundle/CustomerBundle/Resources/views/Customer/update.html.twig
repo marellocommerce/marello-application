@@ -11,7 +11,10 @@
 
 {% block navButtons %}
     {{ UI.cancelButton(path('marello_customer_index')) }}
-    {% set html = UI.saveAndCloseButton() %}
+    {% set html = UI.saveAndCloseButton({
+        'route': 'marello_customer_view',
+        'params': {'id': '$id'}
+    }) %}
     {% if is_granted('marello_customer_update') %}
         {% set html = html ~ UI.saveAndStayButton() %}
     {% endif %}
