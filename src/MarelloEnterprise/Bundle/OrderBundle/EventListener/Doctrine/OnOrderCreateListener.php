@@ -25,7 +25,7 @@ class OnOrderCreateListener
      */
     public function onFlush(OnFlushEventArgs $eventArgs): void
     {
-        $this->em = $eventArgs->getEntityManager();
+        $this->em = $eventArgs->getObjectManager();
         $unitOfWork = $this->em->getUnitOfWork();
 
         if (!empty($unitOfWork->getScheduledEntityInsertions())) {
