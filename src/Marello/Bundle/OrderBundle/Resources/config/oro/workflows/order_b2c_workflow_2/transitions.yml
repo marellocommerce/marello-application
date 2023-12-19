@@ -1,0 +1,76 @@
+workflows:
+    marello_order_b2c_workflow_2:
+        transitions:
+            pending:
+                step_to: pending
+                is_start: true
+                transition_definition: pending_definition
+            cancel:
+                step_to:  cancelled
+                transition_definition: cancel_definition
+            hold_pending:
+                step_to:  pending_on_hold
+                transition_definition: hold_definition
+                form_options:
+                    attribute_fields:
+                        note:
+                            form_type: Symfony\Component\Form\Extension\Core\Type\TextAreaType
+                            options:
+                                required: false
+            un_hold_pending:
+                step_to:  pending
+                transition_definition: un_hold_definition
+            hold_invoice:
+                step_to:  invoice_on_hold
+                transition_definition: hold_definition
+                form_options:
+                    attribute_fields:
+                        note:
+                            form_type: Symfony\Component\Form\Extension\Core\Type\TextAreaType
+                            options:
+                                required: false
+            un_hold_invoice:
+                step_to:  invoice
+                transition_definition: un_hold_definition
+            invoice:
+                step_to:  invoice
+                transition_definition: invoice_definition
+                form_options:
+                    attribute_fields:
+                        invoiced_at:
+                            form_type: Oro\Bundle\FormBundle\Form\Type\OroDateTimeType
+                            options:
+                                required: true
+                                constraints:
+                                    - NotBlank: ~
+            payment_received:
+                step_to:  paid
+                transition_definition: payment_received_definition
+                form_options:
+                    attribute_fields:
+                        payment_reference:
+                            form_type: Symfony\Component\Form\Extension\Core\Type\TextType
+                            options:
+                                required: true
+                                constraints:
+                                    - NotBlank: ~
+                        payment_details:
+                            form_type: Symfony\Component\Form\Extension\Core\Type\TextType
+                            options:
+                                required: true
+                                constraints:
+                                    - NotBlank: ~
+                        total_paid:
+                            form_type: Marello\Bundle\OrderBundle\Form\Type\OrderTotalPaidType
+                            options:
+                                required: true
+                                currency: $order.currency
+            ship:
+                step_to:  shipped
+                transition_definition: ship_definition
+            prepare_shipping:
+                step_to:  pick_and_pack
+                transition_definition: prepare_shipping_definition
+            payment_reminder:
+                step_to:  pending
+                transition_definition: payment_reminder_definition

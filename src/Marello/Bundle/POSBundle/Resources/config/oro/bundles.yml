@@ -1,0 +1,2 @@
+bundles:
+    - { name: Marello\Bundle\POSBundle\MarelloPOSBundle, priority: 100 }

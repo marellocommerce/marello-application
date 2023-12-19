@@ -1,0 +1,30 @@
+workflows:
+    marello_order_b2c_workflow_1:
+        steps:
+            pending:
+                allowed_transitions:
+                    - invoice
+                    - hold_pending
+                    - cancel
+            cancelled:
+                allowed_transitions: []
+            pending_on_hold:
+                allowed_transitions:
+                    - un_hold_pending
+            invoice:
+                allowed_transitions:
+                    - hold_invoice
+                    - payment_reminder
+                    - payment_received
+            invoice_on_hold:
+                allowed_transitions:
+                    - un_hold_invoice
+            paid:
+                allowed_transitions:
+                    - prepare_shipping
+            pick_and_pack:
+                allowed_transitions:
+                    - ship
+            shipped:
+                allowed_transitions: []
+

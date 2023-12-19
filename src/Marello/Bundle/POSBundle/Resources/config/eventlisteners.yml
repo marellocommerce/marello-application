@@ -1,0 +1,13 @@
+services:
+    Marello\Bundle\POSBundle\EventListener\Doctrine\OnPOSOrderCreateListener:
+        arguments:
+            - '@oro_workflow.manager'
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: postFlush }
+
+    Marello\Bundle\POSBundle\EventListener\Workflow\PosOrderWorkflowListener:
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: kernel.event_listener, event: extendable_action.order_pending, method: onOrderPending }
