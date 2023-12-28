@@ -25,6 +25,14 @@ workflows:
                               current_transition: invoice
                     - '@extendable':
                           events: [extendable_action.order_paid]
+                    - '@marello_notification_send':
+                          conditions:
+                              '@and':
+                                  - '@not_empty': $order.customer.email
+                                  - '@eq': [true, $send_invoice_by_email]
+                          entity: $order
+                          recipient: $order.customer
+                          template: marello_order_invoiced
             ship_definition:
                 actions:
                     - '@extendable':

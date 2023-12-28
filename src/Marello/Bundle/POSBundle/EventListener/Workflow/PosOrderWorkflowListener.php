@@ -3,7 +3,6 @@
 namespace Marello\Bundle\POSBundle\EventListener\Workflow;
 
 use Oro\Bundle\CurrencyBundle\Entity\Price;
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Component\Action\Event\ExtendableActionEvent;
@@ -12,14 +11,6 @@ use Marello\Bundle\OrderBundle\Entity\Order;
 
 class PosOrderWorkflowListener
 {
-    /**
-     * @param DoctrineHelper $doctrineHelper
-     */
-    public function __construct(
-        protected DoctrineHelper $doctrineHelper
-    ) {
-    }
-
     /**
      * @param ExtendableActionEvent $event
      */
@@ -39,6 +30,12 @@ class PosOrderWorkflowListener
 
             if (isset($entityData['paymentReference'])) {
                 $event->getContext()->getData()->set('payment_reference', $entityData['paymentReference']);
+            }
+
+            if (isset($entityData['sendInvoiceByEmail'])) {
+                if (true === $entityData['sendInvoiceByEmail']) {
+                    $event->getContext()->getData()->set('send_invoice_by_email', $entityData['sendInvoiceByEmail']);
+                }
             }
 
             if (isset($entityData['amount'])) {

@@ -11,3 +11,5 @@ workflows:
                     class: Oro\Bundle\CurrencyBundle\Entity\Price
             update_balanced_inventory:
                 type: boolean
+            send_invoice_by_email:
+                type: boolean
