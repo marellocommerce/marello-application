@@ -16,7 +16,7 @@ use Marello\Bundle\POSBundle\Migrations\Data\ORM\LoadSalesChannelPOSTypeData;
 
 class OnPOSOrderCreateListener
 {
-    const TRANSIT_TO_STEP = 'pending';
+    const TRANSIT_TO_STEP = 'processing';
 
     /** @var array $entitiesScheduledForWorkflowStart */
     protected array $entitiesScheduledForWorkflowStart = [];
@@ -42,6 +42,20 @@ class OnPOSOrderCreateListener
                 $salesChannel->getChannelType()->getName() === LoadSalesChannelPOSTypeData::POS
             ) {
                 $entity->setInvoicedAt(new \DateTime('now', new \DateTimeZone('UTC')));
+                $existingData = $entity->getData();
+                if (empty($existingData) || !isset($existingData[0]['amount'])) {
+                    $entityData = [];
+                    if (is_array($existingData)) {
+                        $entityData = array_shift($existingData);
+                    }
+
+                    if (!isset($entityData['amount'])) {
+                        $entityData['amount'] = $entity->getGrandTotal();
+                        $existingData[] = $entityData;
+                    }
+                    $entity->setData($existingData);
+                }
+
                 if ($workflow = $this->getApplicableWorkflow($entity)) {
                     $this->entitiesScheduledForWorkflowStart[] = new WorkflowStartArguments(
                         $workflow->getName(),

@@ -162,7 +162,6 @@ class AllocationCompleteListener
                         'current_step_id' => $workflowItem->getCurrentStep()->getId(),
                         'entity_class' => Order::class,
                         'transition' => self::TRANSIT_TO_STEP,
-                        'jobId' => $this->generateJobId($order->getId()),
                         'priority' => MessagePriority::NORMAL
                     ]
                 );

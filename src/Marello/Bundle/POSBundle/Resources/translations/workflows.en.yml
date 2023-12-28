@@ -4,56 +4,20 @@ oro:
             label: 'Order POS Workflow'
             attribute:
                 payment_reference:
-                    label: 'Payment Reference'
+                    label:      'Payment Reference'
                 payment_details:
-                    label: 'Payment Details'
+                    label:      'Payment Details'
                 total_paid:
-                    label: 'Paid Amount'
-                invoiced_at:
-                    label: 'Invoiced At'
-                note:
-                    label: 'Note'
+                    label:      'Paid Amount'
             step:
-                pending:
-                    label:  'Pending Order'
-                cancelled:
-                    label:  'Cancelled'
-                pending_on_hold:
-                    label:  'On Hold'
-                invoice_on_hold:
-                    label:  'On Hold'
-                invoice:
-                    label:  'Invoiced'
-                paid:
-                    label:  'Order Paid'
-                credit:
-                    label:  'Closed'
-                pick_and_pack:
-                    label: 'Allocated'
+                processing:
+                    label:      'Processing'
                 shipped:
-                    label:  'Complete'
+                    label:      'Complete'
             transition:
                 pending:
-                    label:     'Pending'
-                cancel:
-                    label:    'Cancel'
-                hold_pending:
-                    label:    'Hold'
-                un_hold_pending:
-                    label:    'Un-Hold'
-                hold_invoice:
-                    label:    'Hold'
-                un_hold_invoice:
-                    label:    'Un-Hold'
-                invoice:
-                    label:    'Invoice'
-                payment_received:
-                    label:    'Payment Received'
+                    label:      'Pending'
+                processing:
+                    label:      'Processing'
                 ship:
-                    label:    'Complete'
-                credit:
-                    label:    'Credit'
-                prepare_shipping:
-                    label:    'Prepare Shipping'
-                payment_reminder:
-                    label:    'Payment Reminder'
+                    label:      'Complete'

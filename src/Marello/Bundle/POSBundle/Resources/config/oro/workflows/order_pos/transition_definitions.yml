@@ -1,7 +1,7 @@
 workflows:
     marello_order_pos_workflow:
         transition_definitions:
-            pending_definition:
+            processing_definition:
                 actions:
                     - '@assign_value':
                           - [$update_balanced_inventory, true]
@@ -9,15 +9,13 @@ workflows:
                           action_group: marello_order_status_change
                           parameters_mapping:
                               order: $order
-                              status: 'pending'
+                              status: 'processing'
                     - '@extendable':
                           events: [extendable_action.order_pending]
                     - '@call_service_method':
                           service: Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider
                           method: allocateOrderToWarehouses
                           method_parameters: [ $order ]
-            ship_definition:
-                actions:
                     - '@extendable':
                           events: [extendable_action.order_invoiced]
                     - '@run_action_group':
@@ -27,6 +25,8 @@ workflows:
                               current_transition: invoice
                     - '@extendable':
                           events: [extendable_action.order_paid]
+            ship_definition:
+                actions:
                     - '@extendable':
                           events: [extendable_action.order_ship]
                     - '@marello_ship_order': ~
@@ -37,27 +37,3 @@ workflows:
                           parameters_mapping:
                               order: $order
                               status: 'shipped'
-            cancel_definition:
-                conditions:
-                    '@and':
-                        - '@sales_channel_has_valid_integration':
-                              salesChannel: $order.salesChannel
-                actions:
-                    - '@extendable':
-                          events: [extendable_action.order_cancel]
-                    - '@marello_cancel_order':
-                          update_balanced_inventory: $update_balanced_inventory
-                    - '@marello_notification_send':
-                          entity: $order
-                          recipient: $order.customer
-                          template: marello_order_cancelled
-                    - '@run_action_group':
-                          action_group: send_order_invoice_email
-                          parameters_mapping:
-                              order: $order
-                              current_transition: cancel
-                    - '@run_action_group':
-                          action_group: marello_order_status_change
-                          parameters_mapping:
-                              order: $order
-                              status: 'cancelled'

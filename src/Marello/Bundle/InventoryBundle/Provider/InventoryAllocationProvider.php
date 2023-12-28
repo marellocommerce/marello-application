@@ -19,6 +19,7 @@ use Marello\Bundle\InventoryBundle\Entity\Allocation;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
+use Marello\Bundle\OrderBundle\Model\OrderItemTypeInterface;
 use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
@@ -43,6 +44,8 @@ class InventoryAllocationProvider
 
     /** @var array $newAllocations */
     protected $newAllocations = [];
+
+    protected $isCashAndCarryAllocation = false;
 
     public function __construct(
         protected DoctrineHelper $doctrineHelper,
@@ -134,6 +137,10 @@ class InventoryAllocationProvider
 
                 $this->createAllocationItems($result, $newAllocation);
                 $allocationContext = AllocationContextInterface::ALLOCATION_CONTEXT_ORDER;
+
+                if ($this->isCashAndCarryAllocation) {
+                    $allocationContext = AllocationContextInterface::ALLOCATION_CONTEXT_CASH_CARRY;
+                }
                 if ($callback) {
                     $allocationContext = AllocationContextInterface::ALLOCATION_CONTEXT_RESHIPMENT;
                     $this->assignDataProperties($newAllocation, $order);
@@ -231,6 +238,7 @@ class InventoryAllocationProvider
     public function createAllocationItems(OrderWarehouseResult $result, Allocation $allocation)
     {
         $itemWithQty = $result->getItemsWithQuantity();
+        $totalItemsCandC = 0;
         foreach ($result->getOrderItems() as $item) {
             $allocationItem = new AllocationItem();
             $orderItem = $item;
@@ -249,9 +257,17 @@ class InventoryAllocationProvider
             $allocationItem->setQuantity($itemWithQty[$item->getProductSku()]);
             $allocationItem->setTotalQuantity($orderItem->getQuantity());
             $allocation->addItem($allocationItem);
+            if ($orderItem->getItemType() === OrderItemTypeInterface::OI_TYPE_CASHANDCARRY) {
+                $totalItemsCandC++;
+            }
+
             $this->allOrderItems->add($orderItem);
             $this->allItems[] = clone $allocationItem;
             $this->subAllocations[] = $allocation;
+        }
+
+        if ($totalItemsCandC === $allocation->getItems()->count()) {
+            $this->isCashAndCarryAllocation = true;
         }
     }
 
