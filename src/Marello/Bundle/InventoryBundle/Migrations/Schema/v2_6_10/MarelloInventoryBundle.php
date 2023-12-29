@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\InventoryBundle\Migrations\Schema\v2_6_9;
+namespace Marello\Bundle\InventoryBundle\Migrations\Schema\v2_6_10;
 
 use Doctrine\DBAL\Schema\Schema;
 
