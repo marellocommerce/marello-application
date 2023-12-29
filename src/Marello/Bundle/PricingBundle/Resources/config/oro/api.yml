@@ -120,6 +120,9 @@ api:
                         property_path: product.sku
                         allow_array: true
                         description: 'Filter prices by Product SKU'
+                    currency:
+                        data_type: string
+                        description: 'Filter prices by currency'
                     createdAt:
                         data_type: datetime
                         property_path: createdAt
