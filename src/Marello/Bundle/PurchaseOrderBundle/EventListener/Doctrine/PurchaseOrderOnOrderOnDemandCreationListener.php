@@ -5,26 +5,30 @@ namespace Marello\Bundle\PurchaseOrderBundle\EventListener\Doctrine;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
-use Marello\Bundle\InventoryBundle\Entity\Allocation;
-use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
-use Marello\Bundle\InventoryBundle\Factory\InventoryBatchFromInventoryLevelFactory;
-use Marello\Bundle\InventoryBundle\Provider\AllocationContextInterface;
-use Marello\Bundle\InventoryBundle\Provider\AllocationStateStatusInterface;
-use Marello\Bundle\NotificationMessageBundle\Factory\NotificationMessageContextFactory;
-use Marello\Bundle\NotificationMessageBundle\Model\NotificationMessageContext;
-use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageResolvedInterface;
-use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageSourceInterface;
-use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageTypeInterface;
+
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
+
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
+use Marello\Bundle\InventoryBundle\Entity\Allocation;
+use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
-use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
+use Marello\Bundle\InventoryBundle\Provider\AllocationContextInterface;
+use Marello\Bundle\InventoryBundle\Provider\AllocationStateStatusInterface;
+use Marello\Bundle\NotificationMessageBundle\Model\NotificationMessageContext;
+use Marello\Bundle\NotificationMessageBundle\Event\CreateNotificationMessageEvent;
+use Marello\Bundle\InventoryBundle\Factory\InventoryBatchFromInventoryLevelFactory;
+use Marello\Bundle\NotificationMessageBundle\Factory\NotificationMessageContextFactory;
+use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageTypeInterface;
+use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageSourceInterface;
+use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageResolvedInterface;
 
 class PurchaseOrderOnOrderOnDemandCreationListener
 {
@@ -36,7 +40,8 @@ class PurchaseOrderOnOrderOnDemandCreationListener
     private $allocationId;
 
     public function __construct(
-        private ConfigManager $configManager
+        private ConfigManager $configManager,
+        private EventDispatcherInterface $eventDispatcher
     ) {
     }
 
@@ -75,7 +80,7 @@ class PurchaseOrderOnOrderOnDemandCreationListener
             $this->allocationId = $entity->getId();
         }
     }
-    
+
     /**
      * @param PostFlushEventArgs $args
      */
@@ -111,11 +116,18 @@ class PurchaseOrderOnOrderOnDemandCreationListener
         $allocationItemsBySupplier = [];
 
         $warehouse = $this->getOnDemandLocation($allocation, $entityManager);
+        $organization = $allocation->getOrganization();
         if (!$warehouse) {
+            /** @var NotificationMessageContext $context */
+            $context = $this->createNotificationContext($organization);
+            $this->eventDispatcher
+                ->dispatch(
+                    new CreateNotificationMessageEvent($context),
+                    CreateNotificationMessageEvent::NAME
+                );
             throw new \LogicException('To create Purchase Order you need to specify an On Demand Location warehouse');
         }
 
-        $organization = $allocation->getOrganization();
         foreach ($allocation->getItems() as $allocationItem) {
             if (!$this->isOrderOnDemandItem($allocationItem->getProduct())) {
                 continue;
@@ -279,32 +291,26 @@ class PurchaseOrderOnOrderOnDemandCreationListener
     }
 
     /**
+     * @param $organization OrganizationInterface
      * @return NotificationMessageContext
      */
-    protected function createNotificationContext($type)
+    protected function createNotificationContext(OrganizationInterface $organization)
     {
-//        $translation = $this
-//            ->container
-//            ->get('translator')
-//            ->trans(
-//                'marello.notificationmessage.purchaseorder.candidates.solution',
-//                ['%url%' => $url],
-//                'notificationMessage'
-//            );
-
-//        return NotificationMessageContextFactory::create(
-//            NotificationMessageTypeInterface::NOTIFICATION_MESSAGE_TYPE_INFO,
-//            NotificationMessageResolvedInterface::NOTIFICATION_MESSAGE_RESOLVED_NO,
-//            NotificationMessageSourceInterface::NOTIFICATION_MESSAGE_SOURCE_SYSTEM,
-//            'marello.notificationmessage.purchaseorder.candidates.title',
-//            'marello.notificationmessage.purchaseorder.candidates.message',
-//            $translation,
-//            null,
-//            null,
-//            null,
-//            null,
-//            null,
-//            $this->getOrganization()
-//        );
+        return NotificationMessageContextFactory::create(
+            NotificationMessageTypeInterface::NOTIFICATION_MESSAGE_TYPE_ERROR,
+            NotificationMessageResolvedInterface::NOTIFICATION_MESSAGE_RESOLVED_NO,
+            NotificationMessageSourceInterface::NOTIFICATION_MESSAGE_SOURCE_PURCHASE_ORDER,
+            'marello.notificationmessage.purchaseorder.no_ood_warehouse_configured.title',
+            'marello.notificationmessage.purchaseorder.no_ood_warehouse_configured.message',
+            'marello.notificationmessage.purchaseorder.no_ood_warehouse_configured.solution',
+            null,
+            'allocating',
+            null,
+            null,
+            null,
+            $organization,
+            false,
+            true
+        );
     }
 }

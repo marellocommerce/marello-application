@@ -10,3 +10,7 @@ marello:
                 solution: 'Navigate to the <a href="%url%">Purchase Order Item Candidates</a> and create Purchase Order(s) for the products'
                 error:
                     cron: Purchase Candidates Cron Error
+            no_ood_warehouse_configured:
+                title: No OoD warehouse configured
+                message: Purchase Order cannot be created because there is not Order On Demand warehouse configured.
+                solution: 'Navigate to the Warehouse Groups and configure an Order On Demand warehouse in one or more group(s)'
