@@ -2,14 +2,11 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
-
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
-
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use MarelloEnterprise\Bundle\InventoryBundle\Checker\IsFixedWarehouseGroupChecker;
 
@@ -48,7 +45,7 @@ class WarehouseGroupRemoveListener
             $this->session->getFlashBag()->add('error', $message);
             throw new AccessDeniedException($message);
         }
-        $em = $args->getEntityManager();
+        $em = $args->getObjectManager();
         $systemGroup = $em
             ->getRepository(WarehouseGroup::class)
             ->findSystemWarehouseGroup($this->aclHelper);

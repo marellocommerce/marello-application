@@ -1,8 +1,10 @@
 services:
-    MarelloEnterprise\Bundle\OrderBundle\EventListener\Doctrine\OrderWorkflowStartListener:
-        decorates: marello_order.listener.start_workflow
+    MarelloEnterprise\Bundle\OrderBundle\Provider\OrderConsolidationProvider:
         arguments:
-            - '@oro_workflow.manager'
-            - '@MarelloEnterprise\Bundle\OrderBundle\EventListener\Doctrine\OrderWorkflowStartListener.inner'
-        calls:
-            - [setTokenAccessor, ['@oro_security.token_accessor']]
+            - '@oro_config.manager'
+
+    MarelloEnterprise\Bundle\OrderBundle\Provider\Form\OrderConsolidationFormChangesProvider:
+        arguments:
+            - '@MarelloEnterprise\Bundle\OrderBundle\Provider\OrderConsolidationProvider'
+        tags:
+            - { name: marello.form_changes_data_provider, class: 'Marello\Bundle\OrderBundle\Entity\Order', type: consolidation_enabled, priority: 255 }

@@ -22,7 +22,9 @@ define(function(require) {
 
         events: {
             'click [data-name="warehouse-add"]': 'onAddWarehouse',
-            'change .consolidation-warehouse [data-name="field__consolidation-warehouse"]': 'onCheckboxChange'
+            'change .consolidation-warehouse [data-name="field__consolidation-warehouse"]': 'onConsolidationCheckboxChange',
+            'change .warehouse-order-on-demand-location [data-name="field__order-on-demand-location-warehouse"]': 'onDemandLocationCheckboxChange',
+            'change .warehouse-sort-order-ood [data-name="field__sort-order-ood-warehouse"]': 'onsortOrderOodLocChange'
         },
 
         /**
@@ -62,6 +64,8 @@ define(function(require) {
                 $availableWarehousesSelect: this.$('[data-name="warehouse-select"]'),
                 $warehouseTable: this.$('[data-name="warehouse-table-body"]'),
                 $consolidationWarehouses: $(document).find('[name*=isConsolidationWarehouse]'),
+                $onDemandLocationWarehouses: $(document).find('[name*=isOrderOnDemandLocation]'),
+                $sortOrderOodLocWarehouses: $(document).find('[name*=sortOrderOodLoc]'),
             };
         },
 
@@ -75,7 +79,7 @@ define(function(require) {
             }));
 
             this.listenTo(this.collection, 'add remove change', this.onCollectionChange);
-            this.updateConsolidationWarehouses();
+            this.updateWarehouses();
         },
 
         onCollectionChange: function() {
@@ -85,13 +89,25 @@ define(function(require) {
                 placeholder: __('marelloenterprise.inventory.warehouse.form.select_warehouse')
             });
 
-            this.updateConsolidationWarehouses();
+            this.updateWarehouses();
         },
 
-        onCheckboxChange: function(e) {
+        onConsolidationCheckboxChange: function(e) {
             const cid = this.$(e.currentTarget).closest('tr').data('cid');
             const propertyValue = this.$(e.currentTarget).is(':checked');
             this.collection.get({cid: cid}).set('isConsolidationWarehouse', propertyValue);
+        },
+
+        onDemandLocationCheckboxChange: function(e) {
+            const cid = this.$(e.currentTarget).closest('tr').data('cid');
+            const propertyValue = this.$(e.currentTarget).is(':checked');
+            this.collection.get({cid: cid}).set('isOrderOnDemandLocation', propertyValue);
+        },
+
+        onsortOrderOodLocChange: function(e) {
+            const cid = this.$(e.currentTarget).closest('tr').data('cid');
+            const propertyValue = this.$(e.currentTarget).val();
+            this.collection.get({cid: cid}).set('sortOrderOodLoc', propertyValue);
         },
 
         onAddWarehouse: function(e) {
@@ -102,6 +118,8 @@ define(function(require) {
                 const model = new this.collection.model(_.extend(
                     {
                         isConsolidationWarehouse: false,
+                        isOrderOnDemandLocation: false,
+                        sortOrderOodLoc: 0,
                         onlyAdded: true
                     },
                     this.allowedWarehouses[value]
@@ -118,13 +136,19 @@ define(function(require) {
             this.$el.inputWidget('seekAndCreate');
         },
 
-        updateConsolidationWarehouses: function() {
-            const warehousesData = {};
+        updateWarehouses: function() {
+            const consolidationWarehousesData = {};
+            const orderOnDemandLocationData = {};
+            const sortOrderOodLocData = {};
             this.collection.each(function(model) {
-                _.extend(warehousesData, model.getConsolidationWarehouseData());
+                _.extend(consolidationWarehousesData, model.getConsolidationWarehouseData());
+                _.extend(orderOnDemandLocationData, model.getOrderOnDemandLocationData());
+                _.extend(sortOrderOodLocData, model.getsortOrderOodLocData());
             });
 
-            this.domCache.$consolidationWarehouses.val(JSON.stringify(warehousesData));
+            this.domCache.$consolidationWarehouses.val(JSON.stringify(consolidationWarehousesData));
+            this.domCache.$onDemandLocationWarehouses.val(JSON.stringify(orderOnDemandLocationData));
+            this.domCache.$sortOrderOodLocWarehouses.val(JSON.stringify(sortOrderOodLocData));
         },
 
         getConsolidationWarehouses: function() {

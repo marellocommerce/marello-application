@@ -1,10 +1,5 @@
 marello:
     order:
-        system_configuration:
-            groups:
-                order.title:          Order
-                order_general.title:  General
-
         consolidation_enabled.label: Consolidation Enabled
 
 marelloenterprise:
@@ -15,7 +10,6 @@ marelloenterprise:
             fields:
                 enable_order_consolidation:
                     label: Enable consolidation feature
-                    tooltip: Enable consolidation feature
-                set_global_consolidation:
-                    label: Set global consolidation
-                    tooltip: Set Consolidation globally
+                set_consolidation_for_scope:
+                    label: Enable consolidation
+                    tooltip: Enable Consolidation for the current scope

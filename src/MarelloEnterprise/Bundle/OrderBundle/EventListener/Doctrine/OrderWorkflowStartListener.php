@@ -2,17 +2,14 @@
 
 namespace MarelloEnterprise\Bundle\OrderBundle\EventListener\Doctrine;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
-
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowStartArguments;
 use Oro\Bundle\SecurityBundle\Authentication\TokenAccessorInterface;
-
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Model\WorkflowNameProviderInterface;
-use Marello\Bundle\OrderBundle\EventListener\Doctrine\OrderWorkflowStartListener as BaseListener;
 
 class OrderWorkflowStartListener
 {
@@ -27,18 +24,13 @@ class OrderWorkflowStartListener
     /** @var TokenAccessorInterface $tokenAccessor */
     private $tokenAccessor;
 
-    /** @var BaseListener $baseListener */
-    private $baseListener;
-
     /**
      * @param WorkflowManager $workflowManager
      */
     public function __construct(
         WorkflowManager $workflowManager,
-        BaseListener $baseListener
     ) {
         $this->workflowManager = $workflowManager;
-        $this->baseListener = $baseListener;
     }
 
     /**
@@ -46,7 +38,7 @@ class OrderWorkflowStartListener
      */
     public function postPersist(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
         if ($entity instanceof Order) {
             if ($workflow = $this->getApplicableWorkflow($entity)) {
                 $this->entitiesScheduledForWorkflowStart[] = new WorkflowStartArguments(
@@ -92,7 +84,7 @@ class OrderWorkflowStartListener
         // apply force autostart (ignore default filters)
         $workflows = $this->workflowManager->getApplicableWorkflows($entity);
         foreach ($workflows as $name => $workflow) {
-            if (in_array($name, $this->getDefaultWorkflowNames())) {
+            if (str_starts_with($name, WorkflowNameProviderInterface::MARELLO_WORKFLOW_START)) {
                 $applicableWorkflows[$name] = $workflow;
             }
         }
@@ -102,19 +94,6 @@ class OrderWorkflowStartListener
         }
 
         return array_shift($applicableWorkflows);
-    }
-
-    /**
-     * @return array
-     */
-    protected function getDefaultWorkflowNames(): array
-    {
-        return [
-            WorkflowNameProviderInterface::ORDER_WORKFLOW_1,
-            WorkflowNameProviderInterface::ORDER_WORKFLOW_2,
-            WorkflowNameProviderInterface::ORDER_DEPRECATED_WORKFLOW_1,
-            WorkflowNameProviderInterface::ORDER_DEPRECATED_WORKFLOW_2
-        ];
     }
 
     /**

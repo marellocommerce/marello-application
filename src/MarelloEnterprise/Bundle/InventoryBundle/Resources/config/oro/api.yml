@@ -7,4 +7,9 @@ api:
     entities:
         Marello\Bundle\InventoryBundle\Entity\Warehouse:
             # this entity does not have own Data API resource
-            actions: false
+            actions:
+                update: false
+                delete: false
+                delete_list: false
+                update_relationship: false
+                delete_relationship: false

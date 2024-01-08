@@ -64,6 +64,13 @@
 
     {% set additionalData %}
         {{ entityConfig.renderDynamicFields(entity) }}
+        {{ UI.renderHtmlProperty(
+            'marello.inventory.warehouse.order_on_demand_location.label'|trans,
+            entity.orderOnDemandLocation ?
+            'marello.core.yes.label'|trans
+            :
+            'marello.core.no.label'|trans
+        ) }}
     {% endset %}
 
     {% set dataBlocks = dataBlocks|merge([{

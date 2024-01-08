@@ -5,15 +5,26 @@ namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use MarelloEnterprise\Bundle\ReplenishmentBundle\Model\ExtendReplenishmentOrderManualItemConfig;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 
 /**
  * @ORM\Entity()
  * @ORM\Table(name="marello_repl_order_m_item_config")
  * @ORM\HasLifecycleCallbacks
+ * @Oro\Config(
+ *      defaultValues={
+ *          "dataaudit"={
+ *              "auditable"=false
+ *          }
+ *      }
+ * )
  */
-class ReplenishmentOrderManualItemConfig extends ExtendReplenishmentOrderManualItemConfig
+class ReplenishmentOrderManualItemConfig implements ExtendEntityInterface
 {
+    use ExtendEntityTrait;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -69,7 +80,7 @@ class ReplenishmentOrderManualItemConfig extends ExtendReplenishmentOrderManualI
     protected $availableQuantity;
 
     /**
-     * @ORM\ManyToOne(targetEntity="ReplenishmentOrderConfig")
+     * @ORM\ManyToOne(targetEntity="ReplenishmentOrderConfig", inversedBy="manualItems")
      * @ORM\JoinColumn(name="order_config_id", nullable=false, onDelete="CASCADE")
      *
      * @var ReplenishmentOrderConfig

@@ -2,18 +2,18 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Manager;
 
-use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
-use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
+use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
+use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
+use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository;
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Marello\Bundle\InventoryBundle\Factory\InventoryBatchFromInventoryLevelFactory;
 use Marello\Bundle\InventoryBundle\Manager\InventoryManager as BaseInventoryManager;
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
-use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
-use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
-use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
 
 class InventoryManager extends BaseInventoryManager
 {
@@ -113,7 +113,7 @@ class InventoryManager extends BaseInventoryManager
         }
         /** @var InventoryBatch[] $updatedBatches */
         $updatedBatches = $context->getInventoryBatches();
-        if (count($updatedBatches) === 1) {
+        if (count($updatedBatches) === 1 && $updatedBatches[0]['batch']->getId() === null) {
             $level->addInventoryBatch($updatedBatches[0]['batch']);
         }
         $updatedLevel = $this->updateInventory($level, $inventory, $allocatedInventory);

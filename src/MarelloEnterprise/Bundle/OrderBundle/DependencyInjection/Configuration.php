@@ -21,7 +21,7 @@ class Configuration implements ConfigurationInterface
                 'value' => false,
                 'type' => 'boolean'
             ],
-            'set_global_consolidation' => [
+            'set_consolidation_for_scope' => [
                 'value' => false,
                 'type' => 'boolean'
             ]

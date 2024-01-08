@@ -23,6 +23,7 @@ class MarelloEnterpriseReplenishmentExtension extends Extension
         $loader->load('services.yml');
         $loader->load('form.yml');
         $loader->load('workflow_actions.yml');
+        $loader->load('mq_topics.yml');
 
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);

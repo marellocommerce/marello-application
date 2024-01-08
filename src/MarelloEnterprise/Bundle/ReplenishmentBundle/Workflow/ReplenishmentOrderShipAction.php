@@ -2,7 +2,7 @@
 
 namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Workflow;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
@@ -15,24 +15,12 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ReplenishmentOrderShipAction extends ReplenishmentOrderTransitionAction
 {
-    /**
-     * @var Registry
-     */
-    protected $doctrine;
-
-    /**
-     * @param ContextAccessor           $contextAccessor
-     * @param EventDispatcherInterface  $eventDispatcher
-     * @param Registry                  $doctrine
-     */
     public function __construct(
         ContextAccessor $contextAccessor,
         EventDispatcherInterface $eventDispatcher,
-        Registry $doctrine
+        protected ManagerRegistry $doctrine
     ) {
         parent::__construct($contextAccessor, $eventDispatcher);
-
-        $this->doctrine = $doctrine;
     }
 
     /**

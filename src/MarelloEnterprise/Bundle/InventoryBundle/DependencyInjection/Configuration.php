@@ -7,8 +7,6 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 use Oro\Bundle\ConfigBundle\DependencyInjection\SettingsBuilder;
 
-use Marello\Bundle\InventoryBundle\DependencyInjection\MarelloInventoryExtension;
-
 /**
  * This is the class that validates and merges configuration from your app/config files
  *
