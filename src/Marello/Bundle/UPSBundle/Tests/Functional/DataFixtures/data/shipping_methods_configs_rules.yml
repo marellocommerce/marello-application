@@ -1,7 +1,7 @@
 ups.shipping_rule.1:
     rule:
         enabled: true
-        sortOrder: 0
+        sortOrder: 1
         expression: 'true'
     currency: 'EUR'
     destinations:
@@ -91,25 +91,25 @@ ups.shipping_rule.8:
 ups.shipping_rule.9:
     rule:
         enabled: true
-        sortOrder: 0
+        sortOrder: 1
         expression: 'true'
     currency: 'USD'
 ups.shipping_rule.10:
     rule:
         enabled: true
-        sortOrder: 0
+        sortOrder: 1
         expression: 'true'
     currency: 'UAH'
 ups.shipping_rule.11:
     rule:
         enabled: false
-        sortOrder: 0
+        sortOrder: 1
         expression: 'true'
     currency: 'UAH'
 ups.shipping_rule.12:
     rule:
         enabled: true
-        sortOrder: 0
+        sortOrder: 1
         expression: 'true'
     currency: 'UAH'
     destinations:

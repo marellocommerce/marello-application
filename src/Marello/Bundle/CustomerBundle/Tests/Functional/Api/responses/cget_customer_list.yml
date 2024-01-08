@@ -21,10 +21,16 @@ data:
                     -
                         type: marelloaddresses
                         id: '<toString(@marello-customer-0->primaryAddress->id)>'
+            company:
+                data: null
             organization:
                 data:
                     type: organizations
-                    id: '1'
+                    id: '<toString(@organization->id)>'
+            attachments:
+                data: []
+            activityNotes:
+                data: []
     -
         type: marellocustomers
         id: '<toString(@marello-customer-1->id)>'
@@ -47,10 +53,16 @@ data:
                     -
                         type: marelloaddresses
                         id: '<toString(@marello-customer-1->primaryAddress->id)>'
+            company:
+                data: null
             organization:
                 data:
                     type: organizations
-                    id: '1'
+                    id: '<toString(@organization->id)>'
+            attachments:
+                data: []
+            activityNotes:
+                data: []
     -
         type: marellocustomers
         id: '<toString(@marello-customer-2->id)>'
@@ -73,10 +85,16 @@ data:
                     -
                         type: marelloaddresses
                         id: '<toString(@marello-customer-2->primaryAddress->id)>'
+            company:
+                data: null
             organization:
                 data:
                     type: organizations
-                    id: '1'
+                    id: '<toString(@organization->id)>'
+            attachments:
+                data: []
+            activityNotes:
+                data: []
     -
         type: marellocustomers
         id: '<toString(@marello-customer-3->id)>'
@@ -99,10 +117,16 @@ data:
                     -
                         type: marelloaddresses
                         id: '<toString(@marello-customer-3->primaryAddress->id)>'
+            company:
+                data: null
             organization:
                 data:
                     type: organizations
-                    id: '1'
+                    id: '<toString(@organization->id)>'
+            attachments:
+                data: []
+            activityNotes:
+                data: []
     -
         type: marellocustomers
         id: '<toString(@marello-customer-4->id)>'
@@ -125,10 +149,16 @@ data:
                     -
                         type: marelloaddresses
                         id: '<toString(@marello-customer-4->primaryAddress->id)>'
+            company:
+                data: null
             organization:
                 data:
                     type: organizations
-                    id: '1'
+                    id: '<toString(@organization->id)>'
+            attachments:
+                data: []
+            activityNotes:
+                data: []
     -
         type: marellocustomers
         id: '<toString(@marello-customer-5->id)>'
@@ -151,10 +181,16 @@ data:
                     -
                         type: marelloaddresses
                         id: '<toString(@marello-customer-5->primaryAddress->id)>'
+            company:
+                data: null
             organization:
                 data:
                     type: organizations
-                    id: '1'
+                    id: '<toString(@organization->id)>'
+            attachments:
+                data: []
+            activityNotes:
+                data: []
     -
         type: marellocustomers
         id: '<toString(@marello-customer-6->id)>'
@@ -177,10 +213,16 @@ data:
                     -
                         type: marelloaddresses
                         id: '<toString(@marello-customer-6->primaryAddress->id)>'
+            company:
+                data: null
             organization:
                 data:
                     type: organizations
-                    id: '1'
+                    id: '<toString(@organization->id)>'
+            attachments:
+                data: []
+            activityNotes:
+                data: []
     -
         type: marellocustomers
         id: '<toString(@marello-customer-7->id)>'
@@ -203,10 +245,16 @@ data:
                     -
                         type: marelloaddresses
                         id: '<toString(@marello-customer-7->primaryAddress->id)>'
+            company:
+                data: null
             organization:
                 data:
                     type: organizations
-                    id: '1'
+                    id: '<toString(@organization->id)>'
+            attachments:
+                data: []
+            activityNotes:
+                data: []
     -
         type: marellocustomers
         id: '<toString(@marello-customer-8->id)>'
@@ -229,10 +277,16 @@ data:
                     -
                         type: marelloaddresses
                         id: '<toString(@marello-customer-8->primaryAddress->id)>'
+            company:
+                data: null
             organization:
                 data:
                     type: organizations
-                    id: '1'
+                    id: '<toString(@organization->id)>'
+            attachments:
+                data: []
+            activityNotes:
+                data: []
     -
         type: marellocustomers
         id: '<toString(@marello-customer-9->id)>'
@@ -255,7 +309,13 @@ data:
                     -
                         type: marelloaddresses
                         id: '<toString(@marello-customer-9->primaryAddress->id)>'
+            company:
+                data: null
             organization:
                 data:
                     type: organizations
-                    id: '1'
+                    id: '<toString(@organization->id)>'
+            attachments:
+                data: []
+            activityNotes:
+                data: []

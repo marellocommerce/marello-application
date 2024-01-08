@@ -151,9 +151,9 @@ class QuantityWFAStrategyTest extends TestCase
             ]
         );
 
-        $product1->addInventoryItem($inventoryItem1);
-        $product2->addInventoryItem($inventoryItem2);
-        $product3->addInventoryItem($inventoryItem3);
+        $product1->setInventoryItem($inventoryItem1);
+        $product2->setInventoryItem($inventoryItem2);
+        $product3->setInventoryItem($inventoryItem3);
 
         $orderItem1 = $this->getEntity(
             OrderItem::class,

@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\PackingBundle\Pdf\Request;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\PackingBundle\Entity\PackingSlip;
 use Marello\Bundle\PdfBundle\Provider\Render\ConfigValuesProvider;
 use Marello\Bundle\PdfBundle\Provider\Render\LogoRenderParameterProvider;
@@ -19,7 +19,7 @@ class PackingSlipPdfRequestHandler implements PdfRequestHandlerInterface
     const ENTITY_ALIAS = 'packingslip';
 
     public function __construct(
-        private Registry $doctrine,
+        private ManagerRegistry $doctrine,
         private TranslatorInterface $translator,
         private RenderParametersProvider $parametersProvider,
         private TwigRenderer $renderer

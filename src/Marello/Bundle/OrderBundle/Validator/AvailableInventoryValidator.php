@@ -223,7 +223,7 @@ class AvailableInventoryValidator extends ConstraintValidator
             ->getRepository(WarehouseType::class)
             ->find(WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL);
 
-        $inventoryItem = $product->getInventoryItems()->first();
+        $inventoryItem = $product->getInventoryItem();
         $availableWarehouses = [];
         foreach ($filteredSupplierRelations as $supplierRelation) {
             if (!$supplierRelation) {
@@ -275,10 +275,9 @@ class AvailableInventoryValidator extends ConstraintValidator
      */
     private function isProductCanBackorder(ProductInterface $product)
     {
-        foreach ($product->getInventoryItems() as $inventoryItem) {
-            if ($inventoryItem->isBackorderAllowed()) {
-                return true;
-            }
+        $inventoryItem = $product->getInventoryItem();
+        if ($inventoryItem && $inventoryItem->isBackorderAllowed()) {
+            return true;
         }
 
         return false;
@@ -290,13 +289,12 @@ class AvailableInventoryValidator extends ConstraintValidator
      */
     private function getBackorderQty(ProductInterface $product)
     {
-        foreach ($product->getInventoryItems() as $inventoryItem) {
-            if ($inventoryItem->isBackorderAllowed()) {
-                if (null === $inventoryItem->getMaxQtyToBackorder()) {
-                    return PHP_INT_MAX;
-                }
-                return $inventoryItem->getMaxQtyToBackorder();
+        $inventoryItem = $product->getInventoryItem();
+        if ($inventoryItem && $inventoryItem->isBackorderAllowed()) {
+            if (null === $inventoryItem->getMaxQtyToBackorder()) {
+                return PHP_INT_MAX;
             }
+            return $inventoryItem->getMaxQtyToBackorder();
         }
 
         return 0;
@@ -308,10 +306,9 @@ class AvailableInventoryValidator extends ConstraintValidator
      */
     private function isProductCanPreorder(ProductInterface $product)
     {
-        foreach ($product->getInventoryItems() as $inventoryItem) {
-            if ($inventoryItem->isCanPreorder()) {
-                return true;
-            }
+        $inventoryItem = $product->getInventoryItem();
+        if ($inventoryItem && $inventoryItem->isCanPreorder()) {
+            return true;
         }
 
         return false;
@@ -323,13 +320,12 @@ class AvailableInventoryValidator extends ConstraintValidator
      */
     private function getPreorderQty(ProductInterface $product)
     {
-        foreach ($product->getInventoryItems() as $inventoryItem) {
-            if ($inventoryItem->isCanPreorder()) {
-                if (null === $inventoryItem->getMaxQtyToPreorder()) {
-                    return PHP_INT_MAX;
-                }
-                return $inventoryItem->getMaxQtyToPreorder();
+        $inventoryItem = $product->getInventoryItem();
+        if ($inventoryItem && $inventoryItem->isCanPreorder()) {
+            if (null === $inventoryItem->getMaxQtyToPreorder()) {
+                return PHP_INT_MAX;
             }
+            return $inventoryItem->getMaxQtyToPreorder();
         }
 
         return 0;
@@ -341,10 +337,9 @@ class AvailableInventoryValidator extends ConstraintValidator
      */
     private function isOrderOnDemandAllowed(ProductInterface $product)
     {
-        foreach ($product->getInventoryItems() as $inventoryItem) {
-            if ($inventoryItem->isOrderOnDemandAllowed()) {
-                return true;
-            }
+        $inventoryItem = $product->getInventoryItem();
+        if ($inventoryItem && $inventoryItem->isOrderOnDemandAllowed()) {
+            return true;
         }
 
         return false;

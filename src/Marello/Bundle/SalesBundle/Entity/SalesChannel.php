@@ -9,8 +9,9 @@ use Marello\Bundle\LocaleBundle\Model\LocalizationAwareInterface;
 use Marello\Bundle\LocaleBundle\Model\LocalizationTrait;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\SalesBundle\Model\ExtendSalesChannel;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 
@@ -47,12 +48,14 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
  *  }
  * )
  */
-class SalesChannel extends ExtendSalesChannel implements
+class SalesChannel implements
     CurrencyAwareInterface,
-    LocalizationAwareInterface
+    LocalizationAwareInterface,
+    ExtendEntityInterface
 {
     use EntityCreatedUpdatedAtTrait;
     use LocalizationTrait;
+    use ExtendEntityTrait;
     
     const DEFAULT_TYPE = 'marello';
 
@@ -224,8 +227,6 @@ class SalesChannel extends ExtendSalesChannel implements
      */
     public function __construct($name = null)
     {
-        parent::__construct();
-        
         $this->name = $name;
         $this->products = new ArrayCollection();
     }

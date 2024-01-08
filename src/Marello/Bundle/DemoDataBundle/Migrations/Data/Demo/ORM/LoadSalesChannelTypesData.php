@@ -8,7 +8,6 @@ class LoadSalesChannelTypesData extends BaseLoadSalesChannelTypesData
 {
     /** @var array */
     protected $data = [
-        'pos' => 'Pos',
         'webshop' => 'Webshop',
         'marketplace' => 'Marketplace'
     ];

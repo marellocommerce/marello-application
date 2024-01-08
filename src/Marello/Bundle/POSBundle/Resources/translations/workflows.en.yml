@@ -1,0 +1,23 @@
+oro:
+    workflow:
+        marello_order_pos_workflow:
+            label: 'Order POS Workflow'
+            attribute:
+                payment_reference:
+                    label:      'Payment Reference'
+                payment_details:
+                    label:      'Payment Details'
+                total_paid:
+                    label:      'Paid Amount'
+            step:
+                processing:
+                    label:      'Processing'
+                shipped:
+                    label:      'Complete'
+            transition:
+                pending:
+                    label:      'Pending'
+                processing:
+                    label:      'Processing'
+                ship:
+                    label:      'Complete'

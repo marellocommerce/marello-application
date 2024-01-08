@@ -1,0 +1,25 @@
+services:
+    marello_pos.api.authentication_provider:
+        alias: oro_security.authentication.provider.username_password_organization.main
+        public: false
+
+    Marello\Bundle\POSBundle\Api\Processor\HandleLogin:
+        arguments:
+            - 'main'
+            - '@marello_pos.api.authentication_provider'
+            - '@translator'
+        tags:
+            - { name: oro.api.processor, action: create, group: save_data, requestType: json_api&rest, class: Marello\Bundle\POSBundle\Api\Model\Login }
+
+    marello_pos.api.login.normalize:
+        class: Oro\Bundle\ApiBundle\Processor\Shared\NormalizeEntity
+        arguments:
+            - '@oro_api.object_normalizer'
+        tags:
+            - { name: oro.api.processor, action: create, group: normalize_data, requestType: json_api&rest, class: Marello\Bundle\POSBundle\Api\Model\Login }
+
+    # return HTTP_OK status code instead of HTTP_CREATED for "login" POST request
+    marello_pos.api.login.set_http_ok_response_status_code:
+        class: Oro\Bundle\ApiBundle\Processor\Shared\SetHttpResponseStatusCode
+        tags:
+            - { name: oro.api.processor, action: create, group: normalize_result, requestType: json_api&rest, class: Marello\Bundle\POSBundle\Api\Model\Login, priority: 10 }

@@ -2,12 +2,11 @@
 
 namespace Marello\Bundle\OrderBundle\EventListener\Doctrine;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 
 class OrderItemOriginalPriceListener
 {
-    public function prePersist(OrderItem $orderItem, LifecycleEventArgs $args): void
+    public function prePersist(OrderItem $orderItem): void
     {
         $this->setDefaultPrice($orderItem);
     }

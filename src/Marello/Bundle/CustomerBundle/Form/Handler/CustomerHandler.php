@@ -4,54 +4,41 @@ namespace Marello\Bundle\CustomerBundle\Form\Handler;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Marello\Bundle\CustomerBundle\Entity\Customer;
+use Oro\Bundle\FormBundle\Form\Handler\FormHandlerInterface;
 use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 
-class CustomerHandler
+class CustomerHandler implements FormHandlerInterface
 {
     use RequestHandlerTrait;
 
-    /**
-     * @var FormInterface
-     */
-    protected $form;
-    /**
-     * @var Request
-     */
-    protected $request;
     /**
      * @var EntityManagerInterface
      */
     protected $manager;
 
     /**
-     * @param FormInterface $form
-     * @param RequestStack $requestStack
      * @param EntityManagerInterface $manager
      */
-    public function __construct(FormInterface $form, RequestStack $requestStack, EntityManagerInterface $manager)
+    public function __construct(EntityManagerInterface $manager)
     {
-        $this->form = $form;
-        $this->request = $requestStack->getCurrentRequest();
         $this->manager = $manager;
     }
 
-    /**
-     * @param Customer $entity
-     *
-     * @return bool
-     */
-    public function process(Customer $entity)
+    public function process($data, FormInterface $form, Request $request)
     {
-        $this->form->setData($entity);
+        if (!$data instanceof Customer) {
+            throw new \InvalidArgumentException('Argument data should be instance of Customer entity');
+        }
 
-        if (in_array($this->request->getMethod(), array('POST', 'PUT'))) {
-            $this->submitPostPutRequest($this->form, $this->request);
+        $form->setData($data);
 
-            if ($this->form->isValid()) {
-                $this->onSuccess($entity);
+        if (in_array($request->getMethod(), ['POST', 'PUT'])) {
+            $this->submitPostPutRequest($form, $request);
+
+            if ($form->isValid()) {
+                $this->onSuccess($data);
 
                 return true;
             }

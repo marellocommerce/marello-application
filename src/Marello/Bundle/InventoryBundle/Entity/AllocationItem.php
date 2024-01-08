@@ -3,13 +3,17 @@
 namespace Marello\Bundle\InventoryBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
-use Marello\Bundle\InventoryBundle\Model\ExtendAllocationItem;
-use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use Marello\Bundle\ProductBundle\Entity\Product;
+
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
+
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Marello\Bundle\OrderBundle\Model\QuantityAwareInterface;
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 
 /**
  * @ORM\Entity()
@@ -28,10 +32,11 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
  * @ORM\Table(name="marello_inventory_alloc_item")
  * @ORM\HasLifecycleCallbacks()
  */
-class AllocationItem extends ExtendAllocationItem implements OrganizationAwareInterface
+class AllocationItem implements QuantityAwareInterface, OrganizationAwareInterface, ExtendEntityInterface
 {
     use EntityCreatedUpdatedAtTrait;
     use AuditableOrganizationAwareTrait;
+    use ExtendEntityTrait;
 
     /**
      * @var int

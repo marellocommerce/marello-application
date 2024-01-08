@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\SalesBundle\EventListener\Doctrine;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Oro\Bundle\DistributionBundle\Handler\ApplicationState;
@@ -20,7 +20,7 @@ class SalesChannelListener
     {
         if ($this->applicationState->isInstalled() && !$salesChannel->getGroup()) {
             $systemGroup = $args
-                ->getEntityManager()
+                ->getObjectManager()
                 ->getRepository(SalesChannelGroup::class)
                 ->findSystemChannelGroup($this->aclHelper);
 

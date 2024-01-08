@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\OrderBundle\EventListener\Workflow;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
@@ -45,7 +45,7 @@ class PurchaseOrderWorkflowCompletedListener
     private $packingSlip;
 
     public function __construct(
-        private Registry $doctrine,
+        private ManagerRegistry $doctrine,
         private WorkflowManager $workflowManager,
         private OrderShippingContextFactory $orderShippingContextFactory,
         private ShippingMethodProviderInterface $shippingMethodProvider,
@@ -81,7 +81,7 @@ class PurchaseOrderWorkflowCompletedListener
                 $entityManager = $this->doctrine->getManagerForClass(OrderItem::class);
                 foreach ($order->getItems() as $item) {
                     $status = $item->getStatus()->getId();
-                    if (!in_array($item->getId(), $data[$orderOnDemandKey]['orderItems'])) {
+                    if (!in_array($item->getId(), $data[$orderOnDemandKey]['allocationItems'])) {
                         $statuses = [LoadOrderItemStatusData::DROPSHIPPING, LoadOrderItemStatusData::SHIPPED];
                         if (in_array($status, $statuses, true)) {
                             $hasShippedItems = true;
@@ -104,7 +104,7 @@ class PurchaseOrderWorkflowCompletedListener
                 $entityManager->flush();
                 if ($hasPackedItems || $hasShippedItems) {
                     foreach ($order->getItems() as $item) {
-                        if (!in_array($item->getId(), $data[$orderOnDemandKey]['orderItems'])) {
+                        if (!in_array($item->getId(), $data[$orderOnDemandKey]['allocationItems'])) {
                             $this->removedItems[] = [
                                 'sku' => $item->getProductSku(),
                                 'quantity' => $item->getQuantity()
@@ -128,6 +128,7 @@ class PurchaseOrderWorkflowCompletedListener
                             $shipmentManager->flush();
                         }
                     }
+                    // ????
                     $workflowItems = $this->workflowManager->getWorkflowItemsByEntity($order);
                     foreach ($workflowItems as $workflowItem) {
                         $this->eventDispatcher->dispatch(
@@ -135,52 +136,6 @@ class PurchaseOrderWorkflowCompletedListener
                             'extendable_action.create_packingslip'
                         );
                     }
-                    if ($this->packingSlip) {
-                        $warehouse = $this->packingSlip->getWarehouse();
-                        foreach ($this->packingSlip->getItems() as $packingSlipItem) {
-                            $item = $packingSlipItem->getOrderItem();
-                            $this->handleInventoryUpdate(
-                                $item,
-                                null,
-                                $item->getQuantity(),
-                                $order,
-                                $warehouse,
-                                'order_workflow.inventory_allocated',
-                                false
-                            );
-                        }
-                    }
-                    $this->emailSendProcessorLink->getService()->sendNotification(
-                        'marello_order_shipping_prepared',
-                        [$order->getCustomer()],
-                        $order
-                    );
-                }
-                if ($hasShippedItems) {
-                    if ($this->packingSlip) {
-                        $entityManager = $this->doctrine->getManagerForClass(OrderItem::class);
-                        $warehouse = $this->packingSlip->getWarehouse();
-                        foreach ($this->packingSlip->getItems() as $packingSlipItem) {
-                            $item = $packingSlipItem->getOrderItem();
-                            $this->handleInventoryUpdate(
-                                $item,
-                                -$item->getQuantity(),
-                                -$item->getQuantity(),
-                                $order,
-                                $warehouse,
-                                'order_workflow.shipped',
-                                true
-                            );
-                            $item->setStatus($this->findStatusByName(LoadOrderItemStatusData::SHIPPED));
-                            $entityManager->persist($item);
-                        }
-                        $entityManager->flush();
-                    }
-                    $this->emailSendProcessorLink->getService()->sendNotification(
-                        'marello_order_shipped_confirmation',
-                        [$order->getCustomer()],
-                        $order
-                    );
                 }
             }
         }

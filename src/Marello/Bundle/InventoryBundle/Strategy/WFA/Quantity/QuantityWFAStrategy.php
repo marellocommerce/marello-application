@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
@@ -16,16 +17,16 @@ use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
 use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
+use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 use Marello\Bundle\InventoryBundle\Strategy\WFA\WFAStrategyInterface;
 use Marello\Bundle\InventoryBundle\Provider\AllocationExclusionInterface;
 use Marello\Bundle\InventoryBundle\Provider\AllocationStateStatusInterface;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
-use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository;
-use Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\Calculator\QtyWHCalculatorInterface;
 use Marello\Bundle\NotificationMessageBundle\Event\CreateNotificationMessageEvent;
 use Marello\Bundle\NotificationMessageBundle\Factory\NotificationMessageContextFactory;
 use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageSourceInterface;
+use Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\Calculator\QtyWHCalculatorInterface;
 
 class QuantityWFAStrategy implements WFAStrategyInterface
 {
@@ -34,19 +35,6 @@ class QuantityWFAStrategy implements WFAStrategyInterface
 
     const EMPTY_WAREHOUSE_CODE = 'no_warehouse';
     const CNA_WAREHOUSE_CODE = 'could_not_allocate';
-
-    /**
-     * @var QtyWHCalculatorInterface
-     */
-    private $minQtyWHCalculator;
-
-    /**
-     * @var WarehouseChannelGroupLinkRepository
-     */
-    private $warehouseChannelGroupLinkRepository;
-
-    /** @var ConfigManager $configManager */
-    private $configManager;
 
     /** @var AllocationExclusionInterface $exclusionProvider */
     private $exclusionProvider;
@@ -65,17 +53,14 @@ class QuantityWFAStrategy implements WFAStrategyInterface
 
     /**
      * @param QtyWHCalculatorInterface $minQtyWHCalculator
-     * @param WarehouseChannelGroupLinkRepository $warehouseChannelGroupLinkRepository
+     * @param DoctrineHelper $doctrineHelper
      * @param ConfigManager $configManager
      */
     public function __construct(
-        QtyWHCalculatorInterface $minQtyWHCalculator,
-        WarehouseChannelGroupLinkRepository $warehouseChannelGroupLinkRepository,
-        ConfigManager $configManager
+        private QtyWHCalculatorInterface $minQtyWHCalculator,
+        private DoctrineHelper $doctrineHelper,
+        private ConfigManager $configManager
     ) {
-        $this->minQtyWHCalculator = $minQtyWHCalculator;
-        $this->warehouseChannelGroupLinkRepository = $warehouseChannelGroupLinkRepository;
-        $this->configManager = $configManager;
     }
 
     /**
@@ -109,8 +94,8 @@ class QuantityWFAStrategy implements WFAStrategyInterface
     {
         $productsByWh = [];
         $warehouses = [];
-        $orderItems = $this->exclusionProvider->getItems($order, $allocation);
-        $orderItemsByProducts = [];
+        $items = $this->exclusionProvider->getItems($order, $allocation);
+        $itemsByProducts = [];
         $emptyWarehouse = new Warehouse();
         $emptyWarehouse->setWarehouseType(new WarehouseType('virtual'));
         $emptyWarehouse->setCode(self::EMPTY_WAREHOUSE_CODE);
@@ -130,8 +115,8 @@ class QuantityWFAStrategy implements WFAStrategyInterface
             return $warehouse->getId();
         }, $linkedWarehouses);
 
-        foreach ($orderItems as $key => $orderItem) {
-            if (!$orderItem->getProduct()) {
+        foreach ($items as $key => $item) {
+            if (!$item->getProduct()) {
                 $errorContext = NotificationMessageContextFactory::createError(
                     NotificationMessageSourceInterface::NOTIFICATION_MESSAGE_SOURCE_ALLOCATION,
                     'marello.notificationmessage.allocation.no_sku.title',
@@ -151,23 +136,22 @@ class QuantityWFAStrategy implements WFAStrategyInterface
                 );
                 return [];
             }
-            $orderItemsByProducts[sprintf(
+            $itemsByProducts[sprintf(
                 '%s_|_%s',
-                $orderItem->getProduct()->getSku(),
-                $orderItem->getId() ? : $key
-            )] = $orderItem;
+                $item->getProduct()->getSku(),
+                $item->getId() ? : $key
+            )] = $item;
 
-            /** @var ArrayCollection $inventoryItems */
-            if ($orderItem instanceof AllocationItem) {
-                $inventoryItems = $orderItem->getProduct()->getInventoryItems();
+            if ($item instanceof AllocationItem) {
+                $inventoryItem = $item->getProduct()->getInventoryItem();
             } else {
-                $inventoryItems = $orderItem->getInventoryItems();
+                $inventoryItem = $item->getInventoryItem();
             }
-            /** @var InventoryItem $inventoryItem */
-            $inventoryItem = $inventoryItems->first();
+
             $productSku = $inventoryItem->getProduct()->getSku();
-            $orderItemQtyToAllocateLeft = $orderItem->getQuantity();
-            $inventoryLevels = $this->getInventoryLevelCandidates($inventoryItem, $warehousesIds);
+            $itemQtyToAllocateLeft = $item->getQuantity();
+            // allocation for order of batches is not allocated correctly if more orders are open (for OoD)
+            $inventoryLevels = $this->getInventoryLevelCandidates($inventoryItem, $item, $warehousesIds);
             $quantityAvailable = 0;
 
             if ($allocation &&
@@ -176,71 +160,95 @@ class QuantityWFAStrategy implements WFAStrategyInterface
                 $this->getExcludedWarehouses($allocation);
             }
 
-            /** @var InventoryLevel $inventoryLevel */
-            foreach ($inventoryLevels as $i => $inventoryLevel) {
-                $warehouse = $inventoryLevel->getWarehouse();
-                $warehouses[$warehouse->getCode()] = $warehouse;
-                $this->warehouseTypes[$warehouse->getCode()] = $warehouse->getWarehouseType()->getName();
-                $virtualInventoryQuantity = $inventoryLevel->getVirtualInventoryQty();
-                // if an allocation has been rejected, and the quantity would still be available in this warehouse
-                // (of said allocation). Set the quantity (virtualInventoryQuantity to 0 to make sure this warehouse
-                // will be excluded from allocating. Rejections of an allocation for a warehouse will be excluded for
-                // the next allocation round (triggered by the rejection).
-                if ($allocation && in_array($warehouse->getCode(), $this->excludedWarehouses)) {
-                    $virtualInventoryQuantity = $inventoryLevel->getVirtualInventoryQty() - $orderItem->getQuantityRejected();
-                    if (($orderItem->getQuantity() - $orderItem->getQuantityRejected()) <= 0) {
-                        $virtualInventoryQuantity = 0;
-                    }
-                }
-
-                // custom logic for dropship warehouses
-                if ($this->isWarehouseEligible($orderItem, $inventoryLevel, 'dropshipping')) {
-                    $dropshipUnmanagedQuantity = $orderItem->getQuantity();
-                    $availableForDropShipping = $orderItemQtyToAllocateLeft;
-                    if ($allocation && in_array($warehouse->getCode(), $this->excludedWarehouses)) {
-                        $dropshipUnmanagedQuantity = 0;
-                        $availableForDropShipping = 0;
-                    }
-                    $inventoryQty = $dropshipUnmanagedQuantity;
-                    $inventoryCount = $availableForDropShipping;
-                    if ($inventoryLevel->isManagedInventory()) {
-                        $inventoryQty = $inventoryCount = $virtualInventoryQuantity;
-                    }
-
-                    $productsByWh[$productSku]['selected_wh'][$warehouse->getCode()] = $inventoryQty;
-                    $quantityAvailable += $inventoryCount;
+            $orderOnDemandReserved = false;
+            // item is a reallocation (probably), but still check if OoD is enabled.
+            if ($item instanceof AllocationItem &&
+                ($inventoryItem->isOrderOnDemandAllowed() && $inventoryItem->isEnableBatchInventory())
+            ) {
+                $orderOnDemandReserved = true;
+                $allocationItemId = $item->getOrderItem()->getId();
+                $repo = $this->doctrineHelper->getEntityRepositoryForClass(InventoryBatch::class);
+                /** @var InventoryBatch $batch */
+                $batch = $repo->findOneBy(['orderOnDemandRef' => $allocationItemId]);
+                if ($batch && $batch->getQuantity() > 0) {
+                    $warehouse = $batch->getInventoryLevel()->getWarehouse();
+                    $warehouses[$warehouse->getCode()] = $warehouse;
+                    $productsByWh[$productSku]['selected_wh'][$warehouse->getCode()] = $item->getQuantity();
+                    $quantityAvailable = $batch->getQuantity();
                 } else {
-                    // default behaviour
-                    $productsByWh[$productSku]['selected_wh'][$warehouse->getCode()] = $virtualInventoryQuantity;
-                    $quantityAvailable += $virtualInventoryQuantity;
+                    $warehouses[$emptyWarehouse->getCode()] = $emptyWarehouse;
+                    $productsByWh[$productSku]['selected_wh'][$emptyWarehouse->getCode()] = $item->getQuantity();
+                    $quantityAvailable = $item->getQuantity();
                 }
-                $orderItemQtyToAllocateLeft -= $virtualInventoryQuantity;
             }
 
-            if ($this->isItemAvailable($orderItem, $inventoryItem, 'ondemand')) {
-                $warehouses[$emptyWarehouse->getCode()] = $emptyWarehouse;
-                $productsByWh[$productSku]['selected_wh'][$emptyWarehouse->getCode()] = $orderItemQtyToAllocateLeft;
-                $quantityAvailable += $orderItem->getQuantity();
-            }
+            if (!$orderOnDemandReserved) {
+                /** @var InventoryLevel $inventoryLevel */
+                foreach ($inventoryLevels as $inventoryLevel) {
+                    $warehouse = $inventoryLevel->getWarehouse();
+                    $warehouses[$warehouse->getCode()] = $warehouse;
+                    $this->warehouseTypes[$warehouse->getCode()] = $warehouse->getWarehouseType()->getName();
+                    $virtualInventoryQuantity = $inventoryLevel->getVirtualInventoryQty();
+                    // if an allocation has been rejected, and the quantity would still be available in this warehouse
+                    // (of said allocation). Set the quantity (virtualInventoryQuantity) to 0 to make sure this warehouse
+                    // will be excluded from allocating. Rejections of an allocation for a warehouse will be excluded for
+                    // the next allocation round (triggered by the rejection).
+                    if ($allocation && in_array($warehouse->getCode(), $this->excludedWarehouses)) {
+                        $virtualInventoryQuantity = $inventoryLevel->getVirtualInventoryQty() - $item->getQuantityRejected();
+                        if (($item->getQuantity() - $item->getQuantityRejected()) <= 0) {
+                            $virtualInventoryQuantity = 0;
+                        }
+                    }
 
-            if ($this->isItemAvailable($orderItem, $inventoryItem, 'preorder')) {
-                $warehouses[$emptyWarehouse->getCode()] = $emptyWarehouse;
-                $productsByWh[$productSku]['selected_wh'][$emptyWarehouse->getCode()] = $orderItemQtyToAllocateLeft;
-                $quantityAvailable += $orderItem->getQuantity();
-            }
+                    // custom logic for drop-ship warehouses
+                    if ($this->isWarehouseEligible($item, $inventoryLevel, 'dropshipping')) {
+                        $dropshipUnmanagedQuantity = $item->getQuantity();
+                        $availableForDropShipping = $itemQtyToAllocateLeft;
+                        if ($allocation && in_array($warehouse->getCode(), $this->excludedWarehouses)) {
+                            $dropshipUnmanagedQuantity = 0;
+                            $availableForDropShipping = 0;
+                        }
+                        $inventoryQty = $dropshipUnmanagedQuantity;
+                        $inventoryCount = $availableForDropShipping;
+                        if ($inventoryLevel->isManagedInventory()) {
+                            $inventoryQty = $inventoryCount = $virtualInventoryQuantity;
+                        }
 
-            if ($this->isItemAvailable($orderItem, $inventoryItem, 'backorder')) {
-                $warehouses[$emptyWarehouse->getCode()] = $emptyWarehouse;
-                $productsByWh[$productSku]['selected_wh'][$emptyWarehouse->getCode()] = $orderItemQtyToAllocateLeft;
-                $quantityAvailable += $orderItem->getQuantity();
+                        $productsByWh[$productSku]['selected_wh'][$warehouse->getCode()] = $inventoryQty;
+                        $quantityAvailable += $inventoryCount;
+                    } else {
+                        // default behaviour
+                        $productsByWh[$productSku]['selected_wh'][$warehouse->getCode()] = $virtualInventoryQuantity;
+                        $quantityAvailable += $virtualInventoryQuantity;
+                    }
+                    $itemQtyToAllocateLeft -= $virtualInventoryQuantity;
+                }
+
+                if ($this->isItemAvailable($item, $inventoryItem, 'ondemand')) {
+                    $warehouses[$emptyWarehouse->getCode()] = $emptyWarehouse;
+                    $productsByWh[$productSku]['selected_wh'][$emptyWarehouse->getCode()] = $itemQtyToAllocateLeft;
+                    $quantityAvailable += $item->getQuantity();
+                }
+
+                if ($this->isItemAvailable($item, $inventoryItem, 'preorder')) {
+                    $warehouses[$emptyWarehouse->getCode()] = $emptyWarehouse;
+                    $productsByWh[$productSku]['selected_wh'][$emptyWarehouse->getCode()] = $itemQtyToAllocateLeft;
+                    $quantityAvailable += $item->getQuantity();
+                }
+
+                if ($this->isItemAvailable($item, $inventoryItem, 'backorder')) {
+                    $warehouses[$emptyWarehouse->getCode()] = $emptyWarehouse;
+                    $productsByWh[$productSku]['selected_wh'][$emptyWarehouse->getCode()] = $itemQtyToAllocateLeft;
+                    $quantityAvailable += $item->getQuantity();
+                }
             }
 
             // for one reason or another, no warehouse could be found for this product
             // so add it to the no allocation warehouse to prevent errors but create an allocation with an alert state
             if (!isset($productsByWh[$productSku]['selected_wh'])) {
-                $productsByWh[$productSku]['selected_wh'][$noAllocationWarehouse->getCode()] = $orderItem->getQuantity();
+                $productsByWh[$productSku]['selected_wh'][$noAllocationWarehouse->getCode()] = $item->getQuantity();
             }
-            $productsByWh[$inventoryItem->getProduct()->getSku()]['qtyOrdered'] = $orderItem->getQuantity();
+            $productsByWh[$inventoryItem->getProduct()->getSku()]['qtyOrdered'] = $item->getQuantity();
             $productsByWh[$inventoryItem->getProduct()->getSku()]['qtyAvailable'] = $quantityAvailable;
         }
         $possibleOptionsToFulfill = array_map(
@@ -285,9 +293,9 @@ class QuantityWFAStrategy implements WFAStrategyInterface
 
         return $this->minQtyWHCalculator->calculate(
             $productsWithInventoryData,
-            $orderItemsByProducts,
+            $itemsByProducts,
             $warehouses,
-            $orderItems
+            $items
         );
     }
 
@@ -551,17 +559,25 @@ class QuantityWFAStrategy implements WFAStrategyInterface
     /**
      * @param InventoryItem $inventoryItem
      * @param array $warehouses
+     * @param OrderItem|AllocationItem $item
      * @return ArrayCollection
      * @throws \Exception
      */
-    protected function getInventoryLevelCandidates(InventoryItem $inventoryItem, array $warehouses)
+    protected function getInventoryLevelCandidates(InventoryItem $inventoryItem, $item, array $warehouses)
     {
         // filter levels that either; have a warehouse in the linked warehouses,
-        // have virtual inventory > 0 or have an external warehouse (dropshipping)
+        // have virtual inventory > 0 or have an external warehouse (drop-shipping)
         $filteredLevels = $inventoryItem
             ->getInventoryLevels()
-            ->filter(function (InventoryLevel $inventoryLevel) use ($warehouses) {
+            ->filter(function (InventoryLevel $inventoryLevel) use ($warehouses, $item, $inventoryItem) {
                 $warehouse = $inventoryLevel->getWarehouse();
+                // items that are order on demand are not a candidate for allocation by default.
+                if ($item instanceof OrderItem &&
+                    ($inventoryItem->isEnableBatchInventory() && $inventoryItem->isOrderOnDemandAllowed())
+                ) {
+                    return false;
+                }
+
                 if (in_array($warehouse->getId(), $warehouses)) {
                     if ($inventoryLevel->getVirtualInventoryQty() > 0) {
                         return true;
@@ -580,7 +596,6 @@ class QuantityWFAStrategy implements WFAStrategyInterface
             });
 
         $inventoryLevelIterator = $filteredLevels->getIterator();
-        // mixed --> still relevant?
         if ($this->getInventoryLevelSortingPriorityFromConfig() === 0) {
             $inventoryLevelIterator->uasort(function (InventoryLevel $a, InventoryLevel $b) {
                 return $b->getVirtualInventoryQty() <=> $a->getVirtualInventoryQty();
@@ -599,12 +614,12 @@ class QuantityWFAStrategy implements WFAStrategyInterface
     }
 
     /**
-     * @param OrderItem|AllocationItem $orderItem
+     * @param OrderItem|AllocationItem $item
      * @param InventoryLevel $inventoryLevel
      * @param $type string
      * @return bool
      */
-    protected function isWarehouseEligible($orderItem, InventoryLevel $inventoryLevel, $type = 'full')
+    protected function isWarehouseEligible($item, InventoryLevel $inventoryLevel, $type = 'full')
     {
         // these are basically rules, we might need to convert this into some rule based system
         // in order to have some more control over the priority of the conditions of the item
@@ -612,7 +627,7 @@ class QuantityWFAStrategy implements WFAStrategyInterface
         $warehouseType = $warehouse->getWarehouseType()->getName();
         switch ($type) {
             case 'full':
-                return ($inventoryLevel->getVirtualInventoryQty() >= $orderItem->getQuantity());
+                return ($inventoryLevel->getVirtualInventoryQty() >= $item->getQuantity());
                 break;
             case 'dropshipping':
                 return ($warehouseType === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL);
@@ -645,12 +660,12 @@ class QuantityWFAStrategy implements WFAStrategyInterface
     }
 
     /**
-     * @param OrderItem|AllocationItem $orderItem
+     * @param OrderItem|AllocationItem $item
      * @param InventoryItem $inventoryItem
      * @param null $type
      * @return bool
      */
-    protected function isItemAvailable($orderItem, InventoryItem $inventoryItem, $type = null)
+    protected function isItemAvailable($item, InventoryItem $inventoryItem, $type = null)
     {
         switch ($type) {
             case 'ondemand':
@@ -658,13 +673,13 @@ class QuantityWFAStrategy implements WFAStrategyInterface
             case 'preorder':
                 return ($inventoryItem->isCanPreorder() &&
                     ($inventoryItem->getMaxQtyToPreorder() === null ||
-                        $inventoryItem->getMaxQtyToPreorder() >= $orderItem->getQuantity()
+                        $inventoryItem->getMaxQtyToPreorder() >= $item->getQuantity()
                     )
                 );
             case 'backorder':
                 return ($inventoryItem->isBackorderAllowed() &&
                     ($inventoryItem->getMaxQtyToBackorder() === null ||
-                        $inventoryItem->getMaxQtyToBackorder() >= $orderItem->getQuantity()
+                        $inventoryItem->getMaxQtyToBackorder() >= $item->getQuantity()
                     )
                 );
             default:
@@ -683,7 +698,7 @@ class QuantityWFAStrategy implements WFAStrategyInterface
                 return [];
             }
             /** @var WarehouseChannelGroupLink $warehouseGroupLink */
-            $warehouseGroupLink = $this->warehouseChannelGroupLinkRepository
+            $warehouseGroupLink = $this->doctrineHelper->getEntityRepositoryForClass(WarehouseChannelGroupLink::class)
                 ->findLinkBySalesChannelGroup($order->getSalesChannel()->getGroup());
 
             if (!$warehouseGroupLink) {

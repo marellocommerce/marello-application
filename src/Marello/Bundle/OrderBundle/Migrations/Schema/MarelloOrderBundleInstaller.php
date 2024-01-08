@@ -46,7 +46,7 @@ class MarelloOrderBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v3_1_3';
+        return 'v3_1_5';
     }
 
     /**
@@ -152,6 +152,8 @@ class MarelloOrderBundleInstaller implements
         $table->addColumn('order_note', 'text', ['notnull' => false]);
         $table->addColumn('po_number', 'string', ['length' => 255, 'notnull' => false]);
         $table->addIndex(['organization_id']);
+        $table->addColumn('user_owner_id', 'integer', ['notnull' => false]);
+        $table->addIndex(['user_owner_id']);
 
         $this->activityExtension->addActivityAssociation($schema, 'marello_notification', $table->getName());
         $this->activityExtension->addActivityAssociation($schema, 'oro_email', $table->getName());
@@ -231,6 +233,10 @@ class MarelloOrderBundleInstaller implements
         );
         $table->addColumn('tax_code_id', 'integer', ['notnull' => false]);
         $table->addColumn('allocation_exclusion', 'boolean', ['notnull' => false, 'default' => false]);
+        $table->addColumn('user_owner_id', 'integer', ['notnull' => false]);
+        $table->addColumn('item_type', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addIndex(['user_owner_id']);
+
         $this->extendExtension->addEnumField(
             $schema,
             $table,
@@ -268,6 +274,12 @@ class MarelloOrderBundleInstaller implements
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_organization'),
             ['organization_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_user'),
+            ['user_owner_id'],
             ['id'],
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
@@ -339,6 +351,12 @@ class MarelloOrderBundleInstaller implements
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_organization'),
             ['organization_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_user'),
+            ['user_owner_id'],
             ['id'],
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );

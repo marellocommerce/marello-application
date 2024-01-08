@@ -2,32 +2,31 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\EventListener\Doctrine;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
+
+use Oro\Bundle\WorkflowBundle\Model\Workflow;
+use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
+use Oro\Bundle\WorkflowBundle\Model\WorkflowStartArguments;
+
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
-use Marello\Bundle\SupplierBundle\Entity\Supplier;
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
-use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 
 class PurchaseOrderWorkflowTransitListener
 {
-    const WORKFLOW = 'marello_purchase_order_workflow';
+    const WORKFLOW_NAME = 'marello_purchase_order_workflow';
     const TRANSIT_TO_STEP = 'send';
 
-    /** @var WorkflowManager $workflowManager */
-    private $workflowManager;
-
-    /** @var string $purchaseOrderId*/
-    private $purchaseOrderId;
+    /** @var array $entitiesScheduledForWorkflowStart*/
+    private array $entitiesScheduledForWorkflowStart = [];
 
     /**
      * @param WorkflowManager $workflowManager
      */
-    public function __construct(WorkflowManager $workflowManager)
+    public function __construct(private WorkflowManager $workflowManager)
     {
-        $this->workflowManager = $workflowManager;
     }
 
     /**
@@ -35,10 +34,16 @@ class PurchaseOrderWorkflowTransitListener
      */
     public function postPersist(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
         if ($entity instanceof PurchaseOrder) {
+            $workflow = $this->getApplicableWorkflow($entity);
             if ($entity->getSupplier()->getPoSendBy() === Supplier::SEND_PO_MANUALLY) {
-                $this->purchaseOrderId = $entity->getId();
+                $this->entitiesScheduledForWorkflowStart[] = new WorkflowStartArguments(
+                    $workflow->getName(),
+                    $entity,
+                    [],
+                    self::TRANSIT_TO_STEP
+                );
             } else {
                 $onDemandItems = [];
                 /** @var PurchaseOrderItem[] $poItems */
@@ -49,7 +54,12 @@ class PurchaseOrderWorkflowTransitListener
                     }
                 }
                 if (count($onDemandItems) === count($poItems)) {
-                    $this->purchaseOrderId = $entity->getId();
+                    $this->entitiesScheduledForWorkflowStart[] = new WorkflowStartArguments(
+                        $workflow->getName(),
+                        $entity,
+                        [],
+                        self::TRANSIT_TO_STEP
+                    );
                 }
             }
         }
@@ -60,51 +70,11 @@ class PurchaseOrderWorkflowTransitListener
      */
     public function postFlush(PostFlushEventArgs $args)
     {
-        if ($this->purchaseOrderId) {
-            $entityManager = $args->getEntityManager();
-            /** @var PurchaseOrder $entity */
-            $entity = $entityManager
-                ->getRepository(PurchaseOrder::class)
-                ->find($this->purchaseOrderId);
-            if ($entity) {
-                $this->purchaseOrderId = null;
-                $this->transitTo($entity, self::WORKFLOW, self::TRANSIT_TO_STEP);
-            }
+        if (!empty($this->entitiesScheduledForWorkflowStart)) {
+            $massStartData = $this->entitiesScheduledForWorkflowStart;
+            unset($this->entitiesScheduledForWorkflowStart);
+            $this->workflowManager->massStartWorkflow($massStartData);
         }
-    }
-
-    /**
-     * @param PurchaseOrder $order
-     * @param string $workflow
-     * @param string $transition
-     */
-    private function transitTo(PurchaseOrder $order, $workflow, $transition)
-    {
-        $workflowItem = $this->getCurrentWorkFlowItem($order, $workflow);
-        if (!$workflowItem) {
-            return;
-        }
-
-        $this->workflowManager->transitIfAllowed($workflowItem, $transition);
-    }
-
-    /**
-     * @param PurchaseOrder $order
-     * @param string $workflow
-     * @return null|WorkflowItem
-     */
-    private function getCurrentWorkFlowItem(PurchaseOrder $order, $workflow)
-    {
-        $workflowItems = $this->workflowManager->getWorkflowItemsByEntity($order);
-        if (0 !== count($workflowItems)) {
-            /** @var WorkflowItem $workflowItem */
-            $workflowItem = array_shift($workflowItems);
-            //find the follow-up workflow
-            if (preg_match('/'.$workflow.'/', $workflowItem->getWorkflowName())) {
-                return $workflowItem;
-            }
-        }
-        return null;
     }
 
     /**
@@ -113,12 +83,47 @@ class PurchaseOrderWorkflowTransitListener
      */
     private function isOrderOnDemandAllowed(Product $product)
     {
-        foreach ($product->getInventoryItems() as $inventoryItem) {
-            if ($inventoryItem->isOrderOnDemandAllowed()) {
-                return true;
-            }
+        $inventoryItem = $product->getInventoryItem();
+        if ($inventoryItem && $inventoryItem->isOrderOnDemandAllowed()) {
+            return true;
         }
 
         return false;
+    }
+
+    /**
+     * @param $entity
+     * @return Workflow|null
+     */
+    protected function getApplicableWorkflow($entity): ?Workflow
+    {
+        if (!$this->workflowManager->hasApplicableWorkflows($entity)) {
+            return null;
+        }
+
+        $applicableWorkflows = [];
+        // apply force autostart (ignore default filters)
+        $workflows = $this->workflowManager->getApplicableWorkflows($entity);
+        foreach ($workflows as $name => $workflow) {
+            if (in_array($name, $this->getDefaultWorkflowNames())) {
+                $applicableWorkflows[$name] = $workflow;
+            }
+        }
+
+        if (count($applicableWorkflows) !== 1) {
+            return null;
+        }
+
+        return array_shift($applicableWorkflows);
+    }
+
+    /**
+     * @return array
+     */
+    protected function getDefaultWorkflowNames(): array
+    {
+        return [
+            self::WORKFLOW_NAME
+        ];
     }
 }

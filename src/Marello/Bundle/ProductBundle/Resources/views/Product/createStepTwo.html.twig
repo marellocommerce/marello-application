@@ -36,7 +36,10 @@
     {{ parent() }}
 
     {{ UI.cancelButton(path('marello_product_index')) }}
-    {% set html = UI.saveAndCloseButton() %}
+    {% set html = UI.saveAndCloseButton({
+        'route': 'marello_product_view',
+        'params': {'id': '$id'}
+    }) %}
     {% if is_granted('oro_product_create') %}
         {% set saveAndDuplicateButton = UI.saveActionButton({
         'label': 'marello.product.ui.save_and_duplicate'|trans,
@@ -45,7 +48,10 @@
         {% set html = html ~ saveAndDuplicateButton %}
     {% endif %}
     {% if entity.id or is_granted('marello_product_update') %}
-        {% set html = html ~ UI.saveAndStayButton() %}
+        {% set html = html ~ UI.saveAndStayButton({
+            'route': 'marello_product_update',
+            'params': {'id': '$id'}
+        }) %}
     {% endif %}
     {{ UI.dropdownSaveButton({'html': html}) }}
 {% endblock navButtons %}

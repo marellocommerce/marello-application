@@ -4,7 +4,7 @@ namespace Marello\Bundle\WorkflowBundle\Api\Processor;
 
 use Oro\Bundle\ApiBundle\Processor\CustomizeLoadedData\CustomizeLoadedDataContext;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
-use Oro\Bundle\TranslationBundle\Translation\Translator;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Helper\WorkflowTranslationHelper;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
@@ -24,19 +24,19 @@ class ProcessWorkflowItem implements ProcessorInterface
     private $doctrineHelper;
 
     /**
-     * @var Translator
+     * @var TranslatorInterface
      */
     private $translator;
 
     /**
      * @param WorkflowManager $workflowManager
      * @param DoctrineHelper $doctrineHelper
-     * @param Translator $translator
+     * @param TranslatorInterface $translator
      */
     public function __construct(
         WorkflowManager $workflowManager,
         DoctrineHelper $doctrineHelper,
-        Translator $translator
+        TranslatorInterface $translator
     ) {
         $this->workflowManager = $workflowManager;
         $this->doctrineHelper = $doctrineHelper;

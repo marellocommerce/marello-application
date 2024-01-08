@@ -84,6 +84,14 @@ class NotificationActivityListProvider implements ActivityListProviderInterface
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function isActivityListApplicable(ActivityList $activityList): bool
+    {
+        return true;
+    }
+
+    /**
      * Get array of ActivityOwners for list entity
      *
      * @param object       $entity

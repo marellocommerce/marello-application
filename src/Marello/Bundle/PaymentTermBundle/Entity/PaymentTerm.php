@@ -5,8 +5,9 @@ namespace Marello\Bundle\PaymentTermBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Marello\Bundle\PaymentTermBundle\Model\ExtendPaymentTerm;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 
 /**
@@ -40,8 +41,10 @@ use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
  *      }
  * )
  */
-class PaymentTerm extends ExtendPaymentTerm
+class PaymentTerm implements ExtendEntityInterface
 {
+    use ExtendEntityTrait;
+
     /**
      * @var integer
      *
@@ -128,8 +131,6 @@ class PaymentTerm extends ExtendPaymentTerm
     public function __construct()
     {
         $this->labels = new ArrayCollection();
-
-        parent::__construct();
     }
 
     /**

@@ -238,7 +238,7 @@ services:
     Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\QuantityWFAStrategy:
         arguments:
             - '@Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\Calculator\SingleWHCalculator'
-            - '@Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository'
+            - '@oro_entity.doctrine_helper'
             - '@oro_config.manager'
         calls:
             - [setAllocationExclusionProvider, ['@Marello\Bundle\InventoryBundle\Provider\AllocationExclusionProvider']]
@@ -301,3 +301,9 @@ services:
     Marello\Bundle\InventoryBundle\EventListener\Action\Condition\ReshipmentActionListener:
         tags:
             - { name: kernel.event_listener, event: extendable_condition.reshipment_allowed, method: isReshipmentAllowed }
+
+    Marello\Bundle\InventoryBundle\Api\Processor\ComputeSalesChannelsField:
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: oro.api.processor, action: customize_loaded_data, class: Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel }

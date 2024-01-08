@@ -4,7 +4,8 @@ namespace Marello\Bundle\InventoryBundle\Provider;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Oro\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
@@ -17,11 +18,12 @@ use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\Allocation;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\InventoryBundle\Entity\AllocationItem;
+use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
+use Marello\Bundle\OrderBundle\Model\OrderItemTypeInterface;
 use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 use Marello\Bundle\InventoryBundle\Strategy\WFA\Quantity\QuantityWFAStrategy;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class InventoryAllocationProvider
 {
@@ -42,6 +44,8 @@ class InventoryAllocationProvider
 
     /** @var array $newAllocations */
     protected $newAllocations = [];
+
+    protected $isCashAndCarryAllocation = false;
 
     public function __construct(
         protected DoctrineHelper $doctrineHelper,
@@ -133,6 +137,10 @@ class InventoryAllocationProvider
 
                 $this->createAllocationItems($result, $newAllocation);
                 $allocationContext = AllocationContextInterface::ALLOCATION_CONTEXT_ORDER;
+
+                if ($this->isCashAndCarryAllocation) {
+                    $allocationContext = AllocationContextInterface::ALLOCATION_CONTEXT_CASH_CARRY;
+                }
                 if ($callback) {
                     $allocationContext = AllocationContextInterface::ALLOCATION_CONTEXT_RESHIPMENT;
                     $this->assignDataProperties($newAllocation, $order);
@@ -230,6 +238,7 @@ class InventoryAllocationProvider
     public function createAllocationItems(OrderWarehouseResult $result, Allocation $allocation)
     {
         $itemWithQty = $result->getItemsWithQuantity();
+        $totalItemsCandC = 0;
         foreach ($result->getOrderItems() as $item) {
             $allocationItem = new AllocationItem();
             $orderItem = $item;
@@ -248,9 +257,17 @@ class InventoryAllocationProvider
             $allocationItem->setQuantity($itemWithQty[$item->getProductSku()]);
             $allocationItem->setTotalQuantity($orderItem->getQuantity());
             $allocation->addItem($allocationItem);
+            if ($orderItem->getItemType() === OrderItemTypeInterface::OI_TYPE_CASHANDCARRY) {
+                $totalItemsCandC++;
+            }
+
             $this->allOrderItems->add($orderItem);
             $this->allItems[] = clone $allocationItem;
             $this->subAllocations[] = $allocation;
+        }
+
+        if ($totalItemsCandC === $allocation->getItems()->count()) {
+            $this->isCashAndCarryAllocation = true;
         }
     }
 
@@ -325,7 +342,7 @@ class InventoryAllocationProvider
             $allocation->getItems()->map(function (AllocationItem $item) use ($allocation, $order) {
                 $this->handleInventoryUpdate(
                     $item->getOrderItem(),
-                    null,
+                    0,
                     -$item->getQuantity(),
                     'inventory_allocation.released',
                     $allocation->getWarehouse(),
@@ -335,15 +352,32 @@ class InventoryAllocationProvider
         }
 
         if (!$release) {
+            $repo = $this->doctrineHelper
+                ->getEntityManagerForClass(InventoryBatch::class)
+                ->getRepository(InventoryBatch::class);
             // allocate inventory for allocation
-            $allocation->getItems()->map(function (AllocationItem $item) use ($allocation) {
+            $batches = [];
+            if ($allocation->getSourceEntity()) {
+                foreach ($allocation->getSourceEntity()->getItems() as $item) {
+                    $batches[$item->getProductSku()] = $item;
+                }
+            }
+
+            $allocation->getItems()->map(function (AllocationItem $item) use ($allocation, $repo, $batches) {
+                $batch = null;
+                if (array_key_exists($item->getProductSku(), $batches)) {
+                    $allocationItem = $batches[$item->getProductSku()];
+                    /** @var InventoryBatch $batch */
+                    $batch = $repo->findOneBy(['orderOnDemandRef' => $allocationItem->getId()]);
+                }
                 $this->handleInventoryUpdate(
                     $item->getOrderItem(),
-                    null,
+                    0,
                     $item->getQuantity(),
                     'inventory_allocation.allocated',
                     $allocation->getWarehouse(),
-                    $allocation
+                    $allocation,
+                    $batch
                 );
             });
         }
@@ -357,6 +391,7 @@ class InventoryAllocationProvider
      * @param $message
      * @param Warehouse $warehouse
      * @param Allocation $allocation
+     * @param InventoryBatch|null $batch
      */
     protected function handleInventoryUpdate(
         OrderItem $item,
@@ -364,16 +399,29 @@ class InventoryAllocationProvider
         $allocatedInventoryQty,
         $message,
         Warehouse $warehouse,
-        Allocation $allocation
+        Allocation $allocation,
+        InventoryBatch $batch = null
     ) {
-        $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
-            $item,
-            null,
-            $inventoryUpdateQty,
-            $allocatedInventoryQty,
-            $message,
-            $allocation
-        );
+        if ($batch) {
+            $context = InventoryUpdateContextFactory::createInventoryLevelUpdateContext(
+                $batch->getInventoryLevel(),
+                $batch->getInventoryLevel()->getInventoryItem(),
+                [['batch' => $batch, 'qty' => $inventoryUpdateQty]],
+                $inventoryUpdateQty,
+                $allocatedInventoryQty,
+                $message,
+                $allocation
+            );
+        } else {
+            $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
+                $item,
+                null,
+                $inventoryUpdateQty,
+                $allocatedInventoryQty,
+                $message,
+                $allocation
+            );
+        }
 
         $context->setValue('warehouse', $warehouse);
         $context->setValue('forceFlush', true);

@@ -191,6 +191,16 @@ class PurchaseOrderItem implements
      * @var array $data
      *
      * @ORM\Column(name="data", type="json_array", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "email"={
+     *              "available_in_template"=true
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $data = [];
 
@@ -221,14 +231,6 @@ class PurchaseOrderItem implements
     public function __toString()
     {
         return sprintf('#%s', $this->productName);
-    }
-
-    /**
-     * @return \Marello\Bundle\ProductBundle\Entity\Product
-     */
-    public function getInventoryItems()
-    {
-        return $this->getProduct();
     }
 
     /**

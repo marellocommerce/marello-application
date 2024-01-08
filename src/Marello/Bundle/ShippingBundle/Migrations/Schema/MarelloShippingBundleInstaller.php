@@ -24,7 +24,7 @@ class MarelloShippingBundleInstaller implements Installation, AttachmentExtensio
      */
     public function getMigrationVersion()
     {
-        return 'v1_3';
+        return 'v1_3_1';
     }
 
     /**
@@ -48,6 +48,7 @@ class MarelloShippingBundleInstaller implements Installation, AttachmentExtensio
         $this->addMarelloShipMethodPostalCodeForeignKeys($schema);
         $this->addMarelloShipMethodTypeConfigForeignKeys($schema);
         $this->addMarelloShippingRuleDestinationForeignKeys($schema);
+        $this->addMarelloTrackingInfoForeignKeys($schema);
 
         $this->attachmentExtension->addImageRelation(
             $schema,
@@ -79,6 +80,7 @@ class MarelloShippingBundleInstaller implements Installation, AttachmentExtensio
         $table->addColumn('created_at', 'datetime', []);
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
+        $table->addUniqueIndex(['tracking_info_id'], 'marello_shipment_trackinginfoidx');
     }
 
     /**
@@ -177,7 +179,11 @@ class MarelloShippingBundleInstaller implements Installation, AttachmentExtensio
         $table->addColumn('tracking_code', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('provider', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('provider_name', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('shipment_id', 'integer', ['notnull' => true]);
+        $table->addColumn('created_at', 'datetime');
+        $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
+        $table->addUniqueIndex(['shipment_id'], 'marello_tracking_info_shipmentidx');
     }
 
     /**
@@ -297,6 +303,22 @@ class MarelloShippingBundleInstaller implements Installation, AttachmentExtensio
             ['tracking_info_id'],
             ['id'],
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+    }
+
+    /**
+     * Add marello_tracking_info foreign keys.
+     *
+     * @param Schema $schema
+     */
+    protected function addMarelloTrackingInfoForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('marello_tracking_info');
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_shipment'),
+            ['shipment_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
     }
 

@@ -2,7 +2,6 @@ search:
     Marello\Bundle\SupplierBundle\Entity\Supplier:
         alias: marello_supplier
         label: marello.supplier.entity_plural_label
-        title_fields: [name]
         route:
             name: marello_supplier_supplier_index
             parameters:

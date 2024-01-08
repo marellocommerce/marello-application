@@ -3,28 +3,23 @@
 namespace Marello\Bundle\ProductBundle\Async;
 
 use Doctrine\ORM\EntityManagerInterface;
-
-use Oro\Bundle\EmailBundle\Sender\EmailModelSender;
 use Psr\Log\LoggerInterface;
-
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-
-use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Component\MessageQueue\Util\JSON;
 use Oro\Bundle\EmailBundle\Form\Model\Factory;
+use Oro\Bundle\EmailBundle\Sender\EmailModelSender;
+use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
 use Oro\Component\MessageQueue\Transport\SessionInterface;
 use Oro\Component\MessageQueue\Client\TopicSubscriberInterface;
 use Oro\Component\MessageQueue\Consumption\MessageProcessorInterface;
-
+use Oro\Component\MessageQueue\Util\JSON;
+use Marello\Bundle\ProductBundle\Async\Topic\ProductsAssignSalesChannelsTopic;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 
 class ProductsAssignSalesChannelsProcessor implements MessageProcessorInterface, TopicSubscriberInterface
 {
-    const TOPIC = 'marello_product.assign_sales_channels_to_products';
-
     const FLUSH_BATCH_SIZE = 100;
 
     public function __construct(
@@ -41,7 +36,7 @@ class ProductsAssignSalesChannelsProcessor implements MessageProcessorInterface,
      */
     public static function getSubscribedTopics(): array
     {
-        return [self::TOPIC];
+        return [ProductsAssignSalesChannelsTopic::getName()];
     }
 
     /**

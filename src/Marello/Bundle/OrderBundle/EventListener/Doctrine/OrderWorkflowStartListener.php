@@ -2,14 +2,11 @@
 
 namespace Marello\Bundle\OrderBundle\EventListener\Doctrine;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
-
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowStartArguments;
-
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Model\WorkflowNameProviderInterface;
 
@@ -19,9 +16,6 @@ class OrderWorkflowStartListener
 
     /** @var WorkflowManager $workflowManager */
     private $workflowManager;
-
-    /** @var DoctrineHelper $doctrineHelper */
-    private $doctrineHelper;
 
     /** @var array $entitiesScheduledForWorkflowStart */
     protected $entitiesScheduledForWorkflowStart = [];
@@ -39,7 +33,7 @@ class OrderWorkflowStartListener
      */
     public function postPersist(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
         if ($entity instanceof Order) {
             if ($workflow = $this->getApplicableWorkflow($entity)) {
                 $this->entitiesScheduledForWorkflowStart[] = new WorkflowStartArguments(
@@ -78,7 +72,7 @@ class OrderWorkflowStartListener
         // apply force autostart (ignore default filters)
         $workflows = $this->workflowManager->getApplicableWorkflows($entity);
         foreach ($workflows as $name => $workflow) {
-            if (in_array($name, $this->getDefaultWorkflowNames())) {
+            if (str_starts_with($name, WorkflowNameProviderInterface::MARELLO_WORKFLOW_START)) {
                 $applicableWorkflows[$name] = $workflow;
             }
         }
@@ -88,25 +82,5 @@ class OrderWorkflowStartListener
         }
 
         return array_shift($applicableWorkflows);
-    }
-
-    /**
-     * @return array
-     */
-    protected function getDefaultWorkflowNames(): array
-    {
-        return [
-            WorkflowNameProviderInterface::ORDER_WORKFLOW_1,
-            WorkflowNameProviderInterface::ORDER_WORKFLOW_2,
-        ];
-    }
-
-    /**
-     * @deprecated
-     * @param DoctrineHelper $doctrineHelper
-     */
-    public function setDoctrineHelper(DoctrineHelper $doctrineHelper)
-    {
-        $this->doctrineHelper = $doctrineHelper;
     }
 }

@@ -18,7 +18,7 @@ marello:
         tax_code.label:             Tax Code
         channels.label:             Sales Channels
         sales_channel_tax_codes.label:  Sales Channel Tax Code
-        inventory_items.label:      Inventory Items
+        inventory_item.label:       Inventory Item
         organization.label:         Organization
         variant.label:              Variant
         prices.label:               Product Prices
@@ -82,11 +82,14 @@ marello:
             general:                General
             additional:             Additional
 
-        form.choose_product:        Select Product
-        form.add_product:           Add Product
-        form.add_products:          Add Multiple Products
-        form.add_variant:           Add Variant
-        form.add_supplier:          Add Supplier
+        form:
+            choose_product:        Select Product
+            add_product:           Add Product
+            add_products:          Add Multiple Products
+            add_variant:           Add Variant
+            add_supplier:          Add Supplier
+            tooltip:
+                warranty:          Warranty in number of days
         product_information:        Product Information
         create_variant.label:       Create Variant
         add_variant.label:          Variants
@@ -115,8 +118,27 @@ marello:
             action:
                 assign_sales_channels: Assign Sales Channels
 
+        system_configuration:
+            groups:
+                product.title: Product
+                product_configuration.title: Product Configuration
+                product_general.label: General
+            fields:
+                image_use_external_url.label: Use External Url For Product Image
+
+    attachment:
+        file:
+            media_url:
+                label:  'External Media Url'
+                description: 'External Url For Product Image'
 oro:
     marelloproduct:
         menu:
             marelloproduct_attributes: Product Attributes
             marelloproduct_attribute_families: Product Families
+
+    attachment:
+        file:
+            media_url:
+                label:  'External Media Url'
+                description: 'External Url For Product Image'

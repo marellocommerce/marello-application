@@ -1,4 +1,5 @@
 <?php
+
 namespace Marello\Bundle\RefundBundle\Validator\Constraints;
 
 use Marello\Bundle\RefundBundle\Validator\RefundBalanceValidator;

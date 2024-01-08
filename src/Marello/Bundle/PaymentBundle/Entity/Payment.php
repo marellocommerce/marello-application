@@ -5,8 +5,9 @@ namespace Marello\Bundle\PaymentBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\InvoiceBundle\Entity\AbstractInvoice;
-use Marello\Bundle\PaymentBundle\Model\ExtendPayment;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
@@ -33,11 +34,13 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
  * )
  * @ORM\HasLifecycleCallbacks()
  */
-class Payment extends ExtendPayment implements
-    OrganizationAwareInterface
+class Payment implements
+    OrganizationAwareInterface,
+    ExtendEntityInterface
 {
     use EntityCreatedUpdatedAtTrait;
     use AuditableOrganizationAwareTrait;
+    use ExtendEntityTrait;
     
     /**
      * @var int
@@ -249,7 +252,7 @@ class Payment extends ExtendPayment implements
      * @param array $paymentMethodOptions
      * @return $this
      */
-    public function setPaymentMethodOptions(array $paymentMethodOptions)
+    public function setPaymentMethodOptions(array $paymentMethodOptions = [])
     {
         $this->paymentMethodOptions = $paymentMethodOptions;
         
@@ -285,11 +288,11 @@ class Payment extends ExtendPayment implements
     }
 
     /**
-     * @param string $paymentReference
+     * @param string|null $paymentReference
      *
      * @return $this
      */
-    public function setPaymentReference($paymentReference)
+    public function setPaymentReference(string $paymentReference = null)
     {
         $this->paymentReference = $paymentReference;
 

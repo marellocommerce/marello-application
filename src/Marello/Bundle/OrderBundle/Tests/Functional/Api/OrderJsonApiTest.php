@@ -71,7 +71,6 @@ class OrderJsonApiTest extends RestJsonApiTestCase
         $this->assertResponseContains('get_order_by_orderNumber.yml', $response);
     }
 
-
     /**
      * Create a new order
      */
@@ -115,5 +114,40 @@ class OrderJsonApiTest extends RestJsonApiTestCase
         $this->assertEquals($order->getCustomer()->getEmail(), $customer->getEmail());
         $this->assertNull($customer->getPrimaryAddress());
         $this->assertNull($customer->getShippingAddress());
+    }
+
+    /**
+     * Try creating order with duplicate (new)customer
+     */
+    public function testCreateOrderWithDuplicateCustomer()
+    {
+        $response = $this->post(
+            ['entity' => self::TESTING_ENTITY],
+            'order_create_with_new_customer.yml',
+            [],
+            false
+        );
+        $this->assertJsonResponse($response);
+        $entityType = self::extractEntityType(['entity' => self::TESTING_ENTITY]);
+        self::assertApiResponseStatusCodeEquals(
+            $response,
+            Response::HTTP_BAD_REQUEST,
+            $entityType,
+            'post'
+        );
+        self::assertResponseContentTypeEquals($response, $this->getResponseContentType());
+    }
+
+    /**
+     * @param array $parameters
+     * @return string
+     */
+    private static function extractEntityType(array $parameters): string
+    {
+        if (empty($parameters['entity'])) {
+            return 'unknown';
+        }
+
+        return $parameters['entity'];
     }
 }

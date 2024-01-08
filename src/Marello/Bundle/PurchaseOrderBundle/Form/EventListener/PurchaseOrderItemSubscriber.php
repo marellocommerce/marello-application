@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\Form\EventListener;
 
+use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormError;
@@ -39,7 +40,7 @@ class PurchaseOrderItemSubscriber implements EventSubscriberInterface
      */
     public function postSubmitValidation(FormEvent $event)
     {
-        /** @var Collection|PurchaseOrderItem $purchaseOrderItem */
+        /** @var PurchaseOrderItem $purchaseOrderItem */
         $purchaseOrderItem = $event->getData();
         if ($acceptedQtyAttribute = $event->getForm()->get('accepted_qty')) {
             /** @var int */

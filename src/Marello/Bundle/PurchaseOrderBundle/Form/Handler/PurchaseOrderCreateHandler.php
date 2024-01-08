@@ -3,6 +3,7 @@
 namespace Marello\Bundle\PurchaseOrderBundle\Form\Handler;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
@@ -19,7 +20,7 @@ class PurchaseOrderCreateHandler
     /** @var FormInterface */
     private $form;
 
-    /** @var Registry */
+    /** @var ManagerRegistry */
     private $doctrine;
 
     /** @var TokenStorageInterface */
@@ -33,13 +34,13 @@ class PurchaseOrderCreateHandler
      *
      * @param FormInterface         $form
      * @param RequestStack          $requestStack
-     * @param Registry              $doctrine
+     * @param ManagerRegistry       $doctrine
      * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(
         FormInterface $form,
         RequestStack  $requestStack,
-        Registry $doctrine,
+        ManagerRegistry $doctrine,
         TokenStorageInterface $tokenStorage
     ) {
         $this->form         = $form;

@@ -3,14 +3,13 @@
 namespace Marello\Bundle\CustomerBundle\Controller;
 
 use Marello\Bundle\CustomerBundle\Entity\Customer;
-use Marello\Bundle\CustomerBundle\Form\Handler\CustomerHandler;
+use Marello\Bundle\CustomerBundle\Form\Type\CustomerType;
 use Oro\Bundle\ActivityListBundle\Entity\Manager\ActivityListManager;
 use Oro\Bundle\EntityBundle\Tools\EntityRoutingHelper;
-use Oro\Bundle\FormBundle\Model\UpdateHandler;
+use Oro\Bundle\FormBundle\Model\UpdateHandlerFacade;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -63,9 +62,9 @@ class CustomerController extends AbstractController
      *
      * @return array
      */
-    public function createAction()
+    public function createAction(Request $request)
     {
-        return $this->update();
+        return $this->update($request);
     }
 
     /**
@@ -82,39 +81,23 @@ class CustomerController extends AbstractController
      *
      * @return array
      */
-    public function updateAction(Customer $customer)
+    public function updateAction(Request $request, Customer $customer)
     {
-        return $this->update($customer);
+        return $this->update($request, $customer);
     }
 
-    /**
-     * @param Customer|null $customer
-     *
-     * @return mixed
-     */
-    private function update(Customer $customer = null)
+    private function update(Request $request, Customer $customer = null)
     {
         if (!$customer) {
             $customer = new Customer();
         }
 
-        return $this->container->get(UpdateHandler::class)->handleUpdate(
+        return $this->container->get(UpdateHandlerFacade::class)->update(
             $customer,
-            $this->container->get(Form::class),
-            function (Customer $entity) {
-                return [
-                    'route' => 'marello_customer_update',
-                    'parameters' => ['id' => $entity->getId()]
-                ];
-            },
-            function (Customer $entity) {
-                return [
-                    'route' => 'marello_customer_view',
-                    'parameters' => ['id' => $entity->getId()]
-                ];
-            },
+            $this->createForm(CustomerType::class, $customer),
             $this->container->get(TranslatorInterface::class)->trans('marello.order.messages.success.customer.saved'),
-            $this->container->get(CustomerHandler::class)
+            $request,
+            'marello_customer.form.handler.customer'
         );
     }
 
@@ -125,10 +108,8 @@ class CustomerController extends AbstractController
             [
                 EntityRoutingHelper::class,
                 ActivityListManager::class,
-                UpdateHandler::class,
-                Form::class,
+                UpdateHandlerFacade::class,
                 TranslatorInterface::class,
-                CustomerHandler::class,
             ]
         );
     }

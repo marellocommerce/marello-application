@@ -5,8 +5,9 @@ namespace Marello\Bundle\InventoryBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
-use Marello\Bundle\InventoryBundle\Model\ExtendInventoryBatch;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 use Oro\Bundle\SecurityBundle\Tools\UUIDGenerator;
@@ -40,12 +41,14 @@ use Oro\Bundle\SecurityBundle\Tools\UUIDGenerator;
  * )
  * @ORM\HasLifecycleCallbacks()
  */
-class InventoryBatch extends ExtendInventoryBatch implements
+class InventoryBatch implements
     DerivedPropertyAwareInterface,
-    OrganizationAwareInterface
+    OrganizationAwareInterface,
+    ExtendEntityInterface
 {
     use EntityCreatedUpdatedAtTrait;
     use AuditableOrganizationAwareTrait;
+    use ExtendEntityTrait;
     
     /**
      * @var int
@@ -204,6 +207,21 @@ class InventoryBatch extends ExtendInventoryBatch implements
      * @var InventoryLevel
      */
     protected $inventoryLevel;
+
+
+    /**
+     * @ORM\Column(name="order_on_demand_ref", type="string", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var string
+     */
+    protected $orderOnDemandRef;
 
     public function __clone()
     {
@@ -428,6 +446,25 @@ class InventoryBatch extends ExtendInventoryBatch implements
     {
         $this->inventoryLevel = $inventoryLevel;
         
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getOrderOnDemandRef(): ?string
+    {
+        return $this->orderOnDemandRef;
+    }
+
+    /**
+     * @param string|null $orderOnDemandRef
+     * @return InventoryBatch
+     */
+    public function setOrderOnDemandRef(string $orderOnDemandRef = null): self
+    {
+        $this->orderOnDemandRef = $orderOnDemandRef;
+
         return $this;
     }
 }

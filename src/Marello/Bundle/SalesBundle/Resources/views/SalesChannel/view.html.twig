@@ -1,6 +1,7 @@
 {% extends '@OroUI/actions/view.html.twig' %}
 {% import '@OroUI/macros.html.twig' as UI %}
 {% import '@OroEntityConfig/macros.html.twig' as entityConfig %}
+{% import '@OroDataGrid/macros.html.twig' as dataGrid %}
 
 {% oro_title_set({params : {'%name%': entity.name, '%entityName%': 'marello.sales.saleschannel.entity_label'|trans }}) %}
 
@@ -27,15 +28,11 @@
                         {{ UI.renderProperty('marello.sales.saleschannel.channel_type.label'|trans, entity.channelType) }}
                         {{ UI.renderProperty('marello.sales.saleschannel.currency.label'|trans, entity.currency) }}
                         {{ UI.renderProperty('marello.sales.saleschannel.default.label'|trans, entity.default ?
-                        'marello.core.yes.label'|trans
-                        :
-                        'marello.core.no.label'|trans
-                        ) }}
+                            'marello.core.yes.label'|trans : 'marello.core.no.label'|trans )
+                        }}
                         {{ UI.renderProperty('marello.sales.saleschannel.active.label'|trans, entity.active ?
-                        'marello.core.yes.label'|trans
-                        :
-                        'marello.core.no.label'|trans
-                        ) }}
+                            'marello.core.yes.label'|trans : 'marello.core.no.label'|trans)
+                        }}
                         {{ UI.renderProperty('marello.sales.saleschannel.localization.label'|trans, entity.localization) }}
                     </div>
                 </div>
@@ -53,9 +50,29 @@
         }
     ] %}
 
+    {% set saleschannelProducts %}
+        {{ dataGrid.renderGrid(
+            'marello-saleschannel-product-grid',
+            {
+                'productIds': marello_get_product_ids_by_channel_ids([entity.id])
+            }
+        ) }}
+    {% endset %}
+
     {% set additionalData %}
         {{ entityConfig.renderDynamicFields(entity) }}
     {% endset %}
+
+    {% set dataBlocks = dataBlocks|merge([{
+        'title' : 'marello.sales.saleschannel.datablock.products'|trans,
+            'subblocks': [{
+            'title' : null,
+            'useSpan': false,
+            'data' : [
+                saleschannelProducts
+            ]
+        }]
+    }]) %}
 
     {% set dataBlocks = dataBlocks|merge([{
         'title' : 'marello.sales.saleschannel.datablock.additional'|trans,

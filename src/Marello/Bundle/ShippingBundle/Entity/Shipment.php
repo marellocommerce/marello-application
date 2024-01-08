@@ -5,15 +5,23 @@ namespace Marello\Bundle\ShippingBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
-
-use Marello\Bundle\ShippingBundle\Model\ExtendShipment;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="marello_shipment")
+ * @ORM\Table(
+ *     name="marello_shipment",
+ *     uniqueConstraints={
+ *          @ORM\UniqueConstraint(
+ *              name="marello_shipment_trackinginfoidx",
+ *              columns={"tracking_info_id"}
+ *          )
+ *      }
+ * )
  * @ORM\HasLifecycleCallbacks()
  * @Oro\Config(
  *  defaultValues={
@@ -32,10 +40,11 @@ use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
  *  }
  * )
  */
-class Shipment extends ExtendShipment implements OrganizationAwareInterface
+class Shipment implements OrganizationAwareInterface, ExtendEntityInterface
 {
     use EntityCreatedUpdatedAtTrait;
     use AuditableOrganizationAwareTrait;
+    use ExtendEntityTrait;
 
     /**
      * @ORM\Id
@@ -106,7 +115,7 @@ class Shipment extends ExtendShipment implements OrganizationAwareInterface
     protected $base64EncodedLabel;
 
     /**
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\ShippingBundle\Entity\TrackingInfo", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="Marello\Bundle\ShippingBundle\Entity\TrackingInfo", cascade={"persist"}, mappedBy="shipment")
      * @ORM\JoinColumn(name="tracking_info_id", nullable=true)
      *
      * @var TrackingInfo

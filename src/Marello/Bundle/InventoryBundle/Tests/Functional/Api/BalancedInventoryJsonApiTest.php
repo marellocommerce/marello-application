@@ -64,7 +64,7 @@ class BalancedInventoryJsonApiTest extends RestJsonApiTestCase
         $response = $this->cget(
             ['entity' => self::TESTING_ENTITY],
             [
-                'filter' => ['saleschannel' =>  $salesChannel->getCode()]
+                'filter' => ['saleschannels' =>  $salesChannel->getCode()]
             ]
         );
         $this->assertJsonResponse($response);

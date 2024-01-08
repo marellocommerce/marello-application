@@ -12,6 +12,8 @@ workflows:
                 type: entity
                 options:
                     class: Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder
+            pickup_location:
+                type: string
         steps:
             not_sent:
                 allowed_transitions:
@@ -27,10 +29,12 @@ workflows:
             complete_purchase_order:
                 is_final: true
             cancelled_purchase_order:
-                is_final: true
+                allowed_transitions:
+                    - send
         transitions:
             send:
                 step_to: pending
+                is_start: true
                 transition_definition: send_definition
             partially_receive:
                 step_to: partially_received
@@ -39,6 +43,10 @@ workflows:
                 page_template: '@OroWorkflow/Workflow/transitionForm.html.twig'
                 form_options:
                     attribute_fields:
+                        pickup_location:
+                            form_type: Symfony\Component\Form\Extension\Core\Type\TextType
+                            options:
+                                required: false
                         received_items:
                             form_type: Marello\Bundle\PurchaseOrderBundle\Form\Type\PartialReceiveType
                             options:
@@ -52,21 +60,22 @@ workflows:
                 transition_definition: cancel_purchase_order_definition
         transition_definitions:
             send_definition:
-                post_actions:
+                actions:
                     - '@marello_purchase_order_send':
                         entity: $po
                         recipient: $po.supplier
                         template: marello_purchase_order_supplier
             partially_receive_definition:
-                post_actions:
+                actions:
                     - '@marello_receive_purchase_order':
                         entity: $received_items
                         is_partial: true
+                        pickup_location: $pickup_location
                     - '@marello_purchase_order_transit_complete_action':
                         transitionName: 'complete_purchase_order'
                         entity: $received_items
             complete_purchase_order_definition:
-                post_actions:
+                actions:
                     - '@marello_receive_purchase_order':
                         entity: $po
                     - '@marello_purchase_order_transit_complete_action':

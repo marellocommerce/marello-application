@@ -4,9 +4,10 @@ namespace Marello\Bundle\InventoryBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use Marello\Bundle\InventoryBundle\Model\ExtendWarehouse;
 use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 
 /**
@@ -33,8 +34,10 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
  *      }
  * )
  */
-class Warehouse extends ExtendWarehouse implements EmailHolderInterface
+class Warehouse implements EmailHolderInterface, ExtendEntityInterface
 {
+    use ExtendEntityTrait;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -177,13 +180,42 @@ class Warehouse extends ExtendWarehouse implements EmailHolderInterface
     protected $notifier;
 
     /**
+     * @ORM\Column(name="sort_order_ood_loc", type="integer", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
+                "entity"={
+     *               "label"="marello.inventory.warehouse.sort_order_ood_loc.label"
+     *           },
+     *      }
+     * )
+     *
+     * @var int
+     */
+    protected $sortOrderOodLoc;
+
+    /**
+     * @ORM\Column(name="order_on_demand_location", type="boolean", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var bool
+     */
+    protected $orderOnDemandLocation;
+
+    /**
      * @param string $label
      * @param bool   $default
      */
     public function __construct($label = null, $default = false)
     {
-        parent::__construct();
-        
         $this->label   = $label;
         $this->default = $default;
     }
@@ -377,6 +409,44 @@ class Warehouse extends ExtendWarehouse implements EmailHolderInterface
     public function setNotifier(string $notifier = null): self
     {
         $this->notifier = $notifier;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getSortOrderOodLoc(): ?int
+    {
+        return $this->sortOrderOodLoc;
+    }
+
+    /**
+     * @param int|null $sortOrderOodLoc
+     * @return $this
+     */
+    public function setSortOrderOodLoc(int $sortOrderOodLoc = null): self
+    {
+        $this->sortOrderOodLoc = $sortOrderOodLoc;
+
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function isOrderOnDemandLocation(): ?bool
+    {
+        return $this->orderOnDemandLocation;
+    }
+
+    /**
+     * @param bool|null $orderOnDemandLocation
+     * @return $this
+     */
+    public function setOrderOnDemandLocation(bool $orderOnDemandLocation = null): self
+    {
+        $this->orderOnDemandLocation = $orderOnDemandLocation;
 
         return $this;
     }

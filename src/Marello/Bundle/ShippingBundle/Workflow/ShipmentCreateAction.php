@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\ShippingBundle\Workflow;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Marello\Bundle\ShippingBundle\Context\ShippingContextInterface;
 use Marello\Bundle\ShippingBundle\Entity\Shipment;
@@ -15,7 +15,7 @@ use Symfony\Component\PropertyAccess\PropertyPathInterface;
 class ShipmentCreateAction extends AbstractAction
 {
     /**
-     * @var Registry
+     * @var ManagerRegistry
      */
     protected $doctrine;
     
@@ -41,12 +41,12 @@ class ShipmentCreateAction extends AbstractAction
 
     /**
      * @param ContextAccessor $contextAccessor
-     * @param Registry $doctrine
+     * @param ManagerRegistry $doctrine
      * @param ShippingMethodProviderInterface $shippingMethodProvider
      */
     public function __construct(
         ContextAccessor $contextAccessor,
-        Registry $doctrine,
+        ManagerRegistry $doctrine,
         ShippingMethodProviderInterface $shippingMethodProvider
     ) {
         parent::__construct($contextAccessor);

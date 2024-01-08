@@ -1,0 +1,3 @@
+meta:
+      user: '<toString(@test_user_1->username)>'
+      password: 'password'

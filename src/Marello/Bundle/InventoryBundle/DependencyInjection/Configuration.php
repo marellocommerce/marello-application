@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\InventoryBundle\DependencyInjection;
 
-use Marello\Bundle\InventoryBundle\Provider\AllocationStateStatusInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -37,12 +36,6 @@ class Configuration implements ConfigurationInterface
                 ],
                 'balance_threshold_percentage' => [
                     'value' => 0.20
-                ],
-                'inventory_on_demand_enabled' => [
-                    'value' => false
-                ],
-                'inventory_on_demand' => [
-                    'value' => false
                 ],
                 'inventory_allocation_priority' => [
                     'value' => 0

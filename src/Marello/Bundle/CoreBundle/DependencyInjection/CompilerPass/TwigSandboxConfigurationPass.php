@@ -2,34 +2,41 @@
 
 namespace Marello\Bundle\CoreBundle\DependencyInjection\CompilerPass;
 
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
+use Oro\Bundle\EmailBundle\DependencyInjection\Compiler\AbstractTwigSandboxConfigurationPass;
 
-class TwigSandboxConfigurationPass implements CompilerPassInterface
+class TwigSandboxConfigurationPass extends AbstractTwigSandboxConfigurationPass
 {
     /**
      * {@inheritDoc}
      */
-    public function process(ContainerBuilder $container)
+    protected function getFilters(): array
     {
-        if ($container->hasDefinition('oro_email.twig.email_security_policy') &&
-            $container->hasDefinition('oro_email.email_renderer')
-        ) {
-            $securityPolicyDef = $container->getDefinition('oro_email.twig.email_security_policy');
+        return [];
+    }
 
-            $filters = $securityPolicyDef->getArgument(1);
-            $filters = array_merge(
-                $filters,
-                [
-                    'oro_format_currency'
-                ]
-            );
+    /**
+     * {@inheritDoc}
+     */
+    protected function getFunctions(): array
+    {
+        return [];
+    }
 
-            $securityPolicyDef->replaceArgument(1, $filters);
+    /**
+     * {@inheritdoc}
+     */
+    protected function getTags(): array
+    {
+        return [
+            'set'
+        ];
+    }
 
-            $rendererDef = $container->getDefinition('oro_email.email_renderer');
-            $rendererDef->addMethodCall('addExtension', [new Reference('oro_locale.twig.number')]);
-        }
+    /**
+     * {@inheritDoc}
+     */
+    protected function getExtensions(): array
+    {
+        return [];
     }
 }

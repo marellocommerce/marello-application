@@ -67,11 +67,6 @@ class NotificationMessageGroupConfigType extends AbstractType
         return self::NAME;
     }
 
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
-
     private function getTypes(): array
     {
         if (!$this->types) {

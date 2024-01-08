@@ -8,7 +8,6 @@ use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Oro\Bundle\CurrencyBundle\Model\LocaleSettings;
-use Oro\Bundle\LocaleBundle\Twig\NumberExtension;
 
 class SupplierProvider
 {

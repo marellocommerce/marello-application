@@ -21,6 +21,7 @@ marello:
         workflow_item.label:        Workflow Item
         workflow_step.label:        Workflow Step
         organization.label:         Organization
+        owner.label:                Owner
         currency.label:             Currency
         coupon_code.label:          Coupon Code
         discount_amount.label:      Discount Amount
@@ -119,6 +120,7 @@ marello:
             status.label:        Status
             allocation_exclusion.label: Exclude from Allocation Process
             organization.label: Organization
+            owner.label:        Owner
 
             messages:
                 product_not_salable:    Product cannot be sold in the chosen Sales Channel
@@ -221,6 +223,17 @@ marello:
         system_configuration:
             fields:
                 order_notification.label: Order Notification
+                order_on_demand_enabled.label: Enable
+                order_on_demand.label: Create Purchase Order
+
+                tooltip:
+                    order_on_demand: Enabling this feature will require you to connect suppliers to Products, failing to do so will result in weird behaviour and issues.
+
+            groups:
+                order.title:          Order
+                order_general.title:  General
+                order_on_demand.title: Order On Demand
+                order_on_demand.general.label: Order On Demand
 
         report:
             order_items_by_status.label: Order Items by Status
