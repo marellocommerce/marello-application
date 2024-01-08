@@ -1,9 +1,9 @@
 imports:
     - { resource: controllers.yml }
+    - { resource: eventlisteners.yml }
 
 services:
-    marello_purchaseorder.processor.note_activity_processor:
-        class: Marello\Bundle\PurchaseOrderBundle\Processor\NoteActivityProcessor
+    Marello\Bundle\PurchaseOrderBundle\Processor\NoteActivityProcessor:
         arguments:
             - '@marello_purchaseorder.oro_note_entity_service'
             - '@doctrine.orm.entity_manager'
@@ -11,43 +11,27 @@ services:
     marello_purchaseorder.oro_note_entity_service:
         class: 'Oro\Bundle\NoteBundle\Entity\Note'
 
-    marello_purchaseorder.workflow.receive_purchase_order:
-        class: Marello\Bundle\PurchaseOrderBundle\Workflow\Action\ReceivePurchaseOrderAction
+    Marello\Bundle\PurchaseOrderBundle\Workflow\Action\ReceivePurchaseOrderAction:
         arguments:
             - '@oro_action.expression.context_accessor'
-            - '@doctrine.orm.entity_manager'
-            - '@marello_purchaseorder.processor.note_activity_processor'
+            - '@oro_entity.doctrine_helper'
+            - '@Marello\Bundle\PurchaseOrderBundle\Processor\NoteActivityProcessor'
+            - '@Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider'
+            - '@oro_message_queue.client.message_producer'
         tags:
             - { name: oro_action.action, alias: marello_receive_purchase_order }
 
-    marello_purchaseorder.workflow.send_purchase_order:
-        class: Marello\Bundle\PurchaseOrderBundle\Workflow\Action\SendPurchaseOrderAction
+    Marello\Bundle\PurchaseOrderBundle\Workflow\Action\SendPurchaseOrderAction:
         parent: marello_notification.workflow.send_notification_action
         arguments:
             - '@doctrine.orm.entity_manager'
         tags:
             - { name: oro_action.action, alias: marello_purchase_order_send }
 
-    marello_purchaseorder.workflow.action.transit_complete_action:
-        class: Marello\Bundle\PurchaseOrderBundle\Workflow\Action\TransitCompleteAction
+    Marello\Bundle\PurchaseOrderBundle\Workflow\Action\TransitCompleteAction:
         parent: marello_core.workflow.action.workflow_transit_action
         tags:
             - { name: oro_action.action, alias: marello_purchase_order_transit_complete_action }
-
-    marello_purchaseorder.listener.datagrid.product_supplier_grid_listener:
-        class: Marello\Bundle\ProductBundle\EventListener\Datagrid\ProductSupplierGridListener
-        arguments:
-            - '@doctrine.orm.entity_manager'
-        tags:
-            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-purchase-order-item-candidates, method: buildBeforeProductsBySupplier, priority: 100 }
-
-    marello_purchaseorder.listener.datagrid.purchaseorder_item_candidates_grid_listener:
-        class: Marello\Bundle\PurchaseOrderBundle\EventListener\Datagrid\PurchaseOrderItemCandidatesGridListener
-        arguments:
-            - '@Marello\Bundle\PurchaseOrderBundle\Provider\PurchaseOrderCandidatesProvider'
-        tags:
-            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-purchase-order-item-candidates, method: onBuildBeforeCandidatesGrid }
-            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-purchase-order-item-candidates-grid, method: onBuildBeforeCandidatesGrid }
 
     Marello\Bundle\PurchaseOrderBundle\Provider\PurchaseOrderCandidatesProvider:
         public: true
@@ -56,56 +40,28 @@ services:
             - '@oro_workflow.manager'
             - '@oro_security.acl_helper'
 
-    marello_purchaseorder.twig.purchaseorder_extension:
-        class: Marello\Bundle\PurchaseOrderBundle\Twig\PurchaseOrderExtension
+    Marello\Bundle\PurchaseOrderBundle\Twig\PurchaseOrderExtension:
         arguments:
             - '@oro_workflow.manager'
         tags:
             - { name: twig.extension }
 
-    marello_purchaseorder.listener.doctrine.po_on_demand_creation:
-        class: Marello\Bundle\PurchaseOrderBundle\EventListener\Doctrine\PurchaseOrderOnOrderOnDemandCreationListener
-        arguments:
-            - '@oro_security.acl_helper'
-        calls:
-            - ['setConfigManager', ['@oro_config.manager']]
-        tags:
-            - { name: doctrine.event_listener, event: postPersist }
-            - { name: doctrine.event_listener, event: postFlush }
-
-    marello_purchaseorder.listener.doctrine.warehouse_listener:
-        class: Marello\Bundle\PurchaseOrderBundle\EventListener\Doctrine\PurchaseOrderWarehouseListener
-        arguments:
-            - '@doctrine'
-            - '@oro_security.acl_helper'
-        tags:
-            - { name: doctrine.event_listener, event: prePersist }
-
-    marello_purchaseorder.listener.doctrine.workflow_transit:
-        class: Marello\Bundle\PurchaseOrderBundle\EventListener\Doctrine\PurchaseOrderWorkflowTransitListener
-        arguments:
-            - '@oro_workflow.manager'
-        tags:
-            - { name: doctrine.event_listener, event: postPersist }
-            - { name: doctrine.event_listener, event: postFlush }
-
-    marello_purchaseorder.api.add_workflow_item_config:
-        class: 'Marello\Bundle\WorkflowBundle\Api\Processor\ProcessWorkflowItemConfig'
+    Marello\Bundle\WorkflowBundle\Api\Processor\ProcessWorkflowItemConfig:
         tags:
             - { name: oro.api.processor, action: get_config, class: Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder }
 
-    marello_purchaseorder.api.add_workflow_item:
-        class: 'Marello\Bundle\WorkflowBundle\Api\Processor\ProcessWorkflowItem'
+    Marello\Bundle\WorkflowBundle\Api\Processor\ProcessWorkflowItem:
         arguments:
             - '@oro_workflow.manager'
             - '@oro_entity.doctrine_helper'
-            - '@translator.default'
+            - '@translator'
         tags:
             - { name: oro.api.processor, action: customize_loaded_data, class: Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder }
 
-    marello_purchaseorder.command.purchase_order_advice:
-        class: 'Marello\Bundle\PurchaseOrderBundle\Cron\PurchaseOrderAdviceCommand'
+    Marello\Bundle\PurchaseOrderBundle\Cron\PurchaseOrderAdviceCommand:
         arguments:
             - '@service_container'
+            - '@oro_email.manager.template_email'
+            - '@oro_notification.model.notification_settings'
         tags:
             - { name: console.command }

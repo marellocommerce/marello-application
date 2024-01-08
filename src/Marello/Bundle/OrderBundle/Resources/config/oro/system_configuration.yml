@@ -1,10 +1,38 @@
 system_configuration:
+    groups:
+        marello_order:
+            title: marello.order.system_configuration.groups.order.title
+        marello_order_on_demand_general:
+            title: marello.order.system_configuration.groups.order_on_demand.general.label
+        marello_order_general:
+            title: marello.order.system_configuration.groups.order_general.title
+            icon: fa-shopping-cart
+            priority: 10
+        marello_order_on_demand:
+            title: marello.order.system_configuration.groups.order_on_demand.title
+            icon: fa-cog
+            priority: 100
     fields:
         marello_order.order_notification:
             data_type: boolean
             type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
             options:
                 label: marello.order.system_configuration.fields.order_notification.label
+                required: false
+
+        marello_order.order_on_demand_enabled:
+            data_type: boolean
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+            options:
+                label: marello.order.system_configuration.fields.order_on_demand_enabled.label
+                required: false
+
+        marello_order.order_on_demand:
+            data_type: boolean
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+            options:
+                label: marello.order.system_configuration.fields.order_on_demand.label
+                tooltip: marello.order.system_configuration.fields.tooltip.order_on_demand
                 required: false
 
     tree:
@@ -18,3 +46,11 @@ system_configuration:
                                     notification_general:
                                         children:
                                             - marello_order.order_notification
+                    marello_order:
+                        children:
+                            marello_order_on_demand:
+                                children:
+                                    marello_order_on_demand_general:
+                                        children:
+                                            - marello_order.order_on_demand_enabled
+                                            - marello_order.order_on_demand

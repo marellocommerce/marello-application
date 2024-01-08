@@ -3,6 +3,7 @@
 namespace Marello\Bundle\InventoryBundle\EventListener\Workflow;
 
 use Marello\Bundle\CoreBundle\Model\JobIdGenerationTrait;
+use Marello\Bundle\InventoryBundle\Provider\AllocationStateStatusInterface;
 use Marello\Bundle\WorkflowBundle\Async\Topic\WorkflowTransitTopic;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
@@ -27,7 +28,7 @@ class TransitionEventListener
     const WORKFLOW_STEP_FROM = 'pending';
     const WORKFLOW_NAME = 'marello_allocate_workflow';
     const CONTEXT_KEY = 'allocation';
-    const WORKFLOW_COULD_NOT_ALLOCATE_STEP = 'could_not_allocate';
+    const ALLOCATION_WORKFLOW_RESOLVED = 'resolved';
 
     /** @var WorkflowManager $workflowManager */
     protected $workflowManager;
@@ -68,23 +69,22 @@ class TransitionEventListener
         $entity = $event->getContext()->getData()->get(self::CONTEXT_KEY);
 
         if ($this->getApplicableWorkflow($entity)) {
-            if ($entity->getStatus()->getName() === self::WORKFLOW_COULD_NOT_ALLOCATE_STEP) {
+            if ($entity->getStatus()->getName() === AllocationStateStatusInterface::ALLOCATION_STATUS_CNA) {
                 if ($event->getContext()->getCurrentStep()->getName() === self::WORKFLOW_STEP_FROM) {
                     $this->messageProducer->send(
                         WorkflowTransitTopic::getName(),
                         [
-                            'workflow_item_entity_id' => $event->getContext()->getEntityId(),
+                            'workflow_item_entity_id' => $entity->getId(),
                             'current_step_id' => $event->getContext()->getCurrentStep()->getId(),
                             'entity_class' => Allocation::class,
-                            'transition' => self::WORKFLOW_COULD_NOT_ALLOCATE_STEP,
-                            'jobId' => $this->generateJobId($event->getContext()->getEntityId()),
+                            'transition' => self::ALLOCATION_WORKFLOW_RESOLVED,
                             'priority' => MessagePriority::NORMAL
                         ]
                     );
                 }
             }
 
-            if ($entity->getStatus()->getName() !== self::WORKFLOW_COULD_NOT_ALLOCATE_STEP) {
+            if ($entity->getStatus()->getName() !== AllocationStateStatusInterface::ALLOCATION_STATUS_CNA) {
                 if ($entity->getWarehouse() && !$entity->hasChildren()) {
                     // allocations that can be allocated and are not the parent allocation for the consolidation
                     // option, we should decrease the reserved inventory quantity

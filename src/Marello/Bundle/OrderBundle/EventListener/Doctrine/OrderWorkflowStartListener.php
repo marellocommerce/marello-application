@@ -72,7 +72,7 @@ class OrderWorkflowStartListener
         // apply force autostart (ignore default filters)
         $workflows = $this->workflowManager->getApplicableWorkflows($entity);
         foreach ($workflows as $name => $workflow) {
-            if (in_array($name, $this->getDefaultWorkflowNames())) {
+            if (str_starts_with($name, WorkflowNameProviderInterface::MARELLO_WORKFLOW_START)) {
                 $applicableWorkflows[$name] = $workflow;
             }
         }
@@ -82,16 +82,5 @@ class OrderWorkflowStartListener
         }
 
         return array_shift($applicableWorkflows);
-    }
-
-    /**
-     * @return array
-     */
-    protected function getDefaultWorkflowNames(): array
-    {
-        return [
-            WorkflowNameProviderInterface::ORDER_WORKFLOW_1,
-            WorkflowNameProviderInterface::ORDER_WORKFLOW_2,
-        ];
     }
 }

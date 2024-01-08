@@ -192,3 +192,9 @@ system_configuration:
                                             - marello_pdf.email_sender_email
                                             - marello_pdf.email_sender_name
                                             - marello_pdf.email_bcc
+
+    api_tree:
+        document_configuration:
+            marello_pdf.company_phone: ~
+            marello_pdf.company_email: ~
+            marello_pdf.company_address: ~

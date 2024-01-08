@@ -1,0 +1,47 @@
+api:
+    entity_aliases:
+        Marello\Bundle\POSBundle\Api\Model\Login:
+            alias: marelloposuser
+            plural_alias: marelloposusers
+
+    entities:
+        Marello\Bundle\POSBundle\Api\Model\Login:
+            documentation_resource: '@MarelloPOSBundle/Resources/doc/api/pos_user_api.md'
+            fields:
+                user:
+                    data_type: string
+                password:
+                    data_type: string
+                apiKey:
+                    data_type: string
+                roles:
+                    data_type: string
+            actions:
+                get: false
+                get_list: false
+                update: false
+                delete: false
+                delete_list: false
+                create:
+                    description: Get API Access Key and roles
+                    fields:
+                        user:
+                            direction: input-only
+                            form_options:
+                                constraints:
+                                    - NotBlank: ~
+                        password:
+                            direction: input-only
+                            form_type: Symfony\Component\Form\Extension\Core\Type\PasswordType
+                            form_options:
+                                constraints:
+                                    - NotBlank: ~
+                        apiKey:
+                            direction: output-only
+                        roles:
+                            direction: output-only
+                    status_codes:
+                        201: false
+                        200: Returned when the credentials are valid
+                        403: Returned when the credentials are not valid
+                        409: false

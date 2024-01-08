@@ -70,7 +70,6 @@ class Order implements
     DerivedPropertyAwareInterface,
     CurrencyAwareInterface,
     DiscountAwareInterface,
-    ShippingAwareInterface,
     SubtotalAwareInterface,
     TaxAwareInterface,
     LineItemsAwareInterface,
@@ -78,8 +77,6 @@ class Order implements
     SalesChannelAwareInterface,
     ExtendEntityInterface
 {
-    // HasShipmentTrait, ShippingAwareInterface will be removed in next Major
-    use HasShipmentTrait;
     use LocalizationTrait;
     use EntityCreatedUpdatedAtTrait;
     use AuditableUserAwareTrait;
@@ -225,7 +222,7 @@ class Order implements
      *      }
      * )
      */
-    protected $paymentMethodOptions;
+    protected $paymentMethodOptions = [];
 
     /**
      * @var double
@@ -893,7 +890,7 @@ class Order implements
      * @param array $paymentMethodOptions
      * @return Order
      */
-    public function setPaymentMethodOptions(array $paymentMethodOptions)
+    public function setPaymentMethodOptions(array $paymentMethodOptions = [])
     {
         $this->paymentMethodOptions = $paymentMethodOptions;
         

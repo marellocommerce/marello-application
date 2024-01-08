@@ -2,30 +2,33 @@
 
 namespace Marello\Bundle\ProductBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
+use Oro\Bundle\EntityBundle\EntityProperty\DenormalizedPropertyAwareInterface;
+use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamilyAwareInterface;
+
+use Marello\Bundle\TaxBundle\Entity\TaxCode;
 use Marello\Bundle\CatalogBundle\Entity\Category;
+use Marello\Bundle\SupplierBundle\Entity\Supplier;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\PricingBundle\Entity\AssembledChannelPriceList;
 use Marello\Bundle\PricingBundle\Entity\AssembledPriceList;
 use Marello\Bundle\PricingBundle\Entity\PriceListInterface;
 use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\SalesBundle\Model\SalesChannelsAwareInterface;
-use Marello\Bundle\SupplierBundle\Entity\Supplier;
-use Marello\Bundle\TaxBundle\Entity\TaxCode;
-use Oro\Bundle\EntityBundle\EntityProperty\DenormalizedPropertyAwareInterface;
-use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
-use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamilyAwareInterface;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
-use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
-use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
-use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
-use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
+use Marello\Bundle\PricingBundle\Entity\AssembledChannelPriceList;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository")
@@ -75,10 +78,10 @@ class Product implements
     PricingAwareInterface,
     OrganizationAwareInterface,
     AttributeFamilyAwareInterface,
-    ExtendEntityInterface,
-    DenormalizedPropertyAwareInterface
+    DenormalizedPropertyAwareInterface,
+    ExtendEntityInterface
 {
-    use ExtendEntityTrait;
+    use ExtendEntityTrait, EntityCreatedUpdatedAtTrait;
 
     const DEFAULT_PRODUCT_TYPE = 'simple';
  
@@ -1496,57 +1499,15 @@ class Product implements
     {
         return $this->denormalizedDefaultName;
     }
-    
-    /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return mixed
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
 
-        return $this;
-    }
-
-    /**
-     * @return \Datetime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Set updatedAt
-     *
-     * @param \DateTime $updatedAt
-     *
-     * @return mixed
-     */
-    public function setUpdatedAt($updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * @return \Datetime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
-    
     /**
      * @ORM\PrePersist
      */
     public function prePersist()
     {
-        $this->createdAt = new \DateTime('now', new \DateTimeZone('UTC'));
+        if (!$this->getDefaultName()) {
+            throw new \RuntimeException(sprintf('Product %s has to have a default name', $this->getSku()));
+        }
         $this->updateDenormalizedProperties();
     }
 
@@ -1555,7 +1516,9 @@ class Product implements
      */
     public function preUpdate()
     {
-        $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
+        if (!$this->getDefaultName()) {
+            throw new \RuntimeException(sprintf('Product %s has to have a default name', $this->getSku()));
+        }
         $this->updateDenormalizedProperties();
     }
 

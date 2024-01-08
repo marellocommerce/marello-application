@@ -61,7 +61,7 @@ datagrids:
                 frontend_type:      boolean
                 data_name:          canPreorder
             orderOnDemandAllowed:
-                label:              marello.inventory.inventoryitem.order_on_demand_allowed.grid.label
+                label:              marello.inventory.inventoryitem.order_on_demand.grid.label
                 frontend_type:      boolean
                 data_name:          orderOnDemandAllowed
         sorters:

@@ -252,7 +252,7 @@ class Payment implements
      * @param array $paymentMethodOptions
      * @return $this
      */
-    public function setPaymentMethodOptions(array $paymentMethodOptions)
+    public function setPaymentMethodOptions(array $paymentMethodOptions = [])
     {
         $this->paymentMethodOptions = $paymentMethodOptions;
         
@@ -288,11 +288,11 @@ class Payment implements
     }
 
     /**
-     * @param string $paymentReference
+     * @param string|null $paymentReference
      *
      * @return $this
      */
-    public function setPaymentReference($paymentReference)
+    public function setPaymentReference(string $paymentReference = null)
     {
         $this->paymentReference = $paymentReference;
 

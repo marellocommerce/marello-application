@@ -1,0 +1,10 @@
+workflows:
+    marello_order_pos_workflow:
+        transitions:
+            processing:
+                step_to: processing
+                is_start: true
+                transition_definition: processing_definition
+            ship:
+                step_to:  shipped
+                transition_definition: ship_definition

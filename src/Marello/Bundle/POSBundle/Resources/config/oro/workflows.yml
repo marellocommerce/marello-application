@@ -1,0 +1,2 @@
+imports:
+    - { resource: 'workflows/order_pos.yml' }                  # Marello Order POS workflow

@@ -4,11 +4,12 @@ namespace Marello\Bundle\CustomerBundle\Form\Handler;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Marello\Bundle\CustomerBundle\Entity\Customer;
+use Oro\Bundle\FormBundle\Form\Handler\FormHandlerInterface;
 use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class CustomerHandler
+class CustomerHandler implements FormHandlerInterface
 {
     use RequestHandlerTrait;
 
@@ -28,7 +29,7 @@ class CustomerHandler
     public function process($data, FormInterface $form, Request $request)
     {
         if (!$data instanceof Customer) {
-            throw new \InvalidArgumentException('Argument data should be instance of WarehouseGroup entity');
+            throw new \InvalidArgumentException('Argument data should be instance of Customer entity');
         }
 
         $form->setData($data);

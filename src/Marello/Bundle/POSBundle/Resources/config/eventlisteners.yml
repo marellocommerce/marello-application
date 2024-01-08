@@ -1,0 +1,18 @@
+services:
+    Marello\Bundle\POSBundle\EventListener\Doctrine\OnPOSOrderCreateListener:
+        arguments:
+            - '@oro_workflow.manager'
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: postFlush }
+
+    Marello\Bundle\POSBundle\EventListener\Workflow\PosOrderWorkflowListener:
+        tags:
+            - { name: kernel.event_listener, event: extendable_action.order_pending, method: onOrderPending }
+
+    Marello\Bundle\POSBundle\EventListener\Workflow\PosOrderAllocationWorkflowListener:
+        arguments:
+            - '@oro_workflow.manager'
+            - '@oro_message_queue.client.message_producer'
+        tags:
+            - { name: kernel.event_listener, event: extendable_action.pending_transition_after, method: onPendingTransitionAfter, priority: 10 }

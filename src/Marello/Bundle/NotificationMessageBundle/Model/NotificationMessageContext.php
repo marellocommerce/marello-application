@@ -30,5 +30,7 @@ class NotificationMessageContext
 
     public ?string $log = null;
 
+    public bool $queue;
+
     public ?OrganizationInterface $organization = null;
 }

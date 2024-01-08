@@ -1,0 +1,9 @@
+workflows:
+    marello_order_pos_workflow:
+        steps:
+            processing:
+                allowed_transitions:
+                    - ship
+            shipped:
+                allowed_transitions: []
+                is_final: true
