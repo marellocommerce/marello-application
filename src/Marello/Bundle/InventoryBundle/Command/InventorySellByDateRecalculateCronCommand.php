@@ -5,11 +5,11 @@ namespace Marello\Bundle\InventoryBundle\Command;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Manager\InventoryManagerInterface;
 use Marello\Bundle\InventoryBundle\Model\InventoryLevelCalculator;
+use Oro\Bundle\CronBundle\Command\CronCommandScheduleDefinitionInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
-use Oro\Bundle\CronBundle\Command\CronCommandScheduleDefinitionInterface;
 
 class InventorySellByDateRecalculateCronCommand extends Command implements CronCommandScheduleDefinitionInterface
 {
@@ -33,11 +33,6 @@ class InventorySellByDateRecalculateCronCommand extends Command implements CronC
     public function getDefaultDefinition()
     {
         return '0 5 * * *';
-    }
-
-    public function isActive()
-    {
-        return true;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

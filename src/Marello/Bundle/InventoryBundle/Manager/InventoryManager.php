@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\InventoryBundle\Manager;
 
+use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
@@ -232,6 +233,38 @@ class InventoryManager implements InventoryManagerInterface
         }
 
         return $batch;
+    }
+
+    /**
+     * @param $entity
+     * @return int
+     */
+    public function getExpectedInventoryTotal($entity)
+    {
+        $total = 0;
+        $purchaseOrderItems = $this->doctrineHelper->getEntityRepositoryForClass(PurchaseOrderItem::class)
+            ->getExpectedItemsByProduct($entity->getProduct());
+        /** @var PurchaseOrderItem $purchaseOrderItem */
+        foreach ($purchaseOrderItems as $purchaseOrderItem) {
+            $total += $purchaseOrderItem->getOrderedAmount() - $purchaseOrderItem->getReceivedAmount();
+        }
+
+        return $total;
+    }
+
+    public function getExpiredSellByDateTotal(InventoryItem $entity): int
+    {
+        $total = 0;
+        $currentDateTime = new \DateTime('now', new \DateTimeZone('UTC'));
+        foreach ($entity->getInventoryLevels() as $inventoryLevel) {
+            foreach ($inventoryLevel->getInventoryBatches() as $batch) {
+                if ($batch->getSellByDate() && $batch->getSellByDate() < $currentDateTime) {
+                    $total += $batch->getQuantity();
+                }
+            }
+        }
+
+        return $total;
     }
 
     /**
