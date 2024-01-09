@@ -2,18 +2,17 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Manager;
 
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
-use Marello\Bundle\InventoryBundle\Entity\InventoryBatch;
-use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
-use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
-use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository;
-use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Factory\InventoryBatchFromInventoryLevelFactory;
 use Marello\Bundle\InventoryBundle\Manager\InventoryManager as BaseInventoryManager;
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
+use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 
 class InventoryManager extends BaseInventoryManager
 {
@@ -113,7 +112,7 @@ class InventoryManager extends BaseInventoryManager
         }
         /** @var InventoryBatch[] $updatedBatches */
         $updatedBatches = $context->getInventoryBatches();
-        if (count($updatedBatches) === 1 && $updatedBatches[0]['batch']->getId() === null) {
+        if (count($updatedBatches) === 1) {
             $level->addInventoryBatch($updatedBatches[0]['batch']);
         }
         $updatedLevel = $this->updateInventory($level, $inventory, $allocatedInventory);
@@ -130,38 +129,6 @@ class InventoryManager extends BaseInventoryManager
                 ->getEntityManagerForClass(InventoryBatch::class)
                 ->flush();
         }
-    }
-
-    /**
-     * @param $entity
-     * @return int
-     */
-    public function getExpectedInventoryTotal($entity)
-    {
-        $total = 0;
-        $purchaseOrderItems = $this->doctrineHelper->getEntityRepositoryForClass(PurchaseOrderItem::class)
-            ->getExpectedItemsByProduct($entity->getProduct());
-        /** @var PurchaseOrderItem $purchaseOrderItem */
-        foreach ($purchaseOrderItems as $purchaseOrderItem) {
-            $total += $purchaseOrderItem->getOrderedAmount() - $purchaseOrderItem->getReceivedAmount();
-        }
-
-        return $total;
-    }
-
-    public function getExpiredSellByDateTotal(InventoryItem $entity): int
-    {
-        $total = 0;
-        $currentDateTime = new \DateTime('now', new \DateTimeZone('UTC'));
-        foreach ($entity->getInventoryLevels() as $inventoryLevel) {
-            foreach ($inventoryLevel->getInventoryBatches() as $batch) {
-                if ($batch->getSellByDate() && $batch->getSellByDate() < $currentDateTime) {
-                    $total += $batch->getQuantity();
-                }
-            }
-        }
-
-        return $total;
     }
 
     /**
