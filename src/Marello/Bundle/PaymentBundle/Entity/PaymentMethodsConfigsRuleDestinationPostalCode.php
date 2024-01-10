@@ -5,7 +5,8 @@ namespace Marello\Bundle\PaymentBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
-use Marello\Bundle\PaymentBundle\Model\ExtendPaymentMethodsConfigsRuleDestinationPostalCode;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 
 /**
  * @ORM\Entity
@@ -15,8 +16,10 @@ use Marello\Bundle\PaymentBundle\Model\ExtendPaymentMethodsConfigsRuleDestinatio
  *     mode="hidden",
  * )
  */
-class PaymentMethodsConfigsRuleDestinationPostalCode extends ExtendPaymentMethodsConfigsRuleDestinationPostalCode
+class PaymentMethodsConfigsRuleDestinationPostalCode implements ExtendEntityInterface
 {
+    use ExtendEntityTrait;
+
     /**
      * @var integer
      *

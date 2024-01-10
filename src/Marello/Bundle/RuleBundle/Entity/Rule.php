@@ -3,11 +3,12 @@
 namespace Marello\Bundle\RuleBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Marello\Bundle\RuleBundle\Model\ExtendRule;
 use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareInterface;
 use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareTrait;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 
 /**
  * @ORM\Entity
@@ -34,9 +35,10 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
  *      }
  * )
  */
-class Rule extends ExtendRule implements DatesAwareInterface, RuleInterface
+class Rule implements DatesAwareInterface, RuleInterface, ExtendEntityInterface
 {
     use DatesAwareTrait;
+    use ExtendEntityTrait;
 
     /**
      * @var int

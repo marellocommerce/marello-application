@@ -3,8 +3,24 @@ api:
         Marello\Bundle\SalesBundle\Entity\SalesChannel:
             alias: marellosaleschannel
             plural_alias: marellosaleschannels
+        Marello\Bundle\SalesBundle\Entity\SalesChannelGroup:
+            alias: marellosaleschannelgroup
+            plural_alias: marellosaleschannelgroups
 
     entities:
+        Marello\Bundle\SalesBundle\Entity\SalesChannelGroup:
+            actions:
+                get_list: true
+                get_relationship: true
+                get_subresource: true
+                create: false
+                update: false
+                delete: false
+                delete_list: false
+                add_relationship: false
+                update_relationship: false
+                delete_relationship: false
+
         Marello\Bundle\SalesBundle\Entity\SalesChannel:
             documentation_resource: '@MarelloSalesBundle/Resources/doc/api/saleschannel.md'
             identifier_field_names: [code]

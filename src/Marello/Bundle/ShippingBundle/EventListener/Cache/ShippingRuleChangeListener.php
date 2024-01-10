@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\ShippingBundle\EventListener\Cache;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Marello\Bundle\RuleBundle\Entity\Rule;
 use Marello\Bundle\RuleBundle\Entity\RuleInterface;
 use Marello\Bundle\ShippingBundle\Entity\ShippingMethodConfig;
@@ -65,7 +65,7 @@ class ShippingRuleChangeListener
      */
     protected function isShippingRule(RuleInterface $rule, LifecycleEventArgs $args)
     {
-        $repository = $args->getEntityManager()->getRepository(ShippingMethodsConfigsRule::class);
+        $repository = $args->getObjectManager()->getRepository(ShippingMethodsConfigsRule::class);
         if ($repository->findOneBy(['rule' => $rule])) {
             return true;
         }

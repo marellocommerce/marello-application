@@ -10,9 +10,15 @@
 
 {% block navButtons %}
     {{ UI.cancelButton(path('marello_webhook_index')) }}
-    {% set html = UI.saveAndCloseButton() %}
+    {% set html = UI.saveAndCloseButton({
+        'route': 'marello_webhook_view',
+        'params': {'id': '$id'}
+    }) %}
     {% if is_granted('marello_webhook_update') %}
-        {% set html = html ~ UI.saveAndStayButton() %}
+        {% set html = html ~ UI.saveAndStayButton({
+            'route': 'marello_webhook_update',
+            'params': {'id': '$id'}
+        }) %}
     {% endif %}
     {{ UI.dropdownSaveButton({ 'html': html }) }}
 {% endblock navButtons %}
@@ -42,7 +48,7 @@
             'title': '',
             'data': [
                 form_row(form.name),
-                form_row(form.callback_url),
+                form_row(form.callbackUrl),
                 form_row(form.secret),
                 form_row(form.enabled),
                 form_row(form.event),

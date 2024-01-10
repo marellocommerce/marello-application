@@ -2,8 +2,8 @@
 
 namespace Marello\Bundle\WebhookBundle\Entity\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityRepository;
 
-class WebhookRepository extends ServiceEntityRepository
+class WebhookRepository extends EntityRepository
 {
 }

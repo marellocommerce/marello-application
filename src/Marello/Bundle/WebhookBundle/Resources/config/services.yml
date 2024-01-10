@@ -1,67 +1,21 @@
 services:
-  Marello\Bundle\WebhookBundle\Entity\Repository\WebhookRepository:
-    parent: oro_entity.abstract_repository
-    arguments:
-      - 'Marello\Bundle\WebhookBundle\Entity\Webhook'
-    tags:
-      - { name: doctrine.repository_service }
+    marello_webhook.event.provider.webhook_event_provider:
+        class: Marello\Bundle\WebhookBundle\Event\Provider\WebhookEventProvider
+        public: true
+        arguments:
+            - !tagged_iterator { tag: marello_webhook.event, default_index_method: getName }
 
-  Marello\Bundle\WebhookBundle\Form\Type\WebhookType:
-    tags:
-      - { name: form.type }
+    Marello\Bundle\WebhookBundle\Manager\WebhookProvider:
+        arguments:
+            - '@doctrine.orm.entity_manager'
 
-  Marello\Bundle\WebhookBundle\Form\Type\EventSelectType:
-    arguments:
-      - '@Marello\Bundle\WebhookBundle\Provider\WebhookEventProvider'
-    tags:
-      - { name: form.type }
+    Marello\Bundle\WebhookBundle\Manager\WebhookProducer:
+        arguments:
+            - '@Marello\Bundle\WebhookBundle\Manager\WebhookProvider'
+            - '@oro_message_queue.client.message_producer'
 
-  Marello\Bundle\WebhookBundle\EventListener\WebhookEventListener:
-    arguments:
-      - '@Marello\Bundle\WebhookBundle\Model\WebhookProvider'
-      - '@oro_message_queue.client.message_producer'
-    tags:
-      - { name: kernel.event_subscriber }
-
-  Marello\Bundle\WebhookBundle\Model\WebhookProvider:
-    arguments:
-      - '@doctrine.orm.entity_manager'
-
-  Marello\Bundle\WebhookBundle\Provider\WebhookEventProvider:
-    public: true
-
-  marello_webhook.inventory.update:
-    class: Marello\Bundle\WebhookBundle\Event\WebhookEventType
-    arguments:
-      - name: 'marello_inventory.inventory.update'
-        label: 'Inventory Update'
-    tags:
-      - {name: marello_webhook.event}
-  marello_webhook.balancedinventory.update_after:
-    class: Marello\Bundle\WebhookBundle\Event\WebhookEventType
-    arguments:
-      - name: 'marello_inventory.balancedinventory.update_after'
-        label: 'Balanced Inventory Update After'
-    tags:
-      - {name: marello_webhook.event}
-
-  marello_webhook.webhook_listeners.manager:
-    class: Marello\Bundle\WebhookBundle\Manager\WebhookListenerManager
-    public: true
-    arguments:
-      - []
-      - '@service_container'
-
-  Marello\Bundle\WebhookBundle\Async\WebhookSyncProcessor:
-    arguments:
-      - '@oro_entity.doctrine_helper'
-      - '@oro_integration.reverse_sync.processor'
-      - '@oro_message_queue.job.runner'
-      - '@security.token_storage'
-      - '@oro_config.manager'
-      - '@logger'
-    tags:
-      - { name: 'oro_message_queue.client.message_processor', topicName: !php/const Marello\Bundle\WebhookBundle\Async\Topics::WEBHOOK_NOTIFY }
-
-  marello_webhook.importexport.cache:
-    parent: oro.cache.provider.memory_cache
+    Marello\Bundle\WebhookBundle\Twig\WebhookExtension:
+        arguments:
+            - '@marello_webhook.event.provider.webhook_event_provider'
+        tags:
+            - { name: twig.extension }

@@ -15,7 +15,7 @@ marello:
         tax_code.label:             Tax Code
         channels.label:             Sales Channels
         sales_channel_tax_codes.label:  Sales Channel Tax Code
-        inventory_items.label:      Inventory Items
+        inventory_item.label:       Inventory Item
         organization.label:         Organization
         variant.label:              Variant
         prices.label:               Product Prices

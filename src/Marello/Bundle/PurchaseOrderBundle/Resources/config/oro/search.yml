@@ -2,7 +2,6 @@ search:
     Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder:
         alias:                          marello_purchaseorder
         label:                          marello.purchaseorder.entity_plural_label
-        title_fields:                   [purchaseOrderNumber]
         route:
             name:                       marello_purchaseorder_purchaseorder_view
             parameters:

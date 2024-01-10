@@ -2,8 +2,7 @@
 
 namespace Marello\Bundle\RefundBundle\Calculator;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
-
+use Doctrine\Persistence\ManagerRegistry;
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
 use Marello\Bundle\RefundBundle\Entity\Refund;
 use Marello\Bundle\TaxBundle\Model\ResultElement;
@@ -13,21 +12,15 @@ use Marello\Bundle\TaxBundle\Calculator\TaxCalculatorInterface;
 
 class RefundBalanceCalculator
 {
-    /** @var Registry $doctrine */
-    protected $doctrine;
-
     /** @var TaxCalculatorInterface $taxCalculator */
     protected $taxCalculator;
 
     /** @var TaxRuleMatcherInterface $taxRuleMatcher */
     protected $taxRuleMatcher;
 
-    /**
-     * @param Registry $doctrine
-     */
-    public function __construct(Registry $doctrine)
-    {
-        $this->doctrine = $doctrine;
+    public function __construct(
+        protected ManagerRegistry $doctrine
+    ) {
     }
     
     /**

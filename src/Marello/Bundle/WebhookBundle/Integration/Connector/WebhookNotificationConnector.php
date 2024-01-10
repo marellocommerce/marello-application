@@ -3,8 +3,7 @@
 namespace Marello\Bundle\WebhookBundle\Integration\Connector;
 
 use Marello\Bundle\WebhookBundle\Entity\Webhook;
-use Marello\Bundle\WebhookBundle\Model\WebhookProvider;
-
+use Marello\Bundle\WebhookBundle\Manager\WebhookProvider;
 use Oro\Bundle\BatchBundle\Item\ExecutionContext;
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
@@ -19,41 +18,25 @@ class WebhookNotificationConnector extends AbstractConnector implements TwoWaySy
     public const EXPORT_JOB_NAME = 'marello_webhook_notification';
     public const TYPE = 'marello_webhook';
 
-    protected WebhookProvider $webhookProvider;
-
-    /**
-     * @param ContextRegistry $contextRegistry
-     * @param LoggerStrategy $logger
-     * @param ConnectorContextMediator $contextMediator
-     * @param WebhookProvider $webhookProvider
-     */
     public function __construct(
         ContextRegistry $contextRegistry,
         LoggerStrategy $logger,
         ConnectorContextMediator $contextMediator,
-        WebhookProvider $webhookProvider
+        protected WebhookProvider $webhookProvider
     ) {
         parent::__construct($contextRegistry, $logger, $contextMediator);
-        $this->logger          = $logger;
-        $this->contextMediator = $contextMediator;
-        $this->webhookProvider = $webhookProvider;
     }
 
-    /**
-     * @inheritDoc
-     */
     protected function getConnectorSource()
     {
         $executionContext = $this->getJobExecutionContext();
         $items = $executionContext->get('items');
         $iterator = new \AppendIterator();
         $iterator->append(new \ArrayIterator($items));
+
         return $iterator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function initializeFromContext(ContextInterface $context)
     {
         $this->transport = $this->contextMediator->getTransport($context, true);
@@ -71,9 +54,6 @@ class WebhookNotificationConnector extends AbstractConnector implements TwoWaySy
         }
     }
 
-    /**
-     * @return ExecutionContext
-     */
     protected function getJobExecutionContext(): ExecutionContext
     {
         return $this->stepExecution
@@ -81,40 +61,27 @@ class WebhookNotificationConnector extends AbstractConnector implements TwoWaySy
             ->getExecutionContext();
     }
 
-
-    /**
-     * {@inheritdoc}
-     */
     public function getLabel(): string
     {
         return 'marello.webhook.connector.notification.label';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getImportEntityFQCN(): string
     {
         return Webhook::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getImportJobName(): string
     {
         return self::EXPORT_JOB_NAME;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getType(): string
     {
         return self::TYPE;
     }
 
-    public function getExportJobName()
+    public function getExportJobName(): string
     {
         return self::EXPORT_JOB_NAME;
     }

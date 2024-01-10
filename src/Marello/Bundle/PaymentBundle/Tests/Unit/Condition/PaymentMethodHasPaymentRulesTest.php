@@ -144,7 +144,6 @@ class PaymentMethodHasPaymentRulesTest extends \PHPUnit\Framework\TestCase
             get_class($this->paymentMethodHasPaymentRulesCondition),
             'contextAccessor'
         );
-        $reflection->setAccessible(true);
 
         $this->assertInstanceOf(
             get_class($contextAccessor),

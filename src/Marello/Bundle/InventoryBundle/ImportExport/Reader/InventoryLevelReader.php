@@ -2,26 +2,17 @@
 
 namespace Marello\Bundle\InventoryBundle\ImportExport\Reader;
 
-use Oro\Bundle\EntityBundle\ORM\Registry;
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
-
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 
 class InventoryLevelReader extends AbstractInventoryLevelReader
 {
-    /**
-     * @var Registry
-     */
-    protected $registry;
-
-    /**
-     * @param ContextRegistry $contextRegistry,
-     * @param Registry $registry
-     */
-    public function __construct(ContextRegistry $contextRegistry, Registry $registry)
-    {
+    public function __construct(
+        ContextRegistry $contextRegistry,
+        protected ManagerRegistry $registry
+    ) {
         parent::__construct($contextRegistry);
-        $this->registry = $registry;
     }
 
     /**

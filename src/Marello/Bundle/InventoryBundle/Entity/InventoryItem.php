@@ -5,11 +5,12 @@ namespace Marello\Bundle\InventoryBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Marello\Bundle\InventoryBundle\Model\ExtendInventoryItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 use Marello\Bundle\ProductBundle\Model\ProductAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
@@ -41,9 +42,10 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
  *      }
  * )
  */
-class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface, OrganizationAwareInterface
+class InventoryItem implements ProductAwareInterface, OrganizationAwareInterface, ExtendEntityInterface
 {
     use AuditableOrganizationAwareTrait;
+    use ExtendEntityTrait;
     
     /**
      * @ORM\Id
@@ -85,7 +87,7 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
     protected $inventoryLevels;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\Product", inversedBy="inventoryItems")
+     * @ORM\OneToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\Product", inversedBy="inventoryItem")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * @Oro\ConfigField(
      *      defaultValues={
@@ -304,10 +306,8 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
      */
     public function __construct(ProductInterface $product)
     {
-        parent::__construct();
-        
         $this->product = $product;
-        $product->addInventoryItem($this);
+        $product->setInventoryItem($this);
         $this->inventoryLevels = new ArrayCollection();
     }
 

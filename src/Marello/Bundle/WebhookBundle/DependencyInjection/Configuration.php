@@ -10,9 +10,6 @@ class Configuration implements ConfigurationInterface
 {
     public const DEFAULT_NOTIFICATION_REDELIVERY = 2;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('marello_webhook');
@@ -23,6 +20,7 @@ class Configuration implements ConfigurationInterface
                 'type' => 'text'
             ]
         ]);
+
         return $treeBuilder;
     }
 }

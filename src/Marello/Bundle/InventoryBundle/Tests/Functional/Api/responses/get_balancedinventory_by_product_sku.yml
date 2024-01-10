@@ -6,17 +6,19 @@ data:
             inventory: 100
             balancedInventory: 100
             reservedInventory: null
+            updatedAt: null
+            saleschannels:
+                - chan_eur
         relationships:
             product:
                 data:
                     type: marelloproducts
                     id: p1
+            salesChannelGroup:
+                data:
+                    type: marellosaleschannelgroups
+                    id: '<toString(@channelgroup1->id)>'
             organization:
                 data:
                     type: organizations
                     id: '1'
-            saleschannels:
-                data:
-                    -
-                        type: marellosaleschannels
-                        id: chan_eur

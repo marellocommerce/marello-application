@@ -73,13 +73,13 @@ workflows:
 
         transition_definitions:
             send_reminder_def:
-                post_actions:
+                actions:
                     - '@marello_notification_send':
                         entity: $return
                         recipient: $return.order.customer
                         template: marello_return_reminder
             receive_def:
-                post_actions:
+                actions:
                     - '@marello_notification_send':
                         entity: $return
                         recipient: $return.order.customer
@@ -90,23 +90,23 @@ workflows:
                           actions:
                               - '@assign_value': [ $return.receivedAt, $received_at ]
             contents_verified_def:
-                post_actions:
+                actions:
                     - '@return_inspection_ok': ~
             contents_not_verified_def:
-                post_actions:
+                actions:
                     - '@marello_notification_send':
                         entity: $return
                         recipient: $return.order.customer
                         template: marello_return_not_verified
             continue_received_def: ~
             inspection_not_ok_def:
-                post_actions:
+                actions:
                     - '@marello_notification_send':
                         entity: $return
                         recipient: $return.order.customer
                         template: marello_return_inspection_not_ok
             credit_def:
-                post_actions:
+                actions:
                     - '@marello_create_refund':
                           entity: $return
                     - '@flash_message':

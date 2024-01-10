@@ -17,7 +17,7 @@ services:
             - "@oro_importexport.context_registry"
             - "@oro_integration.logger.strategy"
             - "@oro_integration.provider.connector_context_mediator"
-            - '@Marello\Bundle\WebhookBundle\Model\WebhookProvider'
+            - '@Marello\Bundle\WebhookBundle\Manager\WebhookProvider'
         tags:
             - { name: oro_integration.connector, type: marello_webhook, channel_type: marello_webhook }
 
@@ -28,10 +28,18 @@ services:
             - '@oro_importexport.context_registry'
             - '@oro_integration.provider.connector_context_mediator'
             - '@Marello\Bundle\WebhookBundle\Integration\Transport\WebhookTransport'
-            - '@Marello\Bundle\WebhookBundle\Model\WebhookProvider'
+            - '@Marello\Bundle\WebhookBundle\Manager\WebhookProvider'
             - '@monolog.logger'
 
-
-    # Import processors
     Marello\Bundle\WebhookBundle\ImportExport\Processor\AsyncProcessor: ~
 
+    Marello\Bundle\WebhookBundle\Async\WebhookSyncProcessor:
+        arguments:
+            - '@Marello\Bundle\WebhookBundle\Manager\WebhookProvider'
+            - '@oro_integration.reverse_sync.processor'
+            - '@oro_message_queue.job.runner'
+            - '@security.token_storage'
+            - '@oro_config.manager'
+            - '@logger'
+        tags:
+            - { name: 'oro_message_queue.client.message_processor', topicName: 'marello_webhook.notify_webhook' }

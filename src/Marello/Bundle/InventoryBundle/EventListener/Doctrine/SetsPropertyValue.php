@@ -24,7 +24,6 @@ trait SetsPropertyValue
     {
         $reflection = new \ReflectionObject($inventoryLevelLogRecord);
         $property   = $reflection->getProperty($propertyName);
-        $property->setAccessible(true);
         $property->setValue($inventoryLevelLogRecord, $value);
     }
 }

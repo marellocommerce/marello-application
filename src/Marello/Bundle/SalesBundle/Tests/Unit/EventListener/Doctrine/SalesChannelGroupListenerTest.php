@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\SalesBundle\Tests\Unit\EventListener\Doctrine;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 use Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelGroupRepository;
@@ -114,11 +114,11 @@ class SalesChannelGroupListenerTest extends TestCase
             ->getMock();
         $args
             ->expects(static::once())
-            ->method('getEntityManager')
+            ->method('getObjectManager')
             ->willReturn($entityManager);
         $args
             ->expects(static::once())
-            ->method('getEntity')
+            ->method('getObject')
             ->willReturn($salesChannelGroup);
 
         $this->salesChannelGroupListener->preRemove($args);
@@ -193,7 +193,7 @@ class SalesChannelGroupListenerTest extends TestCase
             ->getMock();
         $args
             ->expects(static::once())
-            ->method('getEntityManager')
+            ->method('getObjectManager')
             ->willReturn($entityManager);
 
         $this->salesChannelGroupListener->postPersist($salesChannelGroup, $args);

@@ -6,9 +6,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
-use Marello\Bundle\InventoryBundle\Model\ExtendWarehouseChannelGroupLink;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
@@ -33,10 +34,11 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
  *  }
  * )
  */
-class WarehouseChannelGroupLink extends ExtendWarehouseChannelGroupLink implements OrganizationAwareInterface
+class WarehouseChannelGroupLink implements OrganizationAwareInterface, ExtendEntityInterface
 {
     use EntityCreatedUpdatedAtTrait;
     use AuditableOrganizationAwareTrait;
+    use ExtendEntityTrait;
 
     /**
      * @var int
@@ -96,8 +98,6 @@ class WarehouseChannelGroupLink extends ExtendWarehouseChannelGroupLink implemen
 
     public function __construct()
     {
-        parent::__construct();
-
         $this->salesChannelGroups = new ArrayCollection();
     }
 

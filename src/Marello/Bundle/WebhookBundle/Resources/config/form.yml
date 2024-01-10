@@ -1,0 +1,10 @@
+services:
+    Marello\Bundle\WebhookBundle\Form\Type\WebhookType:
+        tags:
+            - { name: form.type }
+
+    Marello\Bundle\WebhookBundle\Form\Type\EventSelectType:
+        arguments:
+            - '@marello_webhook.event.provider.webhook_event_provider'
+        tags:
+            - { name: form.type }

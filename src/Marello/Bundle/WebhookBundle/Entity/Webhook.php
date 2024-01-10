@@ -3,7 +3,8 @@
 namespace Marello\Bundle\WebhookBundle\Entity;
 
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
-use Marello\Bundle\WebhookBundle\Model\ExtendWebhook;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 use Doctrine\ORM\Mapping as ORM;
@@ -28,6 +29,11 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
  *          "dataaudit"={
  *              "auditable"=true
  *          },
+*           "ownership"={
+*               "owner_type"="ORGANIZATION",
+*               "owner_field_name"="organization",
+*               "owner_column_name"="organization_id"
+*           },
  *          "security"={
  *              "type"="ACL",
  *              "group_name"=""
@@ -35,10 +41,11 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
  *      }
  * )
  */
-class Webhook extends ExtendWebhook implements OrganizationAwareInterface
+class Webhook implements OrganizationAwareInterface, ExtendEntityInterface
 {
     use EntityCreatedUpdatedAtTrait;
     use AuditableOrganizationAwareTrait;
+    use ExtendEntityTrait;
 
     /**
      * @var int
@@ -116,7 +123,7 @@ class Webhook extends ExtendWebhook implements OrganizationAwareInterface
     protected $secret;
 
     /**
-     * @var string
+     * @var bool
      *
      * @ORM\Column(name="enabled",type="boolean")
      * @ConfigField(

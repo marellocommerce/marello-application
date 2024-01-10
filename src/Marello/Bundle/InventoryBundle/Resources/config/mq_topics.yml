@@ -1,0 +1,8 @@
+services:
+    _defaults:
+        tags:
+            - { name: oro_message_queue.topic }
+
+    Marello\Bundle\InventoryBundle\Async\Topic\BalancedInventoryResetTopic: ~
+    Marello\Bundle\InventoryBundle\Async\Topic\ResolveRebalanceAllInventoryTopic: ~
+    Marello\Bundle\InventoryBundle\Async\Topic\ResolveRebalanceInventoryTopic: ~

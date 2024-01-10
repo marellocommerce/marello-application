@@ -9,10 +9,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Oro\Bundle\CurrencyBundle\Entity\Price;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
-
-use Marello\Bundle\OrderBundle\Model\ExtendOrder;
 use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\TaxBundle\Model\TaxAwareInterface;
@@ -64,7 +64,7 @@ use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
  * )
  * @ORM\HasLifecycleCallbacks()
  */
-class Order extends ExtendOrder implements
+class Order implements
     DerivedPropertyAwareInterface,
     CurrencyAwareInterface,
     DiscountAwareInterface,
@@ -74,13 +74,15 @@ class Order extends ExtendOrder implements
     LineItemsAwareInterface,
     LocalizationAwareInterface,
     SalesChannelAwareInterface,
-    OrganizationAwareInterface
+    OrganizationAwareInterface,
+    ExtendEntityInterface
 {
     // HasShipmentTrait, ShippingAwareInterface will be removed in next Major
     use HasShipmentTrait;
     use LocalizationTrait;
     use EntityCreatedUpdatedAtTrait;
     use AuditableOrganizationAwareTrait;
+    use ExtendEntityTrait;
     
     /**
      * @var int
@@ -554,8 +556,6 @@ class Order extends ExtendOrder implements
         AbstractAddress $billingAddress = null,
         AbstractAddress $shippingAddress = null
     ) {
-        parent::__construct();
-        
         $this->items           = new ArrayCollection();
         $this->billingAddress  = $billingAddress;
         $this->shippingAddress = $shippingAddress;

@@ -5,7 +5,7 @@ namespace Marello\Bundle\OrderBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Marello\Bundle\OrderBundle\Model\ExtendOrderItem;
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\OrderBundle\Model\QuantityAwareInterface;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
@@ -16,6 +16,8 @@ use Marello\Bundle\TaxBundle\Entity\TaxCode;
 use Marello\Bundle\TaxBundle\Model\TaxAwareInterface;
 use Oro\Bundle\CurrencyBundle\Entity\PriceAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
@@ -36,16 +38,18 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
  * @ORM\Table(name="marello_order_order_item")
  * @ORM\HasLifecycleCallbacks()
  */
-class OrderItem extends ExtendOrderItem implements
+class OrderItem implements
     CurrencyAwareInterface,
     QuantityAwareInterface,
     PriceAwareInterface,
     TaxAwareInterface,
     ProductAwareInterface,
     OrderAwareInterface,
-    OrganizationAwareInterface
+    OrganizationAwareInterface,
+    ExtendEntityInterface
 {
     use AuditableOrganizationAwareTrait;
+    use ExtendEntityTrait;
 
     /**
      * @var int
@@ -345,8 +349,6 @@ class OrderItem extends ExtendOrderItem implements
      */
     public function __construct()
     {
-        parent::__construct();
-        
         $this->returnItems = new ArrayCollection();
     }
 
@@ -367,11 +369,11 @@ class OrderItem extends ExtendOrderItem implements
     }
 
     /**
-     * @return ArrayCollection|\Marello\Bundle\InventoryBundle\Entity\InventoryItem[]
+     * @return InventoryItem|null
      */
-    public function getInventoryItems()
+    public function getInventoryItem()
     {
-        return $this->getProduct()->getInventoryItems();
+        return $this->getProduct()->getInventoryItem();
     }
 
     /**

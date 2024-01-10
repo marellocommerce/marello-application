@@ -7,10 +7,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
-use Marello\Bundle\PaymentBundle\Model\ExtendPaymentMethodsConfigsRule;
 use Marello\Bundle\RuleBundle\Entity\RuleInterface;
 use Marello\Bundle\RuleBundle\Entity\RuleOwnerInterface;
 
@@ -38,10 +39,13 @@ use Marello\Bundle\RuleBundle\Entity\RuleOwnerInterface;
  *      }
  * )
  */
-class PaymentMethodsConfigsRule extends ExtendPaymentMethodsConfigsRule implements
+class PaymentMethodsConfigsRule implements
     RuleOwnerInterface,
-    OrganizationAwareInterface
+    OrganizationAwareInterface,
+    ExtendEntityInterface
 {
+    use ExtendEntityTrait;
+
     /**
      * @var integer
      *
@@ -129,8 +133,6 @@ class PaymentMethodsConfigsRule extends ExtendPaymentMethodsConfigsRule implemen
 
     public function __construct()
     {
-        parent::__construct();
-
         $this->methodConfigs = new ArrayCollection();
         $this->destinations = new ArrayCollection();
     }

@@ -2,15 +2,13 @@
 
 namespace Marello\Bundle\WebhookBundle\Event;
 
+use Marello\Bundle\WebhookBundle\Model\WebhookContext;
+
 interface WebhookEventInterface
 {
-    /**
-     * @return string
-     */
-    public function getName(): string;
+    public static function getName(): string;
 
-    /**
-     * @return string
-     */
-    public function getLabel(): string;
+    public static function getLabel(): string;
+
+    public function getContext(): WebhookContext;
 }

@@ -2,7 +2,6 @@ search:
     Marello\Bundle\ReturnBundle\Entity\ReturnEntity:
         alias:                          marello_return
         label:                          marello.return.returnentity.entity_plural_label
-        title_fields:                   [returnNumber]
         route:
             name:                       marello_return_return_view
             parameters:

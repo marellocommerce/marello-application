@@ -62,10 +62,8 @@ class OrderToPackingSlipMapper extends AbstractPackingSlipMapper
     {
         $packingSlipItem = new PackingSlipItem();
         $packingSlipItemData = $this->getData($allocationItem, PackingSlipItem::class);
-        /** @var Product $product */
         $product = $allocationItem->getProduct();
-        /** @var InventoryItem $inventoryItem */
-        $inventoryItem = $product->getInventoryItems()->first();
+        $inventoryItem = $product->getInventoryItem();
         if ($inventoryItem) {
             if ($inventoryLevel = $inventoryItem->getInventoryLevel($warehouse)) {
                 $inventoryBatches = $inventoryLevel->getInventoryBatches()->toArray();

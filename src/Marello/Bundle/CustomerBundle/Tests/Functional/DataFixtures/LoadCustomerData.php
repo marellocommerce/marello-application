@@ -6,11 +6,12 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\TestFrameworkBundle\Test\DataFixtures\InitialFixtureInterface;
 
 use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 
-class LoadCustomerData extends AbstractFixture
+class LoadCustomerData extends AbstractFixture implements InitialFixtureInterface
 {
     /** flush manager count */
     const FLUSH_MAX = 25;
