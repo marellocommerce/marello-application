@@ -1,0 +1,15 @@
+workflows:
+    marello_order_pos_workflow:
+        attributes:
+            payment_reference:
+                type: string
+            payment_details:
+                type: string
+            total_paid:
+                type: object
+                options:
+                    class: Oro\Bundle\CurrencyBundle\Entity\Price
+            update_balanced_inventory:
+                type: boolean
+            send_invoice_by_email:
+                type: boolean

@@ -1,0 +1,10 @@
+services:
+    Marello\Bundle\NotificationMessageBundle\EventListener\NotificationMessageEventListener:
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@translator'
+            - '@oro_message_queue.client.message_producer'
+            - '@Marello\Bundle\NotificationMessageBundle\Factory\NotificationMessageFactory'
+        tags:
+            - { name: kernel.event_listener, event: marello_notificationmessage.create_notification_message, method: onCreate }
+            - { name: kernel.event_listener, event: marello_notificationmessage.resolve_notification_message, method: onResolve }

@@ -11,6 +11,7 @@ workflows:
                     - sent_to_warehouse
                     - reallocate
                     - resolved
+                    - item_complete
             warehouse_notified:
                 allowed_transitions:
                     - pick_and_pack
@@ -23,6 +24,8 @@ workflows:
             resolved:
                 is_final: true
             complete:
+                is_final: true
+            item_complete:
                 is_final: true
         transitions:
             pending:
@@ -49,6 +52,9 @@ workflows:
             complete:
                 step_to: complete
                 transition_definition: complete_definition
+            item_complete:
+                step_to: item_complete
+                transition_definition: item_complete_definition
         transition_definitions:
             pending_definition:
                 actions:
@@ -58,6 +64,9 @@ workflows:
                                    -   '@not_equal': [ $allocation.allocationContext.id, 'reshipment' ]
                            events: [ extendable_action.pending_transition_after ]
             send_definition:
+                preconditions:
+                    '@and':
+                        - '@not_equal': [ $allocation.allocationContext.id, 'order_cash_and_carry']
                 conditions:
                     '@and':
                         - '@not_empty': $allocation.warehouse
@@ -89,6 +98,9 @@ workflows:
                     - '@extendable':
                           events: [extendable_action.create_packingslip]
             reallocate_definition:
+                preconditions:
+                    '@and':
+                        - '@not_equal': [ $allocation.allocationContext.id, 'order_cash_and_carry']
                 actions:
                     - '@foreach':
                           array: $allocation.items
@@ -173,6 +185,33 @@ workflows:
                                                 attribute: $.result.value.orderItem.status
                     -   '@extendable':
                             events: [ extendable_action.allocation_complete ]
+            item_complete_definition:
+                preconditions:
+                    '@and':
+                        - '@equal': [ $allocation.allocationContext.id, 'order_cash_and_carry']
+                actions:
+                    - '@tree':
+                          actions:
+                              - '@foreach':
+                                    array: $allocation.items
+                                    value: $.result.value
+                                    actions:
+                                        - '@assign_value': [$.result.value.quantityConfirmed, $.result.value.quantity]
+                                        - '@call_service_method':
+                                              service: marello_inventory.model.inventory_level_totals_calculator
+                                              method: getTotalAllocationQtyConfirmed
+                                              method_parameters: [$.result.value]
+                                              attribute: $.result.totalQtyConfirmed
+                                        - '@tree':
+                                              conditions:
+                                                  '@equal': [$.result.totalQtyConfirmed, $.result.value.orderItem.quantity]
+                                              actions:
+                                                  - '@request_enum_entity':
+                                                        enum_code: marello_item_status
+                                                        identifier: 'complete'
+                                                        attribute: $.result.value.orderItem.status
+                    - '@extendable':
+                          events: [ extendable_action.allocation_complete ]
             rejected_definition:
                 actions:
                     - '@foreach':

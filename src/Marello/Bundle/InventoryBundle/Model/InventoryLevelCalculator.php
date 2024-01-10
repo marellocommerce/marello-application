@@ -49,7 +49,7 @@ class InventoryLevelCalculator
     {
         // check level's inventory batches for expiration dates
         $currentDateTime = new \DateTime('now', new \DateTimeZone('UTC'));
-        $expiredInventory = 0;
+        $forbiddenInventory = 0;
         $batchInventoryTotal = 0;
         foreach ($batches as $inventoryBatch) {
             $batch = is_array($inventoryBatch) ? $inventoryBatch['batch'] : $inventoryBatch;
@@ -58,13 +58,18 @@ class InventoryLevelCalculator
             }
             // we cannot use expired batches
             if ($batch->getExpirationDate() && $batch->getExpirationDate() <= $currentDateTime) {
-                $expiredInventory += $batch->getQuantity();
+                $forbiddenInventory += $batch->getQuantity();
             }
+            // we cannot use reserved for Order On Demand batches
+//            if ($batch->getOrderOnDemandRef()) {
+//                $forbiddenInventory += $batch->getQuantity();
+//            }
+
             $batchInventoryTotal += $batch->getQuantity();
         }
 
-        if ($expiredInventory > 0) {
-            return ($batchInventoryTotal - $expiredInventory);
+        if ($forbiddenInventory > 0) {
+            return ($batchInventoryTotal - $forbiddenInventory);
         }
 
         return $batchInventoryTotal;

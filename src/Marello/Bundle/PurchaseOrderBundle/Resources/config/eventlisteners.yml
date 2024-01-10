@@ -1,0 +1,35 @@
+services:
+    Marello\Bundle\ProductBundle\EventListener\Datagrid\ProductSupplierGridListener:
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-purchase-order-item-candidates, method: buildBeforeProductsBySupplier, priority: 100 }
+
+    Marello\Bundle\PurchaseOrderBundle\EventListener\Datagrid\PurchaseOrderItemCandidatesGridListener:
+        arguments:
+            - '@Marello\Bundle\PurchaseOrderBundle\Provider\PurchaseOrderCandidatesProvider'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-purchase-order-item-candidates, method: onBuildBeforeCandidatesGrid }
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-purchase-order-item-candidates-grid, method: onBuildBeforeCandidatesGrid }
+
+    Marello\Bundle\PurchaseOrderBundle\EventListener\Doctrine\PurchaseOrderOnOrderOnDemandCreationListener:
+        arguments:
+            - '@oro_config.manager'
+            - '@event_dispatcher'
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: postFlush }
+
+    Marello\Bundle\PurchaseOrderBundle\EventListener\Doctrine\PurchaseOrderWarehouseListener:
+        arguments:
+            - '@doctrine'
+            - '@oro_security.acl_helper'
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+
+    Marello\Bundle\PurchaseOrderBundle\EventListener\Doctrine\PurchaseOrderWorkflowTransitListener:
+        arguments:
+            - '@oro_workflow.manager'
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: postFlush }

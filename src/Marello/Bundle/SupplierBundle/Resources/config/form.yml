@@ -9,11 +9,3 @@ services:
         class: Marello\Bundle\SupplierBundle\Form\Type\SupplierSelectType
         tags:
             - { name: form.type }
-
-    ## handlers
-    marello_supplier.supplier_form.handler:
-        class: 'Marello\Bundle\SupplierBundle\Form\Handler\SupplierHandler'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-        tags:
-            - { name: oro_form.form.handler, alias: marello_supplier.supplier_form.handler }

@@ -1,21 +1,13 @@
 imports:
     - { resource: controllers.yml }
-
+    - { resource: eventlisteners.yml }
+    - { resource: mq_topics.yml }
 services:
     Marello\Bundle\NotificationMessageBundle\Cron\NotificationMessageCleanupCommand:
         arguments:
             - '@doctrine'
         tags:
             - { name: console.command }
-
-    Marello\Bundle\NotificationMessageBundle\EventListener\NotificationMessageEventListener:
-        arguments:
-            - '@doctrine'
-            - '@oro_config.manager'
-            - '@translator'
-        tags:
-            - { name: kernel.event_listener, event: marello_notificationmessage.create_notification_message, method: onCreate }
-            - { name: kernel.event_listener, event: marello_notificationmessage.resolve_notification_message, method: onResolve }
 
     marello_notification_message.datagrid.action_permission_provider:
         class: Marello\Bundle\NotificationMessageBundle\Datagrid\ActionPermissionProvider
@@ -60,3 +52,19 @@ services:
             - ['setAclHelper', ['@oro_security.acl_helper']]
         tags:
             - { name: doctrine.repository_service }
+
+    Marello\Bundle\NotificationMessageBundle\Factory\NotificationMessageFactory:
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@oro_config.manager'
+            - '@translator'
+        tags:
+            - { name: doctrine.repository_service }
+
+    Marello\Bundle\NotificationMessageBundle\Async\ProcessNotificationMessageProcessor:
+        arguments:
+            - '@logger'
+            - '@oro_entity.doctrine_helper'
+            - '@Marello\Bundle\NotificationMessageBundle\Factory\NotificationMessageFactory'
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }
