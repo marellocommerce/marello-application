@@ -104,6 +104,40 @@ class CompositeSubtotalProviderTest extends TestCase
         static::assertEquals(new Subtotal($totalData), $this->compositeSubtotalProvider->getTotal(new Order()));
     }
 
+    /**
+     * @dataProvider totalDataProvider
+     *
+     * @param array $subtotalData1
+     * @param array $subtotalData2
+     * @param array $totalData
+     */
+    public function testGetTotalWithProvidedSubtotal(array $subtotalData1, array $subtotalData2, array $totalData)
+    {
+        $this->defaultCurrencyProvider
+            ->expects(static::any())
+            ->method('getDefaultCurrency')
+            ->willReturn('USD');
+
+        $this->translator
+            ->expects(static::once())
+            ->method('trans')
+            ->willReturnCallback(function ($value) {
+                return $value;
+            });
+
+        $this->rounding
+            ->expects(static::once())
+            ->method('round')
+            ->willReturnCallback(function ($value) {
+                return $value;
+            });
+
+        static::assertEquals(
+            new Subtotal($totalData),
+            $this->compositeSubtotalProvider->getTotal(new Order(), [new Subtotal($subtotalData1), new Subtotal($subtotalData2)])
+        );
+    }
+
     public function totalDataProvider()
     {
         return [

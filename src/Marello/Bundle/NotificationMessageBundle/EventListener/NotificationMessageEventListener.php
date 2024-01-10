@@ -3,20 +3,22 @@
 namespace Marello\Bundle\NotificationMessageBundle\EventListener;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
-use Marello\Bundle\NotificationMessageBundle\DependencyInjection\Configuration;
+
+use Symfony\Contracts\Translation\TranslatorInterface;
+
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
+use Oro\Component\MessageQueue\Client\MessagePriority;
+use Oro\Bundle\EntityExtendBundle\Entity\AbstractEnumValue;
+use Oro\Component\MessageQueue\Client\MessageProducerInterface;
+
 use Marello\Bundle\NotificationMessageBundle\Entity\NotificationMessage;
+use Marello\Bundle\NotificationMessageBundle\Model\NotificationMessageContext;
+use Marello\Bundle\NotificationMessageBundle\Factory\NotificationMessageFactory;
 use Marello\Bundle\NotificationMessageBundle\Event\CreateNotificationMessageEvent;
 use Marello\Bundle\NotificationMessageBundle\Event\ResolveNotificationMessageEvent;
-use Marello\Bundle\NotificationMessageBundle\Model\NotificationMessageContext;
+use Marello\Bundle\NotificationMessageBundle\Async\Topic\ProcessNotificationMessageTopic;
 use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageResolvedInterface;
-use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageSourceInterface;
-use Marello\Bundle\NotificationMessageBundle\Provider\NotificationMessageTypeInterface;
-use Oro\Bundle\ConfigBundle\Config\ConfigManager;
-use Oro\Bundle\EntityExtendBundle\Entity\AbstractEnumValue;
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
-use Oro\Bundle\UserBundle\Entity\Group;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class NotificationMessageEventListener
 {
@@ -26,9 +28,10 @@ class NotificationMessageEventListener
     private $em;
 
     public function __construct(
-        private ManagerRegistry $registry,
-        private ConfigManager $configManager,
-        private TranslatorInterface $translator
+        private DoctrineHelper $doctrineHelper,
+        private TranslatorInterface $translator,
+        private MessageProducerInterface $messageProducer,
+        private NotificationMessageFactory $messageFactory
     ) {
     }
 
@@ -50,19 +53,17 @@ class NotificationMessageEventListener
         }
 
         /** @var NotificationMessage $existingMessage */
-        $existingMessage = $this->getEntityManager()
+        $notificationMessage = $this->getEntityManager()
             ->getRepository(NotificationMessage::class)
             ->findOneBy($attributes);
-        if ($existingMessage) {
-            $existingMessage->increaseCount();
+        if ($notificationMessage) {
+            $notificationMessage->increaseCount();
         } else {
-            $notificationMessage = $this->createNewNotificationMessage($context, $attributes);
+            $notificationMessage = $this->messageFactory->createNewNotificationMessage($attributes, $context);
             $this->getEntityManager()->persist($notificationMessage);
         }
 
-        if ($context->flush) {
-            $this->getEntityManager()->flush();
-        }
+        $this->processMessage($context, $notificationMessage);
     }
 
     /**
@@ -92,71 +93,8 @@ class NotificationMessageEventListener
                 NotificationMessageResolvedInterface::NOTIFICATION_MESSAGE_RESOLVED_YES
             );
             $existingMessage->setResolved($resolved);
-
-            if ($context->flush) {
-                $this->getEntityManager()->flush();
-            }
+            $this->processMessage($context, $existingMessage);
         }
-    }
-
-    /**
-     * @param NotificationMessageContext $context
-     * @param array $attributes
-     * @return NotificationMessage
-     */
-    private function createNewNotificationMessage(
-        NotificationMessageContext $context,
-        array $attributes
-    ): NotificationMessage {
-        $notificationMessage = new NotificationMessage();
-        $notificationMessage->setTitle($context->title);
-        $notificationMessage->setMessage(
-            $this->translator->trans($context->message, [], 'notificationMessage')
-        );
-        if ($context->solution) {
-            $notificationMessage->setSolution(
-                $this->translator->trans($context->solution, [], 'notificationMessage')
-            );
-        }
-        $notificationMessage->setRelatedItemClass($attributes['relatedItemClass']);
-        $notificationMessage->setRelatedItemId($attributes['relatedItemId']);
-        $notificationMessage->setResolved($this->getEnumValue(
-            NotificationMessageResolvedInterface::NOTIFICATION_MESSAGE_RESOLVED_ENUM_CODE,
-            $context->resolved
-        ));
-        $notificationMessage->setAlertType($this->getEnumValue(
-            NotificationMessageTypeInterface::NOTIFICATION_MESSAGE_TYPE_ENUM_CODE,
-            $context->alertType
-        ));
-        $notificationMessage->setSource($this->getEnumValue(
-            NotificationMessageSourceInterface::NOTIFICATION_MESSAGE_SOURCE_ENUM_CODE,
-            $context->source
-        ));
-
-        if ($context->operation) {
-            $notificationMessage->setOperation($context->operation);
-        }
-        if ($context->step) {
-            $notificationMessage->setStep($context->step);
-        }
-        if ($context->externalId) {
-            $notificationMessage->setExternalId($context->externalId);
-        }
-        if ($context->log) {
-            $notificationMessage->setLog($context->log);
-        }
-        if ($context->organization) {
-            $notificationMessage->setOrganization($context->organization);
-        }
-
-        $groupConfiguration = $this->configManager->get(Configuration::SYSTEM_CONFIG_PATH_ASSIGNED_GROUPS);
-        $configKey = sprintf('%s_%s', $context->source, $context->alertType);
-        if (!empty($groupConfiguration[$configKey])) {
-            $group = $this->getEntityManager()->getRepository(Group::class)->find($groupConfiguration[$configKey]);
-            $notificationMessage->setUserGroup($group);
-        }
-
-        return $notificationMessage;
     }
 
     /**
@@ -173,7 +111,7 @@ class NotificationMessageEventListener
             'title' => $context->title,
             'resolved' => $context->resolved,
             'relatedItemId' => null,
-            'relatedItemClass' => null,
+            'relatedItemClass' => null
         ];
     }
 
@@ -199,9 +137,39 @@ class NotificationMessageEventListener
     private function getEntityManager(): EntityManagerInterface
     {
         if (!$this->em) {
-            $this->em = $this->registry->getManagerForClass(NotificationMessage::class);
+            $this->em = $this->doctrineHelper->getEntityManagerForClass(NotificationMessage::class);
         }
 
         return $this->em;
+    }
+
+    private function processMessage(NotificationMessageContext $context, NotificationMessage $message): void
+    {
+        if ($context->flush && !$context->queue) {
+            $this->getEntityManager()->flush();
+        }
+
+        if ($context->queue) {
+            $this->messageProducer->send(
+                ProcessNotificationMessageTopic::getName(),
+                [
+                    'title' => $context->title,
+                    'message' => $context->message,
+                    'solution' => $context->solution,
+                    'relatedItemClass' => $message->getRelatedItemClass(),
+                    'relatedItemId' => $message->getRelatedItemId(),
+                    'resolved' => $context->resolved,
+                    'alertType' => $context->alertType,
+                    'source' => $context->source,
+                    'operation' => $context->operation,
+                    'step' => $context->step,
+                    'externalId' => $context->externalId,
+                    'log' => $context->log,
+                    'organization' => $context->organization->getId(),
+                    'entity_class' => NotificationMessage::class,
+                    'priority' => MessagePriority::LOW
+                ]
+            );
+        }
     }
 }

@@ -11,8 +11,7 @@ use Oro\Bundle\CurrencyBundle\Entity\Price;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
-use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
-use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
+
 use Marello\Bundle\CustomerBundle\Entity\Customer;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\TaxBundle\Model\TaxAwareInterface;
@@ -28,6 +27,7 @@ use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
 use Marello\Bundle\PricingBundle\Subtotal\Model\SubtotalAwareInterface;
 use Marello\Bundle\PricingBundle\Subtotal\Model\LineItemsAwareInterface;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
+use Oro\Bundle\UserBundle\Entity\Ownership\AuditableUserAwareTrait;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\OrderBundle\Entity\Repository\OrderRepository")
@@ -44,9 +44,11 @@ use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
  *              "group_name"=""
  *          },
  *          "ownership"={
- *              "owner_type"="ORGANIZATION",
- *              "owner_field_name"="organization",
- *              "owner_column_name"="organization_id"
+ *              "owner_type"="USER",
+ *              "owner_field_name"="owner",
+ *              "owner_column_name"="user_owner_id",
+ *              "organization_field_name"="organization",
+ *              "organization_column_name"="organization_id"
  *          },
  *          "grid"={
  *              "default"="marello-order-select-grid"
@@ -68,20 +70,16 @@ class Order implements
     DerivedPropertyAwareInterface,
     CurrencyAwareInterface,
     DiscountAwareInterface,
-    ShippingAwareInterface,
     SubtotalAwareInterface,
     TaxAwareInterface,
     LineItemsAwareInterface,
     LocalizationAwareInterface,
     SalesChannelAwareInterface,
-    OrganizationAwareInterface,
     ExtendEntityInterface
 {
-    // HasShipmentTrait, ShippingAwareInterface will be removed in next Major
-    use HasShipmentTrait;
     use LocalizationTrait;
     use EntityCreatedUpdatedAtTrait;
-    use AuditableOrganizationAwareTrait;
+    use AuditableUserAwareTrait;
     use ExtendEntityTrait;
     
     /**
@@ -224,7 +222,7 @@ class Order implements
      *      }
      * )
      */
-    protected $paymentMethodOptions;
+    protected $paymentMethodOptions = [];
 
     /**
      * @var double
@@ -892,7 +890,7 @@ class Order implements
      * @param array $paymentMethodOptions
      * @return Order
      */
-    public function setPaymentMethodOptions(array $paymentMethodOptions)
+    public function setPaymentMethodOptions(array $paymentMethodOptions = [])
     {
         $this->paymentMethodOptions = $paymentMethodOptions;
         

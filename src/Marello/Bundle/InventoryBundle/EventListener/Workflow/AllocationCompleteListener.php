@@ -3,6 +3,7 @@
 namespace Marello\Bundle\InventoryBundle\EventListener\Workflow;
 
 use Marello\Bundle\CoreBundle\Model\JobIdGenerationTrait;
+use Marello\Bundle\OrderBundle\Model\WorkflowNameProviderInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
@@ -32,8 +33,6 @@ class AllocationCompleteListener
     use JobIdGenerationTrait;
 
     const TRANSIT_TO_STEP = 'ship';
-    const WORKFLOW_NAME_B2C_1 = 'marello_order_b2c_workflow_1';
-    const WORKFLOW_NAME_B2C_2 = 'marello_order_b2c_workflow_2';
 
     /** @var WorkflowManager $workflowManager */
     protected $workflowManager;
@@ -163,7 +162,6 @@ class AllocationCompleteListener
                         'current_step_id' => $workflowItem->getCurrentStep()->getId(),
                         'entity_class' => Order::class,
                         'transition' => self::TRANSIT_TO_STEP,
-                        'jobId' => $this->generateJobId($order->getId()),
                         'priority' => MessagePriority::NORMAL
                     ]
                 );
@@ -216,8 +214,9 @@ class AllocationCompleteListener
     protected function getDefaultWorkflowNames(): array
     {
         return [
-            self::WORKFLOW_NAME_B2C_1,
-            self::WORKFLOW_NAME_B2C_2
+            WorkflowNameProviderInterface::ORDER_WORKFLOW_1,
+            WorkflowNameProviderInterface::ORDER_WORKFLOW_2,
+            WorkflowNameProviderInterface::ORDER_POS_WORKFLOW
         ];
     }
 

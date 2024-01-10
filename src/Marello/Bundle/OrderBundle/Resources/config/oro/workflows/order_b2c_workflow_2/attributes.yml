@@ -1,0 +1,17 @@
+workflows:
+    marello_order_b2c_workflow_2:
+        attributes:
+            payment_reference:
+                type: string
+            payment_details:
+                type: string
+            total_paid:
+                type: object
+                options:
+                    class: Oro\Bundle\CurrencyBundle\Entity\Price
+            invoiced_at:
+                type: object
+                options:
+                    class: \DateTime
+            note:
+                type: string

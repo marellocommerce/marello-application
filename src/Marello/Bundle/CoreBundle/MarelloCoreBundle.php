@@ -13,7 +13,7 @@ class MarelloCoreBundle extends Bundle
 {
     public function build(ContainerBuilder $container)
     {
-        //$container->addCompilerPass(new TwigSandboxConfigurationPass());
+        $container->addCompilerPass(new TwigSandboxConfigurationPass());
         $container->addCompilerPass(new OroEmailImagesExtractorOverrideServiceCompilerPass());
         $container->addCompilerPass(new AdditionalPlaceholderProviderPass());
         parent::build($container);

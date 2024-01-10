@@ -17,6 +17,9 @@ class WarehouseChannelGroupLinkRepository extends ServiceEntityRepository
         parent::__construct($registry, $entityClass);
     }
 
+    /**
+     * @return false|mixed
+     */
     public function findSystemLink()
     {
         $qb = $this->createQueryBuilder('wcgl');
@@ -27,6 +30,10 @@ class WarehouseChannelGroupLinkRepository extends ServiceEntityRepository
         return reset($results);
     }
 
+    /**
+     * @param SalesChannelGroup $group
+     * @return false|mixed
+     */
     public function findLinkBySalesChannelGroup(SalesChannelGroup $group)
     {
         $qb = $this->createQueryBuilder('wcgl');

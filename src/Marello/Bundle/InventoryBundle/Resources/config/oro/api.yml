@@ -22,7 +22,7 @@ api:
             fields:
                 saleschannels:
                     data_type: object
-                    target_class: Marello\Bundle\SalesBundle\Entity\SalesChannel
+                    property_path: _
                 createdAt:
                     exclude: true
             filters:

@@ -1,0 +1,12 @@
+imports:
+    - { resource: 'order_pos/steps.yml' }
+    - { resource: 'order_pos/attributes.yml' }
+    - { resource: 'order_pos/transitions.yml' }
+    - { resource: 'order_pos/transition_definitions.yml' }
+
+workflows:
+    marello_order_pos_workflow:
+        entity:       Marello\Bundle\OrderBundle\Entity\Order
+        entity_attribute: order
+        exclusive_record_groups: [order_b2c]
+        priority: 10

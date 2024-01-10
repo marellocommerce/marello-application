@@ -43,7 +43,7 @@
                     </div>
                     {{ UI.renderProperty('marello.inventory.allocation.state.label'|trans, entity.state) }}
                     {{ UI.renderProperty('marello.inventory.allocation.status.label'|trans, entity.status) }}
-                    {{ UI.renderProperty('marello.inventory.allocation.allocation_context.label'|trans, entity.allocationContext, null, null, {tooltipHTML: UI.tooltip('marello.inventory.allocation.tooltip.context')}) }}
+                    {{ UI.renderProperty('marello.inventory.allocation.allocation_context.label'|trans, entity.allocationContext, null, null, {tooltipHTML: UI.tooltip('marello.inventory.allocation.tooltip.context'|trans({}, 'tooltips'))}) }}
                     {% if entity.allocationContext is not null
                         and entity.allocationContext.id == constant('Marello\\Bundle\\InventoryBundle\\Provider\\AllocationContextInterface::ALLOCATION_CONTEXT_RESHIPMENT')
                     %}

@@ -23,12 +23,14 @@ class ResolveRebalanceInventoryTopic extends AbstractTopic implements JobAwareTo
         $resolver
             ->setDefined([
                 'product_id',
-                'jobId',
+                'priority',
+                'jobId'
             ])
             ->setRequired([
                 'product_id',
             ])
             ->addAllowedTypes('product_id', ['int'])
+            ->addAllowedTypes('priority', ['string'])
             ->addAllowedTypes('jobId', ['int']);
     }
 

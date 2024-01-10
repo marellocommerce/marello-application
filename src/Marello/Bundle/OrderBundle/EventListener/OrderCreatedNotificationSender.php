@@ -4,6 +4,7 @@ namespace Marello\Bundle\OrderBundle\EventListener;
 
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertySetEvent;
 use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\OrderBundle\Model\OrderItemTypeInterface;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Component\DependencyInjection\ServiceLink;
 
@@ -37,7 +38,16 @@ class OrderCreatedNotificationSender
         $entity = $event->getEntity();
 
         if ($entity instanceof Order && $this->configManager->get('marello_order.order_notification') === true) {
-            $this->sendNotification($entity);
+            $totalItemsCandC = 0;
+            foreach ($entity->getItems() as $item) {
+                if ($item->getItemType() === OrderItemTypeInterface::OI_TYPE_CASHANDCARRY) {
+                    $totalItemsCandC++;
+                }
+            }
+            // not all items are cash and carry, so send an email when the order is created
+            if ($totalItemsCandC !== $entity->getItems()->count()) {
+                $this->sendNotification($entity);
+            }
         }
     }
 

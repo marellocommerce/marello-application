@@ -13,7 +13,15 @@ use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="marello_shipment")
+ * @ORM\Table(
+ *     name="marello_shipment",
+ *     uniqueConstraints={
+ *          @ORM\UniqueConstraint(
+ *              name="marello_shipment_trackinginfoidx",
+ *              columns={"tracking_info_id"}
+ *          )
+ *      }
+ * )
  * @ORM\HasLifecycleCallbacks()
  * @Oro\Config(
  *  defaultValues={

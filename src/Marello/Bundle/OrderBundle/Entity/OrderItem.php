@@ -2,36 +2,44 @@
 
 namespace Marello\Bundle\OrderBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\OrderBundle\Model\QuantityAwareInterface;
-use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\ProductBundle\Entity\ProductInterface;
-use Marello\Bundle\ProductBundle\Model\ProductAwareInterface;
-use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
-use Marello\Bundle\TaxBundle\Entity\TaxCode;
-use Marello\Bundle\TaxBundle\Model\TaxAwareInterface;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Oro\Bundle\CurrencyBundle\Entity\PriceAwareInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
-use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
+use Oro\Bundle\UserBundle\Entity\Ownership\AuditableUserAwareTrait;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
-use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
+use Marello\Bundle\TaxBundle\Entity\TaxCode;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
+use Marello\Bundle\TaxBundle\Model\TaxAwareInterface;
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\ProductBundle\Entity\ProductInterface;
+use Marello\Bundle\OrderBundle\Model\OrderItemTypeInterface;
+use Marello\Bundle\OrderBundle\Model\QuantityAwareInterface;
+use Marello\Bundle\ProductBundle\Model\ProductAwareInterface;
+use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\OrderBundle\Entity\Repository\OrderItemRepository")
  * @Oro\Config(
  *      defaultValues={
+*           "security"={
+*               "type"="ACL",
+*               "group_name"=""
+*           },
  *          "dataaudit"={
  *              "auditable"=true
  *          },
  *          "ownership"={
- *              "owner_type"="ORGANIZATION",
- *              "owner_field_name"="organization",
- *              "owner_column_name"="organization_id"
+ *               "owner_type"="USER",
+ *               "owner_field_name"="owner",
+ *               "owner_column_name"="user_owner_id",
+ *               "organization_field_name"="organization",
+ *               "organization_column_name"="organization_id"
  *          },
  *      }
  * )
@@ -48,7 +56,7 @@ class OrderItem implements
     OrganizationAwareInterface,
     ExtendEntityInterface
 {
-    use AuditableOrganizationAwareTrait;
+    use AuditableUserAwareTrait;
     use ExtendEntityTrait;
 
     /**
@@ -343,6 +351,20 @@ class OrderItem implements
      * @var boolean
      */
     protected $allocationExclusion = false;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="item_type",type="string", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=false
+     *          }
+     *      }
+     * )
+     */
+    protected $itemType = OrderItemTypeInterface::OI_TYPE_DELIVERY;
 
     /**
      * OrderItem constructor.
@@ -786,6 +808,25 @@ class OrderItem implements
     public function setAllocationExclusion(bool $allocationExclusion = false): self
     {
         $this->allocationExclusion = $allocationExclusion;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getItemType(): ?string
+    {
+        return $this->itemType;
+    }
+
+    /**
+     * @param string|null $itemType
+     * @return $this
+     */
+    public function setItemType(string $itemType = null): self
+    {
+        $this->itemType = $itemType;
 
         return $this;
     }
