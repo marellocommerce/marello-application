@@ -32,11 +32,15 @@ class InventoryUpdateWebhookEvent extends AbstractWebhookEvent
 
     protected function getContextData(): array
     {
+        $product = $this->data->getProduct() ?? $this->data->getInventoryItem()->getProduct();
+        $dateTime = new \DateTime('now', new \DateTimeZone('UTC'));
         return [
-            'inventory' => $this->data->getInventory(),
-            'inventory_level_qty' => $this->data->getInventoryLevel() ? $this->data->getInventoryLevel()->getInventoryQty() : null,
+            'prev_inventory_level_qty' => $this->data->getInventoryLevel() ? $this->data->getInventoryLevel()->getInventoryQty() : null,
+            'inventory_adjustment' => $this->data->getInventory(),
+            'inventory_level_qty' => $this->data->getInventoryLevel() ? ($this->data->getInventoryLevel()->getInventoryQty() + $this->data->getInventory()) : null,
             'change_trigger' => $this->data->getChangeTrigger(),
-            'sku' => $this->data->getProduct()->getSku(),
+            'sku' => $product->getSku(),
+            'updated_at' => $dateTime->format('Y-m-d H:i:s'),
             'warehouse' => $this->data->getInventoryLevel() ? $this->data->getInventoryLevel()->getWarehouse()->getCode() : null,
         ];
     }

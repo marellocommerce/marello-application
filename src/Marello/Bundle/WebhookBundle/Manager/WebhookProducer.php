@@ -34,7 +34,7 @@ class WebhookProducer
     {
         $integrationChannels = $this->webhookProvider->getWebhookIntergrations();
         $items = [
-            'items' => $webhookContext->getWebhookDataContext(),
+            'items' => [$webhookContext->getWebhookDataContext()],
             'webhook_id' => $webhook->getId()
         ];
         foreach ($integrationChannels as $integrationChannel) {

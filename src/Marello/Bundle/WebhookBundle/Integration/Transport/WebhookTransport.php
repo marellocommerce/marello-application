@@ -50,11 +50,11 @@ class WebhookTransport extends AbstractRestTransport
     protected function getClientOptions(ParameterBag $parameterBag)
     {
         return [
-            'headers' => [
-                'User-Agent' => self::DEFAULT_USER_AGENT_HEADER,
+            'User-Agent' => [
+                self::DEFAULT_USER_AGENT_HEADER
             ],
-            'authorization' => [
-                'HTTP_MARELLO_SIGNATURE ' . $this->getMarelloWebhookSignature($parameterBag),
+            'X-Marello-Signature' => [
+                $this->getMarelloWebhookSignature($parameterBag)
             ]
         ];
     }

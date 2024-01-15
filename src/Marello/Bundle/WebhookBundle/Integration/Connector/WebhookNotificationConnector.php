@@ -31,10 +31,8 @@ class WebhookNotificationConnector extends AbstractConnector implements TwoWaySy
     {
         $executionContext = $this->getJobExecutionContext();
         $items = $executionContext->get('items');
-        $iterator = new \AppendIterator();
-        $iterator->append(new \ArrayIterator($items));
 
-        return $iterator;
+        return new \ArrayIterator($items);
     }
 
     protected function initializeFromContext(ContextInterface $context)

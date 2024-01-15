@@ -24,11 +24,11 @@ class InventoryUpdateEventListener
     {
         $context = $event->getInventoryUpdateContext();
         $this->webhookProducer->triggerWebhook(new InventoryUpdateWebhookEvent($context));
-        if (!$context->getIsVirtual()) {
-            $this->manager->updateInventoryLevel($context);
+        if ($context->getIsVirtual()) {
+            $this->balancedInventoryManager->updateInventoryLevel($context);
             return;
         }
 
-        $this->balancedInventoryManager->updateInventoryLevel($context);
+        $this->manager->updateInventoryLevel($context);
     }
 }
