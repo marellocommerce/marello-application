@@ -1,0 +1,45 @@
+services:
+    Marello\Bundle\WebhookBundle\Integration\WebhookChannel:
+        public: true
+        tags:
+            - { name: oro_integration.channel, type: marello_webhook }
+
+    Marello\Bundle\WebhookBundle\Integration\Transport\WebhookTransport:
+        public: true
+        parent: oro_integration.transport.rest.abstract_transport
+        arguments:
+            - '@monolog.logger'
+        tags:
+        - { name: oro_integration.transport, type: marello_webhook, channel_type: marello_webhook }
+
+    Marello\Bundle\WebhookBundle\Integration\Connector\WebhookNotificationConnector:
+        arguments:
+            - "@oro_importexport.context_registry"
+            - "@oro_integration.logger.strategy"
+            - "@oro_integration.provider.connector_context_mediator"
+            - '@Marello\Bundle\WebhookBundle\Manager\WebhookProvider'
+        tags:
+            - { name: oro_integration.connector, type: marello_webhook, channel_type: marello_webhook }
+
+    Marello\Bundle\WebhookBundle\ImportExport\Writer\WebhookExportWriter:
+        arguments:
+            - '@doctrine'
+            - '@event_dispatcher'
+            - '@oro_importexport.context_registry'
+            - '@oro_integration.provider.connector_context_mediator'
+            - '@Marello\Bundle\WebhookBundle\Integration\Transport\WebhookTransport'
+            - '@Marello\Bundle\WebhookBundle\Manager\WebhookProvider'
+            - '@monolog.logger'
+
+    Marello\Bundle\WebhookBundle\ImportExport\Processor\AsyncProcessor: ~
+
+    Marello\Bundle\WebhookBundle\Async\WebhookSyncProcessor:
+        arguments:
+            - '@Marello\Bundle\WebhookBundle\Manager\WebhookProvider'
+            - '@oro_integration.reverse_sync.processor'
+            - '@oro_message_queue.job.runner'
+            - '@security.token_storage'
+            - '@oro_config.manager'
+            - '@logger'
+        tags:
+            - { name: 'oro_message_queue.client.message_processor', topicName: 'marello_webhook.notify_webhook' }

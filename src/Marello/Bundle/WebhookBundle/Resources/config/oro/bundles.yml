@@ -1,0 +1,2 @@
+bundles:
+    - { name: Marello\Bundle\WebhookBundle\MarelloWebhookBundle, priority: 20 }

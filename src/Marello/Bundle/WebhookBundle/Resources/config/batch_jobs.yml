@@ -1,0 +1,16 @@
+connector:
+    name: oro_importexport
+    jobs:
+        marello_webhook_notification:
+            title: "Process webhooks"
+            type: export
+            steps:
+                extract:
+                    title: export
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader: Marello\Bundle\WebhookBundle\Integration\Connector\WebhookNotificationConnector
+                        processor: Marello\Bundle\WebhookBundle\ImportExport\Processor\AsyncProcessor
+                        writer: Marello\Bundle\WebhookBundle\ImportExport\Writer\WebhookExportWriter
+                    parameters:
+                        batch_size: 1

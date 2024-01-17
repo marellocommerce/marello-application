@@ -6,12 +6,12 @@ use Marello\Bundle\CustomerBundle\Form\Type\CompanyAwareCustomerSelectType;
 use Marello\Bundle\CustomerBundle\Form\Type\CompanySelectType;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Form\EventListener\CurrencySubscriber;
-use Marello\Bundle\OrderBundle\Form\EventListener\OrderTotalsSubscriber;
 use Marello\Bundle\SalesBundle\Form\Type\SalesChannelSelectType;
 use Oro\Bundle\CurrencyBundle\Entity\Price;
 use Oro\Bundle\CurrencyBundle\Form\Type\PriceType;
 use Oro\Bundle\FormBundle\Form\Type\OroDateTimeType;
 use Oro\Bundle\LocaleBundle\Form\Type\LocalizationSelectType;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -26,6 +26,10 @@ use Symfony\Component\Validator\Constraints\Valid;
 class OrderType extends AbstractType
 {
     const BLOCK_PREFIX = 'marello_order_order';
+
+    public function __construct(
+        protected EventSubscriberInterface $orderTotalsSubscriber
+    ) {}
 
     /**
      * {@inheritdoc}
@@ -113,7 +117,7 @@ class OrderType extends AbstractType
         $this->addBillingAddress($builder, $options);
         $this->addShippingAddress($builder, $options);
 
-        $builder->addEventSubscriber(new OrderTotalsSubscriber());
+        $builder->addEventSubscriber($this->orderTotalsSubscriber);
         $builder->addEventSubscriber(new CurrencySubscriber());
         $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
             $data = $event->getData();

@@ -1,0 +1,41 @@
+marello:
+    webhook:
+        entity_label: Webhook
+        entity_plural_label: Webhooks
+        entity_grid_all_view_label: View all webhooks
+        id.label: ID
+        name.label: Name
+        callback_url.label: Callback URL
+        organization.label: Organization
+        event.label: Event
+        enabled:
+            label: Enabled
+            yes.label: Yes
+            no.label: No
+        created_at.label: Created At
+        updated_at.label: Updated At
+        secret.description: Secret / Token
+        secret.label: Secret / Token
+
+        system_configuration:
+            fields:
+                notification_redelivery.label: Notification Redelivery Count
+            groups:
+                settings.title: Webhook Settings
+                webhook.title: Webhooks
+                integrations.title: Integrations
+        connector:
+            notification.label: Webhook Notification
+        notification:
+            integration.label: Webhook Integration
+        callback_url.description: The webhook URL that needs to called
+        name:
+            label.description: Name of the webhook
+        messages:
+            success:
+                webhook:
+                    saved: Webhook saved
+        datablock:
+            general.title: General
+        sections:
+            additional: Additional

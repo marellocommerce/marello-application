@@ -47,7 +47,7 @@ class CompositeSubtotalProvider extends AbstractSubtotalProvider implements Tota
     /**
      * {@inheritdoc}
      */
-    public function getTotal($entity)
+    public function getTotal($entity, iterable $subtotals = [])
     {
         $total = new Subtotal([]);
         
@@ -57,7 +57,8 @@ class CompositeSubtotalProvider extends AbstractSubtotalProvider implements Tota
             ->setVisible(true);
 
         $totalAmount = 0.0;
-        foreach ($this->getSubtotal($entity) as $subtotal) {
+        $subtotals = $subtotals ?: $this->getSubtotal($entity);
+        foreach ($subtotals as $subtotal) {
             $rowTotal = $subtotal->getAmount();
 
             $totalAmount = $this->calculateTotal($subtotal->getOperation(), $rowTotal, $totalAmount);

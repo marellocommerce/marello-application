@@ -1,6 +1,8 @@
 services:
     marello_order.form.type.order:
         class: Marello\Bundle\OrderBundle\Form\Type\OrderType
+        arguments:
+            - '@Marello\Bundle\OrderBundle\Form\EventListener\OrderTotalsSubscriber'
         tags:
             - { name: form.type }
 
@@ -75,3 +77,7 @@ services:
         public: true
         arguments:
             - '@doctrine.orm.entity_manager'
+
+    Marello\Bundle\OrderBundle\Form\EventListener\OrderTotalsSubscriber:
+        arguments:
+            - '@marello_productprice.pricing.subtotal_provider.composite'

@@ -1,0 +1,4 @@
+marello_webhook_bundle:
+    resource:     "@MarelloWebhookBundle/Controller"
+    type:         annotation
+    prefix:       /marello/webhook
