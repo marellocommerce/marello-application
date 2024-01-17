@@ -36,5 +36,9 @@ class MarelloInventoryBundle implements Migration
         if (!$table->hasColumn('order_on_demand_ref')) {
             $table->addColumn('order_on_demand_ref', 'string', ['notnull' => false, 'length' => 255]);
         }
+
+        if (!$table->hasColumn('sell_by_date')) {
+            $table->addColumn('sell_by_date', 'datetime', ['notnull' => false, 'comment' => '(DC2Type:datetime)']);
+        }
     }
 }
