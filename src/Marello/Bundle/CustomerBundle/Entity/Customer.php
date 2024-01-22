@@ -20,7 +20,14 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
 /**
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks()
- * @ORM\Table(name="marello_customer_customer")
+ * @ORM\Table(name="marello_customer_customer",
+ *       uniqueConstraints={
+ *           @ORM\UniqueConstraint(
+ *               name="marello_customer_emailorgidx",
+ *               columns={"email","organization_id"}
+ *           )
+ *       }
+ * )
  * @Oro\Config(
  *      routeView="marello_customer_view",
  *      defaultValues={
