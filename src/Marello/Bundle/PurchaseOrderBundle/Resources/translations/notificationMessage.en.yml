@@ -14,3 +14,7 @@ marello:
                 title: No OoD warehouse configured
                 message: Purchase Order cannot be created because there is not Order On Demand warehouse configured.
                 solution: 'Navigate to the Warehouse Groups and configure an Order On Demand warehouse in one or more group(s)'
+            no_inventory_levels:
+                    title: No InventoryLevels Found!
+                    message: No Inventory Levels are found for the products.
+                    solution: 'Navigate to the Inventory Management and configure an inventory level.'

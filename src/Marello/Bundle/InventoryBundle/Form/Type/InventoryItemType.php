@@ -151,7 +151,7 @@ class InventoryItemType extends AbstractType
         $inventoryItem = $event->getData();
         $form = $event->getForm();
 
-        if ($inventoryItem->isEnableBatchInventory() === true) {
+        if ($inventoryItem->isEnableBatchInventory()) {
             $form->remove('enableBatchInventory');
             $form->add(
                 'enableBatchInventory',

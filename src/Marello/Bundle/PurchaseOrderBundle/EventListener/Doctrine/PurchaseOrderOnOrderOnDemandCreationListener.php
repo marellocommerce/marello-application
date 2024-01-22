@@ -119,7 +119,12 @@ class PurchaseOrderOnOrderOnDemandCreationListener
         $organization = $allocation->getOrganization();
         if (!$warehouse) {
             /** @var NotificationMessageContext $context */
-            $context = $this->createNotificationContext($organization);
+            $context = $this->createNotificationContext(
+                $organization,
+                'marello.notificationmessage.purchaseorder.no_ood_warehouse_configured.title',
+                'marello.notificationmessage.purchaseorder.no_ood_warehouse_configured.message',
+                'marello.notificationmessage.purchaseorder.no_ood_warehouse_configured.solution',
+            );
             $this->eventDispatcher
                 ->dispatch(
                     new CreateNotificationMessageEvent($context),
@@ -259,6 +264,23 @@ class PurchaseOrderOnOrderOnDemandCreationListener
         $allocation = $allocationItem->getAllocation();
 
         $inventoryLevels = $allocationItem->getProduct()->getInventoryItem()->getInventoryLevels();
+        if ($inventoryLevels->count() === 0) {
+            $context = $this->createNotificationContext(
+                $warehouse->getOwner(),
+                'marello.notificationmessage.purchaseorder.no_inventory_levels.title',
+                'marello.notificationmessage.purchaseorder.no_inventory_levels.message',
+                'marello.notificationmessage.purchaseorder.no_inventory_levels.solution',
+            );
+            $this->eventDispatcher
+                ->dispatch(
+                    new CreateNotificationMessageEvent($context),
+                    CreateNotificationMessageEvent::NAME
+                );
+
+            throw new \LogicException(
+                sprintf('No inventory levels found for Product sku: %s', $allocationItem->getProductSku())
+            );
+        }
         foreach ($inventoryLevels as $inventoryLevel) {
             if ($inventoryLevel->getWarehouse() !== $warehouse) {
                 continue;
@@ -291,18 +313,25 @@ class PurchaseOrderOnOrderOnDemandCreationListener
     }
 
     /**
-     * @param $organization OrganizationInterface
+     * @param OrganizationInterface $organization
+     * @param $title
+     * @param $message
+     * @param $solution
      * @return NotificationMessageContext
      */
-    protected function createNotificationContext(OrganizationInterface $organization)
-    {
+    protected function createNotificationContext(
+        OrganizationInterface $organization,
+        $title,
+        $message,
+        $solution
+    ) {
         return NotificationMessageContextFactory::create(
             NotificationMessageTypeInterface::NOTIFICATION_MESSAGE_TYPE_ERROR,
             NotificationMessageResolvedInterface::NOTIFICATION_MESSAGE_RESOLVED_NO,
             NotificationMessageSourceInterface::NOTIFICATION_MESSAGE_SOURCE_PURCHASE_ORDER,
-            'marello.notificationmessage.purchaseorder.no_ood_warehouse_configured.title',
-            'marello.notificationmessage.purchaseorder.no_ood_warehouse_configured.message',
-            'marello.notificationmessage.purchaseorder.no_ood_warehouse_configured.solution',
+            $title,
+            $message,
+            $solution,
             null,
             'allocating',
             null,

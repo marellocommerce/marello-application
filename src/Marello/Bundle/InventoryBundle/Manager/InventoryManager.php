@@ -157,6 +157,14 @@ class InventoryManager implements InventoryManagerInterface
             new InventoryUpdateEvent($context),
             InventoryUpdateEvent::INVENTORY_UPDATE_AFTER
         );
+
+        if (!empty($context->getInventoryBatches())) {
+            // for some reason multiple batches are not saved when this flush is not triggered..
+            // which causes issues when replenishing multiple batches :/ (can't complete the replenishment order)
+            $this->doctrineHelper
+                ->getEntityManagerForClass(InventoryBatch::class)
+                ->flush();
+        }
     }
     
     /**

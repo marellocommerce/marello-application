@@ -46,12 +46,13 @@ class LoadWarehouseData implements FixtureInterface
         /*
         * Create default warehouse with name of Warehouse.
         */
-        $defaultWarehouse = new Warehouse('Warehouse DE 1', true);
+        $defaultWarehouse = new Warehouse('Default Warehouse', true);
         $defaultWarehouse->setOwner($organization);
-        $defaultWarehouse->setCode('warehouse_de_1');
+        $defaultWarehouse->setCode('default_warehouse');
         $defaultWarehouse->setNotifier(WarehouseManualNotifier::IDENTIFIER);
         $warehouseAddress = $this->createAddress($this->data);
         $defaultWarehouse->setAddress($warehouseAddress);
+        $defaultWarehouse->setOrderOnDemandLocation(true);
 
         $this->manager->persist($defaultWarehouse);
         $this->manager->flush();
