@@ -119,6 +119,7 @@ class ProductHandler
         $this->setPreferredSupplier($entity);
         $this->appendCategories($entity, $appendCategories);
         $this->removeCategories($entity, $removeCategories);
+        $entity->updateDenormalizedProperties();
 
         $this->manager->persist($entity);
         $this->manager->flush();

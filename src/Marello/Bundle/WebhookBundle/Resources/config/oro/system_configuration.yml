@@ -1,0 +1,31 @@
+system_configuration:
+    groups:
+        webhook_settings:
+            title: marello.webhook.system_configuration.groups.webhook.title
+            icon: 'fa-share'
+        webhook_integration_settings:
+            title: marello.webhook.system_configuration.groups.settings.title
+        marello_integrations:
+            title: marello.webhook.system_configuration.groups.integrations.title
+
+    fields:
+        marello_webhook.notification_redelivery:
+            data_type: string
+            type: Symfony\Component\Form\Extension\Core\Type\TextType
+            search_type: text
+            priority: 60
+            options:
+                label: marello.webhook.system_configuration.fields.notification_redelivery.label
+                required: false
+
+    tree:
+        system_configuration:
+            marello:
+                children:
+                    marello_integrations:
+                        children:
+                            webhook_settings:
+                                children:
+                                    webhook_integration_settings:
+                                        children:
+                                            - marello_webhook.notification_redelivery

@@ -2,15 +2,13 @@
 
 namespace Marello\Bundle\PdfBundle\Tests\Unit\Provider\Logo;
 
-use PHPUnit\Framework\TestCase;
-
-use Oro\Component\Testing\Unit\EntityTrait;
-
-use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ShippingBundle\Entity\Shipment;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\PdfBundle\Provider\LogoPathProvider;
 use Marello\Bundle\PdfBundle\Tests\Unit\Mock\SalesChannelAwareModel;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Component\Testing\Unit\EntityTrait;
+use PHPUnit\Framework\TestCase;
 use Marello\Bundle\PdfBundle\Provider\Render\LogoRenderParameterProvider;
 
 class LogoRenderParameterProviderTest extends TestCase
@@ -42,7 +40,7 @@ class LogoRenderParameterProviderTest extends TestCase
 
     public function testSupportsOptions()
     {
-        $entity = new Order();
+        $entity = new Organization();
         $options = [LogoRenderParameterProvider::OPTION_KEY => new SalesChannel()];
 
         $this->assertTrue($this->provider->supports($entity, $options));
@@ -50,7 +48,7 @@ class LogoRenderParameterProviderTest extends TestCase
 
     public function testSupportsUnsupported()
     {
-        $entity = new Shipment();
+        $entity = new Organization();
         $options = [];
 
         $this->assertFalse($this->provider->supports($entity, $options));
@@ -101,7 +99,7 @@ class LogoRenderParameterProviderTest extends TestCase
                 'logoPath' => 'logo-from-entity.jpg',
             ],
             'from options' => [
-                'entity' => new Shipment(),
+                'entity' => new Organization(),
                 'options' => [LogoRenderParameterProvider::OPTION_KEY => $salesChannel2],
                 'salesChannel' => $salesChannel2,
                 'logoPath' => 'logo-from-options.jpg',

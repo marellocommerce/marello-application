@@ -83,7 +83,7 @@ class OrderToPackingSlipMapper extends AbstractPackingSlipMapper
                     $currentDateTime = new \DateTime('now', new \DateTimeZone('UTC'));
                     foreach ($inventoryBatches as $inventoryBatch) {
                         // we cannot use expired batches
-                        if ($inventoryBatch->getExpirationDate() && $inventoryBatch->getExpirationDate() <= $currentDateTime) {
+                        if ($inventoryBatch->getSellByDate() && $inventoryBatch->getSellByDate() <= $currentDateTime) {
                             continue;
                         }
                         if ($inventoryBatch->getQuantity() >= $quantity) {

@@ -1,0 +1,47 @@
+workflows:
+    marello_order_pos_workflow:
+        transition_definitions:
+            processing_definition:
+                actions:
+                    - '@assign_value':
+                          - [$update_balanced_inventory, true]
+                    - '@run_action_group':
+                          action_group: marello_order_status_change
+                          parameters_mapping:
+                              order: $order
+                              status: 'processing'
+                    - '@extendable':
+                          events: [extendable_action.order_pending]
+                    - '@call_service_method':
+                          service: Marello\Bundle\InventoryBundle\Provider\InventoryAllocationProvider
+                          method: allocateOrderToWarehouses
+                          method_parameters: [ $order ]
+                    - '@extendable':
+                          events: [extendable_action.order_invoiced]
+                    - '@run_action_group':
+                          action_group: send_order_invoice_email
+                          parameters_mapping:
+                              order: $order
+                              current_transition: invoice
+                    - '@extendable':
+                          events: [extendable_action.order_paid]
+                    - '@marello_notification_send':
+                          conditions:
+                              '@and':
+                                  - '@not_empty': $order.customer.email
+                                  - '@eq': [true, $send_invoice_by_email]
+                          entity: $order
+                          recipient: $order.customer
+                          template: marello_order_invoiced
+            ship_definition:
+                actions:
+                    - '@extendable':
+                          events: [extendable_action.order_ship]
+                    - '@marello_ship_order': ~
+                    - '@extendable':
+                          events: [extendable_action.order_shipped]
+                    - '@run_action_group':
+                          action_group: marello_order_status_change
+                          parameters_mapping:
+                              order: $order
+                              status: 'shipped'

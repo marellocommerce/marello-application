@@ -1,0 +1,20 @@
+marello:
+    notificationmessage:
+        purchaseorder:
+            no_sku:
+                title: Product SKU can’t be found
+                message: Can’t create a Purchase Order, product SKU can’t be found
+            candidates:
+                title: Product purchase candidates
+                message: Based on the product configuration, we've identified that one or more products need to be purchased to prevent the product(s) from becoming out of stock.
+                solution: 'Navigate to the <a href="%url%">Purchase Order Item Candidates</a> and create Purchase Order(s) for the products'
+                error:
+                    cron: Purchase Candidates Cron Error
+            no_ood_warehouse_configured:
+                title: No OoD warehouse configured
+                message: Purchase Order cannot be created because there is not Order On Demand warehouse configured.
+                solution: 'Navigate to the Warehouse Groups and configure an Order On Demand warehouse in one or more group(s)'
+            no_inventory_levels:
+                    title: No InventoryLevels Found!
+                    message: No Inventory Levels are found for the products.
+                    solution: 'Navigate to the Inventory Management and configure an inventory level.'

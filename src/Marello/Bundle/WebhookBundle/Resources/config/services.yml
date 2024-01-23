@@ -1,0 +1,21 @@
+services:
+    marello_webhook.event.provider.webhook_event_provider:
+        class: Marello\Bundle\WebhookBundle\Event\Provider\WebhookEventProvider
+        public: true
+        arguments:
+            - !tagged_iterator { tag: marello_webhook.event, default_index_method: getName }
+
+    Marello\Bundle\WebhookBundle\Manager\WebhookProvider:
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    Marello\Bundle\WebhookBundle\Manager\WebhookProducer:
+        arguments:
+            - '@Marello\Bundle\WebhookBundle\Manager\WebhookProvider'
+            - '@oro_message_queue.client.message_producer'
+
+    Marello\Bundle\WebhookBundle\Twig\WebhookExtension:
+        arguments:
+            - '@marello_webhook.event.provider.webhook_event_provider'
+        tags:
+            - { name: twig.extension }

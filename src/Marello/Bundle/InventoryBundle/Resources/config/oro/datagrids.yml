@@ -61,7 +61,7 @@ datagrids:
                 frontend_type:      boolean
                 data_name:          canPreorder
             orderOnDemandAllowed:
-                label:              marello.inventory.inventoryitem.order_on_demand_allowed.grid.label
+                label:              marello.inventory.inventoryitem.order_on_demand.grid.label
                 frontend_type:      boolean
                 data_name:          orderOnDemandAllowed
         sorters:
@@ -422,10 +422,10 @@ datagrids:
                 label:              marello.inventory.inventorybatch.date_received.label
                 frontend_type:      datetime
                 data_name:          deliveryDate
-            expirationDate:
-                label:              marello.inventory.inventorybatch.expiration_date.label
+            sellByDate:
+                label:              marello.inventory.inventorybatch.sell_by_date.label
                 frontend_type:      datetime
-                data_name:          expirationDate
+                data_name:          sellByDate
             purchasePrice:
                 label:              marello.inventory.inventorybatch.purchase_price.label
                 frontend_type:      currency
@@ -654,3 +654,77 @@ datagrids:
         options:
             toolbarOptions:
                 hide: true
+
+    marello-inventory-expected-inventory-item-grid:
+        source:
+            type: orm
+            acl_resource: marello_inventory_inventory_view
+            query:
+                select:
+                    - poi.productSku
+                    - poi.productName
+                    - poi.orderedAmount
+                    - poi.receivedAmount
+                    - poi.supplier
+                    - po.dueDate
+                    - w.label
+                from:
+                    - { table: MarelloPurchaseOrderBundle:PurchaseOrderItem, alias: poi }
+                join:
+                    inner:
+                        - { join: poi.order, alias: po }
+                        - { join: po.warehouse, alias: w }
+                where:
+                    and:
+                        - poi.status = 'pending'
+        columns:
+            productSku:
+                label: marello.purchaseorder.purchaseorderitem.product_sku.label
+            productName:
+                label: marello.purchaseorder.purchaseorderitem.product_name.label
+            orderedAmount:
+                label: marello.purchaseorder.purchaseorderitem.ordered_amount.label
+            receivedAmount:
+                label: marello.purchaseorder.purchaseorderitem.received_amount.label
+            supplier:
+                label: marello.purchaseorder.purchaseorderitem.supplier.label
+            dueDate:
+                label: marello.purchaseorder.due_date.label
+                frontend_type: datetime
+            label:
+                label: marello.purchaseorder.warehouse.label
+        sorters:
+            columns:
+                productSku: { data_name: poi.productSku }
+                productName: { data_name: poi.productName }
+                orderedAmount: { data_name: poi.orderedAmount }
+                receivedAmount: { data_name: poi.receivedAmount }
+                supplier: { data_name: poi.supplier }
+                dueDate: { data_name: po.dueDate }
+                label: { data_name: w.label }
+            default:
+                dueDate: 'ASC'
+        filters:
+            columns:
+                productSku:
+                    type: string
+                    data_name: poi.productSku
+                productName:
+                    type: string
+                    data_name: poi.productName
+                supplier:
+                    type: string
+                    data_name: poi.supplier
+                dueDate:
+                    type: datetime
+                    data_name: po.dueDate
+                label:
+                    type: string
+                    data_name: w.label
+        options:
+            entityHint: marello.inventory.inventorylevel.expected_inventory.label
+            gridViews:
+                allLabel: marello.inventory.inventorylevel.expected_inventory.label
+            mass_actions:
+                delete:
+                    enabled: false

@@ -91,7 +91,7 @@ class InventoryBatchType extends AbstractType
                 ]
             )
             ->add(
-                'expirationDate',
+                'sellByDate',
                 OroDateTimeType::class,
                 [
                     'required' => false

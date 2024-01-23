@@ -16,6 +16,8 @@ marello:
             owner.label:                Owner
             warehouse_type.label:       Type
             notifier.label:             Notifier
+            sort_order_ood_loc.label:   Sort order OoD
+            order_on_demand_location.label: Order on Demand location
             group.label:                Warehouse Group
             create_group.label:         Create Group
 
@@ -79,8 +81,8 @@ marello:
             max_qty_to_preorder.label:     Max Qty per Order
             back_orders_datetime.label:    Backorders Datetime
             pre_orders_datetime.label:     Pre-orders Datetime
-            order_on_demand_allowed:
-                label:                     Order on demand allowed
+            order_on_demand:
+                label:                     Order on demand
                 grid.label:                Order on Demand
             enable_batch_inventory.label:  Enable Batch Inventory
             batch_inventory.label:         Batches / Lot
@@ -108,6 +110,7 @@ marello:
             virtual_inventory:
                 label:                      Virtual Inventory Qty
                 grid.label:                 Virtual Qty
+            expired_sell_by_date.label:     Expired Sell-by Date Qty
             expected_inventory.label:       Expected Inventory Qty
             inventory_diff.label:           Inventory Qty Change
             allocated_inventory_diff.label: Allocated Inventory Qty Change
@@ -141,11 +144,13 @@ marello:
             purchase_reference.label:       Purchase Reference
             quantity.label:                 Quantity
             date_received.label:            Date Received
+            sell_by_date.label:             Sell by Date
             expiration_date.label:          Expiration Date
             purchase_price.label:           Purchase Price
             total_price.label:              Total Price
             organization.label:             Organization
             delivery_date.label:            Delivery Date
+            order_on_demand_ref.label:      Order on Demand reference
 
         inventorylevellogrecord:
             id.label:                       Id
@@ -202,6 +207,10 @@ marello:
             page_title.view:                '%entity_label% #%id%'
             reshipment_reason.label:        Reshipment reason
             shipment.label:                 Shipment
+
+            tooltip:
+                context: Context describes what triggered the creation of the Allocation. For example the original Order, a Reshipment or a Re-Allocation
+
         allocationitem:
             id.label:                       Id
             entity_label:                   Allocation Item
@@ -268,6 +277,10 @@ marello:
                     mixed:          Mixed
                     internal:       Internal First
                     external:       External First
+                tooltip:
+                    balance_threshold_percentage: Threshold for when the balancer should rebalance the inventory for a product. This threshold is used in the calculation between the current inventory and the original balanced inventory quantity.
+                    inventory_on_demand: Enabling this feature will require you to connect suppliers to Products, failing to do so will result in weird behaviour and issues.
+                    inventory_allocation_priority: Set the sorting for Allocations which warehouse options to use first. Mixed will be based on qty and will less prioritise the type of warehouse, external warehouses will be pushed down, Internal will prioritise own warehouses (all warehouses that are not of the external type), External will prioritise warehouses of the external type before all others
         messages:
             success:
                 warehouse.saved:        Warehouse has been saved successfully
@@ -281,3 +294,11 @@ marello:
                 inventorylevel.product_not_found: Product not found for sku "%entity_sku%", please correct the import file before continuing.
             warning:
                 inventorybatches.not_enabled:    Inventory Batches are not enabled for Inventory Item
+
+        form:
+            tooltip:
+                order_on_demand: To be able to use Order On Demand, Batch Inventory needs to be enabled.
+                max_qty_to_backorder: Limit the number of items that can be ordered in one order. Leave blank if no restriction applies.
+                max_qty_to_preorder: Limit the number of items that can be ordered in one order. Leave blank if no restriction applies.
+                preorder_datetime: Set the expected delivery date or leave blank if this is unknown. Field is cleared when new inventory is added from a Marello purchase order
+                backorder_datetime: Set the expected delivery date or leave blank if this is unknown. Field is cleared when new inventory is added from a Marello purchase order

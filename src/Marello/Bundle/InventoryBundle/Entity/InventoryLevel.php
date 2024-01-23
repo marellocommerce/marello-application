@@ -227,13 +227,24 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
      *      }
      * )
      *
-     * @var InventoryLevel[]|Collection
+     * @var InventoryBatch[]|Collection
      */
     protected $inventoryBatches;
+
+    /**
+     * @ORM\OneToMany(
+     *     targetEntity="InventoryLevelLogRecord",
+     *     mappedBy="inventoryLevel"
+     * )
+     *
+     * @var Collection|InventoryLevelLogRecord[]
+     */
+    protected $inventoryLevelLogRecords;
     
     public function __construct()
     {
         $this->inventoryBatches = new ArrayCollection();
+        $this->inventoryLevelLogRecords = new ArrayCollection();
     }
     
     /**
@@ -412,6 +423,40 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
     public function getInventoryBatches()
     {
         return $this->inventoryBatches;
+    }
+
+    /**
+     * @param InventoryLevelLogRecord $inventoryLevelLogRecord
+     * @return $this
+     */
+    public function addInventoryLevelLogRecord(InventoryLevelLogRecord $inventoryLevelLogRecord)
+    {
+        if (!$this->inventoryLevelLogRecords->contains($inventoryLevelLogRecord)) {
+            $this->inventoryLevelLogRecords->add($inventoryLevelLogRecord);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param InventoryLevelLogRecord $inventoryLevelLogRecord
+     * @return $this
+     */
+    public function removeInventoryLevelLogRecord(InventoryLevelLogRecord $inventoryLevelLogRecord)
+    {
+        if ($this->inventoryLevelLogRecords->contains($inventoryLevelLogRecord)) {
+            $this->inventoryLevelLogRecords->removeElement($inventoryLevelLogRecord);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection|InventoryLevelLogRecord[]
+     */
+    public function getInventoryLevelLogRecords()
+    {
+        return $this->inventoryLevelLogRecords;
     }
 
     /**

@@ -1,0 +1,29 @@
+navigation:
+    menu_config:
+        items:
+            marello_webhook:
+                label:    'marello.webhook.entity_plural_label'
+                route:    'marello_webhook_index'
+                position:  60
+                extras:
+                    routes:      ['marello_webhook_index']
+
+            marello_webhook_shortcut:
+                label: 'marello.webhook.menu.shortcut.label'
+                route: 'marello_webhook_index'
+                extras:
+                    description: 'marello.webhook.menu.shortcut.description'
+
+        tree:
+            application_menu:
+                children:
+                    system_tab:
+                        children:
+                            marello_webhook: ~
+
+            shortcuts:
+                children:
+                    marello_webhook_shortcut: ~
+
+    titles:
+        marello_webhook: ~

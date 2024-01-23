@@ -56,3 +56,4 @@ navigation:
         marello_inventory_allocation_index: 'marello.inventory.allocation.entity_plural_label'
         marello_inventory_allocation_view: 'marello.inventory.allocation.page_title.view'
         marello_inventory_reshipment_create: 'marello.inventory.reshipment.label'
+        marello_inventory_expected_inventory_item_view: 'marello.inventory.inventorylevel.expected_inventory.label'

@@ -34,7 +34,7 @@ class MarelloCustomerBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_5';
+        return 'v1_5_1';
     }
 
     /**
@@ -107,6 +107,7 @@ class MarelloCustomerBundleInstaller implements
         $table->addColumn('company_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['organization_id']);
+        $table->addUniqueIndex(['email', 'organization_id'], 'marello_customer_emailorgidx');
 
         $this->attachmentExtension->addAttachmentAssociation($schema, $table->getName());
         $this->activityExtension->addActivityAssociation($schema, 'oro_note', $table->getName());

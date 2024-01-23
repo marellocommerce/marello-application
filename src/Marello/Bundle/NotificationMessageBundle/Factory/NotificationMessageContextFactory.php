@@ -37,6 +37,7 @@ class NotificationMessageContextFactory
         ?string $log = null,
         ?OrganizationInterface $organization = null,
         bool $flush = true,
+        bool $queue = false
     ): NotificationMessageContext {
         return self::create(
             NotificationMessageTypeInterface::NOTIFICATION_MESSAGE_TYPE_ERROR,
@@ -51,7 +52,8 @@ class NotificationMessageContextFactory
             $externalId,
             $log,
             $organization,
-            $flush
+            $flush,
+            $queue
         );
     }
 
@@ -82,6 +84,7 @@ class NotificationMessageContextFactory
         ?string $log = null,
         ?OrganizationInterface $organization = null,
         bool $flush = true,
+        bool $queue = false
     ): NotificationMessageContext {
         return self::create(
             NotificationMessageTypeInterface::NOTIFICATION_MESSAGE_TYPE_WARNING,
@@ -96,7 +99,8 @@ class NotificationMessageContextFactory
             $externalId,
             $log,
             $organization,
-            $flush
+            $flush,
+            $queue
         );
     }
 
@@ -127,6 +131,7 @@ class NotificationMessageContextFactory
         ?string $log = null,
         ?OrganizationInterface $organization = null,
         bool $flush = true,
+        bool $queue = false
     ): NotificationMessageContext {
         return self::create(
             NotificationMessageTypeInterface::NOTIFICATION_MESSAGE_TYPE_SUCCESS,
@@ -141,7 +146,8 @@ class NotificationMessageContextFactory
             $externalId,
             $log,
             $organization,
-            $flush
+            $flush,
+            $queue
         );
     }
 
@@ -172,6 +178,7 @@ class NotificationMessageContextFactory
         ?string $log = null,
         ?OrganizationInterface $organization = null,
         bool $flush = true,
+        bool $queue = false
     ): NotificationMessageContext {
         return self::create(
             NotificationMessageTypeInterface::NOTIFICATION_MESSAGE_TYPE_INFO,
@@ -186,7 +193,8 @@ class NotificationMessageContextFactory
             $externalId,
             $log,
             $organization,
-            $flush
+            $flush,
+            $queue
         );
     }
 
@@ -221,6 +229,7 @@ class NotificationMessageContextFactory
         ?string $log = null,
         ?OrganizationInterface $organization = null,
         bool $flush = true,
+        bool $queue = false
     ): NotificationMessageContext {
         $context = new NotificationMessageContext();
         $context->alertType = $alertType;
@@ -251,6 +260,7 @@ class NotificationMessageContextFactory
         }
 
         $context->flush = $flush;
+        $context->queue = $queue;
 
         return $context;
     }

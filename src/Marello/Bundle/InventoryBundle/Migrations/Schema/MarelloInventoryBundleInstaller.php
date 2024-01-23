@@ -32,7 +32,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
      */
     public function getMigrationVersion()
     {
-        return 'v2_6_9';
+        return 'v2_6_10';
     }
 
     /**
@@ -156,9 +156,11 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addColumn('quantity', 'integer', []);
         $table->addColumn('delivery_date', 'datetime', ['notnull' => false, 'comment' => '(DC2Type:datetime)']);
         $table->addColumn('expiration_date', 'datetime', ['notnull' => false, 'comment' => '(DC2Type:datetime)']);
+        $table->addColumn('sell_by_date', 'datetime', ['notnull' => false, 'comment' => '(DC2Type:datetime)']);
         $table->addColumn('purchase_price', 'money', ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('total_price', 'money', ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('inventory_level_id', 'integer', ['notnull' => false]);
+        $table->addColumn('order_on_demand_ref', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime', ['comment' => '(DC2Type:datetime)']);
         $table->addColumn('updated_at', 'datetime', ['notnull' => false, 'comment' => '(DC2Type:datetime)']);
@@ -212,6 +214,8 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addColumn('group_id', 'integer', ['notnull' => false]);
         $table->addColumn('email', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('notifier', 'string', ['notnull' => false, 'length' => 100]);
+        $table->addColumn('sort_order_ood_loc', 'integer', ['notnull' => false]);
+        $table->addColumn('order_on_demand_location', 'boolean', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['address_id'], 'uniq_15597d1f5b7af75');
         $table->addUniqueIndex(['code'], 'UNIQ_15597D177153098');

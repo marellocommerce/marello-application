@@ -11,6 +11,7 @@ api:
     entities:
         Marello\Bundle\CustomerBundle\Entity\Customer:
             documentation_resource: '@MarelloCustomerBundle/Resources/doc/api/customer.md'
+            identifier_field_names: [email]
             fields:
                 createdAt:
                     exclude: true

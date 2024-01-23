@@ -1,0 +1,59 @@
+{% extends '@OroUI/actions/view.html.twig' %}
+{% import '@OroUI/macros.html.twig' as UI %}
+{% import '@OroDataGrid/macros.html.twig' as dataGrid %}
+
+{% oro_title_set({params : {"%id%": entity.id }}) %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity':      entity,
+        'indexPath':   path('marello_webhook_index'),
+        'indexLabel': 'marello.webhook.entity_plural_label'|trans,
+        'entityTitle': entity.name
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block navButtons %}
+    {{ parent() }}
+    {% if is_granted('EDIT', entity) %}
+        {{ UI.editButton({
+            'path': path('marello_webhook_update', {'id': entity.id}),
+            'entity_label': 'marello.webhook.entity_label'|trans
+        }) }}
+    {% endif %}
+{% endblock %}
+
+{% block content_data %}
+    {% set id = 'marello-webhook-view' %}
+    {% set generalSubblocks = [] %}
+    {% set generalInformation %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    <div class="box-type1">
+                        {{ UI.renderProperty('marello.webhook.name.label'|trans, entity.name) }}
+                        {{ UI.renderProperty('marello.webhook.callback_url.label'|trans, entity.callbackUrl) }}
+                        {{ UI.renderProperty('marello.webhook.event.label'|trans, get_marello_webhook_event_label(entity.event)) }}
+                        {{ UI.renderProperty('marello.webhook.enabled.label'|trans, entity.enabled ? 'marello.webhook.enabled.yes.label'|trans : 'marello.webhook.enabled.no.label'|trans) }}
+                        {{ UI.renderProperty('oro.ui.created_at'|trans, entity.createdAt|date) }}
+                        {{ UI.renderProperty('oro.ui.updated_at'|trans, entity.updatedAt|date|default('N/A'|trans)) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endset %}
+    {% set generalSubblocks = generalSubblocks|merge([{'data' : [generalInformation] }]) %}
+
+    {% set dataBlocks = [
+        {
+            'title': 'marello.webhook.datablock.general.title'|trans,
+            'class': 'active',
+            'subblocks': generalSubblocks
+        },
+
+    ] %}
+
+    {% set data = { 'dataBlocks': dataBlocks } %}
+    {{ parent() }}
+{% endblock content_data %}

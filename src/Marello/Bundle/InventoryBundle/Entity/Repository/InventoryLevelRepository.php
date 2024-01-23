@@ -43,4 +43,21 @@ class InventoryLevelRepository extends ServiceEntityRepository
 
         return $aclHelper->apply($qb)->getResult();
     }
+
+    public function findWithExpiredSellByDateBatch(): array
+    {
+        $now = new \DateTime('now', new \DateTimeZone('UTC'));
+        // Take more than one day gap not to skip anything
+        $yesterday = new \DateTime('-25 hours', new \DateTimeZone('UTC'));
+        $qb = $this->createQueryBuilder('il');
+        $qb
+            ->innerJoin('il.inventoryBatches', 'ib')
+            ->andWhere($qb->expr()->isNotNull('ib.sellByDate'))
+            ->andWhere($qb->expr()->lte('ib.sellByDate', ':now'))
+            ->andWhere($qb->expr()->gte('ib.sellByDate', ':yesterday'))
+            ->setParameter('now', $now)
+            ->setParameter('yesterday', $yesterday);
+
+        return $qb->getQuery()->getResult();
+    }
 }

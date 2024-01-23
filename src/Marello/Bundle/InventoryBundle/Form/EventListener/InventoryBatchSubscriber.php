@@ -16,28 +16,11 @@ use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 
 class InventoryBatchSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var InventoryLevelCalculator
-     */
-    protected $levelCalculator;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
-     * InventoryLevelSubscriber constructor.
-     * @param InventoryLevelCalculator $levelCalculator
-     * @param EventDispatcherInterface $eventDispatcher
-     */
     public function __construct(
-        InventoryLevelCalculator $levelCalculator,
-        EventDispatcherInterface $eventDispatcher
-    ) {
-        $this->levelCalculator = $levelCalculator;
-        $this->eventDispatcher = $eventDispatcher;
-    }
+        protected InventoryLevelCalculator $levelCalculator,
+        protected EventDispatcherInterface $eventDispatcher,
+        protected array $previousSellByDate = []
+    ) {}
 
     /**
      * Get subscribed events
@@ -46,8 +29,19 @@ class InventoryBatchSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            FormEvents::POST_SUBMIT     => 'handleUnMappedFields'
+            FormEvents::POST_SET_DATA => 'storeOldData',
+            FormEvents::POST_SUBMIT => 'handleUnMappedFields'
         ];
+    }
+
+    public function storeOldData(FormEvent $event)
+    {
+        $data = $event->getData();
+        if (!$data) {
+            return;
+        }
+
+        $this->previousSellByDate[spl_object_id($event->getForm())] = $data->getSellByDate();
     }
 
     /**
@@ -78,7 +72,9 @@ class InventoryBatchSubscriber implements EventSubscriberInterface
         $operator = $this->getAdjustmentOperator($form);
         $quantity = $this->getAdjustmentQuantity($form);
         $adjustment = $this->levelCalculator->calculateAdjustment($operator, $quantity);
-        if ($adjustment === 0) {
+        $isSellByDateChanged = array_key_exists(spl_object_id($event->getForm()), $this->previousSellByDate)
+            && $this->previousSellByDate[spl_object_id($event->getForm())] != $event->getData()->getSellByDate();
+        if ($adjustment === 0 && !$isSellByDateChanged) {
             return;
         }
         $batches = [

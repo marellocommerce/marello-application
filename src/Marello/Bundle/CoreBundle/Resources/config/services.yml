@@ -94,3 +94,9 @@ services:
             - '@oro_email.email_address_visibility.manager'
         tags:
             - { name: doctrine.event_listener, event: onFlush }
+
+    marello_core.provider.attachment_entity_config_decorator:
+        decorates: oro_attachment.provider.attachment_entity_config
+        class: Marello\Bundle\CoreBundle\Provider\AttachmentEntityConfigProviderDecorator
+        arguments:
+            - '@marello_core.provider.attachment_entity_config_decorator.inner'

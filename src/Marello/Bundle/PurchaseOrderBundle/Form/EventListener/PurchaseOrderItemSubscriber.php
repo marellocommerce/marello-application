@@ -2,12 +2,12 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\Form\EventListener;
 
-use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
 
 class PurchaseOrderItemSubscriber implements EventSubscriberInterface
 {

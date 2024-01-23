@@ -14,8 +14,8 @@ services:
     marello_purchase_order.form.type.purchase_order_create_step_two:
         class: Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderCreateStepTwoType
         arguments:
-            - "@router"
-            - "@oro_currency.helper.currency_name"
+            - '@router'
+            - '@oro_currency.helper.currency_name'
         tags:
             - { name: form.type }
 
@@ -54,13 +54,13 @@ services:
     # Forms
     marello_purchase_order.form.purchase_order:
         class: Symfony\Component\Form\Form
-        factory: ["@form.factory", 'create']
+        factory: ['@form.factory', 'create']
         arguments:
             - Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderType
 
     marello_purchase_order.form.purchase_order_create_step_two:
         class: Symfony\Component\Form\Form
-        factory: ["@form.factory", 'create']
+        factory: ['@form.factory', 'create']
         arguments:
             - Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderCreateStepTwoType
 
@@ -69,10 +69,10 @@ services:
         class: Marello\Bundle\PurchaseOrderBundle\Form\Handler\PurchaseOrderCreateHandler
         public: true
         arguments:
-            - "@marello_purchase_order.form.purchase_order_create_step_two"
-            - "@request_stack"
-            - "@doctrine"
-            - "@security.token_storage"
+            - '@marello_purchase_order.form.purchase_order_create_step_two'
+            - '@request_stack'
+            - '@doctrine'
+            - '@security.token_storage'
 
     marello_purchase_order.form.handler.purchase_order_update:
         class: Marello\Bundle\PurchaseOrderBundle\Form\Handler\PurchaseOrderUpdateHandler

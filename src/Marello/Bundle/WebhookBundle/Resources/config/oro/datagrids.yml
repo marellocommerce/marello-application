@@ -1,0 +1,91 @@
+datagrids:
+    marello-webhook-grid:
+        extended_entity_name: Marello\Bundle\WebhookBundle\Entity\Webhook
+        inline_editing:
+            enable: true
+        source:
+            type: orm
+            query:
+                select:
+                    - w
+                from:
+                    - { table: MarelloWebhookBundle:Webhook, alias: w }
+        columns:
+            id:
+                label:            marello.webhook.id.label
+                frontend_type:    integer
+            name:
+                label:            marello.webhook.name.label
+                frontend_type:    string
+            callbackUrl:
+                label:            marello.webhook.callback_url.label
+                frontend_type:    string
+            event:
+                label:            marello.webhook.event.label
+                frontend_type:    select
+                choices:          "@marello_webhook.event.provider.webhook_event_provider->getEventChoices"
+            enabled:
+                label:            marello.webhook.enabled.label
+                frontend_type:    select
+                choices:
+                    marello.webhook.enabled.yes.label: 1
+                    marello.webhook.enabled.no.label: 0
+            createdAt:
+                label:            oro.ui.created_at
+                frontend_type:    datetime
+            updatedAt:
+                label:            oro.ui.updated_at
+                frontend_type:    datetime
+        sorters:
+            columns:
+                id: { data_name: w.id }
+                createdAt: { data_name: w.createdAt }
+                updatedAt: { data_name: w.updatedAt }
+            default:
+                id: DESC
+        filters:
+            columns:
+                createdAt:
+                    type:      datetime
+                    data_name: w.createdAt
+                updateddAt:
+                    type:      datetime
+                    data_name: w.updatedAt
+        properties:
+            id: ~
+            view_link:
+                type:       url
+                route:      marello_webhook_view
+                params:     [ id ]
+            update_link:
+                type:       url
+                route:      marello_webhook_update
+                params:     [ id ]
+            delete_link:
+                type:       url
+                route:      marello_webhook_delete
+                params:     [ id ]
+        actions:
+            view:
+                type:           navigate
+                label:          oro.grid.action.view
+                link:           view_link
+                icon:           eye
+                acl_recource:   marello_webhook_view
+                rowAction:      true
+            update:
+                type:           navigate
+                label:          oro.grid.action.update
+                icon:           edit
+                link:           update_link
+                acl_resource:   marello_webhook_update
+                options:
+                    entityHint: webhook
+                    export: true
+                    entity_pagination: true
+            delete:
+                type:          delete
+                label:         oro.grid.action.delete
+                link:          delete_link
+                icon:          trash-o
+                acl_resource:  marello_webhook_delete

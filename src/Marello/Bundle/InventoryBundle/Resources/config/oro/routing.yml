@@ -27,3 +27,8 @@ marello_inventory_reshipment:
     resource: "@MarelloInventoryBundle/Controller/ReshipmentController.php"
     type:     annotation
     prefix:   /marello/reshipment
+
+marello_inventory_expected_inventory_item:
+    resource: "@MarelloInventoryBundle/Controller/ExpectedInventoryItemController.php"
+    type:     annotation
+    prefix:   /marello/inventory/expected-inventory-item

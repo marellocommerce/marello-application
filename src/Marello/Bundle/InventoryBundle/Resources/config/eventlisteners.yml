@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        autoconfigure: true
+
     marello_inventory.listener.doctrine.stock_level_hydration:
         class: Marello\Bundle\InventoryBundle\EventListener\Doctrine\StockLevelSubjectHydrationSubscriber
         tags:
@@ -21,8 +24,11 @@ services:
         arguments:
             - '@marello_inventory.manager.inventory_manager'
             - '@marello_inventory.manager.balancedinventory_manager'
+            - '@Marello\Bundle\WebhookBundle\Manager\WebhookProducer'
         tags:
             - { name: kernel.event_listener, event: marello_inventory.inventory.update, method: handleUpdateInventoryEvent }
+
+    Marello\Bundle\InventoryBundle\Event\InventoryUpdateWebhookEvent: ~
 
     marello_inventory.event_listener.balancedinventory_update_event_listener:
         class: 'Marello\Bundle\InventoryBundle\EventListener\BalancedInventoryUpdateAfterEventListener'

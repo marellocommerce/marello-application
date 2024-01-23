@@ -13,5 +13,5 @@ interface TotalAwareSubtotalProviderInterface extends SubtotalProviderInterface
      *
      * @return Subtotal[]|Subtotal
      */
-    public function getTotal($entity);
+    public function getTotal($entity, iterable $subtotals = []);
 }

@@ -1,0 +1,17 @@
+{% import '@OroUI/macros.html.twig' as UI %}
+
+{% if entity.enableBatchInventory %}
+    {{ UI.renderProperty('marello.inventory.inventorylevel.expired_sell_by_date.label'|trans, get_expired_sell_by_date_total(entity)) }}
+{% endif %}
+{% set expectedInventoryTotal = get_expected_inventory_total(entity) %}
+{{ UI.renderHtmlProperty(
+    'marello.inventory.inventorylevel.expected_inventory.label'|trans,
+    expectedInventoryTotal
+        ? UI.entityViewLink(
+            entity,
+            expectedInventoryTotal,
+            'marello_inventory_expected_inventory_item_view',
+            'marello_inventory_inventory_view'
+        )
+        : expectedInventoryTotal
+) }}

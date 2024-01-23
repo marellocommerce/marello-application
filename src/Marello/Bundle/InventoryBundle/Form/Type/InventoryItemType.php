@@ -45,7 +45,8 @@ class InventoryItemType extends AbstractType
                 CheckboxType::class,
                 [
                     'required' => false,
-                    'label' => 'marello.inventory.inventoryitem.order_on_demand_allowed.label'
+                    'tooltip'  => 'marello.inventory.form.tooltip.order_on_demand',
+                    'label' => 'marello.inventory.inventoryitem.order_on_demand.label'
                 ]
             )
             ->add(
@@ -150,7 +151,7 @@ class InventoryItemType extends AbstractType
         $inventoryItem = $event->getData();
         $form = $event->getForm();
 
-        if ($inventoryItem->isEnableBatchInventory() === true) {
+        if ($inventoryItem->isEnableBatchInventory()) {
             $form->remove('enableBatchInventory');
             $form->add(
                 'enableBatchInventory',
@@ -159,6 +160,18 @@ class InventoryItemType extends AbstractType
                     'disabled' => true,
                     'required' => false,
                     'label' => 'marello.inventory.inventoryitem.enable_batch_inventory.label'
+                ]
+            );
+        } else {
+            $form->remove('orderOnDemandAllowed');
+            $form->add(
+                'orderOnDemandAllowed',
+                CheckboxType::class,
+                [
+                    'disabled' => true,
+                    'required' => false,
+                    'tooltip'  => 'marello.inventory.form.tooltip.order_on_demand',
+                    'label' => 'marello.inventory.inventoryitem.order_on_demand.label'
                 ]
             );
         }
