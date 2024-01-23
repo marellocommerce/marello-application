@@ -5,8 +5,9 @@ namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use MarelloEnterprise\Bundle\ReplenishmentBundle\Model\ExtendReplenishmentOrderConfig;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
@@ -27,9 +28,10 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
  *      }
  * )
  */
-class ReplenishmentOrderConfig extends ExtendReplenishmentOrderConfig implements OrganizationAwareInterface
+class ReplenishmentOrderConfig implements OrganizationAwareInterface, ExtendEntityInterface
 {
     use AuditableOrganizationAwareTrait;
+    use ExtendEntityTrait;
 
     /**
      * @ORM\Id
@@ -147,7 +149,6 @@ class ReplenishmentOrderConfig extends ExtendReplenishmentOrderConfig implements
 
     public function __construct()
     {
-        parent::__construct();
         $this->manualItems = new ArrayCollection();
     }
 

@@ -2,8 +2,8 @@
 
 namespace MarelloEnterprise\Bundle\ReplenishmentBundle\EventListener\Doctrine;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrder;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
@@ -36,7 +36,7 @@ class ReplenishmentWorkflowAllocateInventoryListener
      */
     public function postPersist(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
         if ($entity instanceof ReplenishmentOrder && $entity->getExecutionDateTime() <= new \DateTime()) {
             $this->replenishmentOrderIds[] = $entity->getId();
         }
@@ -48,7 +48,7 @@ class ReplenishmentWorkflowAllocateInventoryListener
     public function postFlush(PostFlushEventArgs $args)
     {
         if (count($this->replenishmentOrderIds) > 0) {
-            $entityManager = $args->getEntityManager();
+            $entityManager = $args->getObjectManager();
             foreach ($this->replenishmentOrderIds as $key => $replenishmentOrderId) {
                 /** @var ReplenishmentOrder $entity */
                 $entity = $entityManager

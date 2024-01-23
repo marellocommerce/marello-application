@@ -1,7 +1,6 @@
 search:
     Marello\Bundle\InventoryBundle\Entity\Warehouse:
         alias:                          marello_warehouses
-        title_fields:                   [label]
         route:
             name:                       marelloenterprise_inventory_warehouse_update
             parameters:
@@ -19,7 +18,6 @@ search:
 
     Marello\Bundle\InventoryBundle\Entity\WarehouseGroup:
         alias:                          marello_warehousegroups
-        title_fields:                   [name]
         route:
             name:                       marelloenterprise_inventory_warehousegroup_update
             parameters:

@@ -3,7 +3,7 @@
 namespace MarelloEnterprise\Bundle\AddressBundle\EventListener\Doctrine;
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use MarelloEnterprise\Bundle\AddressBundle\Entity\MarelloEnterpriseAddress;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Context\Factory\GoogleApiContextFactory;
@@ -47,7 +47,7 @@ class AddressGeocodingListener implements FeatureToggleableInterface
      */
     public function postUpdate(MarelloAddress $address, LifecycleEventArgs $args)
     {
-        $em = $args->getEntityManager();
+        $em = $args->getObjectManager();
         $changes = $em->getUnitOfWork()->getEntityChangeSet($address);
         if (count(array_intersect(array_keys($changes), self::GEOCODE_SOURCE_FIELDS))) {
             $this->geocodeAddress($address, $em);

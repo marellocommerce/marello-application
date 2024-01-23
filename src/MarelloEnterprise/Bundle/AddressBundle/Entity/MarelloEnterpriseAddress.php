@@ -5,10 +5,11 @@ namespace MarelloEnterprise\Bundle\AddressBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
-use MarelloEnterprise\Bundle\AddressBundle\Model\ExtendMarelloEnterpriseAddress;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Entity\HasGeocodeTrait;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Model\GeocodeAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 
 /**
  * @ORM\Entity(
@@ -28,10 +29,11 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  *      }
  * )
  */
-class MarelloEnterpriseAddress extends ExtendMarelloEnterpriseAddress implements GeocodeAwareInterface
+class MarelloEnterpriseAddress implements GeocodeAwareInterface, ExtendEntityInterface
 {
     use HasGeocodeTrait;
     use EntityCreatedUpdatedAtTrait;
+    use ExtendEntityTrait;
 
     /**
      * @var int

@@ -4,12 +4,12 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
+use Doctrine\ORM\QueryBuilder;
 
 class WarehouseChannelGroupLinkRepository extends EntityRepository
 {
     /**
-     * @return SalesChannelGroup[]
+     * @return QueryBuilder
      */
     public function getNotLinkedSalesChannelGroupsGridQueryBuilder()
     {

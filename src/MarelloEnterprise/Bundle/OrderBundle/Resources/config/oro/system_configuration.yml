@@ -15,17 +15,16 @@ system_configuration:
             page_reload: true
             options:
                 label: marelloenterprise.order.system_configuration.fields.enable_order_consolidation.label
-                tooltip: marelloenterprise.order.system_configuration.fields.enable_order_consolidation.tooltip
                 required: false
                 resettable: false
             priority: 15
-        marello_enterprise_order.set_global_consolidation:
+        marello_enterprise_order.set_consolidation_for_scope:
             data_type: boolean
             type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
             page_reload: true
             options:
-                label: marelloenterprise.order.system_configuration.fields.set_global_consolidation.label
-                tooltip: marelloenterprise.order.system_configuration.fields.set_global_consolidation.tooltip
+                label: marelloenterprise.order.system_configuration.fields.set_consolidation_for_scope.label
+                tooltip: marelloenterprise.order.system_configuration.fields.set_consolidation_for_scope.tooltip
                 required: false
                 resettable: false
             priority: 10
@@ -41,7 +40,7 @@ system_configuration:
                                     marello_order_consolidation:
                                         children:
                                             - marello_enterprise_order.enable_order_consolidation
-                                            - marello_enterprise_order.set_global_consolidation
+                                            - marello_enterprise_order.set_consolidation_for_scope
         saleschannel_configuration:
             marello:
                 children:
@@ -51,4 +50,4 @@ system_configuration:
                                 children:
                                     marello_order_consolidation:
                                         children:
-                                            - marello_enterprise_order.enable_order_consolidation
+                                            - marello_enterprise_order.set_consolidation_for_scope
