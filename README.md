@@ -35,7 +35,7 @@ In addition to adding it as dependency in composer, you might need to add an add
 Run unit tests
 --------------
 
-Please make sure you have at least phpunit 7.5 or above.
+Please make sure you have at least phpunit 9.5 or above.
 To run unit tests of any bundles:
 
 ```bash
