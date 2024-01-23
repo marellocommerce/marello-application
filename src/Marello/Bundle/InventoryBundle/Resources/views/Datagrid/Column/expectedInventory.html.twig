@@ -1,6 +1,6 @@
 {% import '@OroUI/macros.html.twig' as UI %}
 
-{% set inventoryItem = record.getRootEntity.product.inventoryItems.first() %}
+{% set inventoryItem = record.getRootEntity.product.inventoryItem %}
 {% set expectedInventoryTotal = get_expected_inventory_total(inventoryItem) %}
 {{ UI.entityViewLink(
     inventoryItem,
