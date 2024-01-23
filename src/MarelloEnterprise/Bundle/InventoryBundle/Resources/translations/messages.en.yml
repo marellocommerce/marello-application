@@ -27,6 +27,8 @@ marelloenterprise:
         system_configuration:
             fields:
                 inventory_allocation_consolidation_exclusion.label: Allocation consolidation state exclusion
+                tooltip:
+                    inventory_allocation_consolidation_exclusion: When an order is consolidated, certain Allocation states can be excluded from the consolidation process. This allows that a part of the order can be shipped before delayed products (eg. backorders) arrive.
 
         messages:
             error:
@@ -62,7 +64,8 @@ marelloenterprise:
                     actions:                Actions
             datablock:
                 additional:             Additional
-
+            tooltip:
+                delete_default:         You have to select a different default warehouse before deleting.
         warehousegroup:
             datablock:
                 general:                General
@@ -74,6 +77,8 @@ marelloenterprise:
             datablock:
                 general:                General
                 channel_groups:         Sales Channel (Groups)
+            tooltip:
+                select_warehousegroup:  Warehouse (Group) of WarehouseType 'Fixed' can only be linked to a single SalesChannel (Group).
 
         sections:
             general:                    General

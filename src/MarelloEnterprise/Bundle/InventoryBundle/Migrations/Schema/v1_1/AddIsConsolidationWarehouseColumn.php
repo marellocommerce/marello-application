@@ -46,5 +46,21 @@ class AddIsConsolidationWarehouseColumn implements Migration
                 ]
             );
         }
+        if (!$table->hasColumn('sort_order_cons_loc')) {
+            $table->addColumn(
+                'sort_order_cons_loc',
+                'integer',
+                [
+                    'notnull' => false,
+                    OroOptions::KEY => [
+                        'extend' => ['is_extend' => true, 'owner' => ExtendScope::OWNER_CUSTOM],
+                        'form' => ['is_enabled' => false],
+                        'datagrid' => ['is_visible' => DatagridScope::IS_VISIBLE_FALSE],
+                        'importexport' => ['excluded' => true],
+                        ExtendOptionsManager::MODE_OPTION => ConfigModel::MODE_READONLY,
+                    ]
+                ]
+            );
+        }
     }
 }

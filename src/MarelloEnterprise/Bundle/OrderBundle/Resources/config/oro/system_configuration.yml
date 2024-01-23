@@ -1,10 +1,5 @@
 system_configuration:
     groups:
-        marello_order:
-            title: marello.order.system_configuration.groups.order.title
-        marello_order_general:
-            title: marello.order.system_configuration.groups.order_general.title
-            icon: fa-shopping-cart
         marello_order_consolidation:
             title: marelloenterprise.order.system_configuration.groups.order_consolidation.label
 
