@@ -134,7 +134,7 @@ class ProductImageListener
             ->getEntityManager(Product::class)
             ->getConnection()
             ->getConfiguration()
-            ->setSQLLogger(); //turn off log
+            ->setSQLLogger();
 
         $qb = $em->createQueryBuilder('p');
         $query = $qb->select('p.id', 'p.sku');
