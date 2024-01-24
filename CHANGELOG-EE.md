@@ -1,105 +1,136 @@
+## 5.0.0 (2024-01-23)
+
+- [AddressBundle](#addressbundle)
 - [InventoryBundle](#inventorybundle)
-- [LayoutBundle](#layoutbundle)
+- [OrderBundle](#orderbundle)
 - [PurchaseOrderBundle](#purchaseorderbundle)
 - [ReplenishmentBundle](#replenishmentbundle)
+- [SalesBundle](#salesbundle)
+
+AddressBundle
+-----
+* `MarelloEnterprise\Bundle\AddressBundle\Tests\Unit\EventListener\Doctrine\AddressGeocodingListenerTest::testPostUpdate` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\AddressBundle\EventListener\Doctrine\AddressGeocodingListener::postUpdate` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\AddressBundle\DependencyInjection\MarelloEnterpriseAddressExtension::load` [public] Method parameter name changed.
+* `MarelloEnterprise\Bundle\AddressBundle\Model\ExtendMarelloEnterpriseAddress` Class was added.
+* `MarelloEnterprise\Bundle\AddressBundle\EventListener\Doctrine\AddressGeocodingListener::postUpdate` [public] Method parameter typing added.
+* `MarelloEnterprise\Bundle\AddressBundle\EventListener\Doctrine\AddressGeocodingListener::postUpdate` [public] Method parameter typing removed.
 
 InventoryBundle
 -----
-* `MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\EventListener\Datagrid\InventoryLevelLogGridListenerTest::testOnBuildBefore` [public] Method implementation changed.
-* `MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\EventListener\Datagrid\InventoryLevelLogGridListenerTest::testOnBuildBeforeNoColumnAdded` [public] Method implementation changed.
-* `MarelloEnterprise\Bundle\InventoryBundle\Provider\InventoryAllocationProvider::__construct` [public] Method parameter name changed.
-* `MarelloEnterprise\Bundle\InventoryBundle\Provider\InventoryAllocationProvider::__construct` [public] Method implementation changed.
-* `MarelloEnterprise\Bundle\InventoryBundle\Provider\InventoryAllocationProvider::allocateOrderToWarehouses` [public] Method implementation changed.
-* `MarelloEnterprise\Bundle\InventoryBundle\Provider\InventoryAllocationProvider::getShippingAddress` [protected] Method implementation changed.
-* `MarelloEnterprise\Bundle\InventoryBundle\Provider\InventoryAllocationProvider::$configManager` [private] Property has been removed.
-* `MarelloEnterprise\Bundle\InventoryBundle\Manager\InventoryManager::updateInventoryLevel` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\InventoryBundle\Twig\WarehouseExtension::getFunctions` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\InventoryBundle\Twig\WarehouseExtension::getExpectedInventoryTotal` [public] Method has been added.
+* `MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\EventListener\Doctrine\WarehouseGroupREmoveListenerTest::testPreRemove` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\EventListener\Doctrine\WarehouseListenerTest::testPrePersist` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\InventoryBundle\Migrations\Schema\InventoryBundleInstaller::updateMarelloWarehouseTable` [protected] Method implementation changed.
+* `MarelloEnterprise\Bundle\InventoryBundle\Migrations\Schema\v1_1\AddIsConsolidationWarehouseColumn::updateMarelloWarehouseTable` [protected] Method implementation changed.
+* `MarelloEnterprise\Bundle\InventoryBundle\Manager\InventoryManager::getExpectedInventoryTotal` [public] Method has been added.
+* `MarelloEnterprise\Bundle\InventoryBundle\Form\Type\AllocationConsolidationExclusionSelectType::getName` [public] Method has been added.
+* `MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseChannelGroupLinkType::buildForm` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseGridType::buildView` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseGridType::getWarehouseCollection` [protected] Method parameter name changed.
 * `MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseGridType::getWarehouseCollection` [protected] Method implementation changed.
-* `MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseGridType::setAclHelper` [public] Method has been added.
-* `MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseGridType::$aclHelper` [protected] Property has been added.
-* `MarelloEnterprise\Bundle\InventoryBundle\EventListener\Workflow\TransitionEventListener::__construct` [public] Method implementation changed.
-* `MarelloEnterprise\Bundle\InventoryBundle\EventListener\Workflow\TransitionEventListener::onSendTransitionAfter` [public] Method implementation changed.
-* `MarelloEnterprise\Bundle\InventoryBundle\EventListener\Workflow\TransitionEventListener::getEntityManager` [protected] Method has been added.
-* `MarelloEnterprise\Bundle\InventoryBundle\EventListener\Workflow\TransitionEventListener::$em` [protected] Property has been added.
-* `MarelloEnterprise\Bundle\InventoryBundle\Form\Type\ConsolidationEnabledType` Class was added.
-* `MarelloEnterprise\Bundle\InventoryBundle\Form\Extension\ReshipmentExtension` Class was added.
-* `MarelloEnterprise\Bundle\InventoryBundle\Provider\InventoryAllocationProvider::allocateOrderToWarehouses` [public] Method parameter added.
-* `MarelloEnterprise\Bundle\InventoryBundle\Provider\InventoryAllocationProvider::$strategiesRegistry` [protected] Property has been removed.
-* `MarelloEnterprise\Bundle\InventoryBundle\Provider\InventoryAllocationProvider::$rulesFiltrationService` [protected] Property has been removed.
-* `MarelloEnterprise\Bundle\InventoryBundle\Provider\InventoryAllocationProvider::$baseAllocationProvider` [protected] Property has been removed.
-* `MarelloEnterprise\Bundle\InventoryBundle\EventListener\Workflow\TransitionEventListener::$doctrineHelper` [protected] Property has been removed.
-* `MarelloEnterprise\Bundle\InventoryBundle\EventListener\Workflow\TransitionEventListener::$workflowManager` [protected] Property has been removed.
+* `MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseGroupType::assignDataToWarehouses` [private] Method has been removed.
+* `MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseGroupType::buildForm` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseGroupType::postSubmitDataListener` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\InventoryBundle\Form\Extension\WarehouseExtension::buildForm` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\DefaultWarehouseSubscriber::preUpdate` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\DefaultWarehouseSubscriber::prePersist` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\OrganizationCreateListener::postPersist` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\OrganizationCreateListener::__construct` [public] Method has been added.
+* `MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseGroupInventoryRebalanceListener::onFlush` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseGroupInventoryRebalanceListener::triggerRebalance` [protected] Method implementation changed.
+* `MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseGroupRemoveListener::preRemove` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseInventoryRebalanceListener::onFlush` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseInventoryRebalanceListener::triggerRebalance` [protected] Method implementation changed.
+* `MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseListener::prePersist` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseListener::preRemove` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\InventoryBundle\Tests\Functional\Controller\ExpectedInventoryItemControllerTest` Class was added.
+* `MarelloEnterprise\Bundle\InventoryBundle\Model\ExtendWFARule` Class was added.
+* `MarelloEnterprise\Bundle\InventoryBundle\EventListener\Datagrid\ExpectedInventoryItemGridListener` Class was added.
+* `MarelloEnterprise\Bundle\InventoryBundle\Controller\ExpectedInventoryItemController` Class was added.
+* `MarelloEnterprise\Bundle\InventoryBundle\Twig\WarehouseExtension::__construct` [public] Method parameter added.
+* `MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseGridType::getWarehouseCollection` [protected] Method parameter added.
+* `MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseGridType::getWarehouseCollection` [protected] Method parameter typing added.
+* `MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseGridType::getWarehouseCollection` [protected] Method parameter typing removed.
+* `MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\DefaultWarehouseSubscriber::prePersist` [public] Method parameter typing added.
+* `MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\DefaultWarehouseSubscriber::prePersist` [public] Method parameter typing removed.
+* `MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\OrganizationCreateListener::postPersist` [public] Method parameter typing added.
+* `MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\OrganizationCreateListener::postPersist` [public] Method parameter typing removed.
+* `MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseGroupRemoveListener::preRemove` [public] Method parameter typing added.
+* `MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseGroupRemoveListener::preRemove` [public] Method parameter typing removed.
+* `MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseListener::prePersist` [public] Method parameter typing added.
+* `MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseListener::prePersist` [public] Method parameter typing removed.
+* `MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseListener::preRemove` [public] Method parameter typing added.
+* `MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseListener::preRemove` [public] Method parameter typing removed.
 
-LayoutBundle
+OrderBundle
 -----
-* `MarelloEnterprise\Bundle\LayoutBundle\Form\Extension\FormChangesExtension::getExtendedTypes` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\OrderBundle\Tests\Functional\Controller\OrderControllerDropshipmentTest::testAssigningOwnAndExternalWarehouse` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\OrderBundle\EventListener\Doctrine\OnOrderCreateListener::onFlush` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\OrderBundle\EventListener\Doctrine\OrderWorkflowStartListener::__construct` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\OrderBundle\EventListener\Doctrine\OrderWorkflowStartListener::postPersist` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\OrderBundle\EventListener\Doctrine\OrderWorkflowStartListener::getApplicableWorkflow` [protected] Method implementation changed.
+* `MarelloEnterprise\Bundle\OrderBundle\EventListener\Doctrine\OrderWorkflowStartListener::getDefaultWorkflowNames` [protected] Method has been added.
+* `MarelloEnterprise\Bundle\OrderBundle\EventListener\Doctrine\OrderWorkflowStartListener::$baseListener` [private] Property has been added.
+* `MarelloEnterprise\Bundle\OrderBundle\EventListener\Doctrine\OrderWorkflowStartListener::__construct` [public] Method parameter added.
+* `MarelloEnterprise\Bundle\OrderBundle\EventListener\Doctrine\OrderWorkflowStartListener::postPersist` [public] Method parameter typing added.
+* `MarelloEnterprise\Bundle\OrderBundle\EventListener\Doctrine\OrderWorkflowStartListener::postPersist` [public] Method parameter typing removed.
 
 PurchaseOrderBundle
 -----
-* `MarelloEnterprise\Bundle\PurchaseOrderBundle\Form\Extension\PurchaseOrderWarehouseFormExtension::buildForm` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\PurchaseOrderBundle\Tests\Unit\Form\Type\PurchaseOrderCreateStepTwoTypeTest::getExtensions` [public] Method implementation changed.
 
 ReplenishmentBundle
 -----
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Workflow\ReplenishmentOrderAllocateOriginInventoryAction::__construct` [public] Method implementation changed.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Workflow\ReplenishmentOrderAllocateOriginInventoryAction::executeAction` [protected] Method implementation changed.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Workflow\ReplenishmentOrderAllocateOriginInventoryAction::getQuantities` [protected] Method has been added.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\Workflow\ReplenishmentOrderAllocateDestinationInventoryAction::__construct` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\Workflow\ReplenishmentOrderAllocateDestinationInventoryAction::handleInventoryUpdate` [protected] Method implementation changed.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\Workflow\ReplenishmentOrderAllocateDestinationInventoryAction::$doctrine` [protected] Property has been added.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\Workflow\ReplenishmentOrderAllocateOriginInventoryAction::getQuantities` [protected] Method implementation changed.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\Workflow\ReplenishmentOrderShipAction::__construct` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\Workflow\ReplenishmentOrderShipAction::$doctrine` [protected] Property has been added.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\Strategy\EqualDivision\EqualDivisionReplenishmentStrategy::getResults` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\Provider\ReplenishmentManualItemFormChangesProvider::processFormChanges` [public] Method implementation changed.
 * `MarelloEnterprise\Bundle\ReplenishmentBundle\Provider\ReplenishmentOrdersFromConfigProvider::getReplenishmentOrders` [public] Method implementation changed.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Migrations\Schema\MarelloEnterpriseReplenishmentBundleInstaller::getMigrationVersion` [public] Method implementation changed.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Migrations\Schema\MarelloEnterpriseReplenishmentBundleInstaller::up` [public] Method implementation changed.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Migrations\Schema\MarelloEnterpriseReplenishmentBundleInstaller::createMarelloReplenishmentOrderConfigTable` [protected] Method implementation changed.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Migrations\Schema\MarelloEnterpriseReplenishmentBundleInstaller::createMarelloReplenishmentOrderTable` [protected] Method implementation changed.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Migrations\Schema\MarelloEnterpriseReplenishmentBundleInstaller::createMarelloReplenishmentOrderItemTable` [protected] Method implementation changed.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Migrations\Schema\MarelloEnterpriseReplenishmentBundleInstaller::addMarelloReplenishmentOrderForeignKeys` [protected] Method implementation changed.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Migrations\Schema\MarelloEnterpriseReplenishmentBundleInstaller::addMarelloReplenishmentOrderItemForeignKeys` [protected] Method implementation changed.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Migrations\Schema\MarelloEnterpriseReplenishmentBundleInstaller::createMarelloReplenishmentOrderManualItemTable` [protected] Method has been added.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Migrations\Schema\MarelloEnterpriseReplenishmentBundleInstaller::addMarelloReplenishmentOrderManualItemConfigForeignKeys` [protected] Method has been added.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Type\ReplenishmentOrderConfigType::buildForm` [public] Method implementation changed.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Handler\ReplenishmentOrderConfigHandler::__construct` [public] Method parameter name changed.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Handler\ReplenishmentOrderConfigHandler::__construct` [public] Method implementation changed.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Handler\ReplenishmentOrderConfigHandler::process` [public] Method parameter name changed.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Handler\ReplenishmentOrderConfigHandler::process` [public] Method implementation changed.
 * `MarelloEnterprise\Bundle\ReplenishmentBundle\EventListener\Doctrine\ReplenishmentOrderItemListener::postUpdate` [public] Method implementation changed.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\EventListener\Doctrine\ReplenishmentOrderItemListener::collectInventoryBatches` [private] Method has been added.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderConfig::__construct` [public] Method has been added.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderConfig::getManualItems` [public] Method has been added.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderConfig::addManualItem` [public] Method has been added.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderConfig::removeManualItem` [public] Method has been added.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderConfig::$manualItems` [protected] Property has been added.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderItem::isAllQuantity` [public] Method has been added.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderItem::setAllQuantity` [public] Method has been added.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderItem::$allQuantity` [protected] Property has been added.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Controller\ReplenishmentOrderConfigController::createAction` [public] Method implementation changed.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Controller\ReplenishmentOrderConfigController::createStepTwoAction` [public] Method has been added.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Tests\Functional\Controller\ReplenishmentOrderConfigAjaxControllerTest` Class was added.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Tests\Functional\Controller\ReplenishmentOrderConfigControllerTest` Class was added.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Strategy\ManualReplenishmentStrategy` Class was added.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Provider\ReplenishmentManualItemFormChangesProvider` Class was added.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\EventListener\Doctrine\ReplenishmentOrderItemListener::collectInventoryBatches` [private] Method implementation changed.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\EventListener\Doctrine\ReplenishmentWorkflowAllocateInventoryListener::postPersist` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\EventListener\Doctrine\ReplenishmentWorkflowAllocateInventoryListener::postFlush` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrder::__construct` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderConfig::__construct` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\DependencyInjection\MarelloEnterpriseReplenishmentExtension::load` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\Command\AllocateDelayedReplenishmentOrdersInventoryCommand::__construct` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\Command\AllocateDelayedReplenishmentOrdersInventoryCommand::execute` [protected] Method implementation changed.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\Command\AllocateDelayedReplenishmentOrdersInventoryCommand::isActive` [public] Method has been added.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\Command\AllocateDelayedReplenishmentOrdersInventoryCommand::$doctrine` [private] Property has been added.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\Command\AllocateDelayedReplenishmentOrdersInventoryCommand::$messageProducer` [private] Property has been added.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\Async\AllocateReplenishmentOrdersInventoryProcessor::getSubscribedTopics` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\Model\ExtendReplenishmentOrder` Class was added.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\Model\ExtendReplenishmentOrderConfig` Class was added.
 * `MarelloEnterprise\Bundle\ReplenishmentBundle\Model\ExtendReplenishmentOrderManualItemConfig` Class was added.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Model\ReplenishmentOrderStepOne` Class was added.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Migrations\Schema\v2_1\MarelloReplenishmentBundle` Class was added.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Type\ReplenishmentOrderConfigManualType` Class was added.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Type\ReplenishmentOrderManualItemCollectionType` Class was added.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Type\ReplenishmentOrderManualItemType` Class was added.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Type\ReplenishmentOrderStepOneType` Class was added.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Handler\ReplenishmentOrderStepOneHandler` Class was added.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\EventListener\Datagrid\ReplenishmentOrderItemInventoryBatchesColumnListener` Class was added.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderManualItemConfig` Class was added.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Controller\ReplenishmentOrderConfigAjaxController` Class was added.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Workflow\ReplenishmentOrderAllocateOriginInventoryAction::$replenishmentOrdersProvider` [protected] Property has been removed.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Workflow\ReplenishmentOrderAllocateOriginInventoryAction::$registry` [protected] Property has been removed.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Handler\ReplenishmentOrderConfigHandler::getFormView` [public] Method has been removed.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Handler\ReplenishmentOrderConfigHandler::__construct` [public] Method parameter removed.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Handler\ReplenishmentOrderConfigHandler::__construct` [public] Method parameter typing added.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Handler\ReplenishmentOrderConfigHandler::__construct` [public] Method parameter typing removed.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Handler\ReplenishmentOrderConfigHandler::process` [public] Method parameter added.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Handler\ReplenishmentOrderConfigHandler::process` [public] Method parameter typing added.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Handler\ReplenishmentOrderConfigHandler::process` [public] Method parameter typing removed.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Handler\ReplenishmentOrderConfigHandler::$form` [protected] Property has been removed.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Handler\ReplenishmentOrderConfigHandler::$request` [protected] Property has been removed.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Handler\ReplenishmentOrderConfigHandler::$manager` [protected] Property has been removed.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Handler\ReplenishmentOrderConfigHandler::$replenishmentOrdersProvider` [protected] Property has been removed.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrder::getPercentage` [public] Method has been removed.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrder::setPercentage` [public] Method has been removed.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrder::$percentage` [protected] Property has been removed.
-* `MarelloEnterprise\Bundle\ReplenishmentBundle\Controller\ReplenishmentOrderConfigController::update` [protected] Method has been removed.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\Async\Topic\AllocateReplenishmentOrdersInventoryTopic` Class was removed.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\Workflow\ReplenishmentOrderAllocateDestinationInventoryAction::__construct` [public] Method parameter typing added.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\Workflow\ReplenishmentOrderAllocateDestinationInventoryAction::__construct` [public] Method parameter typing removed.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\Workflow\ReplenishmentOrderAllocateOriginInventoryAction::__construct` [public] Method parameter typing added.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\Workflow\ReplenishmentOrderAllocateOriginInventoryAction::__construct` [public] Method parameter typing removed.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\Workflow\ReplenishmentOrderShipAction::__construct` [public] Method parameter typing added.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\Workflow\ReplenishmentOrderShipAction::__construct` [public] Method parameter typing removed.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\EventListener\Doctrine\ReplenishmentOrderItemListener::postUpdate` [public] Method parameter typing added.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\EventListener\Doctrine\ReplenishmentOrderItemListener::postUpdate` [public] Method parameter typing removed.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\EventListener\Doctrine\ReplenishmentWorkflowAllocateInventoryListener::postPersist` [public] Method parameter typing added.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\EventListener\Doctrine\ReplenishmentWorkflowAllocateInventoryListener::postPersist` [public] Method parameter typing removed.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\Command\AllocateDelayedReplenishmentOrdersInventoryCommand::__construct` [public] Method parameter typing added.
+* `MarelloEnterprise\Bundle\ReplenishmentBundle\Command\AllocateDelayedReplenishmentOrdersInventoryCommand::__construct` [public] Method parameter typing removed.
+
+SalesBundle
+-----
+* `MarelloEnterprise\Bundle\SalesBundle\EventListener\Doctrine\OrganizationCreateListener::postPersist` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\SalesBundle\EventListener\Doctrine\OrganizationCreateListener::__construct` [public] Method has been added.
+* `MarelloEnterprise\Bundle\SalesBundle\EventListener\Doctrine\SalesChannelGroupListener::preRemove` [public] Method implementation changed.
+* `MarelloEnterprise\Bundle\SalesBundle\EventListener\Doctrine\OrganizationCreateListener::postPersist` [public] Method parameter typing added.
+* `MarelloEnterprise\Bundle\SalesBundle\EventListener\Doctrine\OrganizationCreateListener::postPersist` [public] Method parameter typing removed.
+* `MarelloEnterprise\Bundle\SalesBundle\EventListener\Doctrine\SalesChannelGroupListener::__construct` [public] Method parameter added.
+* `MarelloEnterprise\Bundle\SalesBundle\EventListener\Doctrine\SalesChannelGroupListener::preRemove` [public] Method parameter typing added.
+* `MarelloEnterprise\Bundle\SalesBundle\EventListener\Doctrine\SalesChannelGroupListener::preRemove` [public] Method parameter typing removed.
 
 

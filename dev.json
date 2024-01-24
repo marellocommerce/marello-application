@@ -25,14 +25,14 @@
         }
     },
     "require": {
-        "oro/platform-enterprise": "5.0.*",
-        "oro/platform-serialised-fields": "5.0.*",
-        "oro/calendar-bundle": "5.0.*",
-        "oro/health-check-bundle": "5.0.*",
-        "oro/oauth2-server": "5.0.*",
-        "oro/crm-task-bundle": "5.0.*",
-        "marellocommerce/marello": "4.2.x-dev",
-        "marellocommerce/marello-enterprise": "4.2.x-dev",
+        "oro/platform-enterprise": "5.1.*",
+        "oro/platform-serialised-fields": "5.1.*",
+        "oro/calendar-bundle": "5.1.*",
+        "oro/health-check-bundle": "5.1.*",
+        "oro/oauth2-server": "5.1.*",
+        "oro/crm-task-bundle": "5.1.*",
+        "marellocommerce/marello": "5.0.x-dev",
+        "marellocommerce/marello-enterprise": "5.0.x-dev",
         "http-interop/http-factory-guzzle": "^1.2"
     },
     "require-dev": {
@@ -69,7 +69,9 @@
         },
         "allow-plugins": {
             "composer/package-versions-deprecated": false,
-            "php-http/discovery": true
+            "php-http/discovery": false,
+            "symfony/flex": true,
+            "symfony/runtime": true
         }
     },
     "scripts": {
@@ -94,7 +96,7 @@
         "test-install": [
             "rm -rf var/cache/*",
             "rm -rf var/logs/*",
-            "bin/console oro:install --env test --organization-name Oro --user-name admin --user-email admin@example.com --user-firstname John --user-lastname Doe --user-password admin --sample-data n --application-url http://localhost --drop-database --timeout 3600 --skip-translations --skip-assets --formatting-code=en_US --language=en"
+            "bin/console oro:install --env test --organization-name Oro --user-name admin --user-email admin@example.com --user-firstname John --user-lastname Doe --user-password admin --sample-data n --application-url http://localhost --drop-database --timeout 3600 --skip-translations --formatting-code=en_US --language=en"
         ],
         "test-psr": [
             "php ./bin/phpcs --standard=vendor/marellocommerce/marello/phpcs.xml -p vendor/marellocommerce/ --report-file=var/logs/phpcs.xml"
@@ -106,19 +108,16 @@
             "@test-functional"
         ],
         "post-install-cmd": [
-            "@build-parameters",
             "@set-permissions",
             "@install-assets",
-            "@set-assets-version"
+            "@set-assets-version",
+            "@auto-scripts"
         ],
         "post-update-cmd": [
-            "@build-parameters",
             "@set-permissions",
             "@update-assets",
-            "@set-assets-version"
-        ],
-        "build-parameters": [
-            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
+            "@set-assets-version",
+            "@auto-scripts"
         ],
         "set-permissions": [
             "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::setPermissions"
@@ -134,7 +133,10 @@
         ],
         "set-parameters": [
             "Oro\\Bundle\\InstallerBundle\\Composer\\ParametersHandler::set"
-        ]
+        ],
+        "auto-scripts": {
+            "oro:assets:install": "symfony-cmd"
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -142,31 +144,15 @@
         "symfony": {
             "require": "~5.4.0"
         },
+        "runtime": {
+            "dotenv_path": ".env-app",
+            "env_var_name": "ORO_ENV",
+            "debug_var_name": "ORO_DEBUG",
+            "prod_envs": ["prod", "behat_test"]
+        },
         "symfony-web-dir": "public",
         "symfony-var-dir": "var",
         "symfony-bin-dir": "bin",
-        "symfony-tests-dir": "tests",
-        "incenteev-parameters": {
-            "file": "config/parameters.yml",
-            "env-map": {
-                "database_driver": "APP_DB_DRIVER",
-                "database_host": "APP_DB_HOST",
-                "database_port": "APP_DB_PORT",
-                "database_name": "APP_DB_NAME",
-                "database_user": "APP_DB_USER",
-                "database_password": "APP_DB_PASSWORD",
-                "mailer_transport": "APP_MAILER_TRANSPORT",
-                "mailer_host": "APP_MAILER_HOST",
-                "mailer_port": "APP_MAILER_PORT",
-                "mailer_encryption": "APP_MAILER_ENCRYPTION",
-                "mailer_user": "APP_MAILER_USER",
-                "mailer_password": "APP_MAILER_PASSWORD",
-                "websocket_bind_port": "APP_WEBSOCKET_BACKEND_PORT",
-                "websocket_backend_port": "APP_WEBSOCKET_BACKEND_PORT",
-                "websocket_frontend_port": "APP_WEBSOCKET_FRONTEND_PORT",
-                "installed": "APP_IS_INSTALLED",
-                "secret": "APP_SECRET"
-            }
-        }
+        "symfony-tests-dir": "tests"
     }
 }

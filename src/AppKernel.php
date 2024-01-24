@@ -31,7 +31,21 @@ class AppKernel extends OroKernel
             $bundles[] = new Oro\Bundle\TestFrameworkProBundle\OroTestFrameworkProBundle();
         }
 
-        return array_merge(parent::registerBundles(), $bundles);
+        $bundles = array_merge(parent::registerBundles(), $bundles);
+
+        $excludedBundles = [
+            Oro\Bundle\FusionChartsBundle\OroFusionChartsBundle::class,
+        ];
+        foreach ($excludedBundles as $excludedBundle) {
+            foreach ($bundles as $key => $bundle) {
+                if ($bundle instanceof $excludedBundle) {
+                    unset($bundles[$key]);
+                    break;
+                }
+            }
+        }
+
+        return $bundles;
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader)

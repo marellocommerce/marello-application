@@ -1,6 +1,5 @@
 imports:
     - { resource: '@OroDistributionBundle/Resources/config/security.yml' }
-    - { resource: ../parameters.yml }
 
 framework:
     #esi:             ~
@@ -40,10 +39,6 @@ lexik_maintenance:
             file_path:        '%kernel.project_dir%/var/cache/maintenance_lock'
 
 services:
-    oro.cache.abstract:
-        abstract:             true
-        class:                Doctrine\Common\Cache\PhpFileCache
-        arguments:            ['%kernel.cache_dir%/dist']
     twig.extension.intl:
          class:               Twig_Extensions_Extension_Intl
          tags:
