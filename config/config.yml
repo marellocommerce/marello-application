@@ -1,6 +1,7 @@
 imports:
     - { resource: parameters.yml, ignore_errors: not_found }
     - { resource: security.yml }
+    - { resource: doctrine.yml }
 
 parameters:
     web_backend_prefix: ''
