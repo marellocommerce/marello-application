@@ -156,15 +156,6 @@
             "console oro:entity-extend:update --no-interaction --no-ansi",
             "@maintenance:unlock"
         ],
-        "health": [
-            "console monitor:health doctrine_dbal --no-interaction --no-ansi",
-            "console monitor:health mail_transport --no-interaction --no-ansi",
-            "console monitor:health rabbitmq_server --no-interaction --no-ansi",
-            "console monitor:health elasticsearch --no-interaction --no-ansi",
-            "console monitor:health redis_cache --no-interaction --no-ansi",
-            "console monitor:health redis_doctrine_cache --no-interaction --no-ansi",
-            "console monitor:health redis_session_storage --no-interaction --no-ansi"
-        ],
         "platform:update:dry-run": [
             "console oro:platform:update --timeout=0 --no-interaction --no-ansi"
         ],
@@ -184,8 +175,8 @@
             "console cache:warmup --no-interaction --no-ansi",
             "console oro:translation:rebuild-cache --no-interaction --no-ansi"
         ],
-        "global:lock": "touch ${ORO_GLOBAL_LOCK_FILE_PATH:-var/cache/maintenance/global_lock}",
-        "global:unlock": "rm -f ${ORO_GLOBAL_LOCK_FILE_PATH:-var/cache/maintenance/global_lock}",
+        "global:lock": "touch ${ORO_GLOBAL_LOCK_FILE_PATH:-var/maintenance/global_lock}",
+        "global:unlock": "rm -f ${ORO_GLOBAL_LOCK_FILE_PATH:-var/maintenance/global_lock}",
         "maintenance:lock": [
             "console oro:maintenance-notification --message=Maintenance\\ start --subject=At\\ $ORO_APP_URL --no-interaction --no-ansi",
             "console oro:maintenance:lock --no-interaction --no-ansi"

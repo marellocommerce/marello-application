@@ -17,6 +17,10 @@ behat.yml
 !var/data/
 /var/data/*
 !var/data/.gitkeep
+/var/sessions/*
+!var/sessions/.gitkeep
+/var/maintenance/*
+!var/maintenance/.gitkeep
 !var/oro-check.php
 !var/SymfonyRequirements.php
 !var/OroRequirements.php
