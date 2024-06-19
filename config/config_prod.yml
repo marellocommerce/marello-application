@@ -23,15 +23,19 @@ monolog:
             excluded_http_codes: [ 404, 405 ]
         grouped:
             type: group
-            members: [deduplicated, streamed]
+            members: [streamed, deduplicated]
+
         streamed:
             type:           stream
-            path:           "%kernel.logs_dir%/%kernel.environment%.log"
+            path:           "%log_path%"
             level:          debug
+
         deduplicated:
             type:           deduplication
             handler:        symfony_mailer
             time:           10
+            store:          "%kernel.logs_dir%/deduplicated.log"
+
         symfony_mailer:
             type:           symfony_mailer
             email_prototype:
