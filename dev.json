@@ -96,7 +96,7 @@
         "test-install": [
             "rm -rf var/cache/*",
             "rm -rf var/logs/*",
-            "bin/console oro:install --env test --organization-name Oro --user-name admin --user-email admin@example.com --user-firstname John --user-lastname Doe --user-password admin --sample-data n --application-url http://localhost --drop-database --timeout 3600 --skip-translations --formatting-code=en_US --language=en"
+            "bin/console oro:install --env test --organization-name OroInc --user-name admin --user-email admin@example.com --user-firstname John --user-lastname Doe --user-password admin --sample-data n --application-url http://localhost/ --drop-database --timeout 3600 --skip-translations --formatting-code=en_US --language=en"
         ],
         "test-psr": [
             "php ./bin/phpcs --standard=vendor/marellocommerce/marello/phpcs.xml -p vendor/marellocommerce/ --report-file=var/logs/phpcs.xml"

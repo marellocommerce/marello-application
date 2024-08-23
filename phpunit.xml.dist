@@ -27,7 +27,6 @@
     <groups>
         <exclude>
             <group>dist</group>
-            <group>install</group>
             <group>segfault</group>
             <group>demo-fixtures</group>
         </exclude>
@@ -37,8 +36,7 @@
             <directory>vendor/marellocommerce/*/*/*/*/*/Tests/Unit</directory>
         </testsuite>
         <testsuite name="functional">
-            <file>vendor/oro/platform/src/Oro/Bundle/TestFrameworkBundle/Tests/Functional/ConfigTranslationTest.php</file>
-            <!--<file>vendor/oro/platform/src/Oro/Bundle/TestFrameworkBundle/Tests/Functional/SchemaTest.php</file>-->
+            <directory>vendor/oro/platform/src/Oro/Bundle/TestFrameworkBundle/Tests/Functional/</directory>
             <directory>vendor/marellocommerce/*/*/*/*/*/Tests/Functional</directory>
         </testsuite>
         <testsuite name="selenium">
