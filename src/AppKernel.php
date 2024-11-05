@@ -11,11 +11,16 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class AppKernel extends OroKernel
 {
-    public function registerBundles()
+    public function registerBundles(): iterable
     {
         $bundles = array(
             // bundles
         );
+
+        if ($this->isDebug()) {
+            ini_set('memory_limit', -1);
+            ini_set('max_execution_time', 0);
+        }
 
         if ('dev' === $this->getEnvironment()) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
@@ -50,7 +55,6 @@ class AppKernel extends OroKernel
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
         $loader->load(function (ContainerBuilder $container) {
-            $container->setParameter('container.autowiring.strict_mode', true);
             $container->setParameter('container.dumper.inline_class_loader', true);
             $container->addObjectResource($this);
         });
@@ -61,15 +65,7 @@ class AppKernel extends OroKernel
     /**
      * {@inheritdoc}
      */
-    public function getRootDir()
-    {
-        return __DIR__;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCacheDir()
+    public function getCacheDir(): string
     {
         return dirname(__DIR__).'/var/cache/'.$this->environment;
     }
@@ -77,7 +73,7 @@ class AppKernel extends OroKernel
     /**
      * {@inheritdoc}
      */
-    public function getLogDir()
+    public function getLogDir(): string
     {
         return dirname(__DIR__).'/var/logs';
     }
