@@ -10,7 +10,7 @@ using Marello.
 
 Marello is a Symfony 5.4 based application with the following requirements:
 
-* PHP 8.1 or above with command line interface
+* PHP 8.2 or above with command line interface
 * PHP Extensions
     * ctype
     * curl
@@ -19,8 +19,8 @@ Marello is a Symfony 5.4 based application with the following requirements:
     * intl (ICU library 4.4 and above)
     * json
     * mbstring
+    * sodium
     * openssl
-    * mysql
     * pcre
     * simplexml
     * tokenizer
@@ -30,7 +30,8 @@ Marello is a Symfony 5.4 based application with the following requirements:
     * soap
     * bcmath
     * ldap
-* MySQL 8.0
+    * pgsql
+* PostgreSQL 15.1
 
 ## Installation instructions
 
@@ -50,7 +51,7 @@ where x.y.z is the latest [release tag](https://github.com/marellocommerce/marel
 
 - Install [Composer][1] globally following the official Composer installation documentation
 
-- Make sure that you have [NodeJS][4] >=16.0, <17.0 installed
+- Make sure that you have [Node.js][4] >=18.14.0, <19 installed and NPM >=9.3.1, <10
 
 - Install Marello dependencies with composer. If installation process seems too slow you can use `--prefer-dist` option. Go to marello-application folder and run composer installation:
 
@@ -104,17 +105,7 @@ Installed PHP Accelerators must be compatible with Symfony and Doctrine (support
 
 Note that the port used in Websocket must be open in firewall for outgoing/incoming connections
 
-Using MySQL 8.0.x on HDD is potentially risky because of performance issues
-
-Recommended configuration for this case:
-
-    innodb_file_per_table = 0
-
-And ensure that timeout has default value
-
-    wait_timeout = 28800
-
-See [Oro's recommendation regarding optimization][2] and [Optimizing InnoDB Disk I/O][3] for more 
+Additional performance configurations and optimizations can be found in the [Oro docs][2]
 
 ## Web Server Configuration
 
@@ -124,15 +115,9 @@ The Marello application is based on the Symfony standard application so web serv
 
 Github OAuth token should be configured in package manager settings
 
-## Need Support?
-
-[Join the Community Chat][8] and get help from other users in the Marello community.
-
 [1]:  https://getcomposer.org/
-[2]:  https://doc.oroinc.com/backend/setup/system-requirements/database-optimization/
-[3]:  https://dev.mysql.com/doc/refman/8.0/en/optimizing-innodb-diskio.html
-[4]:  https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager
+[2]:  https://doc.oroinc.com/backend/setup/system-requirements/performance-optimization/
+[4]:  https://nodejs.org/en/download/package-manager
 [5]:  https://symfony.com/doc/5.4/setup/web_server_configuration.html
-[6]:  https://oroinc.com/orocrm/doc/current/install-upgrade/installation-quick-start-dev/crm#step-4-post-installation-environment-configuration
+[6]:  https://doc.oroinc.com/backend/setup/dev-environment/community-edition/
 [7]:  https://supervisord.org/
-[8]:  https://www.marello.com/community/

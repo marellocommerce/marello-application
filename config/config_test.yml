@@ -5,9 +5,10 @@ imports:
 
 parameters:
     doctrine.dbal.connection_factory.class: 'Oro\Component\Testing\Doctrine\PersistentConnectionFactory'
-    message_queue_transport: 'dbal'
-    message_queue_transport_config: {}
+    message_queue_transport_dsn: 'dbal:'
     main_log_channels: []
+
+    env(ORO_DB_URL): 'postgresql://root:root@db_postgres:5432/marellocommerce_test?sslmode=disable&charset=utf8&serverVersion=15.1'
 
 framework:
     test: ~
