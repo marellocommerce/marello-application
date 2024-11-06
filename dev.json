@@ -67,9 +67,10 @@
             "enabled": false
         },
         "allow-plugins": {
-            "php-http/discovery": false,
+            "composer/package-versions-deprecated": true,
+            "symfony/runtime": true,
             "symfony/flex": true,
-            "symfony/runtime": true
+            "php-http/discovery": false
         }
     },
     "scripts": {
