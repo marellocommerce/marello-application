@@ -33,7 +33,8 @@
         "oro/calendar-bundle": "6.0.*",
         "oro/oauth2-server": "6.0.*",
         "oro/crm-task-bundle": "6.0.*",
-        "marellocommerce/marello": "6.0.x-dev"
+        "marellocommerce/marello": "6.0.x-dev",
+        "symfony/dependency-injection": "6.4.11"
     },
     "require-dev": {
         "behat/behat": "~3.12.0",
