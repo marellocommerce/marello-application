@@ -1,6 +1,5 @@
 imports:
     - { resource: config.yml }
-    - { resource: parameters_test.yml, ignore_errors: true }
     - { resource: security_test.yml }
 
 parameters:
@@ -8,12 +7,10 @@ parameters:
     message_queue_transport_dsn: 'dbal:'
     main_log_channels: []
 
-    env(ORO_DB_URL): 'postgresql://root:root@db_postgres:5432/marellocommerce_test?sslmode=disable&charset=utf8&serverVersion=15.1'
-
 framework:
     test: ~
     session:
-        storage_id: session.storage.mock_file
+        storage_factory_id: session.storage.factory.mock_file
     csrf_protection: true
     profiler:
         enabled: false
@@ -24,9 +21,15 @@ framework:
 
 monolog:
     handlers:
+        fingers_crossed:
+            type: fingers_crossed
+            action_level: error
+            handler: nested
+            excluded_http_codes: [ 404, 405 ]
+            channels: [ "!event" ]
         nested:
             type: stream
-            path: "%kernel.logs_dir%/%kernel.environment%.log"
+            path: "%log_path%"
             level: debug
             channels: '%main_log_channels%'
 
@@ -47,10 +50,6 @@ oro_user:
 twig:
     strict_variables: true
     debug: false
-
-oro_search:
-    engine_parameters:
-        force_refresh: true
 
 oro_api:
     settings:

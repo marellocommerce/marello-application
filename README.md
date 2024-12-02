@@ -8,9 +8,9 @@ using Marello.
 
 ## Requirements
 
-Marello is a Symfony 5.4 based application with the following requirements:
+Marello is a Symfony 6.4 based application with the following requirements:
 
-* PHP 8.2 or above with command line interface
+* PHP 8.3 or above with command line interface
 * PHP Extensions
     * ctype
     * curl
@@ -31,7 +31,7 @@ Marello is a Symfony 5.4 based application with the following requirements:
     * bcmath
     * ldap
     * pgsql
-* PostgreSQL 15.1
+* PostgreSQL 16.1
 
 ## Installation instructions
 
@@ -51,7 +51,7 @@ where x.y.z is the latest [release tag](https://github.com/marellocommerce/marel
 
 - Install [Composer][1] globally following the official Composer installation documentation
 
-- Make sure that you have [Node.js][4] >=18.14.0, <19 installed and NPM >=9.3.1, <10
+- Make sure that you have [Node.js][4] >=20.10.0, <21 installed and NPM >10
 
 - Install Marello dependencies with composer. If installation process seems too slow you can use `--prefer-dist` option. Go to marello-application folder and run composer installation:
 

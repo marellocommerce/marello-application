@@ -8,7 +8,8 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 //umask(0000);
 
 set_time_limit(0);
-
+error_reporting(-1);
+ini_set('display_errors', 'On');
 // Set the project directory as the current working directory
 // for running child processes correctly without specifying the execution directory
 chdir(__DIR__ . DIRECTORY_SEPARATOR . '..');
