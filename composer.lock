@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d137ca943b62765e3e2417f99427bd9f",
+    "content-hash": "b1d8cbfc960f0978dd2204eee02cff95",
     "packages": [
         {
             "name": "ass/xmlsecurity",
@@ -4746,12 +4746,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/marellocommerce/marello.git",
-                "reference": "d7d74b4f31793e0631322ae12652d1c457caddc4"
+                "reference": "d3e576c49caf84a5c877ecbe6a2a1ef45fcda0d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/marellocommerce/marello/zipball/d7d74b4f31793e0631322ae12652d1c457caddc4",
-                "reference": "d7d74b4f31793e0631322ae12652d1c457caddc4",
+                "url": "https://api.github.com/repos/marellocommerce/marello/zipball/d3e576c49caf84a5c877ecbe6a2a1ef45fcda0d0",
+                "reference": "d3e576c49caf84a5c877ecbe6a2a1ef45fcda0d0",
                 "shasum": ""
             },
             "require": {
@@ -4789,7 +4789,7 @@
                 "source": "https://github.com/marellocommerce/marello/tree/6.0.4",
                 "issues": "https://github.com/marellocommerce/marello/issues"
             },
-            "time": "2025-02-18T14:29:15+00:00"
+            "time": "2025-02-18T15:35:45+00:00"
         },
         {
             "name": "matomo/device-detector",
@@ -14326,16 +14326,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v6.4.18",
+            "version": "v6.4.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "bf598c9d9bb4a22f495a4e26e4c4fce2f8ecefc5"
+                "reference": "e99b4e94d124b29ee4cf3140e1b537d2dad8cec9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/bf598c9d9bb4a22f495a4e26e4c4fce2f8ecefc5",
-                "reference": "bf598c9d9bb4a22f495a4e26e4c4fce2f8ecefc5",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/e99b4e94d124b29ee4cf3140e1b537d2dad8cec9",
+                "reference": "e99b4e94d124b29ee4cf3140e1b537d2dad8cec9",
                 "shasum": ""
             },
             "require": {
@@ -14378,7 +14378,7 @@
             "description": "Loads and dumps YAML files",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/yaml/tree/v6.4.18"
+                "source": "https://github.com/symfony/yaml/tree/v6.4.13"
             },
             "funding": [
                 {
@@ -14394,7 +14394,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-01-07T09:44:41+00:00"
+            "time": "2024-09-25T14:18:03+00:00"
         },
         {
             "name": "twig/twig",
