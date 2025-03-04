@@ -147,6 +147,8 @@ oro_attachment:
         - image/svg
         - image/svg+xml
         - image/webp
+        - model/vnd.usdz+zip
+        - image/avif
     upload_image_mime_types:
         - image/gif
         - image/jpeg
@@ -154,3 +156,4 @@ oro_attachment:
         - image/svg
         - image/svg+xml
         - image/webp
+        - image/avif
