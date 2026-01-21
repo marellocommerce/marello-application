@@ -4816,16 +4816,16 @@
         },
         {
             "name": "marellocommerce/marello",
-            "version": "6.0.7",
+            "version": "6.0.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/marellocommerce/marello.git",
-                "reference": "2455dde9184d6348d257a5f25f81660635936cad"
+                "reference": "14d41da18b9ba76c82e891a086d79b4084821073"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/marellocommerce/marello/zipball/2455dde9184d6348d257a5f25f81660635936cad",
-                "reference": "2455dde9184d6348d257a5f25f81660635936cad",
+                "url": "https://api.github.com/repos/marellocommerce/marello/zipball/14d41da18b9ba76c82e891a086d79b4084821073",
+                "reference": "14d41da18b9ba76c82e891a086d79b4084821073",
                 "shasum": ""
             },
             "require": {
@@ -4860,10 +4860,10 @@
             "description": "Marello Unified Commerce Management",
             "homepage": "https://github.com/marellocommerce/marello.git",
             "support": {
-                "source": "https://github.com/marellocommerce/marello/tree/6.0.7",
+                "source": "https://github.com/marellocommerce/marello/tree/6.0.7.1",
                 "issues": "https://github.com/marellocommerce/marello/issues"
             },
-            "time": "2026-01-20T09:47:47+00:00"
+            "time": "2026-01-21T09:20:14+00:00"
         },
         {
             "name": "matomo/device-detector",
